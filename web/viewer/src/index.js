@@ -508,6 +508,8 @@ class FloorForgeViewer {
 
   // ---------- cameras ----------
   orbitTo(targetScene, theta, phi, distance) {
+    // Placing the camera outright ends any glide still under way (its destination belongs to the previous view).
+    this.zoomAnim = null;
     const t = s2t(targetScene);
     // Views are composed for landscape frames; step back on a portrait (phone) canvas so the house still fits.
     const aspect = this.canvas.clientWidth / Math.max(1, this.canvas.clientHeight);

@@ -104,7 +104,12 @@ try {
   await page.waitForTimeout(200);
   const topView = await frame();
   await page.screenshot({ path: join(OUT, 'studio-focus-top.png') });
-  check('Focus shows the home alone filling the whole screen', focus.focus && !focus.context && focus.inside && Math.max(...focus.span) >= .75 && focus.wrap[0] === focus.window[0] && focus.wrap[1] === focus.window[1] && topView.inside, { focus, top: topView });
+  // A view chosen while a framing glide is still under way takes its own direction, not the glide's.
+  await page.click('.canvas-wrap [data-view="hero"]');
+  await page.click('#zoom-fit');
+  await page.click('.canvas-wrap [data-view="top"]');
+  const midGlide = await page.evaluate(() => { const v = window.__ffApp.viewer; const d = v.camera.position.clone().sub(v.controls.target).normalize(); return { up: +d.y.toFixed(3), gliding: !!v.zoomAnim }; });
+  check('Focus shows the home alone filling the whole screen', focus.focus && !focus.context && focus.inside && Math.max(...focus.span) >= .75 && focus.wrap[0] === focus.window[0] && focus.wrap[1] === focus.window[1] && topView.inside && midGlide.up > .95 && !midGlide.gliding, { focus, top: topView, view_chosen_mid_glide: midGlide });
   await page.click('#focus');
   await page.waitForTimeout(300);
   const unfocused = await page.evaluate(() => ({ focus: !!window.__ffApp.viewer.focus, context: window.__ffApp.viewer.context.visible, expanded: document.querySelector('.canvas-wrap').classList.contains('expanded') }));
