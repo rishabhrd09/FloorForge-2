@@ -3,9 +3,9 @@
  "date": "2026-09-26",
  "all_original_requirements_complete": false,
  "pytest": {
-  "passed": 164,
+  "passed": 193,
   "failed": 0,
-  "seconds": 112.11,
+  "seconds": 201.78,
   "source": "evidence/pytest.txt"
  },
  "reproducibility": {
@@ -13,13 +13,13 @@
   "equal_build_ids": true,
   "files_compared": 23,
   "changed_artifacts": [],
-  "seconds": 6.965,
+  "seconds": 7.392,
   "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
  },
  "browser": {
   "studio": {
-   "checks_passed": 17,
-   "checks_total": 17,
+   "checks_passed": 19,
+   "checks_total": 19,
    "page_errors": 0,
    "transport": "Direct navigation to the real loopback studio server (scripts/capture_studio.mjs)",
    "renderer": {
@@ -28,7 +28,7 @@
    }
   },
   "walkthrough": {
-   "captures": 16,
+   "captures": 21,
    "page_errors": 0,
    "source": "scripts/capture_walkthrough.mjs",
    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
@@ -38,7 +38,7 @@
    "page_errors": 0,
    "presentation_glb": {
     "file": "FloorForge-presentation.glb",
-    "bytes": 76485344,
+    "bytes": 78478472,
     "magic": "glTF"
    },
    "live_walk": {
@@ -49,8 +49,8 @@
     "rooms": [
      "Street|Ground floor",
      "Garden|Ground floor",
-     "Hall|Ground floor",
-     "Living|Ground floor"
+     "Living|Ground floor",
+     "Dining|Ground floor"
     ]
    }
   },
@@ -65,13 +65,13 @@
   ],
   "all_completed": true,
   "seconds": [
-   138,
-   271,
-   243,
-   565,
-   570,
-   430,
-   1115
+   144,
+   314,
+   291,
+   551,
+   569,
+   420,
+   1092
   ],
   "source": "evidence/cycles-renders.json",
   "scope": "Offline renders of preliminary geometry; not photographs; no camera or luminance calibration"
@@ -90,13 +90,13 @@
     "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
     "autocad_gui": "NOT TESTED",
     "dimension_entities": 4,
-    "entities": 476,
+    "entities": 478,
     "status": "ezdxf_reimport_pass",
     "units": "mm"
    },
    "glb": {
-    "geometries": 346,
-    "node_count": 1396,
+    "geometries": 389,
+    "node_count": 1668,
     "separate_viewer": "pending",
     "status": "trimesh_reimport_pass",
     "units": "m",
@@ -113,9 +113,9 @@
    },
    "exterior": {
     "theme": "modern_tropical",
-    "assemblies": 3,
-    "landscape_features": 53,
-    "opening_refinements": 17,
+    "assemblies": 4,
+    "landscape_features": 38,
+    "opening_refinements": 18,
     "protected_interior": "unchanged"
    }
   },
@@ -129,8 +129,8 @@
     "units": "mm"
    },
    "glb": {
-    "geometries": 182,
-    "node_count": 671,
+    "geometries": 235,
+    "node_count": 856,
     "separate_viewer": "pending",
     "status": "trimesh_reimport_pass",
     "units": "m",
@@ -148,8 +148,8 @@
    "exterior": {
     "theme": "modern_tropical",
     "assemblies": 1,
-    "landscape_features": 34,
-    "opening_refinements": 10,
+    "landscape_features": 29,
+    "opening_refinements": 11,
     "protected_interior": "unchanged"
    }
   },
@@ -163,8 +163,8 @@
     "units": "mm"
    },
    "glb": {
-    "geometries": 153,
-    "node_count": 537,
+    "geometries": 230,
+    "node_count": 717,
     "separate_viewer": "pending",
     "status": "trimesh_reimport_pass",
     "units": "m",
@@ -182,8 +182,8 @@
    "exterior": {
     "theme": "modern_tropical",
     "assemblies": 2,
-    "landscape_features": 9,
-    "opening_refinements": 8,
+    "landscape_features": 5,
+    "opening_refinements": 9,
     "protected_interior": "unchanged"
    }
   }

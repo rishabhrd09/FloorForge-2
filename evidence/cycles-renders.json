@@ -11,8 +11,8 @@
       "eye": null,
       "grade": "day",
       "samples": 128,
-      "seconds": 138,
-      "exposure_ev": -0.51,
+      "seconds": 144,
+      "exposure_ev": -0.32,
       "completed": true
     },
     {
@@ -21,8 +21,8 @@
       "eye": null,
       "grade": "golden",
       "samples": 128,
-      "seconds": 271,
-      "exposure_ev": -0.33,
+      "seconds": 314,
+      "exposure_ev": -0.21,
       "completed": true
     },
     {
@@ -31,8 +31,8 @@
       "eye": null,
       "grade": "dusk",
       "samples": 128,
-      "seconds": 243,
-      "exposure_ev": 0.65,
+      "seconds": 291,
+      "exposure_ev": 0.57,
       "completed": true
     },
     {
@@ -41,8 +41,8 @@
       "eye": "3.2,3.9,0,-95",
       "grade": "day",
       "samples": 160,
-      "seconds": 565,
-      "exposure_ev": 4.55,
+      "seconds": 551,
+      "exposure_ev": 4.82,
       "completed": true
     },
     {
@@ -51,8 +51,8 @@
       "eye": "4.0,7.0,0,128",
       "grade": "day",
       "samples": 160,
-      "seconds": 570,
-      "exposure_ev": 3.0,
+      "seconds": 569,
+      "exposure_ev": 3.2,
       "completed": true
     },
     {
@@ -61,8 +61,8 @@
       "eye": "6.4,9.5,1,-35",
       "grade": "day",
       "samples": 160,
-      "seconds": 430,
-      "exposure_ev": 3.4,
+      "seconds": 420,
+      "exposure_ev": 3.41,
       "completed": true
     },
     {
@@ -71,8 +71,8 @@
       "eye": "3.2,3.9,0,-95",
       "grade": "dusk",
       "samples": 160,
-      "seconds": 1115,
-      "exposure_ev": -2.27,
+      "seconds": 1092,
+      "exposure_ev": -2.24,
       "completed": true
     }
   ]

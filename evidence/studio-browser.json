@@ -13,7 +13,7 @@
       "check": "viewer fills the studio at 1440×1024",
       "passed": true,
       "details": {
-        "canvas": 554,
+        "canvas": 694,
         "panelBottom": 987,
         "statusTop": 987,
         "scroll": 0
@@ -23,7 +23,7 @@
       "check": "1366×768 laptop layout keeps the panel clear of the status bar",
       "passed": true,
       "details": {
-        "canvas": 330,
+        "canvas": 438,
         "panelBottom": 731,
         "statusTop": 731,
         "scroll": 0
@@ -48,8 +48,8 @@
         ],
         "controlsInside": true,
         "zoom_m": [
-          26.6,
-          18.62
+          25.09,
+          17.57
         ]
       }
     },
@@ -63,11 +63,70 @@
       }
     },
     {
+      "check": "Focus shows the home alone filling the whole screen",
+      "passed": true,
+      "details": {
+        "focus": {
+          "span": [
+            0.692,
+            0.822
+          ],
+          "inside": true,
+          "context": false,
+          "focus": true,
+          "wrap": [
+            1440,
+            1024
+          ],
+          "window": [
+            1440,
+            1024
+          ]
+        },
+        "top": {
+          "span": [
+            0.795,
+            0.734
+          ],
+          "inside": true,
+          "context": false,
+          "focus": true,
+          "wrap": [
+            1440,
+            1024
+          ],
+          "window": [
+            1440,
+            1024
+          ]
+        },
+        "view_chosen_mid_glide": {
+          "up": 0.999,
+          "gliding": false
+        }
+      }
+    },
+    {
+      "check": "wider view folds the brief away; leaving Focus brings the street back",
+      "passed": true,
+      "details": {
+        "canvas_px": [
+          1066,
+          1384
+        ],
+        "unfocused": {
+          "focus": false,
+          "context": true,
+          "expanded": false
+        }
+      }
+    },
+    {
       "check": "Blender GLB export downloads a textured binary glTF",
       "passed": true,
       "details": {
         "file": "FloorForge-presentation.glb",
-        "bytes": 76485344
+        "bytes": 78478472
       }
     },
     {
@@ -143,6 +202,11 @@
       "status": 200
     },
     {
+      "path": "/demo/scene.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
       "path": "/demo/building.json",
       "method": "GET",
       "status": 200
@@ -158,11 +222,6 @@
       "status": 200
     },
     {
-      "path": "/demo/scene.json",
-      "method": "GET",
-      "status": 200
-    },
-    {
       "path": "/api/intent",
       "method": "POST",
       "status": 200
@@ -173,47 +232,52 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/ecc7d55b28cc7c65",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/ecc7d55b28cc7c65",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/ecc7d55b28cc7c65",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/ecc7d55b28cc7c65",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/ecc7d55b28cc7c65",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/4551e9c7f5ae91203ea74acd/building.json",
+      "path": "/api/jobs/d07d0d75c16d3589",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/4551e9c7f5ae91203ea74acd/scene.json",
+      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/sheets.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/4551e9c7f5ae91203ea74acd/report.json",
+      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/report.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/4551e9c7f5ae91203ea74acd/sheets.json",
+      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/building.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/scene.json",
       "method": "GET",
       "status": 200
     }

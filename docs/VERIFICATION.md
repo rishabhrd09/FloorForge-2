@@ -4,7 +4,7 @@
 
 ## Executed here
 
-**Tests.** 164 tests passed, 0 failed (112.1 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 45 realism test cases in `tests/test_realism.py` cover:
+**Tests.** 193 tests passed, 0 failed (201.8 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 74 realism test cases in `tests/test_realism.py` cover:
 - the Modern Tropical default and scene 0.4;
 - full-height living glazing within wall height;
 - landscape, stepping stones, planting and lawns inside the plot and off the house, for every fixture plot;
@@ -13,7 +13,12 @@
 - physically based material kinds and furniture containment;
 - offline-preview script integrity, and the bundled viewer's presence and licence comments;
 - walls that tile each storey without overlapping solids;
-- the walk from the footpath through the open gate to the front door, for every exterior theme on the villa, the narrowest plot and a plot with parking: no obstacle in the way and no rise above the walker's practical 0.3 m;
+- the walk from the footpath through the open pedestrian gate to the front door, for every exterior theme on the villa, the narrowest plot and a plot with parking: no obstacle in the way and no rise above the walker's practical 0.3 m;
+- the frontage for every designed theme and plot: separate pedestrian and vehicle gates that do not overlap, the pedestrian gate on the door's axis, the vehicle gate clear of the entrance or serving the carport (none where no 2.4 m stretch is free), the letterbox pier beside the pedestrian gate and its open leaf;
+- the modern L-shaped entrance (returning flight, LED strips, sit-out column, planter and bench) and the tall pivot door in its portal;
+- the deep eave with its timber soffit and downlights, the solar rack, the stair tower on every designed theme, and the roof terrace with its balustrade and roof-level planting;
+- paved side passages and timber-clad boundary walls where the passage allows;
+- Focus, the fitted views and the wider layout in the studio and preview, and the exact camera fit (`web/viewer/src/framing.js`) from low, high and overhead directions on wide and tall screens;
 - the refined window system, and each terrace's level, balustrade and pergola, for every exterior theme;
 - the large view, zoom and large-still controls in the studio and the offline preview;
 - the offline render path: the export in the bundle, and the Blender scripts compiling.
@@ -29,21 +34,23 @@ All three are Modern Tropical.
 
 **Drawings.** All 41 pages across the three example PDFs were rasterised with PyMuPDF 1.28.2. Each is A3 landscape, has the preliminary banner and keeps its text inside the physical page, with 0 issues. Contact sheets and selected full pages were inspected (`evidence/pdf-*`). No physical printing was tested.
 
-**Viewer.** `scripts/capture_walkthrough.mjs` produced 16 captures with no page errors, all in software WebGL (SwiftShader):
-- exterior in daylight, golden hour and blue hour, plus front and entrance views;
+**Viewer.** `scripts/capture_walkthrough.mjs` produced 21 captures with no page errors, all in software WebGL (SwiftShader):
+- exterior in daylight, golden hour and blue hour, plus front, entrance, aerial and top views, Focus, and the entrance at blue hour;
 - both dollhouse levels;
-- a scripted first-person walk: the arrival on the footpath outside the gate, dining and living, kitchen, the U-stair mid-landing, a first-floor bedroom and the terrace, plus blue-hour and night interiors;
+- a scripted first-person walk: the arrival on the footpath outside the pedestrian gate, dining and living, kitchen, the paved side passage, the U-stair mid-landing, a first-floor bedroom and the terrace, plus blue-hour and night interiors;
 - the compact example's hero.
 
 Per-shot mode, grade, room badge, probe state and metered exposure are in `evidence/walkthrough-capture.json`.
 
-**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the hall and living room. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 76 MB binary glTF (`evidence/browser-preview.json`).
+**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open pedestrian gate, along the entrance path, up the L-shaped steps and through the pivot door into the living and dining room. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 78 MB binary glTF (`evidence/browser-preview.json`).
 
-**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 17 checks with no page errors (`evidence/studio-browser.json`):
+**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 19 checks with no page errors (`evidence/studio-browser.json`):
 - the bundled scene 0.4 and realistic renderer;
-- the 3D view filling the studio at 1440×1024 (554 px tall), and a 1366×768 layout whose panel stays clear of the status bar;
+- the 3D view filling the studio at 1440×1024 (694 px tall), and a 1366×768 layout (438 px) whose panel stays clear of the status bar;
 - walk mode with the room badge;
-- the large view filling the window with its controls, and **+** gliding the camera from 26.6 m to 18.6 m (`evidence/studio-large-view.png`);
+- the large view filling the window with its controls, and **+** gliding the camera from 25.1 m to 17.6 m (`evidence/studio-large-view.png`);
+- **◎ Focus** filling the whole 1440×1024 window with the home alone (street and neighbours set aside), from the hero direction and from the top, the home spanning 82% of the frame's height; a view chosen while a framing glide is under way taking its own direction; leaving Focus bringing the street back (`evidence/studio-focus.png`, `studio-focus-top.png`);
+- **⇤ Wider view** widening the 3D from 1066 px to 1384 px (`evidence/studio-wide.png`);
 - **Capture** saving a 3840-pixel still;
 - nine drawing sheets, and a sheet zooming to 225% for close reading;
 - the visible regulatory unknown;
@@ -55,12 +62,12 @@ Per-shot mode, grade, room badge, probe state and metered exposure are in `evide
 - a 390 px mobile layout without horizontal overflow;
 - the **Blender GLB** button downloading a textured binary glTF.
 
-**Path-traced stills.** `scripts/export_presentation.mjs` exported the demo's presentation GLB (74.6 MB, 179 meshes, 143 textures), with the refurbished windows and terrace. `scripts/render_cycles.py` then path traced seven 1600×900 stills (`evidence/cycles-*.jpg`):
+**Path-traced stills.** `scripts/export_presentation.mjs` exported the demo's presentation GLB (76.0 MB, 193 meshes, 153 textures), with the new frontage, entrance, stair tower and roof terrace. `scripts/render_cycles.py` then path traced seven 1600×900 stills (`evidence/cycles-*.jpg`), framing the hero on the home with the viewer's exact fit:
 - hero in daylight, golden hour and dusk;
 - living/dining in daylight and at dusk;
 - kitchen and a first-floor bedroom in daylight.
 
-They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 2¼ to 4½ minutes, daylight interiors 7 to 9½ minutes, and the lamp-lit dusk interior 18½ minutes. The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. A saved `.blend` (`--blend`) was reopened with its 179 meshes, 143 packed textures, sun, camera and Cycles settings intact.
+They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 2½ to 5¼ minutes, daylight interiors 7 to 9½ minutes, and the lamp-lit dusk interior 18 minutes. The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. In the previous round a saved `.blend` (`--blend`) was reopened with its meshes, packed textures, sun, camera and Cycles settings intact; it was not re-saved for this round.
 
 **Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 13 START_HERE links resolve.
 
