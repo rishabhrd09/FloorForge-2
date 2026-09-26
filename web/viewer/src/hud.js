@@ -11,7 +11,8 @@ const CSS = `
 .ffhud .ff-keys{display:grid;grid-template-columns:auto auto;gap:5px 14px;text-align:left;margin:0 auto;width:max-content}
 .ffhud kbd{display:inline-block;min-width:18px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);font:600 11px system-ui;text-align:center}
 .ffhud.locked .ff-start{display:none}
-.ffhud .ff-tip{position:absolute;right:16px;bottom:16px;padding:6px 10px;border-radius:6px;background:rgba(18,22,20,.4);font-size:11px;opacity:.85}
+.ffhud .ff-tip{position:absolute;right:16px;top:16px;padding:6px 10px;border-radius:6px;background:rgba(18,22,20,.4);font-size:11px;opacity:.85}
+@media (max-width:520px){.ffhud .ff-tip{display:none}}
 .ffhud .ff-touch{display:none}
 @media (pointer:coarse){.ffhud .ff-touch{display:block}.ffhud .ff-start{top:32%}}
 .ffhud .ff-stick{position:absolute;left:22px;bottom:22px;width:112px;height:112px;border-radius:50%;border:2px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08)}
@@ -45,6 +46,7 @@ export class Hud {
     this.el = el;
     this.where = el.querySelector('.ff-where');
     this.where.style.top = inset + 'px';
+    el.querySelector('.ff-tip').style.top = inset + 'px';
     const start = el.querySelector('.ff-start');
     start.addEventListener('click', (e) => { e.preventDefault(); onLock(); canvas.focus?.(); });
     start.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onLock(); } });

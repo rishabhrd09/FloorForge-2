@@ -24,6 +24,7 @@ const QUALITY = {
   performance: { pixelRatio: .75, ao: false, aoHalf: true, aoMode: 'Performance', bloom: false, shadow: 'performance', smaa: false, lights: 4, veg: .3, textures: 'performance' },
 };
 const ORDER = ['ultra', 'high', 'balanced', 'performance'];
+const DIRECTED = new Set(['downlight', 'soffit', 'uplight']);
 const WALK_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyC', 'ControlLeft', 'KeyE', 'KeyQ']);
 
 const s2t = (p) => new THREE.Vector3(p[0], p[2], -p[1]); // scene (Z-up) point -> Three (Y-up)
@@ -70,6 +71,7 @@ class FloorForgeViewer {
     this.scene.add(this.root);
     this.meshes = [];
     this.lightPool = [];
+    this.probes = new Map();
     this.mode = 'solid';
     this.floor = 0;
     this.gradeName = 'day';
@@ -235,6 +237,7 @@ class FloorForgeViewer {
   }
 
   clearScene() {
+    this.clearProbes();
     for (const m of this.meshes) m.geometry.dispose();
     this.meshes = [];
     this.vegetation?.dispose();
@@ -248,53 +251,88 @@ class FloorForgeViewer {
     this.materials?.dispose();
     this._ds?.forEach((m) => m.dispose());
     this._ds = new Map();
-    for (const l of this.lightPool) this.scene.remove(l);
+    for (const l of this.lightPool) { this.scene.remove(l); if (l.target) this.scene.remove(l.target); }
     this.lightPool = [];
   }
 
   // ---------- lights ----------
+  // Fixture lights are pooled: the nearest fittings to the visitor (or orbit target) are live. Recessed and
+  // soffit downlights are downward spotlights, so they pool light on floors and walls and leave the ceiling
+  // around them dark, as real downlights do; garden uplights point up; other fittings radiate all round.
   rebuildLightPool() {
-    for (const l of this.lightPool) this.scene.remove(l);
+    for (const l of this.lightPool) { this.scene.remove(l); if (l.target) this.scene.remove(l.target); }
     this.lightPool = [];
     if (!this.data) return;
-    const n = Math.min(this.q.lights, this.data.lights?.length || 0);
-    for (let i = 0; i < n; i++) {
-      const l = new THREE.PointLight('#ffd7a8', 0, 9, 2);
+    const lights = this.data.lights || [];
+    const n = Math.min(this.q.lights, lights.length);
+    const directed = lights.filter((l) => DIRECTED.has(l.kind)).length;
+    const spots = Math.min(directed, Math.round(n * .6)), points = Math.min(n - spots, lights.length - directed);
+    for (let i = 0; i < spots + points; i++) {
+      const l = i < spots ? new THREE.SpotLight('#ffd7a8', 0, 9, 1.0, .75, 2) : new THREE.PointLight('#ffd7a8', 0, 9, 2);
       l.castShadow = false;
       this.scene.add(l);
+      if (l.target) this.scene.add(l.target);
       this.lightPool.push(l);
     }
+    this.spotCount = spots;
     this.lightKey = '';
   }
 
-  updateLights(force = false) {
+  // `origin` overrides the visitor's eye, e.g. to light a room probe capture from the room's own fittings.
+  updateLights(force = false, origin = null) {
     const lights = this.data?.lights || [];
     if (!this.lightPool.length || !lights.length) return;
-    const eye = this.camera.position;
+    const eye = origin || this.camera.position;
     const level = GRADES[this.gradeName].lamps;
     const walk = this.mode === 'walk';
+    // Re-rank fittings only once the viewpoint has moved 25 cm (the ranking sorts every fitting and ray-casts).
+    const at = walk ? eye : this.controls.target;
+    if (!force && !origin && this._lightsAt && this._lightsAt.distanceToSquared(at) < .0625) return;
+    if (!origin) (this._lightsAt ||= new THREE.Vector3()).copy(at);
     const scored = lights.map((l, i) => {
       const p = s2t(l.position);
       let d = p.distanceTo(walk ? eye : this.controls.target);
       if (walk && Math.abs(p.y - eye.y) > 2.6) d += 20; // prefer fittings on the visitor's own level
       return { i, p, d, l };
-    }).sort((a, b) => a.d - b.d).slice(0, this.lightPool.length);
-    const key = scored.map((s) => s.i).join(',') + '|' + level;
+    }).sort((a, b) => a.d - b.d);
+    if (walk && this.walker) {
+      // Lights do not cast shadows, so a fitting behind a wall would leak through it: when walking, only
+      // fittings with a line of sight to the visitor or to the middle of the current room stay candidates.
+      const room = this.probeRoom || this.roomAt(eye);
+      const middle = room ? this.probePosition(room) : null;
+      for (const s of scored.slice(0, 24)) {
+        if (!this.walker.sees(s.p, eye) && !(middle && this.walker.sees(s.p, middle))) s.d += 60;
+      }
+      scored.sort((a, b) => a.d - b.d);
+    }
+    const spots = scored.filter((s) => DIRECTED.has(s.l.kind)).slice(0, this.spotCount);
+    const points = scored.filter((s) => !DIRECTED.has(s.l.kind)).slice(0, this.lightPool.length - this.spotCount);
+    const key = spots.map((s) => s.i).join(',') + '/' + points.map((s) => s.i).join(',') + '|' + level + (origin ? '|probe' : '');
     if (!force && key === this.lightKey) return;
     this.lightKey = key;
-    scored.forEach((s, k) => {
-      const light = this.lightPool[k];
+    const assign = (s, light) => {
       light.position.copy(s.p);
       light.color.set(s.l.color || '#ffdfae');
       light.intensity = (s.l.power_w || 10) * .9 * level;
       light.distance = s.l.power_w > 20 ? 11 : 7;
-    });
-    for (let k = scored.length; k < this.lightPool.length; k++) this.lightPool[k].intensity = 0;
+      if (light.isSpotLight) {
+        const up = s.l.kind === 'uplight';
+        light.angle = up ? .55 : 1.0;
+        light.target.position.set(s.p.x, s.p.y + (up ? 3 : -3), s.p.z);
+        light.target.updateMatrixWorld();
+      }
+    };
+    spots.forEach((s, k) => assign(s, this.lightPool[k]));
+    for (let k = spots.length; k < this.spotCount; k++) this.lightPool[k].intensity = 0;
+    points.forEach((s, k) => assign(s, this.lightPool[this.spotCount + k]));
+    for (let k = this.spotCount + points.length; k < this.lightPool.length; k++) this.lightPool[k].intensity = 0;
   }
 
   // ---------- grades ----------
   setGrade(name) {
     this.gradeName = GRADES[name] ? name : ({ golden: 'golden', dusk: 'dusk' }[name] || 'day');
+    this.clearProbes();
+    this.metered = null;
     this.env.setGrade(this.gradeName);
     this.applyGrade();
     this.dirty = true;
@@ -310,23 +348,121 @@ class FloorForgeViewer {
     return true;
   }
 
+  // Indoor metering target for a room, from its probe: exposure so the room's mean radiance (windows included)
+  // sits at a bright interior key, and white-balance gains that neutralise most, not all, of its colour cast.
+  meterRoom() {
+    const g = GRADES[this.gradeName];
+    const lit = this.gradeName === 'dusk' || this.gradeName === 'night';
+    const stats = this.env.probe?.stats;
+    if (!stats) return { exposure: g.exposure * (g.indoor ?? 1.5), balance: [1, 1, 1] };
+    const key = lit ? .22 : .68;
+    const exposure = clamp(Math.pow(key / stats.luminance, .85) * Math.pow(g.exposure, .15), g.exposure * .06, g.exposure * 4);
+    const strength = lit ? .55 : .7, bias = lit ? .12 : .06;
+    let gr = Math.pow(stats.g / stats.r, strength) * (1 + bias), gb = Math.pow(stats.g / stats.b, strength) * (1 - bias);
+    gr = clamp(gr, .75, 1.4); gb = clamp(gb, .7, 1.4);
+    const norm = .2126 * gr + .7152 + .0722 * gb;
+    return { exposure, balance: [gr / norm, 1 / norm, gb / norm] };
+  }
+
+  baseWarmth() {
+    return this.gradeName === 'golden' ? .45 : this.gradeName === 'dusk' ? .05 : this.gradeName === 'night' ? -.15 : .05;
+  }
+
   adapt(dt) {
     const target = this.mode === 'walk' && this.isIndoors(this.camera.position) ? 1 : 0;
     const prev = this.indoor || 0;
     this.indoor = Math.abs(target - prev) < .002 ? target : prev + (target - prev) * (1 - Math.exp(-2.2 * dt));
-    if (Math.abs(this.indoor - prev) > 1e-4 || this._adaptDirty) { this._adaptDirty = false; this.applyGrade(); }
+    // Eye/camera adaptation between rooms.
+    const meter = this.meterRoom();
+    const fresh = !this.metered;
+    const m = this.metered || (this.metered = { exposure: meter.exposure, balance: [...meter.balance] });
+    const k = 1 - Math.exp(-2.5 * dt);
+    const changed = fresh || Math.abs(meter.exposure - m.exposure) > 1e-3 || meter.balance.some((v, i) => Math.abs(v - m.balance[i]) > 1e-3);
+    if (changed) {
+      m.exposure += (meter.exposure - m.exposure) * k;
+      m.balance = m.balance.map((v, i) => v + (meter.balance[i] - v) * k);
+    }
+    if (changed || Math.abs(this.indoor - prev) > 1e-4 || this._adaptDirty) { this._adaptDirty = false; this.applyGrade(); }
   }
 
   applyGrade() {
     const g = GRADES[this.gradeName];
     const inside = this.indoor || 0;
-    this.gradeEffect.set('exposure', g.exposure * (1 + ((g.indoor ?? 1.5) - 1) * inside));
-    this.gradeEffect.set('warmth', (this.gradeName === 'golden' ? .6 : this.gradeName === 'dusk' ? .15 : this.gradeName === 'night' ? -.2 : .08) + .45 * inside);
-    this.gradeEffect.set('contrast', this.gradeName === 'overcast' ? 1.02 : 1.07);
-    this.gradeEffect.set('saturation', this.gradeName === 'overcast' ? .96 : 1.06);
+    const m = this.metered || this.meterRoom();
+    const exposure = g.exposure + (m.exposure - g.exposure) * inside;
+    this.gradeEffect.set('exposure', exposure);
+    // Bloom only what the exposed image renders near white, whatever the metered exposure.
+    if (this.bloom) this.bloom.luminanceMaterial.threshold = .95 / exposure;
+    this.gradeEffect.set('warmth', this.baseWarmth());
+    this.gradeEffect.uniforms.get('balance').value.set(...m.balance.map((v) => 1 + (v - 1) * inside));
+    this.gradeEffect.set('contrast', this.gradeName === 'overcast' ? 1.0 : 1.03);
+    this.gradeEffect.set('saturation', this.gradeName === 'overcast' ? .96 : 1.0);
+    this.gradeEffect.set('punch', g.punch ?? .3);
     if (this.bloom) this.bloom.intensity = g.bloom;
     this.materials?.setLampLevel(g.lamps);
     this.updateLights(true);
+  }
+
+  // ---------- room light probes ----------
+  // The room (scene rooms metadata) containing a Three-space point, on the storey the point stands on.
+  // Storey a standing height (feet, Three Y) belongs to; half-way up the stair still counts as the lower floor.
+  levelOf(y) { return clamp(Math.floor((y + .6) / this.H), 0, this.data.storeys - 1); }
+
+  roomAt(p) {
+    if (!this.rooms?.length) return null;
+    const sx = p.x, sy = -p.z;
+    const floor = this.levelOf(p.y);
+    for (const r of this.rooms) if (r.floor === floor && pointInPolygon(sx, sy, r.polygon)) return r;
+    return null;
+  }
+
+  probePosition(room) {
+    // Area centroid of the room polygon at standing eye height; fall back to the visitor if it lies outside.
+    const poly = room.polygon;
+    let a = 0, cx = 0, cy = 0;
+    for (let i = 0; i < poly.length; i++) {
+      const [x0, y0] = poly[i], [x1, y1] = poly[(i + 1) % poly.length];
+      const k = x0 * y1 - x1 * y0;
+      a += k; cx += (x0 + x1) * k; cy += (y0 + y1) * k;
+    }
+    let x = cx / (3 * a), y = cy / (3 * a);
+    if (!Number.isFinite(x) || !pointInPolygon(x, y, poly)) { x = this.camera.position.x; y = -this.camera.position.z; }
+    return new THREE.Vector3(x, room.floor * this.H + 1.45, -y);
+  }
+
+  // Indoors in walk mode, light each room with its own captured probe (cached per room and grade).
+  updateProbe() {
+    let target = null;
+    if (this.mode === 'walk' && this.walker && (this.indoor || 0) >= .5 && !this.clay) {
+      const room = this.roomAt(this.walker.position) || this.probeRoom;
+      if (room && room.kind !== 'terrace') {
+        this.probeRoom = room;
+        const key = room.id + '|' + this.gradeName;
+        target = this.probes.get(key);
+        if (target) { this.probes.delete(key); this.probes.set(key, target); }
+        else {
+          // Glowing lamp shades are already represented by their point lights; keep them out of the capture
+          // so a pendant hanging near the probe point cannot dominate the room's light.
+          // Light the capture with the fittings around the room's middle, not wherever the visitor came from.
+          const lamps = GRADES[this.gradeName].lamps, at = this.probePosition(room);
+          this.materials.setLampLevel(lamps * .04, 0);
+          this.updateLights(true, at);
+          target = this.env.captureProbe(at);
+          this.materials.setLampLevel(lamps);
+          this.updateLights(true);
+          this.probes.set(key, target);
+          while (this.probes.size > 16) { const [k, t] = this.probes.entries().next().value; t.dispose(); this.probes.delete(k); }
+        }
+      }
+    } else if ((this.indoor || 0) < .5) this.probeRoom = null;
+    if (target !== this.env.probe) { this.env.useProbe(target); this.dirty = true; }
+  }
+
+  clearProbes() {
+    this.env.useProbe(null);
+    for (const t of this.probes.values()) t.dispose();
+    this.probes.clear();
+    this.probeRoom = null;
   }
 
   // ---------- visibility / cutaway ----------
@@ -353,6 +489,7 @@ class FloorForgeViewer {
 
   setClay(on = true) {
     this.clay = Boolean(on);
+    this.clearProbes();
     for (const mesh of this.meshes) {
       const b = mesh.userData.bucket;
       mesh.material = this.clay ? (b.transparent ? mesh.userData.baseMaterial : b.cls === 'clip' ? this.materials.clayClip : this.materials.clay) : mesh.userData.baseMaterial;
@@ -383,6 +520,9 @@ class FloorForgeViewer {
     const key = this.mode === 'dollhouse' || this.mode === 'plan' ? 'dollhouse' : 'hero';
     const c = this.data.cameras[key];
     const d = [c.position[0] - c.target[0], c.position[1] - c.target[1], c.position[2] - c.target[2]];
+    // Photograph the hero from the sunlit side: mirror the street-side three-quarter view toward the sun.
+    const sun = this.data.solar?.vector_local;
+    if (key === 'hero' && sun && Math.abs(sun[0]) > .2 && Math.sign(sun[0]) !== Math.sign(d[0])) d[0] = -d[0];
     const dist = Math.hypot(...d);
     let theta = Math.atan2(d[1], d[0]), phi = Math.asin(d[2] / dist);
     if (this.mode === 'plan') phi = 1.52;
@@ -452,6 +592,8 @@ class FloorForgeViewer {
 
   leaveWalk() {
     this.indoor = 0; this._adaptDirty = true;
+    this.env.useProbe(null);
+    this.probeRoom = null;
     if (document.pointerLockElement === this.canvas) document.exitPointerLock?.();
     this.keys.clear();
     this.hud.show(false);
@@ -475,7 +617,7 @@ class FloorForgeViewer {
     p.y += .5;
     const yaw = THREE.MathUtils.degToRad(spot.yaw_deg || 0);
     this.walker.teleport(p, yaw, 0);
-    this.floor = Math.max(0, Math.round(this.walker.position.y / this.H));
+    this.floor = this.levelOf(this.walker.position.y);
     this.dirty = true;
   }
 
@@ -558,13 +700,11 @@ class FloorForgeViewer {
   hudUpdate() {
     if (!this.walker || !this.hud.visible) return;
     const p = this.walker.position;
-    const sx = p.x, sy = -p.z, level = p.y;
-    const floor = clamp(Math.round(level / this.H), 0, this.data.storeys - 1);
-    let label = level < -.2 ? 'Garden' : null;
-    for (const r of this.rooms) {
-      if (r.floor === floor && pointInPolygon(sx, sy, r.polygon)) { label = r.name; break; }
-    }
-    if (!label) label = level > this.H * .5 ? 'Terrace' : 'Garden';
+    const level = p.y;
+    const floor = this.levelOf(level);
+    const room = level < -.2 ? null : this.roomAt(p);
+    let label = room ? room.name : null;
+    if (!label) label = level > this.H * .5 ? 'Terrace' : this.isIndoors(p) ? 'Hall' : 'Garden';
     this.hud.setLocation(label, floor === 0 ? 'Ground floor' : floor === 1 ? 'First floor' : `Level ${floor}`);
   }
 
@@ -582,10 +722,11 @@ class FloorForgeViewer {
       const eye = this.walker.eyePosition(new THREE.Vector3());
       this.camera.position.copy(eye);
       this.camera.rotation.set(this.walker.pitch, this.walker.yaw, this.walker.roll());
-      const f = Math.max(0, Math.round(this.walker.position.y / this.H));
-      if (f !== this.floor && f < this.data.storeys) { this.floor = f; this.onFloorChange?.(f); }
+      const f = this.levelOf(this.walker.position.y);
+      if (f !== this.floor) { this.floor = f; this.onFloorChange?.(f); }
       this.hudUpdate();
       this.adapt(dt);
+      this.updateProbe();
       render = true;
     } else {
       if (this.controls.enabled) this.controls.update(dt);
@@ -649,6 +790,7 @@ class FloorForgeViewer {
 
   destroy() {
     this.disposed = true;
+    this.clearProbes();
     cancelAnimationFrame(this.raf);
     this.resizeObserver.disconnect();
     this.listeners.forEach((fn) => fn());

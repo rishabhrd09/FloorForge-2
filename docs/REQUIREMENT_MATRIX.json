@@ -224,8 +224,8 @@
       "milestone": "M3",
       "requirement": "Six user-selectable geometric exterior languages",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "Style recipe/fixture tests",
-      "remaining": "No fixed-camera six-style realism acceptance or broad massing variety."
+      "evidence_or_file": "Legacy style recipes remain available; `docs/exterior-upgrade/` adds four explicit exterior families (Modern Tropical is the new-project default) with real porch/balcony/opening/landscape/planting geometry on the live pipeline",
+      "remaining": "No real-GPU fixed-camera realism acceptance per family, broad massing variety or structural facade design."
     },
     {
       "milestone": "M3",
@@ -244,9 +244,9 @@
     {
       "milestone": "M3",
       "requirement": "Articulated neighbours and context",
-      "status": "NOT_IMPLEMENTED",
-      "evidence_or_file": "No invented scanned context",
-      "remaining": "Add context geometry with known scale/orientation."
+      "status": "PARTIAL",
+      "evidence_or_file": "Viewer-only procedural neighbourhood sized from the plot: neighbouring houses, street trees, lamp posts and a horizon tree line (never exported)",
+      "remaining": "Generic context, not surveyed: no real neighbour heights, setbacks or scanned surroundings."
     },
     {
       "milestone": "M3",
@@ -258,9 +258,9 @@
     {
       "milestone": "M3",
       "requirement": "HDRI normalisation and physical IBL",
-      "status": "AUTHORED_UNVERIFIED",
-      "evidence_or_file": "Optional Three lab",
-      "remaining": "Default raster has no IBL; asset pack and real-GPU acceptance open."
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Default viewer: analytic Preetham sky (and a twilight sky model below the horizon) prefiltered into image-based light; indoors, per-room captured light probes with metered exposure and white balance; software-rendered captures",
+      "remaining": "No HDRI asset import in the default viewer; luminance not photometrically calibrated; real-GPU colour acceptance open."
     },
     {
       "milestone": "M3",
@@ -280,8 +280,8 @@
       "milestone": "M4",
       "requirement": "Visible-fixture-linked lights",
       "status": "TESTED_SCOPE",
-      "evidence_or_file": "Fixture metadata tests",
-      "remaining": "Lighting quality/physical luminance not calibrated."
+      "evidence_or_file": "Fixture metadata tests; the viewer lights the nearest visible fittings (downlights as downward spots, line-of-sight culled)",
+      "remaining": "Pooled lights cast no shadows; luminance not photometrically calibrated."
     },
     {
       "milestone": "M4",
@@ -293,9 +293,9 @@
     {
       "milestone": "M4",
       "requirement": "First-person at 1.6m with collision",
-      "status": "PARTIAL",
-      "evidence_or_file": "Circle-wall/furniture implementation",
-      "remaining": "Capsule/headroom/glass-door state/stair walking not accepted."
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Capsule collision against a BVH of the actual walls, glazing, furniture and stair treads; gravity, jump, crouch, run and continuous stair climbing; scripted and live walk captures (evidence/walk-*.png, walkthrough-capture.json)",
+      "remaining": "Doors are fixed open leaves (no interactive state); no accessibility-route certification; real-GPU frame-rate acceptance open."
     },
     {
       "milestone": "M4",
@@ -322,8 +322,8 @@
       "milestone": "M5",
       "requirement": "Day/golden/dusk display",
       "status": "PARTIAL",
-      "evidence_or_file": "Native grade controls",
-      "remaining": "Grades are not recalculated true solar times."
+      "evidence_or_file": "Five lighting grades: daylight uses the computed solar vector; golden hour, blue hour, night and overcast are display grades that keep its azimuth",
+      "remaining": "Non-daylight grades are not recalculated true solar times."
     },
     {
       "milestone": "M5",
@@ -560,8 +560,8 @@
       "milestone": "M8",
       "requirement": "Final demo film and photoreal reference match",
       "status": "NOT_IMPLEMENTED",
-      "evidence_or_file": "Actual raster screenshots only",
-      "remaining": "Film, reference comparison and artistic acceptance needed."
+      "evidence_or_file": "Real-time physically based captures (software renderer) only",
+      "remaining": "Film, formal reference comparison and artistic acceptance needed."
     }
   ]
 }

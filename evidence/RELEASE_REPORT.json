@@ -1,134 +1,188 @@
 {
-  "release": "0.2.0-alpha",
-  "date": "2026-09-06",
-  "all_original_requirements_complete": false,
-  "pytest": {
-    "passed": 112,
-    "failed": 0,
-    "seconds": 18.75,
-    "source": "evidence/pytest.txt"
+ "release": "0.3.0-alpha",
+ "date": "2026-09-26",
+ "all_original_requirements_complete": false,
+ "pytest": {
+  "passed": 137,
+  "failed": 0,
+  "seconds": 52.98,
+  "source": "evidence/pytest.txt"
+ },
+ "reproducibility": {
+  "two_clean_generations": true,
+  "equal_build_ids": true,
+  "files_compared": 23,
+  "changed_artifacts": [],
+  "seconds": 7.947,
+  "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
+ },
+ "browser": {
+  "studio": {
+   "checks_passed": 10,
+   "checks_total": 10,
+   "page_errors": 0,
+   "transport": "Direct navigation to the real loopback studio server (scripts/capture_studio.mjs)",
+   "renderer": {
+    "vendor": "WebKit",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+   }
   },
-  "reproducibility": {
-    "two_clean_generations": true,
-    "equal_build_ids": true,
-    "files_compared": 23,
-    "changed_artifacts": [],
-    "seconds": 22.621,
-    "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
+  "walkthrough": {
+   "captures": 16,
+   "page_errors": 0,
+   "source": "scripts/capture_walkthrough.mjs",
+   "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
   },
-  "browser": {
-    "checks_passed": 9,
-    "page_errors": 0,
-    "transport": "HTML set_content and actual-loopback-HTTP bridge under managed navigation restrictions",
-    "renderer": "Chromium ANGLE SwiftShader under Xvfb; software, not a physical GPU"
+  "offline_preview": {
+   "ready": true,
+   "page_errors": 0,
+   "live_walk": {
+    "entered": true,
+    "probe": true,
+    "jumped": true,
+    "peak_jump_m": 0.816,
+    "rooms": [
+     "Garden|Ground floor",
+     "Living|Ground floor",
+     "Dining|Ground floor"
+    ]
+   }
   },
-  "pdf": {
-    "pages_rendered": 41,
-    "examples": 3,
-    "physical_page_bounds_issues": 0,
-    "contact_sheet_visual_inspection": "All pages inspected; no obvious clipping/black glyphs at contact-sheet scale. Detailed professional drafting acceptance is not claimed.",
-    "physical_print_verified": false
+  "scope": "Chromium software WebGL (SwiftShader), headless; not a physical GPU, frame-rate or native-browser test"
+ },
+ "pdf": {
+  "pages_rendered": 41,
+  "examples": 3,
+  "physical_page_bounds_issues": 0,
+  "renderer": "PyMuPDF 1.28.2",
+  "contact_sheet_visual_inspection": "Contact sheets and selected full pages inspected; no obvious clipping or missing glyphs at that scale. Detailed professional drafting acceptance is not claimed.",
+  "physical_print_verified": false
+ },
+ "exports": {
+  "demo": {
+   "dxf": {
+    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
+    "autocad_gui": "NOT TESTED",
+    "dimension_entities": 4,
+    "entities": 476,
+    "status": "ezdxf_reimport_pass",
+    "units": "mm"
+   },
+   "glb": {
+    "geometries": 346,
+    "node_count": 1396,
+    "separate_viewer": "pending",
+    "status": "trimesh_reimport_pass",
+    "units": "m",
+    "up": "Y"
+   },
+   "ifc": {
+    "bim_viewer": "NOT RUN",
+    "entities": 1725,
+    "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
+    "independent_schema_validation": "NOT RUN",
+    "schema": "IFC4",
+    "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
+    "status": "STEP_reference_check_pass"
+   },
+   "exterior": {
+    "theme": "modern_tropical",
+    "assemblies": 3,
+    "landscape_features": 53,
+    "opening_refinements": 17,
+    "protected_interior": "unchanged"
+   }
   },
-  "exports": {
-    "demo": {
-      "dxf": {
-        "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
-        "autocad_gui": "NOT TESTED",
-        "dimension_entities": 4,
-        "entities": 470,
-        "status": "ezdxf_reimport_pass",
-        "units": "mm"
-      },
-      "glb": {
-        "geometries": 234,
-        "node_count": 2178,
-        "separate_viewer": "pending",
-        "status": "trimesh_reimport_pass",
-        "units": "m",
-        "up": "Y"
-      },
-      "ifc": {
-        "bim_viewer": "NOT RUN",
-        "entities": 1725,
-        "independent_schema_validation": "NOT RUN",
-        "schema": "IFC4",
-        "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
-        "status": "STEP_reference_check_pass"
-      }
-    },
-    "compact": {
-      "dxf": {
-        "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
-        "autocad_gui": "NOT TESTED",
-        "dimension_entities": 2,
-        "entities": 221,
-        "status": "ezdxf_reimport_pass",
-        "units": "mm"
-      },
-      "glb": {
-        "geometries": 145,
-        "node_count": 884,
-        "separate_viewer": "pending",
-        "status": "trimesh_reimport_pass",
-        "units": "m",
-        "up": "Y"
-      },
-      "ifc": {
-        "bim_viewer": "NOT RUN",
-        "entities": 829,
-        "independent_schema_validation": "NOT RUN",
-        "schema": "IFC4",
-        "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
-        "status": "STEP_reference_check_pass"
-      }
-    },
-    "small": {
-      "dxf": {
-        "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
-        "autocad_gui": "NOT TESTED",
-        "dimension_entities": 2,
-        "entities": 180,
-        "status": "ezdxf_reimport_pass",
-        "units": "mm"
-      },
-      "glb": {
-        "geometries": 126,
-        "node_count": 754,
-        "separate_viewer": "pending",
-        "status": "trimesh_reimport_pass",
-        "units": "m",
-        "up": "Y"
-      },
-      "ifc": {
-        "bim_viewer": "NOT RUN",
-        "entities": 680,
-        "independent_schema_validation": "NOT RUN",
-        "schema": "IFC4",
-        "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
-        "status": "STEP_reference_check_pass"
-      }
-    }
+  "compact": {
+   "dxf": {
+    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
+    "autocad_gui": "NOT TESTED",
+    "dimension_entities": 2,
+    "entities": 223,
+    "status": "ezdxf_reimport_pass",
+    "units": "mm"
+   },
+   "glb": {
+    "geometries": 182,
+    "node_count": 671,
+    "separate_viewer": "pending",
+    "status": "trimesh_reimport_pass",
+    "units": "m",
+    "up": "Y"
+   },
+   "ifc": {
+    "bim_viewer": "NOT RUN",
+    "entities": 829,
+    "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
+    "independent_schema_validation": "NOT RUN",
+    "schema": "IFC4",
+    "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
+    "status": "STEP_reference_check_pass"
+   },
+   "exterior": {
+    "theme": "modern_tropical",
+    "assemblies": 1,
+    "landscape_features": 34,
+    "opening_refinements": 10,
+    "protected_interior": "unchanged"
+   }
   },
-  "packaging": {
-    "python_compile": "passed",
-    "javascript_syntax": "passed",
-    "bash_syntax": "passed",
-    "startup_html_links_checked": 12,
-    "broken_startup_links": [],
-    "fresh_network_install": "not run; package download networking unavailable",
-    "native_binaries_built": false,
-    "windows_runtime_test": false,
-    "macos_runtime_test": false
-  },
-  "capture_geometry_matches_final_default": true,
-  "non_claims": [
-    "No AutoCAD GUI test",
-    "No independent IFC schema/viewer test",
-    "No structural design or official NBC/byelaw approval",
-    "No real-GPU colour calibration",
-    "No AI model inference or live paid provider request",
-    "No Blender or optional Three build/render",
-    "No full legacy 243-test suite; original repo absent",
-    "No model weights, native installers or third-party photo/font assets bundled"
-  ]
+  "small": {
+   "dxf": {
+    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
+    "autocad_gui": "NOT TESTED",
+    "dimension_entities": 2,
+    "entities": 184,
+    "status": "ezdxf_reimport_pass",
+    "units": "mm"
+   },
+   "glb": {
+    "geometries": 153,
+    "node_count": 537,
+    "separate_viewer": "pending",
+    "status": "trimesh_reimport_pass",
+    "units": "m",
+    "up": "Y"
+   },
+   "ifc": {
+    "bim_viewer": "NOT RUN",
+    "entities": 680,
+    "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
+    "independent_schema_validation": "NOT RUN",
+    "schema": "IFC4",
+    "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
+    "status": "STEP_reference_check_pass"
+   },
+   "exterior": {
+    "theme": "modern_tropical",
+    "assemblies": 2,
+    "landscape_features": 9,
+    "opening_refinements": 8,
+    "protected_interior": "unchanged"
+   }
+  }
+ },
+ "packaging": {
+  "python_compile": "passed",
+  "javascript_syntax": "passed",
+  "bash_syntax": "passed",
+  "startup_html_links_checked": 12,
+  "broken_startup_links": [],
+  "fresh_network_install": "not run; package download networking unavailable",
+  "native_binaries_built": false,
+  "windows_runtime_test": false,
+  "macos_runtime_test": false
+ },
+ "capture_geometry_matches_final_default": true,
+ "non_claims": [
+  "No AutoCAD GUI test",
+  "No independent IFC schema/viewer test",
+  "No structural design or official NBC/byelaw approval",
+  "No real-GPU colour calibration or frame-rate measurement",
+  "No path-traced, photographic or film output from the default viewer",
+  "No AI model inference or live paid provider request",
+  "No Blender or optional Three lab build/render",
+  "No full legacy 243-test suite; original repo absent",
+  "No model weights, native installers or third-party photo/font/texture assets bundled"
+ ]
 }

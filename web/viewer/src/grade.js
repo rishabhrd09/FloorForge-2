@@ -1,6 +1,7 @@
-// Final photographic grade: exposure, AgX tone mapping, gentle contrast/saturation, warmth and vignette.
+// Final photographic grade: exposure, white balance, AgX tone mapping with an adjustable look, contrast/saturation,
+// warmth and vignette.
 import { Effect } from 'postprocessing';
-import { Uniform } from 'three';
+import { Uniform, Vector3 } from 'three';
 
 const FRAG = /* glsl */`
 uniform float exposure;
@@ -9,6 +10,8 @@ uniform float saturation;
 uniform float warmth;
 uniform float vignette;
 uniform float lift;
+uniform float punch;
+uniform vec3 balance;
 
 const mat3 LIN_SRGB_TO_REC2020 = mat3(vec3(0.6274, 0.0691, 0.0164), vec3(0.3293, 0.9195, 0.0880), vec3(0.0433, 0.0113, 0.8956));
 const mat3 REC2020_TO_LIN_SRGB = mat3(vec3(1.6605, -0.1246, -0.0182), vec3(-0.5876, 1.1329, -0.1006), vec3(-0.0728, -0.0083, 1.1187));
@@ -25,14 +28,18 @@ vec3 agx(vec3 color){
   color = (color - minEv) / (maxEv - minEv);
   color = clamp(color, 0.0, 1.0);
   color = agxContrast(color);
+  // AgX look (ASC CDL power + saturation), blended from the neutral base toward Blender's "Punchy".
+  float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+  color = pow(max(color, vec3(0.0)), vec3(mix(1.0, 1.35, punch)));
+  color = luma + mix(1.0, 1.4, punch) * (color - luma);
   color = outset * color;
   color = pow(max(vec3(0.0), color), vec3(2.2));
   color = REC2020_TO_LIN_SRGB * color;
   return clamp(color, 0.0, 1.0);
 }
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor){
-  vec3 c = inputColor.rgb * exposure;
-  c *= vec3(1.0 + warmth * .06, 1.0, 1.0 - warmth * .07);
+  vec3 c = inputColor.rgb * exposure * balance;
+  c *= vec3(1.0 + warmth * .1, 1.0 + warmth * .015, 1.0 - warmth * .13);
   c = agx(c);
   float l = dot(c, vec3(.2126, .7152, .0722));
   c = mix(vec3(l), c, saturation);
@@ -50,7 +57,7 @@ export class GradeEffect extends Effect {
     super('GradeEffect', FRAG, {
       uniforms: new Map([
         ['exposure', new Uniform(1)], ['contrast', new Uniform(1.06)], ['saturation', new Uniform(1.08)],
-        ['warmth', new Uniform(0)], ['vignette', new Uniform(.22)], ['lift', new Uniform(0)],
+        ['warmth', new Uniform(0)], ['vignette', new Uniform(.22)], ['lift', new Uniform(0)], ['punch', new Uniform(0)], ['balance', new Uniform(new Vector3(1, 1, 1))],
       ]),
     });
   }

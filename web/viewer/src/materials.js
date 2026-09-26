@@ -131,8 +131,8 @@ export class MaterialLibrary {
     return m;
   }
 
-  setLampLevel(level) {
-    for (const m of this.emissive) m.emissiveIntensity = Math.max(.08, m.userData.emissiveBase * level);
+  setLampLevel(level, floor = .08) {
+    for (const m of this.emissive) m.emissiveIntensity = Math.max(floor, m.userData.emissiveBase * level);
   }
 
   dispose() {

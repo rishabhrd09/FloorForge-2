@@ -10,7 +10,7 @@ Open **`START_HERE.html`**, then **`examples/demo/preview.html`** in a modern de
 
 ## Walk through your home
 
-Every generated home opens in a real-time, physically based walkthrough: an analytic sky and sun with soft shadows, image-based light, ambient occlusion, bloom and a filmic (AgX) grade; surfaces synthesised offline on the GPU (white render, stamped cobblestone, pebbles, lawn, oak planks, porcelain and marble, stone cladding, patterned cement tiles, fabric); procedurally grown planting (frangipani, clipped shrubs, columnar conifers, spiral topiary, strelitzia, palms, ornamental grasses, hedges, indoor plants) swaying in the wind; and instanced lawn grass.
+Every generated home opens in a real-time, physically based walkthrough: an analytic sky and sun with soft shadows, image-based light, ambient occlusion, bloom and a filmic (AgX) grade; surfaces synthesised on your GPU at load time, with no texture downloads (white render, stamped cobblestone, pebbles, lawn, oak planks, porcelain and marble, stone cladding, patterned cement tiles, fabric); procedurally grown planting (frangipani, clipped shrubs, columnar conifers, spiral topiary, strelitzia, palms, ornamental grasses, hedges, indoor plants) swaying in the wind; and instanced lawn grass.
 
 Choose **Walk in**, click the view and explore on foot:
 
@@ -25,7 +25,7 @@ Choose **Walk in**, click the view and explore on foot:
 | Scroll | Lens width (field of view) |
 | `Esc` | Release the mouse; press again to return to the exterior |
 
-Walking uses capsule collision against the actual generated walls, furniture, railings and glazing, with gravity and step-up climbing: walk up the real stair treads to change floor, jump onto low platforms, crouch under obstacles. Touch screens get a thumb stick and a jump button. Lighting offers Daylight (the computed solar position), Golden hour, Blue hour, Night and Overcast; indoors the exposure and white balance adapt like a phone camera. A neighbourhood context (street, footpath, neighbouring houses, trees, lamp posts) is drawn by the viewer only and is never exported as part of your design.
+Walking uses capsule collision against the actual generated walls, furniture, railings and glazing, with gravity and step-up climbing: walk up the real stair treads to change floor, jump onto low platforms, crouch under obstacles. Touch screens get a thumb stick and a jump button. Lighting offers Daylight (the computed solar position), Golden hour, Blue hour, Night and Overcast. Indoors, each room is lit by its own captured light probe (sun, lamps and sky through its windows, bounced once off the room), and exposure and white balance meter the room like a camera as you walk between rooms. A neighbourhood context (street, footpath, neighbouring houses, trees, lamp posts) is drawn by the viewer only and is never exported as part of your design.
 
 The full extracted folder must stay together for the PDF/DXF/GLB/IFC links beside a preview to work. Viewing a sample is not generating a new design.
 
@@ -64,8 +64,8 @@ The grid is exact when enabled: cells form real connected polygons, including L-
 
 - Deterministic source fusion and a cached, content-addressed Python DAG.
 - G / G+1 reference-family generation, actual room polygons, opening-cut walls, aligned stair cores and a roof-open upper terrace.
-- A new responsive studio and an authored offline WebGL2 inspection viewer; six geometric facade recipes, furnished interiors, orbit/dollhouse/plan/walk modes, explicit floor switching, raster captures and an orbit-recording control.
-- Three explicit exterior architecture families with real porch, balcony, opening, facade-screen and landscape geometry, plus four independent interior palette choices. The exterior upgrade contract and evidence are in `docs/exterior-upgrade/`.
+- A responsive studio and the bundled realistic walkthrough viewer (Three.js, fully offline): furnished interiors, orbit/dollhouse/plan/walk modes, first-person walking with stairs, five lighting grades, PNG capture and an orbit-recording control. Six legacy facade recipes remain available.
+- Four explicit exterior architecture families, with Modern Tropical as the default for new projects. Each has real porch, balcony, opening, facade-screen, landscape and planting geometry. There are also five independent interior palette choices, with Bright Natural as the default. The exterior upgrade contract and evidence are in `docs/exterior-upgrade/`.
 - SVG drawings and an A3 PDF drawing/review set; layered DXF floor plans with dimension entities; GLB; an IFC4 STEP exporter with a deliberately limited acceptance claim.
 - Preliminary room/area/opening schedules, an editable cost scenario, timeline, solar study, Vastu preferences, services notes and review limitations.
 - Session-memory local/cloud AI proposal adapters, which are off by default. Real provider/model inference was not run here.
@@ -108,13 +108,16 @@ Builds are immutable. Editing an exported drawing does not update the source pro
 .venv/bin/python -m pip install -r requirements-dev.lock.txt
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_reproducibility.py
+# Optional browser evidence (Node + Playwright with Chromium; software WebGL is slow):
+node scripts/capture_walkthrough.mjs
+node scripts/capture_studio.mjs
 ```
 
 On Windows replace `.venv/bin/python` with `.venv\Scripts\python.exe`. Use `--out PATH` to put generated projects somewhere else. Ctrl+C stops the developer server. The windowed `desktop.py` launcher is intended for the native packaging recipes.
 
 ## Evidence, not marketing
 
-`evidence/pytest.txt` and `pytest.xml` contain the executed suite. `evidence/reproducibility.json` compares two clean generations. `evidence/studio-browser.json` describes the browser checks and their restricted-host transport method. Screenshots are actual engine output, not generated-image substitutions.
+`evidence/pytest.txt` and `pytest.xml` contain the executed suite. `evidence/reproducibility.json` compares two clean generations. `evidence/studio-browser.json`, `walkthrough-capture.json` and `browser-preview.json` record the browser checks. They are produced by `scripts/capture_studio.mjs` and `scripts/capture_walkthrough.mjs`. Screenshots are actual engine output, not generated-image substitutions.
 
 DXF was read back and audited by ezdxf; GLB was read back by Trimesh. **That is not AutoCAD GUI acceptance or an independent glTF-validator pass.** IFC reference integrity was self-checked; independent IfcOpenShell/schema/viewer acceptance remains open. PDF page size and text placement were checked, but no physical printer/plotter was tested. Browser rendering used software SwiftShader, not a real GPU.
 
@@ -124,7 +127,7 @@ The supplied archive held 120 images and six videos, not the original FloorForge
 
 The output has **no structural design, official NBC clause validation, sanctioned byelaw pack, geotechnical assessment, reinforcement schedule or accessibility/ICU certification**. The cost range uses editable example rates, not market quotations. “Strict Vastu” is reported as unresolved when unmet; it does not create a false pass.
 
-The live renderer is a real-time raster approximation of photographic lighting (no global illumination or ray-traced reflections); its looks were verified in software-rendered Chromium, not on real GPUs. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
+The live renderer is a real-time raster approximation of photographic lighting. It has no path-traced global illumination and no ray-traced reflections; one light probe per room approximates bounce light. Its looks were verified in software-rendered Chromium, not on real GPUs. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
 
 ## Rebuilding the viewer (developers only)
 

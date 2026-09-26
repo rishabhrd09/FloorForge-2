@@ -44,24 +44,40 @@ export function buildContext(viewer, data) {
   const house = (x0, y0, x1, y1, facingRoad) => {
     if (x1 - x0 < 4 || y1 - y0 < 4) return;
     const floors = rnd() < .7 ? subjectFloors : subjectFloors === 1 ? 2 : 1;
-    const h = floors * 3.2;
     const tone = rnd() < .6 ? 'render' : 'render2';
-    boxGeo(x0, y0, g, x1, y1, g + h, buckets[tone]);
-    // Floating roof slab / parapet.
-    const ov = .3 + rnd() * .3;
-    boxGeo(x0 - ov, y0 - ov, g + h, x1 + ov, y1 + ov, g + h + .28, buckets.roof);
-    // Glazing bands on the road-facing side.
-    const faceY = facingRoad > 0 ? y0 - .02 : y1 + .02;
+    // Massing: a full ground-floor volume and, on some houses, an upper floor set back from the street.
+    const setback = floors > 1 && rnd() < .5 ? 1.2 + rnd() * .9 : 0;
+    const fy0 = facingRoad > 0 ? y0 + setback : y0, fy1 = facingRoad > 0 ? y1 : y1 - setback;
     for (let f = 0; f < floors; f++) {
+      const [a0, a1] = f === 0 ? [y0, y1] : [fy0, fy1];
+      boxGeo(x0, a0, g + f * 3.2, x1, a1, g + (f + 1) * 3.2, buckets[tone]);
+      if (f === 0 && setback) { const ov = .25; boxGeo(x0 - ov, y0 - ov, g + 3.2, x1 + ov, y1 + ov, g + 3.2 + .22, buckets.roof); }
+    }
+    const h = floors * 3.2;
+    // Floating roof slab over the top volume.
+    const ov = .3 + rnd() * .3;
+    boxGeo(x0 - ov, fy0 - ov, g + h, x1 + ov, fy1 + ov, g + h + .28, buckets.roof);
+    // Framed glazing on the road-facing side of every floor, with a centre mullion on wide panes.
+    for (let f = 0; f < floors; f++) {
+      const face = facingRoad > 0 ? (f === 0 ? y0 : fy0) - .02 : (f === 0 ? y1 : fy1) + .02;
       const n = Math.max(1, Math.floor((x1 - x0) / 3));
       for (let i = 0; i < n; i++) {
-        const cx = x0 + (i + .5) * (x1 - x0) / n, ww = Math.min(2.2, (x1 - x0) / n - .8);
-        const zb = g + f * 3.2 + (f === 0 ? .4 : .9), zt = g + f * 3.2 + 2.6;
-        boxGeo(cx - ww / 2, Math.min(faceY, faceY + .04 * facingRoad), zb, cx + ww / 2, Math.max(faceY, faceY + .04 * facingRoad), zt, buckets.glass);
-        boxGeo(cx - ww / 2 - .05, faceY - .05, zb - .05, cx + ww / 2 + .05, faceY + .05, zb, buckets.frame);
+        const cx = x0 + (i + .5) * (x1 - x0) / n, ww = Math.min(2.4, (x1 - x0) / n - .8);
+        const zb = g + f * 3.2 + (f === 0 && rnd() < .5 ? .05 : .8), zt = g + f * 3.2 + 2.65;
+        const fa = Math.min(face, face + .04 * facingRoad), fb = Math.max(face, face + .04 * facingRoad);
+        boxGeo(cx - ww / 2, fa, zb, cx + ww / 2, fb, zt, buckets.glass);
+        const t = .055, o0 = face - .045, o1 = face + .045;
+        boxGeo(cx - ww / 2 - t, o0, zb - t, cx + ww / 2 + t, o1, zb, buckets.frame);
+        boxGeo(cx - ww / 2 - t, o0, zt, cx + ww / 2 + t, o1, zt + t, buckets.frame);
+        boxGeo(cx - ww / 2 - t, o0, zb, cx - ww / 2, o1, zt, buckets.frame);
+        boxGeo(cx + ww / 2, o0, zb, cx + ww / 2 + t, o1, zt, buckets.frame);
+        if (ww > 1.5) boxGeo(cx - .025, o0, zb, cx + .025, o1, zt, buckets.frame);
       }
     }
     if (rnd() < .8) trees.push({ species: rnd() < .5 ? 'tree_shade' : rnd() < .5 ? 'palm' : 'tree_standard', x: x0 + (x1 - x0) * (rnd() < .5 ? .15 : .85), y: facingRoad > 0 ? y0 - 1.8 : y1 + 1.8, s: .8 + rnd() * .4 });
+    // Front-garden shrubs soften the plinth line.
+    const sy = facingRoad > 0 ? y0 - .9 : y1 + .9;
+    for (let sx = x0 + .6; sx < x1 - .4; sx += 1.1 + rnd() * 1.4) if (rnd() < .7) trees.push({ species: rnd() < .7 ? 'shrub_round' : 'shrub_flowering', x: sx, y: sy, s: .6 + rnd() * .35 });
   };
   // Neighbouring plots on both sides (same depth, similar widths), with boundary walls.
   for (const side of [-1, 1]) {
@@ -82,14 +98,17 @@ export function buildContext(viewer, data) {
       edge = side < 0 ? px0 : px1;
     }
   }
-  // Houses across the road and behind.
+  // Houses across the road and behind. The opposite plots keep deep front gardens so the street-side hero
+  // camera stands in open garden, never inside a neighbour's massing.
+  const clearX0 = xmin - Math.max(8, W * .6), clearX1 = xmax + Math.max(8, W * .6);
   let x = xmin - W * 2.5;
   while (x < xmax + W * 2.5) {
     const pw = Math.max(9, W * (.8 + rnd() * .5));
-    const back = ymin - 16.5 - rnd() * 2;
+    const back = ymin - 23 - rnd() * 2;
     house(x + 1.2, back - D * .6, x + pw - 1.2, back, -1);
     boxGeo(x, ymin - 10.6, g, x + pw, ymin - 10.45, g + 1.4, buckets.wall);
-    trees.push({ species: rnd() < .5 ? 'tree_shade' : 'palm', x: x + pw * (.2 + rnd() * .6), y: ymin - 12.5 - rnd() * 2, s: .8 + rnd() * .4 });
+    const tx = x + pw * (.2 + rnd() * .6);
+    if (tx < clearX0 || tx > clearX1) trees.push({ species: rnd() < .5 ? 'tree_shade' : 'palm', x: tx, y: ymin - 12.5 - rnd() * 2, s: .8 + rnd() * .4 });
     x += pw;
   }
   x = xmin - W * 1.5;
@@ -100,7 +119,6 @@ export function buildContext(viewer, data) {
   }
   // Street trees and lamp posts along the footpath.
   // Keep the street in front of the plot clear so hero and front cameras are never blocked.
-  const clearX0 = xmin - Math.max(8, W * .6), clearX1 = xmax + Math.max(8, W * .6);
   for (let sx = xmin - W * 2; sx < xmax + W * 2; sx += 9 + rnd() * 3) {
     if (sx > clearX0 && sx < clearX1) continue;
     trees.push({ species: 'tree_shade', x: sx, y: ymin - 1.2, s: .75 + rnd() * .3 });
@@ -117,10 +135,17 @@ export function buildContext(viewer, data) {
     const a = rnd() * Math.PI * 2, r = 70 + rnd() * 110;
     trees.push({ species: rnd() < .8 ? 'tree_shade' : 'palm', x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, s: 1 + rnd() * .8, far: true });
   }
+  // Nothing grows within reach of either street-side hero camera (the design camera or its sunward mirror).
+  const hero = data.cameras?.hero;
+  const spots = hero ? [[hero.position[0], hero.position[1]], [2 * hero.target[0] - hero.position[0], hero.position[1]]] : [];
+  const planted = trees.filter((t) => t.far || spots.every(([hx, hy]) => Math.hypot(t.x - hx, t.y - hy) > 7.5));
+  trees.length = 0;
+  trees.push(...planted);
   const mats = viewer.materials;
   const matFor = {
     render: mats.get('wall'), render2: (() => { const m = mats.get('wall').clone(); m.color = new THREE.Color('#e6ddcc'); return m; })(),
-    glass: new THREE.MeshPhysicalMaterial({ color: '#2b3438', roughness: .08, metalness: .2, envMapIntensity: 1.4 }),
+    // Reflective glazing: reads as glass (sky and ground reflections), not as black holes.
+    glass: new THREE.MeshPhysicalMaterial({ color: '#8a9aa3', roughness: .04, metalness: .85, envMapIntensity: 2.2 }),
     frame: mats.get('frame'), roof: mats.get('roof'), wall: mats.get('wall'),
   };
   const created = [];

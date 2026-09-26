@@ -37,21 +37,21 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M2 | IFC4 export/re-import | PARTIAL_UNVERIFIED | IFC STEP self-reference checks | Independent schema/viewer untested; door/window-fill semantics incomplete. |
 | M2 | GLB geometry export/re-import | TESTED_SCOPE | Trimesh round-trip | Independent glTF validator and a second viewer open; not one watertight house union. |
 | M2 | DWG, STEP/BREP exports | NOT_IMPLEMENTED | No mislabeled substitute | License-reviewed backend and acceptance fixtures required. |
-| M3 | Six user-selectable geometric exterior languages | PARTIAL_TESTED | Legacy style recipes remain available; `docs/exterior-upgrade/` adds three explicit exterior families with real porch/balcony/opening/landscape geometry on the live pipeline | No fixed-camera six-style realism acceptance, broad massing variety or structural facade design. |
+| M3 | Six user-selectable geometric exterior languages | PARTIAL_TESTED | Legacy style recipes remain available; `docs/exterior-upgrade/` adds four explicit exterior families (Modern Tropical is the new-project default) with real porch/balcony/opening/landscape/planting geometry on the live pipeline | No real-GPU fixed-camera realism acceptance per family, broad massing variety or structural facade design. |
 | M3 | Road/kerb/gate/court/porch/door arrival | PARTIAL | Authored scene and actual exterior capture | No surveyed site levels/engineering of access. |
 | M3 | Conditional parking/car/site request fulfilment | PARTIAL | Parking court/envelope validation | No detailed car model, full gate options or all outdoor programmes. |
-| M3 | Articulated neighbours and context | NOT_IMPLEMENTED | No invented scanned context | Add context geometry with known scale/orientation. |
+| M3 | Articulated neighbours and context | PARTIAL | Viewer-only procedural neighbourhood sized from the plot: neighbouring houses, street trees, lamp posts and a horizon tree line (never exported) | Generic context, not surveyed: no real neighbour heights, setbacks or scanned surroundings. |
 | M3 | Compass-correct solar study | PARTIAL_TESTED | Orientation + solar implementation | No refraction, skyline, automatic front-lit-hour search or pvlib comparison. |
-| M3 | HDRI normalisation and physical IBL | AUTHORED_UNVERIFIED | Optional Three lab | Default raster has no IBL; asset pack and real-GPU acceptance open. |
+| M3 | HDRI normalisation and physical IBL | PARTIAL_TESTED | Default viewer: analytic Preetham sky (and a twilight sky model below the horizon) prefiltered into image-based light; indoors, per-room captured light probes with metered exposure and white balance; software-rendered captures | No HDRI asset import in the default viewer; luminance not photometrically calibrated; real-GPU colour acceptance open. |
 | M3 | Geometry-accurate varied massing and terraces | PARTIAL_TESTED | True L polygons, mirrored/shorter plans, upper terrace | Not architecture optimisation or all requested typologies. |
 | M4 | Detailed furniture/soft layers | PARTIAL | Authored mesh recipes and furnished captures | Curated high-quality library, all doorway clearances and full interiors remain open. |
-| M4 | Visible-fixture-linked lights | TESTED_SCOPE | Fixture metadata tests | Lighting quality/physical luminance not calibrated. |
+| M4 | Visible-fixture-linked lights | TESTED_SCOPE | Fixture metadata tests; the viewer lights the nearest visible fittings (downlights as downward spots, line-of-sight culled) | Pooled lights cast no shadows; luminance not photometrically calibrated. |
 | M4 | Dollhouse/top-down/floor inspection | PARTIAL_TESTED | Software-rendered captures | Shader clipping has no proper capped-solid dollhouse sections. |
-| M4 | First-person at 1.6m with collision | PARTIAL | Circle-wall/furniture implementation | Capsule/headroom/glass-door state/stair walking not accepted. |
+| M4 | First-person at 1.6m with collision | PARTIAL_TESTED | Capsule collision against a BVH of the actual walls, glazing, furniture and stair treads; gravity, jump, crouch, run and continuous stair climbing; scripted and live walk captures (evidence/walk-*.png, walkthrough-capture.json) | Doors are fixed open leaves (no interactive state); no accessibility-route certification; real-GPU frame-rate acceptance open. |
 | M4 | Click travel and interactive doors/drawers | NOT_IMPLEMENTED | No fake buttons | Navigation and interaction metadata/state required. |
 | M4 | No room labels in 3D | TESTED_SCOPE | Viewer and actual captures | Labels remain in 2D/review only. |
 | M5 | Cinematic arrival/interior/exit film | NOT_IMPLEMENTED | Orbit control only | Directed validated interior route and render/encode/QA needed. |
-| M5 | Day/golden/dusk display | PARTIAL | Native grade controls | Grades are not recalculated true solar times. |
+| M5 | Day/golden/dusk display | PARTIAL | Five lighting grades: daylight uses the computed solar vector; golden hour, blue hour, night and overcast are display grades that keep its azimuth | Non-daylight grades are not recalculated true solar times. |
 | M5 | Raster PNG capture | IMPLEMENTED | Viewer snapshot control | Automated saved-file acceptance remains limited. |
 | M5 | 12-second WebM orbit capture | AUTHORED_UNVERIFIED | Viewer MediaRecorder code | No recorded video acceptance or frame-rate benchmark. |
 | M5 | Photoreal live path tracing / 4K still | AUTHORED_UNVERIFIED | Optional Three source | Not installed/built/rendered in this environment. |
@@ -85,4 +85,4 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M8 | Update/rollback | PARTIAL | Documented side-by-side rollback | No automatic updater/migration service. |
 | M8 | Real GPU and clean-machine acceptance | NOT_VERIFIED | Software-renderer evidence only | Actual macOS/Windows GPU and setup/installer tests required. |
 | M8 | Adversarial review and tests | TESTED_SCOPE | pytest; repaired defects; reproducibility | Not equivalent to legacy 243 tests, independent engineering review or penetration test. |
-| M8 | Final demo film and photoreal reference match | NOT_IMPLEMENTED | Actual raster screenshots only | Film, reference comparison and artistic acceptance needed. |
+| M8 | Final demo film and photoreal reference match | NOT_IMPLEMENTED | Real-time physically based captures (software renderer) only | Film, formal reference comparison and artistic acceptance needed. |

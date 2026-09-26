@@ -1,5 +1,5 @@
 {
-  "renderer": "1.26.7",
+  "renderer": "1.28.2",
   "checks": [
     {
       "example": "demo",

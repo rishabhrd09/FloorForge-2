@@ -3,6 +3,6 @@
   "equal_build_ids": true,
   "files_compared": 23,
   "changed_artifacts": [],
-  "seconds": 22.621,
+  "seconds": 7.947,
   "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
 }

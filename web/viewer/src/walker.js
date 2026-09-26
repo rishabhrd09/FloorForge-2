@@ -81,6 +81,17 @@ export class Walker {
     return best;
   }
 
+  // True when no solid surface lies between two points (keeps lamps behind walls from lighting this room).
+  sees(from, to, margin = .12) {
+    _dir.subVectors(to, from);
+    const dist = _dir.length();
+    if (dist < margin * 2) return true;
+    _dir.divideScalar(dist);
+    _ray.origin.copy(from).addScaledVector(_dir, margin);
+    _ray.direction.copy(_dir);
+    return !this.bvh.raycastFirst(_ray, THREE.DoubleSide, 0, dist - margin * 2);
+  }
+
   ceilingClear(pos, height) {
     _ray.origin.set(pos.x, pos.y + .3, pos.z);
     _ray.direction.set(0, 1, 0);

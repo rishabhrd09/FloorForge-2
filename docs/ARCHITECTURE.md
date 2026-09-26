@@ -6,6 +6,15 @@
 
 `scene.py` transforms the building into authored shared meshes in **metres / Z-up**. The live renderer and Blender worker consume that scene. GLB converts at its boundary to **metres / Y-up**. IFC remains **millimetres / Z-up** with explicit project units. Plan dimensions remain millimetres. No exporter invents a different layout.
 
+Scene schema `floorforge.scene/0.4` adds four blocks to the nodes, materials, lights and cameras:
+
+- `vegetation`: seeded plant instances with species, position, scale and rotation. The viewer grows them procedurally; `plant-proxy` nodes keep them in the GLB and drawings.
+- `lawns`: lawn polygons.
+- `rooms`: clear room polygons per storey, used for the walk badge and room light probes.
+- `walk`: the arrival spawn, a spawn per floor and the eye height.
+
+Materials may declare a physically based `kind` (render, stone, cobble, pebbles, woodfloor and so on) that the viewer turns into GPU-synthesised texture maps.
+
 ## DAG
 
 ```
@@ -42,7 +51,20 @@ User-reference dimensional targets have **no verified BIS clause ID**. `official
 
 Walls are polygon extrusions split vertically around hosted doors and windows. Slabs preserve stair/terrace voids. Decorative objects and furniture are shared geometry with transforms, not painted rectangles. Bed frames, mattresses, shaped bedding, chair frames, cabinets, handles, hollow vessels, fixture bulbs and leaf meshes are procedural.
 
-Not every decorative surface is a closed manifold, and the whole building is not a single boolean-unioned watertight object. The GLB retains individual components and stable scene names. Walk collision approximates a horizontal circle against walls and selected furniture; stair cores are blocked and the level selector changes floor explicitly. There is no gravity, capsule headroom test or accessible-route certification.
+Not every decorative surface is a closed manifold, and the whole building is not a single boolean-unioned watertight object. The GLB retains individual components and stable scene names.
+
+Walking uses the same geometry. The viewer merges every collidable closed surface (walls, glazing, slabs, stair treads, furniture) into a BVH. A capsule with a 0.27 m radius and 1.78 m height moves against it with gravity, step-up of 0.38 m, snap-down, jump and crouch, so the stair core is climbed continuously. Headroom is checked by ray before standing up. This is walkable geometry, not an accessible-route or egress certification. Doors are fixed open leaves.
+
+The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from the same facade anchors, plot polygon and protected interior fingerprint as the other families:
+
+- a cantilevered portico or balcony soffit;
+- a frameless glass balcony;
+- a floating roof slab;
+- a clad feature wall;
+- a carport and glass-roof pergola when the plot allows;
+- a Shapely-built landscape: court, pebble beds, stepping stones, lawns, planting, lanterns and boundary.
+
+Every landscape polygon is kept inside the plot and off the house footprint. Tests check this for all fixture plots.
 
 ## Files
 
@@ -52,19 +74,25 @@ Not every decorative surface is a closed manifold, and the whole building is not
 | `intent.py` | Supported field validation, text extraction, provenance |
 | `layout.py` | Polygonal layout, walls, openings, stairs |
 | `review.py` | Preliminary checks, scenario reports, solar |
-| `scene.py` | Shared procedural geometry and GLB |
+| `scene.py` | Shared procedural geometry, scene 0.4 metadata and GLB |
+| `scene_kit.py` | Geometry helpers, physically based material library, plant/light registration |
+| `exterior.py` | Exterior/interior theme registry, legacy migration, candidate assemblies |
+| `modern_exterior.py` | Modern Tropical openings, assemblies and plot-aware landscape |
 | `drawings.py` | SVG/ReportLab sheets, DXF floor plans |
 | `ifc_export.py` | IFC4 STEP entities, relations and self-integrity |
 | `pipeline.py` | DAG, caching, immutable builds, export ZIP |
 | `ai.py` | Memory-only optional provider proposals |
 | `server.py` | Loopback API, host/origin/token checks, queue |
 | `web/app.js` | New studio UI and input/review/save flow |
-| `web/viewer.js` | Offline WebGL2 raster fallback |
+| `web/viewer.js` | Bundled realistic viewer (built from `web/viewer/src`, committed) |
+| `web/viewer/src/` | Viewer sources: materials/texture synthesis, sky/sun/probes, walker, planting, context, HUD, grade |
 | `web/src/three-studio.js` | Optional unbuilt Three/path-tracing lab |
 | `scripts/blender_scene.py` | External unexecuted Blender worker |
+| `scripts/regenerate_examples.py` | Rebuilds the three bundled examples from `examples/briefs` |
+| `scripts/capture_walkthrough.mjs`, `scripts/capture_studio.mjs` | Browser evidence harnesses (Playwright, software WebGL) |
 
 ## Engineering technology choices
 
 Shapely, Trimesh, ezdxf and ReportLab solve the implemented stages. CadQuery/build123d, Manifold3D, pvlib, Manim and Mitsuba were not installed simply to satisfy a tool list. BREP/STEP, exact boolean-unioned solids, Manim explanations and validated pvlib comparison remain future work. A custom IFC serializer does not substitute for independent IFC schema/geometry acceptance.
 
-The fallback WebGL renderer was implemented because container dependency downloads were blocked. It makes the ZIP useful offline; it does not prove the optional Three/GSAP pipeline works. GSAP has a custom standard license and requires an explicit optional-build acknowledgement. GEOS transitive license obligations are also recorded rather than hidden behind Shapely's permissive Python license.
+The default viewer bundles Three.js r186, three-mesh-bvh 0.9.5, postprocessing 6.39.5 and n8ao 2.0.1 (MIT, zlib, and ISC/CC0 licences); their notices are in `licenses/viewer-js/` and the bundle's legal comments. The bundle is committed, so the ZIP stays useful offline without Node. It does not prove the separate optional Three/path-tracer/GSAP lab works. GSAP has a custom standard license and requires an explicit optional-build acknowledgement. GEOS transitive license obligations are also recorded rather than hidden behind Shapely's permissive Python license.

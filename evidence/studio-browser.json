@@ -1,13 +1,27 @@
 {
-  "method": "Chromium software SwiftShader under Xvfb. HTML set_content; fetch transport bound to actual loopback HTTP server because managed navigation is blocked. Not a real-GPU or native-platform sign-off.",
+  "method": "Headless Chromium with software WebGL (SwiftShader), navigating the real loopback studio server started by this script. Not a real-GPU, native-browser or installer sign-off.",
   "checks": [
     {
-      "check": "bundled project + actual renderer initialised",
-      "passed": true
+      "check": "bundled project + realistic renderer initialised",
+      "passed": true,
+      "details": {
+        "schema": "floorforge.scene/0.4",
+        "theme": "modern_tropical"
+      }
+    },
+    {
+      "check": "walk mode opens at the arrival with the room badge",
+      "passed": true,
+      "details": {
+        "badge": "Garden|Ground floor"
+      }
     },
     {
       "check": "nine generated drawing sheets selectable",
-      "passed": true
+      "passed": true,
+      "details": {
+        "sheets": 9
+      }
     },
     {
       "check": "regulatory unknown remains visible",
@@ -18,8 +32,13 @@
       "passed": true
     },
     {
-      "check": "UI POST generation to output/render completes for 30x40",
-      "passed": true
+      "check": "UI POST generation completes for 30x40 with the Modern Tropical default",
+      "passed": true,
+      "details": {
+        "title": "The Garden Pavilion",
+        "theme": "modern_tropical",
+        "schema": "floorforge.scene/0.4"
+      }
     },
     {
       "check": "grid painter interaction",
@@ -27,7 +46,10 @@
     },
     {
       "check": "three AI consent choices visible",
-      "passed": true
+      "passed": true,
+      "details": {
+        "choices": 3
+      }
     },
     {
       "check": "reopenable project collects actual inputs",
@@ -50,12 +72,12 @@
       "status": 200
     },
     {
-      "path": "/demo/scene.json",
+      "path": "/demo/building.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/demo/building.json",
+      "path": "/demo/scene.json",
       "method": "GET",
       "status": 200
     },
@@ -70,11 +92,6 @@
       "status": 200
     },
     {
-      "path": "/demo/sheets/A-101.svg",
-      "method": "GET",
-      "status": 200
-    },
-    {
       "path": "/api/intent",
       "method": "POST",
       "status": 200
@@ -85,32 +102,42 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/c219aa1bd54ce847",
+      "path": "/api/jobs/96ef01c9d1429901",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/scene.json",
+      "path": "/api/jobs/96ef01c9d1429901",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/building.json",
+      "path": "/api/jobs/96ef01c9d1429901",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/report.json",
+      "path": "/api/jobs/96ef01c9d1429901",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/sheets.json",
+      "path": "/builds/58171f6dc05339c7198ad56d/sheets.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/sheets/A-101.svg",
+      "path": "/builds/58171f6dc05339c7198ad56d/building.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/58171f6dc05339c7198ad56d/report.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/58171f6dc05339c7198ad56d/scene.json",
       "method": "GET",
       "status": 200
     }
