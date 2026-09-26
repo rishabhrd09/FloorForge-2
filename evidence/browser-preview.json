@@ -4,11 +4,11 @@
     "ready": true,
     "error": null,
     "schema": "floorforge.scene/0.4",
-    "nodes": 1396,
-    "status": "1,396 objects · 118 merged surfaces · 34 plants · realistic render ready in 1472 ms",
+    "nodes": 1470,
+    "status": "1,470 objects · 122 merged surfaces · 35 plants · realistic render ready in 1442 ms",
     "presentation_glb": {
       "file": "FloorForge-presentation.glb",
-      "bytes": 74316328,
+      "bytes": 76485344,
       "magic": "glTF"
     },
     "walk": {
@@ -17,7 +17,7 @@
     },
     "live": [
       {
-        "t": 45829,
+        "t": 49461,
         "x": 6.246,
         "y": -0.35,
         "z": 4.6,
@@ -28,10 +28,10 @@
         "exposure": 0.98
       },
       {
-        "t": 48313,
+        "t": 52080,
         "x": 6.246,
         "y": -0.41,
-        "z": 3.094,
+        "z": 3.071,
         "onGround": true,
         "room": "Garden|Ground floor",
         "indoor": 0,
@@ -39,10 +39,10 @@
         "exposure": 0.98
       },
       {
-        "t": 50548,
+        "t": 54121,
         "x": 6.246,
         "y": -0.41,
-        "z": 2.519,
+        "z": 2.611,
         "onGround": true,
         "room": "Garden|Ground floor",
         "indoor": 0,
@@ -50,10 +50,21 @@
         "exposure": 0.98
       },
       {
-        "t": 52849,
+        "t": 56549,
+        "x": 6.246,
+        "y": -0.301,
+        "z": 2.036,
+        "onGround": true,
+        "room": "Garden|Ground floor",
+        "indoor": 0,
+        "probe": false,
+        "exposure": 0.98
+      },
+      {
+        "t": 58902,
         "x": 6.246,
         "y": -0.15,
-        "z": 1.944,
+        "z": 1.461,
         "onGround": true,
         "room": "Garden|Ground floor",
         "indoor": 0,
@@ -61,10 +72,10 @@
         "exposure": 0.98
       },
       {
-        "t": 55022,
+        "t": 61756,
         "x": 6.246,
         "y": -0.15,
-        "z": 1.369,
+        "z": 0.771,
         "onGround": true,
         "room": "Garden|Ground floor",
         "indoor": 0,
@@ -72,10 +83,10 @@
         "exposure": 0.98
       },
       {
-        "t": 57189,
+        "t": 64201,
         "x": 6.246,
         "y": -0.15,
-        "z": 0.706,
+        "z": 0.196,
         "onGround": true,
         "room": "Garden|Ground floor",
         "indoor": 0,
@@ -83,21 +94,10 @@
         "exposure": 0.98
       },
       {
-        "t": 59420,
-        "x": 6.246,
-        "y": 0,
-        "z": 0.131,
-        "onGround": true,
-        "room": "Garden|Ground floor",
-        "indoor": 0,
-        "probe": false,
-        "exposure": 0.98
-      },
-      {
-        "t": 61614,
+        "t": 66492,
         "x": 6.246,
         "y": 0.009,
-        "z": -0.444,
+        "z": -0.379,
         "onGround": true,
         "room": "Living|Ground floor",
         "indoor": 0.36,
@@ -105,10 +105,10 @@
         "exposure": 1.294
       },
       {
-        "t": 78210,
+        "t": 83407,
         "x": 6.246,
         "y": 0.009,
-        "z": -0.789,
+        "z": -0.724,
         "onGround": true,
         "room": "Living|Ground floor",
         "indoor": 0.54,
@@ -116,191 +116,180 @@
         "exposure": 1.454
       },
       {
-        "t": 80401,
-        "x": 6.213,
+        "t": 85453,
+        "x": 6.222,
         "y": 0.009,
-        "z": -2.293,
+        "z": -2.289,
         "onGround": true,
         "room": "Living|Ground floor",
-        "indoor": 0.9,
+        "indoor": 0.91,
         "probe": true,
-        "exposure": 1.776
+        "exposure": 1.778
       },
       {
-        "t": 90295,
-        "x": 6.01,
+        "t": 86387,
+        "x": 6.169,
         "y": 0.009,
-        "z": -2.682,
+        "z": -2.312,
         "onGround": true,
-        "room": "Dining|Ground floor",
+        "room": "Living|Ground floor",
+        "indoor": 0.92,
+        "probe": true,
+        "exposure": 1.795
+      },
+      {
+        "t": 87783,
+        "x": 6.152,
+        "y": 0.453,
+        "z": -2.319,
+        "onGround": false,
+        "room": "Living|Ground floor",
         "indoor": 0.95,
         "probe": true,
-        "exposure": 1.817
+        "exposure": 1.814
       },
       {
-        "t": 91148,
-        "x": 6.002,
-        "y": 0.009,
-        "z": -2.844,
-        "onGround": true,
-        "room": "Dining|Ground floor",
+        "t": 88220,
+        "x": 6.149,
+        "y": 0.613,
+        "z": -2.321,
+        "onGround": false,
+        "room": "Living|Ground floor",
+        "indoor": 0.95,
+        "probe": true,
+        "exposure": 1.819
+      },
+      {
+        "t": 88665,
+        "x": 6.146,
+        "y": 0.728,
+        "z": -2.322,
+        "onGround": false,
+        "room": "Living|Ground floor",
         "indoor": 0.96,
         "probe": true,
-        "exposure": 1.826
+        "exposure": 1.823
       },
       {
-        "t": 92492,
-        "x": 5.975,
-        "y": 0.453,
-        "z": -2.863,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.97,
-        "probe": true,
-        "exposure": 1.836
-      },
-      {
-        "t": 92972,
-        "x": 5.97,
-        "y": 0.613,
-        "z": -2.867,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.97,
-        "probe": true,
-        "exposure": 1.839
-      },
-      {
-        "t": 93420,
-        "x": 5.966,
-        "y": 0.728,
-        "z": -2.87,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.98,
-        "probe": true,
-        "exposure": 1.841
-      },
-      {
-        "t": 93846,
-        "x": 5.962,
+        "t": 89352,
+        "x": 6.144,
         "y": 0.802,
-        "z": -2.873,
+        "z": -2.323,
         "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.98,
+        "room": "Living|Ground floor",
+        "indoor": 0.96,
         "probe": true,
-        "exposure": 1.843
+        "exposure": 1.827
       },
       {
-        "t": 94247,
-        "x": 5.959,
+        "t": 89961,
+        "x": 6.142,
         "y": 0.825,
-        "z": -2.875,
+        "z": -2.324,
         "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.98,
+        "room": "Living|Ground floor",
+        "indoor": 0.96,
         "probe": true,
-        "exposure": 1.845
+        "exposure": 1.831
       },
       {
-        "t": 94654,
-        "x": 5.956,
+        "t": 92435,
+        "x": 6.14,
         "y": 0.806,
-        "z": -2.877,
+        "z": -2.325,
         "onGround": false,
-        "room": "Dining|Ground floor",
+        "room": "Living|Ground floor",
+        "indoor": 0.97,
+        "probe": true,
+        "exposure": 1.834
+      },
+      {
+        "t": 92955,
+        "x": 6.139,
+        "y": 0.746,
+        "z": -2.326,
+        "onGround": false,
+        "room": "Living|Ground floor",
+        "indoor": 0.97,
+        "probe": true,
+        "exposure": 1.837
+      },
+      {
+        "t": 94781,
+        "x": 6.137,
+        "y": 0.645,
+        "z": -2.326,
+        "onGround": false,
+        "room": "Living|Ground floor",
+        "indoor": 0.97,
+        "probe": true,
+        "exposure": 1.84
+      },
+      {
+        "t": 95241,
+        "x": 6.136,
+        "y": 0.512,
+        "z": -2.327,
+        "onGround": false,
+        "room": "Living|Ground floor",
         "indoor": 0.98,
         "probe": true,
-        "exposure": 1.847
+        "exposure": 1.842
       },
       {
-        "t": 95103,
-        "x": 5.953,
-        "y": 0.731,
-        "z": -2.879,
+        "t": 95662,
+        "x": 6.135,
+        "y": 0.339,
+        "z": -2.327,
         "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
+        "room": "Living|Ground floor",
+        "indoor": 0.98,
         "probe": true,
-        "exposure": 1.849
+        "exposure": 1.888
       },
       {
-        "t": 95538,
-        "x": 5.951,
-        "y": 0.62,
-        "z": -2.881,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
-        "probe": true,
-        "exposure": 1.85
-      },
-      {
-        "t": 95973,
-        "x": 5.95,
-        "y": 0.479,
-        "z": -2.882,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
-        "probe": true,
-        "exposure": 1.852
-      },
-      {
-        "t": 96369,
-        "x": 5.948,
-        "y": 0.296,
-        "z": -2.883,
-        "onGround": false,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
-        "probe": true,
-        "exposure": 1.853
-      },
-      {
-        "t": 96782,
-        "x": 5.947,
+        "t": 96125,
+        "x": 6.134,
         "y": 0.009,
-        "z": -2.884,
+        "z": -2.327,
         "onGround": true,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
+        "room": "Living|Ground floor",
+        "indoor": 0.98,
         "probe": true,
-        "exposure": 1.854
+        "exposure": 1.928
       },
       {
-        "t": 97200,
-        "x": 5.946,
+        "t": 96549,
+        "x": 6.134,
         "y": 0.009,
-        "z": -2.884,
+        "z": -2.328,
         "onGround": true,
-        "room": "Dining|Ground floor",
-        "indoor": 0.99,
+        "room": "Living|Ground floor",
+        "indoor": 0.98,
         "probe": true,
-        "exposure": 1.854
+        "exposure": 1.964
       },
       {
-        "t": 97634,
-        "x": 5.946,
+        "t": 96973,
+        "x": 6.134,
         "y": 0.009,
-        "z": -2.885,
+        "z": -2.328,
         "onGround": true,
-        "room": "Dining|Ground floor",
+        "room": "Living|Ground floor",
         "indoor": 0.99,
         "probe": true,
-        "exposure": 1.855
+        "exposure": 1.996
       },
       {
-        "t": 98049,
-        "x": 5.946,
+        "t": 97448,
+        "x": 6.134,
         "y": 0.009,
-        "z": -2.885,
+        "z": -2.328,
         "onGround": true,
-        "room": "Dining|Ground floor",
+        "room": "Living|Ground floor",
         "indoor": 0.99,
         "probe": true,
-        "exposure": 1.856
+        "exposure": 2.024
       }
     ],
     "live_summary": {
@@ -311,8 +300,7 @@
       "rooms": [
         "Street|Ground floor",
         "Garden|Ground floor",
-        "Living|Ground floor",
-        "Dining|Ground floor"
+        "Living|Ground floor"
       ]
     }
   },

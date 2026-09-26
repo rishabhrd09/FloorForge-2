@@ -92,6 +92,15 @@ The studio was driven through every tab, camera view, mode and grade, both gener
 - **Phone framing.** On a portrait phone canvas the hero view cropped both ends of the house. Orbit views now step back on portrait canvases.
 - **Wording.** The status line kept the walk instructions after leaving walk mode, the heading read "1 bedrooms", and the walk badge called the street "Garden".
 
+## Windows, terraces and the large view
+
+Close-ups of every exterior theme's windows and terraces were rendered from the street, from above, along each side and from the terrace itself, in daylight and at blue hour. These were the findings and the changes:
+
+- **Dated windows.** Bedroom windows sat in 120 mm timber or render boxes. The older themes also had 0.7 m concrete shades over every window, side surrounds and 0.4 m stone sills. All themes now share one slim aluminium system with timber-lined pods on facade bedrooms and etched glass in wet rooms; the older themes keep a slim eyebrow over living-room windows. A test checks, for every theme, that no heavy shades remain, sills stay slim, wet rooms get etched glass and the pods stay slim.
+- **Terraces on the roof.** On the three older themes with a balcony, the balcony was placed at twice the floor height, so it floated on the roof as a glass box while the drawings placed it correctly. It now sits level with the first floor.
+- **Sparse terraces.** The glass balustrade had no visible edge and the deck was bare. Every terrace now has a handrail cap, a louvred pergola with downlights, seating on a rug and planted corners. A test checks the level, balustrade and pergola for every theme.
+- **Large view and zoom.** The studio's large view was driven in a browser at 1440×900 and 390×844. It filled the window with its controls, and **+** zoomed from 26.6 m to 18.6 m. A double-click glided in to the clicked spot. Esc returned to the studio. **Capture** saved a 3840×2400 PNG. A drawing sheet zoomed to 225% and panned by dragging.
+
 ## Not accepted
 
 The following were not available or not completed:
