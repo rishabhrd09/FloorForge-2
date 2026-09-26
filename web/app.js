@@ -57,7 +57,7 @@ function setLargeView(on){if(on===stage.classList.contains('expanded'))return;st
 $('fullscreen').onclick=()=>setLargeView(!stage.classList.contains('expanded'));
 $('zoom-in').onclick=()=>viewer?.zoom(.7);$('zoom-out').onclick=()=>viewer?.zoom(1/.7);
 // Capture renders a large still (3840 px wide) of exactly the current view.
-$('snapshot').onclick=async()=>{if(!viewer)return;$('snapshot').disabled=true;toast('Rendering a large 3840-pixel still of this view…',6000);try{download(await viewer.snapshot({width:3840}),'FloorForge-view-large.png');}catch(e){toast(e.message);}finally{$('snapshot').disabled=false;}};
+$('snapshot').onclick=async()=>{if(!viewer)return;$('snapshot').disabled=true;toast('Rendering a large 3840-pixel still of this view…',6000);try{await new Promise(r=>setTimeout(r,60));download(await viewer.snapshot({width:3840}),'FloorForge-view-large.png');}catch(e){toast(e.message);}finally{$('snapshot').disabled=false;}};
 
 // Drawing sheets: zoom (buttons, Ctrl/⌘ + scroll, double-click), drag to pan, and a large view.
 const sheetHolder=document.querySelector('.drawing-holder'),sheetImage=$('drawing-image');let sheetZoom=1,sheetDrag=null;

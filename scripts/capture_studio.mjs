@@ -73,7 +73,8 @@ try {
   await page.evaluate(() => { const v = window.__ffApp.viewer; v.paused = true; v.resize(); v.updateLights(true); v.composer.render(0); });
   await page.screenshot({ path: join(OUT, 'studio-large-view.png') });
   check('large view fills the window with its controls and zooms in', large.width === large.window[0] && large.height === large.window[1] && large.controlsInside && near < far * .8, { ...large, zoom_m: [+far.toFixed(2), +near.toFixed(2)] });
-  const [still4k] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#snapshot')]);
+  // Software WebGL needs tens of seconds for a 3840-pixel frame, so allow for it.
+  const [still4k] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#snapshot', { timeout: 600000 })]);
   const png = join(work, 'still.png');
   await still4k.saveAs(png);
   const header = readFileSync(png);
