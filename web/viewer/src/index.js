@@ -16,6 +16,7 @@ import { Vegetation } from './vegetation.js';
 import { Hud } from './hud.js';
 import { buildContext } from './context.js';
 import { exportPresentation } from './export.js';
+import { frameBox } from './framing.js';
 import { pointInPolygon, clamp } from './util.js';
 
 const QUALITY = {
@@ -29,6 +30,8 @@ const DIRECTED = new Set(['downlight', 'soffit', 'uplight']);
 const WALK_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyC', 'ControlLeft', 'KeyE', 'KeyQ']);
 
 const s2t = (p) => new THREE.Vector3(p[0], p[2], -p[1]); // scene (Z-up) point -> Three (Y-up)
+// Share of the frame the home fills: the studio's hero view keeps a little street around it; Focus fills the view.
+const HERO_FILL = .84, FOCUS_FILL = .94;
 
 function detectQuality() {
   const coarse = matchMedia?.('(pointer: coarse)').matches;
@@ -64,7 +67,7 @@ class FloorForgeViewer {
     this.controls.minDistance = 1.5;
     this.controls.maxDistance = 160;
     this.controls.addEventListener('change', () => { this.dirty = true; });
-    this.controls.addEventListener('start', () => { this.tour = false; this.interacting = true; this.zoomAnim = null; });
+    this.controls.addEventListener('start', () => { this.tour = false; this.interacting = true; this.zoomAnim = null; this.fitHeld = null; });
     this.controls.addEventListener('end', () => { this.interacting = false; this.settle = performance.now(); });
     this.env = new Environment(renderer, this.scene, { quality: this.q.shadow });
     this.synth = new TextureSynth(renderer, { quality: this.q.textures });
@@ -141,6 +144,8 @@ class FloorForgeViewer {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.resized = false;
+    // A framing the visitor has not touched since it was set follows the canvas (large view, full screen, rotation).
+    if (this.fitHeld && this.mode !== 'walk') this.fitHouse({ ...this.fitHeld, animate: false });
   }
 
   // ---------- scene ----------
@@ -521,21 +526,24 @@ class FloorForgeViewer {
 
   reset() {
     if (!this.data) return;
-    this.showContext(true);
+    this.sideView = false;
+    this.showContext(this.contextWanted());
     if (this.mode === 'walk') { this.spawn(this.floor > 0 ? 'floor' : 'arrival'); return; }
     const key = this.mode === 'dollhouse' || this.mode === 'plan' ? 'dollhouse' : 'hero';
     const c = this.data.cameras[key];
     const d = [c.position[0] - c.target[0], c.position[1] - c.target[1], c.position[2] - c.target[2]];
-    // Photograph the hero from the sunlit side: mirror the street-side three-quarter view toward the sun.
-    const sun = this.data.solar?.vector_local;
-    if (key === 'hero' && sun && Math.abs(sun[0]) > .2 && Math.sign(sun[0]) !== Math.sign(d[0])) d[0] = -d[0];
     const dist = Math.hypot(...d);
-    let theta = Math.atan2(d[1], d[0]), phi = Math.asin(d[2] / dist);
-    if (this.mode === 'plan') phi = 1.52;
-    this.camera.fov = c.fov || 43;
+    // The hero is photographed from the sunlit side (see heroDirection); the plan looks straight down.
+    let { theta, phi } = key === 'hero' ? this.heroDirection() : { theta: Math.atan2(d[1], d[0]), phi: Math.asin(d[2] / dist) };
+    if (this.mode === 'plan') { phi = 1.52; theta = this.overheadTheta(); }
+    // The dollhouse looks down a diagonal turned so the home's long side runs across the screen.
+    else if (key === 'dollhouse') theta = this.acrossTheta(theta);
+    this.camera.fov = this.mode === 'plan' ? 30 : c.fov || 43;
     this.camera.updateProjectionMatrix();
     this.controls.enabled = true;
     this.orbitTo(c.target, theta, phi, dist);
+    // The stored camera sets the direction; the distance is fitted so the home itself, not the street, fills the view.
+    this.fitHouse({ fill: this.focus ? FOCUS_FILL : key === 'hero' ? HERO_FILL : .9, animate: false });
   }
 
   setMode(mode) {
@@ -543,21 +551,33 @@ class FloorForgeViewer {
     const prev = this.mode;
     this._tour = mode === 'tour';
     this.mode = mode === 'tour' ? 'solid' : mode;
-    this.showContext(true);
     if (prev === 'walk' && this.mode !== 'walk') this.leaveWalk();
-    if (this.mode === 'walk') this.enterWalk();
+    this.applyVisibility();
+    if (this.mode === 'walk') { this.fitHeld = null; this.showContext(true); this.enterWalk(); }
     else {
       this.reset();
       this.onStatus({ solid: 'Exterior · physically based daylight', dollhouse: 'Dollhouse · roof lifted on the selected floor', plan: 'Plan · the selected floor from above' }[this.mode]);
     }
-    this.applyVisibility();
     this.applyGrade();
   }
 
   // The neighbourhood stands aside for the side elevations, whose cameras would otherwise look out from
-  // inside the neighbours' houses.
+  // inside the neighbours' houses, and in Focus, which shows the home alone.
   showContext(on) {
     if (this.context && this.context.visible !== on) { this.context.visible = on; this.dirty = true; }
+  }
+
+  contextWanted() { return this.mode === 'walk' || (!this.focus && !this.sideView); }
+
+  // Focus: the home on its own (street and neighbours set aside), framed to fill the whole view from the current
+  // direction; every view, mode and reset keeps that framing until Focus is switched off.
+  setFocus(on = true) {
+    if (!this.data) return;
+    this.focus = Boolean(on);
+    if (this.focus && this.mode === 'walk') { this.setMode('solid'); this.onModeChange?.('solid'); }
+    this.showContext(this.contextWanted());
+    if (this.focus && this.mode !== 'walk') { this._tour = false; this.controls.autoRotate = false; this.fitHouse({ fill: FOCUS_FILL }); }
+    this.onStatus(this.focus ? 'Focus · the home alone, filling the view · drag to orbit, scroll or double-click to look closer' : 'Focus off · street and neighbours back in view');
   }
 
   get tour() { return this._tour; }
@@ -576,8 +596,9 @@ class FloorForgeViewer {
     this._tour = false; this.controls.autoRotate = false;
     this.mode = 'solid';
     this.applyVisibility();
-    this.showContext(name !== 'left' && name !== 'right');
     if (name === 'hero') { this.reset(); this.onStatus('Hero view · physically based daylight'); return; }
+    this.sideView = name === 'left' || name === 'right';
+    this.showContext(this.contextWanted());
     const fp = this.data.footprint, xs = fp.map((p) => p[0]), ys = fp.map((p) => p[1]);
     const W = Math.max(...xs) - Math.min(...xs), D = Math.max(...ys) - Math.min(...ys), H = this.H;
     // Aim at the middle of the elevation's height, so single-storey homes are framed as well as G+1.
@@ -585,19 +606,101 @@ class FloorForgeViewer {
     const mid = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.min(top * .55 + .1, 4.2)];
     const side = W / 2 + Math.max(D * .8, (top + .9) * 1.8);
     const bal = this.balcony();
+    const hero = this.heroDirection();
+    // The elevations, the aerial and the top view are fitted to the home; the close-ups keep their set distance.
     const views = {
-      front: { target: [mid[0], -.2, mid[2]], theta: -Math.PI / 2, phi: .2, distance: Math.max(W, D) * 1.05 },
+      front: { target: [mid[0], -.2, mid[2]], theta: -Math.PI / 2, phi: .2, distance: Math.max(W, D) * 1.05, fit: .88 },
       // Side elevations: far enough back to hold the whole flank and its full height in frame.
-      left: { target: [mid[0], D * .42, top * .45], theta: Math.PI, phi: .15, distance: side },
-      right: { target: [mid[0], D * .42, top * .45], theta: 0, phi: .15, distance: side },
+      left: { target: [mid[0], D * .42, top * .45], theta: Math.PI, phi: .15, distance: side, fit: .88 },
+      right: { target: [mid[0], D * .42, top * .45], theta: 0, phi: .15, distance: side, fit: .88 },
+      // High three-quarter view over the roof, its terraces and the garden.
+      aerial: { target: [mid[0], mid[1], top * .4], theta: hero.theta, phi: .66, distance: 30, fit: .9 },
+      // Straight down onto the roof, terraces and garden, the long side of the plot across the screen.
+      // (a long lens, so the roof does not loom over the garden as it would through a wide one).
+      top: { target: [mid[0], mid[1], top * .5], theta: this.overheadTheta(), phi: 1.52, distance: 30, fit: .95, site: true, fov: 24 },
       entrance: { target: [this.data.entry[0], -.65, 1.65], theta: -Math.PI / 2, phi: .12, distance: 7.2 },
       balcony: bal && { target: [bal.x, bal.y - .2, bal.z + 1.25], theta: -Math.PI / 2, phi: .3, distance: 6.8 },
     };
     const v = views[name] || views.front;
-    this.camera.fov = 43; this.camera.updateProjectionMatrix();
+    this.camera.fov = v.fov || 43; this.camera.updateProjectionMatrix();
     this.orbitTo(v.target, v.theta, v.phi, v.distance);
-    this.onStatus(`${name[0].toUpperCase() + name.slice(1)} view · physically based daylight`);
+    this.fitHeld = null;
+    if (v.fit) this.fitHouse({ fill: this.focus ? FOCUS_FILL : v.fit, site: v.site, animate: false });
+    this.onStatus(`${name === 'top' ? 'Top' : name[0].toUpperCase() + name.slice(1)} view · physically based daylight`);
   }
+
+  // Direction of the hero photograph: the street-side three-quarter view, mirrored toward the sun.
+  heroDirection() {
+    const c = this.data.cameras.hero;
+    const d = [c.position[0] - c.target[0], c.position[1] - c.target[1], c.position[2] - c.target[2]];
+    const sun = this.data.solar?.vector_local;
+    if (sun && Math.abs(sun[0]) > .2 && Math.sign(sun[0]) !== Math.sign(d[0])) d[0] = -d[0];
+    return { theta: Math.atan2(d[1], d[0]), phi: Math.asin(d[2] / Math.hypot(...d)) };
+  }
+
+  // Azimuth for looking straight down: the plot's long side runs along the canvas's long side, with the street at
+  // the bottom (or on the left when a deep plot is shown across a landscape screen), so the plan uses the width.
+  overheadTheta() {
+    const [x0, y0, , x1, y1] = this.data.bounds;
+    const landscape = this.canvas.clientWidth >= this.canvas.clientHeight;
+    return (y1 - y0 > x1 - x0) === landscape ? 0 : -Math.PI / 2;
+  }
+
+  // A three-quarter azimuth on the same side as `theta` (street side, left or right) that turns the plot's long
+  // side 30 degrees off the screen's long side instead of 60, so the home spreads across the width.
+  acrossTheta(theta) {
+    const [x0, y0, , x1, y1] = this.data.bounds;
+    const landscape = this.canvas.clientWidth >= this.canvas.clientHeight;
+    const off = (y1 - y0 > x1 - x0) === landscape ? Math.PI / 3 : Math.PI / 6;
+    return Math.cos(theta) >= 0 ? -Math.PI / 2 + off : -Math.PI / 2 - off;
+  }
+
+  // World box of the home as drawn: every storey on show with its porch, terraces and roof (not the garden, walls,
+  // street or planting), or the whole plot with `site`. A dollhouse cut is framed at the height of its cut.
+  houseBox({ site = false } = {}) {
+    const box = new THREE.Box3(), b = new THREE.Box3();
+    for (const m of this.meshes) {
+      const k = m.userData.bucket;
+      if (!m.visible || k.floor < 0) continue;
+      if (!m.geometry.boundingBox) m.geometry.computeBoundingBox();
+      box.union(b.copy(m.geometry.boundingBox));
+    }
+    if (box.isEmpty()) return null;
+    if (site) { const [x0, y0, z0, x1, y1] = this.data.bounds; box.union(b.set(s2t([x0, y1, z0]), s2t([x1, y0, z0]))); }
+    if (this.mode === 'dollhouse' || this.mode === 'plan') box.max.y = Math.min(box.max.y, this.floor * this.H + 1.3);
+    return box;
+  }
+
+  // Frame the home: keep the camera's viewing direction and move the camera (along and across its line of sight)
+  // to the closest spot from which the whole box fills `fill` of the frame, clear of the toolbars laid over the
+  // canvas (`frameInsets`, CSS pixels). The exact solve lives in framing.js.
+  fitHouse({ fill = .9, site = false, animate = true, hold = true } = {}) {
+    if (!this.data || this.mode === 'walk') return false;
+    const box = this.houseBox({ site });
+    if (!box) return false;
+    const cam = this.camera, w = Math.max(1, this.canvas.clientWidth), h = Math.max(1, this.canvas.clientHeight);
+    if (Math.abs(cam.aspect - w / h) > 1e-3) { cam.aspect = w / h; cam.updateProjectionMatrix(); this.resized = true; }
+    const from = this.zoomAnim ? { target: this.zoomAnim.toTarget, pos: this.zoomAnim.toPos } : { target: this.controls.target, pos: cam.position };
+    const i = this.frameInsets || {}, px = (v, n) => 2 * clamp(v || 0, 0, n * .3) / n;
+    const fit = frameBox(box.min.toArray(), box.max.toArray(), from.target.clone().sub(from.pos).toArray(), {
+      fov: cam.fov, aspect: w / h, fill, up: cam.up.toArray(), minReach: this.controls.minDistance,
+      window: [-1 + px(i.left, w), 1 - px(i.right, w), -1 + px(i.bottom, h), 1 - px(i.top, h)],
+    });
+    const pos = new THREE.Vector3(...fit.position), target = new THREE.Vector3(...fit.target);
+    if (animate) {
+      this.zoomAnim = { t0: performance.now(), fromTarget: this.controls.target.clone(), toTarget: target, fromPos: cam.position.clone(), toPos: pos };
+    } else {
+      this.zoomAnim = null;
+      this.controls.target.copy(target);
+      cam.position.copy(pos);
+      cam.lookAt(target);
+      this.controls.update();
+    }
+    this.fitHeld = hold ? { fill, site } : null;
+    this.dirty = true;
+    return true;
+  }
+
 
   // The street-facing balcony (deck centre, front edge and deck level), or null on homes without one.
   balcony() {
@@ -801,7 +904,7 @@ class FloorForgeViewer {
       this.camera.fov = this.walkFov; this.camera.updateProjectionMatrix(); this.dirty = true;
       return;
     }
-    this._tour = false; this.controls.autoRotate = false;
+    this._tour = false; this.controls.autoRotate = false; this.fitHeld = null;
     // Repeated presses build on the glide already under way.
     const from = this.zoomAnim ? { target: this.zoomAnim.toTarget, pos: this.zoomAnim.toPos } : { target: this.controls.target, pos: this.camera.position };
     const target = focus ? focus.clone() : from.target.clone();

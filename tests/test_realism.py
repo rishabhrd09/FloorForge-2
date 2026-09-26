@@ -1,4 +1,7 @@
 """Realistic walkthrough contract: modern exterior, procedural planting, lawns, rooms and walk metadata."""
+import json
+import shutil
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -238,6 +241,61 @@ def test_studio_offers_large_view_zoom_and_large_stills():
     assert 'setLargeView' in app and 'snapshot({width:3840})' in app and 'zoomSheet' in app
     # The viewer glides the camera for zoom, zooms to a double-clicked spot and renders large stills.
     assert 'zoomToPoint' in bundle and 'stepZoom' in bundle
+
+
+def test_studio_offers_focus_mode_fitted_views_and_a_wider_layout():
+    html = (ROOT / 'web/index.html').read_text('utf8')
+    app = (ROOT / 'web/app.js').read_text('utf8')
+    bundle = (ROOT / 'web/viewer.js').read_text('utf8')
+    page = (ROOT / 'floorforge/pipeline.py').read_text('utf8')
+    for control in ('id="focus"', 'Focus', 'id="zoom-fit"', 'data-view="aerial"', 'data-view="top"', 'id="brief-toggle"'):
+        assert control in html, control
+    assert 'setFocus' in app and 'frameInsets' in app and 'setWide' in app
+    assert 'focusBtn' in page and 'v.setFocus(' in page
+    # The viewer frames the home itself (not the street) in every view and mode.
+    for name in ('fitHouse', 'houseBox', 'setFocus', 'overheadTheta', 'acrossTheta'):
+        assert name in bundle, name
+
+
+@pytest.mark.skipif(shutil.which('node') is None, reason='Node.js unavailable')
+def test_framing_fills_the_frame_exactly_from_any_direction():
+    # The camera fit (web/viewer/src/framing.js) must put every corner of the home's box inside the usable window,
+    # touch the fill line on the limiting axis and centre the other, for low, high and overhead views on wide and
+    # tall screens, with toolbars overlaid.
+    module = (ROOT / 'web/viewer/src/framing.js').as_uri()
+    script = """
+import { frameBox, project } from '%s';
+const out = [];
+const boxes = [[[-.4, -.5, -14.2], [10.4, 6.5, 2.2]], [[0, -.5, -9.5], [7.6, 3.9, 1.5]], [[-3, 0, -3], [3, 12, 3]]];
+const dirs = [[-.54, -.18, .82], [0, -.2, 1], [-1, -.15, 0], [-.4, -.62, .67], [0, -1, .05], [.05, -1, 0]];
+for (const [min, max] of boxes) for (const d of dirs) for (const [aspect, window] of [[16 / 9, [-1, 1, -1, 1]], [.46, [-.97, .97, -.45, .86]], [3.2, [-.99, .9, -.8, .98]]]) {
+  const fill = .9, fov = 43;
+  const { position, target } = frameBox(min, max, d, { fov, aspect, fill, window });
+  let x0 = 9, x1 = -9, y0 = 9, y1 = -9, zmin = 1e9;
+  for (let i = 0; i < 8; i++) {
+    const p = [i & 1 ? max[0] : min[0], i & 2 ? max[1] : min[1], i & 4 ? max[2] : min[2]];
+    const [x, y, z] = project(p, position, target, { fov, aspect });
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); zmin = Math.min(zmin, z);
+  }
+  out.push({ window, fill, ndc: [x0, x1, y0, y1], zmin });
+}
+console.log(JSON.stringify(out));
+""" % module
+    res = subprocess.run(['node', '--input-type=module', '-e', script], capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    cases = json.loads(res.stdout)
+    assert len(cases) == 54
+    for case in cases:
+        (l, r, b, t), (x0, x1, y0, y1) = case['window'], case['ndc']
+        assert case['zmin'] > 0
+        # Inside the window (never under a toolbar)...
+        assert l - 1e-6 <= x0 and x1 <= r + 1e-6 and b - 1e-6 <= y0 and y1 <= t + 1e-6, case
+        # ...filling it on the limiting axis...
+        sx, sy = (x1 - x0) / (r - l), (y1 - y0) / (t - b)
+        assert case['fill'] - .01 < max(sx, sy) <= case['fill'] + .01, case
+        # ...and centred on it.
+        slack = (x0 - l, r - x1) if sx >= sy else (y0 - b, t - y1)
+        assert abs(slack[0] - slack[1]) < .03, case
 
 
 def test_bundled_viewer_is_present_and_attributed():
