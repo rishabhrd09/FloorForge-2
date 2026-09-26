@@ -58,7 +58,8 @@ Walking uses the same geometry. The viewer merges every collidable closed surfac
 The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from the same facade anchors, plot polygon and protected interior fingerprint as the other families:
 
 - a cantilevered portico or balcony soffit;
-- a frameless glass balcony;
+- a frameless glass balcony with a timber deck, handrail cap and louvred pergola;
+- slim aluminium windows, with timber-lined pods on facade bedrooms and etched glass in wet rooms;
 - a floating roof slab;
 - a clad feature wall;
 - a carport and glass-roof pergola when the plot allows;

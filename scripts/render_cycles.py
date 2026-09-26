@@ -75,17 +75,23 @@ def set_input(node, names, value):
             return
 
 
-def archviz_glass(material):
-    """Clear glass for camera and reflection rays; transparent to shadow and diffuse rays, so sunlight and
+# Glass kinds from the scene: clear windows and context glazing, the lightly green balustrade glass, and the
+# obscured (acid-etched) glass of wet rooms.
+GLASS = {'glass': ((.92, .95, .95, 1), 0.0), 'context-glass': ((.92, .95, .95, 1), 0.0),
+         'railglass': ((.84, .93, .9, 1), 0.0), 'frosted': ((.95, .96, .96, 1), .32)}
+
+
+def archviz_glass(material, colour=(.92, .95, .95, 1), roughness=0.0):
+    """Glass for camera and reflection rays; transparent to shadow and diffuse rays, so sunlight and
     skylight reach interiors without caustic noise (the usual architectural-visualisation compromise)."""
     nt = material.node_tree
     for link in list(nt.links):
         if link.to_socket.name == 'Alpha':
             nt.links.remove(link)
     bsdf = principled(material)
-    bsdf.inputs['Base Color'].default_value = (.92, .95, .95, 1)
+    bsdf.inputs['Base Color'].default_value = colour
     set_input(bsdf, ['Transmission Weight', 'Transmission'], 1.0)
-    bsdf.inputs['Roughness'].default_value = 0.0
+    bsdf.inputs['Roughness'].default_value = roughness
     bsdf.inputs['IOR'].default_value = 1.45
     bsdf.inputs['Alpha'].default_value = 1.0
     path = nt.nodes.new('ShaderNodeLightPath')
@@ -149,8 +155,8 @@ def prepare_materials(grade):
         if bsdf is None:
             continue
         name = (material.name or '').split('.')[0]
-        if name in ('glass', 'context-glass'):
-            archviz_glass(material)
+        if name in GLASS:
+            archviz_glass(material, *GLASS[name])
         elif name == 'mirror':
             bsdf.inputs['Metallic'].default_value = 1.0
             bsdf.inputs['Roughness'].default_value = .02

@@ -27,6 +27,10 @@ Choose **Walk in**, click the view and explore on foot:
 
 The walk starts on the footpath outside the open gate, facing the house, so you arrive as a guest does. Walking uses capsule collision against the actual generated walls, furniture, railings and glazing, with gravity and step-up climbing: walk up the real stair treads to change floor, jump onto low platforms, crouch under obstacles. Touch screens get a thumb stick and a jump button. Lighting offers Daylight (the computed solar position), Golden hour, Blue hour, Night and Overcast. Indoors, each room is lit by its own captured light probe (sun, lamps and sky through its windows, bounced once off the room), and exposure and white balance meter the room like a camera as you walk between rooms. A neighbourhood context (street, footpath, neighbouring houses, trees, lamp posts) is drawn by the viewer only and is never exported as part of your design.
 
+**Explore in a large view.** **⤢ Large view** fills the whole window with the home (true full screen where the browser allows it, a window-filling view everywhere else, including iPhone), keeping the view, mode and lighting controls. The **+** and **−** buttons glide the camera in and out, scroll or pinch zooms, and double-clicking a spot on the house glides in to orbit around it. **Capture** saves the current view as a large 3840-pixel still. Drawing sheets zoom too: **+**, **−**, Ctrl/⌘ + scroll or a double-click, drag to pan, and a large view of their own.
+
+**Windows and terraces.** Every exterior theme uses one contemporary window system: slim aluminium frames with staggered sliding panes, slim sills, and obscured glass in bathrooms. Bedroom windows on the facade sit in slim projecting pods lined with timber. First-floor terraces have a timber deck, a frameless glass balustrade with a slim handrail, a pergola of timber louvres with downlights, and seating between planted corners.
+
 The full extracted folder must stay together for the PDF/DXF/GLB/IFC links beside a preview to work. Viewing a sample is not generating a new design.
 
 ## Generate your own home

@@ -30,6 +30,18 @@ def _parts(geom):
     return [p for p in get_parts(geom) if p.geom_type == 'Polygon' and p.area > 1e-6] if not geom.is_empty else []
 
 
+# Window pod shell and lining per exterior theme, and the eyebrow canopy over legacy living-room windows.
+WINDOW_POD = {'modern_tropical': ('frame', 'timber'), 'warm_modern_minimal': ('frame', 'timber'), 'tropical_verandah': ('timber', None),
+              'earth_terracotta': ('stone', 'timber'), 'current': ('frame', None)}
+WINDOW_EYEBROW = {'warm_modern_minimal': 'timber', 'tropical_verandah': 'timber', 'earth_terracotta': 'stone', 'current': 'frame'}
+
+# Terrace finishes per exterior theme: slab edge, handrail cap and pergola frame.
+TERRACE_FINISH = {'modern_tropical': {'slab': 'roof', 'cap': 'frame', 'pergola': 'frame'},
+                  'warm_modern_minimal': {'slab': 'stone', 'cap': 'frame', 'pergola': 'frame'},
+                  'tropical_verandah': {'slab': 'stone', 'cap': 'timber', 'pergola': 'timber'},
+                  'earth_terracotta': {'slab': 'stone', 'cap': 'frame', 'pergola': 'frame'},
+                  'current': {'slab': 'stone', 'cap': 'frame', 'pergola': 'frame'}}
+
 def make_scene(building, report):
     b = building if building.get('exterior') else apply_exterior_preferences(building)
     v = b['brief']; exterior = b['exterior']; theme_id = exterior['theme']
@@ -287,46 +299,40 @@ def make_scene(building, report):
         if o['kind'] == 'cased':
             continue
         room_kinds = [space_kind.get(room, 'secondary') for room in w['rooms']]
-        if o['kind'] == 'window' and modern:
-            # Slim black aluminium: perimeter frame, mullions every ~1.25 m, staggered sliding panes.
-            fw = .045
-            part(fw / 2, 0, z0 + zh / 2, fw, .075, zh); part(ow - fw / 2, 0, z0 + zh / 2, fw, .075, zh)
-            part(ow / 2, 0, z0 + zh - fw / 2, ow, .075, fw); part(ow / 2, 0, z0 + fw / 2, ow, .075, fw)
-            panels = max(1, math.ceil(ow / 1.25))
+        if o['kind'] == 'window':
+            # One contemporary window system for every theme: slim powder-coated aluminium, staggered sliding
+            # panes, a transom on tall glazing and a slim sill; wet rooms get obscured glass.
+            wet = bool(set(room_kinds) & {'bathroom', 'utility', 'toilet', 'wc', 'powder'})
+            fw, fd = .045, .075
+            part(fw / 2, 0, z0 + zh / 2, fw, fd, zh); part(ow - fw / 2, 0, z0 + zh / 2, fw, fd, zh)
+            part(ow / 2, 0, z0 + zh - fw / 2, ow, fd, fw); part(ow / 2, 0, z0 + fw / 2, ow, fd, fw)
+            panels = max(1 if ow < .9 else 2, math.ceil(ow / 1.25))
             for i in range(1, panels):
-                part(ow * i / panels, 0, z0 + zh / 2, .04, .075, zh - 2 * fw)
+                part(ow * i / panels, 0, z0 + zh / 2, .04, fd, zh - 2 * fw)
             if zh > 2.4:
-                part(ow / 2, 0, z0 + 2.12, ow - 2 * fw, .075, .04)
+                part(ow / 2, 0, z0 + 2.12, ow - 2 * fw, fd, .04)
             for i in range(panels):
-                part(ow * (i + .5) / panels, (i % 2) * .028 - .014, z0 + zh / 2, ow / panels - .04, .012, zh - 2 * fw, 'glass', 'glass')
-            if o['sill'] > 100 and w['external']:
-                part(ow / 2, -t_half - .03, z0 - .015, ow + .06, .09, .03, 'frame', 'sill')
+                part(ow * (i + .5) / panels, (i % 2) * .028 - .014, z0 + zh / 2, ow / panels - .04, .012, zh - 2 * fw, 'frosted' if wet else 'glass', 'glass')
+            if o['sill'] > 100:
                 part(ow / 2, t_half - .05, z0 - .02, ow, .14, .03, M['counter'], 'sill')
-            if w['external'] and 'bedroom' in room_kinds and zh < 2.6:
-                # Projecting box-frame surround gives the bedroom glazing depth and shadow.
-                clad = 'timber' if o['floor'] % 2 else 'roof'
-                d = .32
-                part(-.06, -t_half - d / 2, z0 + zh / 2, .12, d, zh + .24, clad, 'window-surround')
-                part(ow + .06, -t_half - d / 2, z0 + zh / 2, .12, d, zh + .24, clad, 'window-surround')
-                part(ow / 2, -t_half - d / 2, z0 + zh + .06, ow + .24, d, .12, clad, 'window-surround')
-                part(ow / 2, -t_half - d / 2, z0 - .06, ow + .24, d, .12, clad, 'window-surround')
-        elif o['kind'] == 'window':
-            part(.025, 0, z0 + zh / 2, .05, .10, zh); part(ow - .025, 0, z0 + zh / 2, .05, .10, zh)
-            part(ow / 2, 0, z0 + zh - .025, ow - .1, .10, .05)
-            part(ow / 2, 0, z0 + .025, ow - .1, .10, .05)
-            part(ow / 2, 0, z0 + zh / 2, ow - .1, .015, zh - .1, 'glass', 'glass')
-            if ow > 1.2:
-                part(ow / 2, 0, z0 + zh / 2, .035, .08, zh)
-            part(ow / 2, 0, z0 - .045, ow + .16, .4, .07, 'stone', 'sill')
-            if w['external']:
-                part(ow / 2, -.18, z0 + zh + .12, ow + .3, .7, .10, 'roof', 'shade')
-                surround = 'stone' if set(room_kinds).intersection({'living', 'family', 'dining'}) else 'frame'
-                part(-.08, -.08, z0 + zh / 2, .10, .18, zh + .18, surround, 'window-surround')
-                part(ow + .08, -.08, z0 + zh / 2, .10, .18, zh + .18, surround, 'window-surround')
-                if set(room_kinds).intersection({'living', 'family', 'dining'}):
-                    part(ow / 2, -.32, z0 + zh + .17, ow + .46, .52, .10, 'stone', 'window-hood')
-                elif zh > 1.0:
-                    part(ow / 2, -.25, z0 + zh + .13, ow + .28, .34, .075, 'roof', 'window-hood')
+            pod = w['external'] and 'bedroom' in room_kinds and zh < 2.6
+            if pod:
+                # Window pod: a slim projecting box, lined with warm timber, gives bedroom glazing depth and shade.
+                shell, reveal = WINDOW_POD.get(theme_id, WINDOW_POD['current'])
+                d = .34; y = -t_half - d / 2
+                part(-.025, y, z0 + zh / 2, .05, d, zh + .1, shell, 'window-surround')
+                part(ow + .025, y, z0 + zh / 2, .05, d, zh + .1, shell, 'window-surround')
+                part(ow / 2, y, z0 + zh + .025, ow + .1, d, .05, shell, 'window-surround')
+                part(ow / 2, y, z0 - .025, ow + .1, d, .05, shell, 'window-surround')
+                if reveal:
+                    part(.008, y, z0 + zh / 2, .016, d - .02, zh, reveal, 'window-surround')
+                    part(ow - .008, y, z0 + zh / 2, .016, d - .02, zh, reveal, 'window-surround')
+                    part(ow / 2, y, z0 + zh - .008, ow - .032, d - .02, .016, reveal, 'window-surround')
+            elif o['sill'] > 100 and w['external']:
+                part(ow / 2, -t_half - .03, z0 - .015, ow + .06, .09, .03, 'frame', 'sill')
+            if w['external'] and not modern and not pod and zh < 2.6 and set(room_kinds) & {'living', 'family', 'dining'}:
+                # A slim floating eyebrow in the theme's accent shades the living-room glazing.
+                part(ow / 2, -t_half - .225, z0 + zh + .1, ow + .3, .45, .05, WINDOW_EYEBROW.get(theme_id, 'frame'), 'window-hood')
         if o['kind'] == 'window':
             # Pleated sheer curtains on the room side.
             if zh > 1. and not ('bathroom' in room_kinds or 'utility' in room_kinds):
@@ -864,45 +870,76 @@ def make_scene(building, report):
                 rect((xx, y0, z, xx + .14, y1, h + z), 'frame', 1, 'massing', aid + f'-pier-{j}', aid)
             rect((x0, y0, h + z - .16, x1, y1, h + z), 'roof', 1, 'roof-edge', aid + '-head', aid)
             rect((x0 - depth, y0 - depth, z, x1 + depth, y0 + .02, z + .08), 'frame', 1, 'roof-edge', aid + '-lower-reveal', aid)
-        elif kind == 'balcony' and geo.get('style') == 'frameless_glass':
-            ztop = geo.get('platform_z_mm', v['floor_height_mm'] - 30) / 1000
-            th = geo.get('slab_thickness_mm', 250) / 1000
-            rect((x0, y0, ztop - th, x1, y1, ztop), 'roof', floor, 'balcony', aid + '-slab', aid)
-            rect((x0 + .03, y0 + .03, ztop, x1 - .03, y1 - .01, ztop + .025), 'deck', floor, 'balcony', aid + '-deck', aid)
-            rail = geo.get('rail_height_mm', 1100) / 1000
-            for (ax, ay, bx2, by2) in [(x0, y0, x1, y0 + .012), (x0, y0, x0 + .012, y1 - .02), (x1 - .012, y0, x1, y1 - .02)]:
-                rect((ax + .02, ay + .02, ztop + .04, bx2 - .0, by2 + .0, ztop + rail), 'glass', floor, 'railing', owner=aid)
-            rect((x0, y0, ztop, x1, y0 + .07, ztop + .06), 'frame', floor, 'railing', aid + '-shoe', aid)
-            if y1 - y0 >= 1.4 and x1 - x0 >= 2.6:
-                cx0 = x0 + (x1 - x0) * .3
-                for j, xx in enumerate((cx0 - .4, cx0 + .4)):
-                    rb((xx, y0 + (y1 - y0) * .55, ztop + .36), (.66, .7, .12), 'sling', floor, 'outdoor-furniture', .05, owner=aid)
-                    rb((xx, y0 + (y1 - y0) * .55 + .33, ztop + .6), (.66, .1, .42), 'sling', floor, 'outdoor-furniture', .04, owner=aid)
-                cylinder((cx0, y0 + (y1 - y0) * .38, ztop + .25), .22, .03, M['counter'], floor, 'outdoor-furniture')
-                beam((cx0, y0 + (y1 - y0) * .38, ztop + .02), (cx0, y0 + (y1 - y0) * .38, ztop + .24), .02, 'frame', floor, 'outdoor-furniture')
-                k.plant(x1 - .45, y0 + .45, ztop + .025, 'strelitzia', height=1.3, f=floor, pot=(.22, .45, 'planter'))
         elif kind == 'balcony':
-            z = floor * H + geo.get('platform_z_mm', v['floor_height_mm'] - 120) / 1000
-            rect((x0, y0, z, x1, y1, z + .12), 'stone', floor, 'balcony', aid + '-slab', aid)
-            rail = z + geo.get('rail_height_mm', 1100) / 1000
-            rect((x0, y0 - .03, rail, x1, y0 + .05, rail + .08), 'frame', floor, 'railing', aid + '-front-rail', aid)
-            rect((x0 - .03, y0, z, x0 + .05, y1, rail), 'frame', floor, 'railing', aid + '-left-rail', aid)
-            rect((x1 - .05, y0, z, x1 + .03, y1, rail), 'frame', floor, 'railing', aid + '-right-rail', aid)
-            for j, xx in enumerate(np.arange(x0 + .15, x1, .72)):
-                rect((xx - .018, y0 - .01, z + .10, xx + .018, y0 + .04, rail), 'frame', floor, 'railing', aid + f'-baluster-{j}', aid)
-            rect((x0, y0 + .06, z + .10, x1, y0 + .09, rail - .05), 'glass', floor, 'railing', aid + '-glass', aid)
-            if x1 - x0 > 3.8:
-                for j, yy in enumerate(np.arange(y0 + .20, y1 - .12, .28)):
-                    rect((x1 - .20, yy - .035, z + .16, x1 - .11, yy + .035, min(z + 1.95, rail + .06)), 'timber', floor, 'screen', aid + f'-privacy-{j}', aid)
+            # Refurbished terrace: slab and timber deck at the first-floor level, a frameless glass balustrade in a
+            # base shoe with a slim handrail cap, a pergola of slim posts and timber louvres with downlights, and
+            # seating on an outdoor rug between planted corners.
+            frameless = geo.get('style') == 'frameless_glass'
+            fz = floor * H
+            deck = fz - .005 if frameless else fz
+            th = geo.get('slab_thickness_mm', 250 if frameless else 220) / 1000
+            finish = TERRACE_FINISH.get(theme_id, TERRACE_FINISH['current'])
+            rect((x0, y0, deck - .025 - th, x1, y1, deck - .025), 'roof' if frameless else finish['slab'], floor, 'balcony', aid + '-slab', aid)
+            rect((x0 + .03, y0 + .03, deck - .025, x1 - .03, y1 - .01, deck), 'deck', floor, 'balcony', aid + '-deck', aid)
+            rail = geo.get('rail_height_mm', 1100) / 1000
+            # Base shoe, glass and handrail cap on the three open sides (front, then the two returns to the facade).
+            for sx0, sy0, sx1, sy1 in ((x0, y0, x1, y0 + .07), (x0, y0 + .07, x0 + .07, y1 - .01), (x1 - .07, y0 + .07, x1, y1 - .01)):
+                along_x = sy1 - sy0 < .1
+                rect((sx0, sy0, deck, sx1, sy1, deck + .07), 'frame', floor, 'railing', owner=aid)
+                pane = (sx0, sy0 + .029, sx1, sy0 + .041) if along_x else (sx0 + .029, sy0, sx0 + .041, sy1)
+                rect((pane[0], pane[1], deck + .07, pane[2], pane[3], deck + rail - .04), 'railglass', floor, 'railing', owner=aid)
+                cap = (sx0, sy0 + .01, sx1, sy1 - .01) if along_x else (sx0 + .01, sy0, sx1 - .01, sy1)
+                rect((cap[0], cap[1], deck + rail - .04, cap[2], cap[3], deck + rail), finish['cap'], floor, 'railing', owner=aid)
+            width, depth = x1 - x0, y1 - y0
+            pz = min(top - .2, deck + 2.95)
+            if depth >= 1.2 and width >= 2.4 and pz - deck >= 2.4:
+                pm, slat = finish['pergola'], 'timber'
+                for px in (x0 + .1, x1 - .18):
+                    rect((px, y0 + .1, deck, px + .08, y0 + .18, pz - .16), pm, floor, 'pergola', owner=aid)
+                rect((x0 + .06, y0 + .1, pz - .16, x1 - .06, y0 + .18, pz), pm, floor, 'pergola', aid + '-pergola', aid)
+                for px in (x0 + .06, x1 - .14):
+                    rect((px, y0 + .18, pz - .16, px + .08, y1 - .08, pz), pm, floor, 'pergola', owner=aid)
+                rect((x0 + .14, y1 - .08, pz - .16, x1 - .14, y1, pz), pm, floor, 'pergola', owner=aid)
+                for xx in np.arange(x0 + .24, x1 - .2, .16):
+                    rect((xx, y0 + .18, pz - .13, xx + .045, y1 - .08, pz - .02), slat, floor, 'pergola', owner=aid)
+                for fx in (x0 + width * .3, x0 + width * .7):
+                    cylinder((fx, y0 + .14, pz - .18), .035, .02, 'lamp', floor, 'downlight')
+                    k.light((fx, y0 + .14, pz - .3), 18, kind='downlight')
             if geo.get('planter_edge'):
-                rect((x0 + .25, y0 - .22, z + .12, x1 - .25, y0 - .02, z + .34), 'stone', floor, 'landscape', aid + '-planter', aid)
+                rect((x0 + .25, y0 - .22, deck - .1, x1 - .25, y0 - .02, deck + .12), 'stone', floor, 'landscape', aid + '-planter', aid)
                 for xx in np.arange(x0 + .5, x1 - .3, 1.0):
-                    k.plant(xx, y0 - .10, z + .34, 'shrub_flowering', height=.35, f=floor)
-            else:
-                rb(((x0 + x1) / 2, y0 + (y1 - y0) * .56, z + .42), (1.65, .52, .30), 'fabric', floor, 'outdoor-furniture', .08, owner=aid)
-                rb(((x0 + x1) / 2, y0 + (y1 - y0) * .73, z + .72), (1.65, .12, .42), 'fabric', floor, 'outdoor-furniture', .06, owner=aid)
-                rb(((x0 + x1) / 2, y0 + (y1 - y0) * .22, z + .38), (.55, .55, .34), 'stone', floor, 'outdoor-furniture', .08, owner=aid)
-            rect((x0 - .12, y0 - .18, z + .35, x1 + .12, y1 + .08, z + .48), 'roof', floor, 'roof-edge', aid + '-upper-reveal', aid)
+                    k.plant(xx, y0 - .10, deck + .12, 'shrub_flowering', height=.35, f=floor)
+            if not frameless and width > 3.8:
+                for j, yy in enumerate(np.arange(y0 + .3, y1 - .15, .11)):
+                    rect((x1 - .26, yy - .02, deck + .02, x1 - .21, yy + .02, deck + 1.95), 'timber', floor, 'screen', aid + f'-privacy-{j}', aid)
+            if depth >= 1.2 and width >= 2.6:
+                # Seating on an outdoor rug, backs to the facade and clear of a door opening onto the deck, with a
+                # tall planter at each front corner.
+                half = .9
+                lo, hi = x0 + .75 + half, x1 - .75 - half
+                cx0 = min(max(x0 + width * .38, lo), hi) if hi >= lo else None
+                door = next((o for o in b['openings'] if o['id'] == geo.get('access_opening_id')), None)
+                if cx0 is not None and door:
+                    dw = hosts[door['wall_id']]; da = np.array(dw['a']) / 1000; du = np.array(dw['b']) / 1000 - da; du /= np.linalg.norm(du)
+                    ends = [da + du * (door['offset'] + t) / 1000 for t in (0, door['width'])]
+                    d0, d1 = sorted(e[0] for e in ends)
+                    if abs(ends[0][1] - y1) < .4 and d1 + .3 > cx0 - half and d0 - .3 < cx0 + half:
+                        cx0 = d0 - .3 - half if d0 - .3 - half >= lo else d1 + .3 + half if d1 + .3 + half <= hi else None
+                if cx0 is not None:
+                    rect((cx0 - half, max(y0 + .3, y1 - 1.3), deck, cx0 + half, y1 - .12, deck + .008), 'rug', floor, 'rug', owner=aid)
+                    if frameless:
+                        for xx in (cx0 - .5, cx0 + .5):
+                            rb((xx, y1 - .6, deck + .36), (.66, .7, .12), 'sling', floor, 'outdoor-furniture', .05, owner=aid)
+                            rb((xx, y1 - .27, deck + .6), (.66, .1, .42), 'sling', floor, 'outdoor-furniture', .04, owner=aid)
+                        cylinder((cx0, y1 - .6, deck + .45), .15, .03, M['counter'], floor, 'outdoor-furniture')
+                        beam((cx0, y1 - .6, deck + .01), (cx0, y1 - .6, deck + .435), .018, 'frame', floor, 'outdoor-furniture')
+                    else:
+                        rb((cx0, y1 - .52, deck + .3), (1.65, .6, .3), 'fabric', floor, 'outdoor-furniture', .08, owner=aid)
+                        rb((cx0, y1 - .25, deck + .62), (1.65, .12, .42), 'fabric', floor, 'outdoor-furniture', .06, owner=aid)
+                        if y1 - 1.35 - .225 >= y0 + .2:
+                            rb((cx0, y1 - 1.35, deck + .19), (.7, .45, .06), 'stone', floor, 'outdoor-furniture', .05, owner=aid)
+                k.plant(x1 - .45 if frameless else x1 - .6, y0 + .45, deck, 'strelitzia', height=1.3, f=floor, pot=(.22, .45, 'planter'))
+                k.plant(x0 + .45, y0 + .45, deck, 'grass_ornamental', height=.55, f=floor, pot=(.24, .42, 'planter'))
         elif kind in ('screen', 'accent'):
             h = geo.get('height_mm', top * 1000 - 400) / 1000
             material = 'stone' if theme_id == 'earth_terracotta' or kind == 'accent' else 'timber'

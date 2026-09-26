@@ -38,7 +38,7 @@ export function buildContext(viewer, data) {
   const g = gz; // ground level
   const W = xmax - xmin, D = ymax - ymin;
   const rnd = mulberry32(Math.round(W * 1000 + D * 7));
-  const buckets = { render: { pos: [], nor: [], uv: [] }, render2: { pos: [], nor: [], uv: [] }, glass: { pos: [], nor: [], uv: [] }, frame: { pos: [], nor: [], uv: [] }, roof: { pos: [], nor: [], uv: [] }, wall: { pos: [], nor: [], uv: [] } };
+  const buckets = { render: { pos: [], nor: [], uv: [] }, render2: { pos: [], nor: [], uv: [] }, glass: { pos: [], nor: [], uv: [] }, frame: { pos: [], nor: [], uv: [] }, roof: { pos: [], nor: [], uv: [] }, wall: { pos: [], nor: [], uv: [] }, plinth: { pos: [], nor: [], uv: [] }, door: { pos: [], nor: [], uv: [] } };
   const trees = [];
   const subjectFloors = data.storeys || 1;
   const house = (x0, y0, x1, y1, facingRoad) => {
@@ -57,21 +57,43 @@ export function buildContext(viewer, data) {
     // Floating roof slab over the top volume.
     const ov = .3 + rnd() * .3;
     boxGeo(x0 - ov, fy0 - ov, g + h, x1 + ov, fy1 + ov, g + h + .28, buckets.roof);
-    // Framed glazing on the road-facing side of every floor, with a centre mullion on wide panes.
+    // A stone plinth grounds the ground-floor volume.
+    boxGeo(x0 - .03, y0 - .03, g, x1 + .03, y1 + .03, g + .42, buckets.plinth);
+    // Framed glazing on the road-facing side of every floor, with a centre mullion on wide panes. The middle bay of
+    // the ground floor is the entrance (timber door, sidelight and canopy); some upper floors open onto a balcony.
+    const n = Math.max(1, Math.floor((x1 - x0) / 3)), mid = Math.floor(n / 2);
     for (let f = 0; f < floors; f++) {
       const face = facingRoad > 0 ? (f === 0 ? y0 : fy0) - .02 : (f === 0 ? y1 : fy1) + .02;
-      const n = Math.max(1, Math.floor((x1 - x0) / 3));
+      const balcony = f > 0 && rnd() < .5;
       for (let i = 0; i < n; i++) {
         const cx = x0 + (i + .5) * (x1 - x0) / n, ww = Math.min(2.4, (x1 - x0) / n - .8);
-        const zb = g + f * 3.2 + (f === 0 && rnd() < .5 ? .05 : .8), zt = g + f * 3.2 + 2.65;
+        const entry = f === 0 && i === mid, full = entry || (balcony && i === mid);
+        const zb = g + f * 3.2 + (full ? .45 : f === 0 && rnd() < .5 ? .45 : .8), zt = g + f * 3.2 + 2.65;
         const fa = Math.min(face, face + .04 * facingRoad), fb = Math.max(face, face + .04 * facingRoad);
-        boxGeo(cx - ww / 2, fa, zb, cx + ww / 2, fb, zt, buckets.glass);
         const t = .055, o0 = face - .045, o1 = face + .045;
+        if (entry) {
+          // Door leaf on one side of the bay, glass beside it, a slim canopy slab above.
+          const dw = Math.min(1.05, ww * .5), dx0 = cx - ww / 2 + t, dx1 = dx0 + dw;
+          boxGeo(dx0, Math.min(o0, o0 + .03 * facingRoad), zb, dx1, Math.max(o1, o1 + .03 * facingRoad), zt - .25, buckets.door);
+          boxGeo(dx1 + t, fa, zb, cx + ww / 2, fb, zt, buckets.glass);
+          boxGeo(dx1, o0, zb, dx1 + t, o1, zt, buckets.frame);
+          boxGeo(dx0, o0, zt - .25, dx1, o1, zt, buckets.frame);
+          const c0 = facingRoad > 0 ? face - 1.1 : face, c1 = facingRoad > 0 ? face : face + 1.1;
+          boxGeo(cx - ww / 2 - .35, c0, zt + .12, cx + ww / 2 + .35, c1, zt + .26, buckets.roof);
+        } else boxGeo(cx - ww / 2, fa, zb, cx + ww / 2, fb, zt, buckets.glass);
         boxGeo(cx - ww / 2 - t, o0, zb - t, cx + ww / 2 + t, o1, zb, buckets.frame);
         boxGeo(cx - ww / 2 - t, o0, zt, cx + ww / 2 + t, o1, zt + t, buckets.frame);
         boxGeo(cx - ww / 2 - t, o0, zb, cx - ww / 2, o1, zt, buckets.frame);
         boxGeo(cx + ww / 2, o0, zb, cx + ww / 2 + t, o1, zt, buckets.frame);
-        if (ww > 1.5) boxGeo(cx - .025, o0, zb, cx + .025, o1, zt, buckets.frame);
+        if (ww > 1.5 && !entry) boxGeo(cx - .025, o0, zb, cx + .025, o1, zt, buckets.frame);
+        if (balcony && i === mid) {
+          // Balcony: slab, glass balustrade and a slim cap rail.
+          const b0 = facingRoad > 0 ? face - 1.2 : face, b1 = facingRoad > 0 ? face : face + 1.2, bz = g + f * 3.2 + .3;
+          boxGeo(cx - ww / 2 - .3, b0, bz, cx + ww / 2 + .3, b1, bz + .15, buckets.roof);
+          const rail = facingRoad > 0 ? [b0 + .03, b0 + .045] : [b1 - .045, b1 - .03];
+          boxGeo(cx - ww / 2 - .27, rail[0], bz + .15, cx + ww / 2 + .27, rail[1], bz + 1.18, buckets.glass);
+          boxGeo(cx - ww / 2 - .28, rail[0] - .015, bz + 1.18, cx + ww / 2 + .28, rail[1] + .015, bz + 1.22, buckets.frame);
+        }
       }
     }
     if (rnd() < .8) trees.push({ species: rnd() < .5 ? 'tree_shade' : rnd() < .5 ? 'palm' : 'tree_standard', x: x0 + (x1 - x0) * (rnd() < .5 ? .15 : .85), y: facingRoad > 0 ? y0 - 1.8 : y1 + 1.8, s: .8 + rnd() * .4 });
@@ -152,7 +174,7 @@ export function buildContext(viewer, data) {
     render: mats.get('wall'), render2: (() => { const m = mats.get('wall').clone(); m.color = new THREE.Color('#e6ddcc'); return m; })(),
     // Reflective glazing: reads as glass (sky and ground reflections), not as black holes.
     glass: new THREE.MeshPhysicalMaterial({ color: '#8a9aa3', roughness: .04, metalness: .85, envMapIntensity: 2.2 }),
-    frame: mats.get('frame'), roof: mats.get('roof'), wall: mats.get('wall'),
+    frame: mats.get('frame'), roof: mats.get('roof'), wall: mats.get('wall'), plinth: mats.get('stone'), door: mats.get('walnut'),
   };
   matFor.render2.name = 'context-render'; matFor.glass.name = 'context-glass';
   const created = [];

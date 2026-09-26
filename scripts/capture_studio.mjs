@@ -62,6 +62,26 @@ try {
   await page.screenshot({ path: join(OUT, 'studio-walk.png') });
   await page.click('[data-mode="solid"]');
 
+  // Large view: the 3D fills the whole window with its controls; the zoom buttons glide the camera in.
+  await page.click('#fullscreen');
+  await page.waitForTimeout(400);
+  const distance = () => page.evaluate(() => { const v = window.__ffApp.viewer; for (let i = 0; i < 40 && v.zoomAnim; i++) v.stepZoom(performance.now() + 1000); return v.camera.position.distanceTo(v.controls.target); });
+  const far = await distance();
+  await page.click('#zoom-in');
+  const near = await distance();
+  const large = await page.evaluate(() => { const r = document.querySelector('.canvas-wrap').getBoundingClientRect(); return { width: Math.round(r.width), height: Math.round(r.height), window: [innerWidth, innerHeight], controlsInside: !!document.querySelector('.canvas-wrap .canvas-tools') }; });
+  await page.evaluate(() => { const v = window.__ffApp.viewer; v.paused = true; v.resize(); v.updateLights(true); v.composer.render(0); });
+  await page.screenshot({ path: join(OUT, 'studio-large-view.png') });
+  check('large view fills the window with its controls and zooms in', large.width === large.window[0] && large.height === large.window[1] && large.controlsInside && near < far * .8, { ...large, zoom_m: [+far.toFixed(2), +near.toFixed(2)] });
+  const [still4k] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#snapshot')]);
+  const png = join(work, 'still.png');
+  await still4k.saveAs(png);
+  const header = readFileSync(png);
+  check('Capture saves a large 3840-pixel still', header.readUInt32BE(16) === 3840, { file: still4k.suggestedFilename(), width: header.readUInt32BE(16), height: header.readUInt32BE(20) });
+  await page.click('#zoom-out');
+  await page.click('#fullscreen');
+  await page.waitForTimeout(300);
+
   const [download] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#export-glb')]);
   const glb = join(work, 'presentation.glb');
   await download.saveAs(glb);
@@ -73,6 +93,11 @@ try {
   await page.screenshot({ path: join(OUT, 'studio-drawings.png') });
   const sheets = await page.locator('#sheet-select option').count();
   check('nine generated drawing sheets selectable', sheets === 9, { sheets });
+  await page.click('#sheet-zoom-in'); await page.click('#sheet-zoom-in');
+  await page.waitForTimeout(200);
+  const sheetZoom = await page.evaluate(() => { const h = document.querySelector('.drawing-holder'); return { label: document.getElementById('sheet-fit').textContent, scrollable: h.scrollWidth > h.clientWidth * 1.5 }; });
+  check('drawing sheets zoom for close reading', sheetZoom.label === '225%' && sheetZoom.scrollable, sheetZoom);
+  await page.click('#sheet-fit');
   await page.click('[data-tab="documents"]');
   await page.screenshot({ path: join(OUT, 'studio-review.png') });
   check('regulatory unknown remains visible', (await page.locator('#review-content').innerText()).includes('NOT EVALUATED'));

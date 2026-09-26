@@ -41,7 +41,21 @@ UVs are box-projected, and a world-space macro variation breaks up tiling. The p
 
 GLB and drawings keep simple coordination proxies (`role: plant-proxy`) for the same plants.
 
-**Neighbourhood context.** The viewer adds context sized from the plot: neighbouring houses with framed reflective glazing, front-garden shrubs, street trees, lamp posts and a horizon tree line. Trees and lamp posts are kept out of the foreground of both hero views, and the context stands aside for the Left and Right elevations, whose cameras would otherwise stand inside a neighbour's house. It is never exported and makes no design claim.
+**Windows and terraces.** The generated geometry uses one contemporary window system for every exterior theme:
+- slim aluminium frames (45 mm face) in the theme's frame colour, staggered sliding panes, and a transom on tall glazing;
+- slim sills, and obscured (etched) glass in bathrooms and utility rooms;
+- bedroom windows on the facade set in slim projecting pods (50 mm shell, 340 mm deep) lined with timber;
+- on the older themes, a slim floating eyebrow over living-room windows in place of deep concrete shades.
+
+First-floor terraces sit level with the floor they open from. Each has a timber deck, a frameless glass balustrade in a base shoe with a slim handrail cap, a pergola of slim posts and timber louvres with downlights, and seating on an outdoor rug between planted corners.
+
+**Neighbourhood context.** The viewer adds context sized from the plot: neighbouring houses with stone plinths, framed reflective glazing, timber entrance doors under slim canopies and some glass-railed balconies, front-garden shrubs, street trees, lamp posts and a horizon tree line. Trees and lamp posts are kept out of the foreground of both hero views, and the context stands aside for the Left and Right elevations, whose cameras would otherwise stand inside a neighbour's house. It is never part of the design exports and makes no design claim; the presentation GLB for offline renders includes it as context.
+
+**Large view and zoom.** **⤢ Large view** makes the 3D fill the whole window, with the view, mode and lighting controls carried along. It uses true full screen where the browser allows it and a window-filling view everywhere else, including iPhone. Esc or the same button returns to the studio.
+- **+** and **−** glide the orbit camera in and out; in walk mode they narrow or widen the lens.
+- Double-clicking a spot on the house glides in to orbit around that spot.
+- **Capture** re-renders the current view at 3840 pixels wide, with the same framing, for a large still.
+- Drawing sheets zoom with **+**, **−**, Ctrl/⌘ + scroll or a double-click, pan by dragging, and have their own large view.
 
 **Quality.** Choose Auto, Ultra, High, Balanced or Performance. Auto starts from the device class and steps down when frames are slow.
 

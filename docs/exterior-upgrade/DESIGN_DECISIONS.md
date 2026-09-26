@@ -31,10 +31,11 @@ Modern Tropical is a separate candidate path (`modern_exterior.py`). It uses the
 - Kitchens get worktop-height glazing.
 - Bathrooms get high privacy windows.
 - Balcony doors widen.
+- Every family draws its windows with one slim aluminium system (staggered sliding panes, slim sills, etched glass in wet rooms). Facade bedroom windows sit in slim projecting pods lined with timber; the older families shade living-room windows with a slim eyebrow.
 
 **Assemblies.**
 - The portico is a cantilevered slab. On G+1 plans the balcony soffit takes that role.
-- The balcony is a frameless-glass slab across the widest upper-floor frontage.
+- The balcony is a frameless-glass slab across the widest upper-floor frontage, level with the floor it opens from. It has a timber deck, a slim handrail cap on the glass, a pergola of timber louvres with downlights, and seating between planted corners. The other families use the same terrace build in their own slab, handrail and pergola finishes.
 - The roof reads as a floating slab with an overhang and upstand.
 - A carport is added only when parking is requested and the front setback is at least 5.5 m.
 - A glass-roof pergola is added only when the rear setback is at least 2.6 m.

@@ -64,7 +64,7 @@ class FloorForgeViewer {
     this.controls.minDistance = 1.5;
     this.controls.maxDistance = 160;
     this.controls.addEventListener('change', () => { this.dirty = true; });
-    this.controls.addEventListener('start', () => { this.tour = false; this.interacting = true; });
+    this.controls.addEventListener('start', () => { this.tour = false; this.interacting = true; this.zoomAnim = null; });
     this.controls.addEventListener('end', () => { this.interacting = false; this.settle = performance.now(); });
     this.env = new Environment(renderer, this.scene, { quality: this.q.shadow });
     this.synth = new TextureSynth(renderer, { quality: this.q.textures });
@@ -695,7 +695,9 @@ class FloorForgeViewer {
     const end = (e) => { if (drag && drag.id === e.pointerId) { if (drag.stick) this.touchMove = null; drag = null; } };
     on(c, 'pointerup', end);
     on(c, 'pointercancel', end);
+    on(c, 'dblclick', (e) => { if (this.zoomToPoint(e.clientX, e.clientY)) e.preventDefault(); });
     on(c, 'wheel', (e) => {
+      this.zoomAnim = null;
       if (this.mode !== 'walk') return;
       e.preventDefault();
       this.walkFov = clamp((this.walkFov || 62) + e.deltaY * .02, 38, 85);
@@ -761,8 +763,9 @@ class FloorForgeViewer {
       this.updateProbe();
       render = true;
     } else {
+      if (this.zoomAnim) this.stepZoom(now);
       if (this.controls.enabled) this.controls.update(dt);
-      if (this._tour || this.interacting || performance.now() - (this.settle || 0) < 1200) render = true;
+      if (this._tour || this.interacting || this.zoomAnim || performance.now() - (this.settle || 0) < 1200) render = true;
     }
     if (!render) return;
     this.vegetation?.update(this.time, this.camera);
@@ -788,11 +791,65 @@ class FloorForgeViewer {
   }
 
   // ---------- capture ----------
-  async snapshot() {
+  // ---------- zoom ----------
+  // factor < 1 moves in, > 1 moves out: the orbit camera glides along its line of sight (optionally onto a
+  // new focus point); in walk mode the lens narrows or widens instead.
+  zoom(factor, focus = null) {
+    if (!this.data) return;
+    if (this.mode === 'walk') {
+      this.walkFov = clamp((this.walkFov || 62) * factor, 30, 90);
+      this.camera.fov = this.walkFov; this.camera.updateProjectionMatrix(); this.dirty = true;
+      return;
+    }
+    this._tour = false; this.controls.autoRotate = false;
+    // Repeated presses build on the glide already under way.
+    const from = this.zoomAnim ? { target: this.zoomAnim.toTarget, pos: this.zoomAnim.toPos } : { target: this.controls.target, pos: this.camera.position };
+    const target = focus ? focus.clone() : from.target.clone();
+    const dir = from.pos.clone().sub(from.target);
+    const distance = clamp(dir.length() * factor, this.controls.minDistance, this.controls.maxDistance);
+    this.zoomAnim = { t0: performance.now(), fromTarget: this.controls.target.clone(), toTarget: target,
+      fromPos: this.camera.position.clone(), toPos: target.clone().add(dir.normalize().multiplyScalar(distance)) };
+    this.dirty = true;
+  }
+
+  stepZoom(now) {
+    const a = this.zoomAnim, k = clamp((now - a.t0) / 420, 0, 1), e = 1 - Math.pow(1 - k, 3);
+    this.controls.target.lerpVectors(a.fromTarget, a.toTarget, e);
+    this.camera.position.lerpVectors(a.fromPos, a.toPos, e);
+    if (k >= 1) { this.zoomAnim = null; this.settle = performance.now(); }
+  }
+
+  // Double-click (or double-tap) a spot on the house to glide in and orbit around it.
+  zoomToPoint(clientX, clientY) {
+    if (this.mode === 'walk' || !this.data) return false;
+    const r = this.canvas.getBoundingClientRect();
+    const ndc = new THREE.Vector2(((clientX - r.left) / r.width) * 2 - 1, -((clientY - r.top) / r.height) * 2 + 1);
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(ndc, this.camera);
+    const hit = ray.intersectObjects(this.meshes.filter((m) => m.visible), false)[0];
+    if (!hit) return false;
+    this.zoom(.5, hit.point);
+    return true;
+  }
+
+  // PNG of the current view. With a width larger than the canvas, the frame is re-rendered at that size (same
+  // framing) for a large, print-ready still.
+  async snapshot({ width = 0 } = {}) {
     if (this.resized) this.resize();
+    const c = this.canvas, w0 = Math.max(1, c.clientWidth), h0 = Math.max(1, c.clientHeight);
+    const max = Math.min(this.renderer.capabilities.maxTextureSize || 4096, 7680);
+    const W = Math.min(Math.round(width), max), H = Math.round(W * h0 / w0);
+    const large = W > c.width && H <= max;
+    if (large) {
+      this.renderer.setPixelRatio(1);
+      this.renderer.setSize(W, H, false);
+      this.composer.setSize(W, H, false);
+    }
     this.vegetation?.update(this.time, this.camera);
     this.composer.render(0);
-    return new Promise((resolve) => this.canvas.toBlob(resolve, 'image/png'));
+    const blob = await new Promise((resolve) => c.toBlob(resolve, 'image/png'));
+    if (large) { this.resize(); this.dirty = true; }
+    return blob;
   }
 
   async record(seconds = 12) {

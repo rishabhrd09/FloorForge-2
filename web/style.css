@@ -4,3 +4,12 @@
 .live-diagnostic{margin:-6px 0 10px;color:#8b6848;font:9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.015em}
 .view-tools{display:flex;gap:4px;flex-wrap:wrap;align-items:center}.view-tools .glass-btn{padding:6px 8px}.view-tools .glass-btn.active{background:#fffef8;color:var(--ink);box-shadow:0 1px 3px #27332415}
 .canvas-wrap:fullscreen{border-radius:0;border:0}.canvas-wrap:fullscreen canvas#scene{height:100vh}.select-tools select#quality{max-width:120px}
+.zoom-tools{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:4}.zoom-tools .glass-btn{width:36px;height:36px;padding:0;font-size:18px;line-height:1;border-radius:50%;display:grid;place-items:center}
+.canvas-wrap.expanded{position:fixed;inset:0;z-index:80;min-height:0;border:0;border-radius:0;background:#1b1f1d}body.viewer-expanded{overflow:hidden}
+.canvas-wrap.expanded .canvas-tools{position:absolute;top:0;left:0;right:0;z-index:5;margin:0;padding:12px 14px;flex-wrap:wrap;background:linear-gradient(#f6f5eee6,#f6f5ee99);backdrop-filter:blur(8px);border-bottom:1px solid #dce0d480}
+.canvas-wrap.expanded .ffhud .ff-where,.canvas-wrap.expanded .ffhud .ff-tip{top:calc(var(--tools-h,56px) + 14px)!important}
+.canvas-wrap.expanded .canvas-bottom{bottom:18px}.canvas-wrap.expanded .glass-btn{font-size:11px}
+.sheet-zoom{display:flex;gap:4px;margin-left:auto;margin-right:12px}.sheet-zoom .glass-btn{min-width:34px}
+.drawing-holder{position:relative}.drawing-holder.zoomed{cursor:grab}.drawing-holder.zoomed.panning{cursor:grabbing}.drawing-holder.zoomed img{height:auto;max-width:none;object-fit:initial;display:block}
+.drawing-holder.expanded{position:fixed;inset:0;z-index:80;border:0;background:#fff}.drawing-holder .close-large{position:fixed;top:14px;right:16px;z-index:81;font-size:12px;padding:8px 12px}
+@media(max-width:820px){.zoom-tools{top:auto;bottom:112px;transform:none;right:10px}.canvas-wrap.expanded .canvas-tools .select-tools{display:none}.sheet-toolbar{flex-wrap:wrap;gap:8px}.sheet-zoom{margin:0}}

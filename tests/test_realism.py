@@ -155,6 +155,40 @@ def test_walk_arrival_leads_through_an_open_gateway(theme, case):
     assert level > -.02, 'the walk does not reach the ground floor through the front door'
 
 
+@pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)
+def test_windows_use_the_refined_system(theme):
+    building, _, scene = build({'exterior_theme': theme})
+    kinds = {s['id']: s['kind'] for s in building['spaces']}
+    walls = {w['id']: w for w in building['walls']}
+    windows = {o['id']: o for o in building['openings'] if o['kind'] == 'window'}
+    parts = [n for n in scene['nodes'] if n.get('owner') in windows]
+    # Slim frames and sills, no heavy projecting shades.
+    assert not any(n['role'] == 'shade' for n in parts)
+    assert all(n['scale'][1] <= .15 for n in parts if n['role'] == 'sill')
+    # Wet rooms get obscured glass, habitable rooms clear glass.
+    for oid, o in windows.items():
+        wet = any(kinds.get(r) in ('bathroom', 'utility') for r in walls[o['wall_id']]['rooms'])
+        panes = {n['material'] for n in parts if n['owner'] == oid and n['role'] == 'glass'}
+        assert panes == ({'frosted'} if wet else {'glass'}), oid
+    # Bedroom glazing on the facade sits in a slim projecting pod.
+    pods = [n for n in parts if n['role'] == 'window-surround']
+    assert pods and all(min(n['scale'][0], n['scale'][2]) <= .05 for n in pods)
+
+
+@pytest.mark.parametrize('theme', [t for t in EXTERIOR_THEME_IDS if t != 'current'])
+def test_terrace_sits_at_the_first_floor_with_rail_and_pergola(theme):
+    _, _, scene = build({'exterior_theme': theme})
+    H = scene['floor_height']
+    deck = next(n for n in scene['nodes'] if n['id'] == 'exterior-balcony-01-deck')
+    # Level with the first floor it opens from, never up on the roof.
+    assert abs(deck['position'][2] + deck['scale'][2] / 2 - H) < .03
+    terrace = [n for n in scene['nodes'] if n.get('owner') == 'exterior-balcony-01']
+    assert any(n['material'] == 'railglass' for n in terrace)
+    assert any(n['role'] == 'pergola' for n in terrace)
+    top = H * scene['storeys']
+    assert all(n['position'][2] + n['scale'][2] / 2 < top for n in terrace)
+
+
 def test_surfaces_declare_physically_based_kinds(modern):
     _, _, scene = modern
     used = {n['material'] for n in scene['nodes']}
@@ -191,6 +225,19 @@ def test_preview_embeds_viewer_without_breaking_script_blocks(modern):
     assert page.count('</script>') == 3
     assert 'FloorForgeViewer' in page and 'Walk in' in page
     assert 'Blender GLB' in page and 'exportPresentation' in page
+    # Large view and zoom for exploring the home in big size, and a large still.
+    assert 'Large view' in page and 'v.zoom(' in page and 'snapshot({width:3840})' in page
+
+
+def test_studio_offers_large_view_zoom_and_large_stills():
+    html = (ROOT / 'web/index.html').read_text('utf8')
+    app = (ROOT / 'web/app.js').read_text('utf8')
+    bundle = (ROOT / 'web/viewer.js').read_text('utf8')
+    for control in ('id="fullscreen"', 'Large view', 'id="zoom-in"', 'id="zoom-out"', 'id="sheet-zoom-in"', 'id="sheet-large"'):
+        assert control in html, control
+    assert 'setLargeView' in app and 'snapshot({width:3840})' in app and 'zoomSheet' in app
+    # The viewer glides the camera for zoom, zooms to a double-clicked spot and renders large stills.
+    assert 'zoomToPoint' in bundle and 'stepZoom' in bundle
 
 
 def test_bundled_viewer_is_present_and_attributed():

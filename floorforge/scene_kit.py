@@ -126,6 +126,8 @@ def material_library(style: dict, interior: dict, modern: bool) -> dict:
         'linen': {'color': im.get('linen', '#f2eee2'), 'roughness': .98, 'texture': 'fabric', 'kind': 'fabric', 'seed': 5, 'params': [180]},
         'rug': {'color': im.get('rug', '#b7a58b'), 'alt': '#9c8a70', 'roughness': .98, 'texture': 'fabric', 'kind': 'rug'},
         'glass': {'color': '#aec8cc', 'roughness': .12, 'alpha': .26, 'metallic': .1},
+        'frosted': {'color': '#e8edeb', 'roughness': .5, 'alpha': .82, 'roughness_override': .38},
+        'railglass': {'color': '#b3cec6', 'roughness': .05, 'alpha': .34, 'metallic': .1},
         'brass': {'color': '#b69c68', 'roughness': .28, 'metallic': .65, 'kind': 'brushed', 'params': [.3]},
         'ceramic': {'color': '#eeebe1', 'roughness': .25},
         'leaf': {'color': leaf, 'roughness': .9},

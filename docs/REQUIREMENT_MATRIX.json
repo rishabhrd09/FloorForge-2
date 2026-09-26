@@ -245,7 +245,7 @@
       "milestone": "M3",
       "requirement": "Articulated neighbours and context",
       "status": "PARTIAL",
-      "evidence_or_file": "Viewer-only procedural neighbourhood sized from the plot: neighbouring houses, street trees, lamp posts and a horizon tree line (never exported)",
+      "evidence_or_file": "Viewer-only procedural neighbourhood sized from the plot: neighbouring houses with plinths, framed glazing, entrance doors under canopies and some balconies, street trees, lamp posts and a horizon tree line (never part of the design exports; included in the presentation GLB as context)",
       "remaining": "Generic context, not surveyed: no real neighbour heights, setbacks or scanned surroundings."
     },
     {
@@ -266,7 +266,7 @@
       "milestone": "M3",
       "requirement": "Geometry-accurate varied massing and terraces",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "True L polygons, mirrored/shorter plans, upper terrace",
+      "evidence_or_file": "True L polygons, mirrored/shorter plans, upper terrace; first-floor terraces level with their floor with a timber deck, glass balustrade and handrail, louvred pergola and seating (tested for every exterior theme)",
       "remaining": "Not architecture optimisation or all requested typologies."
     },
     {
@@ -328,9 +328,9 @@
     {
       "milestone": "M5",
       "requirement": "Raster PNG capture",
-      "status": "IMPLEMENTED",
-      "evidence_or_file": "Viewer snapshot control",
-      "remaining": "Automated saved-file acceptance remains limited."
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Viewer Capture re-renders the current view at 3840 px wide; the studio harness saves one and checks its width",
+      "remaining": "Real-GPU colour acceptance remains open."
     },
     {
       "milestone": "M5",
