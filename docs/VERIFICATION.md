@@ -4,7 +4,7 @@
 
 ## Executed here
 
-**Tests.** 154 tests passed, 0 failed (89.7 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 35 realism test cases in `tests/test_realism.py` cover:
+**Tests.** 154 tests passed, 0 failed (87.5 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 35 realism test cases in `tests/test_realism.py` cover:
 - the Modern Tropical default and scene 0.4;
 - full-height living glazing within wall height;
 - landscape, stepping stones, planting and lawns inside the plot and off the house, for every fixture plot;
@@ -35,7 +35,7 @@ All three are Modern Tropical.
 
 Per-shot mode, grade, room badge, probe state and metered exposure are in `evidence/walkthrough-capture.json`.
 
-**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the hall, living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
+**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
 
 **Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 14 checks with no page errors (`evidence/studio-browser.json`):
 - the bundled scene 0.4 and realistic renderer;

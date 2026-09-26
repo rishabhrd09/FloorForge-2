@@ -10,10 +10,30 @@
       }
     },
     {
+      "check": "viewer fills the studio at 1440×1024",
+      "passed": true,
+      "details": {
+        "canvas": 554,
+        "panelBottom": 987,
+        "statusTop": 987,
+        "scroll": 0
+      }
+    },
+    {
+      "check": "1366×768 laptop layout keeps the panel clear of the status bar",
+      "passed": true,
+      "details": {
+        "canvas": 330,
+        "panelBottom": 731,
+        "statusTop": 731,
+        "scroll": 0
+      }
+    },
+    {
       "check": "walk mode opens at the arrival with the room badge",
       "passed": true,
       "details": {
-        "badge": "Garden|Ground floor"
+        "badge": "Street|Ground floor"
       }
     },
     {
@@ -49,6 +69,15 @@
       }
     },
     {
+      "check": "single-storey home: no balcony view, side view clear of the neighbours",
+      "passed": true,
+      "details": {
+        "balconyButtonHidden": true,
+        "contextInSideView": false,
+        "contextInHero": true
+      }
+    },
+    {
       "check": "grid painter interaction",
       "passed": true
     },
@@ -80,12 +109,7 @@
       "status": 200
     },
     {
-      "path": "/demo/scene.json",
-      "method": "GET",
-      "status": 200
-    },
-    {
-      "path": "/demo/building.json",
+      "path": "/demo/report.json",
       "method": "GET",
       "status": 200
     },
@@ -95,7 +119,12 @@
       "status": 200
     },
     {
-      "path": "/demo/report.json",
+      "path": "/demo/scene.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/demo/building.json",
       "method": "GET",
       "status": 200
     },
@@ -110,47 +139,47 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/db72b4408c4f3796",
+      "path": "/api/jobs/0e33a90c3b792c11",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/db72b4408c4f3796",
+      "path": "/api/jobs/0e33a90c3b792c11",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/db72b4408c4f3796",
+      "path": "/api/jobs/0e33a90c3b792c11",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/db72b4408c4f3796",
+      "path": "/api/jobs/0e33a90c3b792c11",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/db72b4408c4f3796",
+      "path": "/api/jobs/0e33a90c3b792c11",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/40ff1fcb59b576e082d1d19d/building.json",
+      "path": "/builds/bf10fc29e89dc2111addefad/building.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/40ff1fcb59b576e082d1d19d/report.json",
+      "path": "/builds/bf10fc29e89dc2111addefad/scene.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/40ff1fcb59b576e082d1d19d/scene.json",
+      "path": "/builds/bf10fc29e89dc2111addefad/report.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/40ff1fcb59b576e082d1d19d/sheets.json",
+      "path": "/builds/bf10fc29e89dc2111addefad/sheets.json",
       "method": "GET",
       "status": 200
     }
