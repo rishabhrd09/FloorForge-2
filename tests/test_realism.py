@@ -270,6 +270,43 @@ def test_modern_massing_has_a_deep_eave_and_a_finished_roof(case):
 
 
 @pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)
+def test_every_designed_theme_raises_a_stair_tower_and_solar_roof(theme):
+    building, _, scene = build({'exterior_theme': theme})
+    tower = [a for a in building['exterior']['assemblies'] if a['geometry'].get('kind') == 'stair_tower']
+    solar = [n for n in scene['nodes'] if n['material'] == 'solar']
+    if theme == 'current':
+        # The preserved facade stays exactly as it was.
+        assert not tower and not solar
+        return
+    assert len(tower) == 1 and len(solar) >= 4
+    stair = next(s for s in building['spaces'] if s['floor'] == building['storeys'] - 1 and s['kind'] == 'stair')
+    assert Polygon(stair['polygon']).equals(box(*tower[0]['geometry']['bounds_mm']))
+    # Solar modules sit on the roof, inside the footprint.
+    fp = Polygon(scene['footprint'])
+    top = scene['storeys'] * scene['floor_height']
+    assert all(fp.contains(Point(n['position'][:2])) and n['position'][2] > top for n in solar)
+
+
+@pytest.mark.parametrize('case', list(CASES))
+def test_side_passages_are_paved_and_the_boundary_is_clad_in_timber(case):
+    building, _, scene = build(CASES[case])
+    features = {f['id']: f for f in building['exterior']['landscape']['features']}
+    v = building['brief']
+    for side, gap in (('left', v['left_mm']), ('right', v['right_mm'])):
+        if gap < 700:
+            assert f'{side}-fence-cladding' not in features
+            continue
+        fence = features[f'{side}-fence-cladding']
+        boards = [n for n in scene['nodes'] if n.get('owner') == fence['id'] and n['material'] == 'timber']
+        assert len(boards) >= 8 and all(n['scale'][1] > 5 for n in boards), 'horizontal boards the length of the garden'
+        if gap - 150 - 60 >= 820:
+            paving = features[f'{side}-passage-paving']
+            assert paving['kind'] == 'path' and paving['material_role'] == 'site.flagstone'
+            assert features[f'{side}-passage-drip']['kind'] == 'pebble_bed'
+    assert scene['materials']['flagstone']['params'][3] > 0, 'large slabs laid in two tones'
+
+
+@pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)
 def test_windows_use_the_refined_system(theme):
     building, _, scene = build({'exterior_theme': theme})
     kinds = {s['id']: s['kind'] for s in building['spaces']}

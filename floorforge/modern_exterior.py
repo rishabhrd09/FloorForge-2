@@ -112,6 +112,22 @@ def modern_opening_proposals(building: dict[str, Any], classify) -> list[dict[st
     return out
 
 
+def stair_tower_assembly(building: dict[str, Any], theme_id: str, rect):
+    """The stair carried on to the roof in a stone-clad tower (the headroom over the roof access): the usual
+    vertical accent of a real two-storey home. On the modern theme the roof beside it becomes an open terrace."""
+    if building["storeys"] < 2:
+        return None
+    top_floor = building["storeys"] - 1
+    stair = next((s for s in building["spaces"] if s["floor"] == top_floor and s["kind"] == "stair"), None)
+    if not stair:
+        return None
+    sx0, sy0, sx1, sy1 = Polygon(stair["polygon"]).bounds
+    return rect("exterior-stair-tower-01", "stair_tower", top_floor, (sx0, sy0, sx1, sy1), {
+        "kind": "stair_tower", "height_mm": 2700, "material": "cladding", "roof_access": True,
+        "roof_terrace": theme_id == THEME,
+    }, theme_id, [])
+
+
 def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, Any]) -> dict[str, Any]:
     rect = helpers["rectangle_assembly"]
     v = building["brief"]
@@ -193,17 +209,9 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
             "kind": "cladding", "height_mm": building["storeys"] * H - 120, "material": "cladding",
             "slats": True,
         }, THEME, []))
-    # The stair carries on to the roof in a stone-clad tower (the headroom over the roof access), the usual
-    # vertical accent of a two-storey home; the roof beside it becomes an open terrace.
-    if building["storeys"] > 1:
-        top_floor = building["storeys"] - 1
-        stair = next((s for s in building["spaces"] if s["floor"] == top_floor and s["kind"] == "stair"), None)
-        if stair:
-            sx0, sy0, sx1, sy1 = Polygon(stair["polygon"]).bounds
-            assemblies.append(rect("exterior-stair-tower-01", "stair_tower", top_floor, (sx0, sy0, sx1, sy1), {
-                "kind": "stair_tower", "height_mm": 2700, "material": "cladding", "roof_access": True,
-                "roof_terrace": True,
-            }, THEME, []))
+    tower = stair_tower_assembly(building, THEME, rect)
+    if tower:
+        assemblies.append(tower)
     carport = None
     if v["parking"] and F >= 5500 and porch:
         cw, cd = 3200, min(5600, F - 450)
@@ -414,6 +422,10 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             k += 1
 
     # ---- Side passages -------------------------------------------------------
+    # A side garden as renovated in the reference: large two-tone slabs laid across the passage with a pebble
+    # drip strip against the house, the boundary wall clad in horizontal timber boards, tall pots of planting
+    # where the passage is wide enough to walk past them, and wall lights on the house. Narrow passages keep
+    # stepping stones in pebbles.
     for side, gap in (("left", Lm), ("right", Rm)):
         if gap < 700:
             continue
@@ -423,9 +435,35 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             x0, x1 = W + 60, xmax - wt
         y0 = 0 if F >= 700 else ymin + wt
         y1 = D + min(RE, 600)
+        wid = x1 - x0
+        features.append({"id": f"{side}-fence-cladding", "kind": "fence_cladding", "side": side,
+                         "x_mm": round(xmin + wt if side == "left" else xmax - wt), "y0_mm": round(max(y0, 0)),
+                         "y1_mm": round(ymax - wt), "height_mm": 1780, "material_role": "site.timber_boards"})
+        if wid >= 820:
+            drip = 170
+            slab = box(x0 + 30, y0, x1 - drip, y1) if side == "left" else box(x0 + drip, y0, x1 - 30, y1)
+            strip = box(x1 - drip, y0, x1, y1) if side == "left" else box(x0, y0, x0 + drip, y1)
+            add_poly(f"{side}-passage-paving", "path", slab, material_role="site.flagstone")
+            add_poly(f"{side}-passage-drip", "pebble_bed", strip, edging=True, material_role="site.pebble")
+            if wid >= 1200:
+                pot_x = x0 + 280 if side == "left" else x1 - 280
+                yy, i = y0 + 1500, 0
+                while yy < y1 - 700 and i < 8:
+                    species = ("grass_ornamental", "strelitzia", "shrub_round")[i % 3]
+                    features.append({"id": f"{side}-passage-pot-{i}", "kind": "planter", "position_mm": [round(pot_x), round(yy)],
+                                     "shape": "round", "size_mm": [440, 440, 580], "species": species,
+                                     "scale": {"grass_ornamental": .7, "strelitzia": .45, "shrub_round": .5}[species]})
+                    yy += 2600
+                    i += 1
+            yy = y0 + 1800
+            i = 0
+            while yy < y1 - 1000:
+                features.append({"id": f"{side}-wall-light-{i}", "kind": "wall_light", "position_mm": [round(-10 if side == "left" else W + 10), round(yy)], "height_mm": 1900, "facing": -1 if side == "left" else 1})
+                yy += 3200
+                i += 1
+            continue
         passage = box(x0, y0, x1, y1)
         add_poly(f"{side}-passage", "pebble_bed", passage, edging=True, material_role="site.pebble")
-        wid = x1 - x0
         stone_w = min(620, wid - 260)
         if stone_w >= 380:
             cx = (x0 + x1) / 2

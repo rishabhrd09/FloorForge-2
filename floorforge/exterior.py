@@ -897,6 +897,10 @@ def generate_exterior_candidates(
             preferences.exterior_theme,
             [],
         ))
+    from .modern_exterior import stair_tower_assembly
+    tower = stair_tower_assembly(building, preferences.exterior_theme, _rectangle_assembly)
+    if tower:
+        assemblies.append(tower)
     opening_changes = _opening_proposals(building, theme, preferences.change_policy)
     landscape = _landscape(building, preferences.exterior_theme, porch)
     return [{

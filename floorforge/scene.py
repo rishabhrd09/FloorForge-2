@@ -326,10 +326,31 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- roof
     poly_mesh(roof_fp, top - .15, top, 'roof', storeys - 1, 'roof', 'roof-slab')
+    fr = storeys - 1
+    tower = next((a for a in assemblies if a['geometry'].get('kind') == 'stair_tower'), None)
+    tower_fp = box(*[q / 1000 for q in tower['geometry']['bounds_mm']]) if tower else Polygon()
+
+    def solar(field, rear, z):
+        """Photovoltaic modules on a light rack over the rear of the roof, tilted toward the midday sun."""
+        south = enu_to_local(0, -1, v.get('road_bearing_deg', 180))
+        tilt = math.radians(12) * (1 if south[1] < 0 else -1)
+        fx0, fy0, fx1, fy1 = field.bounds
+        rack = field.buffer(-.35).intersection(box(fx0, fy0 + (fy1 - fy0) * rear, fx1, fy1))
+        placed = 0
+        for yy in np.arange(fy1 - 1.3, fy0, -2.05):
+            for xx in np.arange(fx0 + .9, fx1 - .5, 1.06):
+                if placed >= 16 or not rack.contains(box(xx - .5, yy - .83, xx + .5, yy + .83)):
+                    continue
+                node(cube, 'solar', (xx, yy, z + .39), (1.0, 1.66, .035), (tilt, 0, 0), fr, 'roof')
+                node(cube, 'steel', (xx, yy, z + .37), (1.02, 1.68, .02), (tilt, 0, 0), fr, 'roof')
+                for dy, hh in ((-.7, .21), (.7, .57)):
+                    y_leg = yy + dy
+                    for lx in (xx - .47, xx + .43):
+                        rect((lx, y_leg - .02, z, lx + .04, y_leg + .02, z + (hh if tilt > 0 else .78 - hh)), 'steel', fr, 'roof')
+                placed += 1
+        return rack if placed else Polygon()
+
     if modern:
-        fr = storeys - 1
-        tower = next((a for a in assemblies if a['geometry'].get('kind') == 'stair_tower'), None)
-        tower_fp = box(*[q / 1000 for q in tower['geometry']['bounds_mm']]) if tower else Polygon()
         # A deep eave along the street front (shade, and a soffit of timber slats with downlights); 0.45 m on
         # the other sides. Terraces open in the roof and the porch canopy keep their own edges.
         fb = fp.bounds
@@ -371,26 +392,10 @@ def make_scene(building, report):
                 poly_mesh(piece.buffer(.022, cap_style=2, join_style=2), top + 1.02, top + 1.055, 'frame', fr, 'railing')
         else:
             poly_mesh(field, top, top + .025, 'gravel', fr, 'roof', 'roof-gravel')
-        # Photovoltaic array on a light rack over the rear of the roof, tilted toward the midday sun.
-        south = enu_to_local(0, -1, v.get('road_bearing_deg', 180))
-        tilt = math.radians(12) * (1 if south[1] < 0 else -1)
-        fx0, fy0, fx1, fy1 = field.bounds
-        rack = field.buffer(-.35).intersection(box(fx0, fy0 + (fy1 - fy0) * (.5 if tower else .35), fx1, fy1))
-        placed = 0
-        for yy in np.arange(fy1 - 1.3, fy0, -2.05):
-            for xx in np.arange(fx0 + .9, fx1 - .5, 1.06):
-                if placed >= 16 or not rack.contains(box(xx - .5, yy - .83, xx + .5, yy + .83)):
-                    continue
-                node(cube, 'solar', (xx, yy, top + .42), (1.0, 1.66, .035), (tilt, 0, 0), fr, 'roof')
-                node(cube, 'steel', (xx, yy, top + .4), (1.02, 1.68, .02), (tilt, 0, 0), fr, 'roof')
-                for dy, hh in ((-.7, .24), (.7, .6)):
-                    y_leg = yy + dy
-                    rect((xx - .47, y_leg - .02, top + .03, xx - .43, y_leg + .02, top + (hh if tilt > 0 else .84 - hh)), 'steel', fr, 'roof')
-                    rect((xx + .43, y_leg - .02, top + .03, xx + .47, y_leg + .02, top + (hh if tilt > 0 else .84 - hh)), 'steel', fr, 'roof')
-                placed += 1
+        rack = solar(field, .5 if tower else .35, top + .03)
         if tower:
             # Loungers and planted pots on the open part of the terrace, clear of the array and the tower door.
-            used = rack.buffer(.4) if placed else Polygon()
+            used = rack.buffer(.4)
             free = field.buffer(-.45, join_style=2).difference(used).difference(tower_fp.buffer(1.3, join_style=2))
             spots = sorted(_parts(free), key=lambda q: -q.area)
             if spots:
@@ -417,9 +422,11 @@ def make_scene(building, report):
             band = fp.buffer(.1, join_style=2).difference(fp)
             poly_mesh(band, f * H - .25, f * H - .02, 'roof', f - 1, 'band', f'F{f}-slab-band')
     else:
-        parapet = roof_fp.difference(roof_fp.buffer(-.15))
+        parapet = roof_fp.difference(roof_fp.buffer(-.15)).difference(tower_fp)
         poly_mesh(parapet, top, top + .6, 'wall', storeys - 1, 'roof', 'parapet')
-        poly_mesh(fp.buffer(.025).difference(fp.buffer(-.175)), top + .60, top + .65, 'stone', storeys - 1, 'roof', 'coping')
+        poly_mesh(fp.buffer(.025).difference(fp.buffer(-.175)).difference(tower_fp.buffer(.03, join_style=2)), top + .60, top + .65, 'stone', storeys - 1, 'roof', 'coping')
+        if theme_id != 'current':
+            solar(roof_fp.buffer(-.15, join_style=2).difference(tower_fp), .35, top)
 
     # ---------------------------------------------------------------- walls (true voids, split at sill/lintel)
     # Wall polygons overlap at corners and T-junctions. Each storey's walls are tiled instead: external walls
@@ -1324,6 +1331,21 @@ def make_scene(building, report):
             zb = porch_asm['geometry'].get('platform_z_mm', -150) / 1000 if (feature.get('on') == 'landing' and porch_asm) else g
             node(asset(frustum(pw * .5, pw * .68, ph)), 'planter', (x, y, zb), floor=-1, role='planter', owner=feature['id'])
             k.plant(x, y, zb + ph - .03, feature.get('species', 'shrub_round'), scale=feature.get('scale', .5))
+        elif fk == 'fence_cladding':
+            # Horizontal timber boards with shadow gaps on the inside face of the side boundary wall, capped in steel.
+            fx = feature['x_mm'] / 1000; ya, yb = feature['y0_mm'] / 1000, feature['y1_mm'] / 1000
+            into = 1 if feature['side'] == 'left' else -1
+            top_z = g + feature.get('height_mm', 1780) / 1000
+            # A dark batten backing so the gaps between boards read as shadow lines, not white render.
+            xa, xb = sorted((fx, fx + into * .012))
+            rect((xa, ya, g + .2, xb, yb, top_z), 'steel', -1, 'fence', owner=feature['id'])
+            z = g + .22
+            while z + .13 <= top_z + .001:
+                xa, xb = sorted((fx + into * .012, fx + into * .034))
+                rect((xa, ya, z, xb, yb, z + .13), 'timber', -1, 'fence', owner=feature['id'])
+                z += .15
+            xa, xb = sorted((fx, fx + into * .05))
+            rect((xa, ya, top_z, xb, yb, top_z + .03), 'frame', -1, 'fence', owner=feature['id'])
         elif fk == 'wall_light':
             x, y = [q / 1000 for q in feature['position_mm']]
             z = feature.get('height_mm', 1900) / 1000
