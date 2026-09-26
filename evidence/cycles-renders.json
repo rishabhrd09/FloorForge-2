@@ -11,58 +11,8 @@
       "eye": null,
       "grade": "day",
       "samples": 128,
-      "seconds": 123,
-      "exposure_ev": -0.55,
-      "completed": true
-    },
-    {
-      "file": "evidence/cycles-living-day.jpg",
-      "view": "eye",
-      "eye": "3.2,3.9,0,-95",
-      "grade": "day",
-      "samples": 160,
-      "seconds": 549,
-      "exposure_ev": 4.6,
-      "completed": true
-    },
-    {
-      "file": "evidence/cycles-kitchen-day.jpg",
-      "view": "eye",
-      "eye": "4.0,7.0,0,128",
-      "grade": "day",
-      "samples": 160,
-      "seconds": 559,
-      "exposure_ev": 2.97,
-      "completed": true
-    },
-    {
-      "file": "evidence/cycles-bedroom-day.jpg",
-      "view": "eye",
-      "eye": "6.4,9.5,1,-35",
-      "grade": "day",
-      "samples": 160,
-      "seconds": 425,
-      "exposure_ev": 2.65,
-      "completed": true
-    },
-    {
-      "file": "evidence/cycles-hero-dusk.jpg",
-      "view": "hero",
-      "eye": null,
-      "grade": "dusk",
-      "samples": 128,
-      "seconds": 237,
-      "exposure_ev": 0.65,
-      "completed": true
-    },
-    {
-      "file": "evidence/cycles-living-dusk.jpg",
-      "view": "eye",
-      "eye": "3.2,3.9,0,-95",
-      "grade": "dusk",
-      "samples": 160,
-      "seconds": 1103,
-      "exposure_ev": -2.28,
+      "seconds": 138,
+      "exposure_ev": -0.51,
       "completed": true
     },
     {
@@ -71,8 +21,58 @@
       "eye": null,
       "grade": "golden",
       "samples": 128,
-      "seconds": 266,
-      "exposure_ev": -0.29,
+      "seconds": 271,
+      "exposure_ev": -0.33,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-hero-dusk.jpg",
+      "view": "hero",
+      "eye": null,
+      "grade": "dusk",
+      "samples": 128,
+      "seconds": 243,
+      "exposure_ev": 0.65,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-living-day.jpg",
+      "view": "eye",
+      "eye": "3.2,3.9,0,-95",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 565,
+      "exposure_ev": 4.55,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-kitchen-day.jpg",
+      "view": "eye",
+      "eye": "4.0,7.0,0,128",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 570,
+      "exposure_ev": 3.0,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-bedroom-day.jpg",
+      "view": "eye",
+      "eye": "6.4,9.5,1,-35",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 430,
+      "exposure_ev": 3.4,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-living-dusk.jpg",
+      "view": "eye",
+      "eye": "3.2,3.9,0,-95",
+      "grade": "dusk",
+      "samples": 160,
+      "seconds": 1115,
+      "exposure_ev": -2.27,
       "completed": true
     }
   ]

@@ -3,9 +3,9 @@
  "date": "2026-09-26",
  "all_original_requirements_complete": false,
  "pytest": {
-  "passed": 154,
+  "passed": 164,
   "failed": 0,
-  "seconds": 87.53,
+  "seconds": 112.11,
   "source": "evidence/pytest.txt"
  },
  "reproducibility": {
@@ -13,13 +13,13 @@
   "equal_build_ids": true,
   "files_compared": 23,
   "changed_artifacts": [],
-  "seconds": 7.464,
+  "seconds": 6.965,
   "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
  },
  "browser": {
   "studio": {
-   "checks_passed": 14,
-   "checks_total": 14,
+   "checks_passed": 17,
+   "checks_total": 17,
    "page_errors": 0,
    "transport": "Direct navigation to the real loopback studio server (scripts/capture_studio.mjs)",
    "renderer": {
@@ -38,7 +38,7 @@
    "page_errors": 0,
    "presentation_glb": {
     "file": "FloorForge-presentation.glb",
-    "bytes": 74316328,
+    "bytes": 76485344,
     "magic": "glTF"
    },
    "live_walk": {
@@ -49,8 +49,8 @@
     "rooms": [
      "Street|Ground floor",
      "Garden|Ground floor",
-     "Living|Ground floor",
-     "Dining|Ground floor"
+     "Hall|Ground floor",
+     "Living|Ground floor"
     ]
    }
   },
@@ -65,13 +65,13 @@
   ],
   "all_completed": true,
   "seconds": [
-   123,
-   549,
-   559,
-   425,
-   237,
-   1103,
-   266
+   138,
+   271,
+   243,
+   565,
+   570,
+   430,
+   1115
   ],
   "source": "evidence/cycles-renders.json",
   "scope": "Offline renders of preliminary geometry; not photographs; no camera or luminance calibration"

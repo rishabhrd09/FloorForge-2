@@ -4,7 +4,7 @@
 
 ## Executed here
 
-**Tests.** 154 tests passed, 0 failed (87.5 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 35 realism test cases in `tests/test_realism.py` cover:
+**Tests.** 164 tests passed, 0 failed (112.1 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 45 realism test cases in `tests/test_realism.py` cover:
 - the Modern Tropical default and scene 0.4;
 - full-height living glazing within wall height;
 - landscape, stepping stones, planting and lawns inside the plot and off the house, for every fixture plot;
@@ -14,6 +14,8 @@
 - offline-preview script integrity, and the bundled viewer's presence and licence comments;
 - walls that tile each storey without overlapping solids;
 - the walk from the footpath through the open gate to the front door, for every exterior theme on the villa, the narrowest plot and a plot with parking: no obstacle in the way and no rise above the walker's practical 0.3 m;
+- the refined window system, and each terrace's level, balustrade and pergola, for every exterior theme;
+- the large view, zoom and large-still controls in the studio and the offline preview;
 - the offline render path: the export in the bundle, and the Blender scripts compiling.
 
 **Reproducibility.** Two clean default generations compared 23 published artifacts with no differences (`evidence/reproducibility.json`), on the same host and runtime.
@@ -35,13 +37,15 @@ All three are Modern Tropical.
 
 Per-shot mode, grade, room badge, probe state and metered exposure are in `evidence/walkthrough-capture.json`.
 
-**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
+**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the hall and living room. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 76 MB binary glTF (`evidence/browser-preview.json`).
 
-**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 14 checks with no page errors (`evidence/studio-browser.json`):
+**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 17 checks with no page errors (`evidence/studio-browser.json`):
 - the bundled scene 0.4 and realistic renderer;
 - the 3D view filling the studio at 1440×1024 (554 px tall), and a 1366×768 layout whose panel stays clear of the status bar;
 - walk mode with the room badge;
-- nine drawing sheets;
+- the large view filling the window with its controls, and **+** gliding the camera from 26.6 m to 18.6 m (`evidence/studio-large-view.png`);
+- **Capture** saving a 3840-pixel still;
+- nine drawing sheets, and a sheet zooming to 225% for close reading;
 - the visible regulatory unknown;
 - the fused-source preflight;
 - a real 30×40 ft generation that arrives as Modern Tropical, with no Balcony view on the single-storey home and the neighbours standing aside for the side view;
@@ -51,12 +55,12 @@ Per-shot mode, grade, room badge, probe state and metered exposure are in `evide
 - a 390 px mobile layout without horizontal overflow;
 - the **Blender GLB** button downloading a textured binary glTF.
 
-**Path-traced stills.** `scripts/export_presentation.mjs` exported the demo's presentation GLB (72.5 MB, 174 meshes, 141 textures). `scripts/render_cycles.py` then path traced seven 1600×900 stills (`evidence/cycles-*.jpg`):
+**Path-traced stills.** `scripts/export_presentation.mjs` exported the demo's presentation GLB (74.6 MB, 179 meshes, 143 textures), with the refurbished windows and terrace. `scripts/render_cycles.py` then path traced seven 1600×900 stills (`evidence/cycles-*.jpg`):
 - hero in daylight, golden hour and dusk;
 - living/dining in daylight and at dusk;
 - kitchen and a first-floor bedroom in daylight.
 
-They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 2 to 4½ minutes, daylight interiors 7 to 9 minutes, and the lamp-lit dusk interior 18 minutes. The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. A saved `.blend` (`--blend`) was reopened with its geometry, 141 packed textures, sun, camera and Cycles settings intact.
+They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 2¼ to 4½ minutes, daylight interiors 7 to 9½ minutes, and the lamp-lit dusk interior 18½ minutes. The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. A saved `.blend` (`--blend`) was reopened with its 179 meshes, 143 packed textures, sun, camera and Cycles settings intact.
 
 **Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 13 START_HERE links resolve.
 

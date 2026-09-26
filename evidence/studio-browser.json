@@ -37,11 +37,37 @@
       }
     },
     {
+      "check": "large view fills the window with its controls and zooms in",
+      "passed": true,
+      "details": {
+        "width": 1440,
+        "height": 1024,
+        "window": [
+          1440,
+          1024
+        ],
+        "controlsInside": true,
+        "zoom_m": [
+          26.6,
+          18.62
+        ]
+      }
+    },
+    {
+      "check": "Capture saves a large 3840-pixel still",
+      "passed": true,
+      "details": {
+        "file": "FloorForge-view-large.png",
+        "width": 3840,
+        "height": 2731
+      }
+    },
+    {
       "check": "Blender GLB export downloads a textured binary glTF",
       "passed": true,
       "details": {
         "file": "FloorForge-presentation.glb",
-        "bytes": 74316328
+        "bytes": 76485344
       }
     },
     {
@@ -49,6 +75,14 @@
       "passed": true,
       "details": {
         "sheets": 9
+      }
+    },
+    {
+      "check": "drawing sheets zoom for close reading",
+      "passed": true,
+      "details": {
+        "label": "225%",
+        "scrollable": true
       }
     },
     {
@@ -109,6 +143,11 @@
       "status": 200
     },
     {
+      "path": "/demo/building.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
       "path": "/demo/report.json",
       "method": "GET",
       "status": 200
@@ -124,11 +163,6 @@
       "status": 200
     },
     {
-      "path": "/demo/building.json",
-      "method": "GET",
-      "status": 200
-    },
-    {
       "path": "/api/intent",
       "method": "POST",
       "status": 200
@@ -139,47 +173,47 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/0e33a90c3b792c11",
+      "path": "/api/jobs/ecc7d55b28cc7c65",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/0e33a90c3b792c11",
+      "path": "/api/jobs/ecc7d55b28cc7c65",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/0e33a90c3b792c11",
+      "path": "/api/jobs/ecc7d55b28cc7c65",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/0e33a90c3b792c11",
+      "path": "/api/jobs/ecc7d55b28cc7c65",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/0e33a90c3b792c11",
+      "path": "/api/jobs/ecc7d55b28cc7c65",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/bf10fc29e89dc2111addefad/building.json",
+      "path": "/builds/4551e9c7f5ae91203ea74acd/building.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/bf10fc29e89dc2111addefad/scene.json",
+      "path": "/builds/4551e9c7f5ae91203ea74acd/scene.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/bf10fc29e89dc2111addefad/report.json",
+      "path": "/builds/4551e9c7f5ae91203ea74acd/report.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/bf10fc29e89dc2111addefad/sheets.json",
+      "path": "/builds/4551e9c7f5ae91203ea74acd/sheets.json",
       "method": "GET",
       "status": 200
     }
