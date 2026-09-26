@@ -16,6 +16,8 @@ from typing import Any
 from shapely.geometry import Polygon, box, Point
 from shapely.ops import unary_union
 
+from .frontage import plan_frontage
+
 THEME = "modern_tropical"
 BOUNDARY_WALL_MM = 150
 DRIP_STRIP_MM = 450
@@ -58,6 +60,18 @@ def modern_opening_proposals(building: dict[str, Any], classify) -> list[dict[st
     wall_h = building["brief"]["floor_height_mm"] - 150
     out = []
     for o in building["openings"]:
+        if o["kind"] == "entry" and o["floor"] == 0:
+            # A tall pivot entrance door whose head lines up with the full-height glazing.
+            height = min(wall_h - 300, 2600)
+            if height > o["height"]:
+                out.append({
+                    "id": f"{o['id']}-refinement", "opening_id": o["id"], "role": "entrance_pivot",
+                    "before": {"offset": o["offset"], "width": o["width"], "sill": o["sill"], "height": o["height"]},
+                    "after": {"offset": o["offset"], "width": o["width"], "sill": 0, "height": height},
+                    "reason": "Modern Tropical entrance: a tall timber pivot door in a black steel portal, head aligned with the full-height glazing.",
+                    "review_status": "geometry_screen_pending",
+                })
+            continue
         if o["kind"] not in ("window", "glazed"):
             continue
         wall = hosts[o["wall_id"]]
@@ -118,10 +132,26 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
         px0 = max(0, min(W - width, ex - width / 2))
         two_storey = building["storeys"] > 1
         overhang = max(0, min(350, F - depth - 450))
+        # L-shaped entrance: the flight of steps covers the door and returns down the side facing the wider
+        # yard (where the drive goes); a sit-out with a bench and planter fills the other end of the landing,
+        # its corner marked by a stone-clad column under the canopy.
+        clear = next(o for o in building["openings"] if o["kind"] == "entry")["width"] / 2 + 300
+        room = {"left": ex - clear - px0, "right": px0 + width - ex - clear}
+        beyond = {"left": px0 - xmin - BOUNDARY_WALL_MM, "right": xmax - BOUNDARY_WALL_MM - px0 - width}
+        flight_side = "left" if beyond["left"] >= beyond["right"] else "right"
+        sit_side = "right" if flight_side == "left" else "left"
+        if room[sit_side] < 900 <= room[flight_side]:
+            sit_side, flight_side = flight_side, sit_side
+        sitout = None
+        if room[sit_side] >= 900:
+            sitout = [round(px0), round(ex - clear)] if sit_side == "left" else [round(ex + clear), round(px0 + width)]
+        return_len = min(depth - 300, 1200) if beyond[flight_side] >= 1500 and depth >= 900 else 0
         porch = rect("exterior-porch-01", "porch", 0, (px0, -depth, px0 + width, 0), {
             "kind": "porch", "style": "cantilever", "depth_mm": round(depth), "width_mm": round(width),
             "platform_z_mm": -150, "canopy_z_mm": H - 280 if two_storey else 2950, "canopy_thickness_mm": 260,
-            "canopy_overhang_mm": round(overhang), "support_count": 0, "canopy_is_balcony": two_storey,
+            "canopy_overhang_mm": round(overhang), "support_count": 1 if sitout else 0, "canopy_is_balcony": two_storey,
+            "flight_side": flight_side, "sitout_x_mm": sitout, "return_steps_mm": round(return_len),
+            "step_lighting": "led_under_nosing", "door": "timber_pivot_in_black_portal",
         }, THEME, [entry_id])
         assemblies.append(porch)
         if two_storey:
@@ -223,29 +253,34 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
                 continue
             features.append({"id": ident if i == 0 else f"{ident}-{i}", "kind": kind, "polygon": _poly(part), **extra})
             occupied.append(part)
-            if kind in ("court", "patio", "deck"):
+            if kind in ("court", "path", "patio", "deck"):
                 hardscape.append(part)
 
     def add_point(ident, kind, x, y, **extra):
         pt = Point(x, y)
         if not inner.buffer(-120).contains(pt) or house.buffer(150).contains(pt):
             return False
-        if kind in ("plant", "tree") and any(h.buffer(120).contains(pt) for h in hardscape):
+        if kind in ("plant", "tree", "lantern") and any(h.buffer(120).contains(pt) for h in hardscape):
             return False
         features.append({"id": ident, "kind": kind, "position_mm": [round(x), round(y)], **extra})
         return True
 
-    gate_w = 3400 if v["parking"] else 2600
-    gate_center = ex
+    steps_x = carport_x = None
+    if porch:
+        pg = porch["geometry"]
+        s0, s1 = pg["bounds_mm"][0::2]
+        ret = 700 if pg.get("return_steps_mm") else 0
+        steps_x = (s0 - (ret if pg.get("flight_side") == "left" else 0), s1 + (ret if pg.get("flight_side") == "right" else 0))
     if carport:
-        c0, _, c1, _ = carport["geometry"]["bounds_mm"]
-        gate_center = (min(c0, ex - 700) + max(c1, ex + 700)) / 2
-        gate_w = min(max(c1, ex + 700) - min(c0, ex - 700), 6000)
+        carport_x = tuple(carport["geometry"]["bounds_mm"][0::2])
+    frontage = plan_frontage(plot.bounds, ex, steps_x=steps_x, parking=v["parking"], front_mm=F, carport_x=carport_x, wall_mm=wt)
     boundary = {
-        "gate_center_mm": round(gate_center), "gate_width_mm": round(gate_w), "movement_clearance_mm": 500,
+        **frontage, "movement_clearance_mm": 500,
         "style": "rendered_wall_black_slats", "front_wall_height_mm": 1500, "side_wall_height_mm": 1850,
         "wall_thickness_mm": wt, "review_status": "geometry_screen_pending",
     }
+    ped = next(g for g in frontage["gates"] if g["kind"] == "pedestrian")
+    vehicle = next((g for g in frontage["gates"] if g["kind"] == "vehicle"), None)
     front_y0 = ymin + wt + 30
     landing_y = -porch["geometry"]["depth_mm"] if porch else 0
     steps_y = landing_y - 620 if porch else -900
@@ -253,20 +288,44 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         p0, _, p1, _ = porch["geometry"]["bounds_mm"]
         hardscape.append(box(p0, steps_y, p1, 0))
         occupied.append(box(p0, steps_y, p1, 0))
+        if porch["geometry"].get("return_steps_mm"):
+            rx = p0 - 700 if porch["geometry"]["flight_side"] == "left" else p1
+            ret = box(rx, landing_y - 1, rx + 700, landing_y + porch["geometry"]["return_steps_mm"])
+            hardscape.append(ret)
+            occupied.append(ret)
 
     # ---- Front yard -------------------------------------------------------
     if F >= 700:
-        half = max(900, min(1500, gate_w / 2))
-        cx0, cx1 = max(xmin + wt, ex - half), min(xmax - wt, ex + half)
-        court = box(cx0, front_y0, cx1, max(front_y0 + 450, steps_y))
+        # Entrance path of large slabs from the pedestrian gate to the steps: straight when the gate is on the
+        # steps' line, otherwise turning once across the court; an apron of the same slabs meets the steps.
+        g0, g1 = ped["x0_mm"] + 40, ped["x1_mm"] - 40
+        s0, s1 = (p0 + 250, p1 - 250) if porch else (ex - 700, ex + 700)
+        top = steps_y if porch else -DRIP_STRIP_MM - 40
+        if g0 >= s0 - 1 and g1 <= s1 + 1:
+            path = box(g0, front_y0, g1, top)
+        else:
+            half = (g1 - g0) / 2
+            turn = front_y0 + max(half, min(900, (top - front_y0) * .45))
+            to = min(max(ex, s0 + half), s1 - half)
+            path = unary_union([box(g0, front_y0, g1, turn + half), box(min(g0, to - half), turn - half, max(g1, to + half), turn + half),
+                                box(to - half, turn - half, to + half, top)])
         if porch:
-            p0, p_y0, p1, _ = porch["geometry"]["bounds_mm"]
-            court = court.union(box(p0 - 300, steps_y - 450, p1 + 300, steps_y + 1))
-        if carport:
-            c0, cy0, c1, cy1 = carport["geometry"]["bounds_mm"]
-            court = court.union(box(c0 - 150, front_y0, c1 + 150, cy1 + 150))
-        add_poly("site-arrival-court", "court", court, material_role="site.cobble")
-        court_shape = unary_union([f for f in occupied[1:]]) if len(occupied) > 1 else court
+            path = path.union(box(p0 - 300, steps_y - 450, p1 + 300, steps_y + 1))
+            if porch["geometry"].get("return_steps_mm"):
+                # The apron turns the corner to the foot of the returning steps.
+                rx = p0 - 1000 if porch["geometry"]["flight_side"] == "left" else p1 + 700
+                path = path.union(box(rx, steps_y - 450, rx + 300, landing_y + porch["geometry"]["return_steps_mm"]))
+        add_poly("site-entry-path", "path", path, material_role="site.flagstone")
+        # Driveway behind the vehicle gate: cobbles up to the facade's drip strip, or under the carport.
+        if vehicle:
+            d0, d1 = vehicle["x0_mm"] + 60, vehicle["x1_mm"] - 60
+            drive = box(d0, front_y0, d1, -DRIP_STRIP_MM - 40)
+            if carport:
+                c0, cy0, c1, cy1 = carport["geometry"]["bounds_mm"]
+                drive = box(d0, front_y0, d1, cy0 + 10).union(box(c0 - 150, cy0, c1 + 150, cy1 + 150))
+            add_poly("site-driveway", "court", drive.difference(path.buffer(60)), material_role="site.cobble")
+        cx0, cx1 = g0, g1
+        court_shape = unary_union([f for f in occupied[1:]]) if len(occupied) > 1 else path
         bed_d = min(950, max(500, F * .24))
         beds = box(xmin + wt, front_y0, xmax - wt, front_y0 + bed_d).difference(court_shape.buffer(120))
         for i, part in enumerate(_parts(beds)):
@@ -320,9 +379,17 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
                 features.append({"id": "front-stepping-stones", "kind": "stepping_stones", "stones": stones, "material_role": "site.stone_pad"})
         if porch:
             p0, _, p1, _ = porch["geometry"]["bounds_mm"]
+            pg = porch["geometry"]
+            ret_x = (p0 - 700 if pg.get("flight_side") == "left" else p1 + 700) if pg.get("return_steps_mm") else None
             for i, x in enumerate((p0 - 380, p1 + 380)):
+                if ret_x is not None and abs(x - ret_x) < 900:
+                    continue
                 add_point(f"entry-topiary-{i}", "plant", x, steps_y + 250, species="topiary_spiral", scale=.95)
+            # A faceted planter on the landing beside the door; the sit-out end has its own bench and planter.
             for i, x in enumerate((p0 + 420, p1 - 420)):
+                sit = pg.get("sitout_x_mm")
+                if sit and sit[0] - 1 <= x <= sit[1] + 1:
+                    continue
                 add_point(f"entry-planter-{i}", "planter", x, landing_y + 380, shape="faceted", size_mm=[520, 520, 620], species="shrub_round", scale=.52, on="landing")
         for i, x in enumerate((.35, .92)):
             add_point(f"front-strelitzia-{i}", "plant", W * x if x < .5 else W - 700, -DRIP_STRIP_MM - 520, species="strelitzia", scale=.9)

@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from .model import *
 from .scene import opening_polygon, transformation
+from .frontage import gate_openings
 from shapely.geometry import Polygon, LineString, Point
 from shapely import get_parts
 from shapely.ops import unary_union
@@ -95,8 +96,6 @@ def site_elements(b,scene):
     v=b['brief'];fp=Polygon(b['footprint']);plot=Polygon(b['plot']);xmin,ymin,xmax,ymax=plot.bounds;W,D=fp.bounds[2:]
     elems=[P(list(plot.exterior.coords),'#f0f3eb',INK,.35,'A-SITE'),P(b['footprint'],'#dadfd6',INK,.4)]
     for f in scene['furniture']:pass
-    for x,y,txt in [(W/2,-v['front_mm']/2,'FRONT COURT'),(-v['left_mm']/2,D/2,'OPEN'),(W+v['right_mm']/2,D/2,'OPEN'),(W/2,D+v['rear_mm']/2,'REAR YARD')]:
-        elems.append(T(x,y,txt,180))
     elems.extend([P([(xmin-1000,ymin-4500),(xmax+1000,ymin-4500),(xmax+1000,ymin-200),(xmin-1000,ymin-200)],'#e8e8e2',LIGHT,.2,'A-SITE'),T((xmin+xmax)/2,ymin-2600,'ROAD / WIDTH TO BE SURVEYED',230)])
     ex=scene['entry'][0]*1000
     elems.append(P([(ex-1000,ymin),(ex+1000,ymin),(ex+1000,0),(ex-1000,0)],'#f9f8ee',LIGHT,.15,'A-SITE'))
@@ -108,10 +107,24 @@ def site_elements(b,scene):
         elif feature['kind'] in ('tree','shrub'):
             x,y=feature['position_mm'];r=feature.get('mature_canopy_radius_mm',350 if feature['kind']=='shrub' else 900)
             elems.append(P(list(Point(x,y).buffer(r).exterior.coords),'#c8d4ba','#819076',.18,'A-LAND'))
+    for x,y,txt in [(W/2,-v['front_mm']/2,'FRONT COURT'),(-v['left_mm']/2,D/2,'OPEN'),(W+v['right_mm']/2,D/2,'OPEN'),(W/2,D+v['rear_mm']/2,'REAR YARD')]:
+        elems.append(T(x,y,txt,180))
     boundary=exterior.get('landscape',{}).get('boundary',{})
     if boundary:
-        gx=boundary.get('gate_center_mm',ex);gw=boundary.get('gate_width_mm',2200)
-        elems.append(L((gx-gw/2,ymin),(gx+gw/2,ymin),'#9e653f',.45,'A-GATE'))
+        # Each gate in the front wall: the vehicle gate's sliding leaf (closed) with its track, the pedestrian
+        # gate's leaf open on its swing arc, and the letterbox pier beside it.
+        for x0,x1,gate in gate_openings(boundary):
+            if gate.get('operation')=='sliding':
+                elems.append(L((x0,ymin+170),(x1,ymin+170),'#9e653f',.45,'A-GATE'))
+                run=min(x1-x0,gate.get('park_run_mm',x1-x0));t0,t1=((x0-run,x0) if gate.get('park')=='left' else (x1,x1+run))
+                elems.extend([L((t0,ymin+230),(t1,ymin+230),'#9e653f',.18,'A-GATE',True),T((x0+x1)/2,ymin+700,'SLIDING GATE',140,'A-GATE')])
+            else:
+                hx=x1 if gate.get('hinge')=='right' else x0;r=x1-x0;sgn=-1 if gate.get('hinge')=='right' else 1
+                elems.append(L((hx,ymin+150),(hx,ymin+150+r),'#9e653f',.35,'A-GATE'))
+                arc=[(hx+sgn*r*math.cos(t),ymin+150+r*math.sin(t)) for t in np.linspace(0,math.pi/2,10)]
+                elems.append(P(arc,'none','#9e653f',.15,'A-GATE',closed=False))
+        pier=boundary.get('letterbox_pier')
+        if pier:elems.append(P([(pier['x0_mm'],ymin-60),(pier['x1_mm'],ymin-60),(pier['x1_mm'],ymin+210),(pier['x0_mm'],ymin+210)],'#8f8a80',INK,.2,'A-SITE'))
     for a,c,ofs in [((xmin,ymin),(xmax,ymin),ymax+750)]:dim(elems,a,c,ofs)
     dim(elems,(xmax,ymin),(xmax,ymax),xmax+800,'y')
     dim(elems,(W,0),(W,D),W+350,'y')

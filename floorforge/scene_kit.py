@@ -138,6 +138,8 @@ def material_library(style: dict, interior: dict, modern: bool) -> dict:
         'asphalt': {'color': '#4a4d4c', 'alt': '#8b8a85', 'roughness': .97, 'texture': 'asphalt', 'kind': 'asphalt'},
         'paver': {'color': style.get('site_paving', '#aca998'), 'alt': '#9c998e', 'roughness': .75, 'texture': 'paver', 'kind': 'paver'},
         'cobble': {'color': style.get('site_paving', '#8e9194'), 'alt': '#6b7176', 'roughness': .6, 'texture': 'paver', 'kind': 'cobble'},
+        # Large-format slabs (1.2 x 0.6 m) in two tones, as laid on modern entrance paths and side passages.
+        'flagstone': {'color': '#c9c5bb', 'alt': '#6f7072', 'roughness': .68, 'texture': 'paver', 'kind': 'paver', 'params': [4, 2, .006, .28], 'tile_m': 2.4},
         'pebble': {'color': '#ebe8e1', 'alt': '#a19d94', 'roughness': .5, 'texture': 'stone', 'kind': 'pebbles'},
         'gravel': {'color': '#a09e98', 'alt': '#6e6c67', 'roughness': .85, 'texture': 'stone', 'kind': 'gravel'},
         'steppingstone': {'color': '#62625f', 'roughness': .8, 'texture': 'concrete', 'kind': 'concrete', 'seed': 9, 'tile_m': .9},

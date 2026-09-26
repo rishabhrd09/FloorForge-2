@@ -1,12 +1,13 @@
 """Realistic walkthrough contract: modern exterior, procedural planting, lawns, rooms and walk metadata."""
 import json
+import math
 import shutil
 import subprocess
 from pathlib import Path
 
 import numpy as np
 import pytest
-from shapely.geometry import Polygon, Point, box
+from shapely.geometry import LineString, Polygon, Point, box
 
 from floorforge.exterior import EXTERIOR_THEME_IDS, apply_exterior_preferences
 from floorforge.intent import fuse
@@ -156,6 +157,84 @@ def test_walk_arrival_leads_through_an_open_gateway(theme, case):
             assert not blocking, f'a {blocking[0]} edge too high to step onto at y={y:.2f}'
         level = max(t for t in _tops(solids, g, x, y) if t <= level + .3)
     assert level > -.02, 'the walk does not reach the ground floor through the front door'
+
+
+@pytest.mark.parametrize('theme', [t for t in EXTERIOR_THEME_IDS if t != 'current'])
+@pytest.mark.parametrize('case', ['villa', 'compact', 'small', 'parking'])
+def test_frontage_has_separate_pedestrian_and_vehicle_gates(theme, case):
+    # A real compound wall, not a centred gate with equal walls either side: a pedestrian gate on the path to
+    # the door, a separate sliding vehicle gate over the parking pad (or the carport), a letterbox pier.
+    brief = {'parking': True, 'front_mm': 6000, 'depth_mm': 21000} if case == 'parking' else CASES[case]
+    building, _, scene = build({**brief, 'exterior_theme': theme})
+    boundary = building['exterior']['landscape']['boundary']
+    xmin, ymin, xmax, _ = Polygon(building['plot']).bounds
+    gates = {g['kind']: g for g in boundary['gates']}
+    ped, vehicle = gates['pedestrian'], gates.get('vehicle')
+    assert ped['operation'] == 'swing' and 900 <= ped['x1_mm'] - ped['x0_mm'] <= 1300
+    assert boundary['gate_center_mm'] == round((ped['x0_mm'] + ped['x1_mm']) / 2)
+    pier = boundary['letterbox_pier']
+    assert pier['x1_mm'] == ped['x0_mm'] or pier['x0_mm'] == ped['x1_mm']
+    ex = scene['entry'][0] * 1000
+    assemblies = {a['geometry'].get('kind'): a for a in building['exterior']['assemblies']}
+    carport = next((a for a in building['exterior']['assemblies'] if a['geometry'].get('kind') == 'carport'), None)
+    if not carport:
+        assert ped['x0_mm'] <= ex <= ped['x1_mm'], 'the pedestrian gate lines up with the front door'
+    # A vehicle gate wherever 2.4 m of frontage is clear of the entrance porch (a deep verandah across a small
+    # plot leaves no pad for one).
+    free = LineString([(xmin + 450, 0), (xmax - 450, 0)])
+    for a, b2 in [(pier['x0_mm'], pier['x1_mm']), (ped['x0_mm'], ped['x1_mm'])] + \
+            ([tuple(assemblies['porch']['geometry']['bounds_mm'][0::2])] if 'porch' in assemblies else []):
+        free = free.difference(box(a - 150, -1, b2 + 150, 1))
+    room = max((g.length for g in getattr(free, 'geoms', [free])), default=0)
+    if room < 2400 and not carport:
+        assert vehicle is None
+        return
+    assert vehicle, 'a vehicle gate beside the pedestrian gate'
+    assert vehicle['operation'] == 'sliding' and vehicle['x1_mm'] - vehicle['x0_mm'] >= 2400
+    spans = sorted([(ped['x0_mm'], ped['x1_mm']), (vehicle['x0_mm'], vehicle['x1_mm']), (pier['x0_mm'], pier['x1_mm'])])
+    assert all(a[1] <= b[0] for a, b in zip(spans, spans[1:])), 'gates and pier do not overlap'
+    assert xmin < spans[0][0] and spans[-1][1] < xmax
+    if carport:
+        c0, _, c1, _ = carport['geometry']['bounds_mm']
+        assert vehicle['x0_mm'] <= (c0 + c1) / 2 <= vehicle['x1_mm'], 'the vehicle gate serves the carport'
+    elif 'porch' in assemblies:
+        p0, _, p1, _ = assemblies['porch']['geometry']['bounds_mm']
+        assert vehicle['x1_mm'] <= p0 or vehicle['x0_mm'] >= p1, 'the drive keeps clear of the entrance steps'
+    names = {n['id'] for n in scene['nodes']}
+    assert {'exterior-letterbox-pier', 'house-number-plate', 'exterior-vehicle-gate', 'exterior-gate-sill'} <= names
+    # The pedestrian leaf stands open (its parts are turned off the wall line); the vehicle leaf is closed.
+    leaf = [n for n in scene['nodes'] if n.get('owner') == 'exterior-pedestrian-gate' and n['role'] == 'gate' and n['material'] == 'frame']
+    assert leaf and all(abs(math.sin(n['rotation'][2])) > .95 for n in leaf)
+
+
+def test_modern_entrance_is_an_l_shaped_porch_with_a_tall_pivot_door(modern):
+    building, _, scene = modern
+    porch = next(a for a in building['exterior']['assemblies'] if a['geometry'].get('kind') == 'porch')
+    geo = porch['geometry']
+    assert geo['flight_side'] in ('left', 'right') and geo['return_steps_mm'] >= 600 and geo['sitout_x_mm']
+    nodes = {n['id']: n for n in scene['nodes']}
+    aid = porch['id']
+    # Steps across the door end of the landing that return down its side (an L in plan), a sit-out with a
+    # stone-clad column, planter and bench at the other end.
+    for part in ('-step-0', '-step-1', '-return-0', '-return-1', '-column', '-sitout-planter', '-bench-plinth'):
+        assert aid + part in nodes, part
+    assert nodes[aid + '-column']['material'] == 'cladding'
+    front, ret = nodes[aid + '-step-0'], nodes[aid + '-return-0']
+    x0, _, x1, _ = [q / 1000 for q in geo['bounds_mm']]
+    rx = ret['position'][0]
+    assert (rx < x0) if geo['flight_side'] == 'left' else (rx > x1)
+    assert ret['scale'][1] > .5 and front['scale'][0] > 1.5
+    # Every tread carries an LED strip under its nosing.
+    strips = [n for n in scene['nodes'] if n.get('owner') == aid and n['material'] == 'lamp' and n['role'] == 'fixture']
+    assert len(strips) >= 4
+    # A tall pivot door in a black steel portal, its head in line with the full-height glazing.
+    entry = next(o for o in building['openings'] if o['kind'] == 'entry')
+    assert entry['height'] >= 2500
+    portal = [n for n in scene['nodes'] if n.get('owner') == entry['id'] and n['role'] == 'door-portal']
+    assert len(portal) == 3 and all(n['material'] == 'frame' for n in portal)
+    leaf = [n for n in scene['nodes'] if n.get('owner') == entry['id'] and n['role'] == 'door' and n['material'] == 'walnut']
+    heights = [np.ptp(np.array(scene['assets'][n['asset']]['vertices'])[:, 2]) * n['scale'][2] for n in leaf]
+    assert leaf and max(heights) >= 2.4
 
 
 @pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)

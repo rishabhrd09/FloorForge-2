@@ -16,6 +16,7 @@ from shapely.affinity import scale as pscale
 from .model import sha, STYLES
 from .exterior import apply_exterior_preferences, get_exterior_theme, get_interior_theme
 from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT
+from .frontage import gate_openings
 
 __all__ = ['make_scene', 'glb_bytes', 'transformation', 'extrude', 'rounded_box', 'opening_polygon']
 
@@ -125,51 +126,138 @@ def make_scene(building, report):
             rect((x, ymin - 3.4, g + .003, x + 1.7, ymin - 3.34, g + .01), 'linen', role='site')
 
     gate_half = 1.1 if not v['parking'] else 1.7
-    if modern:
+    if boundary and (modern or boundary.get('gates')):
+        # A real frontage (floorforge/frontage.py): a pedestrian gate on the path to the door, shown open, a
+        # separate sliding vehicle gate (closed) over the parking pad, and a stone-clad letterbox pier with the
+        # house number and a gate light beside the pedestrian gate; wall runs between piers elsewhere.
         wt = boundary.get('wall_thickness_mm', 150) / 1000
-        fh = boundary.get('front_wall_height_mm', 1500) / 1000
-        sh = boundary.get('side_wall_height_mm', 1850) / 1000
-        gate_c = boundary.get('gate_center_mm', ex * 1000) / 1000
-        gate_w = boundary.get('gate_width_mm', 2600) / 1000
+        if modern:
+            fh, sh, solid, cap, pier_mat, tall = (boundary.get('front_wall_height_mm', 1500) / 1000, boundary.get('side_wall_height_mm', 1850) / 1000,
+                                                   .95, 'frame', 'wall', 2.1)
+        else:
+            fh, sh, solid, cap, pier_mat, tall = .72 - g, .65 - g, .72 - g, 'stone', 'stone', 1.35 - g
         for xa, ya, xb, yb in [(xmin, ymin, xmin + wt, ymax), (xmax - wt, ymin, xmax, ymax), (xmin, ymax - wt, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, g + sh), 'wall', role='site')
-            rect((xa - .012, ya - .012, g + sh, xb + .012, yb + .012, g + sh + .035), 'frame', role='site')
-        gx0, gx1 = gate_c - gate_w / 2, gate_c + gate_w / 2
-        solid = .95
-        for xa, xb in [(xmin, gx0 - .4), (gx1 + .4, xmax)]:
-            if xb - xa < .15:
-                continue
+            rect((xa - .012, ya - .012, g + sh, xb + .012, yb + .012, g + sh + (.035 if modern else .04)), cap, role='site')
+        openings = [(x0 / 1000, x1 / 1000, gate) for x0, x1, gate in gate_openings(boundary)]
+        lb = boundary.get('letterbox_pier')
+        lbx = (lb['x0_mm'] / 1000, lb['x1_mm'] / 1000) if lb else None
+
+        def pier(px, half=.17, extra=.08):
+            if modern:
+                rect((px - half, ymin - .03, g, px + half, ymin + wt + .03, g + fh + extra), pier_mat, role='site')
+                rect((px - half - .01, ymin - .04, g + fh + extra, px + half + .01, ymin + wt + .04, g + fh + extra + .04), cap, role='site')
+            else:
+                rect((px - .11, ymin - .04, g, px + .11, ymin + wt + .09, 1.05), 'stone', role='site')
+
+        taken = []
+        for x0, x1, gate in openings:
+            if gate['kind'] == 'pedestrian':
+                left = lbx if lbx and lbx[1] <= x0 + .01 else (x0 - .3, x0)
+                right = lbx if lbx and lbx[0] >= x1 - .01 else (x1, x1 + .3)
+                taken.append((left[0], right[1]))
+            else:
+                taken.append((x0 - .36, x1 + .36))
+        x = xmin
+        runs = []
+        for a, b2 in sorted(taken):
+            if a - x > .05:
+                runs.append((x, a))
+            x = max(x, b2)
+        if xmax - x > .05:
+            runs.append((x, xmax))
+        for xa, xb in runs:
             rect((xa, ymin, g, xb, ymin + wt, g + solid), 'wall', role='site')
-            rect((xa, ymin - .006, g + solid, xb, ymin + wt + .006, g + solid + .03), 'frame', role='site')
-            z = g + solid + .075
-            while z + .07 <= g + fh + .001:
-                rect((xa + .02, ymin + .035, z, xb - .02, ymin + .095, z + .065), 'frame', role='site')
-                z += .1
-            n = max(1, round((xb - xa) / 3.2))
-            for i in range(n + 1):
-                px = min(max(xa + (xb - xa) * i / n, xa + .17), xb - .17)
-                rect((px - .17, ymin - .03, g, px + .17, ymin + wt + .03, g + fh + .08), 'wall', role='site')
-                rect((px - .18, ymin - .04, g + fh + .08, px + .18, ymin + wt + .04, g + fh + .12), 'frame', role='site')
-        for side, px in ((-1, gx0 - .2), (1, gx1 + .2)):
-            rect((px - .2, ymin - .04, g, px + .2, ymin + wt + .04, g + fh + .35), 'wall', role='site')
-            rect((px - .21, ymin - .05, g + fh + .35, px + .21, ymin + wt + .05, g + fh + .39), 'frame', role='site')
-            rect((px - .07, ymin - .075, g + fh - .05, px + .07, ymin - .04, g + fh + .08), 'frame', role='fixture')
-            rect((px - .05, ymin - .079, g + fh - .03, px + .05, ymin - .075, g + fh + .06), 'lamp', role='fixture')
-            k.light((px, ymin - .2, g + fh), 8, kind='pillar')
-        rect((gx1 + .06, ymin - .058, g + 1.1, gx1 + .34, ymin - .04, g + 1.28), 'brass', role='detail', name='house-number-plate')
-        # Sliding black slatted gate, parked open behind the wall on the longer side.
-        slide_left = (gx0 - .4 - xmin) >= gate_w
-        gx_a, gx_b = (gx0 - gate_w + .15, gx0 + .1) if slide_left else (gx1 - .1, gx1 + gate_w - .15)
-        gy = ymin + wt + .02
-        for zz in (g + .06, g + fh - .05):
-            rect((gx_a, gy, zz, gx_b, gy + .05, zz + .05), 'frame', role='gate')
-        for xx in (gx_a, gx_b - .05):
-            rect((xx, gy, g + .06, xx + .05, gy + .05, g + fh), 'frame', role='gate')
-        z = g + .16
-        while z < g + fh - .1:
-            rect((gx_a + .05, gy + .01, z, gx_b - .05, gy + .04, z + .07), 'frame', role='gate')
-            z += .105
-        rect((min(gx_a, gx0) - .1, ymin + .02, g - .02, max(gx_b, gx1) + .1, ymin + .06, g + .012), 'steel', role='gate')
+            rect((xa, ymin - .006, g + solid, xb, ymin + wt + .006, g + solid + .03), cap, role='site')
+            if modern:
+                z = g + solid + .075
+                while z + .07 <= g + fh + .001:
+                    rect((xa + .02, ymin + .035, z, xb - .02, ymin + .095, z + .065), 'frame', role='site')
+                    z += .1
+            # Piers at the plot corners and along the run, never more than ~2.9 m apart.
+            n = max(1, round((xb - xa) / 2.9))
+            posts = [xa + (xb - xa) * i / n for i in range(1, n)]
+            posts += [p for p, edge in ((xa + .17, xa <= xmin + .01), (xb - .17, xb >= xmax - .01)) if edge]
+            for px in posts:
+                pier(px)
+        for x0, x1, gate in openings:
+            if gate['kind'] == 'vehicle':
+                for px in (x0 - .18, x1 + .18):
+                    if modern:
+                        pier(px, .18, .2)
+                        rect((px - .07, ymin - .075, g + fh - .02, px + .07, ymin - .04, g + fh + .12), 'frame', role='fixture')
+                        rect((px - .05, ymin - .079, g + fh, px + .05, ymin - .075, g + fh + .1), 'lamp', role='fixture')
+                        k.light((px, ymin - .2, g + fh + .05), 7, kind='pillar')
+                    else:
+                        pier(px)
+                # Closed sliding leaf just inside the wall line on a flush track that runs on behind the wall.
+                gy, top_z = ymin + wt + .02, g + (fh - .03 if modern else .95 - g)
+                rect((x0 - .1, gy, g + .05, x1 + .1, gy + .05, g + .1), 'frame', role='gate', name='exterior-vehicle-gate', owner='exterior-vehicle-gate')
+                rect((x0 - .1, gy, top_z - .05, x1 + .1, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
+                for xx in (x0 - .1, (x0 + x1) / 2 - .025, x1 + .05):
+                    rect((xx, gy, g + .05, xx + .05, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
+                if modern:
+                    z = g + .16
+                    while z < top_z - .1:
+                        rect((x0 - .05, gy + .01, z, x1 + .05, gy + .04, z + .07), 'frame', role='gate', owner='exterior-vehicle-gate')
+                        z += .105
+                else:
+                    for xx in np.arange(x0 + .06, x1 - .03, .12):
+                        rect((xx, gy + .01, g + .1, xx + .025, gy + .04, top_z - .05), 'frame', role='gate', owner='exterior-vehicle-gate')
+                span = min(x1 - x0, gate.get('park_run_mm', (x1 - x0) * 1000) / 1000) + .1
+                t0, t1 = (x0 - span, x1 + .1) if gate.get('park') == 'left' else (x0 - .1, x1 + span)
+                rect((max(t0, xmin + wt), ymin + wt + .01, g - .02, min(t1, xmax - wt), ymin + wt + .07, g + .012), 'steel', role='gate', owner='exterior-vehicle-gate')
+            else:
+                hinge_right = gate.get('hinge') == 'right'
+                pier_left = bool(lbx and lbx[1] <= x0 + .01)
+                jamb = (x1, x1 + .3) if pier_left else (x0 - .3, x0)
+                top_j = g + tall if modern else 1.05
+                if modern:
+                    rect((jamb[0], ymin - .03, g, jamb[1], ymin + wt + .03, top_j), 'wall', role='site')
+                    rect((jamb[0] - .01, ymin - .04, top_j, jamb[1] + .01, ymin + wt + .04, top_j + .04), cap, role='site')
+                else:
+                    pier((jamb[0] + jamb[1]) / 2)
+                if lbx:
+                    l0, l1 = lbx
+                    top_l = g + tall
+                    rect((l0, ymin - .06, g, l1, ymin + wt + .06, top_l), 'cladding', role='site', name='exterior-letterbox-pier', owner='exterior-letterbox-pier')
+                    rect((l0 - .015, ymin - .075, top_l, l1 + .015, ymin + wt + .075, top_l + .04), cap, role='site', owner='exterior-letterbox-pier')
+                    fx = (l0 + l1) / 2
+                    rect((fx - .13, ymin - .072, g + 1.42, fx + .13, ymin - .06, g + 1.6), 'brass', role='detail', name='house-number-plate', owner='exterior-letterbox-pier')
+                    rect((fx - .16, ymin - .1, g + .95, fx + .16, ymin - .06, g + 1.2), 'steel', role='detail', name='exterior-letterbox', owner='exterior-letterbox-pier')
+                    rect((fx - .11, ymin - .103, g + 1.15, fx + .11, ymin - .1, g + 1.165), 'basalt', role='detail', owner='exterior-letterbox-pier')
+                    rect((fx - .045, ymin - .11, top_l - .34, fx + .045, ymin - .06, top_l - .2), 'frame', role='fixture', owner='exterior-letterbox-pier')
+                    rect((fx - .035, ymin - .114, top_l - .33, fx + .035, ymin - .11, top_l - .21), 'lamp', role='fixture', owner='exterior-letterbox-pier')
+                    k.light((fx, ymin - .35, top_l - .3), 6, kind='pillar')
+                    if modern:
+                        # A slim steel canopy over the pedestrian gate, carried by the stone pier and the jamb.
+                        c0, c1 = min(l0, jamb[0]) - .06, max(l1, jamb[1]) + .06
+                        rect((c0, ymin - .55, top_l + .04, c1, ymin + wt + .3, top_l + .12), 'frame', role='canopy', name='exterior-gate-canopy', owner='exterior-gate-canopy')
+                        gc = (x0 + x1) / 2
+                        rect((gc - .06, ymin - .06, top_l + .035, gc + .06, ymin + .06, top_l + .04), 'lamp', role='downlight', owner='exterior-gate-canopy')
+                        k.light((gc, ymin, top_l - .1), 9, kind='downlight')
+                # The leaf stands open into the court against its hinge jamb; a flush stone sill marks the gateway.
+                rect((x0, ymin - .02, g - .02, x1, ymin + wt + .02, g + (.105 if modern else .05)), 'step', role='gate', name='exterior-gate-sill', owner='exterior-pedestrian-gate')
+                L, hgt = x1 - x0 - .06, (fh - .05 if modern else .95 - g)
+                ang = math.radians(gate.get('open_deg', 85))
+                dx, dy = (-math.cos(ang), math.sin(ang)) if hinge_right else (math.cos(ang), math.sin(ang))
+                hx, hy = (x1 - .03 if hinge_right else x0 + .03), ymin + wt + .04
+                rot = math.atan2(dy, dx)
+                at = lambda t, z: (hx + dx * t, hy + dy * t, z)
+                zb = g + (.11 if modern else .06)
+                for z in (zb + .03, zb + hgt - .03):
+                    rb(at(L / 2, z), (L, .05, .05), 'frame', -1, 'gate', .006, rot=rot, owner='exterior-pedestrian-gate')
+                for t in (.025, L - .025):
+                    rb(at(t, zb + hgt / 2), (.05, .05, hgt), 'frame', -1, 'gate', .006, rot=rot, owner='exterior-pedestrian-gate')
+                if modern:
+                    z = zb + .12
+                    while z < zb + hgt - .1:
+                        rb(at(L / 2, z), (L - .08, .03, .07), 'frame', -1, 'gate', .004, rot=rot, owner='exterior-pedestrian-gate')
+                        z += .105
+                else:
+                    for t in np.arange(.13, L - .1, .12):
+                        rb(at(t, zb + hgt / 2), (.025, .025, hgt - .08), 'frame', -1, 'gate', .004, rot=rot, owner='exterior-pedestrian-gate')
+                rb(at(L - .09, zb + 1.0), (.03, .09, .16), 'brass', -1, 'fixture', .01, rot=rot, owner='exterior-pedestrian-gate')
     else:
         for xa, ya, xb, yb in [(xmin, ymin, xmin + .15, ymax), (xmax - .15, ymin, xmax, ymax), (xmin, ymax - .15, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, .65), 'wall', role='site'); rect((xa - .02, ya - .02, .65, xb + .02, yb + .02, .69), 'stone', role='site')
@@ -355,6 +443,20 @@ def make_scene(building, report):
             for xx in (ow * .505, ow - .04):
                 part(xx, 0, z0 + zh / 2, .035, .07, zh - .04)
             part(ow * .74, 0, z0 + .025, ow * .48, .07, .05)
+        elif o['kind'] == 'entry' and modern:
+            # A tall timber pivot door, shown open, turned about a pivot a sixth of the way across: grooved walnut
+            # with long black pulls on both faces, set in a black steel portal that stands proud of the render.
+            lw = ow - .1; pv = p + uv * (.05 + lw * .17); leafcenter = pv + nv * lw * (.5 - .17)
+            rb((leafcenter[0], leafcenter[1], base + zh / 2), (.056, lw, zh - .04), 'walnut', o['floor'], 'door', .006, ang, owner=o['id'])
+            for zz in np.arange(base + .32, base + zh - .25, .32):
+                rb((leafcenter[0], leafcenter[1], zz), (.06, lw - .08, .007), 'frame', o['floor'], 'door', .002, ang, owner=o['id'])
+            for side in (-1, 1):
+                q = pv + nv * (lw * .83 - .1) + uv * side * .075
+                beam((q[0], q[1], base + .55), (q[0], q[1], base + min(2.05, zh - .3)), .016, 'frame', o['floor'], 'door')
+            dp = .18; yy = -t_half - dp / 2 + .01
+            part(-.06, yy, z0 + (zh + .12) / 2, .12, dp, zh + .12, 'frame', 'door-portal')
+            part(ow + .06, yy, z0 + (zh + .12) / 2, .12, dp, zh + .12, 'frame', 'door-portal')
+            part(ow / 2, yy, z0 + zh + .06, ow + .24, dp, .12, 'frame', 'door-portal')
         else:
             # Leaves shown open 90 degrees; no invisible solid wall remains in the portal.
             hinge = p + uv * .055; leafcenter = hinge + nv * (ow - .1) / 2
@@ -754,8 +856,39 @@ def make_scene(building, report):
         if kind == 'porch' and geo.get('style') == 'cantilever':
             land = geo.get('platform_z_mm', -150) / 1000
             rect((x0, y0, g, x1, y1, land), 'step', 0, 'porch', aid + '-landing', aid)
+            # L-shaped entrance (modern_exterior.py): the flight covers the door end of the landing and returns down
+            # its side; the other end is a sit-out. Every tread has a nosing with an LED strip in its shadow.
+            sit = [q / 1000 for q in geo['sitout_x_mm']] if geo.get('sitout_x_mm') else None
+            ret = geo.get('return_steps_mm', 0) / 1000
+            right = geo.get('flight_side') == 'right'
+            fx0, fx1 = x0 - .3, x1 + .3
+            if sit:
+                fx0, fx1 = (sit[1], fx1) if sit[0] <= x0 + .01 else (fx0, sit[0])
+            rise = (land - g) / 2
+
+            def nosing(xa, ya, xb, yb, zt, axis):
+                # A tread nosing projecting 3 cm over an LED strip set into the riser just below it.
+                if axis == 'y':
+                    rect((xa, ya - .03, zt - .035, xb, ya, zt), 'step', 0, 'step', owner=aid)
+                    rect((xa + .04, ya - .016, zt - .062, xb - .04, ya + .004, zt - .036), 'lamp', 0, 'fixture', owner=aid)
+                else:
+                    s = 1 if right else -1
+                    edge = xb if right else xa
+                    rect((min(edge, edge + s * .03), ya, zt - .035, max(edge, edge + s * .03), yb, zt), 'step', 0, 'step', owner=aid)
+                    rect((min(edge - s * .004, edge + s * .016), ya + .04, zt - .062, max(edge - s * .004, edge + s * .016), yb - .04, zt - .036), 'lamp', 0, 'fixture', owner=aid)
+
             for i, (d0, d1) in enumerate(((.62, .31), (.31, 0))):
-                rect((x0 - .3 + i * .0, y0 - d0, g, x1 + .3 - i * .0, y0 - d1, g + (i + 1) * (land - g) / 2 - .0005), 'step', 0, 'step', aid + f'-step-{i}', aid)
+                zt = g + (i + 1) * rise - .0005
+                a, b2 = fx0, fx1
+                if ret:
+                    a, b2 = (a, x1 + d0) if right else (x0 - d0, b2)
+                rect((a, y0 - d0, g, b2, y0 - d1, zt), 'step', 0, 'step', aid + f'-step-{i}', aid)
+                nosing(a, y0 - d0, b2, y0 - d0, zt, 'y')
+                if ret:
+                    ra, rb2 = (x1 + d1, x1 + d0) if right else (x0 - d0, x0 - d1)
+                    rect((ra, y0 - d1, g, rb2, y0 + ret, zt), 'step', 0, 'step', aid + f'-return-{i}', aid)
+                    nosing(ra, y0 - d1, rb2, y0 + ret, zt, 'x')
+            k.light(((fx0 + fx1) / 2, y0 - .9, g + .25), 6, kind='step')
             cz = geo.get('canopy_z_mm', 2950) / 1000; th = geo.get('canopy_thickness_mm', 260) / 1000; ov = geo.get('canopy_overhang_mm', 300) / 1000
             if geo.get('canopy_is_balcony'):
                 ov = 0
@@ -770,6 +903,27 @@ def make_scene(building, report):
             for i, xx in enumerate(np.linspace(x0 + .5, x1 - .5, 3)):
                 cylinder((xx, (y0 - ov) * .5, soffit_z - .03), .045, .01, 'lamp', 0, 'downlight')
                 k.light((xx, (y0 - ov) * .5, soffit_z - .15), 14, kind='soffit')
+            if sit:
+                # Sit-out: a stone-clad column at its outer front corner carries the canopy (or balcony) edge; a
+                # raised planter of grasses runs along the front beside it and a timber bench on a stone plinth
+                # stands against the facade.
+                sx0, sx1 = sit
+                on_left = sx0 <= x0 + .01
+                cx = sx0 + .17 if on_left else sx1 - .17
+                rect((cx - .15, y0 + .02, land, cx + .15, y0 + .32, cz), 'cladding', 0, 'cladding', aid + '-column', aid)
+                pa, pb = (cx + .2, sx1 - .05) if on_left else (sx0 + .05, cx - .2)
+                if pb - pa > .5:
+                    rect((pa, y0 + .03, land, pb, y0 + .43, land + .42), 'planter', 0, 'planter', aid + '-sitout-planter', aid)
+                    rect((pa + .04, y0 + .07, land + .42, pb - .04, y0 + .39, land + .43), 'soil', 0, 'planter', owner=aid)
+                    for xx in np.arange(pa + .22, pb - .1, .42):
+                        k.plant(xx, y0 + .23, land + .43, 'grass_ornamental', scale=.55)
+                ba, bb = sx0 + .12, sx1 - .12
+                if bb - ba > .7:
+                    rect((ba + .08, -.5, land, bb - .08, -.12, land + .36), 'cladding', 0, 'outdoor-furniture', aid + '-bench-plinth', aid)
+                    for j, yy in enumerate(np.arange(-.54, -.1, .075)):
+                        rect((ba, yy, land + .36, bb, yy + .06, land + .41), 'timber', 0, 'outdoor-furniture', owner=aid)
+                    rb(((ba + bb) / 2, -.32, land + .46), (bb - ba - .12, .4, .09), 'fabric', 0, 'outdoor-furniture', .035, owner=aid)
+                    rb((bb - .28, -.14, land + .64), (.4, .12, .36), 'fabric-dark', 0, 'outdoor-furniture', .05, owner=aid)
             # Wall washers flanking the door.
             for side in (-1, 1):
                 xx = ex + side * (entry['width'] / 2000 + .45)
@@ -988,7 +1142,9 @@ def make_scene(building, report):
             if not poly.is_valid:
                 poly = poly.buffer(0)
         if fk == 'path':
-            poly_mesh(poly, g + .004, g + .025, 'paver', -1, 'landscape', feature['id'], feature['id'])
+            slabs = feature.get('material_role') == 'site.flagstone'
+            poly_mesh(poly, g - .02, g + .045, 'flagstone', -1, 'court', feature['id'], feature['id']) if slabs else \
+                poly_mesh(poly, g + .004, g + .025, 'paver', -1, 'landscape', feature['id'], feature['id'])
         elif fk == 'planting_bed':
             poly_mesh(poly, g + .004, g + .025, 'soil', -1, 'landscape', feature['id'], feature['id'])
             border = poly.buffer(.045).difference(poly)
@@ -1105,13 +1261,14 @@ def make_scene(building, report):
     # ---------------------------------------------------------------- walk + rooms metadata
     rooms = [{'id': s['id'], 'name': s['name'], 'kind': s['kind'], 'floor': s['floor'],
               'polygon': [[round(x / 1000, 4), round(y / 1000, 4)] for x, y in s['clear']]} for s in b['spaces']]
-    # The walk starts on the street outside the open gate, facing the house, so the visitor arrives the way a
-    # guest does (the modern gate is parked open and its track is flush; legacy leaves stand open). A wide
-    # drive gate is entered on the front door's line, clear of the carport posts.
+    # The walk starts on the street outside the open pedestrian gate, facing the house, so the visitor arrives the
+    # way a guest does (the vehicle gate beside it stays closed).
     arrive_x = ex
-    if modern and boundary:
+    if boundary and (modern or boundary.get('gates')):
+        # Through the pedestrian gate (the arrival gateway the boundary record names).
         gate_c, gate_w = boundary.get('gate_center_mm', ex * 1000) / 1000, boundary.get('gate_width_mm', 2600) / 1000
-        arrive_x = min(max(ex, gate_c - gate_w / 2 + .6), gate_c + gate_w / 2 - .6)
+        slack = max(0., gate_w / 2 - .45)
+        arrive_x = min(max(ex, gate_c - slack), gate_c + slack)
     walk = {'eye_height': 1.63, 'arrival': {'position': [round(arrive_x, 3), round(ymin - 1.3, 3), round(g + (.1 if modern else 0), 3)], 'yaw_deg': 0}, 'floors': []}
     for f in range(storeys):
         options = [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'family', 'dining', 'hall')]

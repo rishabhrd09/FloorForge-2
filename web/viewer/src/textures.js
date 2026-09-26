@@ -214,7 +214,8 @@ void surface(vec2 p, out vec3 c, out float h, out float r){
   r = mix(.95, .5 + .22 * surf + .1 * t, stoneMask);
 }`,
   paver: /* glsl */`
-// Large concrete/stone slabs in stretcher bond. uP.x rows, uP.y slabs per row, uP.z joint.
+// Large concrete/stone slabs in stretcher bond. uP.x rows, uP.y slabs per row, uP.z joint, uP.w share of slabs
+// laid in the second tone (0: a gentle blend between the two instead).
 void surface(vec2 p, out vec3 c, out float h, out float r){
   float rows = uP.x, k = uP.y, joint = uP.z;
   float row = mod(floor(p.y * rows), rows); float fy = fract(p.y * rows);
@@ -225,7 +226,8 @@ void surface(vec2 p, out vec3 c, out float h, out float r){
   float m = sstep(joint * .1, -joint * .2, d);
   vec2 id = vec2(row, s); float t = hash12(id + 2.);
   float surf = fbm(p * 40., vec2(40.), 5); float grain = vnoise(p * 300., vec2(300.));
-  vec3 slab = mix(uBase, uAlt, t * .5) * (.9 + .14 * (surf - .5) * 2. + .04 * (grain - .5));
+  vec3 tone = uP.w > 0. ? mix(uBase, uAlt, step(1. - uP.w, t)) * (.95 + .1 * hash12(id + 7.)) : mix(uBase, uAlt, t * .5);
+  vec3 slab = tone * (.9 + .14 * (surf - .5) * 2. + .04 * (grain - .5));
   c = mix(uBase * .45, slab, m);
   h = m * (.8 + .1 * surf + .05 * grain);
   r = mix(.95, .7 + .15 * surf, m);

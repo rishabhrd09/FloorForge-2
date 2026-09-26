@@ -13,6 +13,8 @@ from typing import Any
 
 from shapely.geometry import Point, Polygon, box
 
+from .frontage import plan_frontage
+
 from .model import DesignError, sha
 
 
@@ -577,9 +579,9 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
     W, D = _bounds_for_front(building)
     xmin, ymin, xmax, ymax = Polygon(building["plot"]).bounds
     ex, _ = _front_entry(building)
+    porch_x = tuple(porch["geometry"]["bounds_mm"][0::2]) if porch else None
     boundary = {
-        "gate_center_mm": round(ex),
-        "gate_width_mm": 3400 if v["parking"] else 2800 if theme_id == "warm_modern_minimal" else 2200,
+        **plan_frontage((xmin, ymin, xmax, ymax), ex, steps_x=porch_x, parking=v["parking"], front_mm=v["front_mm"]),
         "movement_clearance_mm": 500,
         "review_status": "geometry_screen_pending",
     }
@@ -611,11 +613,28 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
             "material_role": "site.paving",
             "maintenance_clearance_mm": 300,
         })
+    # Driveway behind the vehicle gate, clear of the entrance path.
+    drive = Polygon()
+    vehicle = next((g for g in boundary["gates"] if g["kind"] == "vehicle"), None)
+    if vehicle:
+        drive = box(vehicle["x0_mm"] + 60, ymin + 120, vehicle["x1_mm"] - 60, -250).difference(path.buffer(80))
+        if drive.area > 400_000 and drive.geom_type == "Polygon":
+            features.append({
+                "id": "site-driveway",
+                "kind": "court",
+                "polygon": [[round(x), round(y)] for x, y in list(drive.exterior.coords)[:-1]],
+                "material_role": "site.cobble",
+            })
+        else:
+            drive = Polygon()
     bed_margin = 350
     left_bed = box(xmin + bed_margin, ymin + 500, max(xmin + bed_margin + 400, ex - path_half - 250), -250)
     right_bed = box(min(xmax - bed_margin - 400, ex + path_half + 250), ymin + 500, xmax - bed_margin, -250)
     for ident, bed in (("site-bed-left", left_bed), ("site-bed-right", right_bed)):
-        if bed.area > 1 and not bed.intersects(path):
+        if not drive.is_empty:
+            bed = bed.difference(drive.buffer(200))
+            bed = max(getattr(bed, "geoms", [bed]), key=lambda p: p.area) if not bed.is_empty else bed
+        if bed.area > 250_000 and bed.geom_type == "Polygon" and not bed.intersects(path):
             features.append({
                 "id": ident,
                 "kind": "planting_bed",
@@ -628,7 +647,7 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
         tree_xs = [min(xmax - 1200, ex + 2800)]
     for i, x in enumerate(tree_xs):
         y = max(ymin + 1200, -max(1000, v["front_mm"] * 0.48))
-        if not path.contains(Point(x, y)):
+        if not path.contains(Point(x, y)) and not drive.buffer(400).contains(Point(x, y)):
             features.append({
                 "id": f"feature-tree-{i+1}",
                 "kind": "tree",
@@ -641,7 +660,7 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
     for i in range(shrub_count):
         x = xmin + 850 + i * max(550, (W - 1700) / max(1, shrub_count - 1))
         y = min(-350, ymin + 1050)
-        if not path.contains(Point(x, y)):
+        if not path.contains(Point(x, y)) and not drive.buffer(250).contains(Point(x, y)):
             features.append({
                 "id": f"layered-shrub-{i+1}",
                 "kind": "shrub",
