@@ -54,8 +54,8 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M5 | Day/golden/dusk display | PARTIAL | Five lighting grades: daylight uses the computed solar vector; golden hour, blue hour, night and overcast are display grades that keep its azimuth | Non-daylight grades are not recalculated true solar times. |
 | M5 | Raster PNG capture | IMPLEMENTED | Viewer snapshot control | Automated saved-file acceptance remains limited. |
 | M5 | 12-second WebM orbit capture | AUTHORED_UNVERIFIED | Viewer MediaRecorder code | No recorded video acceptance or frame-rate benchmark. |
-| M5 | Photoreal live path tracing / 4K still | AUTHORED_UNVERIFIED | Optional Three source | Not installed/built/rendered in this environment. |
-| M5 | Editable Blender scene / FBX + JSON / tour frames | AUTHORED_UNVERIFIED | scripts/blender_scene.py | Blender absent; no .blend/FBX/Cycles outputs produced. |
+| M5 | Photoreal live path tracing / 4K still | PARTIAL_TESTED | Offline Blender Cycles path-traced stills executed here (bpy 4.5.14 LTS, CPU) from the viewer's presentation GLB: scripts/export_presentation.mjs + scripts/render_cycles.py; evidence/cycles-*.jpg and cycles-renders.json | No live in-browser path tracing; 4K supported by the script but not rendered here; renders are uncalibrated studies of preliminary geometry. |
+| M5 | Editable Blender scene / FBX + JSON / tour frames | PARTIAL | render_cycles.py assembles and can save a .blend (--blend) with imported geometry, sky, sun, fixtures and camera; blender_scene.py keeps the FBX/tour-frame worker | FBX export and tour frames (blender_scene.py) not executed here; no validated interior camera route. |
 | M5 | Astra inspect/repair/lived-in quality loop | PARTIAL | Owner Appendix E and procedural scene | Original article fetch failed; full loop and photoreal target not completed. |
 | M5 | Manim reveal / AI image enhancement | NOT_IMPLEMENTED | No substitution for true geometry | Optional future explanation/appearance tools, carefully labelled. |
 | M6 | New responsive studio/real-engine landing | TESTED_SCOPE | studio-browser.json; desktop/mobile captures | Native direct-navigation, touch and accessibility audit remain open. |
@@ -85,4 +85,4 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M8 | Update/rollback | PARTIAL | Documented side-by-side rollback | No automatic updater/migration service. |
 | M8 | Real GPU and clean-machine acceptance | NOT_VERIFIED | Software-renderer evidence only | Actual macOS/Windows GPU and setup/installer tests required. |
 | M8 | Adversarial review and tests | TESTED_SCOPE | pytest; repaired defects; reproducibility | Not equivalent to legacy 243 tests, independent engineering review or penetration test. |
-| M8 | Final demo film and photoreal reference match | NOT_IMPLEMENTED | Real-time physically based captures (software renderer) only | Film, formal reference comparison and artistic acceptance needed. |
+| M8 | Final demo film and photoreal reference match | NOT_IMPLEMENTED | Real-time physically based captures and offline Cycles stills only | Film, formal reference comparison and artistic acceptance needed. |

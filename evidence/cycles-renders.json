@@ -1,0 +1,79 @@
+{
+  "method": "Blender Cycles from the PyPI bpy 4.5.14 LTS wheel, CPU (4 cores), OpenImageDenoise, AgX Medium High Contrast. Input: the presentation GLB exported by scripts/export_presentation.mjs from examples/demo/scene.json; lighting rebuilt by scripts/render_cycles.py (Nishita sky, Sun lamp at the computed solar position, scene fixtures). Rendered as 16-bit PNG and stored here as JPEG (quality 90). Offline renders of preliminary geometry, not photographs; no camera or luminance calibration.",
+  "resolution": [
+    1600,
+    900
+  ],
+  "renders": [
+    {
+      "file": "evidence/cycles-hero-day.jpg",
+      "view": "hero",
+      "eye": null,
+      "grade": "day",
+      "samples": 128,
+      "seconds": 123,
+      "exposure_ev": -0.55,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-living-day.jpg",
+      "view": "eye",
+      "eye": "3.2,3.9,0,-95",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 549,
+      "exposure_ev": 4.6,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-kitchen-day.jpg",
+      "view": "eye",
+      "eye": "4.0,7.0,0,128",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 559,
+      "exposure_ev": 2.97,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-bedroom-day.jpg",
+      "view": "eye",
+      "eye": "6.4,9.5,1,-35",
+      "grade": "day",
+      "samples": 160,
+      "seconds": 425,
+      "exposure_ev": 2.65,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-hero-dusk.jpg",
+      "view": "hero",
+      "eye": null,
+      "grade": "dusk",
+      "samples": 128,
+      "seconds": 237,
+      "exposure_ev": 0.65,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-living-dusk.jpg",
+      "view": "eye",
+      "eye": "3.2,3.9,0,-95",
+      "grade": "dusk",
+      "samples": 160,
+      "seconds": 1103,
+      "exposure_ev": -2.28,
+      "completed": true
+    },
+    {
+      "file": "evidence/cycles-hero-golden.jpg",
+      "view": "hero",
+      "eye": null,
+      "grade": "golden",
+      "samples": 128,
+      "seconds": 266,
+      "exposure_ev": -0.29,
+      "completed": true
+    }
+  ]
+}

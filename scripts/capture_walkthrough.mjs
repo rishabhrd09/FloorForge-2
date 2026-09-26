@@ -6,7 +6,7 @@
 // Needs Node 18+ and Playwright with a Chromium build (set PLAYWRIGHT_MODULE to its index.mjs when the
 // package is not resolvable from this folder). Software WebGL (SwiftShader) is used so the run is
 // reproducible on a headless host; it verifies composition and behaviour, not real-GPU colour or frame rate.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -100,6 +100,11 @@ async function preview(browser) {
   await tab.waitForFunction(() => window.__ff && (window.__ff.ready || window.__ff.error), null, { timeout: 300000 });
   const metrics = await tab.evaluate(() => { const v = window.__ff.viewer; v.paused = true; v.composer.render(0); return { ready: Boolean(window.__ff.ready), error: window.__ff.error || null, schema: window.__ff.scene?.schema, nodes: window.__ff.scene?.nodes?.length, status: document.getElementById('status')?.textContent }; });
   await tab.screenshot({ path: join(OUT, 'preview-exterior.png') });
+  // The offline page's "Blender GLB" button: the textured, planted scene as binary glTF.
+  const [download] = await Promise.all([tab.waitForEvent('download', { timeout: 600000 }), tab.click('#glbBtn')]);
+  const saved = await download.path();
+  metrics.presentation_glb = { file: download.suggestedFilename(), bytes: statSync(saved).size, magic: readFileSync(saved).subarray(0, 4).toString('latin1') };
+  if (metrics.presentation_glb.magic !== 'glTF') errors.push('Blender GLB download is not binary glTF');
   await tab.click('[data-mode="walk"]');
   metrics.walk = await tab.evaluate(() => { const v = window.__ff.viewer; v.paused = true; v.walker.update(1 / 30, v.readInput()); v.camera.position.copy(v.walker.eyePosition(v.camera.position.clone())); v.camera.rotation.set(v.walker.pitch, v.walker.yaw, 0); v.hudUpdate(); v.composer.render(0); return { mode: v.mode, badge: v.hud.last }; });
   await tab.screenshot({ path: join(OUT, 'preview-walk.png') });

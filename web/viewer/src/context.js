@@ -148,6 +148,7 @@ export function buildContext(viewer, data) {
     glass: new THREE.MeshPhysicalMaterial({ color: '#8a9aa3', roughness: .04, metalness: .85, envMapIntensity: 2.2 }),
     frame: mats.get('frame'), roof: mats.get('roof'), wall: mats.get('wall'),
   };
+  matFor.render2.name = 'context-render'; matFor.glass.name = 'context-glass';
   const created = [];
   for (const [name, out] of Object.entries(buckets)) {
     if (!out.pos.length) continue;

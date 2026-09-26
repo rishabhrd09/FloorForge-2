@@ -241,9 +241,20 @@ def make_scene(building, report):
         poly_mesh(fp.buffer(.025).difference(fp.buffer(-.175)), top + .60, top + .65, 'stone', storeys - 1, 'roof', 'coping')
 
     # ---------------------------------------------------------------- walls (true voids, split at sill/lintel)
+    # Wall polygons overlap at corners and T-junctions. Each storey's walls are tiled instead: external walls
+    # claim junctions first and later walls keep only what is still unfilled, so no two solids share a face
+    # (coincident faces shade black in path tracers and z-fight in other viewers). Colliders keep full polygons.
+    tiled = {}
+    for f in range(storeys):
+        taken = Polygon()
+        for w in sorted((w for w in b['walls'] if w['floor'] == f), key=lambda w: not w['external']):
+            full = Polygon(np.array(w['polygon']) / 1000)
+            own = full.difference(taken) if not taken.is_empty else full
+            tiled[w['id']] = unary_union([q for q in get_parts(own) if q.geom_type == 'Polygon' and q.area > 1e-5])
+            taken = taken.union(full)
     for w in b['walls']:
         openings = [o for o in b['openings'] if o['wall_id'] == w['id']]
-        wp = Polygon(np.array(w['polygon']) / 1000); cuts = {0, w['height'] / 1000}
+        wp = tiled.get(w['id'], Polygon(np.array(w['polygon']) / 1000)); cuts = {0, w['height'] / 1000}
         for o in openings:
             cuts.update((o['sill'] / 1000, (o['sill'] + o['height']) / 1000))
         cuts = sorted(cuts)
@@ -253,7 +264,7 @@ def make_scene(building, report):
                 if o['sill'] <= mid <= o['sill'] + o['height']:
                     geom = geom.difference(pscale(opening_polygon(w, o), xfact=.001, yfact=.001, origin=(0, 0)))
             poly_mesh(geom, z0 + w['floor'] * H, z1 + w['floor'] * H, 'wall', w['floor'], 'wall', f'{w["id"]}/{i}', w['id'])
-        cp = wp
+        cp = Polygon(np.array(w['polygon']) / 1000)
         for o in openings:
             if o['kind'] != 'window':
                 cp = cp.difference(pscale(opening_polygon(w, o, 10), xfact=.001, yfact=.001, origin=(0, 0)))

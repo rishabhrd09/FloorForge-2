@@ -48,7 +48,7 @@ The scripts need internet access for the first dependency install, unless `FLOOR
 
 Install Python **3.11–3.13** with the Python launcher, extract the ZIP, and double-click **`FloorForge.bat`**. It calls `setup.bat` on the first run, then `start.bat`. Alternatively run those two scripts yourself. A console remains visible in this developer distribution.
 
-The first setup installs exact-version Python dependencies into `.venv`. **Normal generation and the bundled viewer use no network after setup.** Node, Blender, an AI model and API keys are not required for the core.
+The first setup installs exact-version Python dependencies into `.venv`. **Normal generation and the bundled viewer use no network after setup.** Node, Blender, an AI model and API keys are not required for the core; Blender is only needed for optional path-traced stills.
 
 If installation fails, read the error and check the selected Python, network access and available disk space. Do not run with administrator/root privileges to work around an ordinary dependency problem. Optional features have separate installers and their failures do not disable the core.
 
@@ -69,7 +69,8 @@ The grid is exact when enabled: cells form real connected polygons, including L-
 - SVG drawings and an A3 PDF drawing/review set; layered DXF floor plans with dimension entities; GLB; an IFC4 STEP exporter with a deliberately limited acceptance claim.
 - Preliminary room/area/opening schedules, an editable cost scenario, timeline, solar study, Vastu preferences, services notes and review limitations.
 - Session-memory local/cloud AI proposal adapters, which are off by default. Real provider/model inference was not run here.
-- Optional Three.js/path-tracing/GSAP source, an external Blender worker, optional model download/start scripts, and native packaging recipes. These optional paths are not falsely marked built or accepted.
+- Path-traced stills with Blender Cycles: the viewer exports a presentation GLB (the **Blender GLB** button, or `scripts/export_presentation.mjs`) and `scripts/render_cycles.py` renders it under a physical sky, the site's sun and every fixture light. It needs Blender 4.2+ or the `bpy` wheel, not the core. Samples are in `evidence/cycles-*.jpg`.
+- Optional Three.js/path-tracing/GSAP source, optional model download/start scripts, and native packaging recipes. These optional paths are not falsely marked built or accepted.
 
 ## Actual output layout
 
@@ -111,6 +112,9 @@ Builds are immutable. Editing an exported drawing does not update the source pro
 # Optional browser evidence (Node + Playwright with Chromium; software WebGL is slow):
 node scripts/capture_walkthrough.mjs
 node scripts/capture_studio.mjs
+# Optional path-traced stills (Node + Playwright, then Blender 4.2+ or the bpy wheel):
+node scripts/export_presentation.mjs examples/demo/scene.json build/demo.glb
+python scripts/render_cycles.py --glb build/demo.glb --scene examples/demo/scene.json --out build/renders --view hero --grade day
 ```
 
 On Windows replace `.venv/bin/python` with `.venv\Scripts\python.exe`. Use `--out PATH` to put generated projects somewhere else. Ctrl+C stops the developer server. The windowed `desktop.py` launcher is intended for the native packaging recipes.
@@ -127,7 +131,7 @@ The supplied archive held 120 images and six videos, not the original FloorForge
 
 The output has **no structural design, official NBC clause validation, sanctioned byelaw pack, geotechnical assessment, reinforcement schedule or accessibility/ICU certification**. The cost range uses editable example rates, not market quotations. “Strict Vastu” is reported as unresolved when unmet; it does not create a false pass.
 
-The live renderer is a real-time raster approximation of photographic lighting. It has no path-traced global illumination and no ray-traced reflections; one light probe per room approximates bounce light. Its looks were verified in software-rendered Chromium, not on real GPUs. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
+The live renderer is a real-time raster approximation of photographic lighting. It has no path-traced global illumination and no ray-traced reflections; one light probe per room approximates bounce light. Its looks were verified in software-rendered Chromium, not on real GPUs. Path-traced stills come from the separate offline Cycles path, not the live viewer. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
 
 ## Rebuilding the viewer (developers only)
 

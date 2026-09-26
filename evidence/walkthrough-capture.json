@@ -4,7 +4,7 @@
     {
       "file": "realistic-hero.png",
       "scene": "examples/demo/scene.json",
-      "ms": 24000,
+      "ms": 25295,
       "mode": "solid",
       "grade": "day",
       "room": null,
@@ -14,7 +14,7 @@
     {
       "file": "realistic-front.png",
       "scene": "examples/demo/scene.json",
-      "ms": 5215,
+      "ms": 5391,
       "mode": "solid",
       "grade": "day",
       "room": null,
@@ -24,7 +24,7 @@
     {
       "file": "realistic-entrance.png",
       "scene": "examples/demo/scene.json",
-      "ms": 7076,
+      "ms": 6821,
       "mode": "solid",
       "grade": "day",
       "room": null,
@@ -34,7 +34,7 @@
     {
       "file": "realistic-golden.png",
       "scene": "examples/demo/scene.json",
-      "ms": 5648,
+      "ms": 5519,
       "mode": "solid",
       "grade": "golden",
       "room": null,
@@ -44,7 +44,7 @@
     {
       "file": "realistic-blue-hour.png",
       "scene": "examples/demo/scene.json",
-      "ms": 10019,
+      "ms": 9989,
       "mode": "solid",
       "grade": "dusk",
       "room": null,
@@ -54,7 +54,7 @@
     {
       "file": "preview-dollhouse-ground.png",
       "scene": "examples/demo/scene.json",
-      "ms": 5146,
+      "ms": 5043,
       "mode": "dollhouse",
       "grade": "day",
       "room": null,
@@ -64,7 +64,7 @@
     {
       "file": "preview-dollhouse-upper.png",
       "scene": "examples/demo/scene.json",
-      "ms": 3838,
+      "ms": 3974,
       "mode": "dollhouse",
       "grade": "day",
       "room": null,
@@ -74,7 +74,7 @@
     {
       "file": "walk-arrival.png",
       "scene": "examples/demo/scene.json",
-      "ms": 24929,
+      "ms": 24275,
       "mode": "walk",
       "grade": "day",
       "room": "Garden|Ground floor",
@@ -84,17 +84,17 @@
     {
       "file": "walk-living-day.png",
       "scene": "examples/demo/scene.json",
-      "ms": 17234,
+      "ms": 16807,
       "mode": "walk",
       "grade": "day",
       "room": "Dining|Ground floor",
       "probe": true,
-      "exposure": 1.958
+      "exposure": 1.957
     },
     {
       "file": "walk-kitchen-day.png",
       "scene": "examples/demo/scene.json",
-      "ms": 11872,
+      "ms": 11176,
       "mode": "walk",
       "grade": "day",
       "room": "Kitchen|Ground floor",
@@ -104,7 +104,7 @@
     {
       "file": "walk-stair.png",
       "scene": "examples/demo/scene.json",
-      "ms": 10104,
+      "ms": 9983,
       "mode": "walk",
       "grade": "day",
       "room": "Stair|Ground floor",
@@ -114,7 +114,7 @@
     {
       "file": "walk-bedroom-upper.png",
       "scene": "examples/demo/scene.json",
-      "ms": 10152,
+      "ms": 10178,
       "mode": "walk",
       "grade": "day",
       "room": "Bedroom 3|First floor",
@@ -124,7 +124,7 @@
     {
       "file": "walk-terrace.png",
       "scene": "examples/demo/scene.json",
-      "ms": 2563,
+      "ms": 2757,
       "mode": "walk",
       "grade": "day",
       "room": "Open terrace|First floor",
@@ -134,7 +134,7 @@
     {
       "file": "walk-living-blue-hour.png",
       "scene": "examples/demo/scene.json",
-      "ms": 19197,
+      "ms": 19033,
       "mode": "walk",
       "grade": "dusk",
       "room": "Dining|Ground floor",
@@ -144,7 +144,7 @@
     {
       "file": "walk-bedroom-night.png",
       "scene": "examples/demo/scene.json",
-      "ms": 10194,
+      "ms": 9912,
       "mode": "walk",
       "grade": "night",
       "room": "Bedroom 3|First floor",
@@ -154,7 +154,7 @@
     {
       "file": "realistic-compact.png",
       "scene": "examples/compact/scene.json",
-      "ms": 21965,
+      "ms": 22011,
       "mode": "solid",
       "grade": "day",
       "room": null,
@@ -164,5 +164,5 @@
   ],
   "errors": [],
   "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
-  "load_ms": 193480
+  "load_ms": 192806
 }

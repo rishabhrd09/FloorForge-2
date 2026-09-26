@@ -411,10 +411,11 @@
       "status": "Optional external validation setup only; unexecuted"
     },
     {
-      "name": "Blender",
-      "license": "GPL; external user-installed process",
+      "name": "Blender (bpy)",
+      "license": "GPL-2.0-or-later; external user-installed process or PyPI bpy wheel",
       "bundled": false,
-      "status": "Worker authored; no Blender runtime, binary or output bundled"
+      "version_executed": "bpy 4.5.14 LTS (PyPI wheel in a scratch environment, not bundled)",
+      "status": "scripts/render_cycles.py (executed here: evidence/cycles-*.jpg) and scripts/blender_scene.py run inside a user-installed Blender or bpy. FloorForge ships these scripts as MIT source, which is GPL-compatible, and bundles no Blender runtime or binary."
     },
     {
       "name": "Qwen3-8B-GGUF and Qwen3-4B-GGUF",

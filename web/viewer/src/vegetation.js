@@ -99,7 +99,7 @@ export class Vegetation {
     patchFoliage(mass, u, { translucency: .05 });
     const solid = new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .7 });
     patchFoliage(solid, u, { translucency: .35 });
-    return {
+    const set = {
       cluster: leaf(this.tex.cluster, { color: '#e6f0dc' }),
       clusterLight: leaf(this.tex.clusterLight, { color: '#f4f7ea' }),
       leaves: leaf(this.tex.leaves, { roughness: .45, translucency: .5 }),
@@ -108,6 +108,9 @@ export class Vegetation {
       solid,
       bark: barkMat(bark), smoothBark: barkMat(smoothBark), palmBark: barkMat(palmBark), greenStem: barkMat(greenStem), mass,
     };
+    // Names travel into the presentation export, where offline renderers recognise foliage and bark.
+    for (const [key, m] of Object.entries(set)) m.name = (/bark|stem/i.test(key) ? 'plant-bark-' : 'plant-foliage-') + key;
+    return set;
   }
 
   partMaterial(part, spec) {

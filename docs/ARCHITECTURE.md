@@ -49,7 +49,7 @@ User-reference dimensional targets have **no verified BIS clause ID**. `official
 
 ## Geometry and surfaces
 
-Walls are polygon extrusions split vertically around hosted doors and windows. Slabs preserve stair/terrace voids. Decorative objects and furniture are shared geometry with transforms, not painted rectangles. Bed frames, mattresses, shaped bedding, chair frames, cabinets, handles, hollow vessels, fixture bulbs and leaf meshes are procedural.
+Walls are polygon extrusions split vertically around hosted doors and windows. Each storey's walls are tiled without overlaps: external walls claim corners and T-junctions, and later walls keep only the unfilled part. No two solids therefore share a face, since coincident faces shade black in path tracers and z-fight in other viewers. Walk colliders keep the full wall polygons. Slabs preserve stair/terrace voids. Decorative objects and furniture are shared geometry with transforms, not painted rectangles. Bed frames, mattresses, shaped bedding, chair frames, cabinets, handles, hollow vessels, fixture bulbs and leaf meshes are procedural.
 
 Not every decorative surface is a closed manifold, and the whole building is not a single boolean-unioned watertight object. The GLB retains individual components and stable scene names.
 
@@ -85,11 +85,13 @@ Every landscape polygon is kept inside the plot and off the house footprint. Tes
 | `server.py` | Loopback API, host/origin/token checks, queue |
 | `web/app.js` | New studio UI and input/review/save flow |
 | `web/viewer.js` | Bundled realistic viewer (built from `web/viewer/src`, committed) |
-| `web/viewer/src/` | Viewer sources: materials/texture synthesis, sky/sun/probes, walker, planting, context, HUD, grade |
+| `web/viewer/src/` | Viewer sources: materials/texture synthesis, sky/sun/probes, walker, planting, context, HUD, grade, presentation export |
 | `web/src/three-studio.js` | Optional unbuilt Three/path-tracing lab |
 | `scripts/blender_scene.py` | External unexecuted Blender worker |
 | `scripts/regenerate_examples.py` | Rebuilds the three bundled examples from `examples/briefs` |
 | `scripts/capture_walkthrough.mjs`, `scripts/capture_studio.mjs` | Browser evidence harnesses (Playwright, software WebGL) |
+| `scripts/export_presentation.mjs` | Headless export of the viewer's presentation GLB |
+| `scripts/render_cycles.py` | Blender Cycles path-traced stills from that GLB and `scene.json` |
 
 ## Engineering technology choices
 

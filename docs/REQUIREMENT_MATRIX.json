@@ -342,16 +342,16 @@
     {
       "milestone": "M5",
       "requirement": "Photoreal live path tracing / 4K still",
-      "status": "AUTHORED_UNVERIFIED",
-      "evidence_or_file": "Optional Three source",
-      "remaining": "Not installed/built/rendered in this environment."
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Offline Blender Cycles path-traced stills executed here (bpy 4.5.14 LTS, CPU) from the viewer's presentation GLB: scripts/export_presentation.mjs + scripts/render_cycles.py; evidence/cycles-*.jpg and cycles-renders.json",
+      "remaining": "No live in-browser path tracing; 4K supported by the script but not rendered here; renders are uncalibrated studies of preliminary geometry."
     },
     {
       "milestone": "M5",
       "requirement": "Editable Blender scene / FBX + JSON / tour frames",
-      "status": "AUTHORED_UNVERIFIED",
-      "evidence_or_file": "scripts/blender_scene.py",
-      "remaining": "Blender absent; no .blend/FBX/Cycles outputs produced."
+      "status": "PARTIAL",
+      "evidence_or_file": "render_cycles.py assembles and can save a .blend (--blend) with imported geometry, sky, sun, fixtures and camera; blender_scene.py keeps the FBX/tour-frame worker",
+      "remaining": "FBX export and tour frames (blender_scene.py) not executed here; no validated interior camera route."
     },
     {
       "milestone": "M5",
@@ -560,7 +560,7 @@
       "milestone": "M8",
       "requirement": "Final demo film and photoreal reference match",
       "status": "NOT_IMPLEMENTED",
-      "evidence_or_file": "Real-time physically based captures (software renderer) only",
+      "evidence_or_file": "Real-time physically based captures and offline Cycles stills only",
       "remaining": "Film, formal reference comparison and artistic acceptance needed."
     }
   ]

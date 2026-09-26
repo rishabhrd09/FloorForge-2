@@ -15,6 +15,7 @@ import { GradeEffect } from './grade.js';
 import { Vegetation } from './vegetation.js';
 import { Hud } from './hud.js';
 import { buildContext } from './context.js';
+import { exportPresentation } from './export.js';
 import { pointInPolygon, clamp } from './util.js';
 
 const QUALITY = {
@@ -227,6 +228,7 @@ class FloorForgeViewer {
     const uv = g.attributes.uv; const pos = g.attributes.position;
     for (let i = 0; i < uv.count; i++) uv.setXY(i, pos.getX(i) / 2.4, pos.getY(i) / 2.4);
     const m = new THREE.MeshStandardMaterial({ map: synthGrass.map, normalMap: synthGrass.normalMap, roughnessMap: synthGrass.roughnessMap, color: '#9aa27f' });
+    m.name = 'ground';
     const ground = new THREE.Mesh(g, m);
     ground.rotation.x = -Math.PI / 2;
     ground.position.set(this.center.x, z0 - .16, this.center.z);
@@ -779,6 +781,9 @@ class FloorForgeViewer {
       setTimeout(() => rec.stop(), seconds * 1000);
     });
   }
+
+  // Binary glTF of what the viewer draws (textures, planting, lawn, optional context) for offline renderers.
+  exportPresentation(options) { return exportPresentation(this, options); }
 
   // Debug/automation hook used by the capture harness and tests.
   debugState() {

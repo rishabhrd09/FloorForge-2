@@ -4,14 +4,16 @@
 
 ## Executed here
 
-**Tests.** 137 tests passed, 0 failed (53.0 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 18 new realism tests in `tests/test_realism.py` cover:
+**Tests.** 139 tests passed, 0 failed (52.1 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 20 new realism tests in `tests/test_realism.py` cover:
 - the Modern Tropical default and scene 0.4;
 - full-height living glazing within wall height;
 - landscape, stepping stones, planting and lawns inside the plot and off the house, for every fixture plot;
 - plant coordination proxies;
 - room and walk metadata, and climbable stair treads;
 - physically based material kinds and furniture containment;
-- offline-preview script integrity, and the bundled viewer's presence and licence comments.
+- offline-preview script integrity, and the bundled viewer's presence and licence comments;
+- walls that tile each storey without overlapping solids;
+- the offline render path: the export in the bundle, and the Blender scripts compiling.
 
 **Reproducibility.** Two clean default generations compared 23 published artifacts with no differences (`evidence/reproducibility.json`), on the same host and runtime.
 
@@ -32,9 +34,9 @@ All three are Modern Tropical.
 
 Per-shot mode, grade, room badge, probe state and metered exposure are in `evidence/walkthrough-capture.json`.
 
-**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the arrival court up the entrance step and through the door into the living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m (`evidence/browser-preview.json`).
+**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the arrival court up the entrance step and through the door into the living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.80 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
 
-**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 10 checks with no page errors (`evidence/studio-browser.json`):
+**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 11 checks with no page errors (`evidence/studio-browser.json`):
 - the bundled scene 0.4 and realistic renderer;
 - walk mode with the room badge;
 - nine drawing sheets;
@@ -44,9 +46,17 @@ Per-shot mode, grade, room badge, probe state and metered exposure are in `evide
 - the grid painter;
 - three AI consent choices;
 - project collection;
-- a 390 px mobile layout without horizontal overflow.
+- a 390 px mobile layout without horizontal overflow;
+- the **Blender GLB** button downloading a textured binary glTF.
 
-**Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 12 START_HERE links resolve.
+**Path-traced stills.** `scripts/export_presentation.mjs` exported the demo's presentation GLB (72.5 MB, 174 meshes, 141 textures). `scripts/render_cycles.py` then path traced seven 1600×900 stills (`evidence/cycles-*.jpg`):
+- hero in daylight, golden hour and dusk;
+- living/dining in daylight and at dusk;
+- kitchen and a first-floor bedroom in daylight.
+
+They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 2 to 4½ minutes, daylight interiors 7 to 9 minutes, and the lamp-lit dusk interior 18 minutes. The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. A saved `.blend` (`--blend`) was reopened with its geometry, 141 packed textures, sun, camera and Cycles settings intact.
+
+**Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 13 START_HERE links resolve.
 
 ## Repairs made during verification
 
@@ -61,20 +71,24 @@ Per-shot mode, grade, room badge, probe state and metered exposure are in `evide
 - **Walk badge.** The badge read "First floor" at the mid-landing; storeys now switch past half-way up the stair.
 - **HUD overlap.** The walk tip overlapped the studio's toolbar; it moved to the top-right.
 - **Licence record.** n8ao declares ISC but ships CC0 1.0 text; both are now recorded (`licenses/LEDGER.json`).
+- **Overlapping wall solids.** Path tracing showed full-height black bands at wall corners and T-junctions. Overlapping wall solids left coincident faces there, which rays leave and immediately re-hit. `scene.py` now tiles each storey's walls without overlaps, and a regression test compares piece areas with their union.
+- **Inside-out trunks.** Plant trunk tubes were wound inward, so the viewer drew their far inner faces and Cycles shaded them black. They now face out.
+- **Black planting in Blender.** The presentation export carried builder vertex colours on planting, which three.js ignores unless a material opts in but glTF always multiplies in. They are now exported only for materials that use them.
+- **Unlit lamp shades.** Unlit lamp shades rendered black in daylight stills; switched off they now read as opal glass and white diffusers.
 
 ## Not accepted
 
 The following were not available or not completed:
 - native macOS or Windows runs on a real GPU (colour, frame rate, input latency);
 - a clean network installation;
-- path-traced, Blender or photographic stills, and any film;
+- GPU or in-browser path tracing, 4K stills, photographic calibration, and any film;
 - interactive doors;
 - accessible-route certification;
 - live local or cloud AI inference;
 - an independent IFC viewer, or the AutoCAD GUI;
 - professional structural design, or official NBC/byelaw certification.
 
-The screenshots are actual engine output from software rendering. They document a real-time, physically based preview model, not the final photoreal quality bar.
+The viewer screenshots are actual engine output from software rendering and document a real-time, physically based preview. The Cycles stills are offline path-traced renders of the same preliminary geometry, not photographs.
 
 ## Previous release — 0.2.0-alpha
 

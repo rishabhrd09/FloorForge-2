@@ -468,6 +468,7 @@ export class TextureSynth {
     this.renderer = renderer;
     this.quality = quality;
     this.targets = [];
+    this.owners = new Map(); // texture -> render target, for CPU read-back (presentation export)
     this.cache = new Map();
     this.programs = new Map();
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -512,8 +513,12 @@ export class TextureSynth {
       anisotropy: this.anisotropy,
     });
     this.targets.push(rt);
+    this.owners.set(rt.texture, rt);
     return rt;
   }
+
+  // The render target a synthesised texture lives in (null for other textures).
+  owner(texture) { return this.owners.get(texture) || null; }
 
   // Returns {map, normalMap, roughnessMap}. Colours are sRGB hex strings.
   make(kind, { base = '#ffffff', alt = null, params = null, seed = 0, normal = null } = {}) {
@@ -555,6 +560,6 @@ export class TextureSynth {
     for (const rt of this.targets) rt.dispose();
     for (const m of this.programs.values()) m.dispose();
     this.quad.geometry.dispose();
-    this.targets = []; this.cache.clear(); this.programs.clear();
+    this.targets = []; this.owners.clear(); this.cache.clear(); this.programs.clear();
   }
 }

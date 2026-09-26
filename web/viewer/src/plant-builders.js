@@ -55,7 +55,8 @@ export function tube(b, points, radii, sides = 7, sway = [0, .2], uvScale = [.6,
   }
   for (let i = 0; i < n - 1; i++) for (let k = 0; k < sides; k++) {
     const a = rings[i][k], c = rings[i][k + 1], d = rings[i + 1][k], e = rings[i + 1][k + 1];
-    b.tri(a, d, c); b.tri(c, d, e);
+    // Counter-clockwise seen from outside, matching the outward ring normals (front faces face out).
+    b.tri(a, c, d); b.tri(c, e, d);
   }
 }
 

@@ -17,6 +17,14 @@
       }
     },
     {
+      "check": "Blender GLB export downloads a textured binary glTF",
+      "passed": true,
+      "details": {
+        "file": "FloorForge-presentation.glb",
+        "bytes": 74316328
+      }
+    },
+    {
       "check": "nine generated drawing sheets selectable",
       "passed": true,
       "details": {
@@ -72,22 +80,22 @@
       "status": 200
     },
     {
-      "path": "/demo/building.json",
-      "method": "GET",
-      "status": 200
-    },
-    {
       "path": "/demo/scene.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/demo/report.json",
+      "path": "/demo/building.json",
       "method": "GET",
       "status": 200
     },
     {
       "path": "/demo/sheets.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/demo/report.json",
       "method": "GET",
       "status": 200
     },
@@ -102,42 +110,47 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/96ef01c9d1429901",
+      "path": "/api/jobs/db72b4408c4f3796",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/96ef01c9d1429901",
+      "path": "/api/jobs/db72b4408c4f3796",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/96ef01c9d1429901",
+      "path": "/api/jobs/db72b4408c4f3796",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/96ef01c9d1429901",
+      "path": "/api/jobs/db72b4408c4f3796",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/58171f6dc05339c7198ad56d/sheets.json",
+      "path": "/api/jobs/db72b4408c4f3796",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/58171f6dc05339c7198ad56d/building.json",
+      "path": "/builds/40ff1fcb59b576e082d1d19d/building.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/58171f6dc05339c7198ad56d/report.json",
+      "path": "/builds/40ff1fcb59b576e082d1d19d/report.json",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/58171f6dc05339c7198ad56d/scene.json",
+      "path": "/builds/40ff1fcb59b576e082d1d19d/scene.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/40ff1fcb59b576e082d1d19d/sheets.json",
       "method": "GET",
       "status": 200
     }

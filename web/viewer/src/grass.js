@@ -66,6 +66,7 @@ export function buildLawn(lawns, density, uniforms, baseColor) {
   if (!points.length) return null;
   const geo = clumpGeometry(baseColor);
   const material = new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .82, metalness: 0 });
+  material.name = 'plant-foliage-lawn';
   const local = { ffFadeNear: { value: 14 }, ffFadeFar: { value: 30 } };
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms, local);

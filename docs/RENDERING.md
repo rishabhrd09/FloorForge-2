@@ -65,7 +65,7 @@ Choose **Walk in**, click the view to capture the mouse, then use these controls
 
 The visitor is a capsule 0.27 m in radius and 1.78 m tall, with the eye at 1.63 m.
 - It collides against a BVH of the actual generated geometry: walls, glazing, furniture and stair treads.
-- Gravity applies. A jump rises about 0.8 m (0.82 m measured in the live capture).
+- Gravity applies. A jump rises about 0.8 m (0.80–0.82 m measured in the live captures).
 - Steps up to 0.38 m are climbed automatically, so the U-stair is walked continuously from floor to floor, not teleported.
 - Crouching lowers the eye and passes under 1.2 m.
 - Falling off the site respawns you at the arrival court.
@@ -83,7 +83,7 @@ This is real-time rasterisation, not path tracing.
 - **Solar timing:** daylight uses the computed solar vector for the brief's date, hour and location. Golden hour, blue hour, night and overcast are **display grades** that keep the sun's azimuth, not recalculated astronomical times. Edit the date, hour or location and regenerate for a real solar study. The method omits atmospheric refraction, a surveyed skyline and weather.
 - **Recording:** the WebM control records 12 seconds of browser output. It is not a verified 4K/30 fps film pipeline.
 
-The captures in `evidence/` look convincing but are **not photographs or path-traced renders**, and should not be marketed as such.
+The viewer captures in `evidence/` (`realistic-*`, `walk-*`, `preview-*`) look convincing but are **not photographs or path-traced renders**, and should not be marketed as such.
 
 ## Optional Three.js / path tracer / GSAP lab
 
@@ -96,19 +96,49 @@ python scripts/setup_three.py --accept-gsap-standard-license
 
 **This lab was not built or rendered here.** It is not the default viewer. GSAP's own standard licence must be reviewed, not labelled MIT.
 
-## External Blender
+## Path-traced stills with Blender Cycles
 
-`blender_scene.py` builds an editable bpy scene from `scene.json`: meshes, materials, fixture lights and camera positions. Blender runs as a separate, user-installed process; it is not imported into the core or included in this ZIP.
-
-Example invocation (inspect `--help` for the script's exact options):
+For stills beyond real-time rendering, the same home can be path traced in Blender Cycles. Two steps are needed:
 
 ```bash
-blender --background --python scripts/blender_scene.py -- \
-  --scene examples/demo/scene.json --out blender-output \
-  --view hero --width 1600 --samples 128
+# 1. Export what the viewer draws (textures, grown planting, lawn grass, nearby context) as binary glTF.
+node scripts/export_presentation.mjs examples/demo/scene.json build/demo.glb
+# 2. Path trace it (Blender 4.2+, or the PyPI `bpy` wheel on Python 3.11).
+python scripts/render_cycles.py --glb build/demo.glb --scene examples/demo/scene.json --out build/renders \
+    --view hero --grade day --width 1600 --height 900 --samples 128
+python scripts/render_cycles.py ... --view eye --eye 3.2,3.9,0,-95 --name living-day   # eye level: x,y,floor,yaw
+# or: blender --background --python scripts/render_cycles.py -- (same arguments)
 ```
 
-**Blender was unavailable here, so no `.blend`, FBX, Cycles still or tour video is claimed.** The realistic viewer's procedural plants and GPU-synthesised textures are not yet translated into the Blender scene.
+**Export.** The **Blender GLB** button in the studio and in every offline preview downloads the presentation file. `export_presentation.mjs` produces the same file headlessly by calling `viewer.exportPresentation()`:
+- GPU-synthesised textures are read back into images: colour maps as JPEG, normal and roughness maps as PNG.
+- Instanced planting and lawn grass are baked into ordinary meshes.
+- Neighbourhood context is kept only within 60 m; the distant horizon ring is backdrop for the live view only.
+- Lights, sky and post-processing are left out.
+
+**Render.** `render_cycles.py` rebuilds the lighting from `scene.json`:
+- Blender's physical Nishita sky, with its sun disc off.
+- A Sun lamp at the site's computed solar position; golden hour lowers it to 7.5°, dusk to the horizon.
+- Every visible fixture: downlights as spots, others as points.
+
+It then prepares materials:
+- Glazing becomes architectural glass: clear for camera rays, transparent to shadow and diffuse rays, so daylight reaches interiors without caustic noise.
+- Leaves get a translucent back side.
+- Planting and lawn use their vertex colours.
+
+A quick preview meters exposure like a camera, protecting highlights. Interiors get a daylight white balance, and lamp-lit grades stay warm. Output goes through AgX (Medium High Contrast) and OpenImageDenoise. `--blend` also saves the assembled `.blend` scene.
+
+**Executed here.** The stills in `evidence/cycles-*.jpg` were rendered at 1600×900 on 4 CPU cores with the `bpy` 4.5.14 LTS wheel. `evidence/cycles-renders.json` records each view, grade, sample count, exposure and time. Exteriors took 2 to 4½ minutes, daylight interiors 7 to 9 minutes, and the lamp-lit dusk interior 18 minutes; the stills are stored as JPEG.
+
+Path tracing exposed four defects the rasteriser had hidden. All are fixed at the source:
+- **Wall overlaps.** Wall solids overlapped at corners and T-junctions; the coincident faces shaded black. `scene.py` now tiles each storey's walls without overlaps.
+- **Trunks.** Plant trunk tubes were wound inside out.
+- **Vertex colours.** The export carried vertex colours that the viewer ignores but glTF always applies; they are now kept only where the viewer shows them.
+- **Lamp shades.** Unlit lamp shades were black; they now read as opal glass and white diffusers.
+
+**Limits.** These are renders of preliminary generated geometry, not photographs, and are not calibrated to any camera or luminance. There is no live path tracing in the browser. Cycles on a CPU is slow; a GPU (`--gpu`) is much faster but was not available here. 4K output is only a matter of `--width`/`--height` and time, and was not rendered here.
+
+`blender_scene.py` is the older worker. It builds an editable bpy scene directly from `scene.json`, with flat materials and without the grown planting, plus optional FBX and orbit frames. Those FBX and tour paths were not executed.
 
 ## Capture protocol
 

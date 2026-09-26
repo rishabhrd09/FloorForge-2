@@ -3,9 +3,9 @@
  "date": "2026-09-26",
  "all_original_requirements_complete": false,
  "pytest": {
-  "passed": 137,
+  "passed": 139,
   "failed": 0,
-  "seconds": 52.98,
+  "seconds": 52.11,
   "source": "evidence/pytest.txt"
  },
  "reproducibility": {
@@ -13,13 +13,13 @@
   "equal_build_ids": true,
   "files_compared": 23,
   "changed_artifacts": [],
-  "seconds": 7.947,
+  "seconds": 6.425,
   "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
  },
  "browser": {
   "studio": {
-   "checks_passed": 10,
-   "checks_total": 10,
+   "checks_passed": 11,
+   "checks_total": 11,
    "page_errors": 0,
    "transport": "Direct navigation to the real loopback studio server (scripts/capture_studio.mjs)",
    "renderer": {
@@ -36,11 +36,16 @@
   "offline_preview": {
    "ready": true,
    "page_errors": 0,
+   "presentation_glb": {
+    "file": "FloorForge-presentation.glb",
+    "bytes": 74316328,
+    "magic": "glTF"
+   },
    "live_walk": {
     "entered": true,
     "probe": true,
     "jumped": true,
-    "peak_jump_m": 0.816,
+    "peak_jump_m": 0.797,
     "rooms": [
      "Garden|Ground floor",
      "Living|Ground floor",
@@ -49,6 +54,26 @@
    }
   },
   "scope": "Chromium software WebGL (SwiftShader), headless; not a physical GPU, frame-rate or native-browser test"
+ },
+ "path_traced_stills": {
+  "renderer": "Blender Cycles, PyPI bpy 4.5.14 LTS, CPU (4 cores), OpenImageDenoise",
+  "stills": 7,
+  "resolution": [
+   1600,
+   900
+  ],
+  "all_completed": true,
+  "seconds": [
+   123,
+   549,
+   559,
+   425,
+   237,
+   1103,
+   266
+  ],
+  "source": "evidence/cycles-renders.json",
+  "scope": "Offline renders of preliminary geometry; not photographs; no camera or luminance calibration"
  },
  "pdf": {
   "pages_rendered": 41,
@@ -166,7 +191,7 @@
   "python_compile": "passed",
   "javascript_syntax": "passed",
   "bash_syntax": "passed",
-  "startup_html_links_checked": 12,
+  "startup_html_links_checked": 13,
   "broken_startup_links": [],
   "fresh_network_install": "not run; package download networking unavailable",
   "native_binaries_built": false,
@@ -179,10 +204,11 @@
   "No independent IFC schema/viewer test",
   "No structural design or official NBC/byelaw approval",
   "No real-GPU colour calibration or frame-rate measurement",
-  "No path-traced, photographic or film output from the default viewer",
+  "No in-browser path tracing, GPU Cycles run, 4K still or film",
+  "Cycles stills are renders, not photographs",
   "No AI model inference or live paid provider request",
-  "No Blender or optional Three lab build/render",
+  "No optional Three lab build/render",
   "No full legacy 243-test suite; original repo absent",
-  "No model weights, native installers or third-party photo/font/texture assets bundled"
+  "No model weights, native installers, Blender binaries or third-party photo/font/texture assets bundled"
  ]
 }

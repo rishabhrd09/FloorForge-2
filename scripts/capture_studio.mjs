@@ -7,7 +7,7 @@
 // package is not resolvable from this folder). Software WebGL (SwiftShader) keeps it runnable headless; it is
 // not a real-GPU, native-browser or installer sign-off.
 import { spawn } from 'node:child_process';
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -51,6 +51,12 @@ try {
   check('walk mode opens at the arrival with the room badge', hud && hud.includes('|'), { badge: hud });
   await page.screenshot({ path: join(OUT, 'studio-walk.png') });
   await page.click('[data-mode="solid"]');
+
+  const [download] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#export-glb')]);
+  const glb = join(work, 'presentation.glb');
+  await download.saveAs(glb);
+  const glbBytes = statSync(glb).size;
+  check('Blender GLB export downloads a textured binary glTF', readFileSync(glb).subarray(0, 4).toString('latin1') === 'glTF' && glbBytes > 1e6, { file: download.suggestedFilename(), bytes: glbBytes });
 
   await page.click('[data-tab="drawings"]');
   await page.waitForTimeout(300);

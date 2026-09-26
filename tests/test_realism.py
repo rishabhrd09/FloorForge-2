@@ -134,6 +134,7 @@ def test_preview_embeds_viewer_without_breaking_script_blocks(modern):
     page = preview_html(scene, building, svg_sheet(sheets[0], building))
     assert page.count('</script>') == 3
     assert 'FloorForgeViewer' in page and 'Walk in' in page
+    assert 'Blender GLB' in page and 'exportPresentation' in page
 
 
 def test_bundled_viewer_is_present_and_attributed():
@@ -143,3 +144,34 @@ def test_bundled_viewer_is_present_and_attributed():
     assert 'SPDX-License-Identifier: MIT' in bundle and '@license Zlib' in bundle
     for package in ('three', 'three-mesh-bvh', 'postprocessing', 'n8ao'):
         assert any((ROOT / 'licenses/viewer-js' / package).iterdir())
+
+
+def test_walls_tile_each_storey_without_overlapping_solids(modern):
+    # Overlapping wall solids leave coincident faces that path tracers shade black; walls must tile instead.
+    from shapely.ops import unary_union
+    _, _, scene = modern
+    H = scene['floor_height']
+    for f in range(scene['storeys']):
+        z = f * H + .2
+        pieces = []
+        for n in scene['nodes']:
+            if n['role'] != 'wall' or n['floor'] != f:
+                continue
+            asset = scene['assets'][n['asset']]
+            v = asset['vertices']
+            zs = [p[2] for p in v]
+            if not (min(zs) <= z <= max(zs)):
+                continue
+            top = max(zs)
+            tris = [Polygon([v[i][:2] for i in face]) for face in asset['faces'] if all(abs(v[i][2] - top) < 1e-6 for i in face)]
+            pieces.append(unary_union([t for t in tris if t.area > 0]))
+        assert pieces
+        assert sum(q.area for q in pieces) == pytest.approx(unary_union(pieces).area, abs=1e-3)
+
+
+def test_offline_render_path_is_present():
+    bundle = (ROOT / 'web/viewer.js').read_text('utf8')
+    assert 'exportPresentation' in bundle
+    for script in ('scripts/render_cycles.py', 'scripts/blender_scene.py'):
+        compile((ROOT / script).read_text('utf8'), script, 'exec')
+

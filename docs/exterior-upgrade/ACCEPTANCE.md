@@ -20,6 +20,7 @@ The focused exterior suite (`tests/test_exterior.py`) covers:
 - room and walk metadata, and the stair treads that make the stair climbable;
 - physically based material kinds;
 - furniture containment;
+- walls that tile each storey without overlapping solids;
 - offline-preview script integrity, and the bundled viewer's presence and licence comments.
 
 Current result: see `docs/VERIFICATION.md` for the latest full-suite count, which includes the loopback server checks.
