@@ -231,14 +231,14 @@
       "milestone": "M3",
       "requirement": "Road/kerb/gate/court/porch/door arrival",
       "status": "PARTIAL",
-      "evidence_or_file": "Authored scene and actual exterior capture; the walk starts on the footpath outside the open gate and a test keeps the route to the front door clear and climbable for every exterior theme",
+      "evidence_or_file": "A built frontage for every designed theme (floorforge/frontage.py): a pedestrian gate on the door's axis, shown open, a separate sliding vehicle gate over the parking pad or carport and a stone-clad letterbox pier; a cobble driveway and a slab path; the modern entrance is an L-shaped porch with lit steps, a sit-out and a tall pivot door. Tests keep the route from the footpath through the gate to the door clear and climbable for every theme, and the real capsule walker reached the door on four plots",
       "remaining": "No surveyed site levels/engineering of access."
     },
     {
       "milestone": "M3",
       "requirement": "Conditional parking/car/site request fulfilment",
       "status": "PARTIAL",
-      "evidence_or_file": "Parking court/envelope validation",
+      "evidence_or_file": "Parking court/envelope validation; the vehicle gate is aligned with the carport, or placed over the widest stretch of front yard the entrance leaves free, with a cobble driveway",
       "remaining": "No detailed car model, full gate options or all outdoor programmes."
     },
     {
@@ -266,7 +266,7 @@
       "milestone": "M3",
       "requirement": "Geometry-accurate varied massing and terraces",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "True L polygons, mirrored/shorter plans, upper terrace; first-floor terraces level with their floor with a timber deck, glass balustrade and handrail, louvred pergola and seating (tested for every exterior theme)",
+      "evidence_or_file": "True L polygons, mirrored/shorter plans, upper terrace; first-floor terraces level with their floor with a timber deck, glass balustrade and handrail, louvred pergola and seating; a stone-clad stair tower over the roof access and a solar rack on every designed theme; an open roof terrace with a glass balustrade and a deep timber-soffit eave on the modern theme (tested)",
       "remaining": "Not architecture optimisation or all requested typologies."
     },
     {
@@ -287,7 +287,7 @@
       "milestone": "M4",
       "requirement": "Dollhouse/top-down/floor inspection",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "Software-rendered captures",
+      "evidence_or_file": "Software-rendered captures; Aerial and Top views; every view fitted to the home itself, the plan and top view turned to use the screen's width; Focus shows the home alone filling the screen (studio check, framing unit test)",
       "remaining": "Shader clipping has no proper capped-solid dollhouse sections."
     },
     {
@@ -371,7 +371,7 @@
       "milestone": "M6",
       "requirement": "New responsive studio/real-engine landing",
       "status": "TESTED_SCOPE",
-      "evidence_or_file": "studio-browser.json; desktop/mobile captures",
+      "evidence_or_file": "studio-browser.json; desktop/mobile captures; Focus mode, the fitted views and the folding brief panel checked in the studio harness",
       "remaining": "Native direct-navigation, touch and accessibility audit remain open."
     },
     {

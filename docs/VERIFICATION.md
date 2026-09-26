@@ -105,6 +105,17 @@ Close-ups of every exterior theme's windows and terraces were rendered from the 
 - **Sparse terraces.** The glass balustrade had no visible edge and the deck was bare. Every terrace now has a handrail cap, a louvred pergola with downlights, seating on a rug and planted corners. A test checks the level, balustrade and pergola for every theme.
 - **Large view and zoom.** The studio's large view was driven in a browser at 1440×900 and 390×844. It filled the window with its controls, and **+** zoomed from 26.6 m to 18.6 m. A double-click glided in to the clicked spot. Esc returned to the studio. **Capture** saved a 3840×2400 PNG. A drawing sheet zoomed to 225% and panned by dragging.
 
+## Frontage, entrance, massing, side gardens and Focus
+
+The street frontage, entrance, roof and side gardens were rebuilt to read as a home as built, and every view was re-framed on the home. Renders from the street, the court, the steps, the side passages, the roof and above were checked for every plot size and designed theme, by day, at blue hour and at night. These were the findings and the changes:
+
+- **Frontage.** The centred gate between equal walls became a pedestrian gate on the door's axis and a separate sliding vehicle gate over the parking pad (or the carport), with a stone-clad letterbox pier. The open pedestrian leaf, first shown at 78°, reached 2 cm into the walk corridor; it now rests at 88° against its stop. The modern gate canopy (2.14 m above the court) is kept 0.3 m inside the wall so the approach stays clear.
+- **Entrance.** Straight steps across the whole landing became an L-shaped flight with a sit-out, a stone-clad column and a tall pivot door in a black steel portal. The LED strips under the nosings were too thin to read at night and were deepened; path lanterns that landed on the paving at the foot of the steps are now rejected on hardscape.
+- **Massing.** A flat, featureless roof became a stone-clad stair tower beside an open roof terrace (modern), a deep timber-soffit eave and a solar rack; the tower's door, first facing the solar array, now opens onto the terrace seating. Roof furniture and planting sit on the roof level so every dollhouse cut hides them.
+- **Side gardens.** Pebble passages became large two-tone slabs with a timber-clad boundary. The boards' gaps first showed the white render behind; a dark batten backing makes them shadow lines.
+- **Framing.** The hero showed the house across about half the frame's width, inside a street scene; every view now fits the home (84% of the frame for the hero). The Top view through the 43° lens let the roof loom over the garden and now uses a 24° lens. The studio's 3D view was 428 px tall on a 1440×900 laptop and is now 568 px, and the brief panel folds away for the width.
+- **Walk.** With the real capsule walker (the viewer's physics, fixed 1/30 s steps), holding W carried the visitor from the footpath through the open pedestrian gate, up the L-shaped steps and through the pivot door into the dining room on the villa, the 30×40 and 25×35 ft plots, and a plot with parking.
+
 ## Not accepted
 
 The following were not available or not completed:

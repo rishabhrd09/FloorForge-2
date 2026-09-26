@@ -49,6 +49,18 @@ GLB and drawings keep simple coordination proxies (`role: plant-proxy`) for the 
 
 First-floor terraces sit level with the floor they open from. Each has a timber deck, a frameless glass balustrade in a base shoe with a slim handrail cap, a pergola of slim posts and timber louvres with downlights, and seating on an outdoor rug between planted corners.
 
+**Frontage and entrance.** The street frontage (`floorforge/frontage.py`, every designed theme) is laid out as built homes are, not as a centred gate between equal walls:
+- a pedestrian gate on the door's axis, its leaf shown open against the stop (the walk enters here);
+- a separate sliding vehicle gate, closed, over the widest stretch of front yard the entrance steps leave free, or aligned with the carport; its track runs on behind the wall on the side with the longer clear run;
+- a stone-clad pier beside the pedestrian gate with a brass house number, a letterbox and a gate light, and on the modern theme a slim steel canopy over the gate with a downlight;
+- a cobble driveway behind the vehicle gate and a path of large two-tone slabs from the pedestrian gate to the steps.
+
+The Modern Tropical entrance is an L: the flight covers the door end of the landing and returns down its side toward the wider yard, each tread with a 30 mm nosing over an LED strip; the other end of the landing is a sit-out with a timber bench on a stone plinth, a planter of grasses and a stone-clad column under the canopy. The front door is a tall timber pivot door (its head in line with the full-height glazing) with long black pulls, set in a black steel portal that stands proud of the render.
+
+**Massing and roof.** Two-storey homes raise the stair into a stone-clad tower above the roof (the headroom over the roof access) with a floating lid, a slot window to the street and a glazed door onto the roof. On the modern theme the roof beside it is an open terrace with pavers, a frameless glass balustrade, loungers and planted pots, and a 1 m eave shades the street front, its soffit lined in timber slats with downlights. Every designed theme racks photovoltaic modules over the rear of the roof, tilted 12° toward the midday sun; single-storey modern roofs are finished in gravel. Roof-level furniture and planting sit on the roof level (floor = storeys), so every dollhouse cut hides them.
+
+**Side gardens.** Side passages wide enough to walk are paved in large-format slabs (1.2 × 0.6 m, laid in two tones by the paver shader's fourth parameter) with a pebble drip strip against the house; the side boundary walls are clad inside in horizontal timber boards over a dark batten backing, with a steel cap; tall pots of planting stand where a passage is wide enough to walk past them, and wall lights hang on the house. Narrow passages keep stepping stones in pebbles.
+
 **Neighbourhood context.** The viewer adds context sized from the plot: neighbouring houses with stone plinths, framed reflective glazing, timber entrance doors under slim canopies and some glass-railed balconies, front-garden shrubs, street trees, lamp posts and a horizon tree line. Trees and lamp posts are kept out of the foreground of both hero views, and the context stands aside for the Left and Right elevations, whose cameras would otherwise stand inside a neighbour's house. It is never part of the design exports and makes no design claim; the presentation GLB for offline renders includes it as context.
 
 **Large view and zoom.** **⤢ Large view** makes the 3D fill the whole window, with the view, mode and lighting controls carried along. It uses true full screen where the browser allows it and a window-filling view everywhere else, including iPhone. Esc or the same button returns to the studio.
@@ -57,9 +69,15 @@ First-floor terraces sit level with the floor they open from. Each has a timber 
 - **Capture** re-renders the current view at 3840 pixels wide, with the same framing, for a large still.
 - Drawing sheets zoom with **+**, **−**, Ctrl/⌘ + scroll or a double-click, pan by dragging, and have their own large view.
 
+**Framing, Focus and the wider view.** Every orbit view frames the home, not the street. `fitHouse` keeps the camera's viewing direction and moves the camera along and across its line of sight to the closest spot from which the home's box (every storey on show, with its porch, terraces and roof; the whole plot for the Top view) fills a set share of the frame, clear of the toolbars laid over the canvas. Each frame edge bounds the camera by a plane, so per screen axis the closest camera maximises a concave piecewise-linear function; `web/viewer/src/framing.js` solves it exactly and centres the axis with room to spare, and a unit test checks the fit from low, high and overhead directions on wide and tall screens. The hero fills 84% of the frame, the elevations and dollhouse about 90%, and a framing the visitor has not touched follows the canvas when it resizes.
+- **◎ Focus** enters the large view and shows the home alone (street and neighbours set aside) filling 94% of the screen from the current direction; views, modes and Reset keep that framing until Focus is switched off (walking always shows the street).
+- **Aerial** is a high three-quarter view over the roof, its terraces and the garden; **Top** looks straight down through a long lens. The plan and the top view turn the plot's long side across the screen (the street at the bottom, or on the left for a deep plot on a landscape screen), and the dollhouse diagonal is turned the same way, so the home uses the width.
+- **Fit** re-frames after zooming or orbiting; **⇤ Wider view** folds the brief panel away (remembered on the device) so the 3D takes the width of the studio.
+- The Cycles stills (`scripts/render_cycles.py`) frame their hero and front cameras with the same solve.
+
 **Quality.** Choose Auto, Ultra, High, Balanced or Performance. Auto starts from the device class and steps down when frames are slow.
 
-**Hero view.** The street-side three-quarter hero view is mirrored to whichever diagonal faces the sun, as a photographer would choose. The scene's own camera record is unchanged. The Front, Left and Right views aim at the middle of the elevation's height, so single-storey homes are framed as fully as G+1 ones. The Balcony view aims at the generated balcony and is offered only when the home has one.
+**Hero view.** The street-side three-quarter hero view is mirrored to whichever diagonal faces the sun, as a photographer would choose. The scene's own camera record is unchanged. The Front, Left and Right views look from the middle of the elevation's height and are then fitted to the home, so single-storey homes are framed as fully as G+1 ones. The Balcony view aims at the generated balcony and is offered only when the home has one.
 
 ## Walking through the home
 

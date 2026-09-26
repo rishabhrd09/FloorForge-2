@@ -57,13 +57,16 @@ Walking uses the same geometry. The viewer merges every collidable closed surfac
 
 The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from the same facade anchors, plot polygon and protected interior fingerprint as the other families:
 
-- a cantilevered portico or balcony soffit;
+- a cantilevered portico or balcony soffit over an L-shaped entrance: the flight covers the door end of the landing and returns down its side (`flight_side`, `return_steps_mm`), a sit-out with a bench, planter and stone-clad column fills the other end (`sitout_x_mm`), and the entry opening is refined into a tall pivot door (`entrance_pivot`);
 - a frameless glass balcony with a timber deck, handrail cap and louvred pergola;
 - slim aluminium windows, with timber-lined pods on facade bedrooms and etched glass in wet rooms;
-- a floating roof slab;
+- a floating roof slab with a deep street-side eave, a timber-slat soffit and downlights;
+- a stone-clad stair tower over the top-floor stair (`stair_tower`, shared with the other designed themes), beside an open roof terrace, and a solar rack;
 - a clad feature wall;
 - a carport and glass-roof pergola when the plot allows;
-- a Shapely-built landscape: court, pebble beds, stepping stones, lawns, planting, lanterns and boundary.
+- a Shapely-built landscape: driveway, entrance path, pebble beds, stepping stones, paved side passages with timber-clad boundary walls, lawns, planting, lanterns and boundary.
+
+The street frontage for every designed theme comes from `frontage.py`: `boundary.gates` lists a swing pedestrian gate on the door's axis and, where a 2.4 m stretch of front yard is clear of the entrance (or a carport is built), a sliding vehicle gate with the side its leaf parks on; `letterbox_pier` places the stone pier beside the pedestrian gate. `gate_center_mm` and `gate_width_mm` keep naming the arrival gateway (the pedestrian gate) for older consumers.
 
 Every landscape polygon is kept inside the plot and off the house footprint. Tests check this for all fixture plots.
 
@@ -79,6 +82,7 @@ Every landscape polygon is kept inside the plot and off the house footprint. Tes
 | `scene_kit.py` | Geometry helpers, physically based material library, plant/light registration |
 | `exterior.py` | Exterior/interior theme registry, legacy migration, candidate assemblies |
 | `modern_exterior.py` | Modern Tropical openings, assemblies and plot-aware landscape |
+| `frontage.py` | Street frontage for every designed theme: pedestrian and vehicle gates, letterbox pier |
 | `drawings.py` | SVG/ReportLab sheets, DXF floor plans |
 | `ifc_export.py` | IFC4 STEP entities, relations and self-integrity |
 | `pipeline.py` | DAG, caching, immutable builds, export ZIP |
@@ -86,7 +90,7 @@ Every landscape polygon is kept inside the plot and off the house footprint. Tes
 | `server.py` | Loopback API, host/origin/token checks, queue |
 | `web/app.js` | New studio UI and input/review/save flow |
 | `web/viewer.js` | Bundled realistic viewer (built from `web/viewer/src`, committed) |
-| `web/viewer/src/` | Viewer sources: materials/texture synthesis, sky/sun/probes, walker, planting, context, HUD, grade, presentation export |
+| `web/viewer/src/` | Viewer sources: materials/texture synthesis, sky/sun/probes, walker, planting, context, HUD, grade, presentation export; `framing.js` is the exact camera fit behind every view and Focus |
 | `web/src/three-studio.js` | Optional unbuilt Three/path-tracing lab |
 | `scripts/blender_scene.py` | External unexecuted Blender worker |
 | `scripts/regenerate_examples.py` | Rebuilds the three bundled examples from `examples/briefs` |
