@@ -1,0 +1,8 @@
+{
+  "two_clean_generations": true,
+  "equal_build_ids": true,
+  "files_compared": 23,
+  "changed_artifacts": [],
+  "seconds": 22.621,
+  "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
+}

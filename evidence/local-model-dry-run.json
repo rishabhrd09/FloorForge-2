@@ -1,0 +1,12 @@
+{
+  "repo": "Qwen/Qwen3-8B-GGUF",
+  "file": "Qwen3-8B-Q4_K_M.gguf",
+  "revision": "6a569868d07d3bd59e8b97fb001bf8c0b254bb20",
+  "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+  "approx_gb": 5.03,
+  "alias": "Qwen3-8B",
+  "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/6a569868d07d3bd59e8b97fb001bf8c0b254bb20/Qwen3-8B-Q4_K_M.gguf",
+  "license": "Apache-2.0",
+  "license_source": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/main/LICENSE",
+  "execution_inference_tested": false
+}

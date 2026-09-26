@@ -1,0 +1,447 @@
+{
+  "release": "0.2.0-alpha",
+  "license_audit_complete": false,
+  "new_code": "MIT, see LICENSE",
+  "installed_dependencies": [
+    {
+      "name": "numpy",
+      "version": "2.3.5",
+      "license_summary": "BSD-3-Clause + bundled-library notices",
+      "source": "homepage, https://numpy.org",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/numpy/numpy-2.3.5.dist-info__LICENSE.txt.txt",
+          "installed_source": "numpy-2.3.5.dist-info/LICENSE.txt",
+          "sha256": "2046a3130e50b11c01659b3a0d963e6ae0b7436ff8e89cbcfd9e87bc6112d595"
+        },
+        {
+          "path": "licenses/installed/numpy/numpy___core__include__numpy__random__LICENSE.txt.txt",
+          "installed_source": "numpy/_core/include/numpy/random/LICENSE.txt",
+          "sha256": "fbc539f47d0cf83bc61378080fb873d5c14630126cacbfe754035c3926daa5ec"
+        },
+        {
+          "path": "licenses/installed/numpy/numpy__ma__LICENSE.txt",
+          "installed_source": "numpy/ma/LICENSE",
+          "sha256": "05f3b88351988ecfad10abe92c0c50e5875c6452d5009a0084cc291551ffcca6"
+        },
+        {
+          "path": "licenses/installed/numpy/numpy__random__LICENSE.md.txt",
+          "installed_source": "numpy/random/LICENSE.md",
+          "sha256": "103166b62b80443afb9eb3488e052ea06be0cff566b908f199e561fde49af19f"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "shapely",
+      "version": "2.1.2",
+      "license_summary": "BSD-3-Clause; GEOS LGPL-2.1-or-later",
+      "source": "Documentation, https://shapely.readthedocs.io/",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/shapely/shapely-2.1.2.dist-info__licenses__LICENSE.txt.txt",
+          "installed_source": "shapely-2.1.2.dist-info/licenses/LICENSE.txt",
+          "sha256": "4a207eac9bf257ed286e1c6f0fce253d1abfdb134fc61ec855e37f5692a3f754"
+        },
+        {
+          "path": "licenses/installed/shapely/shapely-2.1.2.dist-info__licenses__LICENSE_GEOS.txt",
+          "installed_source": "shapely-2.1.2.dist-info/licenses/LICENSE_GEOS",
+          "sha256": "138b2c2f9450073d7c116abe397ca4382625671c752b7a9a5f320b33fc3f3f2a"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "trimesh",
+      "version": "4.11.1",
+      "license_summary": "MIT",
+      "source": "homepage, https://github.com/mikedh/trimesh",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/trimesh/trimesh-4.11.1.dist-info__licenses__LICENSE.md.txt",
+          "installed_source": "trimesh-4.11.1.dist-info/licenses/LICENSE.md",
+          "sha256": "fe27b5ef8710676cc85255da28a32f394e2ef3f4ce47075a1c732a9ea1d7bd03"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "ezdxf",
+      "version": "1.4.4",
+      "license_summary": "MIT",
+      "source": "Repository, https://github.com/mozman/ezdxf",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/ezdxf/ezdxf-1.4.4.dist-info__licenses__LICENSE.txt",
+          "installed_source": "ezdxf-1.4.4.dist-info/licenses/LICENSE",
+          "sha256": "db97ca426fc0d2b8124145de0f36181db73e6e713ce642d42fed2efc442edf19"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "reportlab",
+      "version": "4.4.9",
+      "license_summary": "BSD-style; fonts/optional assets have separate notices",
+      "source": "https://www.reportlab.com/",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/reportlab/reportlab-4.4.9.dist-info__licenses__LICENSE.txt",
+          "installed_source": "reportlab-4.4.9.dist-info/licenses/LICENSE",
+          "sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138"
+        },
+        {
+          "path": "licenses/installed/reportlab/reportlab__fonts__DarkGarden-copying-gpl.txt.txt",
+          "installed_source": "reportlab/fonts/DarkGarden-copying-gpl.txt",
+          "sha256": "1b2a567f289f66a143c56353e7b3d4fa5862514a5e3c5cfdf8b02ee5e5aaa953"
+        },
+        {
+          "path": "licenses/installed/reportlab/reportlab__fonts__DarkGarden-copying.txt.txt",
+          "installed_source": "reportlab/fonts/DarkGarden-copying.txt",
+          "sha256": "3cd1020510efa7f6b3166a5a2740f92bd664a695ea179e0bda442e74cd0ef3a4"
+        },
+        {
+          "path": "licenses/installed/reportlab/reportlab__fonts__bitstream-vera-license.txt.txt",
+          "installed_source": "reportlab/fonts/bitstream-vera-license.txt",
+          "sha256": "3361d054759a2fc686a2c058be82deaf9c2e6fe549be9004d7935a6c1736315d"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "Pillow",
+      "version": "12.3.0",
+      "license_summary": "HPND + bundled codec notices",
+      "source": "Release notes, https://pillow.readthedocs.io/en/stable/releasenotes/index.html",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/Pillow/pillow-12.3.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "pillow-12.3.0.dist-info/licenses/LICENSE",
+          "sha256": "dda12a98c1979cf3d94df1cff45d27a4cb3f04a60c76f76902ac54cac03ec0ce"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.2",
+      "license_summary": "MIT",
+      "source": "Documentation, https://pyparsing-docs.readthedocs.io/en/latest/",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/pyparsing/pyparsing-3.3.2.dist-info__licenses__LICENSE.txt",
+          "installed_source": "pyparsing-3.3.2.dist-info/licenses/LICENSE",
+          "sha256": "a5425f9dc14ac74d4c5f0b679e941f2442e32cca7452a4418d5b1a49893ebe4e"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license_summary": "PSF-2.0",
+      "source": "Bug Tracker, https://github.com/python/typing_extensions/issues",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/typing_extensions/typing_extensions-4.16.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "fonttools",
+      "version": "4.63.0",
+      "license_summary": "MIT",
+      "source": "http://github.com/fonttools/fonttools",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/fonttools/fonttools-4.63.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "fonttools-4.63.0.dist-info/licenses/LICENSE",
+          "sha256": "6787208f83f659ccbc2223b2fde952ffa6f7e8aca62f1a8a2bf5bc51bb1b2383"
+        },
+        {
+          "path": "licenses/installed/fonttools/fonttools-4.63.0.dist-info__licenses__LICENSE.external.txt",
+          "installed_source": "fonttools-4.63.0.dist-info/licenses/LICENSE.external",
+          "sha256": "94a83aaee0729a0f302d34acc4acecbd9d58366f262429075fe557e4a54b2e69"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.4.7",
+      "license_summary": "MIT",
+      "source": "Changelog, https://github.com/jawah/charset_normalizer/blob/master/CHANGELOG.md",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/charset-normalizer/charset_normalizer-3.4.7.dist-info__licenses__LICENSE.txt",
+          "installed_source": "charset_normalizer-3.4.7.dist-info/licenses/LICENSE",
+          "sha256": "6d0d41bfe170ac6c7dc248c9a63e254d0fb45a60d50a8257d0af92c6e249b887"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "networkx",
+      "version": "3.6.1",
+      "license_summary": "BSD-3-Clause",
+      "source": "Homepage, https://networkx.org/",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/networkx/networkx-3.6.1.dist-info__licenses__LICENSE.txt.txt",
+          "installed_source": "networkx-3.6.1.dist-info/licenses/LICENSE.txt",
+          "sha256": "3cf7c3a179d817b23b8b8568211769fefdf93797d207d984b8b2fa24d0220b33"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "scipy",
+      "version": "1.17.0",
+      "license_summary": "BSD-3-Clause + bundled-library notices",
+      "source": "homepage, https://scipy.org/",
+      "bundled": false,
+      "use": "core dependency installed separately",
+      "notice_files": [
+        {
+          "path": "licenses/installed/scipy/scipy-1.17.0.dist-info__LICENSE.txt.txt",
+          "installed_source": "scipy-1.17.0.dist-info/LICENSE.txt",
+          "sha256": "4daf14e37432e7026165979ecb7a39930707a3e89bef4876cfaf9dad36ed364a"
+        },
+        {
+          "path": "licenses/installed/scipy/scipy___lib___uarray__LICENSE.txt",
+          "installed_source": "scipy/_lib/_uarray/LICENSE",
+          "sha256": "c80c39b5fce06ba4897e14e0b0a88b54458334d951eb1361402ffad2cfb863b4"
+        },
+        {
+          "path": "licenses/installed/scipy/scipy__fft___pocketfft__LICENSE.md.txt",
+          "installed_source": "scipy/fft/_pocketfft/LICENSE.md",
+          "sha256": "c254b2b5fd30ae3c89d36ba061730563b9760fca04f1b746a1b2c3157da2c789"
+        },
+        {
+          "path": "licenses/installed/scipy/scipy__integrate__LICENSE_DOP.txt",
+          "installed_source": "scipy/integrate/LICENSE_DOP",
+          "sha256": "ed9bf58c6d74d3fad9d92d1d67d9bff8141d8ab60de784516b0711364fd43357"
+        },
+        {
+          "path": "licenses/installed/scipy/scipy__spatial__qhull_src__COPYING_QHULL.txt.txt",
+          "installed_source": "scipy/spatial/qhull_src/COPYING_QHULL.txt",
+          "sha256": "106d55c931fd6a84822e5345d900273d059f1c27310d02567ccb313c5d18c55d"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "pytest",
+      "version": "9.0.2",
+      "license_summary": "MIT",
+      "source": "Changelog, https://docs.pytest.org/en/stable/changelog.html",
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/pytest/pytest-9.0.2.dist-info__licenses__LICENSE.txt",
+          "installed_source": "pytest-9.0.2.dist-info/licenses/LICENSE",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "packaging",
+      "version": "25.0",
+      "license_summary": "Apache-2.0 OR BSD-2-Clause",
+      "source": "Documentation, https://packaging.pypa.io/",
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/packaging/packaging-25.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "packaging-25.0.dist-info/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "licenses/installed/packaging/packaging-25.0.dist-info__licenses__LICENSE.APACHE.txt",
+          "installed_source": "packaging-25.0.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "licenses/installed/packaging/packaging-25.0.dist-info__licenses__LICENSE.BSD.txt",
+          "installed_source": "packaging-25.0.dist-info/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "license_summary": "MIT",
+      "source": "Homepage, https://github.com/pytest-dev/iniconfig",
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/iniconfig/iniconfig-2.3.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "iniconfig-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "3409fa91f7ace557894632676656e32264fe5ef7581535725dc9a23774551bd4"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "license_summary": "MIT",
+      "source": null,
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/pluggy/pluggy-1.6.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "pluggy-1.6.0.dist-info/licenses/LICENSE",
+          "sha256": "d6b65e6c213a5d0b577911d34d6e5949b9f59d76c238c5071a2f3fc16cfb2606"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.20.0",
+      "license_summary": "BSD-2-Clause",
+      "source": "Homepage, https://pygments.org",
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/Pygments/pygments-2.20.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "pygments-2.20.0.dist-info/licenses/LICENSE",
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    },
+    {
+      "name": "playwright",
+      "version": "1.57.0",
+      "license_summary": "Apache-2.0",
+      "source": "homepage, https://github.com/Microsoft/playwright-python",
+      "bundled": false,
+      "use": "test-only",
+      "notice_files": [
+        {
+          "path": "licenses/installed/playwright/playwright-1.57.0.dist-info__licenses__LICENSE.txt",
+          "installed_source": "playwright-1.57.0.dist-info/licenses/LICENSE",
+          "sha256": "7fab1461b41970ff376f1c9303a637076bfaaeb71cd12dd3a1c44aaf59a1a2b9"
+        },
+        {
+          "path": "licenses/installed/playwright/playwright__driver__LICENSE.txt",
+          "installed_source": "playwright/driver/LICENSE",
+          "sha256": "537308465103a306d0e3eecf42632b4ff1b48aaaec044e9fc10a78c81fd00b34"
+        },
+        {
+          "path": "licenses/installed/playwright/playwright__driver__package__LICENSE.txt",
+          "installed_source": "playwright/driver/package/LICENSE",
+          "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+        },
+        {
+          "path": "licenses/installed/playwright/playwright__driver__package__NOTICE.txt",
+          "installed_source": "playwright/driver/package/NOTICE",
+          "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+        },
+        {
+          "path": "licenses/installed/playwright/playwright__driver__package__ThirdPartyNotices.txt.txt",
+          "installed_source": "playwright/driver/package/ThirdPartyNotices.txt",
+          "sha256": "3c338d6e7da464cd2c935351162dc472ca21d807cb81b9eccf521bb35731d8da"
+        }
+      ],
+      "status": "Installed-distribution notices inspected; not complete platform-specific redistribution clearance"
+    }
+  ],
+  "optional": [
+    {
+      "name": "Three.js",
+      "version": "0.180.0",
+      "license": "MIT",
+      "bundled": false,
+      "status": "optional source integration, not downloaded/built"
+    },
+    {
+      "name": "three-gpu-pathtracer",
+      "version": "0.0.24",
+      "license": "MIT",
+      "bundled": false,
+      "status": "optional source integration, not downloaded/built"
+    },
+    {
+      "name": "GSAP",
+      "license": "GSAP standard license (custom, not MIT)",
+      "bundled": false,
+      "status": "Explicit opt-in license review required"
+    },
+    {
+      "name": "IfcOpenShell",
+      "version": "0.8.5",
+      "license": "LGPL-3.0-or-later; review complete distribution",
+      "bundled": false,
+      "status": "Optional external validation setup only; unexecuted"
+    },
+    {
+      "name": "Blender",
+      "license": "GPL; external user-installed process",
+      "bundled": false,
+      "status": "Worker authored; no Blender runtime, binary or output bundled"
+    },
+    {
+      "name": "Qwen3-8B-GGUF and Qwen3-4B-GGUF",
+      "license": "Apache-2.0 model cards",
+      "bundled": false,
+      "status": "Official hash-pinned opt-in downloader; no weights/inference bundled"
+    },
+    {
+      "name": "llama.cpp",
+      "license": "MIT",
+      "bundled": false,
+      "status": "User-provided llama-server executable; no runtime/version accepted"
+    },
+    {
+      "name": "PyInstaller / Inno Setup",
+      "license": "Platform-specific distribution and runtime audit required",
+      "bundled": false,
+      "status": "Build recipes only; no native binaries"
+    },
+    {
+      "name": "Procedural scene, meshes, styles, viewer",
+      "license": "Project MIT (new authored code/geometry)",
+      "bundled": true,
+      "status": "No third-party furniture, protected reference photos or fonts bundled"
+    }
+  ],
+  "native_distribution_warning": "GEOS and compiled numerical/codec libraries have their own notices and obligations. The native recipes are not a commercially cleared distribution. This source ZIP does not bundle their runtimes.",
+  "reference_images": "User-supplied taste references inspected in contact sheets; not redistributed. No claim of rights to reference media.",
+  "fonts": "No font files are included in this ZIP. System/browser and PDF built-in fonts are used."
+}

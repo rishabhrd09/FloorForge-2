@@ -1,0 +1,13 @@
+G+1 40x60: preliminary_geometry_pass
+G 30x40: preliminary_geometry_pass
+G 25x35: preliminary_geometry_pass
+{
+  "python": "3.13.5",
+  "shapely": "2.1.2",
+  "numpy": "2.3.5",
+  "trimesh": "4.11.1",
+  "ezdxf": "1.4.4",
+  "reportlab": "4.4.9",
+  "Pillow": "12.3.0"
+}
+Core import and geometry smoke passed. This is not structural or regulatory acceptance.

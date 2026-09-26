@@ -1,0 +1,183 @@
+...F....................................................F...........F... [ 65%]
+......................................                                   [100%]
+=================================== FAILURES ===================================
+______________ test_furniture_footprints_within_their_clear_room _______________
+
+model = {'banner': 'PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION', 'brief': {'bedrooms': 3, 'budget_lakh': 65.0, 'c...: 'F0-D005', ...}, {'connects': ['F0-hall', 'F0-left-0'], 'floor': 0, 'height': 2150, 'id': 'F0-D006', ...}, ...], ...}
+scene = {'assets': {'007dc2aafe1ddd4bd50b': {'closed': True, 'faces': [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, ...}, 'interior': {'fov': 66, 'position': [np.float64(6.246), 0.65, 1.6], 'target': [7.194240000000001, 4.0, 1.35]}}, ...}
+
+    def test_furniture_footprints_within_their_clear_room(model,scene):
+        rooms={s['id']:Polygon([[x/1000,y/1000] for x,y in s['clear']]) for s in model['spaces']}
+        for item in scene['furniture']:
+>           assert rooms[item['room_id']].buffer(.015).covers(Polygon(item['footprint'])),item['id']
+E           AssertionError: F0-dining/dining-set
+E           assert False
+E            +  where False = covers(<POLYGON ((7.952 2.561, 7.952 4.401, 6.052 4.401, 6.052 2.561, 7.952 2.561))>)
+E            +    where covers = <POLYGON ((2.5 2.595, 2.499 2.595, 2.497 2.595, 2.496 2.596, 2.494 2.596, 2....>.covers
+E            +      where <POLYGON ((2.5 2.595, 2.499 2.595, 2.497 2.595, 2.496 2.596, 2.494 2.596, 2....> = buffer(0.015)
+E            +        where buffer = <POLYGON ((2.5 2.61, 2.5 4.4, 0.23 4.4, 0.23 4.425, 4.171 4.425, 4.321 4.425...>.buffer
+E            +    and   <POLYGON ((7.952 2.561, 7.952 4.401, 6.052 4.401, 6.052 2.561, 7.952 2.561))> = Polygon([[7.952439999999999, 2.5612], [7.952439999999999, 4.4012], [6.052440000000001, 4.4012], [6.052440000000001, 2.5612]])
+
+tests/test_exports.py:28: AssertionError
+______________ test_adversarial_geometry_rejected[rooms-<lambda>] ______________
+
+model = {'banner': 'PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION', 'brief': {'bedrooms': 3, 'budget_lakh': 65.0, 'c...: 'F0-D005', ...}, {'connects': ['F0-hall', 'F0-left-0'], 'floor': 0, 'height': 2150, 'id': 'F0-D006', ...}, ...], ...}
+key = 'rooms', mutate = <function <lambda> at 0x7f73557132e0>
+
+    @pytest.mark.parametrize('key,mutate',[('rooms',lambda b:b['spaces'].__setitem__(1,copy.deepcopy(b['spaces'][0]))),('opening',lambda b:b['openings'][0].__setitem__('width',999999))])
+    def test_adversarial_geometry_rejected(model,key,mutate):
+        b=copy.deepcopy(model);mutate(b)
+>       with pytest.raises(DesignError):validate(b)
+                                        ^^^^^^^^^^^
+
+tests/test_geometry.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+b = {'banner': 'PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION', 'brief': {'bedrooms': 3, 'budget_lakh': 65.0, 'c...: 'F0-D005', ...}, {'connects': ['F0-hall', 'F0-left-0'], 'floor': 0, 'height': 2150, 'id': 'F0-D006', ...}, ...], ...}
+
+    def validate(b):
+        v=b['brief'];errors=[];warnings=[];checks=[]; spaces=b['spaces']; fp=Polygon(b['footprint'])
+        ids=[s['id'] for key in ('spaces','walls','openings') for s in b[key]]
+        if len(ids)!=len(set(ids)): errors.append({'code':'DUPLICATE_ID'})
+        if not fp.is_valid or fp.is_empty:errors.append({'code':'FOOTPRINT_INVALID'})
+        if not Polygon(b['plot']).covers(fp):errors.append({'code':'PLOT_CONTAINMENT'})
+        graph={s['id']:set() for s in spaces};graph['outside']=set()
+        for floor in range(b['storeys']):
+            ss=[s for s in spaces if s['floor']==floor]
+            for i,s in enumerate(ss):
+                p=Polygon(s['polygon']); c=Polygon(s['clear'])
+                if not fp.buffer(.01).covers(p):errors.append({'code':'SPACE_OUTSIDE','id':s['id']})
+                for q in ss[i+1:]:
+                    if p.intersection(Polygon(q['polygon'])).area>1:errors.append({'code':'SPACE_OVERLAP','ids':[s['id'],q['id']]})
+                    # Shared edge without a wall is an open connection.
+                    edge=p.boundary.intersection(Polygon(q['polygon']).boundary)
+                    wall=any(set(w['rooms'])=={s['id'],q['id']} for w in b['walls'])
+                    if edge.length>=800 and not wall:
+                        graph[s['id']].add(q['id']);graph[q['id']].add(s['id'])
+                area,width=GUIDELINES.get(s['kind'],(0,0))
+                bounds=c.bounds; minwidth=min(bounds[2]-bounds[0],bounds[3]-bounds[1])
+                if s['kind'] in ('living','dining'):
+                    combined=unary_union([Polygon(t['clear']) for t in ss if t['kind'] in ('living','dining')])
+                    area_actual=combined.area/1e6
+                    bx=combined.bounds;minwidth=min(bx[2]-bx[0],bx[3]-bx[1])
+                else:area_actual=c.area/1e6
+                if area_actual+1e-5<area or minwidth+.01<width:
+                    errors.append({'code':'GUIDELINE_ROOM_SIZE','id':s['id'],'actual_m2':round(area_actual,3),
+                        'required_m2':area,'bounding_short_side_mm':round(minwidth),'target_width_mm':width,'source':RULE_SOURCE})
+                if not c.is_valid or c.area<=0:errors.append({'code':'CLEAR_INVALID','id':s['id']})
+                if s['kind']=='hall' and max(bounds[2]-bounds[0],bounds[3]-bounds[1])>4000:
+                    warnings.append({'code':'LONG_CIRCULATION','id':s['id'],'message':'A long hall remains; review daylight and circulation efficiency.'})
+            if abs(unary_union([Polygon(s['polygon']) for s in ss]).area-fp.area)>2:
+                errors.append({'code':'UNTILED_FLOOR','floor':floor})
+        hosts={w['id']:w for w in b['walls']}
+        for o in b['openings']:
+            if o['wall_id'] not in hosts:errors.append({'code':'MISSING_HOST','id':o['id']});continue
+            w=hosts[o['wall_id']];length=math.dist(w['a'],w['b'])
+            if o['offset']<0 or o['offset']+o['width']>length+.1 or o['sill']+o['height']>w['height']:
+                errors.append({'code':'OPENING_OUTSIDE','id':o['id']})
+            if o['kind']!='window':
+>               a,c=o['connects'];graph[a].add(c);graph[c].add(a)
+                                  ^^^^^^^^
+E               KeyError: 'F0-living'
+
+floorforge/review.py:59: KeyError
+__________________ test_invalid_field_rejected[depth_mm-nan] ___________________
+
+key = 'depth_mm', value = nan
+
+    @pytest.mark.parametrize('key,value',[('width_mm',True),('width_mm',4999),('depth_mm',float('nan')),('storeys',3),('bedrooms',0),('budget_lakh',-1),('road_bearing_deg',360),('latitude',91),('longitude',200),('floor_height_mm',1000),('front_mm',-1),('style','unknown'),('solar_date','2026-02-30'),('parking','yes')])
+    def test_invalid_field_rejected(key,value):
+>       with pytest.raises(DesignError):fuse({'brief':{key:value}})
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_intent.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+floorforge/intent.py:98: in fuse
+    if len({canonical(s['values'][key]) for s in chosen})>1:
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+floorforge/model.py:15: in canonical
+    return json.dumps(data, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf8')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/usr/lib/python3.13/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.encoder.JSONEncoder object at 0x7f7354c07bf0>, o = nan
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if self.indent is None or isinstance(self.indent, str):
+            indent = self.indent
+        else:
+            indent = ' ' * self.indent
+        if _one_shot and c_make_encoder is not None:
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+>       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant: nan
+
+/usr/lib/python3.13/json/encoder.py:261: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_exports.py::test_furniture_footprints_within_their_clear_room - AssertionError: F0-dining/dining-set
+assert False
+ +  where False = covers(<POLYGON ((7.952 2.561, 7.952 4.401, 6.052 4.401, 6.052 2.561, 7.952 2.561))>)
+ +    where covers = <POLYGON ((2.5 2.595, 2.499 2.595, 2.497 2.595, 2.496 2.596, 2.494 2.596, 2....>.covers
+ +      where <POLYGON ((2.5 2.595, 2.499 2.595, 2.497 2.595, 2.496 2.596, 2.494 2.596, 2....> = buffer(0.015)
+ +        where buffer = <POLYGON ((2.5 2.61, 2.5 4.4, 0.23 4.4, 0.23 4.425, 4.171 4.425, 4.321 4.425...>.buffer
+ +    and   <POLYGON ((7.952 2.561, 7.952 4.401, 6.052 4.401, 6.052 2.561, 7.952 2.561))> = Polygon([[7.952439999999999, 2.5612], [7.952439999999999, 4.4012], [6.052440000000001, 4.4012], [6.052440000000001, 2.5612]])
+FAILED tests/test_geometry.py::test_adversarial_geometry_rejected[rooms-<lambda>] - KeyError: 'F0-living'
+FAILED tests/test_intent.py::test_invalid_field_rejected[depth_mm-nan] - ValueError: Out of range float values are not JSON compliant: nan
+3 failed, 107 passed in 17.41s

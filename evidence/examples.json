@@ -1,0 +1,23 @@
+[
+  {
+    "name": "demo",
+    "build_id": "1838d085e68f679a164791dd",
+    "project": "examples/briefs/demo.json",
+    "outputs": "examples/demo",
+    "seconds": 0.881
+  },
+  {
+    "name": "compact",
+    "build_id": "bd1f4c55a4cc2e799532dfe4",
+    "project": "examples/briefs/compact.json",
+    "outputs": "examples/compact",
+    "seconds": 6.705
+  },
+  {
+    "name": "small",
+    "build_id": "3c838ced5acd60ff195d5619",
+    "project": "examples/briefs/small.json",
+    "outputs": "examples/small",
+    "seconds": 4.917
+  }
+]

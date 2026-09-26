@@ -1,0 +1,27 @@
+{
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+  "dependencies": {
+    "numpy": "2.3.5",
+    "shapely": "2.1.2",
+    "trimesh": "4.11.1",
+    "ezdxf": "1.4.4",
+    "reportlab": "4.4.9",
+    "Pillow": "12.3.0",
+    "pyparsing": "3.3.2",
+    "typing_extensions": "4.16.0",
+    "fonttools": "4.63.0",
+    "charset-normalizer": "3.4.7",
+    "networkx": "3.6.1",
+    "scipy": "1.17.0",
+    "pytest": "9.0.2",
+    "packaging": "25.0",
+    "iniconfig": "2.3.0",
+    "pluggy": "1.6.0",
+    "Pygments": "2.20.0",
+    "playwright": "1.57.0"
+  },
+  "network": "Package downloads unavailable in delivery environment; installed runtime used",
+  "native_os_checks": false,
+  "real_gpu": false
+}

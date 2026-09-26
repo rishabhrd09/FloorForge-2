@@ -1,0 +1,567 @@
+{
+  "release": "0.2.0-alpha",
+  "all_original_requirements_complete": false,
+  "status_definition": "TESTED_SCOPE means the explicitly bounded behavior passed local tests, not the full commercial requirement.",
+  "requirements": [
+    {
+      "milestone": "M0",
+      "requirement": "Reference inventory and fresh design direction",
+      "status": "PARTIAL",
+      "evidence_or_file": "evidence/input-inventory.json",
+      "remaining": "Images reviewed in contact sheets; videos not fully reviewed; original repo unavailable."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "Legacy contracts and 243 tests",
+      "status": "BLOCKED",
+      "evidence_or_file": "Input audit",
+      "remaining": "Supply original repository and run unchanged suite."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "Shared units, orientation and semantic building model",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "model.py; orientation and geometry tests",
+      "remaining": "No licensed surveying or georeferencing certification."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "Typed contracts and pure stages",
+      "status": "PARTIAL",
+      "evidence_or_file": "Dataclasses; intent/layout/review modules",
+      "remaining": "Strict complete annotations/type-check gate not run."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "Selectable cached DAG and manifests",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "pipeline.py; cache tests",
+      "remaining": "Programme/openings remain coupled to layout; structural/render stages expose placeholders honestly."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "Determinism from two clean runs",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "evidence/reproducibility.json",
+      "remaining": "Same runtime/OS; cross-platform bitwise equivalence unverified."
+    },
+    {
+      "milestone": "M0",
+      "requirement": "License and asset ledger",
+      "status": "PARTIAL",
+      "evidence_or_file": "licenses/LEDGER.json",
+      "remaining": "Complete native/transitive redistribution audit open."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Five-input path with useful defaults",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "UI generation and three fixture families",
+      "remaining": "Bounded valid programme/plot range only."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Source precedence, conflict and Used/Off",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "intent.py; source tests",
+      "remaining": "Image semantics/manual grid comparisons remain limited."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Free text understanding",
+      "status": "PARTIAL",
+      "evidence_or_file": "parse_text; grammar tests",
+      "remaining": "Unrestricted prose, Hindi and semantic placement not implemented."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Exact cell grid and L polygons",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Grid union and nonrectangular tests",
+      "remaining": "Only ground-floor manual grids; no arbitrary multi-level edited polygons."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Survey G/G+1 distinct floors",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Fixture/variants/stair tests",
+      "remaining": "No G+2/G+3, stilt, basement or arbitrary room-per-floor programme."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "No silent added storeys",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Intent and infeasibility tests",
+      "remaining": "Rejected requests need explicit owner revision."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Open public zones/private room routing",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Portal graph and through-bedroom tests",
+      "remaining": "Graph access does not prove furniture-clearance or universal accessibility."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Minimum-size, overlap and containment screen",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "review.py",
+      "remaining": "Secondary research targets; local width/clearance and current legal clauses unverified."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Official NBC/byelaw validator",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Statuses NOT EVALUATED",
+      "remaining": "Authorised clause-specific jurisdiction pack and professional acceptance."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Aligned wet services and stairs",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Layout/stair core tests",
+      "remaining": "Full structural/headroom/MEP coordination not designed."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Automatic courtyard/lightwell/double-height solving",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No hidden claims",
+      "remaining": "Need new topology, void and circulation solver."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Eldercare/ICU/accessibility design",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Preserved intent and NOT CERTIFIED status",
+      "remaining": "Specialist patient/equipment/step-free route and services review."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Sketch/photo/OCR/CV interpretation",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Browser manual references only",
+      "remaining": "Recognition, confidence, tracing/correction and image persistence."
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Vastu lever and strict satisfaction",
+      "status": "PARTIAL",
+      "evidence_or_file": "Centroid heuristic and unmet-strict warning",
+      "remaining": "No enforced strict optimiser or scientific claim."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "True walls/openings and plan schedules",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "SVG/PDF/DXF and tests",
+      "remaining": "Professional drafting review, exact clear openings/finishes needed."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "Overall/room/opening dimension chains",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Plan vectors and real DXF dimensions",
+      "remaining": "Not a complete chained dimension set for every edge/irregular shape."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "Site plan/elevations/stair section",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Nine default drawing sheets",
+      "remaining": "Elevations simplified; full facade/building details and slopes absent."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "IS 962 convention certification",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Layer/line-weight-inspired drawing system",
+      "remaining": "No official standard compliance audit."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "Indicative structural member/footing drawing",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "S-001 coordination axes only",
+      "remaining": "No columns/beams/slab sizing/footings/rebar certification."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "A3 PDF/SVG export",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Page/text checks and actual captures",
+      "remaining": "Physical printer/plotter acceptance open."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "DXF re-import",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "ezdxf audit; deterministic metadata tests",
+      "remaining": "AutoCAD GUI not tested; elevations/section not exported in DXF."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "IFC4 export/re-import",
+      "status": "PARTIAL_UNVERIFIED",
+      "evidence_or_file": "IFC STEP self-reference checks",
+      "remaining": "Independent schema/viewer untested; door/window-fill semantics incomplete."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "GLB geometry export/re-import",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Trimesh round-trip",
+      "remaining": "Independent glTF validator and a second viewer open; not one watertight house union."
+    },
+    {
+      "milestone": "M2",
+      "requirement": "DWG, STEP/BREP exports",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No mislabeled substitute",
+      "remaining": "License-reviewed backend and acceptance fixtures required."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Six user-selectable geometric exterior languages",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Style recipe/fixture tests",
+      "remaining": "No fixed-camera six-style realism acceptance or broad massing variety."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Road/kerb/gate/court/porch/door arrival",
+      "status": "PARTIAL",
+      "evidence_or_file": "Authored scene and actual exterior capture",
+      "remaining": "No surveyed site levels/engineering of access."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Conditional parking/car/site request fulfilment",
+      "status": "PARTIAL",
+      "evidence_or_file": "Parking court/envelope validation",
+      "remaining": "No detailed car model, full gate options or all outdoor programmes."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Articulated neighbours and context",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No invented scanned context",
+      "remaining": "Add context geometry with known scale/orientation."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Compass-correct solar study",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Orientation + solar implementation",
+      "remaining": "No refraction, skyline, automatic front-lit-hour search or pvlib comparison."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "HDRI normalisation and physical IBL",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "Optional Three lab",
+      "remaining": "Default raster has no IBL; asset pack and real-GPU acceptance open."
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Geometry-accurate varied massing and terraces",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "True L polygons, mirrored/shorter plans, upper terrace",
+      "remaining": "Not architecture optimisation or all requested typologies."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "Detailed furniture/soft layers",
+      "status": "PARTIAL",
+      "evidence_or_file": "Authored mesh recipes and furnished captures",
+      "remaining": "Curated high-quality library, all doorway clearances and full interiors remain open."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "Visible-fixture-linked lights",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Fixture metadata tests",
+      "remaining": "Lighting quality/physical luminance not calibrated."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "Dollhouse/top-down/floor inspection",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Software-rendered captures",
+      "remaining": "Shader clipping has no proper capped-solid dollhouse sections."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "First-person at 1.6m with collision",
+      "status": "PARTIAL",
+      "evidence_or_file": "Circle-wall/furniture implementation",
+      "remaining": "Capsule/headroom/glass-door state/stair walking not accepted."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "Click travel and interactive doors/drawers",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No fake buttons",
+      "remaining": "Navigation and interaction metadata/state required."
+    },
+    {
+      "milestone": "M4",
+      "requirement": "No room labels in 3D",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Viewer and actual captures",
+      "remaining": "Labels remain in 2D/review only."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Cinematic arrival/interior/exit film",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Orbit control only",
+      "remaining": "Directed validated interior route and render/encode/QA needed."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Day/golden/dusk display",
+      "status": "PARTIAL",
+      "evidence_or_file": "Native grade controls",
+      "remaining": "Grades are not recalculated true solar times."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Raster PNG capture",
+      "status": "IMPLEMENTED",
+      "evidence_or_file": "Viewer snapshot control",
+      "remaining": "Automated saved-file acceptance remains limited."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "12-second WebM orbit capture",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "Viewer MediaRecorder code",
+      "remaining": "No recorded video acceptance or frame-rate benchmark."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Photoreal live path tracing / 4K still",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "Optional Three source",
+      "remaining": "Not installed/built/rendered in this environment."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Editable Blender scene / FBX + JSON / tour frames",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "scripts/blender_scene.py",
+      "remaining": "Blender absent; no .blend/FBX/Cycles outputs produced."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Astra inspect/repair/lived-in quality loop",
+      "status": "PARTIAL",
+      "evidence_or_file": "Owner Appendix E and procedural scene",
+      "remaining": "Original article fetch failed; full loop and photoreal target not completed."
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Manim reveal / AI image enhancement",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No substitution for true geometry",
+      "remaining": "Optional future explanation/appearance tools, carefully labelled."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "New responsive studio/real-engine landing",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "studio-browser.json; desktop/mobile captures",
+      "remaining": "Native direct-navigation, touch and accessibility audit remain open."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Full conditional civil questionnaire",
+      "status": "PARTIAL",
+      "evidence_or_file": "Five essentials + selected deeper fields",
+      "remaining": "Not the entire supplied questionnaire; no unsupported answers disguised as honoured."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Review fused intent and conflicts",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Preflight UI and tests",
+      "remaining": "Arbitrary recognition hypotheses not implemented."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Save/reopen project and export bundle",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "JSON contract, UI collection and actual files",
+      "remaining": "Image bytes/legacy project migration not supported; undo/compare absent."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Drag-resize-rotate/snapping designer",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Grid painter only",
+      "remaining": "Semantic editor, undo and constraint-preserving updates required."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "GSAP choreography",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "Optional lab only",
+      "remaining": "Default UI uses CSS; no accepted production GSAP integration."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Keyboard/reduced-motion/accessibility",
+      "status": "PARTIAL",
+      "evidence_or_file": "Focus states, controls, reduced-motion handling",
+      "remaining": "Formal keyboard, touch, screen-reader and contrast audit open."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Three user-consent AI questions",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Dialog and schema/consent tests",
+      "remaining": "Not every cloud/local provider exercised."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Local Qwen download + llama-server",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "Pinned hash downloader dry-run and starter",
+      "remaining": "No weights/runtime/inference test bundled."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Cloud BYOK and validated edit proposals",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Mock/schema/security tests and adapter",
+      "remaining": "No paid provider request; no image input; structural/regulatory gates unavailable."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Session keys/clear/estimate/privacy",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Security tests",
+      "remaining": "OS-keychain, secure RAM erase, formal audit not implemented."
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Every higher AI tier visibly better",
+      "status": "NOT_VERIFIED",
+      "evidence_or_file": "No invented benchmark",
+      "remaining": "Controlled accepted-plan evaluation required; no blanket guarantee."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Area/room/opening schedules",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "Generated drawing/report data",
+      "remaining": "Gross envelope includes terraces/stair cells, not statutory/carpet area."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Cost in lakhs and timeline",
+      "status": "PARTIAL",
+      "evidence_or_file": "Editable illustrative scenarios",
+      "remaining": "No location/date rate survey, BOQ or commitment."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Indicative RCC/foundations/steel/material quantities",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "No fabricated values",
+      "remaining": "Professional calculations and measured soil/assemblies required."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Soil/photo/geotech recommendation",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Soil context and warning only",
+      "remaining": "Never infer bearing capacity or a pile scheme from a photo/name."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Drainage/plinth/RWH design",
+      "status": "PARTIAL",
+      "evidence_or_file": "Plinth geometry/input; notes",
+      "remaining": "No surveyed falls, stormwater sizing or rainwater engineering."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "MEP schematics and loads",
+      "status": "PARTIAL",
+      "evidence_or_file": "Services intent tables",
+      "remaining": "No routed plumbing/electrical sizing, one-line design or medical services."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Understandable quality scores",
+      "status": "PARTIAL",
+      "evidence_or_file": "Vastu/opening ratios and warnings",
+      "remaining": "No verified daylight, energy, thermal or universal circulation score."
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Preliminary banner throughout",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "PDF page tests and output headers",
+      "remaining": "Cannot replace professional review."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Setup/start scripts and double-click wrappers",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Shell syntax + installed-runtime smoke",
+      "remaining": "Fresh network install and native OS execution unverified; terminals visible."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "No-terminal native launcher",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "desktop.py / PyInstaller spec",
+      "remaining": "Target-platform runtime build and acceptance needed."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "macOS .app/.dmg and Windows .exe/.msi",
+      "status": "AUTHORED_UNVERIFIED",
+      "evidence_or_file": "macOS and Inno Setup recipes",
+      "remaining": "No binaries built, signed or notarised. MSI recipe absent."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Offline release/runtime/assets",
+      "status": "PARTIAL_TESTED",
+      "evidence_or_file": "Self-contained preview + no-network core",
+      "remaining": "Core dependencies first need installation; model/optional assets separate."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Update/rollback",
+      "status": "PARTIAL",
+      "evidence_or_file": "Documented side-by-side rollback",
+      "remaining": "No automatic updater/migration service."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Real GPU and clean-machine acceptance",
+      "status": "NOT_VERIFIED",
+      "evidence_or_file": "Software-renderer evidence only",
+      "remaining": "Actual macOS/Windows GPU and setup/installer tests required."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Adversarial review and tests",
+      "status": "TESTED_SCOPE",
+      "evidence_or_file": "pytest; repaired defects; reproducibility",
+      "remaining": "Not equivalent to legacy 243 tests, independent engineering review or penetration test."
+    },
+    {
+      "milestone": "M8",
+      "requirement": "Final demo film and photoreal reference match",
+      "status": "NOT_IMPLEMENTED",
+      "evidence_or_file": "Actual raster screenshots only",
+      "remaining": "Film, reference comparison and artistic acceptance needed."
+    }
+  ]
+}

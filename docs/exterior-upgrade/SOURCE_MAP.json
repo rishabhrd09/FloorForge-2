@@ -1,0 +1,32 @@
+{
+  "schema": "floorforge.exterior-source-map/0.1",
+  "live_entry": {
+    "browser": "web/app.js:collect,generate,loadBuild",
+    "http": "floorforge/server.py:Handler.do_GET,Handler.do_POST",
+    "pipeline": "floorforge/pipeline.py:run,publish"
+  },
+  "contracts": {
+    "preferences": "floorforge/exterior.py:DesignPreferences",
+    "theme_registry": "floorforge/exterior.py:EXTERIOR_THEMES,INTERIOR_THEMES",
+    "anchors": "floorforge/exterior.py:derive_facade_anchors",
+    "change_set": "floorforge/exterior.py:build_exterior_change_set",
+    "protection": "floorforge/exterior.py:protected_interior_fingerprint",
+    "review": "floorforge/exterior.py:exterior_review"
+  },
+  "geometry": {
+    "candidate_generation": "floorforge/exterior.py:generate_exterior_candidates",
+    "candidate_selection": "floorforge/exterior.py:evaluate_candidate,select_candidate",
+    "building_revision": "floorforge/exterior.py:apply_exterior_preferences",
+    "shared_scene": "floorforge/scene.py:make_scene",
+    "shared_drawings": "floorforge/drawings.py:plan_elements,site_elements,elevation_elements",
+    "review_screen": "floorforge/review.py:validate"
+  },
+  "data_flow": {
+    "building_revision": "floorforge.building/0.3",
+    "landscape": "floorforge.landscape/0.1",
+    "change_set": "floorforge.change-set/0.1",
+    "scene": "floorforge.scene/0.3",
+    "project_opt_in": "floorforge.project/0.3"
+  },
+  "tests": "tests/test_exterior.py"
+}

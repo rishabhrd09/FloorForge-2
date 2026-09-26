@@ -1,0 +1,11 @@
+{
+  "method": "Playwright set_content of self-contained preview, Chromium SwiftShader under Xvfb. Browser navigation blocked by managed environment; real GPU unverified.",
+  "metrics": {
+    "ready": true,
+    "error": null,
+    "frames": 2,
+    "nodes": 2178,
+    "renderer": "WebKit WebGL"
+  },
+  "errors": []
+}

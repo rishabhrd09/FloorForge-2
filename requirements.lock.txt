@@ -1,0 +1,14 @@
+# Tested direct + required transitive Python versions. Python 3.11-3.13.
+# This is an exact-version lock, not a hash-locked cross-platform wheel manifest.
+numpy==2.3.5
+shapely==2.1.2
+trimesh==4.11.1
+ezdxf==1.4.4
+reportlab==4.4.9
+Pillow==12.3.0
+pyparsing==3.3.2
+typing_extensions==4.16.0
+fonttools==4.63.0
+charset-normalizer==3.4.7
+networkx==3.6.1
+scipy==1.17.0

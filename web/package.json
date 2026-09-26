@@ -1,0 +1,9 @@
+{
+  "name": "floorforge-optional-three-studio",
+  "version": "0.2.0-alpha",
+  "private": true,
+  "type": "module",
+  "scripts": {"build": "esbuild src/three-studio.js --bundle --format=esm --minify --outfile=dist/three-studio.js --legal-comments=external"},
+  "dependencies": {"three": "0.180.0", "three-gpu-pathtracer": "0.0.24", "three-mesh-bvh": "0.9.5", "gsap": "3.13.0"},
+  "devDependencies": {"esbuild": "0.25.10"}
+}

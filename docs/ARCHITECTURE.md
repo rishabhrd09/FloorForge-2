@@ -1,0 +1,70 @@
+# Architecture and contracts
+
+## One authority, explicit export boundaries
+
+`intent.py` preserves sources and compiles supported input into a brief. `layout.py` produces the canonical building: local plan coordinates in millimetres, Z up, stable semantic IDs, polygonal room cells and clear spaces, walls, hosted openings, floors and stair parameters. The road is at local −Y; `road_bearing_deg` is the azimuth from the house outward towards the road. North, solar direction, annotations and entrance geometry use that single convention.
+
+`scene.py` transforms the building into authored shared meshes in **metres / Z-up**. The live renderer and Blender worker consume that scene. GLB converts at its boundary to **metres / Y-up**. IFC remains **millimetres / Z-up** with explicit project units. Plan dimensions remain millimetres. No exporter invents a different layout.
+
+## DAG
+
+```
+intent → programme → layout → openings
+                       ├── structure (explicitly not designed)
+                       └── validate
+                            ├── documents
+                            └── scene → sheets
+                                      └── render (raster-ready; offline render pending)
+                                                   └── exports
+```
+
+The exact dependency map is `pipeline.DEPS`; the schematic above is abbreviated. Run a target with `--target intent`, `layout`, `validate`, `scene`, `sheets` or another registered stage. Dependencies execute in order. A stage's key includes inputs, dependency hashes, the implementation-source fingerprint and installed runtime versions. Stage JSON is written atomically; caches are checked before use. Published outputs carry hashes and are immutable. The generation queue has one worker to bound concurrent expensive work.
+
+This is a modular functional core, not a claim that all functions have passed a strict type checker. Dataclass contracts are typed; several JSON-facing functions still require annotation/schema tightening. `programme` and `openings` currently wrap parts of the layout generator. `structure` and `render` expose honest statuses, not fake engineering/rendering computation.
+
+## Input precedence and source truth
+
+Default < survey < recognised text < manually structured sketch < grid/plan < explicit edit. Equal-priority conflicting field values block generation. Disabled source records remain archived. A high-priority source can therefore override a changed low-priority survey answer; the preflight shows which source won.
+
+The `text` parser recognises only a small grammar: dimensions with units, BHK/bedroom count, G+n or ground-only, cardinal/diagonal facing, a lakh amount and selected style/kitchen/parking phrases. It preserves the raw text and displays an unenforced-remainder notice. This is not unrestricted natural-language understanding.
+
+A ground-floor grid's labelled cells are unioned as polygons. Room names must form connected regions; holes or inaccessible layouts are rejected. It is not a room-suggestion grid that gets discarded after input. A programmatic source marked `plan` means manually verified structured information; it does not imply an automatic plan-recognition engine exists.
+
+## Layout and checks
+
+The current strategy is a bounded public-hub / services-band / private-room family with mirrored and shorter-footprint variants. The G+1 plan has distinct upper programming, a vertically aligned stair and a real uncovered terrace. It is not arbitrary stochastic optimisation, general constraint solving or a house for every plot.
+
+The deterministic screen checks partition coverage, containment, overlap, supplied-reference size targets, window presence, opening hosting/bounds, portal connectivity, bedroom-through-route avoidance, requested floor/bedroom counts and basic stair proportions/alignment. Those are useful checks, but insufficient to prove buildability. Width screening of nonrectangular rooms currently uses a bounding short side, not a full local-clearance medial-axis calculation. Furniture recipes use a contained rectangle within nonrectangular clear space rather than filling the entire bounding box.
+
+User-reference dimensional targets have **no verified BIS clause ID**. `official_clause` remains null; statutory status remains `NOT EVALUATED`. The structural stage returns `NOT DESIGNED`. The report clones its input review before appending report-only warnings, preserving DAG purity.
+
+## Geometry and surfaces
+
+Walls are polygon extrusions split vertically around hosted doors and windows. Slabs preserve stair/terrace voids. Decorative objects and furniture are shared geometry with transforms, not painted rectangles. Bed frames, mattresses, shaped bedding, chair frames, cabinets, handles, hollow vessels, fixture bulbs and leaf meshes are procedural.
+
+Not every decorative surface is a closed manifold, and the whole building is not a single boolean-unioned watertight object. The GLB retains individual components and stable scene names. Walk collision approximates a horizontal circle against walls and selected furniture; stair cores are blocked and the level selector changes floor explicitly. There is no gravity, capsule headroom test or accessible-route certification.
+
+## Files
+
+| File | Responsibility |
+|---|---|
+| `floorforge/model.py` | Data classes, defaults, hashes, orientation |
+| `intent.py` | Supported field validation, text extraction, provenance |
+| `layout.py` | Polygonal layout, walls, openings, stairs |
+| `review.py` | Preliminary checks, scenario reports, solar |
+| `scene.py` | Shared procedural geometry and GLB |
+| `drawings.py` | SVG/ReportLab sheets, DXF floor plans |
+| `ifc_export.py` | IFC4 STEP entities, relations and self-integrity |
+| `pipeline.py` | DAG, caching, immutable builds, export ZIP |
+| `ai.py` | Memory-only optional provider proposals |
+| `server.py` | Loopback API, host/origin/token checks, queue |
+| `web/app.js` | New studio UI and input/review/save flow |
+| `web/viewer.js` | Offline WebGL2 raster fallback |
+| `web/src/three-studio.js` | Optional unbuilt Three/path-tracing lab |
+| `scripts/blender_scene.py` | External unexecuted Blender worker |
+
+## Engineering technology choices
+
+Shapely, Trimesh, ezdxf and ReportLab solve the implemented stages. CadQuery/build123d, Manifold3D, pvlib, Manim and Mitsuba were not installed simply to satisfy a tool list. BREP/STEP, exact boolean-unioned solids, Manim explanations and validated pvlib comparison remain future work. A custom IFC serializer does not substitute for independent IFC schema/geometry acceptance.
+
+The fallback WebGL renderer was implemented because container dependency downloads were blocked. It makes the ZIP useful offline; it does not prove the optional Three/GSAP pipeline works. GSAP has a custom standard license and requires an explicit optional-build acknowledgement. GEOS transitive license obligations are also recorded rather than hidden behind Shapely's permissive Python license.

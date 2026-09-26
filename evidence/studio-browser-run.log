@@ -1,0 +1,69 @@
+GET /api/session 200
+GET /demo/scene.json 200
+GET /demo/building.json 200
+GET /demo/report.json 200
+GET /demo/sheets.json 200
+GET /demo/sheets/A-101.svg 200
+capture desktop
+POST /api/intent 200
+generate compact
+POST /api/generate 202
+GET /api/jobs/c219aa1bd54ce847 200
+GET /builds/8b11aca2d92415c3dcf5bad3/scene.json 200
+GET /builds/8b11aca2d92415c3dcf5bad3/building.json 200
+GET /builds/8b11aca2d92415c3dcf5bad3/report.json 200
+GET /builds/8b11aca2d92415c3dcf5bad3/sheets.json 200
+GET /builds/8b11aca2d92415c3dcf5bad3/sheets/A-101.svg 200
+generation completed
+grid checks
+AI choices
+mobile capture
+{
+  "checks": [
+    {
+      "check": "bundled project + actual renderer initialised",
+      "passed": true
+    },
+    {
+      "check": "nine generated drawing sheets selectable",
+      "passed": true
+    },
+    {
+      "check": "regulatory unknown remains visible",
+      "passed": true
+    },
+    {
+      "check": "fused-source preflight opens",
+      "passed": true
+    },
+    {
+      "check": "UI POST generation to output/render completes for 30x40",
+      "passed": true
+    },
+    {
+      "check": "grid painter interaction",
+      "passed": true
+    },
+    {
+      "check": "three AI consent choices visible",
+      "passed": true
+    },
+    {
+      "check": "reopenable project collects actual inputs",
+      "passed": true
+    },
+    {
+      "check": "mobile no horizontal document overflow",
+      "passed": true,
+      "details": {
+        "width": 390,
+        "scroll": 390
+      }
+    }
+  ],
+  "errors": [],
+  "gpu": {
+    "vendor": "WebKit",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  }
+}

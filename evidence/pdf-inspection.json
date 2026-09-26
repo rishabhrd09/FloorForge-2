@@ -1,0 +1,28 @@
+{
+  "renderer": "1.26.7",
+  "checks": [
+    {
+      "example": "demo",
+      "pages": 15,
+      "page_size": "A3 landscape",
+      "checks": "Size, preliminary banner, text inside physical page; all pages rasterised",
+      "issues": []
+    },
+    {
+      "example": "compact",
+      "pages": 13,
+      "page_size": "A3 landscape",
+      "checks": "Size, preliminary banner, text inside physical page; all pages rasterised",
+      "issues": []
+    },
+    {
+      "example": "small",
+      "pages": 13,
+      "page_size": "A3 landscape",
+      "checks": "Size, preliminary banner, text inside physical page; all pages rasterised",
+      "issues": []
+    }
+  ],
+  "physical_plotter_verified": false,
+  "scale_chain_or_legal_accuracy_approval": false
+}

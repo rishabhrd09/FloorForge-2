@@ -1,0 +1,13 @@
+{
+  "brief": {
+    "width_mm": 7620,
+    "depth_mm": 10668,
+    "storeys": 1,
+    "bedrooms": 1,
+    "front_mm": 1200,
+    "rear_mm": 600,
+    "left_mm": 450,
+    "right_mm": 450,
+    "budget_lakh": 18
+  }
+}

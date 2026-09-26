@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "floorforge-studio"
+version = "0.2.0a1"
+description = "Offline preliminary residential design and coordination studio"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+[project.scripts]
+floorforge = "floorforge.__main__:main"
+[tool.setuptools.packages.find]
+include = ["floorforge*"]
+# Run from this distribution folder so web/ and examples/ remain alongside Python.
+# Wheel packaging of the web assets is not an accepted release target.
