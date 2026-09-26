@@ -193,6 +193,17 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
             "kind": "cladding", "height_mm": building["storeys"] * H - 120, "material": "cladding",
             "slats": True,
         }, THEME, []))
+    # The stair carries on to the roof in a stone-clad tower (the headroom over the roof access), the usual
+    # vertical accent of a two-storey home; the roof beside it becomes an open terrace.
+    if building["storeys"] > 1:
+        top_floor = building["storeys"] - 1
+        stair = next((s for s in building["spaces"] if s["floor"] == top_floor and s["kind"] == "stair"), None)
+        if stair:
+            sx0, sy0, sx1, sy1 = Polygon(stair["polygon"]).bounds
+            assemblies.append(rect("exterior-stair-tower-01", "stair_tower", top_floor, (sx0, sy0, sx1, sy1), {
+                "kind": "stair_tower", "height_mm": 2700, "material": "cladding", "roof_access": True,
+                "roof_terrace": True,
+            }, THEME, []))
     carport = None
     if v["parking"] and F >= 5500 and porch:
         cw, cd = 3200, min(5600, F - 450)

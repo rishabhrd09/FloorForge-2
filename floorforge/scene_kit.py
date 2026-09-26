@@ -144,6 +144,8 @@ def material_library(style: dict, interior: dict, modern: bool) -> dict:
         'gravel': {'color': '#a09e98', 'alt': '#6e6c67', 'roughness': .85, 'texture': 'stone', 'kind': 'gravel'},
         'steppingstone': {'color': '#62625f', 'roughness': .8, 'texture': 'concrete', 'kind': 'concrete', 'seed': 9, 'tile_m': .9},
         'steel': {'color': '#232526', 'roughness': .45, 'metallic': .6, 'kind': 'metal', 'params': [.45]},
+        # Photovoltaic modules: dark cells behind glass on a fine grid.
+        'solar': {'color': '#1f2c3f', 'roughness': .14, 'metallic': .25, 'texture': 'tile', 'kind': 'tile', 'params': [6, .03, 0, .95], 'tile_m': 1.0},
         'planter': {'color': '#f1f0ec', 'roughness': .7, 'texture': 'concrete', 'kind': 'concrete', 'seed': 11},
         'deck': {'color': '#7a5a3e', 'alt': '#5d412b', 'roughness': .7, 'texture': 'wood', 'kind': 'deck'},
         'encaustic': {'color': '#dddbd5', 'alt': '#4a4c50', 'roughness': .55, 'texture': 'tile', 'kind': 'encaustic'},

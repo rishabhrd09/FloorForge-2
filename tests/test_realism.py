@@ -237,6 +237,38 @@ def test_modern_entrance_is_an_l_shaped_porch_with_a_tall_pivot_door(modern):
     assert leaf and max(heights) >= 2.4
 
 
+@pytest.mark.parametrize('case', ['villa', 'compact'])
+def test_modern_massing_has_a_deep_eave_and_a_finished_roof(case):
+    building, _, scene = build(CASES[case])
+    top = scene['storeys'] * scene['floor_height']
+    nodes = scene['nodes']
+    by_id = {n['id']: n for n in nodes}
+    # A deep street-side eave with a timber-slat soffit and downlights.
+    eave = by_id['roof-overhang']
+    ys = np.array(scene['assets'][eave['asset']]['vertices'])[:, 1]
+    assert ys.min() <= -.95
+    def zmid(n):
+        z = np.array(scene['assets'][n['asset']]['vertices'])[:, 2] * n['scale'][2] + n['position'][2]
+        return (z.min() + z.max()) / 2
+    assert sum(n['role'] == 'soffit' and n['material'] == 'timber' and zmid(n) > top - .3 for n in nodes) >= 20
+    assert any(n['role'] == 'downlight' and zmid(n) > top - .3 for n in nodes)
+    # Photovoltaic modules on a rack.
+    assert sum(n['material'] == 'solar' for n in nodes) >= 4
+    tower = next((a for a in building['exterior']['assemblies'] if a['geometry'].get('kind') == 'stair_tower'), None)
+    if scene['storeys'] > 1:
+        # The stair rises into a stone-clad tower beside an open roof terrace with a glass balustrade.
+        assert tower
+        body = by_id[tower['id'] + '-body']
+        assert body['position'][2] + body['scale'][2] / 2 >= top + 2.4
+        assert any(n['id'].startswith(tower['id'] + '-cladding') and n['material'] == 'cladding' for n in nodes)
+        assert 'roof-terrace-pavers' in by_id
+        assert sum(n['material'] == 'railglass' and zmid(n) > top for n in nodes) >= 1
+        roof_items = [v for v in scene['vegetation'] if v['position'][2] > top]
+        assert all(v['floor'] == scene['storeys'] for v in roof_items)
+    else:
+        assert tower is None and 'roof-gravel' in by_id
+
+
 @pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)
 def test_windows_use_the_refined_system(theme):
     building, _, scene = build({'exterior_theme': theme})

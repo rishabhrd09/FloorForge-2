@@ -13,7 +13,7 @@ from shapely.geometry import Polygon, LineString, Point, box
 from shapely.ops import unary_union
 from shapely import get_parts
 from shapely.affinity import scale as pscale
-from .model import sha, STYLES
+from .model import sha, STYLES, enu_to_local
 from .exterior import apply_exterior_preferences, get_exterior_theme, get_interior_theme
 from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT
 from .frontage import gate_openings
@@ -327,11 +327,92 @@ def make_scene(building, report):
     # ---------------------------------------------------------------- roof
     poly_mesh(roof_fp, top - .15, top, 'roof', storeys - 1, 'roof', 'roof-slab')
     if modern:
-        over = roof_fp.buffer(.45, join_style=2)
+        fr = storeys - 1
+        tower = next((a for a in assemblies if a['geometry'].get('kind') == 'stair_tower'), None)
+        tower_fp = box(*[q / 1000 for q in tower['geometry']['bounds_mm']]) if tower else Polygon()
+        # A deep eave along the street front (shade, and a soffit of timber slats with downlights); 0.45 m on
+        # the other sides. Terraces open in the roof and the porch canopy keep their own edges.
+        fb = fp.bounds
+        front = box(fb[0] - .45, -1.0, fb[2] + .45, 0)
+        for terrace in terraces:
+            tx0, ty0, tx1, _ = terrace.bounds
+            if ty0 < .05:
+                front = front.difference(box(tx0 - .01, -1.1, tx1 + .01, .01))
+        if porch_asm and not porch_asm['geometry'].get('canopy_is_balcony'):
+            pa = [q / 1000 for q in porch_asm['geometry']['bounds_mm']]
+            front = front.difference(box(pa[0] - .3, pa[1] - porch_asm['geometry'].get('canopy_overhang_mm', 300) / 1000 - .05, pa[2] + .3, .01))
+        over = roof_fp.buffer(.45, join_style=2).union(front)
         for terrace in terraces:
             over = over.difference(terrace)
-        poly_mesh(over.difference(roof_fp), top - .15, top + .22, 'roof', storeys - 1, 'fascia', 'roof-overhang')
-        poly_mesh(roof_fp.difference(roof_fp.buffer(-.22, join_style=2)), top, top + .22, 'roof', storeys - 1, 'parapet', 'roof-upstand')
+        if porch_asm and not porch_asm['geometry'].get('canopy_is_balcony'):
+            over = over.difference(box(pa[0] - .3, pa[1] - porch_asm['geometry'].get('canopy_overhang_mm', 300) / 1000, pa[2] + .3, 0))
+        poly_mesh(over.difference(roof_fp), top - .15, top + .22, 'roof', fr, 'fascia', 'roof-overhang')
+        eave = front.intersection(over).difference(fp.buffer(.02, join_style=2))
+        for xx in np.arange(fb[0] - .4, fb[2] + .4, .11):
+            for part in _parts(eave.intersection(box(xx, -.97, xx + .06, -.03))):
+                poly_mesh(part, top - .176, top - .15, 'timber', fr, 'soffit')
+        span = [q for q in _parts(eave) if q.area > .5]
+        for part in span:
+            ex0, _, ex1, _ = part.bounds
+            for xx in np.linspace(ex0 + .6, ex1 - .6, max(1, round((ex1 - ex0) / 2.2))):
+                cylinder((xx, -.5, top - .185), .045, .01, 'lamp', fr, 'downlight')
+                k.light((xx, -.62, top - .35), 12, kind='soffit')
+        poly_mesh(roof_fp.difference(roof_fp.buffer(-.22, join_style=2)).difference(tower_fp), top, top + .22, 'roof', fr, 'parapet', 'roof-upstand')
+        field = roof_fp.buffer(-.22, join_style=2).difference(tower_fp)
+        if tower:
+            # Open roof terrace beside the stair tower: pavers, a frameless glass balustrade, loungers, planters.
+            poly_mesh(field, top, top + .03, 'paver', fr, 'roof', 'roof-terrace-pavers')
+            rail = roof_fp.buffer(-.3, join_style=2).exterior.difference(tower_fp.buffer(.32, join_style=2))
+            for piece in getattr(rail, 'geoms', [rail]):
+                if piece.length < .3:
+                    continue
+                poly_mesh(piece.buffer(.009, cap_style=2, join_style=2), top + .1, top + 1.02, 'railglass', fr, 'railing')
+                poly_mesh(piece.buffer(.03, cap_style=2, join_style=2), top + .03, top + .1, 'frame', fr, 'railing')
+                poly_mesh(piece.buffer(.022, cap_style=2, join_style=2), top + 1.02, top + 1.055, 'frame', fr, 'railing')
+        else:
+            poly_mesh(field, top, top + .025, 'gravel', fr, 'roof', 'roof-gravel')
+        # Photovoltaic array on a light rack over the rear of the roof, tilted toward the midday sun.
+        south = enu_to_local(0, -1, v.get('road_bearing_deg', 180))
+        tilt = math.radians(12) * (1 if south[1] < 0 else -1)
+        fx0, fy0, fx1, fy1 = field.bounds
+        rack = field.buffer(-.35).intersection(box(fx0, fy0 + (fy1 - fy0) * (.5 if tower else .35), fx1, fy1))
+        placed = 0
+        for yy in np.arange(fy1 - 1.3, fy0, -2.05):
+            for xx in np.arange(fx0 + .9, fx1 - .5, 1.06):
+                if placed >= 16 or not rack.contains(box(xx - .5, yy - .83, xx + .5, yy + .83)):
+                    continue
+                node(cube, 'solar', (xx, yy, top + .42), (1.0, 1.66, .035), (tilt, 0, 0), fr, 'roof')
+                node(cube, 'steel', (xx, yy, top + .4), (1.02, 1.68, .02), (tilt, 0, 0), fr, 'roof')
+                for dy, hh in ((-.7, .24), (.7, .6)):
+                    y_leg = yy + dy
+                    rect((xx - .47, y_leg - .02, top + .03, xx - .43, y_leg + .02, top + (hh if tilt > 0 else .84 - hh)), 'steel', fr, 'roof')
+                    rect((xx + .43, y_leg - .02, top + .03, xx + .47, y_leg + .02, top + (hh if tilt > 0 else .84 - hh)), 'steel', fr, 'roof')
+                placed += 1
+        if tower:
+            # Loungers and planted pots on the open part of the terrace, clear of the array and the tower door.
+            used = rack.buffer(.4) if placed else Polygon()
+            free = field.buffer(-.45, join_style=2).difference(used).difference(tower_fp.buffer(1.3, join_style=2))
+            spots = sorted(_parts(free), key=lambda q: -q.area)
+            if spots:
+                zone = spots[0]
+                cx, cy = zone.centroid.x, zone.centroid.y
+                for dx in (-.45, .45):
+                    lx, ly = cx + dx, cy
+                    if not zone.contains(box(lx - .36, ly - 1.0, lx + .36, ly + 1.0)):
+                        continue
+                    for sx in (-.3, .3):
+                        for sy in (-.85, .85):
+                            rect((lx + sx - .02, ly + sy - .02, top + .03, lx + sx + .02, ly + sy + .02, top + .3), 'frame', fr, 'roof')
+                    rect((lx - .34, ly - .95, top + .3, lx + .34, ly + .95, top + .33), 'frame', fr, 'roof')
+                    rb((lx, ly - .3, top + .38), (.64, 1.2, .09), 'sling', fr, 'roof', .035)
+                    node(asset(rounded_box((.64, .72, .09), .03), smooth=True), 'sling', (lx, ly + .56, top + .55), rot=(math.radians(38), 0, 0), floor=fr, role='roof')
+                if zone.contains(box(cx - .2, cy - .2, cx + .2, cy + .2)):
+                    cylinder((cx, cy, top + .24), .2, .42, 'counter', fr, 'roof')
+                x0z, y0z, x1z, y1z = zone.bounds
+                for i, (px, py) in enumerate(((x0z + .35, y0z + .35), (x1z - .35, y0z + .35), (x0z + .35, y1z - .35), (x1z - .35, y1z - .35))):
+                    if zone.contains(Point(px, py)) and not box(cx - 1.0, cy - 1.2, cx + 1.0, cy + 1.2).contains(Point(px, py)):
+                        # (floor = storeys: the roof level, above every storey a dollhouse cut can show)
+                        k.plant(px, py, top + .03, 'strelitzia' if i % 2 == 0 else 'grass_ornamental', f=storeys, scale=.6, pot=(.26, .62, 'planter'))
         for f in range(1, storeys):
             band = fp.buffer(.1, join_style=2).difference(fp)
             poly_mesh(band, f * H - .25, f * H - .02, 'roof', f - 1, 'band', f'F{f}-slab-band')
@@ -1107,6 +1188,49 @@ def make_scene(building, report):
                 spacing = max(0.12, geo.get('spacing_mm', 180) / 1000)
                 for j, xx in enumerate(np.arange(x0, x1, spacing)):
                     rect((xx, y0, 0, min(x1, xx + geo.get('slat_depth_mm', 55) / 1000), y1, h), material, 0, 'screen', aid + f'-slat-{j}', aid)
+        elif kind == 'stair_tower':
+            # The stair's headroom over the roof: a rendered box with stone cladding on the faces that continue
+            # the facade, a floating lid, a slot window to the street and a glazed door onto the roof terrace.
+            zt, z1 = top, top + geo.get('height_mm', 2700) / 1000
+            fb = fp.bounds
+            rect((x0, y0, zt, x1, y1, z1 - .2), 'wall', floor, 'massing', aid + '-body', aid)
+            edge = {'front': abs(y0 - fb[1]) < .05, 'back': abs(y1 - fb[3]) < .05, 'left': abs(x0 - fb[0]) < .05, 'right': abs(x1 - fb[2]) < .05}
+            c = .04
+            if edge['front']:
+                rect((x0 - (c if edge['left'] else 0), y0 - c, zt + .22, x1 + (c if edge['right'] else 0), y0, z1 - .2), 'cladding', floor, 'massing', aid + '-cladding-front', aid)
+            for side, xa, xb in (('left', x0 - c, x0), ('right', x1, x1 + c)):
+                if edge[side]:
+                    rect((xa, y0, zt + .22, xb, y1, z1 - .2), 'cladding', floor, 'massing', aid + f'-cladding-{side}', aid)
+            rect((x0 - .18, y0 - .18, z1 - .2, x1 + .18, y1 + .18, z1), 'roof', floor, 'massing', aid + '-lid', aid)
+            rect((x0 - .19, y0 - .19, z1 - .21, x1 + .19, y0 - .17, z1 - .19), 'frame', floor, 'massing', owner=aid)
+            if edge['front']:
+                xc = (x0 + x1) / 2
+                rect((xc - .13, y0 - c - .012, zt + .55, xc + .13, y0 - c, z1 - .55), 'blackglass', floor, 'massing', aid + '-slot', aid)
+                rect((xc - .16, y0 - c - .02, zt + .52, xc + .16, y0 - c - .012, zt + .55), 'frame', floor, 'massing', owner=aid)
+            # Door onto the terrace on the inner face with the most roof in front of it.
+            faces = []
+            if not edge['right']:
+                faces.append((fb[2] - x1, 'right'))
+            if not edge['left']:
+                faces.append((x0 - fb[0], 'left'))
+            if not edge['back']:
+                faces.append((fb[3] - y1, 'back'))
+            if faces:
+                # A side face opens onto the terrace seating; the back (toward the solar array) only as a fallback.
+                sides = [q for q in faces if q[1] != 'back' and q[0] >= 2.0]
+                _, side = max(sides or faces)
+                if side in ('right', 'left'):
+                    xf = x1 if side == 'right' else x0
+                    s_ = 1 if side == 'right' else -1
+                    yc = y0 + min(1.0, (y1 - y0) / 2)
+                    rect((min(xf, xf + s_ * .03), yc - .45, zt + .03, max(xf, xf + s_ * .03), yc + .45, zt + 2.15), 'blackglass', floor, 'massing', aid + '-door', aid)
+                    rect((min(xf, xf + s_ * .05), yc - .5, zt + 2.15, max(xf, xf + s_ * .05), yc + .5, zt + 2.2), 'frame', floor, 'massing', owner=aid)
+                    rect((min(xf, xf + s_ * .09), yc - .05, zt + 2.3, max(xf, xf + s_ * .09), yc + .05, zt + 2.42), 'frame', floor, 'fixture', owner=aid)
+                    k.light((xf + s_ * .4, yc, zt + 2.2), 6, kind='wall')
+                else:
+                    xc = (x0 + x1) / 2
+                    rect((xc - .45, y1, zt + .03, xc + .45, y1 + .03, zt + 2.15), 'blackglass', floor, 'massing', aid + '-door', aid)
+                    rect((xc - .5, y1, zt + 2.15, xc + .5, y1 + .05, zt + 2.2), 'frame', floor, 'massing', owner=aid)
         elif kind == 'carport':
             rz = geo.get('roof_z_mm', 2750) / 1000; th = geo.get('slab_thickness_mm', 220) / 1000
             rect((x0 - .15, y0 - .15, g + rz, x1 + .15, y1 + .15, g + rz + th), 'roof', -1, 'carport', aid + '-roof', aid)

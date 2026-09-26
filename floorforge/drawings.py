@@ -151,6 +151,12 @@ def elevation_elements(b,direction,scene=None):
     # and scene. They are deliberately schematic rather than construction detail.
     for assembly in b.get('exterior',{}).get('assemblies',[]):
         geo=assembly['geometry'];x0,y0,x1,y1=geo['bounds_mm'];kind=geo.get('kind');floor=assembly.get('floor_id',0)
+        if kind=='stair_tower':
+            # Seen from every side: the stair's headroom box rising above the roof.
+            a,c=(x0,x1) if horizontal else (y0,y1);z1=top+geo.get('height_mm',2700)
+            elems.append(P([(a,top),(c,top),(c,z1),(a,z1)],'#e3ddd2','#9e653f',.3,'A-EXT'))
+            elems.append(T((a+c)/2,z1+130,'STAIR TOWER',130,'A-EXT'))
+            continue
         selected=(direction=='Front' and y1<=300) or (direction=='Rear' and y0>=D-300) or (direction=='Left' and x1<=300) or (direction=='Right' and x1>=W-300 and x0<=W+300)
         if not selected:continue
         if horizontal:
