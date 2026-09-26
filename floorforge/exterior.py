@@ -18,12 +18,14 @@ from .model import DesignError, sha
 
 EXTERIOR_THEME_IDS = (
     "current",
+    "modern_tropical",
     "warm_modern_minimal",
     "tropical_verandah",
     "earth_terracotta",
 )
 INTERIOR_THEME_IDS = (
     "current",
+    "bright_natural",
     "warm_contemporary",
     "quiet_minimal",
     "earthy_modern_indian",
@@ -92,6 +94,34 @@ EXTERIOR_THEMES: dict[str, dict[str, Any]] = {
         "balcony_depth_mm": 0,
         "geometry": {},
     },
+    "modern_tropical": _theme(
+        "Modern Tropical",
+        "White rendered volumes, slim black full-height glazing, a floating roof slab, a stamped-cobble arrival court, pebble gardens with sculpted planting and a lawn with stepping stones.",
+        2100,
+        1800,
+        4200,
+        {
+            "wall": "#f1efea",
+            "stone": "#8a8883",
+            "timber": "#7a5234",
+            "frame": "#1d2022",
+            "roof": "#ecebe6",
+            "site_paving": "#8e9194",
+            "site_gate": "#1d2022",
+            "site_soil": "#43372b",
+            "site_leaf": "#3f6b35",
+            "site_leaf_light": "#86a257",
+        },
+        {
+            "porch_strategy": "cantilevered_slab_portico",
+            "balcony_strategy": "frameless_glass_balustrade",
+            "screen_strategy": "timber_slat_and_stone_cladding",
+            "opening_policy": "full_height_glazing",
+            "roof_edge_strategy": "floating_roof_slab",
+            "boundary_strategy": "rendered_wall_black_slat_gate",
+            "planting_strategy": "tropical_layers_pebble_beds_lawn",
+        },
+    ),
     "warm_modern_minimal": _theme(
         "Warm Modern Minimal",
         "A generous sheltered arrival court, broad glazed openings, a timber screen anchor and a furnished balcony.",
@@ -185,6 +215,17 @@ INTERIOR_THEMES: dict[str, dict[str, Any]] = {
         "description": "Preserves the existing interior material assignments and furniture layout.",
         "materials": {},
     },
+    "bright_natural": {
+        "label": "Bright Natural",
+        "description": "Light oak floors, warm white walls, sand linen upholstery, walnut and black accents.",
+        "materials": {
+            "fabric": "#d3c7b3",
+            "fabric-dark": "#5d6b57",
+            "linen": "#f1ede4",
+            "rug": "#c9bda8",
+            "woodfloor": "#b89572",
+        },
+    },
     "warm_contemporary": {
         "label": "Warm Contemporary",
         "description": "Soft clay, linen and walnut-like furniture finishes.",
@@ -255,7 +296,7 @@ def resolve_legacy_preferences(project: dict[str, Any]) -> dict[str, Any]:
     return {
         "exterior_theme": brief.get(
             "exterior_theme",
-            "warm_modern_minimal" if modern_project else "current",
+            "modern_tropical" if modern_project else "current",
         ),
         "interior_theme": brief.get("interior_theme", "current"),
         "change_policy": brief.get("change_policy", "exterior_refinement"),
@@ -622,6 +663,14 @@ def generate_exterior_candidates(
     preferences: DesignPreferences,
     constraints: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
+    if preferences.exterior_theme == "modern_tropical":
+        from .modern_exterior import modern_candidate
+        return [modern_candidate(building, preferences, {
+            "rectangle_assembly": _rectangle_assembly,
+            "front_entry": _front_entry,
+            "anchors": derive_facade_anchors,
+            "classify": classify_opening_role,
+        })]
     if preferences.exterior_theme == "current":
         return [{
             "id": "legacy-current",

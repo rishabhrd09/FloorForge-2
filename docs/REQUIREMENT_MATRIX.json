@@ -1,5 +1,5 @@
 {
-  "release": "0.2.0-alpha",
+  "release": "0.3.0-alpha",
   "all_original_requirements_complete": false,
   "status_definition": "TESTED_SCOPE means the explicitly bounded behavior passed local tests, not the full commercial requirement.",
   "requirements": [

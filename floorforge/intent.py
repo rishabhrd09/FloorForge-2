@@ -1,6 +1,7 @@
 """Source-preserving fusion. Uninterpreted material stays visible, not silently applied."""
 from __future__ import annotations
 from .model import *
+from .exterior import EXTERIOR_THEME_IDS, INTERIOR_THEME_IDS, CHANGE_POLICIES
 import re, datetime
 
 
@@ -53,9 +54,9 @@ def validate_values(values: dict) -> dict:
         raise DesignError('RATE_ORDER','Low scenario rate must not exceed high scenario rate.')
     for k in ('parking','pooja','eldercare','open_kitchen'):
         if type(d[k]) is not bool: raise DesignError('FIELD_TYPE',f'{k} must be a boolean.')
-    for key, choices in [('style',list(STYLES)),('exterior_theme',['current','warm_modern_minimal','tropical_verandah','earth_terracotta']),
-                         ('interior_theme',['current','warm_contemporary','quiet_minimal','earthy_modern_indian']),
-                         ('change_policy',['finish_only','exterior_refinement','spatial_redesign']),
+    for key, choices in [('style',list(STYLES)),('exterior_theme',list(EXTERIOR_THEME_IDS)),
+                         ('interior_theme',list(INTERIOR_THEME_IDS)),
+                         ('change_policy',list(CHANGE_POLICIES)),
                          ('finish',['economy','standard','premium']),('vastu',['off','flexible','moderate','strict']),
                          ('soil',['unknown','black-cotton','rocky','sandy','alluvial','red-laterite','murrum'])]:
         if d[key] not in choices: raise DesignError('FIELD_CHOICE',f'Invalid {key}.')
@@ -82,6 +83,8 @@ def fuse(payload: dict) -> dict:
     # appearance until the owner explicitly selects an upgrade.
     if 'exterior_theme' not in brief_input and payload.get('schema')!='floorforge.project/0.3':
         defaults['exterior_theme']='current'
+    if 'interior_theme' not in brief_input and payload.get('schema')!='floorforge.project/0.3':
+        defaults['interior_theme']='current'
     sources=[{'id':'defaults','kind':'defaults','enabled':True,'values':defaults}]
     if payload.get('brief') is not None:
         sources.append({'id':'quick-survey','kind':'survey','enabled':True,'values':payload['brief']})

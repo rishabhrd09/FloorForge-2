@@ -37,7 +37,9 @@ def test_legacy_projects_keep_current_exterior_until_opted_in():
     legacy=fuse({'brief':{}})
     modern=fuse({'schema':'floorforge.project/0.3','brief':{}})
     assert legacy['values']['exterior_theme']=='current'
-    assert modern['values']['exterior_theme']=='warm_modern_minimal'
+    assert legacy['values']['interior_theme']=='current'
+    assert modern['values']['exterior_theme']=='modern_tropical'
+    assert modern['values']['interior_theme']=='bright_natural'
 
 
 @pytest.mark.parametrize('theme',EXTERIOR_THEME_IDS[1:])

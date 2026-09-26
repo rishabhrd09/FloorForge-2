@@ -41,7 +41,7 @@ DEFAULTS = {
     'soil': 'unknown', 'plinth_mm': 450, 'floor_height_mm': 3150,
     'rate_low_inr_ft2': 2000., 'rate_high_inr_ft2': 2800.,
     'cost_contingency_pct': 10., 'variant': 0,
-    'exterior_theme': 'warm_modern_minimal', 'interior_theme': 'current',
+    'exterior_theme': 'modern_tropical', 'interior_theme': 'bright_natural',
     'change_policy': 'exterior_refinement', 'interior_layout_locked': True,
     'seed': 0, 'theme_version': '1',
 }

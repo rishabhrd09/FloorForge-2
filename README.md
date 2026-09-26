@@ -1,4 +1,4 @@
-# FloorForge Studio — 0.2.0-alpha
+# FloorForge Studio — 0.3.0-alpha
 
 **A runnable, offline-first preliminary design application, with source, tests, generated examples and evidence. This is not a completed M0–M8 commercial release.**
 
@@ -6,7 +6,26 @@ The previous M0 response was unexecuted source. This distribution is a new multi
 
 ## See it immediately — no installation
 
-Open **`START_HERE.html`**, then **`examples/demo/preview.html`** in a modern desktop browser. The preview contains the actual scene and viewer code, with no CDN, server, account or AI dependency. Its drawing is embedded too. WebGL2 is required for 3D; the drawing remains available without it.
+Open **`START_HERE.html`**, then **`examples/demo/preview.html`** in a modern desktop browser. The preview contains the actual scene and the realistic walkthrough viewer, with no CDN, server, account or AI dependency. Its drawing is embedded too. WebGL2 is required for 3D; the drawing remains available without it.
+
+## Walk through your home
+
+Every generated home opens in a real-time, physically based walkthrough: an analytic sky and sun with soft shadows, image-based light, ambient occlusion, bloom and a filmic (AgX) grade; surfaces synthesised offline on the GPU (white render, stamped cobblestone, pebbles, lawn, oak planks, porcelain and marble, stone cladding, patterned cement tiles, fabric); procedurally grown planting (frangipani, clipped shrubs, columnar conifers, spiral topiary, strelitzia, palms, ornamental grasses, hedges, indoor plants) swaying in the wind; and instanced lawn grass.
+
+Choose **Walk in**, click the view and explore on foot:
+
+| Input | Action |
+|---|---|
+| Mouse (pointer lock) or drag | Look around |
+| `W` `A` `S` `D` / arrow keys | Walk |
+| `Shift` | Run |
+| `Space` | Jump |
+| `C` | Crouch |
+| `Q` / `E` | Turn (keyboard only) |
+| Scroll | Lens width (field of view) |
+| `Esc` | Release the mouse; press again to return to the exterior |
+
+Walking uses capsule collision against the actual generated walls, furniture, railings and glazing, with gravity and step-up climbing: walk up the real stair treads to change floor, jump onto low platforms, crouch under obstacles. Touch screens get a thumb stick and a jump button. Lighting offers Daylight (the computed solar position), Golden hour, Blue hour, Night and Overcast; indoors the exposure and white balance adapt like a phone camera. A neighbourhood context (street, footpath, neighbouring houses, trees, lamp posts) is drawn by the viewer only and is never exported as part of your design.
 
 The full extracted folder must stay together for the PDF/DXF/GLB/IFC links beside a preview to work. Viewing a sample is not generating a new design.
 
@@ -105,7 +124,18 @@ The supplied archive held 120 images and six videos, not the original FloorForge
 
 The output has **no structural design, official NBC clause validation, sanctioned byelaw pack, geotechnical assessment, reinforcement schedule or accessibility/ICU certification**. The cost range uses editable example rates, not market quotations. “Strict Vastu” is reported as unresolved when unmet; it does not create a false pass.
 
-The live renderer is a raster study. Photoreal quality, 4K path-traced output, an interior cinematic film, full stair/capsule physics, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
+The live renderer is a real-time raster approximation of photographic lighting (no global illumination or ray-traced reflections); its looks were verified in software-rendered Chromium, not on real GPUs. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
+
+## Rebuilding the viewer (developers only)
+
+`web/viewer.js` is committed, so running FloorForge never needs Node. To change the viewer, edit `web/viewer/src` and rebuild:
+
+```bash
+cd web/viewer
+npm ci
+npm run build      # writes ../viewer.js
+cd ../.. && .venv/bin/python scripts/regenerate_examples.py
+```
 
 No `.dmg`, `.exe` or `.msi` binary is disguised inside this ZIP. `packaging/` contains build recipes that still need execution, signing and clean-machine testing on their target operating systems.
 

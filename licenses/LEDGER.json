@@ -1,5 +1,5 @@
 {
-  "release": "0.2.0-alpha",
+  "release": "0.3.0-alpha",
   "license_audit_complete": false,
   "new_code": "MIT, see LICENSE",
   "installed_dependencies": [
@@ -443,5 +443,39 @@
   ],
   "native_distribution_warning": "GEOS and compiled numerical/codec libraries have their own notices and obligations. The native recipes are not a commercially cleared distribution. This source ZIP does not bundle their runtimes.",
   "reference_images": "User-supplied taste references inspected in contact sheets; not redistributed. No claim of rights to reference media.",
-  "fonts": "No font files are included in this ZIP. System/browser and PDF built-in fonts are used."
+  "fonts": "No font files are included in this ZIP. System/browser and PDF built-in fonts are used.",
+  "bundled_viewer_js": {
+    "bundle": "web/viewer.js (esbuild IIFE, minified; upstream @license comments preserved at end of file)",
+    "source": "web/viewer/src (FloorForge authored, MIT) built with web/viewer/package.json",
+    "packages": {
+      "three": {
+        "version": "0.186.1",
+        "license": "MIT",
+        "notice": "licenses/viewer-js/three/LICENSE"
+      },
+      "three-mesh-bvh": {
+        "version": "0.9.5",
+        "license": "MIT",
+        "notice": "licenses/viewer-js/three-mesh-bvh/LICENSE"
+      },
+      "postprocessing": {
+        "version": "6.39.5",
+        "license": "Zlib",
+        "notice": "licenses/viewer-js/postprocessing/LICENSE.md"
+      },
+      "n8ao": {
+        "version": "2.0.1",
+        "license": "ISC",
+        "notice": "licenses/viewer-js/n8ao/LICENSE"
+      }
+    },
+    "build_only": {
+      "esbuild": {
+        "version": "0.25.10",
+        "license": "MIT",
+        "shipped": false
+      }
+    },
+    "assets": "No bitmaps, HDRIs, fonts or models are shipped; all textures, foliage and sky are generated procedurally at runtime."
+  }
 }
