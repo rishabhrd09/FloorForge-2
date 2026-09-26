@@ -83,6 +83,41 @@ try {
   await page.click('#fullscreen');
   await page.waitForTimeout(300);
 
+  // Focus: the home alone fills the whole screen from the current direction (and from the top); leaving Focus
+  // brings the street back. The wider view folds the brief panel away so the home takes the width.
+  const frame = () => page.evaluate(() => {
+    const v = window.__ffApp.viewer; v.paused = true; if (v.resized) v.resize();
+    for (let i = 0; i < 40 && v.zoomAnim; i++) v.stepZoom(performance.now() + 1000);
+    v.controls.update();
+    const b = v.houseBox(), c = v.camera; c.updateMatrixWorld();
+    let x0 = 1, x1 = -1, y0 = 1, y1 = -1;
+    for (let i = 0; i < 8; i++) { const p = b.min.clone(); if (i & 1) p.x = b.max.x; if (i & 2) p.y = b.max.y; if (i & 4) p.z = b.max.z; p.project(c); x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); }
+    v.updateLights(true); v.vegetation?.update(v.time, v.camera); v.composer.render(0);
+    const r = document.querySelector('.canvas-wrap').getBoundingClientRect();
+    return { span: [+((x1 - x0) / 2).toFixed(3), +((y1 - y0) / 2).toFixed(3)], inside: x0 > -1 && x1 < 1 && y0 > -1 && y1 < 1, context: v.context.visible, focus: !!v.focus, wrap: [Math.round(r.width), Math.round(r.height)], window: [innerWidth, innerHeight] };
+  });
+  await page.click('#focus');
+  await page.waitForTimeout(400);
+  const focus = await frame();
+  await page.screenshot({ path: join(OUT, 'studio-focus.png') });
+  await page.click('.canvas-wrap [data-view="top"]');
+  await page.waitForTimeout(200);
+  const topView = await frame();
+  await page.screenshot({ path: join(OUT, 'studio-focus-top.png') });
+  check('Focus shows the home alone filling the whole screen', focus.focus && !focus.context && focus.inside && Math.max(...focus.span) >= .75 && focus.wrap[0] === focus.window[0] && focus.wrap[1] === focus.window[1] && topView.inside, { focus, top: topView });
+  await page.click('#focus');
+  await page.waitForTimeout(300);
+  const unfocused = await page.evaluate(() => ({ focus: !!window.__ffApp.viewer.focus, context: window.__ffApp.viewer.context.visible, expanded: document.querySelector('.canvas-wrap').classList.contains('expanded') }));
+  await page.click('[data-view="hero"]');
+  const narrow = await page.evaluate(() => Math.round(document.querySelector('.canvas-wrap').getBoundingClientRect().width));
+  await page.click('#brief-toggle');
+  await page.waitForTimeout(300);
+  const wide = await frame();
+  await page.screenshot({ path: join(OUT, 'studio-wide.png') });
+  await page.click('#brief-toggle');
+  await page.waitForTimeout(300);
+  check('wider view folds the brief away; leaving Focus brings the street back', wide.wrap[0] >= narrow + 250 && !unfocused.focus && unfocused.context && !unfocused.expanded, { canvas_px: [narrow, wide.wrap[0]], unfocused });
+
   const [download] = await Promise.all([page.waitForEvent('download', { timeout: 600000 }), page.click('#export-glb')]);
   const glb = join(work, 'presentation.glb');
   await download.saveAs(glb);

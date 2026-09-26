@@ -1,23 +1,23 @@
 [
   {
     "name": "demo",
-    "build_id": "c90ddb702dad5154a3f23fb8",
+    "build_id": "baab00f165e53fec7ddcb70c",
     "project": "examples/briefs/demo.json",
     "outputs": "examples/demo",
-    "seconds": 3.976
+    "seconds": 5.19
   },
   {
     "name": "compact",
-    "build_id": "f5b6c28458578c7e3cbf44aa",
+    "build_id": "99adadad610ac3c20c2ad2aa",
     "project": "examples/briefs/compact.json",
     "outputs": "examples/compact",
-    "seconds": 2.209
+    "seconds": 2.715
   },
   {
     "name": "small",
-    "build_id": "6e2d7c8c1def13bd0dc79ce5",
+    "build_id": "ddcc24246e0e222cd5d0f6b9",
     "project": "examples/briefs/small.json",
     "outputs": "examples/small",
-    "seconds": 1.649
+    "seconds": 2.604
   }
 ]
