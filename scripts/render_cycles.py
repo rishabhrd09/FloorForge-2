@@ -236,6 +236,83 @@ def fixtures(scene_data, grade):
     return count
 
 
+def house_box(scene_data):
+    """World bounds of the home (every storey with its porch, terraces and roof; not the garden or street), from
+    the scene's instanced assets and their Rz.Ry.Rx transforms, as the viewer frames it."""
+    assets, lo, hi = scene_data['assets'], [1e9] * 3, [-1e9] * 3
+    bounds = {}
+    for n in scene_data['nodes']:
+        if n.get('floor', -1) < 0 or n['role'] == 'plant-proxy':
+            continue
+        if n['asset'] not in bounds:
+            vs = assets[n['asset']]['vertices']
+            bounds[n['asset']] = ([min(v[i] for v in vs) for i in range(3)], [max(v[i] for v in vs) for i in range(3)])
+        a, b = bounds[n['asset']]
+        rx, ry, rz = n.get('rotation', (0, 0, 0))
+        cx, sx, cy, sy, cz, sz = math.cos(rx), math.sin(rx), math.cos(ry), math.sin(ry), math.cos(rz), math.sin(rz)
+        for i in range(8):
+            q = [(b if i >> k & 1 else a)[k] * n['scale'][k] for k in range(3)]
+            q = [q[0], cx * q[1] - sx * q[2], sx * q[1] + cx * q[2]]
+            q = [cy * q[0] + sy * q[2], q[1], -sy * q[0] + cy * q[2]]
+            q = [cz * q[0] - sz * q[1], sz * q[0] + cz * q[1], q[2]]
+            for k in range(3):
+                v = q[k] + n['position'][k]
+                lo[k], hi[k] = min(lo[k], v), max(hi[k], v)
+    return lo, hi
+
+
+def frame_box(lo, hi, forward, fov, aspect, fill, up=Vector((0, 0, 1)), min_reach=1.5):
+    """The closest camera, looking along `forward`, from which the box fills `fill` of the frame on its limiting
+    axis, centred on the other: the solve of web/viewer/src/framing.js (every frame edge bounds the camera by a
+    plane; per screen axis the closest camera maximises a concave piecewise-linear function)."""
+    F = forward.normalized()
+    R = F.cross(up).normalized()
+    U = R.cross(F)
+    tv = math.tan(math.radians(fov) / 2)
+    pts = []
+    for i in range(8):
+        p = Vector([(hi if i >> k & 1 else lo)[k] for k in range(3)])
+        pts.append((p.dot(R), p.dot(U), p.dot(F)))
+
+    def axis(k, t):
+        def g(c):
+            return min(p[2] - max((p[k] - c) / (fill * t), (p[k] - c) / (-fill * t)) for p in pts)
+        a, b = min(p[k] for p in pts), max(p[k] for p in pts)
+        for _ in range(100):
+            m1, m2 = a + (b - a) / 3, b - (b - a) / 3
+            if g(m1) < g(m2):
+                a = m1
+            else:
+                b = m2
+        return (a + b) / 2, g, b - a + 1
+
+    (bx, gx, spx), (by, gy, spy) = axis(0, tv * aspect), axis(1, tv)
+    depth = min(gx(bx), gy(by), min(p[2] for p in pts) - .5)
+
+    def centre(best, g, span):
+        if g(best) <= depth + 1e-9:
+            return best
+        ends = []
+        for d in (-1, 1):
+            inside, step = best, span
+            out = best + d * step
+            while g(out) >= depth:
+                inside, step = out, step * 2
+                out = best + d * step
+            for _ in range(60):
+                m = (inside + out) / 2
+                if g(m) >= depth:
+                    inside = m
+                else:
+                    out = m
+            ends.append(inside)
+        return sum(ends) / 2
+
+    position = R * centre(bx, gx, spx) + U * centre(by, gy, spy) + F * depth
+    mid = Vector([(lo[k] + hi[k]) / 2 for k in range(3)])
+    return position, position + F * max(min_reach, mid.dot(F) - depth)
+
+
 def camera(scene_data, args):
     cameras = scene_data['cameras']
     if args.view == 'eye':
@@ -255,6 +332,9 @@ def camera(scene_data, args):
             if abs(sun_x) > .2 and (sun_x > 0) != (position.x - target.x > 0):
                 position.x = 2 * target.x - position.x
             fov = c.get('fov', 43)
+            # Framed like the viewer's hero: the home itself fills 84% of the frame from that direction.
+            lo, hi = house_box(scene_data)
+            position, target = frame_box(lo, hi, target - position, fov, args.width / args.height, .84)
         else:
             fp = scene_data['footprint']
             xs, ys = [p[0] for p in fp], [p[1] for p in fp]
@@ -266,6 +346,9 @@ def camera(scene_data, args):
                 target, theta, phi, distance = Vector((mid_x, -.2, min(h * 1.15 + .2, 4.2))), -math.pi / 2, .2, max(w, d) * 1.05
             position = target + distance * Vector((math.cos(phi) * math.cos(theta), math.cos(phi) * math.sin(theta), math.sin(phi)))
             fov = 43
+            if args.view == 'front':
+                lo, hi = house_box(scene_data)
+                position, target = frame_box(lo, hi, target - position, fov, args.width / args.height, .88)
         forward = target - position
     data = bpy.data.cameras.new('FloorForge camera')
     data.sensor_fit = 'VERTICAL'
