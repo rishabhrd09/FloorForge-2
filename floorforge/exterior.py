@@ -802,20 +802,26 @@ def generate_exterior_candidates(
         ))
     if preferences.exterior_theme == "warm_modern_minimal":
         # A real blank stair bay gives the facade a dominant vertical anchor;
-        # it is deliberately placed on the stair-facing blank wall region.
-        assemblies.append(_rectangle_assembly(
-            "exterior-feature-wall-01",
-            "feature_wall",
-            0,
-            (180, -560, min(W - 360, 2550), -40),
-            {
-                "kind": "feature_wall",
-                "height_mm": building["storeys"] * v["floor_height_mm"] - 80,
-                "cap_height_mm": 150,
-            },
-            preferences.exterior_theme,
-            [],
-        ))
+        # it is deliberately placed on the stair-facing blank wall region, and
+        # stops short of the walk to the front door (on narrow plots it is left out).
+        entry_w = next(o for o in building["openings"] if o["kind"] == "entry")["width"]
+        wall_x1 = min(W - 360, 2550, ex - entry_w / 2 - 450)
+        if wall_x1 - 180 >= 900:
+            assemblies.append(_rectangle_assembly(
+                "exterior-feature-wall-01",
+                "feature_wall",
+                0,
+                (180, -560, wall_x1, -40),
+                {
+                    "kind": "feature_wall",
+                    "height_mm": building["storeys"] * v["floor_height_mm"] - 80,
+                    "cap_height_mm": 150,
+                },
+                preferences.exterior_theme,
+                [],
+            ))
+    if preferences.exterior_theme == "warm_modern_minimal" and building["storeys"] > 1:
+        # The first-floor frame only exists where there is a first floor to frame.
         assemblies.append(_rectangle_assembly(
             "exterior-front-frame-01",
             "facade_frame",

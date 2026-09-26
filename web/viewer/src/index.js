@@ -504,6 +504,9 @@ class FloorForgeViewer {
   // ---------- cameras ----------
   orbitTo(targetScene, theta, phi, distance) {
     const t = s2t(targetScene);
+    // Views are composed for landscape frames; step back on a portrait (phone) canvas so the house still fits.
+    const aspect = this.canvas.clientWidth / Math.max(1, this.canvas.clientHeight);
+    if (aspect > 0) distance *= clamp(1.35 / aspect, 1, 1.8);
     const eye = new THREE.Vector3(
       t.x + distance * Math.cos(phi) * Math.cos(theta),
       t.y + distance * Math.sin(phi),
@@ -518,6 +521,7 @@ class FloorForgeViewer {
 
   reset() {
     if (!this.data) return;
+    this.showContext(true);
     if (this.mode === 'walk') { this.spawn(this.floor > 0 ? 'floor' : 'arrival'); return; }
     const key = this.mode === 'dollhouse' || this.mode === 'plan' ? 'dollhouse' : 'hero';
     const c = this.data.cameras[key];
@@ -539,11 +543,21 @@ class FloorForgeViewer {
     const prev = this.mode;
     this._tour = mode === 'tour';
     this.mode = mode === 'tour' ? 'solid' : mode;
+    this.showContext(true);
     if (prev === 'walk' && this.mode !== 'walk') this.leaveWalk();
     if (this.mode === 'walk') this.enterWalk();
-    else this.reset();
+    else {
+      this.reset();
+      this.onStatus({ solid: 'Exterior · physically based daylight', dollhouse: 'Dollhouse · roof lifted on the selected floor', plan: 'Plan · the selected floor from above' }[this.mode]);
+    }
     this.applyVisibility();
     this.applyGrade();
+  }
+
+  // The neighbourhood stands aside for the side elevations, whose cameras would otherwise look out from
+  // inside the neighbours' houses.
+  showContext(on) {
+    if (this.context && this.context.visible !== on) { this.context.visible = on; this.dirty = true; }
   }
 
   get tour() { return this._tour; }
@@ -562,21 +576,37 @@ class FloorForgeViewer {
     this._tour = false; this.controls.autoRotate = false;
     this.mode = 'solid';
     this.applyVisibility();
+    this.showContext(name !== 'left' && name !== 'right');
     if (name === 'hero') { this.reset(); this.onStatus('Hero view · physically based daylight'); return; }
     const fp = this.data.footprint, xs = fp.map((p) => p[0]), ys = fp.map((p) => p[1]);
     const W = Math.max(...xs) - Math.min(...xs), D = Math.max(...ys) - Math.min(...ys), H = this.H;
-    const mid = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.min(H * 1.15 + .2, 4.2)];
+    // Aim at the middle of the elevation's height, so single-storey homes are framed as well as G+1.
+    const top = H * this.data.storeys;
+    const mid = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2, Math.min(top * .55 + .1, 4.2)];
+    const side = W / 2 + Math.max(D * .8, (top + .9) * 1.8);
+    const bal = this.balcony();
     const views = {
       front: { target: [mid[0], -.2, mid[2]], theta: -Math.PI / 2, phi: .2, distance: Math.max(W, D) * 1.05 },
-      left: { target: [mid[0], D * .24, mid[2]], theta: Math.PI, phi: .2, distance: Math.max(W, D) * 1.12 },
-      right: { target: [mid[0], D * .24, mid[2]], theta: 0, phi: .2, distance: Math.max(W, D) * 1.12 },
+      // Side elevations: far enough back to hold the whole flank and its full height in frame.
+      left: { target: [mid[0], D * .42, top * .45], theta: Math.PI, phi: .15, distance: side },
+      right: { target: [mid[0], D * .42, top * .45], theta: 0, phi: .15, distance: side },
       entrance: { target: [this.data.entry[0], -.65, 1.65], theta: -Math.PI / 2, phi: .12, distance: 7.2 },
-      balcony: { target: [W * .61, -1.05, H * 1.78], theta: -Math.PI / 2, phi: .3, distance: 6.8 },
+      balcony: bal && { target: [bal.x, bal.y - .2, bal.z + 1.25], theta: -Math.PI / 2, phi: .3, distance: 6.8 },
     };
     const v = views[name] || views.front;
     this.camera.fov = 43; this.camera.updateProjectionMatrix();
     this.orbitTo(v.target, v.theta, v.phi, v.distance);
     this.onStatus(`${name[0].toUpperCase() + name.slice(1)} view · physically based daylight`);
+  }
+
+  // The street-facing balcony (deck centre, front edge and deck level), or null on homes without one.
+  balcony() {
+    const slabs = (this.data?.nodes || []).filter((n) => n.role === 'balcony');
+    if (!slabs.length) return null;
+    const x = slabs.reduce((a, n) => a + n.position[0], 0) / slabs.length;
+    const y = Math.min(...slabs.map((n) => n.position[1] - Math.abs(n.scale[1]) / 2));
+    const z = Math.max(...slabs.map((n) => n.position[2] + Math.abs(n.scale[2]) / 2));
+    return { x, y, z };
   }
 
   // ---------- walking ----------
@@ -706,7 +736,7 @@ class FloorForgeViewer {
     const floor = this.levelOf(level);
     const room = level < -.2 ? null : this.roomAt(p);
     let label = room ? room.name : null;
-    if (!label) label = level > this.H * .5 ? 'Terrace' : this.isIndoors(p) ? 'Hall' : 'Garden';
+    if (!label) label = level > this.H * .5 ? 'Terrace' : this.isIndoors(p) ? 'Hall' : -p.z < this.data.bounds[1] ? 'Street' : 'Garden';
     this.hud.setLocation(label, floor === 0 ? 'Ground floor' : floor === 1 ? 'First floor' : `Level ${floor}`);
   }
 

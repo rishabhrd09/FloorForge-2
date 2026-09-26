@@ -117,6 +117,13 @@ export function buildContext(viewer, data) {
     house(x + 1.2, ymax + 3, x + pw - 1.2, ymax + 3 + D * .6, 1);
     x += pw;
   }
+  // The street-side hero cameras: the design camera and its sunward mirror, both aimed at the same target.
+  const hero = data.cameras?.hero;
+  const spots = hero ? [[hero.position[0], hero.position[1]], [2 * hero.target[0] - hero.position[0], hero.position[1]]] : [];
+  const inHeroShot = (x, y) => spots.some(([hx, hy]) => {
+    const vx = x - hx, vy = y - hy, tx = hero.target[0] - hx, ty = hero.target[1] - hy, d = Math.hypot(vx, vy);
+    return d < 26 && (vx * tx + vy * ty) / (d * Math.hypot(tx, ty) || 1) > Math.cos(68 * Math.PI / 180);
+  });
   // Street trees and lamp posts along the footpath.
   // Keep the street in front of the plot clear so hero and front cameras are never blocked.
   for (let sx = xmin - W * 2; sx < xmax + W * 2; sx += 9 + rnd() * 3) {
@@ -124,7 +131,8 @@ export function buildContext(viewer, data) {
     trees.push({ species: 'tree_shade', x: sx, y: ymin - 1.2, s: .75 + rnd() * .3 });
   }
   for (let sx = xmin - W * 2 + 4; sx < xmax + W * 2; sx += 18) {
-    if (sx > clearX0 - 3 && sx < clearX1 + 3) continue;
+    // A lamp post in the foreground of a hero view (even on a very wide screen) would split the picture.
+    if ((sx > clearX0 - 3 && sx < clearX1 + 3) || inHeroShot(sx, ymin - 1.4)) continue;
     boxGeo(sx - .06, ymin - 1.45, g, sx + .06, ymin - 1.33, g + 6.5, buckets.frame);
     boxGeo(sx - .06, ymin - 2.6, g + 6.4, sx + .06, ymin - 1.33, g + 6.5, buckets.frame);
     boxGeo(sx - .12, ymin - 2.75, g + 6.3, sx + .12, ymin - 2.4, g + 6.42, buckets.frame);
@@ -136,8 +144,6 @@ export function buildContext(viewer, data) {
     trees.push({ species: rnd() < .8 ? 'tree_shade' : 'palm', x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, s: 1 + rnd() * .8, far: true });
   }
   // Nothing grows within reach of either street-side hero camera (the design camera or its sunward mirror).
-  const hero = data.cameras?.hero;
-  const spots = hero ? [[hero.position[0], hero.position[1]], [2 * hero.target[0] - hero.position[0], hero.position[1]]] : [];
   const planted = trees.filter((t) => t.far || spots.every(([hx, hy]) => Math.hypot(t.x - hx, t.y - hy) > 7.5));
   trees.length = 0;
   trees.push(...planted);

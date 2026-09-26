@@ -774,11 +774,27 @@ def make_scene(building, report):
         elif kind == 'porch':
             platform = geo.get('platform_z_mm', -120) / 1000
             roof_z = geo.get('canopy_z_mm', 2700) / 1000
-            rect((x0, y0, platform, x1, y1, platform + .10), 'stone', 0, 'porch', aid + '-platform', aid)
+            # The platform stands more than a stride above the court, so an inset step on the walk to the front
+            # door climbs it; elsewhere the platform edge stays a clean plinth line.
+            rise = platform + .10 - g
+            sx0, sx1 = max(x0, ex - .8), min(x1, ex + .8)
+            depth = min(.36, (y1 - y0) * .45)
+            if rise > .3 and sx1 - sx0 > .9:
+                for xa, xb in ((x0, sx0), (sx1, x1)):
+                    rect((xa, y0, platform, xb, y1, platform + .10), 'stone', 0, 'porch', owner=aid)
+                rect((sx0, y0 + depth, platform, sx1, y1, platform + .10), 'stone', 0, 'porch', aid + '-platform', aid)
+                rect((sx0, y0, g - .02, sx1, y0 + depth, g + rise / 2), 'stone', 0, 'porch', aid + '-step', aid)
+            else:
+                rect((x0, y0, platform, x1, y1, platform + .10), 'stone', 0, 'porch', aid + '-platform', aid)
             rect((x0 - .15, y0 - .15, roof_z, x1 + .15, y1 + .15, roof_z + .14), 'roof', 0, 'canopy', aid + '-roof', aid)
             count = geo.get('support_count', 2)
-            for i in range(count):
-                xx = x0 + .16 + (x1 - x0 - .32) * i / max(1, count - 1)
+            posts = [x0 + .16 + (x1 - x0 - .32) * i / max(1, count - 1) for i in range(count)]
+            # A post never stands in the walk to the front door: one that would is split into a pair framing it.
+            clear = entry['width'] / 2000 + .55
+            if any(abs(xx - ex) < clear for xx in posts):
+                moved = sorted([xx for xx in posts if abs(xx - ex) >= clear] + [xx for xx in (ex - clear, ex + clear) if x0 + .16 <= xx <= x1 - .16])
+                posts = [xx for j, xx in enumerate(moved) if j == 0 or xx - moved[j - 1] > .6]
+            for i, xx in enumerate(posts):
                 rect((xx - .045, y0 + .10, platform, xx + .045, y0 + .20, roof_z), 'timber', 0, 'porch', aid + f'-post-{i}', aid)
             rect((x0 - .15, y0 - .15, roof_z + .14, x1 + .15, y0 - .05, roof_z + .25), 'timber', 0, 'canopy', aid + '-fascia', aid)
             for j, xx in enumerate(np.arange(x0 + .28, x1 - .10, .52)):
@@ -790,13 +806,18 @@ def make_scene(building, report):
             for xx in (x0 + (x1 - x0) * .34, x0 + (x1 - x0) * .66):
                 cylinder((xx, y0 + .38, roof_z - .13), .07, .02, 'lamp', 0, 'fixture')
                 k.light((xx, y0 + .38, roof_z - .16), 24)
-            if x1 - x0 > 3.0:
-                seat_x = min(x1 - 1.25, max(x0 + 1.15, ex + 1.0)); seat_y = y0 + (y1 - y0) * .53
+            # Porch seating sits beside the walk to the front door, never across it.
+            clear = entry['width'] / 2000 + .45
+            side = 1 if x1 - ex >= ex - x0 else -1
+            seat_x = ex + side * (clear + .8); seat_y = y0 + (y1 - y0) * .53
+            if x1 - x0 > 3.0 and x0 + 1.1 <= seat_x <= x1 - 1.0:
                 rb((seat_x, seat_y, platform + .40), (1.55, .54, .28), 'fabric', 0, 'outdoor-furniture', .07, owner=aid)
                 rb((seat_x, seat_y + .22, platform + .75), (1.55, .12, .43), 'fabric', 0, 'outdoor-furniture', .06, owner=aid)
                 for dx in (-1.18, 1.18):
-                    rb((seat_x + dx, seat_y - .05, platform + .34), (.62, .60, .24), 'fabric-dark', 0, 'outdoor-furniture', .07, owner=aid)
-                rb((seat_x, seat_y - .78, platform + .30), (.78, .62, .08), 'stone', 0, 'outdoor-furniture', .08, owner=aid)
+                    if abs(seat_x + dx - ex) >= clear + .31 and x0 + .6 <= seat_x + dx <= x1 - .35:
+                        rb((seat_x + dx, seat_y - .05, platform + .34), (.62, .60, .24), 'fabric-dark', 0, 'outdoor-furniture', .07, owner=aid)
+                if seat_y - 1.1 >= y0:
+                    rb((seat_x, seat_y - .78, platform + .30), (.78, .62, .08), 'stone', 0, 'outdoor-furniture', .08, owner=aid)
             rect((x0 + .12, y0 + .18, platform + .10, x0 + .28, y1 - .12, platform + .52), 'stone', 0, 'planter', aid + '-planter', aid)
             for xx in np.linspace(x0 + .48, x0 + .95, 2):
                 k.plant(xx, y0 + .42, platform + .52, 'shrub_round', height=.3)
@@ -1011,9 +1032,9 @@ def make_scene(building, report):
                             beam((cxx + ddx, cyy + ddy, zb), (cxx + ddx, cyy + ddy, zb + .42), .012, 'frame', -1, 'outdoor-furniture')
             k.plant(x + 1.15, y - .2, zb, 'shrub_round', height=.5, pot=(.22, .5, 'planter'))
     if boundary and theme_id != 'current' and not modern:
-        gate_x = boundary.get('gate_center_mm', ex * 1000) / 1000
-        gate_w = boundary.get('gate_width_mm', 2200) / 1000
-        rect((gate_x - gate_w / 2, ymin + .18, .78, gate_x + gate_w / 2, ymin + .25, .86), 'timber', -1, 'gate', 'exterior-gate-header', 'exterior-gate')
+        # A flush timber threshold marks the gateway between the pillars; nothing spans the opening at body
+        # height, so a visitor can walk in from the street.
+        rect((ex - gate_half + .03, ymin - .02, g - .02, ex + gate_half - .03, ymin + .2, g + .05), 'timber', -1, 'gate', 'exterior-gate-threshold', 'exterior-gate')
 
     # ---------------------------------------------------------------- bands, drainage, bollards
     if not modern:
@@ -1047,8 +1068,14 @@ def make_scene(building, report):
     # ---------------------------------------------------------------- walk + rooms metadata
     rooms = [{'id': s['id'], 'name': s['name'], 'kind': s['kind'], 'floor': s['floor'],
               'polygon': [[round(x / 1000, 4), round(y / 1000, 4)] for x, y in s['clear']]} for s in b['spaces']]
-    gate_c = boundary.get('gate_center_mm', ex * 1000) / 1000 if boundary else ex
-    walk = {'eye_height': 1.63, 'arrival': {'position': [round(gate_c, 3), round(ymin + .75, 3), round(g, 3)], 'yaw_deg': 0}, 'floors': []}
+    # The walk starts on the street outside the open gate, facing the house, so the visitor arrives the way a
+    # guest does (the modern gate is parked open and its track is flush; legacy leaves stand open). A wide
+    # drive gate is entered on the front door's line, clear of the carport posts.
+    arrive_x = ex
+    if modern and boundary:
+        gate_c, gate_w = boundary.get('gate_center_mm', ex * 1000) / 1000, boundary.get('gate_width_mm', 2600) / 1000
+        arrive_x = min(max(ex, gate_c - gate_w / 2 + .6), gate_c + gate_w / 2 - .6)
+    walk = {'eye_height': 1.63, 'arrival': {'position': [round(arrive_x, 3), round(ymin - 1.3, 3), round(g + (.1 if modern else 0), 3)], 'yaw_deg': 0}, 'floors': []}
     for f in range(storeys):
         options = [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'family', 'dining', 'hall')]
         if not options:

@@ -44,6 +44,16 @@ try {
   check('bundled project + realistic renderer initialised', scene.schema === 'floorforge.scene/0.4', scene);
   await still(page);
   await page.screenshot({ path: join(OUT, 'studio-desktop.png') });
+  // The 3D view takes most of the height and the scrolling panel never runs under the status bar.
+  const layout = async () => page.evaluate(() => { const box = (q) => document.querySelector(q).getBoundingClientRect(); return { canvas: Math.round(box('.canvas-wrap').height), panelBottom: Math.round(box('#home-panel').bottom), statusTop: Math.round(box('.status-bar').top), scroll: document.documentElement.scrollHeight - innerHeight }; });
+  const roomy = await layout();
+  check('viewer fills the studio at 1440×1024', roomy.canvas >= 520 && roomy.panelBottom <= roomy.statusTop + 1 && roomy.scroll <= 0, roomy);
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.waitForTimeout(300);
+  const laptop = await layout();
+  check('1366×768 laptop layout keeps the panel clear of the status bar', laptop.canvas >= 330 && laptop.panelBottom <= laptop.statusTop + 1 && laptop.scroll <= 0, laptop);
+  await page.setViewportSize({ width: 1440, height: 1024 });
+  await page.waitForTimeout(300);
 
   await page.click('[data-mode="walk"]');
   await page.evaluate(() => { const v = window.__ffApp.viewer; v.paused = true; v.hud.setLocked(true); v.walker.update(1 / 30, v.readInput()); v.camera.position.copy(v.walker.eyePosition(v.camera.position.clone())); v.camera.rotation.set(v.walker.pitch, v.walker.yaw, 0); v.hudUpdate(); v.composer.render(0); });
@@ -77,6 +87,8 @@ try {
   const generated = await page.evaluate(() => ({ title: document.getElementById('project-title').textContent, theme: window.__ff.scene.exterior_theme, schema: window.__ff.scene.schema }));
   check('UI POST generation completes for 30x40 with the Modern Tropical default', generated.title.includes('Garden Pavilion') && generated.theme === 'modern_tropical', generated);
   await page.click('[data-tab="home"]');
+  const views = await page.evaluate(() => { const v = window.__ffApp.viewer; v.setView('right'); const side = v.context.visible; v.setView('hero'); return { balconyButtonHidden: document.querySelector('[data-view="balcony"]').hidden, contextInSideView: side, contextInHero: v.context.visible }; });
+  check('single-storey home: no balcony view, side view clear of the neighbours', views.balconyButtonHidden && !views.contextInSideView && views.contextInHero, views);
   await page.click('[data-mode="dollhouse"]');
   await page.waitForTimeout(500);
   await still(page);
@@ -94,10 +106,12 @@ try {
   check('reopenable project collects actual inputs', project.brief.bedrooms === 2 && project.brief.storeys === 1);
 
   gl = await page.evaluate(() => { const g = window.__ffApp.viewer.gl, e = g.getExtension('WEBGL_debug_renderer_info'); return { vendor: g.getParameter(g.VENDOR), renderer: e ? g.getParameter(e.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER) }; });
-  await page.evaluate(() => window.__ffApp.viewer.destroy());
+  // Phone width: draw one frame at the new canvas size (the loop stays paused), then capture the page.
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
+  await page.evaluate(() => { const v = window.__ffApp.viewer; v.paused = true; v.resize(); v.composer.render(0); });
   await page.screenshot({ path: join(OUT, 'studio-mobile.png'), fullPage: true });
+  await page.evaluate(() => window.__ffApp.viewer.destroy());
   const dims = await page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
   check('mobile no horizontal document overflow', dims.scroll <= dims.width, dims);
 } finally {

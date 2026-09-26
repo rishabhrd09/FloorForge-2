@@ -11,7 +11,7 @@ Scene schema `floorforge.scene/0.4` adds four blocks to the nodes, materials, li
 - `vegetation`: seeded plant instances with species, position, scale and rotation. The viewer grows them procedurally; `plant-proxy` nodes keep them in the GLB and drawings.
 - `lawns`: lawn polygons.
 - `rooms`: clear room polygons per storey, used for the walk badge and room light probes.
-- `walk`: the arrival spawn, a spawn per floor and the eye height.
+- `walk`: the arrival spawn (on the footpath outside the open gate, facing the house), a spawn per floor and the eye height.
 
 Materials may declare a physically based `kind` (render, stone, cobble, pebbles, woodfloor and so on) that the viewer turns into GPU-synthesised texture maps.
 
@@ -53,7 +53,7 @@ Walls are polygon extrusions split vertically around hosted doors and windows. E
 
 Not every decorative surface is a closed manifold, and the whole building is not a single boolean-unioned watertight object. The GLB retains individual components and stable scene names.
 
-Walking uses the same geometry. The viewer merges every collidable closed surface (walls, glazing, slabs, stair treads, furniture) into a BVH. A capsule with a 0.27 m radius and 1.78 m height moves against it with gravity, step-up of 0.38 m, snap-down, jump and crouch, so the stair core is climbed continuously. Headroom is checked by ray before standing up. This is walkable geometry, not an accessible-route or egress certification. Doors are fixed open leaves.
+Walking uses the same geometry. The viewer merges every collidable closed surface (walls, glazing, slabs, stair treads, furniture) into a BVH. A capsule with a 0.27 m radius and 1.78 m height moves against it with gravity, a 0.38 m step offset (about 0.3 m in practice for a single rise), snap-down, jump and crouch, so the stair core is climbed continuously. Headroom is checked by ray before standing up. This is walkable geometry, not an accessible-route or egress certification. Doors are fixed open leaves.
 
 The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from the same facade anchors, plot polygon and protected interior fingerprint as the other families:
 

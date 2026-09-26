@@ -41,11 +41,11 @@ UVs are box-projected, and a world-space macro variation breaks up tiling. The p
 
 GLB and drawings keep simple coordination proxies (`role: plant-proxy`) for the same plants.
 
-**Neighbourhood context.** The viewer adds context sized from the plot: neighbouring houses with framed reflective glazing, front-garden shrubs, street trees, lamp posts and a horizon tree line. It is never exported and makes no design claim.
+**Neighbourhood context.** The viewer adds context sized from the plot: neighbouring houses with framed reflective glazing, front-garden shrubs, street trees, lamp posts and a horizon tree line. Trees and lamp posts are kept out of the foreground of both hero views, and the context stands aside for the Left and Right elevations, whose cameras would otherwise stand inside a neighbour's house. It is never exported and makes no design claim.
 
 **Quality.** Choose Auto, Ultra, High, Balanced or Performance. Auto starts from the device class and steps down when frames are slow.
 
-**Hero view.** The street-side three-quarter hero view is mirrored to whichever diagonal faces the sun, as a photographer would choose. The scene's own camera record is unchanged.
+**Hero view.** The street-side three-quarter hero view is mirrored to whichever diagonal faces the sun, as a photographer would choose. The scene's own camera record is unchanged. The Front, Left and Right views aim at the middle of the elevation's height, so single-storey homes are framed as fully as G+1 ones. The Balcony view aims at the generated balcony and is offered only when the home has one.
 
 ## Walking through the home
 
@@ -63,12 +63,14 @@ Choose **Walk in**, click the view to capture the mouse, then use these controls
 | Esc | release mouse (Esc again leaves walk mode) |
 | Touch | left-side stick to move, drag to look, Jump button |
 
+The walk starts on the footpath outside the open gate, facing the house, so you arrive as a guest does: through the gate, across the court and up the entrance step to the front door. Every exterior theme keeps that route clear and climbable, which a test checks for each theme on the villa, on the narrowest plot and on a plot with parking, where a wide drive gate is entered on the front door's line.
+
 The visitor is a capsule 0.27 m in radius and 1.78 m tall, with the eye at 1.63 m.
 - It collides against a BVH of the actual generated geometry: walls, glazing, furniture and stair treads.
 - Gravity applies. A jump rises about 0.8 m (0.80–0.82 m measured in the live captures).
-- Steps up to 0.38 m are climbed automatically, so the U-stair is walked continuously from floor to floor, not teleported.
+- Stair treads, kerbs and entrance steps are climbed automatically, so the U-stair is walked continuously from floor to floor, not teleported. The step offset is 0.38 m, but the capsule meets an edge higher than about 0.3 m before its foot probe reaches the top, so 0.3 m is the practical single rise (measured by walking at test boxes).
 - Crouching lowers the eye and passes under 1.2 m.
-- Falling off the site respawns you at the arrival court.
+- Falling off the site respawns you at the gate.
 - A badge names the current room and storey from the scene's `rooms` metadata. The floor buttons follow the storey you are standing on.
 
 ## Honest limits

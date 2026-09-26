@@ -109,7 +109,7 @@ async function preview(browser) {
   metrics.walk = await tab.evaluate(() => { const v = window.__ff.viewer; v.paused = true; v.walker.update(1 / 30, v.readInput()); v.camera.position.copy(v.walker.eyePosition(v.camera.position.clone())); v.camera.rotation.set(v.walker.pitch, v.walker.yaw, 0); v.hudUpdate(); v.composer.render(0); return { mode: v.mode, badge: v.hud.last }; });
   await tab.screenshot({ path: join(OUT, 'preview-walk.png') });
   // Live loop: the real requestAnimationFrame loop and keyboard, at performance quality so software WebGL
-  // keeps up. Hold W from the arrival court, then press Space; sample the walker, room and exposure.
+  // keeps up. Hold W from the footpath outside the gate, then press Space; sample the walker, room and exposure.
   const sample = () => tab.evaluate(() => { const v = window.__ff.viewer, w = v.walker; return { t: +performance.now().toFixed(0), x: +w.position.x.toFixed(3), y: +w.position.y.toFixed(3), z: +w.position.z.toFixed(3), onGround: w.onGround, room: v.hud.last, indoor: +(v.indoor || 0).toFixed(2), probe: Boolean(v.env.probe), exposure: +v.gradeEffect.uniforms.get('exposure').value.toFixed(3) }; });
   await tab.setViewportSize({ width: 480, height: 300 });
   await tab.evaluate(() => { const v = window.__ff.viewer; v.setQuality('performance'); v.spawn('arrival'); v.paused = false; v.hud.setLocked(true); v.canvas.focus(); });

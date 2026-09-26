@@ -4,7 +4,7 @@
 
 ## Executed here
 
-**Tests.** 139 tests passed, 0 failed (52.1 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 20 new realism tests in `tests/test_realism.py` cover:
+**Tests.** 154 tests passed, 0 failed (89.7 s). The results are in `evidence/pytest.txt` and `pytest.xml`. The 35 realism test cases in `tests/test_realism.py` cover:
 - the Modern Tropical default and scene 0.4;
 - full-height living glazing within wall height;
 - landscape, stepping stones, planting and lawns inside the plot and off the house, for every fixture plot;
@@ -13,6 +13,7 @@
 - physically based material kinds and furniture containment;
 - offline-preview script integrity, and the bundled viewer's presence and licence comments;
 - walls that tile each storey without overlapping solids;
+- the walk from the footpath through the open gate to the front door, for every exterior theme on the villa, the narrowest plot and a plot with parking: no obstacle in the way and no rise above the walker's practical 0.3 m;
 - the offline render path: the export in the bundle, and the Blender scripts compiling.
 
 **Reproducibility.** Two clean default generations compared 23 published artifacts with no differences (`evidence/reproducibility.json`), on the same host and runtime.
@@ -29,20 +30,21 @@ All three are Modern Tropical.
 **Viewer.** `scripts/capture_walkthrough.mjs` produced 16 captures with no page errors, all in software WebGL (SwiftShader):
 - exterior in daylight, golden hour and blue hour, plus front and entrance views;
 - both dollhouse levels;
-- a scripted first-person walk: arrival, dining and living, kitchen, the U-stair mid-landing, a first-floor bedroom and the terrace, plus blue-hour and night interiors;
+- a scripted first-person walk: the arrival on the footpath outside the gate, dining and living, kitchen, the U-stair mid-landing, a first-floor bedroom and the terrace, plus blue-hour and night interiors;
 - the compact example's hero.
 
 Per-shot mode, grade, room badge, probe state and metered exposure are in `evidence/walkthrough-capture.json`.
 
-**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the arrival court up the entrance step and through the door into the living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.80 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
+**Offline preview.** `examples/demo/preview.html` was opened from disk (`file://`) and became ready with no page errors. In a live check with the real animation loop and keyboard, holding W carried the visitor from the footpath through the open gate, across the court, up the entrance step and through the door into the hall, living and dining area. The room probe was captured, exposure adapted, and Space lifted the visitor 0.82 m. The page's **Blender GLB** button downloaded a 74 MB binary glTF (`evidence/browser-preview.json`).
 
-**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 11 checks with no page errors (`evidence/studio-browser.json`):
+**Studio.** `scripts/capture_studio.mjs` started the real loopback server and passed 14 checks with no page errors (`evidence/studio-browser.json`):
 - the bundled scene 0.4 and realistic renderer;
+- the 3D view filling the studio at 1440×1024 (554 px tall), and a 1366×768 layout whose panel stays clear of the status bar;
 - walk mode with the room badge;
 - nine drawing sheets;
 - the visible regulatory unknown;
 - the fused-source preflight;
-- a real 30×40 ft generation that arrives as Modern Tropical;
+- a real 30×40 ft generation that arrives as Modern Tropical, with no Balcony view on the single-storey home and the neighbours standing aside for the side view;
 - the grid painter;
 - three AI consent choices;
 - project collection;
@@ -75,6 +77,20 @@ They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores wi
 - **Inside-out trunks.** Plant trunk tubes were wound inward, so the viewer drew their far inner faces and Cycles shaded them black. They now face out.
 - **Black planting in Blender.** The presentation export carried builder vertex colours on planting, which three.js ignores unless a material opts in but glTF always multiplies in. They are now exported only for materials that use them.
 - **Unlit lamp shades.** Unlit lamp shades rendered black in daylight stills; switched off they now read as opal glass and white diffusers.
+
+## Repairs from the full visual QA
+
+The studio was driven through every tab, camera view, mode and grade, both generated presets and every exterior theme, at 1024×768, 1366×768, 1440×900, 1440×1000, 1920×1080 and 390 px wide. These defects were found and fixed:
+
+- **Cramped walk start.** The walk began inside the gate, 0.45 m from the facade on the smallest plot. It now starts on the footpath outside the open gate, facing the house.
+- **Blocked gateway on the older themes.** A timber bar crossed the gateway at chest height. It is now a flush threshold.
+- **Porch too high to step onto.** On the Warm Modern Minimal, Tropical Verandah and Earth & Terracotta themes the porch platform stood 0.39–0.43 m above the court with no step, above the walker's practical 0.3 m rise. An inset step on the walk to the door now climbs it.
+- **Things in front of the front door.** On those themes a porch post, a porch ottoman and, on narrow plots, the 3 m Warm Modern Minimal feature wall stood in the door's approach. Posts now frame the walk, seating sits beside it, and the feature wall stops short of the door or is left out. Single-storey homes no longer receive the first-floor facade frame.
+- **Lamp post across the small-plot hero view.** At wide canvas proportions a street lamp stood in the foreground. Lamp posts are now kept out of both hero views.
+- **Side views from inside the neighbours.** The Left and Right cameras stood inside neighbouring houses. The context now stands aside for those views. Front and side views are framed by storey height, where single-storey homes had been cropped to the roof. The Balcony view aims at the generated balcony and is hidden when there is none.
+- **Letterboxed viewer.** At 1440×1000 the 3D view was a 311 px strip under two rows of theme cards. Theme cards now take one row each and the view is 530 px tall. At 1366×768, and on phones, the panel content had run under the status bar; it now scrolls within the panel, and on phones the page grows.
+- **Phone framing.** On a portrait phone canvas the hero view cropped both ends of the house. Orbit views now step back on portrait canvases.
+- **Wording.** The status line kept the walk instructions after leaving walk mode, the heading read "1 bedrooms", and the walk badge called the street "Garden".
 
 ## Not accepted
 

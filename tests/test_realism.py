@@ -1,6 +1,7 @@
 """Realistic walkthrough contract: modern exterior, procedural planting, lawns, rooms and walk metadata."""
 from pathlib import Path
 
+import numpy as np
 import pytest
 from shapely.geometry import Polygon, Point, box
 
@@ -89,7 +90,8 @@ def test_rooms_and_walk_metadata_support_first_person_navigation(modern):
     assert len(scene['rooms']) == len(building['spaces'])
     [x0, y0, _, x1, y1, _] = scene['bounds']
     ax, ay, _ = scene['walk']['arrival']['position']
-    assert x0 <= ax <= x1 and y0 <= ay <= y1
+    # The visitor arrives on the footpath outside the plot, lined up with the open gate.
+    assert x0 <= ax <= x1 and y0 - 1.6 < ay < y0
     floors = {s['floor']: s for s in scene['walk']['floors']}
     assert set(floors) == set(range(building['storeys']))
     fp = Polygon(scene['footprint'])
@@ -97,6 +99,60 @@ def test_rooms_and_walk_metadata_support_first_person_navigation(modern):
         assert fp.contains(Point(spawn['position'][:2]))
     # The stair core is real geometry (treads) the walker can climb, not a teleport.
     assert sum(n['role'] == 'stair' for n in scene['nodes']) >= 17
+
+
+# Roles the viewer's walking capsule passes through (web/viewer/src/scene-builder.js NO_COLLIDE).
+NO_COLLIDE = {'curtain', 'rug', 'detail', 'fixture', 'plant-proxy', 'light-glow', 'downlight', 'cove', 'art', 'decor', 'blind', 'lamp'}
+
+
+def _solids(scene):
+    """World bounding boxes (lo, hi) of every solid that blocks or carries the walking capsule."""
+    out = []
+    for n in scene['nodes']:
+        asset = scene['assets'][n['asset']]
+        if n['role'] in NO_COLLIDE or asset.get('closed') is False:
+            continue
+        rx, ry, rz = n['rotation']
+        cx, sx, cy, sy, cz, sz = np.cos(rx), np.sin(rx), np.cos(ry), np.sin(ry), np.cos(rz), np.sin(rz)
+        R = np.array([[cz * cy, cz * sy * sx - sz * cx, cz * sy * cx + sz * sx], [sz * cy, sz * sy * sx + cz * cx, sz * sy * cx - cz * sx], [-sy, cy * sx, cy * cx]])
+        v = (np.array(asset['vertices']) * n['scale']) @ R.T + n['position']
+        out.append((n['id'] + ':' + n['role'], v.min(0), v.max(0)))
+    return out
+
+
+def _obstacles(solids, lo, hi):
+    """Solids that reach into the axis-aligned box lo..hi (metres, Z up)."""
+    return [name for name, a, b in solids if (a < hi).all() and (b > lo).all()]
+
+
+def _tops(solids, ground, x, y):
+    """Heights a foot can stand on at (x, y): the terrain and the top of every solid there."""
+    return [ground] + [b[2] for _, a, b in solids if a[0] <= x <= b[0] and a[1] <= y <= b[1]]
+
+
+@pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)
+@pytest.mark.parametrize('case', ['villa', 'small', 'parking'])
+def test_walk_arrival_leads_through_an_open_gateway(theme, case):
+    brief = {'parking': True, 'front_mm': 6000, 'depth_mm': 21000} if case == 'parking' else CASES[case]
+    _, _, scene = build({**brief, 'exterior_theme': theme})
+    x0, y0, g = scene['bounds'][:3]
+    ax, ay, _ = scene['walk']['arrival']['position']
+    solids = _solids(scene)
+    # Nothing above step height stands in the capsule's path from the footpath through the gate and up to
+    # the front door, and each rise along the way is one the walker climbs in practice: its capsule
+    # (web/viewer/src/walker.js, radius .27 m, raised by the .38 m step offset) is held back by an edge
+    # much above .3 m before the ground probe reaches it.
+    ex = scene['entry'][0]
+    assert not _obstacles(solids, (ax - .3, ay - .3, g + .45), (ax + .3, y0 + .5, g + 1.85))
+    assert not _obstacles(solids, (ex - .3, y0 + .5, .45), (ex + .3, -.4, 1.85))
+    level = g
+    for y in np.arange(ay, .3, .05):
+        x = ex if y > y0 + .5 else ax
+        if y < -.3:
+            blocking = [name for name, a, b in solids if a[0] <= x <= b[0] and a[1] <= y <= b[1] and b[2] > level + .3 and a[2] < level + 1.7]
+            assert not blocking, f'a {blocking[0]} edge too high to step onto at y={y:.2f}'
+        level = max(t for t in _tops(solids, g, x, y) if t <= level + .3)
+    assert level > -.02, 'the walk does not reach the ground floor through the front door'
 
 
 def test_surfaces_declare_physically_based_kinds(modern):
