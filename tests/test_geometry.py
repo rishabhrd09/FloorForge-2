@@ -146,7 +146,7 @@ def test_report_does_not_mutate_validated_dag_stage():
 def test_professional_screen_is_quiet_on_the_default(model):
     codes={w['code'] for w in validate(model)['warnings']}
     # Habitable rooms get a tenth of their floor in openings and every bath opens to the air.
-    assert not codes&{'LOW_DAYLIGHT','BATH_VENTILATION','POOJA_BESIDE_BATH','DOOR_SWING_CLASH','WET_ABOVE_POOJA'}
+    assert not codes&{'LOW_DAYLIGHT','BATH_VENTILATION','POOJA_BESIDE_BATH','DOOR_SWING_CLASH','WET_ABOVE_POOJA','WET_ABOVE_KITCHEN'}
 
 
 def test_professional_screen_flags_what_a_reviewer_would(model):

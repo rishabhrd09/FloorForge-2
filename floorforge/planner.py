@@ -562,6 +562,20 @@ def floor_cost(rooms, W, D, g, needs):
     return c
 
 
+def below_cost(rooms, below):
+    """Baths over the kitchen or the pooja of the floor below (the same terms as stacking_cost, and a firmer one for
+    the kitchen), so an upper suite chooses where its bath goes knowing what lies underneath."""
+    c = 0.
+    for r in rooms:
+        if r.kind != 'bathroom':
+            continue
+        for q in below:
+            m = overlap(r, q)
+            if m > 0:
+                c += 25 if q.kind == 'pooja' else 6 * m
+    return c
+
+
 def pooja_corners(plan, needs, hall):
     """When a requested pooja found no slot in the stacks, a small pooja room carved from a rear corner of the living
     room, clear of the hall's mouth and opening into the living room (a common arrangement in Indian homes)."""
@@ -612,7 +626,7 @@ def stacking_cost(ground, upper):
             if q.kind == 'pooja':
                 c += 25
             elif q.kind == 'kitchen':
-                c += 2.5 * m
+                c += 6 * m
             elif q.kind in WET:
                 c -= .6 * m
             elif q.kind in HABITABLE_BELOW:
@@ -734,6 +748,7 @@ class House:
         want = v.get('attached_baths', 'all')
         attached = total if want == 'all' else min(int(want), total)
         # Bedrooms, numbered ground floor first; the master is the upper floor's (or the only floor's) last.
+        self.below = ()          # kitchen and pooja of the chosen ground floor, for the upper floor's search
         self.suites = []
         num = 1
         for f, k in enumerate(self.counts):
@@ -883,10 +898,11 @@ class House:
         if xh0 < STAIR_W:
             return None
         res = back_region(W, D, STAIR_D, xh0, p['fwh'], left, right, g, (p['f1'], p['f2']), public_above(rooms))
-        return self._finish(rooms, res, W, D, g, needs)
+        return self._finish(rooms, res, W, D, g, needs, self.below)
 
-    def _finish(self, rooms, res, W, D, g, needs):
-        """Pick the best subdivision of every unit and the best owner of the bay behind the hall."""
+    def _finish(self, rooms, res, W, D, g, needs, below=()):
+        """Pick the best subdivision of every unit and the best owner of the bay behind the hall; upstairs, suites
+        keep their baths off the kitchen and pooja of the ground floor below (`below`)."""
         if res is None:
             return None
         best = None
@@ -902,11 +918,11 @@ class House:
                         if r.kind in WET or r.kind == 'pooja':
                             context.append(r)
                     continue
-                pick = min(range(len(cands)), key=lambda i: (self._local(cands[i], context, W, D, g), i))
+                pick = min(range(len(cands)), key=lambda i: (self._local(cands[i], context, W, D, g) + below_cost(cands[i], below), i))
                 chosen.append(cands[pick])
             plan = fixed + [r for grp in chosen for r in grp]
             for alt in [plan] + pooja_corners(plan, needs, hall[0]):
-                cost = floor_cost(alt, W, D, g, needs)
+                cost = floor_cost(alt, W, D, g, needs) + below_cost(alt, below)
                 if best is None or cost < best[0]:
                     best = (cost, alt)
         return best
@@ -1070,10 +1086,13 @@ def plan_width(v, W, D, quick=False, only=None):
             continue
         pairs = [(g[0], g, None) for g in grs]
         if stair:
+            house.below = tuple(r for r in grs[0][2] if r.kind in ('kitchen', 'pooja'))
             ups = best_floor(fspace, lambda p: house.upper(p, Dp), fseeds, **kw)
             if not ups or ups[0][0] >= BIG:
                 continue
-            pairs = [(g[0] + u[0] + stacking_cost(g[2], u[2]) + (5 if studies(g[2]) and studies(u[2]) else 0), g, u)
+            # The upper search steered clear of the best ground floor's kitchen and pooja; each pairing is costed on
+            # what actually lies below it instead.
+            pairs = [(g[0] + u[0] - below_cost(u[2], house.below) + stacking_cost(g[2], u[2]) + (5 if studies(g[2]) and studies(u[2]) else 0), g, u)
                      for g in grs for u in ups]
         cost, g, u = min(pairs, key=lambda t: t[0])
         cost += (D - Dp) / 300 * 1.6
