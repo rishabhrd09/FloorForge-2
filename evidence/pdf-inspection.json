@@ -10,14 +10,14 @@
     },
     {
       "example": "compact",
-      "pages": 13,
+      "pages": 14,
       "page_size": "A3 landscape",
       "checks": "Size, preliminary banner, text inside physical page; all pages rasterised",
       "issues": []
     },
     {
       "example": "small",
-      "pages": 13,
+      "pages": 14,
       "page_size": "A3 landscape",
       "checks": "Size, preliminary banner, text inside physical page; all pages rasterised",
       "issues": []

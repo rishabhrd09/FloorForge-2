@@ -287,23 +287,104 @@ def test_every_designed_theme_raises_a_stair_tower_and_solar_roof(theme):
     assert all(fp.contains(Point(n['position'][:2])) and n['position'][2] > top for n in solar)
 
 
-@pytest.mark.parametrize('case', list(CASES))
-def test_side_passages_are_paved_and_the_boundary_is_clad_in_timber(case):
-    building, _, scene = build(CASES[case])
+WIDE = {'width_mm': 18288, 'depth_mm': 27432, 'bedrooms': 4}   # 60 x 90 ft: 2 m sides and rear, as derived
+
+
+@pytest.fixture(scope='module')
+def wide():
+    return build(WIDE)
+
+
+@pytest.mark.parametrize('case', list(CASES) + ['wide'])
+def test_side_passages_lay_pavers_on_black_pebbles_behind_a_clad_boundary(case):
+    building, _, scene = build(WIDE if case == 'wide' else CASES[case])
     features = {f['id']: f for f in building['exterior']['landscape']['features']}
     v = building['brief']
+    paved = False
     for side, gap in (('left', v['left_mm']), ('right', v['right_mm'])):
         if gap < 700:
             assert f'{side}-fence-cladding' not in features
             continue
         fence = features[f'{side}-fence-cladding']
         boards = [n for n in scene['nodes'] if n.get('owner') == fence['id'] and n['material'] == 'timber']
-        assert len(boards) >= 8 and all(n['scale'][1] > 5 for n in boards), 'horizontal boards the length of the garden'
-        if gap - 150 - 60 >= 820:
-            paving = features[f'{side}-passage-paving']
-            assert paving['kind'] == 'path' and paving['material_role'] == 'site.flagstone'
-            assert features[f'{side}-passage-drip']['kind'] == 'pebble_bed'
-    assert scene['materials']['flagstone']['params'][3] > 0, 'large slabs laid in two tones'
+        assert len(boards) >= 8 and all(n['scale'][1] > 1.5 for n in boards), 'horizontal boards along the garden'
+        if gap - 150 - 60 < 820:
+            continue
+        paved = True
+        bed = features[f'{side}-passage-bed']
+        assert bed['kind'] == 'pebble_bed' and bed['material_role'] == 'site.pebble_black'
+        assert features[f'{side}-passage-drip']['material_role'] == 'site.pebble'
+        pavers = [Polygon(q) for q in features[f'{side}-passage-pavers']['stones']]
+        assert len(pavers) >= 4 and all(Polygon(bed['polygon']).buffer(1).covers(q) for q in pavers)
+        assert len({round(q.centroid.x) for q in pavers}) == 2, 'pavers laid staggered'
+        screen = features.get(f'{side}-breeze-screen')
+        if screen:
+            assert fence['gaps_mm'] == [[screen['y0_mm'], screen['y1_mm']]]
+            a, b = screen['y0_mm'] / 1000, screen['y1_mm'] / 1000
+            for n in boards:
+                y, half = n['position'][1], n['scale'][1] / 2
+                assert y + half <= a + 1e-6 or y - half >= b - 1e-6, 'boards stop at the breeze-block screen'
+            assert any(n['id'] == screen['id'] and n['material'] == 'breeze' for n in scene['nodes'])
+        for f in features.values():
+            if f['id'].startswith(side) and f['kind'] in ('planter', 'garden_basin'):
+                foot = Point(*f['position_mm']).buffer(220 if f['kind'] == 'planter' else 250)
+                assert not any(foot.intersects(q) for q in pavers), f['id']
+    if case == 'wide':
+        assert paved and scene['materials']['pebbleblack']['kind'] == 'pebbles'
+        assert any(f['kind'] == 'garden_basin' for f in features.values())
+
+
+def test_rear_garden_has_a_lit_water_wall_with_the_hedge_parted_around_it(wide):
+    building, _, scene = wide
+    features = building['exterior']['landscape']['features']
+    wall = next(f for f in features if f['kind'] == 'water_wall')
+    x, y = wall['position_mm']
+    w = wall['width_mm']
+    assert Polygon(building['plot']).covers(box(x - w / 2, y - 200 - wall['trough_depth_mm'], x + w / 2, y))
+    for h in (f for f in features if f['kind'] == 'hedge'):
+        hx, half = h['position_mm'][0], h['size_mm'][0] / 2
+        assert hx + half <= x - w / 2 or hx - half >= x + w / 2, 'the hedge parts around the water wall'
+    names = {n['id'] for n in scene['nodes']}
+    assert {wall['id'], wall['id'] + '-pool', wall['id'] + '-fall'} <= names
+    assert any(l['kind'] == 'uplight' and abs(l['position'][0] - x / 1000) < .05 for l in scene['lights'])
+
+
+def test_modern_frontage_is_stone_clad_and_lit_behind_a_tall_slatted_gate(modern):
+    building, _, scene = modern
+    assert any(n['id'].startswith('exterior-boundary-cladding') and n['material'] == 'cladding' for n in scene['nodes'])
+    street = Polygon(building['plot']).bounds[1] / 1000
+    assert sum(1 for l in scene['lights'] if l['kind'] == 'uplight' and l['position'][1] < street) >= 2
+    slats = [n for n in scene['nodes'] if n.get('owner') == 'exterior-vehicle-gate' and n['material'] == 'timber']
+    assert len(slats) >= 20 and all(n['scale'][2] > 1.3 and n['scale'][0] < .06 for n in slats), 'tall vertical slats'
+
+
+def test_foyer_inside_the_main_door_has_a_slatted_timber_ceiling(modern):
+    building, _, scene = modern
+    entry = next(o for o in building['openings'] if o['kind'] == 'entry')
+    room = next(s for s in building['spaces'] if s['id'] == entry['swing'])
+    clear = Polygon(np.array(room['clear']) / 1000).buffer(.01)
+    H = building['brief']['floor_height_mm'] / 1000
+    parts = [n for n in scene['nodes'] if n.get('owner') == 'foyer-ceiling']
+    assert len(parts) >= 10 and {n['material'] for n in parts} == {'walnut', 'oak'}
+    for n in parts:
+        verts = np.array(scene['assets'][n['asset']]['vertices'])
+        assert all(clear.covers(Point(x, y)) for x, y, _ in verts) and H - .26 <= verts[:, 2].min() and verts[:, 2].max() <= H - .15
+
+
+def test_roof_terrace_sala_stands_clear_of_the_solar_rack_and_the_loungers(modern):
+    building, _, scene = modern
+    parts = [n for n in scene['nodes'] if n.get('owner') == 'roof-sala']
+    deck = next(n for n in parts if n['id'] == 'roof-sala-deck')
+    (dx, dy, _), (sx, sy, _) = deck['position'], deck['scale']
+    foot = box(dx - sx / 2, dy - sy / 2, dx + sx / 2, dy + sy / 2)
+    assert Polygon(np.array(building['footprint']) / 1000).buffer(-.2).covers(foot)
+    for n in scene['nodes']:
+        if n['material'] in ('solar', 'sling') and n.get('owner') != 'roof-sala':
+            (x, y, _), (ax, ay, _) = n['position'], n['scale']
+            assert not foot.buffer(.2).intersects(box(x - ax / 2, y - ay / 2, x + ax / 2, y + ay / 2)), n['id']
+    assert any(l['kind'] == 'pendant' and foot.contains(Point(*l['position'][:2])) for l in scene['lights'])
+    _, _, small = build({'width_mm': 9144, 'depth_mm': 12192, 'bedrooms': 3})
+    assert not any(n.get('owner') == 'roof-sala' for n in small['nodes']), 'a small roof keeps its loungers only'
 
 
 @pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)

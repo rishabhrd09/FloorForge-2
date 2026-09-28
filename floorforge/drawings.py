@@ -551,12 +551,24 @@ def section_elements(b, scene):
 
 
 # ---------------------------------------------------------------------------------------------- schedules
+def listing(names, limit):
+    """Names joined up to `limit` characters, ending "+N more" rather than cutting a word."""
+    out = []
+    for i, n in enumerate(names):
+        more = len(names) - i
+        text = ', '.join(out + [n])
+        if len(text) > limit or (more > 1 and len(text) + len(f', +{more - 1} more') > limit):
+            return ', '.join(out) + f' +{more} more' if out else n[:limit]
+        out.append(n)
+    return ', '.join(out)
+
+
 def schedule_tables(b, report):
     tags, types = opening_types(b)
     doors = [['TAG', 'DESCRIPTION', 'SIZE W x H (mm)', 'SILL', 'NO.', 'LOCATION']]
     for t in types:
         doors.append([t['tag'], describe(t), f'{t["width"]} x {t["height"]}', str(t['sill']) if t['sill'] else '-', str(t['count']),
-                      ', '.join(t['rooms'])[:44]])
+                      listing(t['rooms'], 46)])
     rooms = [['SPACE', 'FLOOR', 'CLEAR SIZE (m)', 'CLEAR SIZE (ft-in)', 'AREA m2', 'AREA ft2']]
 
     def ftin(mm):

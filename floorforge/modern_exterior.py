@@ -456,15 +456,18 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             bx0, _, bx1, _ = bed.bounds
             away = 1 if side == "left" else -1                    # direction from the boundary towards the house
             edge = bx0 if side == "left" else bx1                 # the bed's boundary-side edge
-            pw = min(1100, bx1 - bx0 - (560 if wid >= 1200 else 160))
-            shift = max(0., (bx1 - bx0 - pw) / 2 - 60) * .8
+            # A bed 1.3 m wide or more leaves a 0.58 m strip beside each paver that steps away from the boundary,
+            # for pots and the basin; a narrower one is paved nearly across for walking.
+            roomy = bx1 - bx0 >= 1300
+            pw = min(1100, bx1 - bx0 - (640 if roomy else 160))
+            shift = max(0., (bx1 - bx0 - pw) / 2 - 60) * (1 if roomy else .8)
             pavers, spots, yy, i = [], [], y0 + 380, 0
             while yy + 300 <= y1 - 150 and len(pavers) < 60:
                 cx = (bx0 + bx1) / 2 + (shift if i % 2 else -shift) * away
                 pavers.append(_poly(box(cx - pw / 2, yy - 300, cx + pw / 2, yy + 300)))
                 gap = abs((cx - away * pw / 2) - edge)
-                if i % 2 and gap >= 480:
-                    spots.append((yy, edge + away * min(gap / 2, 280)))
+                if roomy and i % 2 and gap >= 560:
+                    spots.append((yy, edge + away * (gap / 2 - 10)))
                 yy += 760
                 i += 1
             features.append({"id": f"{side}-passage-pavers", "kind": "stepping_stones", "stones": pavers, "material_role": "site.paver_large"})

@@ -133,7 +133,7 @@ try {
   await page.waitForTimeout(300);
   await page.screenshot({ path: join(OUT, 'studio-drawings.png') });
   const sheets = await page.locator('#sheet-select option').count();
-  check('nine generated drawing sheets selectable', sheets === 9, { sheets });
+  check('ten generated drawing sheets selectable (plans, site, elevations, section, schedules, axes)', sheets === 10, { sheets });
   await page.click('#sheet-zoom-in'); await page.click('#sheet-zoom-in');
   await page.waitForTimeout(200);
   const sheetZoom = await page.evaluate(() => { const h = document.querySelector('.drawing-holder'); return { label: document.getElementById('sheet-fit').textContent, scrollable: h.scrollWidth > h.clientWidth * 1.5 }; });
@@ -146,6 +146,21 @@ try {
   await page.waitForSelector('#intent-dialog[open]');
   check('fused-source preflight opens', (await page.locator('#intent-content').innerText()).includes('quick-survey'));
   await page.click('[data-close="intent-dialog"]');
+  // The eight-question survey: the compass sets the road side, attached-bath choices follow the bedrooms, the plot
+  // summary shows the open spaces derived from its size, and a description's reading lists what was not understood.
+  await page.click('#compass .dir[data-deg="90"]');
+  const survey = await page.evaluate(() => ({ facing: document.getElementById('facing').value, note: document.getElementById('facing-note').textContent,
+    baths: document.getElementById('attached-baths').options.length, summary: document.getElementById('plot-summary').textContent }));
+  check('compass sets the road side; bath choices and the derived open spaces follow the plot', survey.facing === '90' && survey.note.includes('east') && survey.baths === 4 && survey.summary.includes('Open spaces from its size'), survey);
+  await page.evaluate(() => { const d = document.getElementById('description'); d.value = '30 by 40 site, north facing, 3BHK duplex, all bedrooms attached, pooja room, 80 lakhs. A swing in the courtyard.'; document.getElementById('text-used').checked = true; });
+  await page.click('#understand');
+  await page.waitForSelector('#intent-dialog[open]');
+  const reading = await page.locator('#intent-content').innerText();
+  await page.screenshot({ path: join(OUT, 'studio-understood.png') });
+  check('the description is read back: phrases understood, and those not understood', reading.includes('From your description') && reading.includes('north') && reading.includes('Not understood') && reading.includes('swing'), { chars: reading.length });
+  await page.click('[data-close="intent-dialog"]');
+  await page.evaluate(() => { document.getElementById('description').value = ''; });
+  await page.click('#compass .dir[data-deg="180"]');
 
   await page.selectOption('#preset', 'compact');
   await page.click('#generate');

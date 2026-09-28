@@ -102,3 +102,11 @@ def test_plan_chains_close_on_the_footprint_and_every_opening_is_tagged(model,sc
 def test_section_cut_runs_up_the_stair_flight(model):
     x=section_cut(model);st=model['stairs'][0]
     assert st['x']<x<st['x']+st['flight_width']
+
+
+def test_schedule_locations_never_cut_a_word(model):
+    names={s_['name'] for s_ in model['spaces']}
+    for row in schedule_tables(model,reports(model,validate(model)))[0]['rows'][1:]:
+        parts=[q.strip() for q in row[5].split(',')]
+        last=parts[-1].rsplit(' +',1)[0]
+        assert all(q in names or ' / ' in q for q in parts[:-1]+[last]),row

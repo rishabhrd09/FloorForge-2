@@ -104,7 +104,8 @@ def make_scene(building, report):
     def lining(room, f, z0, z1, mat, role, thickness=.012):
         """Thin wall lining (skirting, wainscot tiles) inside a room, cut at openings overlapping z0..z1."""
         clear = Polygon(np.array(room['clear']) / 1000)
-        ring = clear.difference(clear.buffer(-thickness, join_style=2))
+        # Only along walls: an open edge between two rooms (living and dining) carries no skirting across the floor.
+        ring = clear.difference(clear.buffer(-thickness, join_style=2)).intersection(wall_union[f].buffer(thickness + .02, join_style=2))
         for o, poly in opening_polys[f]:
             oz0, oz1 = o['sill'] / 1000, (o['sill'] + o['height']) / 1000
             if o['kind'] == 'cased' or (oz1 > z0 - f * H and oz0 < z1 - f * H):
