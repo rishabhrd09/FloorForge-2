@@ -1,6 +1,6 @@
 {
   "name": "floorforge-optional-three-studio",
-  "version": "0.2.0-alpha",
+  "version": "0.3.0-alpha",
   "private": true,
   "type": "module",
   "scripts": {"build": "esbuild src/three-studio.js --bundle --format=esm --minify --outfile=dist/three-studio.js --legal-comments=external"},

@@ -7,9 +7,13 @@ import concurrent.futures,hashlib,json,mimetypes,secrets,threading,time,webbrows
 from . import __version__
 from .model import *
 from .pipeline import run,ROOT,runtime_versions,kernel_hash
-from .intent import fuse
+from .intent import fuse,SETBACKS_BY_DEPTH,SETBACKS_BY_WIDTH
 from .ai import Assist
 from .exterior import list_available_themes
+
+# The open-space tables behind intent.derive_setbacks, for the studio's live plot summary (JSON has no infinity).
+SETBACK_TABLES={'depth':[[None if math.isinf(l) else l,f,r] for l,f,r in SETBACKS_BY_DEPTH],
+                'width':[[None if math.isinf(l) else l,sd] for l,sd in SETBACKS_BY_WIDTH]}
 
 class State:
     def __init__(self,out):
@@ -49,7 +53,7 @@ def make_server(out,port=0):
         def do_GET(self):
             if not self.trusted():self.send({'error':'Local origin required'},403);return
             path=unquote(urlsplit(self.path).path)
-            if path=='/api/session':self.send({'token':state.token,'version':__version__,'backend_build_id':kernel_hash(),'defaults':DEFAULTS,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status()});return
+            if path=='/api/session':self.send({'token':state.token,'version':__version__,'backend_build_id':kernel_hash(),'defaults':DEFAULTS,'setbacks':SETBACK_TABLES,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status()});return
             if path=='/api/ai/status':self.send(state.ai.status());return
             if path.startswith('/api/jobs/'):
                 with state.lock:job=state.jobs.get(path.rsplit('/',1)[1])

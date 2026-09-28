@@ -19,14 +19,17 @@
     "building_revision": "floorforge/exterior.py:apply_exterior_preferences",
     "shared_scene": "floorforge/scene.py:make_scene",
     "shared_drawings": "floorforge/drawings.py:plan_elements,site_elements,elevation_elements",
-    "review_screen": "floorforge/review.py:validate"
+    "review_screen": "floorforge/review.py:validate",
+    "modern_tropical": "floorforge/modern_exterior.py:modern_opening_proposals,modern_candidate,modern_landscape",
+    "scene_kit": "floorforge/scene_kit.py:Kit,material_library",
+    "realistic_viewer": "web/viewer/src/index.js:FloorForgeViewer (bundled to web/viewer.js)"
   },
   "data_flow": {
     "building_revision": "floorforge.building/0.3",
-    "landscape": "floorforge.landscape/0.1",
+    "landscape": "floorforge.landscape/0.1 (legacy families), floorforge.landscape/0.2 (Modern Tropical)",
     "change_set": "floorforge.change-set/0.1",
-    "scene": "floorforge.scene/0.3",
+    "scene": "floorforge.scene/0.4",
     "project_opt_in": "floorforge.project/0.3"
   },
-  "tests": "tests/test_exterior.py"
+  "tests": "tests/test_exterior.py, tests/test_realism.py"
 }

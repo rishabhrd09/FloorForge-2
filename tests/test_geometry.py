@@ -1,5 +1,6 @@
 import pytest,math,copy
 from shapely.geometry import Polygon,box
+from shapely.affinity import scale
 from shapely.ops import unary_union
 from floorforge.model import *
 from floorforge.intent import fuse
@@ -17,9 +18,20 @@ def test_fixture_styles_screen(case,style):
 
 @pytest.mark.parametrize('bearing',range(0,360,45))
 def test_facing_does_not_rotate_geometry_or_promote_floors(bearing,model):
+    # With Vastu off, facing never changes the plan.
+    off=generate_layout(fuse({'brief':{'vastu':'off'}}))
+    b=generate_layout(fuse({'brief':{'road_bearing_deg':bearing,'vastu':'off'}}))
+    assert b['spaces']==off['spaces'] and b['footprint']==off['footprint']
+    # With Vastu on, facing may only choose the hand: the same plan or its mirror, never a rotation or another floor.
     b=generate_layout(fuse({'brief':{'road_bearing_deg':bearing}}))
-    assert b['spaces']==model['spaces'] and b['footprint']==model['footprint']
     validate(b)
+    assert b['storeys']==model['storeys'] and b['footprint']==model['footprint']
+    W=Polygon(model['footprint']).bounds[2]
+    base={s['id']:Polygon(s['polygon']) for s in off['spaces']}
+    same=all(Polygon(s['polygon']).symmetric_difference(base[s['id']]).area<1 for s in b['spaces'])
+    flip=all(Polygon(s['polygon']).symmetric_difference(scale(base[s['id']],-1,1,origin=(W/2,0))).area<1 for s in b['spaces'])
+    assert same or flip
+    assert b['planning']['vastu_mirrored']==flip
 
 @pytest.mark.parametrize('variant',[0,1,2])
 def test_variants_are_valid_and_geometric(variant):
@@ -41,18 +53,26 @@ def test_clear_space_does_not_intersect_wall(model):
         assert Polygon(s['clear']).intersection(wall).area<1
 
 def test_bedrooms_never_required_through_routes(model):
-    graph=validate(model)['graph']
+    graph=validate(model)['graph'];kinds={s['id']:s['kind'] for s in model['spaces']}
     for room in [s for s in model['spaces'] if s['kind']=='bedroom']:
         seen={'outside'};todo=['outside']
         while todo:
             for neighbor in graph[todo.pop()]:
                 if neighbor!=room['id'] and neighbor not in seen:seen.add(neighbor);todo.append(neighbor)
-        assert set(graph)-{room['id']}==seen
+        # Only the bedroom's own attached bath and dressing room lie beyond it.
+        assert all(kinds[r] in ('bathroom','dress') for r in set(graph)-{room['id']}-seen)
 
-def test_short_hall_repair(model):
-    for s in model['spaces']:
-        if s['kind']=='hall':
-            a,b,c,d=Polygon(s['clear']).bounds;assert max(c-a,d-b)<=4000
+@pytest.mark.parametrize('case',list(CASES))
+def test_circulation_is_economical(case):
+    b=generate_layout(fuse({'brief':CASES[case]}))
+    for floor in range(b['storeys']):
+        rooms=[s for s in b['spaces'] if s['floor']==floor]
+        hall=sum(s['area_m2'] for s in rooms if s['kind']=='hall');total=sum(s['area_m2'] for s in rooms)
+        # Circulation of 10-15% of a floor is normal for a house; corridors keep a 1.0 m clear width.
+        assert hall<=.15*total
+        for s in rooms:
+            if s['kind']=='hall':
+                x0,y0,x1,y1=Polygon(s["clear"]).bounds;assert min(x1-x0,y1-y0)>=1000
 
 def test_stair_core_same_xy_and_real_rise(model):
     assert len(model['stairs'])==2
@@ -86,7 +106,8 @@ def grid_project(nonrect=False):
         else:row=['bedroom-1']*4+['hall']+['bedroom-2']*4
         if nonrect and y>=10:row[0]=row[1]=''
         rows.append(row)
-    return {'brief':{'storeys':1,'bedrooms':2,'width_mm':14000,'depth_mm':20000},'grid':{'cell_mm':1250,'floors':[rows]}}
+    return {'brief':{'storeys':1,'bedrooms':2,'width_mm':14000,'depth_mm':20000,'front_mm':3300,'rear_mm':1200,'left_mm':1100,'right_mm':1100},
+            'grid':{'cell_mm':1250,'floors':[rows]}}
 
 @pytest.mark.parametrize('nonrect',[False,True])
 def test_manual_grid_preserves_real_polygon(nonrect):
@@ -120,3 +141,31 @@ def test_report_does_not_mutate_validated_dag_stage():
     r=reports(b,v)
     assert v==before
     assert r['areas']['open_terrace_m2']>0
+
+
+def test_professional_screen_is_quiet_on_the_default(model):
+    codes={w['code'] for w in validate(model)['warnings']}
+    # Habitable rooms get a tenth of their floor in openings and every bath opens to the air.
+    assert not codes&{'LOW_DAYLIGHT','BATH_VENTILATION','POOJA_BESIDE_BATH','DOOR_SWING_CLASH','WET_ABOVE_POOJA','WET_ABOVE_KITCHEN'}
+
+
+def test_professional_screen_flags_what_a_reviewer_would(model):
+    b=copy.deepcopy(model)
+    bath=next(s for s in b['spaces'] if s['kind']=='bathroom')
+    b['openings']=[o for o in b['openings'] if not (o['kind']=='window' and bath['id'] in o['connects'])]
+    door=next(o for o in b['openings'] if o['kind']=='door' and o.get('swing'))
+    twin={**copy.deepcopy(door),'id':door['id']+'-twin'}
+    twin['offset']=door['offset']+100
+    b['openings'].append(twin)
+    codes=[(w['code'],w.get('id') or tuple(w.get('ids',()))) for w in validate(b)['warnings']]
+    assert ('BATH_VENTILATION',bath['id']) in codes
+    assert ('DOOR_SWING_CLASH',(door['id'],twin['id'])) in codes
+
+
+def test_unresolved_requests_name_the_shortfall():
+    b=generate_layout(fuse({'brief':{'width_mm':9144,'depth_mm':12192,'storeys':1,'bedrooms':2,'front_mm':1800,'rear_mm':900,'left_mm':750,'right_mm':750}}))
+    r=reports(b,validate(b));got=b['planning']['attached_baths']
+    assert got['provided']<got['requested']
+    assert any(x.startswith(f'Attached baths: {got["provided"]} of {got["requested"]}') for x in r['unresolved_requests'])
+    assert any(w['code']=='ENSUITE_SHORTFALL' for w in r['review']['warnings'])
+    assert '' not in r['unresolved_requests']

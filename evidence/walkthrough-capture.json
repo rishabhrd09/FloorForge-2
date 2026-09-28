@@ -1,0 +1,218 @@
+{
+  "method": "Headless Chromium, software WebGL (SwiftShader), 1600x900, quality high. The committed web/viewer.js renders each example's scene.json; walking uses fixed 1/30 s steps. Composition and behaviour evidence only: not real-GPU colour, frame-rate or native-browser acceptance.",
+  "shots": [
+    {
+      "file": "realistic-hero.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 32928,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-front.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 7283,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-entrance.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 9834,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-aerial.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 6247,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-top.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 7170,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-focus.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 4938,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "realistic-golden.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 8059,
+      "mode": "solid",
+      "grade": "golden",
+      "room": null,
+      "probe": false,
+      "exposure": 0.95
+    },
+    {
+      "file": "realistic-blue-hour.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 13741,
+      "mode": "solid",
+      "grade": "dusk",
+      "room": null,
+      "probe": false,
+      "exposure": 1.2
+    },
+    {
+      "file": "realistic-entrance-dusk.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 9425,
+      "mode": "solid",
+      "grade": "dusk",
+      "room": null,
+      "probe": false,
+      "exposure": 1.2
+    },
+    {
+      "file": "preview-dollhouse-ground.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 7591,
+      "mode": "dollhouse",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "preview-dollhouse-upper.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 6445,
+      "mode": "dollhouse",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "walk-arrival.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 37166,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Street|Ground floor",
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "walk-living-day.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 20499,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Living|Ground floor",
+      "probe": true,
+      "exposure": 2.182
+    },
+    {
+      "file": "walk-kitchen-day.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 15910,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Kitchen|Ground floor",
+      "probe": true,
+      "exposure": 3.346
+    },
+    {
+      "file": "walk-side-passage.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 8453,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Garden|Ground floor",
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "walk-stair.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 14566,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Stair|Ground floor",
+      "probe": true,
+      "exposure": 3.92
+    },
+    {
+      "file": "walk-bedroom-upper.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 15967,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Bedroom 2|First floor",
+      "probe": true,
+      "exposure": 3.326
+    },
+    {
+      "file": "walk-terrace.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 4394,
+      "mode": "walk",
+      "grade": "day",
+      "room": "Open terrace|First floor",
+      "probe": false,
+      "exposure": 0.98
+    },
+    {
+      "file": "walk-living-blue-hour.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 22262,
+      "mode": "walk",
+      "grade": "dusk",
+      "room": "Living|Ground floor",
+      "probe": true,
+      "exposure": 1.164
+    },
+    {
+      "file": "walk-bedroom-night.png",
+      "scene": "examples/demo/scene.json",
+      "ms": 14770,
+      "mode": "walk",
+      "grade": "night",
+      "room": "Bedroom 2|First floor",
+      "probe": true,
+      "exposure": 5.882
+    },
+    {
+      "file": "realistic-compact.png",
+      "scene": "examples/compact/scene.json",
+      "ms": 34975,
+      "mode": "solid",
+      "grade": "day",
+      "room": null,
+      "probe": false,
+      "exposure": 0.98
+    }
+  ],
+  "errors": [],
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "load_ms": 309259
+}

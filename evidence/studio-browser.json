@@ -1,13 +1,148 @@
 {
-  "method": "Chromium software SwiftShader under Xvfb. HTML set_content; fetch transport bound to actual loopback HTTP server because managed navigation is blocked. Not a real-GPU or native-platform sign-off.",
+  "method": "Headless Chromium with software WebGL (SwiftShader), navigating the real loopback studio server started by this script. Not a real-GPU, native-browser or installer sign-off.",
   "checks": [
     {
-      "check": "bundled project + actual renderer initialised",
-      "passed": true
+      "check": "bundled project + realistic renderer initialised",
+      "passed": true,
+      "details": {
+        "schema": "floorforge.scene/0.4",
+        "theme": "modern_tropical"
+      }
     },
     {
-      "check": "nine generated drawing sheets selectable",
-      "passed": true
+      "check": "viewer fills the studio at 1440×1024",
+      "passed": true,
+      "details": {
+        "canvas": 694,
+        "panelBottom": 987,
+        "statusTop": 987,
+        "scroll": 0
+      }
+    },
+    {
+      "check": "1366×768 laptop layout keeps the panel clear of the status bar",
+      "passed": true,
+      "details": {
+        "canvas": 438,
+        "panelBottom": 731,
+        "statusTop": 731,
+        "scroll": 0
+      }
+    },
+    {
+      "check": "walk mode opens at the arrival with the room badge",
+      "passed": true,
+      "details": {
+        "badge": "Street|Ground floor"
+      }
+    },
+    {
+      "check": "large view fills the window with its controls and zooms in",
+      "passed": true,
+      "details": {
+        "width": 1440,
+        "height": 1024,
+        "window": [
+          1440,
+          1024
+        ],
+        "controlsInside": true,
+        "zoom_m": [
+          25.16,
+          17.61
+        ]
+      }
+    },
+    {
+      "check": "Capture saves a large 3840-pixel still",
+      "passed": true,
+      "details": {
+        "file": "FloorForge-view-large.png",
+        "width": 3840,
+        "height": 2731
+      }
+    },
+    {
+      "check": "Focus shows the home alone filling the whole screen",
+      "passed": true,
+      "details": {
+        "focus": {
+          "span": [
+            0.696,
+            0.822
+          ],
+          "inside": true,
+          "context": false,
+          "focus": true,
+          "wrap": [
+            1440,
+            1024
+          ],
+          "window": [
+            1440,
+            1024
+          ]
+        },
+        "top": {
+          "span": [
+            0.795,
+            0.747
+          ],
+          "inside": true,
+          "context": false,
+          "focus": true,
+          "wrap": [
+            1440,
+            1024
+          ],
+          "window": [
+            1440,
+            1024
+          ]
+        },
+        "view_chosen_mid_glide": {
+          "up": 0.999,
+          "gliding": false
+        }
+      }
+    },
+    {
+      "check": "wider view folds the brief away; leaving Focus brings the street back",
+      "passed": true,
+      "details": {
+        "canvas_px": [
+          1066,
+          1384
+        ],
+        "unfocused": {
+          "focus": false,
+          "context": true,
+          "expanded": false
+        }
+      }
+    },
+    {
+      "check": "Blender GLB export downloads a textured binary glTF",
+      "passed": true,
+      "details": {
+        "file": "FloorForge-presentation.glb",
+        "bytes": 80761636
+      }
+    },
+    {
+      "check": "ten generated drawing sheets selectable (plans, site, elevations, section, schedules, axes)",
+      "passed": true,
+      "details": {
+        "sheets": 10
+      }
+    },
+    {
+      "check": "drawing sheets zoom for close reading",
+      "passed": true,
+      "details": {
+        "label": "225%",
+        "scrollable": true
+      }
     },
     {
       "check": "regulatory unknown remains visible",
@@ -18,8 +153,39 @@
       "passed": true
     },
     {
-      "check": "UI POST generation to output/render completes for 30x40",
-      "passed": true
+      "check": "compass sets the road side; bath choices and the derived open spaces follow the plot",
+      "passed": true,
+      "details": {
+        "facing": "90",
+        "note": "The front, gate and entrance face east.",
+        "baths": 4,
+        "summary": "2,400 ft² · 223 m² plot. Open spaces from its size: front 3.0 m, rear 1.2 m, sides 1.0 / 1.0 m → buildable 10.2 × 14.1 m."
+      }
+    },
+    {
+      "check": "the description is read back: phrases understood, and those not understood",
+      "passed": true,
+      "details": {
+        "chars": 1533
+      }
+    },
+    {
+      "check": "UI POST generation completes for 30x40 with the Modern Tropical default",
+      "passed": true,
+      "details": {
+        "title": "The Garden Pavilion",
+        "theme": "modern_tropical",
+        "schema": "floorforge.scene/0.4"
+      }
+    },
+    {
+      "check": "single-storey home: no balcony view, side view clear of the neighbours",
+      "passed": true,
+      "details": {
+        "balconyButtonHidden": true,
+        "contextInSideView": false,
+        "contextInHero": true
+      }
     },
     {
       "check": "grid painter interaction",
@@ -27,7 +193,10 @@
     },
     {
       "check": "three AI consent choices visible",
-      "passed": true
+      "passed": true,
+      "details": {
+        "choices": 3
+      }
     },
     {
       "check": "reopenable project collects actual inputs",
@@ -70,8 +239,8 @@
       "status": 200
     },
     {
-      "path": "/demo/sheets/A-101.svg",
-      "method": "GET",
+      "path": "/api/intent",
+      "method": "POST",
       "status": 200
     },
     {
@@ -85,32 +254,77 @@
       "status": 202
     },
     {
-      "path": "/api/jobs/c219aa1bd54ce847",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/scene.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/building.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/report.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/sheets.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/8b11aca2d92415c3dcf5bad3/sheets/A-101.svg",
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/report.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/scene.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/building.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/sheets.json",
       "method": "GET",
       "status": 200
     }

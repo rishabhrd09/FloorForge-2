@@ -1,4 +1,5 @@
 {
+  "schema": "floorforge.project/0.3",
   "brief": {
     "width_mm": 9144,
     "depth_mm": 12192,

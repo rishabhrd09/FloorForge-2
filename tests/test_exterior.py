@@ -37,7 +37,9 @@ def test_legacy_projects_keep_current_exterior_until_opted_in():
     legacy=fuse({'brief':{}})
     modern=fuse({'schema':'floorforge.project/0.3','brief':{}})
     assert legacy['values']['exterior_theme']=='current'
-    assert modern['values']['exterior_theme']=='warm_modern_minimal'
+    assert legacy['values']['interior_theme']=='current'
+    assert modern['values']['exterior_theme']=='modern_tropical'
+    assert modern['values']['interior_theme']=='bright_natural'
 
 
 @pytest.mark.parametrize('theme',EXTERIOR_THEME_IDS[1:])
@@ -55,7 +57,7 @@ def test_exterior_theme_is_real_coordinated_geometry(theme):
     roles={node['role'] for node in scene['nodes']}
     assert roles.intersection({'porch','balcony','screen','pergola','accent'})
     assert 'landscape' in roles
-    assert len(make_sheets(building,scene,report))==9
+    assert len(make_sheets(building,scene,report))==10
 
 
 def test_interior_palette_changes_materials_without_layout_change():

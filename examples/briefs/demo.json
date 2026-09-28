@@ -1,7 +1,7 @@
 {
   "schema": "floorforge.project/0.3",
   "brief": {
-    "exterior_theme": "warm_modern_minimal",
-    "interior_theme": "current"
+    "exterior_theme": "modern_tropical",
+    "interior_theme": "bright_natural"
   }
 }

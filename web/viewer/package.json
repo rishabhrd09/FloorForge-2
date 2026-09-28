@@ -1,0 +1,20 @@
+{
+  "name": "floorforge-realistic-viewer",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Source for web/viewer.js: FloorForge's offline realistic Three.js walkthrough renderer. The built bundle is committed so the core needs no Node at runtime.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "n8ao": "2.0.1",
+    "postprocessing": "6.39.5",
+    "three": "0.186.1",
+    "three-mesh-bvh": "0.9.5"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

@@ -13,17 +13,21 @@ from typing import Any
 
 from shapely.geometry import Point, Polygon, box
 
+from .frontage import plan_frontage
+
 from .model import DesignError, sha
 
 
 EXTERIOR_THEME_IDS = (
     "current",
+    "modern_tropical",
     "warm_modern_minimal",
     "tropical_verandah",
     "earth_terracotta",
 )
 INTERIOR_THEME_IDS = (
     "current",
+    "bright_natural",
     "warm_contemporary",
     "quiet_minimal",
     "earthy_modern_indian",
@@ -92,6 +96,34 @@ EXTERIOR_THEMES: dict[str, dict[str, Any]] = {
         "balcony_depth_mm": 0,
         "geometry": {},
     },
+    "modern_tropical": _theme(
+        "Modern Tropical",
+        "White rendered volumes, slim black full-height glazing, a floating roof slab, a stamped-cobble arrival court, pebble gardens with sculpted planting and a lawn with stepping stones.",
+        2100,
+        1800,
+        4200,
+        {
+            "wall": "#f1efea",
+            "stone": "#8a8883",
+            "timber": "#7a5234",
+            "frame": "#1d2022",
+            "roof": "#ecebe6",
+            "site_paving": "#8e9194",
+            "site_gate": "#1d2022",
+            "site_soil": "#43372b",
+            "site_leaf": "#3f6b35",
+            "site_leaf_light": "#86a257",
+        },
+        {
+            "porch_strategy": "cantilevered_slab_portico",
+            "balcony_strategy": "frameless_glass_balustrade",
+            "screen_strategy": "timber_slat_and_stone_cladding",
+            "opening_policy": "full_height_glazing",
+            "roof_edge_strategy": "floating_roof_slab",
+            "boundary_strategy": "rendered_wall_black_slat_gate",
+            "planting_strategy": "tropical_layers_pebble_beds_lawn",
+        },
+    ),
     "warm_modern_minimal": _theme(
         "Warm Modern Minimal",
         "A generous sheltered arrival court, broad glazed openings, a timber screen anchor and a furnished balcony.",
@@ -102,10 +134,10 @@ EXTERIOR_THEMES: dict[str, dict[str, Any]] = {
             "wall": "#ded9cd",
             "stone": "#8d806d",
             "timber": "#76583e",
-            "frame": "#263532",
+            "frame": "#25292a",
             "roof": "#3d4842",
             "site_paving": "#b8b1a3",
-            "site_gate": "#263532",
+            "site_gate": "#25292a",
             "site_soil": "#625545",
             "site_leaf": "#5c744f",
             "site_leaf_light": "#91a06b",
@@ -130,7 +162,7 @@ EXTERIOR_THEMES: dict[str, dict[str, Any]] = {
             "wall": "#e4dfcf",
             "stone": "#a58d65",
             "timber": "#76583c",
-            "frame": "#34483e",
+            "frame": "#2d332f",
             "roof": "#635542",
             "site_paving": "#b2a996",
             "site_gate": "#5b684e",
@@ -158,7 +190,7 @@ EXTERIOR_THEMES: dict[str, dict[str, Any]] = {
             "wall": "#e8dccb",
             "stone": "#b06d4f",
             "timber": "#704832",
-            "frame": "#41463e",
+            "frame": "#3a342f",
             "roof": "#955947",
             "site_paving": "#bcae99",
             "site_gate": "#4c453a",
@@ -184,6 +216,17 @@ INTERIOR_THEMES: dict[str, dict[str, Any]] = {
         "label": "Current interior",
         "description": "Preserves the existing interior material assignments and furniture layout.",
         "materials": {},
+    },
+    "bright_natural": {
+        "label": "Bright Natural",
+        "description": "Light oak floors, warm white walls, sand linen upholstery, walnut and black accents.",
+        "materials": {
+            "fabric": "#d3c7b3",
+            "fabric-dark": "#5d6b57",
+            "linen": "#f1ede4",
+            "rug": "#c9bda8",
+            "woodfloor": "#b89572",
+        },
     },
     "warm_contemporary": {
         "label": "Warm Contemporary",
@@ -255,7 +298,7 @@ def resolve_legacy_preferences(project: dict[str, Any]) -> dict[str, Any]:
     return {
         "exterior_theme": brief.get(
             "exterior_theme",
-            "warm_modern_minimal" if modern_project else "current",
+            "modern_tropical" if modern_project else "current",
         ),
         "interior_theme": brief.get("interior_theme", "current"),
         "change_policy": brief.get("change_policy", "exterior_refinement"),
@@ -432,7 +475,7 @@ def _opening_proposals(
         wall = hosts[opening["wall_id"]]
         if opening["kind"] == "glazed":
             wall_length = math.dist(wall["a"], wall["b"])
-            proposed_width = min(opening["width"] + 600, wall_length - 240)
+            proposed_width = min(opening["width"] + 600, wall_length - 240) // 300 * 300
             if proposed_width > opening["width"]:
                 proposed_offset = round((wall_length - proposed_width) / 2)
                 candidates.append((0, {
@@ -466,7 +509,7 @@ def _opening_proposals(
             continue
         wall_length = math.dist(wall["a"], wall["b"])
         role_delta = delta if role == "living_feature" else 240 if role == "bedroom_primary" else 180
-        proposed_width = min(opening["width"] + role_delta, wall_length - 360)
+        proposed_width = min(opening["width"] + role_delta, wall_length - 360) // 300 * 300
         if proposed_width <= opening["width"]:
             continue
         proposed_offset = round((wall_length - proposed_width) / 2)
@@ -536,9 +579,9 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
     W, D = _bounds_for_front(building)
     xmin, ymin, xmax, ymax = Polygon(building["plot"]).bounds
     ex, _ = _front_entry(building)
+    porch_x = tuple(porch["geometry"]["bounds_mm"][0::2]) if porch else None
     boundary = {
-        "gate_center_mm": round(ex),
-        "gate_width_mm": 3400 if v["parking"] else 2800 if theme_id == "warm_modern_minimal" else 2200,
+        **plan_frontage((xmin, ymin, xmax, ymax), ex, steps_x=porch_x, parking=v["parking"], front_mm=v["front_mm"]),
         "movement_clearance_mm": 500,
         "review_status": "geometry_screen_pending",
     }
@@ -570,11 +613,28 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
             "material_role": "site.paving",
             "maintenance_clearance_mm": 300,
         })
+    # Driveway behind the vehicle gate, clear of the entrance path.
+    drive = Polygon()
+    vehicle = next((g for g in boundary["gates"] if g["kind"] == "vehicle"), None)
+    if vehicle:
+        drive = box(vehicle["x0_mm"] + 60, ymin + 120, vehicle["x1_mm"] - 60, -250).difference(path.buffer(80))
+        if drive.area > 400_000 and drive.geom_type == "Polygon":
+            features.append({
+                "id": "site-driveway",
+                "kind": "court",
+                "polygon": [[round(x), round(y)] for x, y in list(drive.exterior.coords)[:-1]],
+                "material_role": "site.cobble",
+            })
+        else:
+            drive = Polygon()
     bed_margin = 350
     left_bed = box(xmin + bed_margin, ymin + 500, max(xmin + bed_margin + 400, ex - path_half - 250), -250)
     right_bed = box(min(xmax - bed_margin - 400, ex + path_half + 250), ymin + 500, xmax - bed_margin, -250)
     for ident, bed in (("site-bed-left", left_bed), ("site-bed-right", right_bed)):
-        if bed.area > 1 and not bed.intersects(path):
+        if not drive.is_empty:
+            bed = bed.difference(drive.buffer(200))
+            bed = max(getattr(bed, "geoms", [bed]), key=lambda p: p.area) if not bed.is_empty else bed
+        if bed.area > 250_000 and bed.geom_type == "Polygon" and not bed.intersects(path):
             features.append({
                 "id": ident,
                 "kind": "planting_bed",
@@ -587,7 +647,7 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
         tree_xs = [min(xmax - 1200, ex + 2800)]
     for i, x in enumerate(tree_xs):
         y = max(ymin + 1200, -max(1000, v["front_mm"] * 0.48))
-        if not path.contains(Point(x, y)):
+        if not path.contains(Point(x, y)) and not drive.buffer(400).contains(Point(x, y)):
             features.append({
                 "id": f"feature-tree-{i+1}",
                 "kind": "tree",
@@ -600,7 +660,7 @@ def _landscape(building: dict[str, Any], theme_id: str, porch: dict[str, Any] | 
     for i in range(shrub_count):
         x = xmin + 850 + i * max(550, (W - 1700) / max(1, shrub_count - 1))
         y = min(-350, ymin + 1050)
-        if not path.contains(Point(x, y)):
+        if not path.contains(Point(x, y)) and not drive.buffer(250).contains(Point(x, y)):
             features.append({
                 "id": f"layered-shrub-{i+1}",
                 "kind": "shrub",
@@ -622,6 +682,14 @@ def generate_exterior_candidates(
     preferences: DesignPreferences,
     constraints: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
+    if preferences.exterior_theme == "modern_tropical":
+        from .modern_exterior import modern_candidate
+        return [modern_candidate(building, preferences, {
+            "rectangle_assembly": _rectangle_assembly,
+            "front_entry": _front_entry,
+            "anchors": derive_facade_anchors,
+            "classify": classify_opening_role,
+        })]
     if preferences.exterior_theme == "current":
         return [{
             "id": "legacy-current",
@@ -753,20 +821,26 @@ def generate_exterior_candidates(
         ))
     if preferences.exterior_theme == "warm_modern_minimal":
         # A real blank stair bay gives the facade a dominant vertical anchor;
-        # it is deliberately placed on the stair-facing blank wall region.
-        assemblies.append(_rectangle_assembly(
-            "exterior-feature-wall-01",
-            "feature_wall",
-            0,
-            (180, -560, min(W - 360, 2550), -40),
-            {
-                "kind": "feature_wall",
-                "height_mm": building["storeys"] * v["floor_height_mm"] - 80,
-                "cap_height_mm": 150,
-            },
-            preferences.exterior_theme,
-            [],
-        ))
+        # it is deliberately placed on the stair-facing blank wall region, and
+        # stops short of the walk to the front door (on narrow plots it is left out).
+        entry_w = next(o for o in building["openings"] if o["kind"] == "entry")["width"]
+        wall_x1 = min(W - 360, 2550, ex - entry_w / 2 - 450)
+        if wall_x1 - 180 >= 900:
+            assemblies.append(_rectangle_assembly(
+                "exterior-feature-wall-01",
+                "feature_wall",
+                0,
+                (180, -560, wall_x1, -40),
+                {
+                    "kind": "feature_wall",
+                    "height_mm": building["storeys"] * v["floor_height_mm"] - 80,
+                    "cap_height_mm": 150,
+                },
+                preferences.exterior_theme,
+                [],
+            ))
+    if preferences.exterior_theme == "warm_modern_minimal" and building["storeys"] > 1:
+        # The first-floor frame only exists where there is a first floor to frame.
         assemblies.append(_rectangle_assembly(
             "exterior-front-frame-01",
             "facade_frame",
@@ -823,6 +897,10 @@ def generate_exterior_candidates(
             preferences.exterior_theme,
             [],
         ))
+    from .modern_exterior import stair_tower_assembly
+    tower = stair_tower_assembly(building, preferences.exterior_theme, _rectangle_assembly)
+    if tower:
+        assemblies.append(tower)
     opening_changes = _opening_proposals(building, theme, preferences.change_policy)
     landscape = _landscape(building, preferences.exterior_theme, porch)
     return [{
