@@ -65,7 +65,7 @@ def grid_spaces(grid,v):
     if len(floors)!=v['storeys']: raise DesignError('GRID_FLOORS','Grid floor count must match the requested storeys.')
     if v['storeys']>1: raise DesignError('GRID_STAIRS_REVIEW','Multi-storey manual grids require an aligned stair contract not yet supported. Automatic G+1 remains available.')
     spaces=[]; footprints=[]
-    names={'living':'Living','dining':'Dining','bedroom':'Bedroom','kitchen':'Kitchen','bathroom':'Bathroom','utility':'Utility','hall':'Hall','study':'Study','pooja':'Pooja'}
+    names={'living':'Living','dining':'Dining','bedroom':'Bedroom','kitchen':'Kitchen','bathroom':'Bathroom','utility':'Utility','hall':'Hall','study':'Study','pooja':'Pooja','store':'Store'}
     for f,rows in enumerate(floors):
         if not isinstance(rows,list) or not rows or len(rows)>40: raise DesignError('GRID_ROWS','Use 1-40 rows per floor.')
         if any(not isinstance(r,list) or len(r)!=len(rows[0]) or len(r)>40 for r in rows): raise DesignError('GRID_RECT','Grid rows must have equal length, at most 40 cells.')

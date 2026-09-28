@@ -13,23 +13,23 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M0 | Selectable cached DAG and manifests | TESTED_SCOPE | pipeline.py; cache tests | Programme/openings remain coupled to layout; structural/render stages expose placeholders honestly. |
 | M0 | Determinism from two clean runs | TESTED_SCOPE | evidence/reproducibility.json | Same runtime/OS; cross-platform bitwise equivalence unverified. |
 | M0 | License and asset ledger | PARTIAL | licenses/LEDGER.json | Complete native/transitive redistribution audit open. |
-| M1 | Five-input path with useful defaults | TESTED_SCOPE | UI generation and three fixture families | Bounded valid programme/plot range only. |
+| M1 | Eight-question path with derived defaults | TESTED_SCOPE | Studio survey: plot, road-side compass, bedrooms, storeys, attached baths, Vastu, must-haves, budget; intent.derive_setbacks and its tests | Bounded valid programme/plot range only; derived open spaces are typical byelaw values, not a verified local rule pack. |
 | M1 | Source precedence, conflict and Used/Off | TESTED_SCOPE | intent.py; source tests | Image semantics/manual grid comparisons remain limited. |
-| M1 | Free text understanding | PARTIAL | parse_text; grammar tests | Unrestricted prose, Hindi and semantic placement not implemented. |
+| M1 | Free text understanding | PARTIAL | parse_text grammar (plot size/area units, BHK, attached baths, G+1/duplex, facing, lakh/crore, pooja, parking, kitchen, Vastu, setbacks, heights) with understood / not-understood / assumption feedback; sample-brief tests | Unrestricted prose, Hindi and semantic placement (which room goes where) not implemented. |
 | M1 | Exact cell grid and L polygons | PARTIAL_TESTED | Grid union and nonrectangular tests | Only ground-floor manual grids; no arbitrary multi-level edited polygons. |
 | M1 | Survey G/G+1 distinct floors | TESTED_SCOPE | Fixture/variants/stair tests | No G+2/G+3, stilt, basement or arbitrary room-per-floor programme. |
 | M1 | No silent added storeys | TESTED_SCOPE | Intent and infeasibility tests | Rejected requests need explicit owner revision. |
 | M1 | Open public zones/private room routing | TESTED_SCOPE | Portal graph and through-bedroom tests | Graph access does not prove furniture-clearance or universal accessibility. |
-| M1 | Minimum-size, overlap and containment screen | PARTIAL_TESTED | review.py | Secondary research targets; local width/clearance and current legal clauses unverified. |
+| M1 | Minimum-size, overlap and containment screen | PARTIAL_TESTED | review.py: NBC 2016 Part 3 style minimums, corridor width and circulation share, daylight share, bath ventilation, pooja/wet adjacency and stacking, door-swing clashes, attached-bath shortfall | Screening values, not a verified clause pack; local width/clearance by medial axis not computed. |
 | M1 | Official NBC/byelaw validator | NOT_IMPLEMENTED | Statuses NOT EVALUATED | Authorised clause-specific jurisdiction pack and professional acceptance. |
-| M1 | Aligned wet services and stairs | PARTIAL_TESTED | Layout/stair core tests | Full structural/headroom/MEP coordination not designed. |
+| M1 | Aligned wet services and stairs | PARTIAL_TESTED | Planner stacking cost (baths over baths/utility, never over kitchen or pooja); layout/stair core tests | Full structural/headroom/MEP coordination not designed. |
 | M1 | Automatic courtyard/lightwell/double-height solving | NOT_IMPLEMENTED | No hidden claims | Need new topology, void and circulation solver. |
 | M1 | Eldercare/ICU/accessibility design | NOT_IMPLEMENTED | Preserved intent and NOT CERTIFIED status | Specialist patient/equipment/step-free route and services review. |
 | M1 | Sketch/photo/OCR/CV interpretation | NOT_IMPLEMENTED | Browser manual references only | Recognition, confidence, tracing/correction and image persistence. |
-| M1 | Vastu lever and strict satisfaction | PARTIAL | Centroid heuristic and unmet-strict warning | No enforced strict optimiser or scientific claim. |
-| M2 | True walls/openings and plan schedules | PARTIAL_TESTED | SVG/PDF/DXF and tests | Professional drafting review, exact clear openings/finishes needed. |
-| M2 | Overall/room/opening dimension chains | PARTIAL_TESTED | Plan vectors and real DXF dimensions | Not a complete chained dimension set for every edge/irregular shape. |
-| M2 | Site plan/elevations/stair section | PARTIAL_TESTED | Nine default drawing sheets | Elevations simplified; full facade/building details and slopes absent. |
+| M1 | Vastu lever and strict satisfaction | PARTIAL | Planner chooses the plan hand by Vastu cost; review rates rooms preferred / acceptable / avoid; unmet-strict warning | No enforced strict optimiser over room placement or scientific claim. |
+| M2 | True walls/openings and plan schedules | PARTIAL_TESTED | SVG/PDF/DXF plans with typed D/SD/O/W/V tags and the A-601 door, window and room schedule; stock window modules; tests | Professional drafting review, exact clear openings/finishes needed. |
+| M2 | Overall/room/opening dimension chains | PARTIAL_TESTED | Three chains per side (openings, walls, overall) closing on the footprint, grid bubbles, levels, section marker; true DXF DIMENSION entities; tests | Internal room dimension strings and irregular-edge chains not drawn. |
+| M2 | Site plan/elevations/stair section | PARTIAL_TESTED | Ten default drawing sheets including the schedule sheet | Elevations simplified; full facade/building details and slopes absent. |
 | M2 | IS 962 convention certification | NOT_IMPLEMENTED | Layer/line-weight-inspired drawing system | No official standard compliance audit. |
 | M2 | Indicative structural member/footing drawing | NOT_IMPLEMENTED | S-001 coordination axes only | No columns/beams/slab sizing/footings/rebar certification. |
 | M2 | A3 PDF/SVG export | TESTED_SCOPE | Page/text checks and actual captures | Physical printer/plotter acceptance open. |
@@ -59,7 +59,7 @@ TESTED_SCOPE = a bounded behaviour demonstrated here; PARTIAL = useful implement
 | M5 | Astra inspect/repair/lived-in quality loop | PARTIAL | Owner Appendix E and procedural scene | Original article fetch failed; full loop and photoreal target not completed. |
 | M5 | Manim reveal / AI image enhancement | NOT_IMPLEMENTED | No substitution for true geometry | Optional future explanation/appearance tools, carefully labelled. |
 | M6 | New responsive studio/real-engine landing | TESTED_SCOPE | studio-browser.json; desktop/mobile captures; Focus mode, the fitted views and the folding brief panel checked in the studio harness | Native direct-navigation, touch and accessibility audit remain open. |
-| M6 | Full conditional civil questionnaire | PARTIAL | Five essentials + selected deeper fields | Not the entire supplied questionnaire; no unsupported answers disguised as honoured. |
+| M6 | Full conditional civil questionnaire | PARTIAL | Eight essential questions, derived open spaces and selected deeper fields | Not the entire supplied questionnaire; no unsupported answers disguised as honoured. |
 | M6 | Review fused intent and conflicts | TESTED_SCOPE | Preflight UI and tests | Arbitrary recognition hypotheses not implemented. |
 | M6 | Save/reopen project and export bundle | PARTIAL_TESTED | JSON contract, UI collection, explicit exterior/interior theme persistence and actual files | Image bytes, undo and compare are absent; legacy files preserve their current exterior until opted in. |
 | M6 | Drag-resize-rotate/snapping designer | NOT_IMPLEMENTED | Grid painter only | Semantic editor, undo and constraint-preserving updates required. |

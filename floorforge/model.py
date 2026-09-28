@@ -45,7 +45,7 @@ DEFAULTS = {
     'change_policy': 'exterior_refinement', 'interior_layout_locked': True,
     'seed': 0, 'theme_version': '1',
 }
-SOURCE_PRIORITY = {'defaults':0, 'survey':10, 'text':20, 'sketch':30, 'grid':40, 'plan':40, 'edit':50}
+SOURCE_PRIORITY = {'defaults':0, 'derived':5, 'survey':10, 'text':20, 'sketch':30, 'grid':40, 'plan':40, 'edit':50}
 STYLES = {
     'warm': {'label':'Warm stone & timber','wall':'#e5ddc9','accent':'#827762','wood':'#785035','frame':'#293732','roof':'#3a413b','signature':'Deep framed portal, stone blade and timber soffit'},
     'minimal': {'label':'Quiet modern','wall':'#e9e8df','accent':'#777d79','wood':'#907356','frame':'#252e2e','roof':'#424c4a','signature':'Thin horizontal canopies and a recessed steel entry'},

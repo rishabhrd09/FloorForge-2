@@ -143,6 +143,13 @@ def material_library(style: dict, interior: dict, modern: bool) -> dict:
         'pebble': {'color': '#ebe8e1', 'alt': '#a19d94', 'roughness': .5, 'texture': 'stone', 'kind': 'pebbles'},
         'gravel': {'color': '#a09e98', 'alt': '#6e6c67', 'roughness': .85, 'texture': 'stone', 'kind': 'gravel'},
         'steppingstone': {'color': '#62625f', 'roughness': .8, 'texture': 'concrete', 'kind': 'concrete', 'seed': 9, 'tile_m': .9},
+        # Garden touches from the reference videos: black river pebbles, pale large-format pavers laid on them,
+        # off-white breeze blocks, a still water trough and a thin falling sheet of water.
+        'pebbleblack': {'color': '#3b3a37', 'alt': '#7a766d', 'roughness': .42, 'texture': 'stone', 'kind': 'pebbles', 'seed': 5},
+        'paverlarge': {'color': '#d2cfc6', 'alt': '#a8a49a', 'roughness': .72, 'texture': 'concrete', 'kind': 'concrete', 'seed': 12, 'tile_m': 1.2},
+        'breeze': {'color': '#ece8de', 'roughness': .86, 'texture': 'concrete', 'kind': 'concrete', 'seed': 14, 'tile_m': 1.0},
+        'water': {'color': '#35545a', 'roughness': .03, 'alpha': .84, 'metallic': .2},
+        'waterfall': {'color': '#e4f1f2', 'roughness': .04, 'alpha': .36, 'metallic': .05},
         'steel': {'color': '#232526', 'roughness': .45, 'metallic': .6, 'kind': 'metal', 'params': [.45]},
         # Photovoltaic modules: dark cells behind glass on a fine grid.
         'solar': {'color': '#1f2c3f', 'roughness': .14, 'metallic': .25, 'texture': 'tile', 'kind': 'tile', 'params': [6, .03, 0, .95], 'tile_m': 1.0},

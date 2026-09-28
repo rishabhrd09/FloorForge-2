@@ -312,7 +312,15 @@ class FloorForgeViewer {
       }
       scored.sort((a, b) => a.d - b.d);
     }
-    const spots = scored.filter((s) => DIRECTED.has(s.l.kind)).slice(0, this.spotCount);
+    // Outside, the up-lights nearest the camera (washing a boundary wall or a tree) keep a few spot slots; the
+    // rest go to the fittings nearest the point being looked at, as before.
+    let spots = [];
+    if (!walk && this.spotCount > 3) {
+      spots = scored.filter((s) => s.l.kind === 'uplight').map((s) => ({ ...s, e: s.p.distanceTo(eye) }))
+        .filter((s) => s.e < 16).sort((a, b) => a.e - b.e).slice(0, Math.min(3, this.spotCount >> 1));
+    }
+    const taken = new Set(spots.map((s) => s.i));
+    spots = spots.concat(scored.filter((s) => DIRECTED.has(s.l.kind) && !taken.has(s.i)).slice(0, this.spotCount - spots.length));
     const points = scored.filter((s) => !DIRECTED.has(s.l.kind)).slice(0, this.lightPool.length - this.spotCount);
     const key = spots.map((s) => s.i).join(',') + '/' + points.map((s) => s.i).join(',') + '|' + level + (origin ? '|probe' : '');
     if (!force && key === this.lightKey) return;

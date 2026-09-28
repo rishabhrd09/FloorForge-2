@@ -106,7 +106,8 @@ def grid_project(nonrect=False):
         else:row=['bedroom-1']*4+['hall']+['bedroom-2']*4
         if nonrect and y>=10:row[0]=row[1]=''
         rows.append(row)
-    return {'brief':{'storeys':1,'bedrooms':2,'width_mm':14000,'depth_mm':20000},'grid':{'cell_mm':1250,'floors':[rows]}}
+    return {'brief':{'storeys':1,'bedrooms':2,'width_mm':14000,'depth_mm':20000,'front_mm':3300,'rear_mm':1200,'left_mm':1100,'right_mm':1100},
+            'grid':{'cell_mm':1250,'floors':[rows]}}
 
 @pytest.mark.parametrize('nonrect',[False,True])
 def test_manual_grid_preserves_real_polygon(nonrect):

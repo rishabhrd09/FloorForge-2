@@ -3,7 +3,11 @@
     "storeys": 1,
     "bedrooms": 2,
     "width_mm": 14000,
-    "depth_mm": 20000
+    "depth_mm": 20000,
+    "front_mm": 3300,
+    "rear_mm": 1200,
+    "left_mm": 1100,
+    "right_mm": 1100
   },
   "grid": {
     "cell_mm": 1250,

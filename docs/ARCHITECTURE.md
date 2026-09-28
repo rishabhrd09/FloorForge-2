@@ -33,17 +33,19 @@ This is a modular functional core, not a claim that all functions have passed a 
 
 ## Input precedence and source truth
 
-Default < survey < recognised text < manually structured sketch < grid/plan < explicit edit. Equal-priority conflicting field values block generation. Disabled source records remain archived. A high-priority source can therefore override a changed low-priority survey answer; the preflight shows which source won.
+Default < derived < survey < recognised text < manually structured sketch < grid/plan < explicit edit. Equal-priority conflicting field values block generation. Disabled source records remain archived. A high-priority source can therefore override a changed low-priority survey answer; the preflight shows which source won.
 
-The `text` parser recognises only a small grammar: dimensions with units, BHK/bedroom count, G+n or ground-only, cardinal/diagonal facing, a lakh amount and selected style/kitchen/parking phrases. It preserves the raw text and displays an unenforced-remainder notice. This is not unrestricted natural-language understanding.
+The `derived-setbacks` source (`intent.derive_setbacks`) sets the four open spaces from the plot unless an input states them: front and rear by plot depth, each side by plot width, as Indian byelaws usually tabulate them (`SETBACKS_BY_DEPTH`, `SETBACKS_BY_WIDTH`), and a 5.5 m front for a parking court where the plot is deep enough. The studio omits the setback fields while “Open spaces from the plot size” is on, and shows the same tables live (they travel in the session payload). They are design assumptions to verify with the authority, not a rule pack.
+
+The `text` parser is a deterministic grammar of the phrases homeowners write, not general language understanding: plot size (`30x40`, `30 by 40`, `30' x 40'`, `9m x 12m`, `30*50`, width/depth statements; a size right after a room name is a room, not the plot; unitless sizes are read as feet from 20 up and said so), plot area (sq ft, sq yd/gaj, sq m, cents, guntha, marla; common areas snap to the standard Indian plot, others to a 2:3 plot, built-up and carpet areas are ignored), BHK/bedrooms, attached baths (all, a count, the master only, none, or inferred from a bath total), storeys (G+n capped at G+1 with a notice, duplex, two-storey, ground only), facing (`east facing`, `NE-facing`, `facing north`, `road on the west`), budget (lakh, crore, rupees after “budget”), pooja, parking, kitchen, eldercare, Vastu (off, flexible, strict, else preferred), setbacks, floor-to-floor or ceiling height, plinth and style words. It returns `reading`: the phrases understood with the fields they set, the phrases not understood (kept as notes, not applied), and the assumptions made; `fuse` exposes it as `text_reading` and adds the assumptions to the notices.
 
 A ground-floor grid's labelled cells are unioned as polygons. Room names must form connected regions; holes or inaccessible layouts are rejected. It is not a room-suggestion grid that gets discarded after input. A programmatic source marked `plan` means manually verified structured information; it does not imply an automatic plan-recognition engine exists.
 
 ## Layout and checks
 
-The current strategy is a bounded public-hub / services-band / private-room family with mirrored and shorter-footprint variants. The G+1 plan has distinct upper programming, a vertically aligned stair and a real uncovered terrace. It is not arbitrary stochastic optimisation, general constraint solving or a house for every plot.
+`planner.py` searches a family of partis rather than filling one template: a public spine (living, dining, hall) with two stacks of units beside it — bedroom suites (attached bath at an outside corner, a dressing room for the master), the common bath, study, kitchen with utility, pooja and store — in a three-row ground floor (living | kitchen, dining, services | suites) or a compact one (living and dining | kitchen and suites), and on the upper floor a family lounge with the open terrace. Coordinate descent over hall position and width, stack orders, row depths and envelope width/depth, with several seeds, finds the lowest cost. The cost encodes NBC 2016 Part 3 style minimums as hard limits and comfortable targets that grow with the plot as soft ones, maximum sizes and aspect ratios, L-shape penalties, a window on an outside wall for lit rooms and air for baths, wet-room clustering, the pooja off bath walls, a bath on every bedroom floor, dead-end and long halls, filler rooms, stacking between floors (baths over baths or the utility, never over the kitchen or pooja) and the Vastu hand. When a requested pooja finds no slot, a small pooja room is carved from a rear corner of the living room, clear of the hall's mouth. Results are cached per brief. The `planning` record in the building names the parti, envelope, score, mirror and attached baths requested/provided. It is still a bounded search, not general constraint solving or a house for every plot.
 
-The deterministic screen checks partition coverage, containment, overlap, supplied-reference size targets, window presence, opening hosting/bounds, portal connectivity, bedroom-through-route avoidance, requested floor/bedroom counts and basic stair proportions/alignment. Those are useful checks, but insufficient to prove buildability. Width screening of nonrectangular rooms currently uses a bounding short side, not a full local-clearance medial-axis calculation. Furniture recipes use a contained rectangle within nonrectangular clear space rather than filling the entire bounding box.
+The deterministic screen checks partition coverage, containment, overlap, NBC-style room minimums, corridor width and circulation share, window presence, opening hosting/bounds, portal connectivity, bedroom-through-route avoidance (a bedroom's own bath and dressing room may lie beyond it), requested floor/bedroom counts and basic stair proportions/alignment. `professional_screen` adds recorded warnings a reviewing architect would raise: openings under a tenth of a habitable room's floor, a bath without a 0.3 m² opening to open air, a pooja beside a bath or under an upper bath, a bath over the kitchen, two door leaves sweeping the same floor, and fewer attached baths than requested. Those are useful checks, but insufficient to prove buildability. Width screening of nonrectangular rooms currently uses a bounding short side, not a full local-clearance medial-axis calculation. Furniture recipes use a contained rectangle within nonrectangular clear space rather than filling the entire bounding box.
 
 User-reference dimensional targets have **no verified BIS clause ID**. `official_clause` remains null; statutory status remains `NOT EVALUATED`. The structural stage returns `NOT DESIGNED`. The report clones its input review before appending report-only warnings, preserving DAG purity.
 
@@ -64,7 +66,8 @@ The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from 
 - a stone-clad stair tower over the top-floor stair (`stair_tower`, shared with the other designed themes), beside an open roof terrace, and a solar rack;
 - a clad feature wall;
 - a carport and glass-roof pergola when the plot allows;
-- a Shapely-built landscape: driveway, entrance path, pebble beds, stepping stones, paved side passages with timber-clad boundary walls, lawns, planting, lanterns and boundary.
+- a Shapely-built landscape: driveway, entrance path, pebble beds, stepping stones, lawns, planting, lanterns and boundary; side passages with pale pavers staggered over black pebbles, timber-clad boundary walls with a breeze-block screen (`breeze_screen`), pots and a wash basin (`garden_basin`); a stone water wall with a lit trough on the rear boundary (`water_wall`) with the hedge parting around it;
+- a stone-clad street face on the front boundary with up-lights, and a vertical timber-slat vehicle gate; inside, a slatted timber foyer ceiling behind the main door.
 
 The street frontage for every designed theme comes from `frontage.py`: `boundary.gates` lists a swing pedestrian gate on the door's axis and, where a 2.4 m stretch of front yard is clear of the entrance (or a carport is built), a sliding vehicle gate with the side its leaf parks on; `letterbox_pier` places the stone pier beside the pedestrian gate. `gate_center_mm` and `gate_width_mm` keep naming the arrival gateway (the pedestrian gate) for older consumers.
 
@@ -75,15 +78,16 @@ Every landscape polygon is kept inside the plot and off the house footprint. Tes
 | File | Responsibility |
 |---|---|
 | `floorforge/model.py` | Data classes, defaults, hashes, orientation |
-| `intent.py` | Supported field validation, text extraction, provenance |
-| `layout.py` | Polygonal layout, walls, openings, stairs |
-| `review.py` | Preliminary checks, scenario reports, solar |
+| `intent.py` | Supported field validation, text reading with understood/not-understood feedback, derived setbacks, provenance |
+| `planner.py` | Parti search and rule-scored room planning (NBC-style minimums, light and air, wet stacks, Vastu hand) |
+| `layout.py` | Polygons, walls, planned doors and stock-size windows, stairs |
+| `review.py` | Preliminary checks, professional warnings, scenario reports, Vastu readings, solar |
 | `scene.py` | Shared procedural geometry, scene 0.4 metadata and GLB |
 | `scene_kit.py` | Geometry helpers, physically based material library, plant/light registration |
 | `exterior.py` | Exterior/interior theme registry, legacy migration, candidate assemblies |
 | `modern_exterior.py` | Modern Tropical openings, assemblies and plot-aware landscape |
 | `frontage.py` | Street frontage for every designed theme: pedestrian and vehicle gates, letterbox pier |
-| `drawings.py` | SVG/ReportLab sheets, DXF floor plans |
+| `drawings.py` | SVG/ReportLab sheets (dimension chains, tags, grid, levels, section marker, schedules), DXF floor plans with DIMENSION entities |
 | `ifc_export.py` | IFC4 STEP entities, relations and self-integrity |
 | `pipeline.py` | DAG, caching, immutable builds, export ZIP |
 | `ai.py` | Memory-only optional provider proposals |

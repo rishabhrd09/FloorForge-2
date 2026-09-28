@@ -170,6 +170,14 @@ def make_scene(building, report):
         for xa, xb in runs:
             rect((xa, ymin, g, xb, ymin + wt, g + solid), 'wall', role='site')
             rect((xa, ymin - .006, g + solid, xb, ymin + wt + .006, g + solid + .03), cap, role='site')
+            if modern and xb - xa > .6:
+                # Stone cladding on the street face of the solid wall, washed by small up-lights set at its foot.
+                rect((xa, ymin - .025, g, xb, ymin, g + solid), 'cladding', role='site', name=f'exterior-boundary-cladding-{xa:.2f}')
+                for i in range(max(1, int((xb - xa) // 1.6))):
+                    lx = xa + (i + .5) * (xb - xa) / max(1, int((xb - xa) // 1.6))
+                    rect((lx - .05, ymin - .35, g - .01, lx + .05, ymin - .25, g + .02), 'frame', role='fixture')
+                    rect((lx - .035, ymin - .34, g + .02, lx + .035, ymin - .26, g + .024), 'lamp', role='fixture')
+                    k.light((lx, ymin - .3, g + .12), 10, kind='uplight')
             if modern:
                 z = g + solid + .075
                 while z + .07 <= g + fh + .001:
@@ -192,16 +200,15 @@ def make_scene(building, report):
                     else:
                         pier(px)
                 # Closed sliding leaf just inside the wall line on a flush track that runs on behind the wall.
-                gy, top_z = ymin + wt + .02, g + (fh - .03 if modern else .95 - g)
+                gy, top_z = ymin + wt + .02, g + (fh + .15 if modern else .95 - g)
                 rect((x0 - .1, gy, g + .05, x1 + .1, gy + .05, g + .1), 'frame', role='gate', name='exterior-vehicle-gate', owner='exterior-vehicle-gate')
                 rect((x0 - .1, gy, top_z - .05, x1 + .1, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
                 for xx in (x0 - .1, (x0 + x1) / 2 - .025, x1 + .05):
                     rect((xx, gy, g + .05, xx + .05, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
                 if modern:
-                    z = g + .16
-                    while z < top_z - .1:
-                        rect((x0 - .05, gy + .01, z, x1 + .05, gy + .04, z + .07), 'frame', role='gate', owner='exterior-vehicle-gate')
-                        z += .105
+                    # Tall vertical timber slats on a black steel frame, as on the reference house.
+                    for xx in np.arange(x0 - .05, x1 + .05 - .045, .08):
+                        rect((xx, gy + .005, g + .1, xx + .05, gy + .045, top_z - .05), 'timber', role='gate', owner='exterior-vehicle-gate')
                 else:
                     for xx in np.arange(x0 + .06, x1 - .03, .12):
                         rect((xx, gy + .01, g + .1, xx + .025, gy + .04, top_z - .05), 'frame', role='gate', owner='exterior-vehicle-gate')
@@ -1489,6 +1496,34 @@ def make_scene(building, report):
         p = box(st['x'] / 1000, st['y'] / 1000, (st['x'] + st['width']) / 1000, (st['y'] + st['depth']) / 1000)
         colliders.append({'id': st['id'] + '/stair-walk-not-supported', 'floor': st['floor'], 'polygon': list(p.exterior.coords), 'kind': 'stair'})
     # Guarding follows the actual open terrace perimeter; it is a visual scheme, not a certified balustrade.
+    if upgraded_interior:
+        # A foyer inside the main door, marked by a slatted timber ceiling as in the reference house: oak slats on
+        # a walnut ground, with two downlights beneath them.
+        ea = np.array(ew['a'], float) / 1000; eb = np.array(ew['b'], float) / 1000
+        eu = (eb - ea) / np.linalg.norm(eb - ea); en = np.array([-eu[1], eu[0]])
+        em = ea + eu * (entry['offset'] + entry['width'] / 2) / 1000
+        host = next((s_ for s_ in b['spaces'] if s_['id'] == entry.get('swing')), None) or \
+            next((s_ for s_ in b['spaces'] if s_['floor'] == 0 and s_['kind'] == 'living'), None)
+        if host is not None:
+            hclear = Polygon(np.array(host['clear']) / 1000)
+            if not hclear.contains(Point(*(em + en * .6))):
+                en = -en
+            half, deep = entry['width'] / 2000 + .7, 1.9
+            quad = lambda t0, t1: Polygon([em + eu * t0, em + eu * t1, em + eu * t1 + en * deep, em + eu * t0 + en * deep])
+            zone = quad(-half, half).intersection(hclear.buffer(-.03))
+            if not zone.is_empty and zone.geom_type == 'Polygon' and zone.area > 2.:
+                poly_mesh(zone, H - .2, H - .156, 'walnut', 0, 'ceiling-feature', 'foyer-ceiling', 'foyer-ceiling')
+                for t in np.arange(-half + .06, half - .04, .085):
+                    slat = quad(t - .019, t + .019).intersection(zone)
+                    if slat.geom_type == 'Polygon' and slat.area > .01:
+                        poly_mesh(slat, H - .25, H - .2, 'oak', 0, 'ceiling-feature', owner='foyer-ceiling')
+                for d_ in (.65, 1.35):
+                    lx, ly = em + en * d_
+                    if zone.contains(Point(lx, ly)):
+                        cylinder((lx, ly, H - .256), .045, .008, 'frame', 0, 'downlight')
+                        cylinder((lx, ly, H - .261), .034, .004, 'lamp', 0, 'downlight')
+                        k.light((lx, ly, H - .45), 9, kind='downlight')
+
     for terr in [s for s in b['spaces'] if s['kind'] == 'terrace']:
         p = Polygon(np.array(terr['polygon']) / 1000); f = terr['floor']; z = f * H
         for a, c in zip(list(p.exterior.coords), list(p.exterior.coords)[1:]):
@@ -1934,14 +1969,16 @@ def make_scene(building, report):
             lawns.append({'id': feature['id'], 'polygon': [[round(x, 4), round(y, 4)] for x, y in list(poly.exterior.coords)[:-1]],
                           'holes': [[[round(x, 4), round(y, 4)] for x, y in list(r.coords)[:-1]] for r in poly.interiors], 'z': round(g + .012, 4)})
         elif fk == 'pebble_bed':
-            poly_mesh(poly, g - .02, g + .03, 'pebble', -1, 'landscape', feature['id'], feature['id'])
+            pebbles = 'pebbleblack' if feature.get('material_role') == 'site.pebble_black' else 'pebble'
+            poly_mesh(poly, g - .02, g + .03, pebbles, -1, 'landscape', feature['id'], feature['id'])
             if feature.get('edging'):
                 edge = poly.buffer(.006, join_style=2).difference(poly)
                 poly_mesh(edge, g - .02, g + .065, 'steel', -1, 'edging', feature['id'] + '-edging', feature['id'])
         elif fk == 'stepping_stones':
+            large = feature.get('material_role') == 'site.paver_large'
             for i, stone in enumerate(feature.get('stones', [])):
                 sp = Polygon(np.array(stone, dtype=float) / 1000)
-                poly_mesh(sp, g - .01, g + .055, 'steppingstone', -1, 'stone-pad', f"{feature['id']}-{i}", feature['id'])
+                poly_mesh(sp, g - .01, g + (.06 if large else .055), 'paverlarge' if large else 'steppingstone', -1, 'stone-pad', f"{feature['id']}-{i}", feature['id'])
         elif fk in ('plant', 'tree', 'shrub'):
             x, y = [q / 1000 for q in feature['position_mm']]
             species = feature.get('species') or ('tree_standard' if fk == 'tree' else 'shrub_round')
@@ -1980,15 +2017,77 @@ def make_scene(building, report):
             into = 1 if feature['side'] == 'left' else -1
             top_z = g + feature.get('height_mm', 1780) / 1000
             # A dark batten backing so the gaps between boards read as shadow lines, not white render.
-            xa, xb = sorted((fx, fx + into * .012))
-            rect((xa, ya, g + .2, xb, yb, top_z), 'steel', -1, 'fence', owner=feature['id'])
-            z = g + .22
-            while z + .13 <= top_z + .001:
-                xa, xb = sorted((fx + into * .012, fx + into * .034))
-                rect((xa, ya, z, xb, yb, z + .13), 'timber', -1, 'fence', owner=feature['id'])
-                z += .15
+            # Runs between any gaps left for a breeze-block screen.
+            cuts = sorted((a / 1000, b2 / 1000) for a, b2 in feature.get('gaps_mm', []))
+            runs, y_ = [], ya
+            for a, b2 in cuts:
+                if a - y_ > .05:
+                    runs.append((y_, a))
+                y_ = max(y_, b2)
+            if yb - y_ > .05:
+                runs.append((y_, yb))
+            for ra, rb_ in runs:
+                xa, xb = sorted((fx, fx + into * .012))
+                rect((xa, ra, g + .2, xb, rb_, top_z), 'steel', -1, 'fence', owner=feature['id'])
+                z = g + .22
+                while z + .13 <= top_z + .001:
+                    xa, xb = sorted((fx + into * .012, fx + into * .034))
+                    rect((xa, ra, z, xb, rb_, z + .13), 'timber', -1, 'fence', owner=feature['id'])
+                    z += .15
             xa, xb = sorted((fx, fx + into * .05))
             rect((xa, ya, top_z, xb, yb, top_z + .03), 'frame', -1, 'fence', owner=feature['id'])
+        elif fk == 'breeze_screen':
+            # Off-white breeze blocks (a circle in each square module) over a dark backing, framed in steel.
+            fx = feature['x_mm'] / 1000; ya, yb = feature['y0_mm'] / 1000, feature['y1_mm'] / 1000
+            za, zb = feature['z0_mm'] / 1000, feature['z1_mm'] / 1000
+            into = 1 if feature['side'] == 'left' else -1
+            m = feature.get('module_mm', 195) / 1000
+            nu, nz = max(1, int((yb - ya) // m)), max(1, int((zb - za) // m))
+            u0, z0_ = (ya + yb - nu * m) / 2, za
+            face = box(u0, z0_, u0 + nu * m, z0_ + nz * m)
+            holes = [Point(u0 + (i + .5) * m, z0_ + (j + .5) * m).buffer(m * .34, 5) for i in range(nu) for j in range(nz)]
+            panel = face.difference(unary_union(holes))
+            # Extruded in the wall's own (along, up) plane, then stood up against the boundary.
+            mesh = extrude(panel, 0, .09)
+            mesh.apply_transform(np.array([[0, 0, into, fx + into * .03], [1, 0, 0, 0], [0, 1, 0, g], [0, 0, 0, 1]], dtype=float))
+            mesh.fix_normals()
+            node(asset(mesh), 'breeze', floor=-1, role='fence', name=feature['id'], owner=feature['id'])
+            xa, xb = sorted((fx, fx + into * .03))
+            rect((xa, u0, z0_, xb, u0 + nu * m, z0_ + nz * m), 'basalt', -1, 'fence', owner=feature['id'])
+            xa, xb = sorted((fx, fx + into * .13))
+            for ua, ub in ((u0 - .05, u0), (u0 + nu * m, u0 + nu * m + .05)):
+                rect((xa, ua, g, xb, ub, z0_ + nz * m + .04), 'frame', -1, 'fence', owner=feature['id'])
+            rect((xa, u0 - .05, z0_ + nz * m, xb, u0 + nu * m + .05, z0_ + nz * m + .04), 'frame', -1, 'fence', owner=feature['id'])
+        elif fk == 'water_wall':
+            # A stone-clad wall on the rear boundary: a sheet of water falls from a steel lip into a stone trough.
+            wx, wy = [q / 1000 for q in feature['position_mm']]
+            ww, hh, td = feature['width_mm'] / 1000, feature['height_mm'] / 1000, feature.get('trough_depth_mm', 420) / 1000
+            a, c = wx - ww / 2, wx + ww / 2
+            fid = feature['id']
+            rect((a, wy - .2, g, c, wy, g + hh), 'cladding', -1, 'water-wall', fid, fid)
+            rect((a - .02, wy - .23, g + hh, c + .02, wy, g + hh + .04), 'frame', -1, 'water-wall', owner=fid)
+            ty0 = wy - .2 - td
+            for q in (box(a, ty0, c, ty0 + .06), box(a, ty0, a + .06, wy - .2), box(c - .06, ty0, c, wy - .2)):
+                poly_mesh(q, g - .02, g + .45, 'basalt', -1, 'water-wall', owner=fid)
+            rect((a + .06, ty0 + .06, g - .02, c - .06, wy - .2, g + .30), 'basalt', -1, 'water-wall', owner=fid)
+            rect((a + .06, ty0 + .06, g + .30, c - .06, wy - .2, g + .39), 'water', -1, 'water', fid + '-pool', fid)
+            lip = wy - .31
+            rect((a + .25, lip, g + 1.22, c - .25, wy - .2, g + 1.25), 'steel', -1, 'water-wall', owner=fid)
+            rect((a + .27, lip - .004, g + .39, c - .27, lip + .004, g + 1.22), 'waterfall', -1, 'water', fid + '-fall', fid)
+            rect((a + .3, lip + .01, g + 1.212, c - .3, wy - .21, g + 1.22), 'lamp', -1, 'fixture', owner=fid)
+            k.light((wx, lip - .3, g + .5), 12, kind='uplight')
+            k.obstacle(box(a, ty0, c, wy), -1, fid)
+        elif fk == 'garden_basin':
+            # A stone basin on a plinth with a brass tap from the boundary wall, for washing up after the garden.
+            x, y = [q / 1000 for q in feature['position_mm']]
+            into = 1 if feature.get('side') == 'left' else -1
+            fid = feature['id']
+            rect((x - .17, y - .15, g, x + .17, y + .15, g + .74), 'cladding', -1, 'garden-basin', fid, fid)
+            rb((x, y, g + .8), (.5, .4, .12), 'counter', -1, 'garden-basin', .05, owner=fid)
+            tap = x - into * .3
+            beam((tap, y, g + 1.02), (x - into * .06, y, g + 1.02), .012, 'brass', -1, 'detail')
+            beam((x - into * .06, y, g + 1.02), (x - into * .06, y, g + .95), .01, 'brass', -1, 'detail')
+            k.obstacle(box(x - .25, y - .2, x + .25, y + .2), -1, fid)
         elif fk == 'wall_light':
             x, y = [q / 1000 for q in feature['position_mm']]
             z = feature.get('height_mm', 1900) / 1000

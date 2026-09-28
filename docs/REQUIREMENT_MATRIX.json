@@ -54,10 +54,10 @@
     },
     {
       "milestone": "M1",
-      "requirement": "Five-input path with useful defaults",
+      "requirement": "Eight-question path with derived defaults",
       "status": "TESTED_SCOPE",
-      "evidence_or_file": "UI generation and three fixture families",
-      "remaining": "Bounded valid programme/plot range only."
+      "evidence_or_file": "Studio survey: plot, road-side compass, bedrooms, storeys, attached baths, Vastu, must-haves, budget; intent.derive_setbacks and its tests",
+      "remaining": "Bounded valid programme/plot range only; derived open spaces are typical byelaw values, not a verified local rule pack."
     },
     {
       "milestone": "M1",
@@ -70,8 +70,8 @@
       "milestone": "M1",
       "requirement": "Free text understanding",
       "status": "PARTIAL",
-      "evidence_or_file": "parse_text; grammar tests",
-      "remaining": "Unrestricted prose, Hindi and semantic placement not implemented."
+      "evidence_or_file": "parse_text grammar (plot size/area units, BHK, attached baths, G+1/duplex, facing, lakh/crore, pooja, parking, kitchen, Vastu, setbacks, heights) with understood / not-understood / assumption feedback; sample-brief tests",
+      "remaining": "Unrestricted prose, Hindi and semantic placement (which room goes where) not implemented."
     },
     {
       "milestone": "M1",
@@ -105,8 +105,8 @@
       "milestone": "M1",
       "requirement": "Minimum-size, overlap and containment screen",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "review.py",
-      "remaining": "Secondary research targets; local width/clearance and current legal clauses unverified."
+      "evidence_or_file": "review.py: NBC 2016 Part 3 style minimums, corridor width and circulation share, daylight share, bath ventilation, pooja/wet adjacency and stacking, door-swing clashes, attached-bath shortfall",
+      "remaining": "Screening values, not a verified clause pack; local width/clearance by medial axis not computed."
     },
     {
       "milestone": "M1",
@@ -119,7 +119,7 @@
       "milestone": "M1",
       "requirement": "Aligned wet services and stairs",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "Layout/stair core tests",
+      "evidence_or_file": "Planner stacking cost (baths over baths/utility, never over kitchen or pooja); layout/stair core tests",
       "remaining": "Full structural/headroom/MEP coordination not designed."
     },
     {
@@ -147,28 +147,28 @@
       "milestone": "M1",
       "requirement": "Vastu lever and strict satisfaction",
       "status": "PARTIAL",
-      "evidence_or_file": "Centroid heuristic and unmet-strict warning",
-      "remaining": "No enforced strict optimiser or scientific claim."
+      "evidence_or_file": "Planner chooses the plan hand by Vastu cost; review rates rooms preferred / acceptable / avoid; unmet-strict warning",
+      "remaining": "No enforced strict optimiser over room placement or scientific claim."
     },
     {
       "milestone": "M2",
       "requirement": "True walls/openings and plan schedules",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "SVG/PDF/DXF and tests",
+      "evidence_or_file": "SVG/PDF/DXF plans with typed D/SD/O/W/V tags and the A-601 door, window and room schedule; stock window modules; tests",
       "remaining": "Professional drafting review, exact clear openings/finishes needed."
     },
     {
       "milestone": "M2",
       "requirement": "Overall/room/opening dimension chains",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "Plan vectors and real DXF dimensions",
-      "remaining": "Not a complete chained dimension set for every edge/irregular shape."
+      "evidence_or_file": "Three chains per side (openings, walls, overall) closing on the footprint, grid bubbles, levels, section marker; true DXF DIMENSION entities; tests",
+      "remaining": "Internal room dimension strings and irregular-edge chains not drawn."
     },
     {
       "milestone": "M2",
       "requirement": "Site plan/elevations/stair section",
       "status": "PARTIAL_TESTED",
-      "evidence_or_file": "Nine default drawing sheets",
+      "evidence_or_file": "Ten default drawing sheets including the schedule sheet",
       "remaining": "Elevations simplified; full facade/building details and slopes absent."
     },
     {
@@ -378,7 +378,7 @@
       "milestone": "M6",
       "requirement": "Full conditional civil questionnaire",
       "status": "PARTIAL",
-      "evidence_or_file": "Five essentials + selected deeper fields",
+      "evidence_or_file": "Eight essential questions, derived open spaces and selected deeper fields",
       "remaining": "Not the entire supplied questionnaire; no unsupported answers disguised as honoured."
     },
     {

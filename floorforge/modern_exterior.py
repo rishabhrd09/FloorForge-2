@@ -440,25 +440,49 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         y0 = 0 if F >= 700 else ymin + wt
         y1 = D + min(RE, 600)
         wid = x1 - x0
-        features.append({"id": f"{side}-fence-cladding", "kind": "fence_cladding", "side": side,
-                         "x_mm": round(xmin + wt if side == "left" else xmax - wt), "y0_mm": round(max(y0, 0)),
-                         "y1_mm": round(ymax - wt), "height_mm": 1780, "material_role": "site.timber_boards"})
+        fence = {"id": f"{side}-fence-cladding", "kind": "fence_cladding", "side": side,
+                 "x_mm": round(xmin + wt if side == "left" else xmax - wt), "y0_mm": round(max(y0, 0)),
+                 "y1_mm": round(ymax - wt), "height_mm": 1780, "material_role": "site.timber_boards"}
+        features.append(fence)
         if wid >= 820:
+            # As in the reference garden: large pale pavers laid staggered across a bed of black pebbles, a white
+            # pebble drip strip against the house, a breeze-block screen set into the boundary cladding, and pots
+            # and a wash basin by the boundary beside pavers that step away from it.
             drip = 170
-            slab = box(x0 + 30, y0, x1 - drip, y1) if side == "left" else box(x0 + drip, y0, x1 - 30, y1)
+            bed = box(x0 + 30, y0, x1 - drip, y1) if side == "left" else box(x0 + drip, y0, x1 - 30, y1)
             strip = box(x1 - drip, y0, x1, y1) if side == "left" else box(x0, y0, x0 + drip, y1)
-            add_poly(f"{side}-passage-paving", "path", slab, material_role="site.flagstone")
+            add_poly(f"{side}-passage-bed", "pebble_bed", bed, material_role="site.pebble_black")
             add_poly(f"{side}-passage-drip", "pebble_bed", strip, edging=True, material_role="site.pebble")
-            if wid >= 1200:
-                pot_x = x0 + 280 if side == "left" else x1 - 280
-                yy, i = y0 + 1500, 0
-                while yy < y1 - 700 and i < 8:
-                    species = ("grass_ornamental", "strelitzia", "shrub_round")[i % 3]
-                    features.append({"id": f"{side}-passage-pot-{i}", "kind": "planter", "position_mm": [round(pot_x), round(yy)],
-                                     "shape": "round", "size_mm": [440, 440, 580], "species": species,
-                                     "scale": {"grass_ornamental": .7, "strelitzia": .45, "shrub_round": .5}[species]})
-                    yy += 2600
-                    i += 1
+            bx0, _, bx1, _ = bed.bounds
+            away = 1 if side == "left" else -1                    # direction from the boundary towards the house
+            edge = bx0 if side == "left" else bx1                 # the bed's boundary-side edge
+            pw = min(1100, bx1 - bx0 - (560 if wid >= 1200 else 160))
+            shift = max(0., (bx1 - bx0 - pw) / 2 - 60) * .8
+            pavers, spots, yy, i = [], [], y0 + 380, 0
+            while yy + 300 <= y1 - 150 and len(pavers) < 60:
+                cx = (bx0 + bx1) / 2 + (shift if i % 2 else -shift) * away
+                pavers.append(_poly(box(cx - pw / 2, yy - 300, cx + pw / 2, yy + 300)))
+                gap = abs((cx - away * pw / 2) - edge)
+                if i % 2 and gap >= 480:
+                    spots.append((yy, edge + away * min(gap / 2, 280)))
+                yy += 760
+                i += 1
+            features.append({"id": f"{side}-passage-pavers", "kind": "stepping_stones", "stones": pavers, "material_role": "site.paver_large"})
+            span = min(2600, (y1 - y0) * .35)
+            if span >= 1400:
+                sy = (y0 + y1) / 2
+                fence["gaps_mm"] = [[round(sy - span / 2), round(sy + span / 2)]]
+                features.append({"id": f"{side}-breeze-screen", "kind": "breeze_screen", "side": side, "x_mm": fence["x_mm"],
+                                 "y0_mm": round(sy - span / 2), "y1_mm": round(sy + span / 2), "z0_mm": 200, "z1_mm": 1780,
+                                 "module_mm": 195, "material_role": "site.breeze_block"})
+            if spots:
+                by, bxx = spots.pop()
+                features.append({"id": f"{side}-garden-basin", "kind": "garden_basin", "side": side, "position_mm": [round(bxx), round(by)]})
+            for i, (py, px) in enumerate(spots[::2][:6]):
+                species = ("grass_ornamental", "strelitzia", "shrub_round")[i % 3]
+                features.append({"id": f"{side}-passage-pot-{i}", "kind": "planter", "position_mm": [round(px), round(py)],
+                                 "shape": "round", "size_mm": [440, 440, 580], "species": species,
+                                 "scale": {"grass_ornamental": .7, "strelitzia": .45, "shrub_round": .5}[species]})
             yy = y0 + 1800
             i = 0
             while yy < y1 - 1000:
@@ -502,10 +526,25 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             features.append({"id": "rear-dining-set", "kind": "outdoor_dining", "position_mm": [round((q0 + q1) / 2), round((qy0 + qy1) / 2)]})
         taken = unary_union(occupied)
         depth = RE - wt - 60
+        # A stone water wall on the rear boundary, on the axis of the patio (or of the house): water falls from a
+        # steel lip into a pebble-lined trough, lit from below; the hedge parts around it.
+        water = None
+        if depth >= 900 and xmax - xmin >= 6000:
+            wx = (patio["geometry"]["bounds_mm"][0] + patio["geometry"]["bounds_mm"][2]) / 2 if patio else W / 2
+            ww = min(2400, (xmax - xmin) * .28)
+            wx = min(max(wx, xmin + wt + ww / 2 + 400), xmax - wt - ww / 2 - 400)
+            water = (wx - ww / 2, wx + ww / 2)
+            features.append({"id": "rear-water-wall", "kind": "water_wall", "position_mm": [round(wx), round(ymax - wt)],
+                             "width_mm": round(ww), "height_mm": 2000, "trough_depth_mm": 420, "material_role": "site.stone_cladding"})
+            occupied.append(box(wx - ww / 2 - 100, ymax - wt - 560, wx + ww / 2 + 100, ymax - wt))
+            taken = unary_union(occupied)
         if depth >= 1200:
             hedge_y = ymax - wt - 320
-            L = (xmax - wt - 200) - (xmin + wt + 200)
-            features.append({"id": "rear-hedge", "kind": "hedge", "position_mm": [round((xmin + xmax) / 2), round(hedge_y)], "size_mm": [round(L), 480, 1400], "rotation": 0})
+            a, b = xmin + wt + 200, xmax - wt - 200
+            runs = [(a, water[0] - 350), (water[1] + 350, b)] if water else [(a, b)]
+            for i, (ha, hb) in enumerate(r for r in runs if r[1] - r[0] >= 900):
+                features.append({"id": "rear-hedge" if i == 0 else f"rear-hedge-{i}", "kind": "hedge", "position_mm": [round((ha + hb) / 2), round(hedge_y)],
+                                 "size_mm": [round(hb - ha), 480, 1400], "rotation": 0})
             lawn = rear.difference(taken.buffer(80)).difference(box(xmin, hedge_y - 300, xmax, ymax))
         else:
             lawn = rear.difference(taken.buffer(80))
