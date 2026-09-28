@@ -32,7 +32,7 @@ def read_json(path: Path):
 
 DEFAULTS = {
     'title': 'The Verandah House', 'width_mm': 12192, 'depth_mm': 18288,
-    'road_bearing_deg': 180., 'bedrooms': 3, 'storeys': 2, 'budget_lakh': 65.,
+    'road_bearing_deg': 180., 'bedrooms': 3, 'storeys': 2, 'budget_lakh': 65., 'attached_baths': 'all',
     'style': 'warm', 'finish': 'standard', 'open_kitchen': True, 'parking': False,
     'pooja': True, 'eldercare': False, 'vastu': 'moderate', 'front_mm': 3300,
     'rear_mm': 1200, 'left_mm': 1100, 'right_mm': 1100,
@@ -88,6 +88,8 @@ class Opening:
     sill: float
     height: float
     connects: list[str]
+    swing: str | None = None   # the room a hinged leaf opens into
+    hinge: str = 'start'       # which jamb carries the hinges: 'start' (at offset) or 'end' (offset + width)
 
 
 def local_to_enu(x: float, y: float, bearing: float):

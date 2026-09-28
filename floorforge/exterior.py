@@ -475,7 +475,7 @@ def _opening_proposals(
         wall = hosts[opening["wall_id"]]
         if opening["kind"] == "glazed":
             wall_length = math.dist(wall["a"], wall["b"])
-            proposed_width = min(opening["width"] + 600, wall_length - 240)
+            proposed_width = min(opening["width"] + 600, wall_length - 240) // 300 * 300
             if proposed_width > opening["width"]:
                 proposed_offset = round((wall_length - proposed_width) / 2)
                 candidates.append((0, {
@@ -509,7 +509,7 @@ def _opening_proposals(
             continue
         wall_length = math.dist(wall["a"], wall["b"])
         role_delta = delta if role == "living_feature" else 240 if role == "bedroom_primary" else 180
-        proposed_width = min(opening["width"] + role_delta, wall_length - 360)
+        proposed_width = min(opening["width"] + role_delta, wall_length - 360) // 300 * 300
         if proposed_width <= opening["width"]:
             continue
         proposed_offset = round((wall_length - proposed_width) / 2)

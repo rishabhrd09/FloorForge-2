@@ -97,6 +97,10 @@ def modern_opening_proposals(building: dict[str, Any], classify) -> list[dict[st
         if not fit:
             continue
         offset, width = fit
+        step = 150 if role == "bathroom_privacy" else 300
+        snapped = max(600, width // step * step)
+        if snapped < width:
+            offset, width = round(offset + (width - snapped) / 2), snapped
         height = min(height, wall_h - sill)
         if width <= o["width"] and sill == o["sill"] and height == o["height"]:
             continue

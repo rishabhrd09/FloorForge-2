@@ -12,6 +12,9 @@ WET={'bathroom','utility'}
 def coords(poly): return [[round(float(x),3),round(float(y),3)] for x,y in list(poly.exterior.coords)[:-1]]
 
 def automatic_spaces(v):
+    """Planned rooms for a brief (floorforge.planner), the stair records, the footprint and the planned doors."""
+    from shapely.affinity import scale
+    from . import planner
     W=v['width_mm']-v['left_mm']-v['right_mm']; D=v['depth_mm']-v['front_mm']-v['rear_mm']
     if v['variant']==2:D=round(D*.90)
     if W<5400 or D<6300: raise DesignError('ENVELOPE_TOO_SMALL','Usable envelope is too small for this generator. Review plot and setback assumptions.')
@@ -19,69 +22,38 @@ def automatic_spaces(v):
         raise DesignError('PARKING_DEPTH','Requested parking needs a 5.5 m depth assumption. Increase front open space or remove parking; no car was silently inserted.')
     n=v['storeys']; total=v['bedrooms']
     if total<n: raise DesignError('PROGRAMME_SPLIT','This two-floor generator requires at least one bedroom per floor.')
-    counts=[total] if n==1 else [max(1,total//2),total-max(1,total//2)]
-    if max(counts)>4: raise DesignError('PROGRAMME_CAPACITY','At most four bedrooms per floor in this bounded generator.')
-    hall=1250 if W<7600 else 1500
-    L=round((W-hall)/2); R=L+hall
-    rear_min=3100; core_min=2350
-    front=round(min(4400,max(3000,D*.31)))
-    if n==2: front=4500
-    core_end=front+max(2600,min(2800,round((D-front)*.35)))
-    if D-core_end<3000: core_end=D-3000
-    if core_end-front<2200 or (n==2 and L<2650):
-        raise DesignError('PROGRAMME_DOES_NOT_FIT','The public zone, services and bedrooms do not fit. No extra storey has been added. Reduce the programme or setbacks only after local review.')
-    spaces=[];stairs=[]
-    def add(f,key,name,kind,p): spaces.append(Space(f'F{f}-{key}',name,kind,f,coords(p)))
-    for f,num in enumerate(counts):
-        if n==2:
-            sw=2500; sd=4400
-            add(f,'stair','Stair','stair',box(0,0,sw,sd))
-            # Public L-shaped polygon; no invented rectangular bounding-box fill.
-            pub=box(0,0,W,front).difference(box(0,0,sw,sd))
-            if f==0:
-                # Split connected public zones without walls.
-                dining=pub.intersection(box(0,front*.58,W,front))
-                living=pub.difference(dining)
-                add(f,'living','Living','living',living); add(f,'dining','Dining','dining',dining)
-            else:
-                # A genuine open terrace, not a balcony pasted onto an unchanged facade.
-                terrace=box(max(sw+1400,W*.54),0,W,1550 if v['style']!='tropical' else 1850)
-                add(f,'living','Family lounge','family',pub.difference(terrace))
-                add(f,'terrace','Open terrace','terrace',terrace)
-            stairs.append({'id':f'ST-{f}','floor':f,'x':250,'y':250,'width':2200,'depth':4100,
-                           'flight_width':1000,'well':200,'riser_count':18,'riser_mm':v['floor_height_mm']/18,
-                           'tread_mm':250,'landing_mm':1050,'to_floor':f+1 if f+1<n else None})
-        else:
-            cut=round(W*.47)
-            add(f,'dining','Dining','dining',box(0,0,cut,front))
-            add(f,'living','Living','living',box(cut,0,W,front))
-        compact_single=num==1 and W<8500
-        hall_end=core_end if compact_single else min(D,core_end+1200) if num<=2 else D
-        add(f,'hall','Hall','hall',box(L,front,R,hall_end))
-        add(f,'kitchen','Kitchen' if f==0 else 'Study','kitchen' if f==0 else 'study',box(0,front,L,core_end))
-        split=round(front+(core_end-front)*(.50 if f else .54))
-        add(f,'bath','Bathroom','bathroom',box(R,front,W,split))
-        add(f,'utility','Utility' if f==0 else 'Bathroom 2','utility' if f==0 else 'bathroom',box(R,split,W,core_end))
-        if compact_single:
-            add(f,'bedroom','Bedroom '+str((f and counts[0])+1),'bedroom',box(0,core_end,W,D))
-            continue
-        left_count=(num+1)//2;right_count=num//2
-        for side, x0,x1,count in [('left',0,L,left_count),('right',R,W,right_count)]:
-            count=max(count,1)
-            for j in range(count):
-                y0=core_end+round(j*(D-core_end)/count);y1=core_end+round((j+1)*(D-core_end)/count)
-                kind='study' if side=='right' and right_count==0 else 'bedroom'
-                key=f'{side}-{j}'
-                name=('Care / study' if v['eldercare'] and f==0 else 'Study') if kind=='study' else ('Bedroom '+str((f and counts[0]) + (j+1 if side=='left' else left_count+j+1)))
-                shape=box(x0,y0,x1,y1)
-                if side=='left' and j==count-1 and hall_end<D:shape=shape.union(box(L,hall_end,R,D))
-                add(f,key,name,kind,shape)
-    # Variants are geometric mirrors, never a change to the road/north interpretation.
-    if v['variant']==1:
-        from shapely.affinity import scale
-        for s in spaces: s.polygon=coords(scale(Polygon(s.polygon),xfact=-1,yfact=1,origin=(W/2,0)))
-        for s in stairs: s['x']=W-s['x']-s['width'];s['mirrored']=True
-    return spaces,stairs,box(0,0,W,D)
+    (house,floors,Wp,Dp,cost,params),W,D=planner._cached(planner.plan_key(v))
+    # Variants are geometric mirrors, never a change to the road/north interpretation; Vastu may pick the hand.
+    mirror,vastu=planner.vastu_hand(house,floors,Wp,Dp,v)
+    vastu_mirror=mirror
+    if v['variant']==1: mirror=not mirror
+    spaces=[];access={}
+    for f,rooms in enumerate(floors):
+        for r in rooms:
+            poly=planner.union_polygon(r.rects)
+            if mirror: poly=scale(poly,xfact=-1,yfact=1,origin=(Wp/2,0))
+            sid=f'F{f}-{r.key}'
+            spaces.append(Space(sid,r.name,r.kind,f,coords(poly)))
+            if r.access:
+                near=r.prefer
+                if near is not None and mirror: near=(Wp-near[0],near[1])
+                access[sid]={'from':f'F{f}-{r.access}','near':None if near is None else [round(near[0]),round(near[1])],
+                             'opening':r.opening,'width':r.dw}
+    stairs=[]
+    if n==2:
+        for f in range(n):
+            s={'id':f'ST-{f}','floor':f,'x':250,'y':250,'width':2200,'depth':4100,
+               'flight_width':1000,'well':200,'riser_count':18,'riser_mm':v['floor_height_mm']/18,
+               'tread_mm':250,'landing_mm':1050,'to_floor':f+1 if f+1<n else None}
+            if mirror: s['x']=Wp-s['x']-s['width'];s['mirrored']=True
+            stairs.append(s)
+    ensuites=sum(1 for rooms in floors for r in rooms if r.role=='ensuite')
+    planning={'method':'parti search scored against residential planning rules (floorforge/planner.py)',
+              'parti':'three-row: living | kitchen, dining, services | suites' if params['gmode']=='three' else 'compact: living and dining | kitchen and suites',
+              'envelope_mm':[W,D],'footprint_mm':[Wp,Dp],'score':round(cost,2),'mirrored':mirror,'vastu_mirrored':vastu_mirror,
+              'attached_baths':{'requested':house.attached,'provided':ensuites},
+              'rules':'NBC 2016 Part 3 style minimums (hard) with comfortable targets, proportions, light and air, wet-area clustering and circulation economy (scored)'}
+    return spaces,stairs,box(0,0,Wp,Dp),access,planning
 
 
 def grid_spaces(grid,v):
@@ -121,7 +93,7 @@ def grid_spaces(grid,v):
         declared=Polygon(grid['footprint'])
         if not declared.is_valid or declared.symmetric_difference(footprints[0]).area>1:
             raise DesignError('GRID_FOOTPRINT','Declared footprint must match painted cells.')
-    return spaces,[],footprints[0]
+    return spaces,[],footprints[0],None,None
 
 
 def derive_walls(spaces,footprint,v):
@@ -166,62 +138,149 @@ def derive_walls(spaces,footprint,v):
     return result
 
 
-def derive_openings(spaces,walls,v):
-    output=[];kind={s.id:s.kind for s in spaces}
-    preferred={}
-    # A private/service room receives one deliberate public portal, not a door
-    # on every shared edge. Prefer the hall; keep toilets off the living facade.
-    for room in spaces:
-        if room.kind in PUBLIC or room.kind=='stair': continue
-        options=[]
-        for wall in walls:
-            if room.id not in wall.rooms or len(wall.rooms)!=2: continue
-            other=next(r for r in wall.rooms if r!=room.id)
-            if kind[other] not in PUBLIC or math.dist(wall.a,wall.b)<1150:continue
-            rank=(3 if kind[other]=='hall' else 1)
-            if room.kind=='kitchen' and kind[other]=='dining':rank=4
-            options.append((rank,math.dist(wall.a,wall.b),wall.id))
-        if options:preferred[room.id]=max(options)[2]
+def _door_on(walls,sid,parent,near,width):
+    """The wall between two rooms and the door offset on it nearest `near`, 150 mm clear of either end."""
+    best=None
     for w in walls:
+        if set(w.rooms)!={sid,parent}: continue
+        a=np.array(w.a,float);b=np.array(w.b,float);L=float(np.linalg.norm(b-a))
+        if L<width+300: continue
+        u=(b-a)/L
+        if near is None: t=L/2;d=0.
+        else:
+            q=np.array(near,float);t=float(np.clip(np.dot(q-a,u),0,L));d=float(np.linalg.norm(a+u*t-q))
+        t=min(max(t,150+width/2),L-150-width/2)
+        key=(round(d),-L)
+        if best is None or key<best[0]:best=(key,w,t-width/2,L)
+    return None if best is None else best[1:]
+
+
+def entry_offset(w,length,width,spaces):
+    a=np.array(w.a,float);b=np.array(w.b,float);u=(b-a)/length
+    ground=[s for s in spaces if s.floor==0]
+    stair=next((Polygon(s.polygon) for s in ground if s.kind=='stair'),None)
+    hall=next((Polygon(s.polygon) for s in ground if s.kind=='hall'),None)
+    lo,hi=700,length-700-width
+    if hi<lo:return (length-width)/2
+    if stair is not None and stair.distance(Point(*a))<400 or stair is not None and stair.distance(Point(*b))<400:
+        near_a=stair.distance(Point(*a))<=stair.distance(Point(*b))
+        return lo if near_a else hi
+    if hall is not None:
+        # Toward the end of the facade nearer the hall, so the other end keeps room for a drive.
+        t=float(np.dot(np.array(hall.centroid.coords[0])-a,u))
+        return lo if t<=length/2 else hi
+    return (length-width)/2
+
+
+def derive_openings(spaces,walls,v,access=None):
+    output=[];kind={s.id:s.kind for s in spaces}
+    def add(w,target,offset,width,sill,height,swing=None,hinge='start'):
+        output.append(Opening(f'F{w.floor}-{("N" if target=="window" else "D")}{len(output)+1:03d}',w.id,w.floor,target,
+                              round(offset),width,sill,height,list(w.rooms)+(['outside'] if w.external else []),swing,hinge))
+    if access is not None:
+        # Planned doors: each room opens off the room it is entered from, at the planned spot (near a corner, clear
+        # of the counter, off the hall), hinged on the jamb nearer the corner so the leaf folds back against a wall.
+        for sid,a in sorted(access.items()):
+            parent=a['from']
+            if kind.get(parent) is None: raise DesignError('PLAN_ACCESS','A planned room opens off a missing room: '+sid)
+            if kind[sid] in PUBLIC and kind[parent] in PUBLIC: continue
+            opening=a['opening'];width=a['width']
+            if opening=='cased' and kind[sid]=='kitchen':width=1500
+            target={'door':'door','cased':'cased','sliding':'glazed'}[opening]
+            found=_door_on(walls,sid,parent,a['near'],width)
+            if found is None and width>900:
+                width=900;found=_door_on(walls,sid,parent,a['near'],width)
+            if found is None:
+                if any(set(w.rooms)=={sid,parent} for w in walls): raise DesignError('PORTAL_WIDTH','A room connection is too narrow: '+sid)
+                continue
+            w,offset,L=found
+            height=2300 if target=='glazed' else 2100
+            hinge='start' if offset<=L-offset-width else 'end'
+            add(w,target,offset,width,0,height,sid if target=='door' else None,hinge)
+    else:
+        preferred={}
+        # A private/service room receives one deliberate public portal, not a door
+        # on every shared edge. Prefer the hall; keep toilets off the living facade.
+        for room in spaces:
+            if room.kind in PUBLIC or room.kind=='stair': continue
+            options=[]
+            for wall in walls:
+                if room.id not in wall.rooms or len(wall.rooms)!=2: continue
+                other=next(r for r in wall.rooms if r!=room.id)
+                if kind[other] not in PUBLIC or math.dist(wall.a,wall.b)<1150:continue
+                rank=(3 if kind[other]=='hall' else 1)
+                if room.kind=='kitchen' and kind[other]=='dining':rank=4
+                options.append((rank,math.dist(wall.a,wall.b),wall.id))
+            if options:preferred[room.id]=max(options)[2]
+        for w in walls:
+            length=math.dist(w.a,w.b)
+            if length<900 or len(w.rooms)!=2: continue
+            ks={kind[r] for r in w.rooms}
+            if not ks.intersection(PUBLIC): continue
+            private=next((r for r in w.rooms if kind[r] not in PUBLIC),None)
+            if private is None or preferred.get(private)!=w.id:continue
+            other=kind[private];target=None;height=2100
+            if other in ('bedroom','study','pooja','store','dress'): target='door';width=900
+            elif other in ('bathroom','utility'):target='door';width=750
+            elif other=='kitchen':target='cased' if v['open_kitchen'] else 'door';width=1500 if v['open_kitchen'] else 900
+            elif other=='stair':target='cased';width=1100
+            elif other=='terrace':target='glazed';width=1800;height=2300
+            if not target: continue
+            width=min(width,round(length-300))
+            if width<700:raise DesignError('PORTAL_WIDTH','A room connection is too narrow.')
+            # Doors sit near the end of the wall closer to the public room's middle, not in the middle of a room wall.
+            offset=(length-width)/2;hinge='start'
+            if target=='door':
+                pub=next(r for r in w.rooms if r!=private);c=Polygon(next(s.polygon for s in spaces if s.id==pub)).centroid
+                a=np.array(w.a,float);b=np.array(w.b,float)
+                near_a=math.dist((c.x,c.y),a)<=math.dist((c.x,c.y),b)
+                offset=150 if near_a else length-150-width
+                hinge='start' if near_a else 'end'
+            add(w,target,offset,width,0,height,private if target=='door' else None,hinge)
+    for w in walls:
+        if not w.external: continue
         length=math.dist(w.a,w.b)
         if length<900: continue
         target=None;width=0;sill=0;height=2150
         ks={kind[r] for r in w.rooms}
-        if len(w.rooms)==2:
-            if ks.intersection(PUBLIC):
-                private=next((r for r in w.rooms if kind[r] not in PUBLIC),None)
-                if private and preferred.get(private)!=w.id:continue
-                other=next((k for k in ks if k not in PUBLIC),None)
-                if other in ('bedroom','study','pooja'): target='door';width=950
-                elif other in ('bathroom','utility'):target='door';width=850
-                elif other=='kitchen':target='cased' if v['open_kitchen'] else 'door';width=1500 if v['open_kitchen'] else 900
-                elif other=='stair':target='cased';width=1100
-                elif other=='terrace':target='glazed';width=1800;height=2300
-            if target:
-                width=min(width,round(length-300))
-                if width<800:raise DesignError('PORTAL_WIDTH','A room connection is too narrow.')
-        elif w.external:
-            if w.floor==0 and ks.intersection({'living','family','dining'}) and max(w.a[1],w.b[1])<240:
-                existing=any(o.kind=='entry' for o in output)
-                if not existing:target='entry';width=1200;height=2300
-            if target is None and not ks.issubset({'hall','stair'}):
-                target='window';width=min(2100,round(length*.55));height=1450;sill=850
-                if ks.intersection(WET):width=min(900,width);height=600;sill=1750
-                if ks.intersection({'living','dining','family'}):height=2200;sill=300
-                if ks=={'kitchen'}:height=1150;sill=1100
-                if width<600:target=None
-        if target:
-            output.append(Opening(f'F{w.floor}-{("N" if target=="window" else "D")}{len(output)+1:03d}',w.id,w.floor,target,
-                                  round((length-width)/2),width,sill,height,list(w.rooms)+(['outside'] if w.external else [])))
+        if w.floor==0 and ks.intersection({'living','family','dining'}) and max(w.a[1],w.b[1])<240:
+            if not any(o.kind=='entry' for o in output):target='entry';width=1200;height=2300
+        if target is None and not ks.issubset({'stair'}) and not ks.intersection({'pooja','terrace'}):
+            target='window';width=min(2100,round(length*.55));height=1450;sill=850
+            if ks.intersection(WET):width=min(900,width);height=600;sill=1750
+            if ks=={'utility'}:width=min(1200,round(length*.6));height=1050;sill=1000
+            if ks.intersection({'living','dining','family'}):height=2200;sill=300
+            if ks=={'kitchen'}:height=1150;sill=1100
+            if ks=={'dress'}:width=min(900,width);height=1200;sill=1000
+            if ks=={'store'}:width=min(600,width);height=450;sill=1800
+            if ks=={'hall'}:width=min(900,width);height=1450;sill=850
+            if width<600:target=None
+            elif target=='window':
+                # Stock sizes: windows in 300 mm steps from 600, ventilators 450/600/750/900.
+                width=max([m for m in ((450,600,750,900) if sill>=1500 else (600,900,1200,1500,1800,2100,2400)) if m<=width] or [width])
+        if target=='entry':
+            # The front door sits beside the stair (a foyer at the foot of the flight) or on the axis of the hall that
+            # leads to the rooms behind, never blindly in the middle of the living room; the rest of the frontage
+            # stays free for the living room's window and for a drive.
+            offset=entry_offset(w,length,width,spaces)
+            room=next(r for r in w.rooms if kind[r] in ('living','family','dining'))
+            add(w,'entry',offset,width,sill,height,room,'start' if offset<=length-offset-width else 'end')
+            side,other=offset,length-offset-width
+            lo,hi=(0,offset) if side>=other else (offset+width,length)
+            if hi-lo>=1500:
+                ww=min(2400,round(hi-lo-700))
+                add(w,'window',lo+(hi-lo-ww)/2,ww,300,2200,None)
+        elif target:
+            add(w,target,(length-width)/2,width,sill,height,None)
     if not any(o.kind=='entry' for o in output):raise DesignError('NO_ENTRY','There is no public room on the road-facing edge for the entry. Paint a living room at the front.')
     return output
 
 
 def generate_layout(intent):
     v=intent['values']
-    spaces,stairs,footprint=grid_spaces(intent['grid'],v) if intent.get('grid') else automatic_spaces(v)
-    walls=derive_walls(spaces,footprint,v);openings=derive_openings(spaces,walls,v)
-    return {'schema':'floorforge.building/0.2','units':'mm','up':'Z','brief':v,
+    spaces,stairs,footprint,access,planning=grid_spaces(intent['grid'],v) if intent.get('grid') else automatic_spaces(v)
+    walls=derive_walls(spaces,footprint,v);openings=derive_openings(spaces,walls,v,access)
+    return {'schema':'floorforge.building/0.2','units':'mm','up':'Z','brief':v,'planning':planning or {'method':'manual grid'},
             'footprint':coords(footprint),'plot':coords(box(-v['left_mm'],-v['front_mm'],v['width_mm']-v['left_mm'],v['depth_mm']-v['front_mm'])),
             'spaces':[asdict(s) for s in spaces],'walls':[asdict(w) for w in walls],'openings':[asdict(o) for o in openings],
             'stairs':stairs,'storeys':v['storeys'],'banner':__import__('floorforge').BANNER}

@@ -184,6 +184,18 @@ class Kit:
         self.sphere = self.asset(trimesh.creation.uv_sphere(radius=1, count=[12, 16]), 'unit-sphere', True)
         self.cyl = self.asset(trimesh.creation.cylinder(radius=1, height=1, sections=20), 'unit-cylinder', True)
 
+    def checkpoint(self):
+        """A mark to return to when a trial furniture arrangement is abandoned."""
+        return (len(self.nodes), len(self.colliders), len(self.furniture), len(self.lights), len(self.vegetation), len(self.ground),
+                set(self.assets), self.rng.getstate())
+
+    def rollback(self, mark):
+        n, c, fu, li, ve, gr, keys, state = mark
+        del self.nodes[n:], self.colliders[c:], self.furniture[fu:], self.lights[li:], self.vegetation[ve:], self.ground[gr:]
+        for key in set(self.assets) - keys:
+            del self.assets[key]
+        self.rng.setstate(state)
+
     def asset(self, mesh, key=None, smooth=False):
         key = key or sha({'v': np.round(mesh.vertices, 5).tolist(), 'f': mesh.faces.tolist()})[:20]
         if key not in self.assets:

@@ -57,7 +57,7 @@ def test_exterior_theme_is_real_coordinated_geometry(theme):
     roles={node['role'] for node in scene['nodes']}
     assert roles.intersection({'porch','balcony','screen','pergola','accent'})
     assert 'landscape' in roles
-    assert len(make_sheets(building,scene,report))==9
+    assert len(make_sheets(building,scene,report))==10
 
 
 def test_interior_palette_changes_materials_without_layout_change():

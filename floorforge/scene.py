@@ -10,9 +10,10 @@ import math, random
 import numpy as np
 import trimesh
 from shapely.geometry import Polygon, LineString, Point, box
-from shapely.ops import unary_union
+from shapely.ops import unary_union, nearest_points
 from shapely import get_parts
 from shapely.affinity import scale as pscale
+from shapely.prepared import prep
 from .model import sha, STYLES, enu_to_local
 from .exterior import apply_exterior_preferences, get_exterior_theme, get_interior_theme
 from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT
@@ -462,6 +463,7 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- openings
     space_kind = {s['id']: s['kind'] for s in b['spaces']}
+    space_poly = {s['id']: Polygon(np.array(s['polygon']) / 1000) for s in b['spaces']}
     for o in b['openings']:
         w = hosts[o['wall_id']]; a = np.array(w['a']) / 1000; bb = np.array(w['b']) / 1000; uv = (bb - a) / np.linalg.norm(bb - a); nv = np.array([-uv[1], uv[0]]); ang = math.atan2(uv[1], uv[0]); p = a + uv * o['offset'] / 1000
         if not fp.covers(Point(*(p + uv * o['width'] / 2000 + nv * .4))):
@@ -546,8 +548,12 @@ def make_scene(building, report):
             part(ow + .06, yy, z0 + (zh + .12) / 2, .12, dp, zh + .12, 'frame', 'door-portal')
             part(ow / 2, yy, z0 + zh + .06, ow + .24, dp, .12, 'frame', 'door-portal')
         else:
-            # Leaves shown open 90 degrees; no invisible solid wall remains in the portal.
-            hinge = p + uv * .055; leafcenter = hinge + nv * (ow - .1) / 2
+            # Leaves shown open 90 degrees into the room they serve, hinged on the planned jamb so the leaf folds
+            # back against the nearer wall; no invisible solid wall remains in the portal.
+            if o.get('swing') in space_poly:
+                if not space_poly[o['swing']].buffer(.05).contains(Point(*(p + uv * ow / 2 + nv * (t_half + .3)))):
+                    nv = -nv
+            hinge = p + uv * (.055 if o.get('hinge', 'start') == 'start' else ow - .055); leafcenter = hinge + nv * (ow - .1) / 2
             leaf_mat = 'walnut' if (o['kind'] == 'entry' and upgraded_interior) else M['door']
             rb((leafcenter[0], leafcenter[1], base + zh / 2), (.042, ow - .1, zh - .05), leaf_mat, o['floor'], 'door', .008, ang, owner=o['id'])
             knob = hinge + nv * (ow - .18)
@@ -617,236 +623,866 @@ def make_scene(building, report):
                 if placed % 2 == 1:
                     k.light((xx, yy, z - .2), 9, kind='downlight')
 
+    # ---------------------------------------------------------------- furniture placement
+    # Every piece stands against a solid stretch of wall, clear of the swing or approach zone of each door, of
+    # windows lower than the piece, and of pieces already placed; the room's clear polygon (L-shapes included)
+    # is the only floor it may occupy.
+    solid = {f: prep(wall_union[f]) for f in range(storeys)}
+
+    def open_keepouts(ctx):
+        """Open edges a room shares with the stair or the hall stay walkable: 1 m in front of the stair, the hall's
+        mouth and every open connection to another public room."""
+        room, clear = ctx['room'], ctx['clear']
+        zones = []
+        for s in b['spaces']:
+            if s['floor'] != room['floor'] or s['id'] == room['id'] or s['kind'] not in ('stair', 'hall', 'living', 'dining', 'family'):
+                continue
+            other = Polygon(np.array(s['polygon']) / 1000)
+            edge = other.intersection(Polygon(np.array(room['polygon']) / 1000).buffer(.01))
+            if edge.is_empty or edge.area < .002:
+                continue
+            reach = 1.0 if s['kind'] == 'stair' else .6
+            zones.append(edge.buffer(reach).intersection(clear))
+        return [z for z in zones if not z.is_empty]
+
+    def free_path(ctx, block, a, b2):
+        """True when a 0.8 m wide route still joins points a and b2 around `block`."""
+        free = ctx['clear'].buffer(-.4).difference(block.buffer(.4))
+        if free.is_empty:
+            return False
+        pa, pb = Point(*a), Point(*b2)
+        for part in _parts(free):
+            if part.buffer(.45).contains(pa) and part.buffer(.45).contains(pb):
+                return True
+        return False
+
+    def sofa_group(ctx):
+        """Sofa facing a media wall at viewing distance (floating in the room if need be), coffee table, rug, arc
+        lamp and a lounge chair; failing a media wall, a sofa backed by a wall (a low sill is acceptable)."""
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        keep = [q for q, _ in ctx['doors']]
+
+        def fits(sp, length, table=True):
+            pieces = [lpoly(sp, -length / 2, length / 2, .2, 1.18)] + ([lpoly(sp, -.55, .55, 1.525, 2.275)] if table else [])
+            legroom = lpoly(sp, -length / 2 + .3, length / 2 - .3, 1.18, 1.75)
+            return all(ctx['inside'].covers(q) and not hits(q, keep) and not hits(q, ctx['placed']) for q in pieces) and ctx['inside'].covers(legroom)
+        choice = None
+        for m in sorted(spots(ctx, 2.5, .45, front=2.4, height=2.62, step=.1), key=lambda s: abs(s['s'] - s['L'] / 2)):
+            for D in (4.0, 3.8, 3.6):
+                for length in (2.35, 2.1, 1.8):
+                    sp = {'c': m['c'] + m['n'] * D, 't': -m['t'], 'n': -m['n'], 's': 0., 'L': 0.}
+                    if fits(sp, length):
+                        choice = (sp, length, (0., m, D))
+                        break
+                if choice:
+                    break
+            if choice:
+                break
+        if choice is None:
+            for height, table in ((.95, True), (.3, True), (.95, False), (.3, False)):
+                for length in (2.35, 2.1, 1.8, 1.6, 1.4):
+                    cands = [c for c in spots(ctx, length, 1.2, front=.6, height=height, step=.05) if fits(c, length, table)]
+                    if cands:
+                        sp = max(cands, key=lambda c: (round(far_from_doors(ctx, c), 1), -abs(c['s'] - c['L'] / 2)))
+                        choice = (sp, length, None)
+                        break
+                if choice:
+                    break
+        if choice is None:
+            # A floating group in a glazed or open-plan room: facing the widest glazing (the view), with a walkway
+            # all round and the stair, doors and open edges left clear.
+            x0, y0, x1, y1 = clear.bounds
+            views = [(q, o) for q, o in ctx['windows'] if o['sill'] < 900]
+            best = None
+            for length in (2.35, 2.1, 1.8, 1.6, 1.4):
+                for nx_, ny_ in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                    n_ = np.array([nx_, ny_], float); t_ = np.array([-ny_, nx_], float) * -1
+                    for cx_ in np.arange(x0 + .4, x1 - .4 + 1e-6, .2):
+                        for cy_ in np.arange(y0 + .4, y1 - .4 + 1e-6, .2):
+                            sp = {'c': np.array([cx_, cy_]), 't': t_, 'n': n_, 's': 0., 'L': 0.}
+                            group = lpoly(sp, -length / 2, length / 2, .2, 2.275)
+                            if not ctx['inside'].covers(group.buffer(.35)) or hits(group.buffer(.25), keep) or hits(group, ctx['placed']):
+                                continue
+                            view = sum(o['width'] / 1000 * max(0., float(np.dot(n_, (np.array(q.centroid.coords[0]) - sp['c']) / max(1e-6, np.linalg.norm(np.array(q.centroid.coords[0]) - sp['c'])))))
+                                       for q, o in views)
+                            gc = np.array(group.centroid.coords[0]); rc = np.array(clear.centroid.coords[0])
+                            score = (length, round(view, 1), -float(np.linalg.norm(gc - rc)))
+                            if best is None or score > best[0]:
+                                best = (score, sp, length)
+                if best:
+                    break
+            if best is None:
+                return None
+            choice = (best[1], best[2], None)
+        sp, length, fw = choice
+        h = length / 2
+        lrb(sp, 0, .7, z + .25, (length, .92, .28), 'fabric', f, r=.07)
+        lrb(sp, 0, .33, z + .65, (length, .20, .74), 'fabric', f, r=.06)
+        for su in (-1, 1):
+            lrb(sp, su * (h - .08), .74, z + .55, (.18, .9, .50), 'fabric', f, r=.06)
+        for j in range(3):
+            lrb(sp, -h + .26 + (j + .5) * (length - .5) / 3, .8, z + .46, ((length - .54) / 3, .69, .20), 'linen', f, r=.055)
+        for j in (0, 1):
+            x, y = P(sp, -h + .5 + j * max(.6, length - 1.), .72)
+            ball((x, y, z + .69), (.27, .15, .25), 'fabric-dark', f, 'furniture', (.2, .2, lrot(sp)))
+        for uu in (-h + .2, h - .2):
+            x, y = P(sp, uu, .74)
+            cylinder((x, y, z + .085), .025, .17, 'brass', f, 'furniture')
+        sofa = lpoly(sp, -h, h, .2, 1.18)
+        ctx['placed'].append(sofa)
+        furnishing('sofa', room, sofa)
+        table = lpoly(sp, -.55, .55, 1.525, 2.275)
+        if ctx['inside'].covers(table) and not hits(table, keep) and not hits(table, ctx['placed']):
+            lrb(sp, 0, 1.9, z + .36, (1.1, .75, .06), M['counter'] if upgraded_interior else 'stone', f, r=.09)
+            for vv in (1.68, 2.12):
+                x, y = P(sp, 0, vv)
+                cylinder((x, y, z + .18), .045, .33, M['table'], f, 'furniture')
+            ctx['placed'].append(table)
+            furnishing('coffee-table', room, table)
+            lbox(sp, -.28, -.08, 1.84, 2.12, z + .394, z + .427, 'linen', f, 'detail')
+            vessel = trimesh.creation.revolve(np.array([[.055, 0], [.08, .08], [.075, .16], [.055, .18], [.045, .18], [.064, .15], [.068, .08], [.04, .015]]), sections=24)
+            x, y = P(sp, .1, 1.77)
+            node(asset(vessel, smooth=True), 'ceramic', (x, y, z + .394), floor=f, role='detail')
+        rug = lpoly(sp, -h - .15, h + .15, .1, 2.9).intersection(clear.buffer(-.1))
+        if not rug.is_empty and rug.geom_type == 'Polygon':
+            rx0, ry0, rx1, ry1 = rug.bounds
+            rect((rx0, ry0, z + .014, rx1, ry1, z + .022), 'rug', f, 'rug')
+        if upgraded_interior and fw is not None:
+            _, m, d = fw
+            wx, wy = P(m, 0, 0)
+            if wall_behind(f, wx, wy, m['n'][0], m['n'][1], 1.25, .2, 2.6):
+                for uu in np.arange(-1.22, 1.22, .075):
+                    lbox(m, uu, uu + .05, .003, .03, z + .09, z + 2.62, 'walnut', f, 'wall-panel')
+            lbox(m, -.95, .95, .035, .45, z + .26, z + .6, 'walnut', f)
+            lbox(m, -.74, .74, .037, .045, z + 1.01, z + 1.85, 'frame', f, 'detail')
+            lbox(m, -.73, .73, .045, .085, z + 1.02, z + 1.84, 'blackglass', f, 'detail')
+            console = lpoly(m, -.95, .95, .035, .45)
+            ctx['placed'].append(console)
+            furnishing('media-console', room, console)
+        if upgraded_interior:
+            # Arc floor lamp at the sofa's end, its shade reaching over the seat.
+            for su in (-1, 1):
+                base = lpoly(sp, su * (h + .2) - .18, su * (h + .2) + .18, .52, .88)
+                if ctx['inside'].covers(base) and not hits(base, ctx['placed']) and not hits(base, [q for q, _ in ctx['doors']]):
+                    bx_, by_ = P(sp, su * (h + .2), .7)
+                    ex_, ey_ = P(sp, su * (h + .2) - su * .75, .9)
+                    sx_, sy_ = P(sp, su * (h + .2) - su * .8, .9)
+                    cylinder((bx_, by_, z + .02), .16, .04, 'basalt', f, 'furniture')
+                    beam((bx_, by_, z + .04), (bx_, by_, z + 1.55), .012, 'frame', f, 'furniture')
+                    beam((bx_, by_, z + 1.55), (ex_, ey_, z + 1.9), .012, 'frame', f, 'furniture')
+                    shade = trimesh.creation.cone(radius=.2, height=.2, sections=28)
+                    node(asset(shade, smooth=True), 'frame', (sx_, sy_, z + 1.78), rot=(math.pi, 0, 0), floor=f, role='fixture')
+                    ball((sx_, sy_, z + 1.74), (.05, .05, .05), 'lamp', f, 'fixture')
+                    k.light((sx_, sy_, z + 1.7), 18, kind='lamp')
+                    ctx['placed'].append(base)
+                    furnishing('floor-lamp', room, base)
+                    break
+        # A lounge chair at the side of the table, turned toward it.
+        for su in (1, -1):
+            spot = lpoly(sp, su * (h + .75) - .35, su * (h + .75) + .35, 1.55, 2.25)
+            if ctx['inside'].covers(spot) and not hits(spot, ctx['placed']) and not hits(spot, [q for q, _ in ctx['doors']]):
+                cx_, cy_ = P(sp, su * (h + .75), 1.9)
+                face = -su * sp['t']
+                chair(cx_, cy_, z, f, math.atan2(face[0], -face[1]))
+                ctx['placed'].append(spot)
+                break
+        px, py = P(sp, 0, 1.9)
+        lamp(px, py, z + H - .9, f, True)
+        return sp
+
+    def dining_group(ctx, route=None, anchor=None, sizes=(1.8, 1.5, 1.2, 1.0)):
+        """A table for six (four in a small room) with chairs, free-standing where a 0.8 m route stays open; centred
+        in the room, or drawn toward `anchor` (the kitchen side of a combined living and dining room)."""
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        x0, y0, x1, y1 = clear.bounds
+        zones = [q for q, _ in ctx['doors']] + ctx['placed']
+        best = None
+        for tw in sizes:
+            for along_x in (True, False):
+                wx_, wy_ = (tw + .2, 2.0) if along_x else (2.0, tw + .2)
+                for cx_ in np.arange(x0 + wx_ / 2 + .25, x1 - wx_ / 2 - .25 + 1e-6, .1):
+                    for cy_ in np.arange(y0 + wy_ / 2 + .25, y1 - wy_ / 2 - .25 + 1e-6, .1):
+                        zone = box(cx_ - wx_ / 2, cy_ - wy_ / 2, cx_ + wx_ / 2, cy_ + wy_ / 2)
+                        if not ctx['inside'].covers(zone.buffer(.25)) or hits(zone.buffer(.1), zones):
+                            continue
+                        if route and not free_path(ctx, zone, *route):
+                            continue
+                        c = anchor or clear.centroid
+                        score = (tw, -abs(cx_ - c.x) - abs(cy_ - c.y))
+                        if best is None or score > best[0]:
+                            best = (score, cx_, cy_, tw, along_x)
+            if best:
+                break
+        if not best:
+            # A table for four against a wall: two chairs along the open side, one at each end.
+            for cands in (spots(ctx, 2.3, .8, front=.6, height=.8, step=.05),):
+                ok = [c for c in cands if not route or free_path(ctx, lpoly(c, -1.15, 1.15, 0, 1.4), *route)]
+                if ok:
+                    sp = min(ok, key=lambda c: -far_from_doors(ctx, c))
+                    lrb(sp, 0, .4, z + .75, (1.2, .8, .07), M['table'], f, r=.035)
+                    for uu in (-.52, .52):
+                        for vv in (.08, .72):
+                            x, y = P(sp, uu, vv)
+                            beam((x, y, z + .04), (x, y, z + .72), .038, M['table'], f, 'furniture')
+                    for uu in (-.3, .3):
+                        x, y = P(sp, uu, 1.07)
+                        chair(x, y, z, f, lrot(sp))
+                    for su in (-1, 1):
+                        x, y = P(sp, su * .9, .4)
+                        face = -su * sp['t']
+                        chair(x, y, z, f, math.atan2(face[0], -face[1]))
+                    zone = lpoly(sp, -1.15, 1.15, .02, 1.35)
+                    ctx['placed'].append(zone)
+                    furnishing('dining-set', room, zone)
+                    x, y = P(sp, 0, .4)
+                    lamp(x, y, z + 2.2, f, True)
+                    return (x, y)
+            return None
+        _, tx, ty, tw, along_x = best
+        td = .9
+        size = (tw, td) if along_x else (td, tw)
+        rb((tx, ty, z + .75), (size[0], size[1], .07), M['table'], f, r=.035)
+        for a in (-tw * .35, tw * .35):
+            for bb2 in (-.26, .26):
+                xx, yy = (tx + a, ty + bb2) if along_x else (tx + bb2, ty + a)
+                beam((xx, yy, z + .04), (xx, yy, z + .72), .038, M['table'], f, 'furniture')
+        seats = (-tw * .3, 0., tw * .3) if tw >= 1.8 else (-tw * .27, tw * .27)
+        for a in seats:
+            if along_x:
+                chair(tx + a, ty - .67, z, f, math.pi); chair(tx + a, ty + .67, z, f, 0)
+            else:
+                chair(tx - .67, ty + a, z, f, math.pi / 2); chair(tx + .67, ty + a, z, f, -math.pi / 2)
+        for a in seats:
+            for bb2 in (-.22, .22):
+                xx, yy = (tx + a, ty + bb2) if along_x else (tx + bb2, ty + a)
+                cylinder((xx, yy, z + .798), .115, .013, 'ceramic', f, 'detail')
+        zone = box(tx - (tw / 2 + .1 if along_x else .92), ty - (.92 if along_x else tw / 2 + .1), tx + (tw / 2 + .1 if along_x else .92), ty + (.92 if along_x else tw / 2 + .1))
+        ctx['placed'].append(zone)
+        furnishing('dining-set', room, zone)
+        if upgraded_interior:
+            chandelier(tx, ty, f)
+        else:
+            lamp(tx, ty, z + 2.20, f, True)
+        return (tx, ty)
+
+    def public_route(room):
+        """The mouth of the hall and the middle of the edge shared with the living room: the route through."""
+        f = room['floor']
+        me = Polygon(np.array(room['polygon']) / 1000)
+        pts = []
+        for s in b['spaces']:
+            if s['floor'] == f and s['id'] != room['id'] and s['kind'] in ('hall', 'living', 'family'):
+                e = Polygon(np.array(s['polygon']) / 1000).intersection(me.buffer(.01))
+                if not e.is_empty and e.area > .002:
+                    c = e.centroid
+                    pts.append((c.x, c.y))
+        return pts[:2] if len(pts) >= 2 else None
+
+
+    def room_context(room):
+        f = room['floor']
+        clear = Polygon(np.array(room['clear']) / 1000)
+        doors, windows = [], []
+        for o in b['openings']:
+            if o['floor'] != f or room['id'] not in o['connects']:
+                continue
+            w = hosts[o['wall_id']]
+            a = np.array(w['a'], float) / 1000; bb = np.array(w['b'], float) / 1000
+            u = (bb - a) / np.linalg.norm(bb - a); nrm = np.array([-u[1], u[0]])
+            p0 = a + u * o['offset'] / 1000; p1 = p0 + u * o['width'] / 1000; m = (p0 + p1) / 2
+            if clear.distance(Point(*(m + nrm * .5))) > clear.distance(Point(*(m - nrm * .5))):
+                nrm = -nrm
+            face = w['thickness'] / 2000
+            q0 = p0 - u * .06 + nrm * face; q1 = p1 + u * .06 + nrm * face
+            if o['kind'] == 'window':
+                windows.append((Polygon([q0, q1, q1 + nrm * .5, q0 + nrm * .5]), o))
+                continue
+            # A passage 0.6 m deep in front of every opening, and the quarter circle a leaf sweeps into this room.
+            zone = Polygon([q0, q1, q1 + nrm * .6, q0 + nrm * .6])
+            if o['kind'] == 'door' and o.get('swing') == room['id']:
+                hinge = (p0 if o.get('hinge', 'start') == 'start' else p1) + nrm * face
+                along = u if o.get('hinge', 'start') == 'start' else -u
+                r = o['width'] / 1000 + .05
+                arc = [hinge] + [hinge + r * (along * math.cos(a) + nrm * math.sin(a)) for a in np.linspace(0, math.pi / 2, 9)]
+                zone = zone.union(Polygon(arc).buffer(.02))
+            doors.append((zone, o))
+        return {'room': room, 'clear': clear, 'inside': prep(clear.buffer(.004)), 'doors': doors, 'windows': windows,
+                'floor': f, 'placed': []}
+
+    def hits(poly, zones):
+        return any(poly.intersects(q) and poly.intersection(q).area > 2e-4 for q in zones)
+
+    def spots(ctx, width, depth, front=.6, height=1., step=.1, sides=0., tall=None):
+        """Placements of a width x depth piece backed by solid wall: [{'c', 't', 'n', 'foot', 's', 'L'}]. `c` is the
+        wall-face point at the piece's centre, `t` runs along the wall and `n` into the room (a proper rotation)."""
+        clear, f = ctx['clear'], ctx['floor']
+        # Wall junctions leave collinear vertices on the clear outline; each straight wall is one run.
+        pts = list(clear.simplify(1e-4, preserve_topology=True).exterior.coords)
+        out = []
+        placed = ctx['placed']
+        door_zones = [q for q, _ in ctx['doors']]
+        low_windows = [q for q, o in ctx['windows'] if o['sill'] / 1000 < height]
+        for (ax, ay), (bx2, by2) in zip(pts, pts[1:]):
+            L = math.hypot(bx2 - ax, by2 - ay)
+            if L + 1e-6 < width:
+                continue
+            t = np.array([(bx2 - ax) / L, (by2 - ay) / L]); nrm = np.array([-t[1], t[0]])
+            A = np.array([ax, ay], float)
+            mid = A + t * L / 2
+            flip = not clear.contains(Point(*(mid + nrm * .03)))
+            if flip:
+                nrm = -nrm
+            positions = np.arange(width / 2, L - width / 2 + 1e-6, step)
+            if not len(positions):
+                positions = [L / 2]
+            for s in positions:
+                c = A + t * s
+                tt = -t if flip else t
+                e0 = c - tt * (width / 2 + sides); e1 = c + tt * (width / 2 + sides)
+                foot = Polygon([c - tt * width / 2 + nrm * .003, c + tt * width / 2 + nrm * .003,
+                                c + tt * width / 2 + nrm * depth, c - tt * width / 2 + nrm * depth])
+                if not ctx['inside'].covers(foot):
+                    continue
+                if not all(solid[f].contains(Point(*(c + tt * q - nrm * .07))) for q in np.linspace(-width / 2 + .04, width / 2 - .04, 4)):
+                    continue
+                upright = foot if tall is None else Polygon([c - tt * width / 2 + nrm * .003, c + tt * width / 2 + nrm * .003,
+                                                             c + tt * width / 2 + nrm * tall, c - tt * width / 2 + nrm * tall])
+                if hits(foot, door_zones) or hits(upright, low_windows) or hits(foot, placed):
+                    continue
+                if front > 0:
+                    zone = Polygon([e0 + nrm * depth, e1 + nrm * depth, e1 + nrm * (depth + front), e0 + nrm * (depth + front)])
+                    if not ctx['inside'].covers(zone) or hits(zone, placed):
+                        continue
+                out.append({'c': c, 't': tt, 'n': nrm, 'foot': foot, 's': s, 'L': L, 'A': A})
+        return out
+
+    def door_centres(ctx):
+        return [np.array(q.centroid.coords[0]) for q, _ in ctx['doors']]
+
+    def far_from_doors(ctx, sp):
+        ds = [float(np.linalg.norm(sp['c'] + sp['n'] * .5 - d)) for d in door_centres(ctx)]
+        return min(ds) if ds else 0.
+
+    def P(sp, u, v):
+        q = sp['c'] + sp['t'] * u + sp['n'] * v
+        return float(q[0]), float(q[1])
+
+    def lbox(sp, u0, u1, v0, v1, z0, z1, mat, f, role='furniture', owner=None):
+        xs, ys = zip(*(P(sp, uu, vv) for uu in (u0, u1) for vv in (v0, v1)))
+        rect((min(xs), min(ys), z0, max(xs), max(ys), z1), mat, f, role, owner=owner)
+
+    def lpoly(sp, u0, u1, v0, v1):
+        xs, ys = zip(*(P(sp, uu, vv) for uu in (u0, u1) for vv in (v0, v1)))
+        return box(min(xs), min(ys), max(xs), max(ys))
+
+    def lrot(sp):
+        return math.atan2(sp['n'][1], sp['n'][0]) - math.pi / 2
+
+    def lrb(sp, u, v, zc, size, mat, f, role='furniture', r=.04, owner=None, extra=0.):
+        x, y = P(sp, u, v)
+        rb((x, y, zc), size, mat, f, role, r, lrot(sp) + extra, owner=owner)
+
+    def wall_art(ctx, width=.9, height=.7, zc=1.55):
+        """A framed print on the widest solid wall stretch not already used, above any furniture."""
+        f = ctx['floor']; z = f * H
+        cands = spots(ctx, width + .3, .03, front=0, height=zc + height / 2 + .1, step=.2)
+        if not cands:
+            return
+        sp = max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L']))
+        lbox(sp, -width / 2, width / 2, .004, .035, z + zc - height / 2, z + zc + height / 2, 'frame', f, 'art')
+        lbox(sp, -width / 2 + .04, width / 2 - .04, .035, .042, z + zc - height / 2 + .04, z + zc + height / 2 - .04, 'art', f, 'art')
+
+    def wardrobe(ctx, lengths=(2.4, 2.1, 1.8, 1.5, 1.2, .9), name='wardrobe', prefer_door=True):
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        for ww in lengths:
+            cands = spots(ctx, ww, .6, front=.75, height=2.3) or spots(ctx, ww, .6, front=.6, height=2.3)
+            if cands:
+                sp = min(cands, key=lambda s: (far_from_doors(ctx, s) if prefer_door else -far_from_doors(ctx, s), abs(s['s'] - s['L'] / 2)))
+                break
+        else:
+            return None
+        # Frame, top, three or four leaves with bar handles, on a recessed plinth.
+        for u0, u1, v0, v1 in ((-ww / 2, -ww / 2 + .035, 0, .6), (ww / 2 - .035, ww / 2, 0, .6), (-ww / 2, ww / 2, 0, .035)):
+            lbox(sp, u0, u1, v0, v1, z + .08, z + 2.25, M['casework'], f)
+        lbox(sp, -ww / 2, ww / 2, 0, .6, z + 2.22, z + 2.26, M['casework'], f)
+        leaves = 4 if ww >= 2.0 else 3 if ww >= 1.4 else 2
+        for j in range(leaves):
+            a0 = -ww / 2 + j * ww / leaves + .012; a1 = a0 + ww / leaves - .024
+            lbox(sp, a0, a1, .565, .6, z + .12, z + 2.21, M['casework'], f)
+            hu = a1 - .06 if j % 2 == 0 else a0 + .06
+            x, y = P(sp, hu, .62)
+            beam((x, y, z + .9), (x, y, z + 1.2), .008, 'frame' if upgraded_interior else 'brass', f, 'furniture')
+        foot = lpoly(sp, -ww / 2, ww / 2, 0, .6)
+        ctx['placed'].append(foot)
+        furnishing(name, room, foot)
+        return sp
+
+    def dresser(ctx):
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        for dw_ in (1.2, .9, .75):
+            cands = spots(ctx, dw_, .48, front=.6, height=.85, step=.05)
+            if cands:
+                sp = min(cands, key=lambda s: abs(s['s'] - s['L'] / 2))
+                lbox(sp, -dw_ / 2, dw_ / 2, .02, .48, z + .08, z + .82, M['casework'], f)
+                for j in range(3):
+                    lbox(sp, -dw_ / 2 + .03, dw_ / 2 - .03, .48, .5, z + .12 + j * .23, z + .31 + j * .23, M['casework'], f)
+                    a_, b_ = P(sp, -.12, .52), P(sp, .12, .52)
+                    beam((a_[0], a_[1], z + .22 + j * .23), (b_[0], b_[1], z + .22 + j * .23), .007, 'frame' if upgraded_interior else 'brass', f, 'detail')
+                foot = lpoly(sp, -dw_ / 2, dw_ / 2, .02, .5)
+                ctx['placed'].append(foot)
+                furnishing('wardrobe', room, foot)
+                return sp
+        return None
+
+    def bed_set(ctx, master):
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        area = clear.area
+        bw = 1.8 if (master and area > 15) else 1.6 if area > 10.5 else 1.5
+        bl = 2.05
+        head = 1.25
+        good = []
+        for tables, bw_, height in ((.52, bw, 1.3), (.0, bw, 1.3), (.0, min(bw, 1.35), 1.3), (.0, min(bw, 1.5), .8), (.0, 1.35, .8)):
+            bw = bw_
+            if height < 1:
+                head = .72              # a low headboard below the window sill
+            cands = spots(ctx, bw + 2 * tables + .1, bl + .15, front=.55, height=height, tall=.25)
+            # Walking room on at least one long side of the bed.
+            good = []
+            for sp in cands:
+                side = [lpoly(sp, -bw / 2 - tables - .55, -bw / 2 - tables, .3, bl), lpoly(sp, bw / 2 + tables, bw / 2 + tables + .55, .3, bl)]
+                if any(ctx['inside'].covers(q) and not hits(q, ctx['placed']) for q in side):
+                    good.append(sp)
+            if good:
+                break
+        if not good:
+            return None
+        # The command position: the headboard on the wall farthest from the door, centred on it.
+        sp = max(good, key=lambda s: (round(far_from_doors(ctx, s), 1), -abs(s['s'] - s['L'] / 2)))
+        v0 = .1
+        lbox(sp, -bw / 2, bw / 2, v0, v0 + bl, z + .07, z + .28, M['bedframe'], f, owner=room['id'])
+        lrb(sp, 0, v0 + bl / 2, z + .39, (bw + .04, bl + .03, .25), 'linen', f, r=.075, owner=room['id'])
+        lrb(sp, 0, v0 - .03, z + head / 2 + .075, (bw + .35, .12, head), 'fabric-dark', f, r=.05)
+        if upgraded_interior and head > 1 and wall_behind(f, *P(sp, 0, 0), sp['n'][0], sp['n'][1], 1.45, .05, 2.55):
+            for uu in np.arange(-1.42, 1.42, .085):
+                lbox(sp, uu, uu + .06, .003, .028, z + .1, z + 2.55, M['casework'], f, 'wall-panel')
+        for pu in (-bw / 4, bw / 4):
+            lrb(sp, pu, v0 + .38, z + .58, (bw / 2 - .12, .42, .17), 'linen', f, r=.07, extra=.035)
+        vv, ff = [], []
+        nx, ny = 22, 24
+        for j in range(ny):
+            for i in range(nx):
+                uu = -bw / 2 - .055 + (bw + .11) * i / (nx - 1); wv = v0 + .68 + (bl - .58) * j / (ny - 1)
+                zz = z + .54 + .014 * math.cos(i * .9 + j * .25) + .007 * math.sin(i * 1.8)
+                if i in (0, nx - 1):
+                    zz -= .13
+                x, y = P(sp, uu, wv)
+                vv.append((x, y, zz))
+        for j in range(ny - 1):
+            for i in range(nx - 1):
+                q = j * nx + i
+                ff += [[q, q + 1, q + nx + 1], [q, q + nx + 1, q + nx]]
+        node(asset(trimesh.Trimesh(vertices=vv, faces=ff, process=False), smooth=True), 'fabric', floor=f, role='furniture')
+        if tables:
+            for su in (-1, 1):
+                tu = su * (bw / 2 + .30)
+                lrb(sp, tu, .25, z + .31, (.43, .45, .48), M['casework'], f, r=.014)
+                x, y = P(sp, tu, .25)
+                lamp(x, y, z + .56, f)
+        foot = lpoly(sp, -bw / 2 - tables, bw / 2 + tables, .02, v0 + bl + .04)
+        ctx['placed'].append(foot)
+        furnishing('bed', room, lpoly(sp, -bw / 2 - .05, bw / 2 + .05, .02, v0 + bl + .04))
+        rug = lpoly(sp, -bw / 2 - .32, bw / 2 + .32, v0 + .65, v0 + bl + .45).intersection(clear.buffer(-.12))
+        if not rug.is_empty and rug.geom_type == 'Polygon':
+            x0r, y0r, x1r, y1r = rug.bounds
+            rect((x0r, y0r, z + .012, x1r, y1r, z + .018), 'rug', f, 'rug')
+        return sp
+
+    def bath_set(ctx):
+        """WC, basin and shower, planned together: a glass-screened tray at the far end from the door when the room
+        allows it, otherwise a walk-in wet area with a floor drain; the WC and a basin with its lit mirror always."""
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        if upgraded_interior:
+            lining(room, f, z + .009, z + 1.55, 'tilewall', 'wall-tile', .01)
+        x0, y0, x1, y1 = clear.bounds
+        sw = min(1.2, max(.8, min(x1 - x0, y1 - y0) - .05))
+        sd = .9 if clear.area >= 2.6 else .8
+        base = list(ctx['placed'])
+
+        def pick_shower():
+            showers = spots(ctx, sw, sd, front=0, height=1.0, step=.05)
+            if not showers or clear.area < 2.0:
+                return None
+            sp = max(showers, key=lambda s: (round(far_from_doors(ctx, s), 1), -min(s['s'], s['L'] - s['s'])))
+            ctx['placed'].append(lpoly(sp, -sw / 2, sw / 2, 0, sd))
+            return sp
+
+        def pick_wc():
+            cands = spots(ctx, .8, .72, front=.55, height=.8, step=.05) or spots(ctx, .7, .7, front=.5, height=.8, step=.05)
+            if not cands:
+                return None
+            sp = max(cands, key=lambda s: (round(far_from_doors(ctx, s), 1) * .5, -abs(s['s'] - s['L'] / 2)))
+            ctx['placed'].append(lpoly(sp, -.35, .35, .02, .74))
+            return sp
+
+        def pick_basin():
+            for vw in (1.0, .8, .65, .5):
+                cands = spots(ctx, vw, .52 if vw > .5 else .42, front=.6 if vw > .5 else .5, height=.85, step=.05)
+                if cands:
+                    sp = min(cands, key=lambda s: (round(far_from_doors(ctx, s), 1), abs(s['s'] - s['L'] / 2)))
+                    ctx['placed'].append(lpoly(sp, -vw / 2, vw / 2, .02, .52 if vw > .5 else .42))
+                    return sp, vw
+            return None, 0
+        shower = pick_shower(); wc = pick_wc(); basin, vw = pick_basin()
+        if wc is None or basin is None:
+            # A small bath: the WC and basin come first, the shower becomes a walk-in wet area.
+            ctx['placed'][:] = base
+            wc = pick_wc(); basin, vw = pick_basin(); shower = pick_shower()
+        wet = None
+        if shower is None:
+            heads = spots(ctx, .6, .05, front=.6, height=1.0, step=.05)
+            if heads:
+                wet = max(heads, key=lambda s: round(far_from_doors(ctx, s), 1))
+        if shower is not None:
+            tray = lpoly(shower, -sw / 2, sw / 2, 0, sd)
+            tx0, ty0, tx1, ty1 = tray.bounds
+            rect((tx0 + .01, ty0 + .01, z + .009, tx1 - .01, ty1 - .01, z + .02), 'wetfloor', f, 'detail')
+            if upgraded_interior:
+                # Frameless glass along the open side of the tray, a black rain head and a linear drain.
+                edge = [(shower['c'] + shower['t'] * (-sw / 2) + shower['n'] * sd), (shower['c'] + shower['t'] * (sw / 2) + shower['n'] * sd)]
+                gx0, gy0 = np.minimum(*edge); gx1, gy1 = np.maximum(*edge)
+                rect((gx0 - .004, gy0 - .004, z + .02, gx1 + .004, gy1 + .004, z + 2.0), 'glass', f, 'glass')
+                lbox(shower, -sw / 2 + .12, sw / 2 - .12, sd - .12, sd - .08, z + .02, z + .024, 'appliance', f, 'detail')
+            head = shower
+        else:
+            head = wet
+        if head is not None:
+            hx, hy = P(head, 0, .3)
+            bx_, by_ = P(head, 0, .02)
+            beam((bx_, by_, z + 2.15), (hx, hy, z + 2.15), .01, 'frame' if upgraded_interior else 'brass', f, 'detail')
+            cylinder((hx, hy, z + 2.13), .11, .012, 'frame' if upgraded_interior else 'brass', f, 'detail')
+            mx, my = P(head, 0, .03)
+            cylinder((mx, my, z + 1.1), .045, .03, 'frame' if upgraded_interior else 'brass', f, 'detail', rot=(math.pi / 2, 0, lrot(head)))
+            if shower is None:
+                dx, dy = P(head, 0, .45)
+                cylinder((dx, dy, z + .011), .06, .004, 'appliance', f, 'detail')
+        if wc is not None:
+            bx_, by_ = P(wc, 0, .44)
+            ball((bx_, by_, z + .22), (.20, .29, .22), 'ceramic', f, 'furniture', (0, 0, lrot(wc)))
+            torus = trimesh.creation.torus(major_radius=.17, minor_radius=.03, major_sections=24, minor_sections=8)
+            sx_, sy_ = P(wc, 0, .40)
+            node(asset(torus, smooth=True), 'ceramic', (sx_, sy_, z + .44), (.95, 1.45, 1), (0, 0, lrot(wc)), floor=f, role='detail')
+            lrb(wc, 0, .1, z + .55, (.39, .18, .62), 'ceramic', f, r=.05)
+            furnishing('wc', room, lpoly(wc, -.23, .23, .02, .74))
+        if basin is not None:
+            vd = .5 if vw > .5 else .4
+            lbox(basin, -vw / 2, vw / 2, .02, vd, z + .20, z + .77, 'walnut' if upgraded_interior else 'timber', f)
+            lrb(basin, 0, vd / 2 + .01, z + .79, (vw + .02, vd, .045), M['counter'], f, r=.02)
+            bowl = trimesh.creation.revolve(np.array([[.035, 0], [.18, .03], [.245, .115], [.24, .15], [.22, .16], [.215, .13], [.17, .065], [.035, .028]]), sections=32)
+            bx_, by_ = P(basin, 0, vd / 2 + .02)
+            node(asset(bowl, smooth=True), 'ceramic', (bx_, by_, z + .812), (.85 if vw <= .5 else 1, .85 if vw <= .5 else 1, 1), floor=f, role='detail')
+            t0, t1 = P(basin, 0, .06), P(basin, 0, .17)
+            beam((t0[0], t0[1], z + .82), (t0[0], t0[1], z + 1.12), .012, 'frame' if upgraded_interior else 'brass', f, 'detail')
+            beam((t0[0], t0[1], z + 1.12), (t1[0], t1[1], z + 1.12), .012, 'frame' if upgraded_interior else 'brass', f, 'detail')
+            half = min(.31, vw / 2 - .03)
+            if wall_behind(f, *P(basin, 0, 0), basin['n'][0], basin['n'][1], half, 1.05, 1.85):
+                lbox(basin, -half, half, .009, .025, z + 1.08, z + 1.82, 'mirror' if upgraded_interior else 'glass', f, 'mirror')
+                if upgraded_interior:
+                    lbox(basin, -half - .02, half + .02, .012, .03, z + 1.84, z + 1.86, 'lamp', f, 'fixture')
+                    mx, my = P(basin, 0, .3)
+                    k.light((mx, my, z + 1.9), 8, kind='mirror')
+            furnishing('vanity', room, lpoly(basin, -vw / 2, vw / 2, .02, vd + .02))
+        if upgraded_interior:
+            rails = spots(ctx, .6, .08, front=0, height=1.6, step=.1)
+            if rails:
+                sp = rails[len(rails) // 2]
+                a_, b_ = P(sp, -.28, .06), P(sp, .28, .06)
+                beam((a_[0], a_[1], z + 1.25), (b_[0], b_[1], z + 1.25), .01, 'frame', f, 'detail')
+
+    def desk_set(ctx):
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        for tw in (1.6, 1.4, 1.2):
+            desks = spots(ctx, tw, .6, front=.8, height=.8, step=.1)
+            if desks:
+                break
+        else:
+            return
+        # Under a window if one has a sill above the desk, else the widest wall.
+        def lit(s):
+            return any(o['sill'] / 1000 >= .8 and q.intersects(lpoly(s, -tw / 2, tw / 2, 0, .8)) for q, o in ctx['windows'])
+        sp = max(desks, key=lambda s: (lit(s), -abs(s['s'] - s['L'] / 2)))
+        lbox(sp, -tw / 2, tw / 2, .02, .6, z + .72, z + .77, M['table'], f)
+        for su in (-1, 1):
+            lbox(sp, su * (tw / 2 - .07) - .03, su * (tw / 2 - .07) + .03, .08, .52, z, z + .72, 'frame', f)
+        cx_, cy_ = P(sp, 0, .98)
+        chair(cx_, cy_, z, f, lrot(sp))
+        lbox(sp, -.2, .2, .12, .135, z + .79, z + 1.10, 'blackglass' if upgraded_interior else 'frame', f, 'detail')
+        lx, ly = P(sp, tw / 2 - .15, .3)
+        lamp(lx, ly, z + .77, f)
+        foot = lpoly(sp, -tw / 2, tw / 2, .02, 1.25)
+        ctx['placed'].append(foot)
+        furnishing('desk', room, foot)
+        # A bookcase on another wall.
+        cases = spots(ctx, 1.2, .35, front=.7, height=2.0, step=.1)
+        if cases:
+            bk = max(cases, key=lambda s: -abs(s['s'] - s['L'] / 2))
+            for u0, u1 in ((-.6, -.575), (.575, .6)):
+                lbox(bk, u0, u1, 0, .35, z, z + 2.0, M['casework'], f)
+            for zz in (.02, .42, .82, 1.22, 1.62, 1.97):
+                lbox(bk, -.6, .6, 0, .35, z + zz, z + zz + .03, M['casework'], f)
+            for j, uu in enumerate(np.arange(-.52, .5, .09)):
+                if j % 4 == 3:
+                    continue
+                for zz in (.05, .85):
+                    lbox(bk, uu, uu + .06, .06, .3, z + zz, z + zz + .24 + .04 * (j % 3), ('linen', 'fabric', 'rug')[j % 3], f, 'detail')
+            foot = lpoly(bk, -.6, .6, 0, .35)
+            ctx['placed'].append(foot)
+            furnishing('bookcase', room, foot)
+        if clear.area > 9:
+            corners = spots(ctx, .5, .5, front=0, height=1.2, step=.2)
+            if corners:
+                sp = max(corners, key=lambda s: min(s['s'], s['L'] - s['s']) * -1)
+                px, py = P(sp, 0, .3)
+                k.plant(px, py, z, 'monstera', height=.9, f=f, pot=(.18, .34, 'planter' if upgraded_interior else 'ceramic'))
+
+    def utility_set(ctx):
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        for run in (1.9, 1.5, 1.2, .7):
+            runs = spots(ctx, run, .62, front=.7, height=.9, step=.1)
+            if runs:
+                break
+        else:
+            return
+        sp = max(runs, key=lambda s: -abs(s['s'] - s['L'] / 2))
+        # Front-loading washer, a steel wash sink on a counter, and a drying rack above.
+        lrb(sp, -run / 2 + .33, .31, z + .44, (.6, .6, .86), 'ceramic', f, r=.03)
+        ring = trimesh.creation.torus(major_radius=.2, minor_radius=.035, major_sections=24, minor_sections=8)
+        rx, ry = P(sp, -run / 2 + .33, .62)
+        node(asset(ring, smooth=True), 'frame', (rx, ry, z + .45), rot=(math.pi / 2, 0, lrot(sp)), floor=f, role='detail')
+        if run >= 1.2:
+            lbox(sp, -run / 2 + .66, run / 2, .02, .6, z + .1, z + .86, M['casework'], f)
+            lbox(sp, -run / 2 + .66, run / 2, 0, .62, z + .86, z + .9, M['counter'], f)
+            sx_, sy_ = P(sp, (run / 2 - .66 + -run / 2 + .66) / 2 + .25, .3)
+            rect((sx_ - .22, sy_ - .18, z + .78, sx_ + .22, sy_ + .18, z + .905), 'steel', f, 'detail')
+        for dz in (1.95,):
+            a_, b_ = P(sp, -run / 2 + .1, .35), P(sp, run / 2 - .1, .35)
+            beam((a_[0], a_[1], z + dz), (b_[0], b_[1], z + dz), .012, 'frame', f, 'detail')
+        foot = lpoly(sp, -run / 2, run / 2, .02, .62)
+        ctx['placed'].append(foot)
+        furnishing('laundry', room, foot)
+
+    def dress_set(ctx):
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        first = wardrobe(ctx, (2.7, 2.4, 2.1, 1.8, 1.5, 1.2), 'wardrobe', prefer_door=False)
+        if first is None:
+            return
+        second = wardrobe(ctx, (2.4, 2.1, 1.8, 1.5, 1.2, .9), 'wardrobe-2', prefer_door=False)
+        # A full-length mirror on a free wall.
+        mirrors = spots(ctx, .6, .03, front=.8, height=1.95, step=.1)
+        if mirrors:
+            sp = mirrors[len(mirrors) // 2]
+            lbox(sp, -.3, .3, .004, .02, z + .15, z + 1.95, 'mirror' if upgraded_interior else 'glass', f, 'mirror')
+
+    def pooja_set(ctx):
+        """A mandir: a teak cabinet with a marble altar shelf, a carved back panel lit from behind, brass lamps
+        and a bell, on the wall facing the door."""
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        for mw in (1.2, 1.0, .8, .6):
+            cands = spots(ctx, mw, .45, front=.7, height=2.1, step=.05)
+            if cands:
+                break
+        else:
+            return
+        sp = max(cands, key=lambda s: (round(far_from_doors(ctx, s), 1), -abs(s['s'] - s['L'] / 2)))
+        lbox(sp, -mw / 2, mw / 2, .02, .45, z, z + .75, 'walnut', f)
+        lbox(sp, -mw / 2 - .01, mw / 2 + .01, 0, .47, z + .75, z + .8, 'stone', f)
+        for su in (-1, 1):
+            lbox(sp, su * mw / 2 - .04 * (su > 0), su * mw / 2 + .04 * (su < 0), .02, .4, z + .8, z + 1.95, 'walnut', f)
+        lbox(sp, -mw / 2, mw / 2, .02, .45, z + 1.95, z + 2.05, 'walnut', f)
+        lbox(sp, -mw / 2 + .06, mw / 2 - .06, .01, .03, z + .82, z + 1.9, 'lamp', f, 'fixture')
+        for uu in np.arange(-mw / 2 + .1, mw / 2 - .08, .09):
+            lbox(sp, uu, uu + .018, .03, .045, z + .84, z + 1.88, 'walnut', f, 'detail')
+        mx, my = P(sp, 0, .25)
+        k.light((mx, my, z + 1.5), 10, kind='lamp')
+        for uu in (-.25 * mw, .25 * mw):
+            x, y = P(sp, uu, .3)
+            cylinder((x, y, z + .82), .045, .06, 'brass', f, 'detail')
+            ball((x, y, z + .9), (.018, .018, .03), 'lamp', f, 'detail')
+        bx_, by_ = P(sp, 0, .36)
+        cylinder((bx_, by_, z + 1.5), .06, .09, 'brass', f, 'detail')
+        beam((bx_, by_, z + 1.59), (bx_, by_, z + 1.95), .004, 'brass', f, 'detail')
+        foot = lpoly(sp, -mw / 2, mw / 2, .02, .47)
+        ctx['placed'].append(foot)
+        furnishing('mandir', room, foot)
+        fx_, fy_ = P(sp, 0, .95)
+        rect((fx_ - .35, fy_ - .25, z + .012, fx_ + .35, fy_ + .25, z + .018), 'rug', f, 'rug')
+
+    def store_set(ctx):
+        room, f = ctx['room'], ctx['floor']; z = f * H
+        for i in range(2):
+            for sw_, top in ((2.4, 2.2), (1.8, 2.2), (1.2, 2.2), (.9, 2.2), (1.8, 1.7), (1.2, 1.7), (.9, 1.7)):
+                cands = spots(ctx, sw_, .45, front=.5, height=top, step=.1)
+                if cands:
+                    sp = max(cands, key=lambda s: s['L'])
+                    for zz in [q for q in (.05, .5, .95, 1.4, 1.85) if q < top - .1]:
+                        lbox(sp, -sw_ / 2, sw_ / 2, 0, .45, z + zz, z + zz + .025, 'steel' if not upgraded_interior else M['casework'], f)
+                    for su in (-1, 1):
+                        lbox(sp, su * sw_ / 2 - .03 * (su > 0), su * sw_ / 2 + .03 * (su < 0), 0, .45, z, z + top - .3, 'frame', f)
+                    for j, uu in enumerate(np.arange(-sw_ / 2 + .1, sw_ / 2 - .2, .32)):
+                        lbox(sp, uu, uu + .26, .06, .38, z + .52 + .45 * (j % 3), z + .52 + .45 * (j % 3) + .24, ('linen', 'fabric', 'ceramic')[j % 3], f, 'detail')
+                    foot = lpoly(sp, -sw_ / 2, sw_ / 2, 0, .45)
+                    ctx['placed'].append(foot)
+                    furnishing(f'shelves-{i}', room, foot)
+                    break
+
+    def kitchen_set(ctx):
+        """The longest solid wall takes the counter (a window above the worktop is welcome); sink under the window,
+        hob clear of it, tall fridge at the end, wall cabinets and a lit backsplash where the wall is blank, and an
+        island in a large kitchen."""
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        x0, y0, x1, y1 = clear.bounds
+        found = None
+        for run in np.arange(round(min(4.5, max(x1 - x0, y1 - y0) - .08), 1), 1.49, -.3):
+            cands = spots(ctx, run + .08, .66, front=.95, height=.92, step=.05)
+            if cands:
+                found = (float(run), max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L'])))
+                break
+        if not found:
+            return
+        run, sp = found
+        fridge = upgraded_interior and run > 2.7
+        base_run = run - .78 if fridge else run
+        u0 = -run / 2
+        nseg = max(2, int(base_run / .6))
+        for j in range(nseg):
+            a0 = u0 + j * base_run / nseg; ww = base_run / nseg
+            lbox(sp, a0, a0 + ww - .02, 0, .6, z + .10, z + .83, M['casework'], f)
+            for zz in (.30, .59):
+                lbox(sp, a0 + .02, a0 + ww - .035, .6, .622, z + zz, z + zz + .20, M['fronts'], f)
+                h0, h1 = P(sp, a0 + .14, .64), P(sp, a0 + ww - .14, .64)
+                beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
+        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f)
+        if fridge:
+            f0 = u0 + base_run + .02
+            lbox(sp, f0, f0 + .72, 0, .65, z + .02, z + 1.95, 'appliance', f)
+            h0 = P(sp, f0 + .06, .68)
+            beam((h0[0], h0[1], z + 1.0), (h0[0], h0[1], z + 1.6), .01, 'frame', f, 'detail')
+        su = u0 + base_run * .7
+        for q, o in ctx['windows']:
+            if o['sill'] / 1000 >= .9:
+                wc = np.array(q.centroid.coords[0]) - sp['c']
+                cu = float(np.dot(wc, sp['t']))
+                if u0 + .45 <= cu <= u0 + base_run - .45 and float(np.dot(wc, sp['n'])) < 1.0:
+                    su = cu
+        basin = trimesh.creation.revolve(np.array([[.07, 0], [.20, .04], [.25, .11], [.25, .14], [.23, .15], [.22, .12], [.18, .06], [.07, .025]]), sections=32)
+        bx_, by_ = P(sp, su, .32)
+        node(asset(basin, smooth=True), 'appliance' if upgraded_interior else 'frame', (bx_, by_, z + .865), floor=f, role='detail')
+        t0, t1 = P(sp, su, .1), P(sp, su, .28)
+        beam((t0[0], t0[1], z + .88), (t0[0], t0[1], z + 1.17), .012, 'brass', f, 'detail')
+        beam((t0[0], t0[1], z + 1.17), (t1[0], t1[1], z + 1.17), .012, 'brass', f, 'detail')
+        hu = u0 + .5 if su - (u0 + .5) >= .9 else u0 + base_run - .5
+        if upgraded_interior:
+            lbox(sp, hu - .3, hu + .3, .08, .56, z + .87, z + .877, 'blackglass', f, 'detail')
+        for du in (-.15, .14):
+            for dv in (.18, .42):
+                x, y = P(sp, hu + du, dv)
+                cylinder((x, y, z + .88), .095, .016, 'frame', f, 'detail')
+        wx, wy = P(sp, u0 + base_run / 2, 0)
+        if upgraded_interior and wall_behind(f, wx, wy, sp['n'][0], sp['n'][1], base_run / 2 - .05, .9, 2.3):
+            lbox(sp, u0, u0 + base_run, .002, .014, z + .87, z + 1.5, 'tilewall', f, 'wall-tile')
+            for j in range(nseg):
+                a0 = u0 + j * base_run / nseg; ww = base_run / nseg
+                lbox(sp, a0, a0 + ww - .015, .015, .37, z + 1.52, z + 2.28, M['fronts'], f)
+            lbox(sp, u0, u0 + base_run, .015, .34, z + 1.505, z + 1.515, 'lamp', f, 'fixture')
+            lx, ly = P(sp, u0 + base_run / 2, .3)
+            k.light((lx, ly, z + 1.4), 12, kind='undercabinet')
+        else:
+            lbox(sp, hu - .38, hu + .38, .08, .5, z + 1.6, z + 1.7, 'appliance' if upgraded_interior else 'frame', f, 'detail')
+        foot = lpoly(sp, u0 - .03, u0 + run + .03, .005, .66)
+        ctx['placed'].append(foot)
+        furnishing('kitchen-run', room, foot)
+        # An island parallel to the run with a 1.05 m aisle, in a kitchen big enough to walk round it.
+        if clear.area > 11:
+            for iw in (1.6, 1.3):
+                isl = lpoly(sp, -iw / 2, iw / 2, .66 + 1.05, .66 + 1.05 + .75)
+                ring = isl.buffer(.9, join_style=2)
+                if ctx['inside'].covers(isl) and ctx['inside'].covers(ring.intersection(clear.buffer(-.01)).buffer(0)) and not hits(isl, [q for q, _ in ctx['doors']]) and not hits(ring, [q for q, _ in ctx['doors']] + [p_ for p_ in ctx['placed'] if p_ is not foot]):
+                    ix0, iy0, ix1, iy1 = isl.bounds
+                    rect((ix0 + .04, iy0 + .04, z + .10, ix1 - .04, iy1 - .04, z + .86), M['casework'], f, 'furniture')
+                    rect((ix0, iy0, z + .86, ix1, iy1, z + .91), M['counter'], f, 'furniture')
+                    ctx['placed'].append(isl)
+                    furnishing('island', room, isl)
+                    if upgraded_interior:
+                        for du in (-iw / 4, iw / 4):
+                            x, y = P(sp, du, .66 + 1.05 + .375)
+                            lamp(x, y, z + 1.75, f, True)
+                    break
+
     for room in b['spaces']:
         f = room['floor']; z = f * H; p = Polygon(np.array(room['clear']) / 1000)
         kind = room['kind']
         if kind not in ('stair', 'terrace'):
             lining(room, f, z + .009, z + .09, 'skirting', 'skirting')
             downlights(room, f, z + H - .157)
-        layout_rect = box(*p.bounds)
-        if not p.buffer(1e-6).covers(layout_rect):
-            # Furnish the largest contained axis-aligned rectangle, never an L-room bounding box.
-            xs = sorted(set(round(x, 6) for x, y in p.exterior.coords)); ys = sorted(set(round(y, 6) for x, y in p.exterior.coords))
-            candidates = sorted(((x1 - x0) * (y1 - y0), (x0, y0, x1, y1)) for i, x0 in enumerate(xs) for x1 in xs[i + 1:] for j, y0 in enumerate(ys) for y1 in ys[j + 1:])
-            layout_rect = None
-            for _, bounds in reversed(candidates):
-                q = box(*bounds)
-                if p.buffer(1e-5).covers(q):
-                    layout_rect = q; break
-            if layout_rect is None:
-                continue
-        x0, y0, x1, y1 = layout_rect.bounds; rw = x1 - x0; rd = y1 - y0; cx = (x0 + x1) / 2; cy = (y0 + y1) / 2
-        if kind in ('stair', 'hall', 'terrace'):
+        if kind in ('living', 'family', 'dining'):
+            ctx = room_context(room)
+            ctx['doors'] = ctx['doors'] + [(q, {'kind': 'open'}) for q in open_keepouts(ctx)]
+            if kind in ('living', 'family'):
+                mark = k.checkpoint(); before = (list(ctx['placed']), list(ctx['doors']))
+                sofa_group(ctx)
+                if 'dining' in room['name'].lower() and dining_group(ctx) is None:
+                    # Too tight for a table once the lounge group is down: seat the table first and fit the lounge
+                    # around it, keeping that only if both groups found a place.
+                    def reset():
+                        k.rollback(mark); ctx['placed'], ctx['doors'] = list(before[0]), list(before[1])
+                    reset()
+                    kitchen = next((Polygon(np.array(s['polygon']) / 1000) for s in b['spaces'] if s['floor'] == f and s['kind'] == 'kitchen'), None)
+                    near = nearest_points(ctx['clear'], kitchen)[0] if kitchen is not None else None
+                    dining_group(ctx, anchor=near, sizes=(1.2, 1.0)); sofa_group(ctx)
+                    got = {it['kind'] for it in furniture if it['room_id'] == room['id']}
+                    if not {'sofa', 'dining-set'} <= got:
+                        reset(); sofa_group(ctx)
+                if upgraded_interior and p.area > 9:
+                    corners = spots(ctx, .6, .6, front=0, height=2.0, step=.2)
+                    if corners:
+                        sp = min(corners, key=lambda s: min(s['s'], s['L'] - s['s']))
+                        px, py = P(sp, 0, .34)
+                        k.plant(px, py, z, 'fiddle_leaf', height=1.65, f=f, pot=(.21, .44, 'planter'))
+                wall_art(ctx, 1.2, .8)
+            else:
+                dining_group(ctx, public_route(room))
+                wall_art(ctx, 1.0, .7)
             continue
-        if kind == 'bedroom':
-            bw = 1.6; bl = 2.; bx = x0 + max(.25, (rw - bw) / 2 - .2); by = y0 + .20
-            rect((bx, by, z + .07, bx + bw, by + bl, z + .28), M['bedframe'], f, 'furniture', owner=room['id'])
-            rb((bx + bw / 2, by + bl / 2, z + .39), (bw + .04, bl + .03, .25), 'linen', f, r=.075, owner=room['id'])
-            rb((bx + bw / 2, by - .035, z + .7), (bw + .35, .14, 1.25), 'fabric-dark', f, r=.06)
-            if upgraded_interior and wall_behind(f, bx + bw / 2, y0, 0, 1, 1.45, .05, 2.55):
-                # Full-width timber wall panel behind the bed.
-                for j, xx in enumerate(np.arange(bx + bw / 2 - 1.42, bx + bw / 2 + 1.42, .085)):
-                    rect((xx, y0 + .003, z + .1, xx + .06, y0 + .028, z + 2.55), M['casework'], f, 'wall-panel')
-            for px in (bx + .40, bx + 1.20):
-                rb((px, by + .38, z + .58), (.68, .42, .17), 'linen', f, r=.07, rot=.035)
-            # Soft draped duvet with geometric folds rather than a solid block.
-            vv = []; ff = []; nx = 22; ny = 24
-            for j in range(ny):
-                for i in range(nx):
-                    xx = bx - .055 + (bw + .11) * i / (nx - 1); yy = by + .68 + (bl - .58) * j / (ny - 1)
-                    zz = z + .54 + .014 * math.cos(i * .9 + j * .25) + .007 * math.sin(i * 1.8)
-                    if i in (0, nx - 1):
-                        zz -= .13
-                    vv.append((xx, yy, zz))
-            for j in range(ny - 1):
-                for i in range(nx - 1):
-                    kk = j * nx + i; ff += [[kk, kk + 1, kk + nx + 1], [kk, kk + nx + 1, kk + nx]]
-            node(asset(trimesh.Trimesh(vertices=vv, faces=ff, process=False), smooth=True), 'fabric', floor=f, role='furniture')
-            for side in (-1, 1):
-                xx = bx - .30 if side == -1 else bx + bw + .30
-                if x0 + .20 < xx < x1 - .2:
-                    rb((xx, by + .22, z + .31), (.43, .45, .48), M['casework'], f, r=.014); lamp(xx, by + .22, z + .56, f)
-            # Wardrobe with recessed plinth, visible frame, separate front leaves and rails.
-            wx = x0 + .05; wy = y1 - .64; ww = min(1.7, rw - .1)
-            for aa, bb2, cc, dd in [(wx, wy, wx + .035, wy + .6), (wx + ww - .035, wy, wx + ww, wy + .6), (wx, wy + .565, wx + ww, wy + .6)]:
-                rect((aa, bb2, z + .08, cc, dd, z + 2.25), M['casework'], f, 'furniture')
-            rect((wx, wy, z + 2.22, wx + ww, wy + .6, z + 2.26), M['casework'], f, 'furniture')
-            for j in range(3):
-                aa = wx + j * ww / 3 + .012; rect((aa, wy, z + .12, aa + ww / 3 - .024, wy + .035, z + 2.21), M['casework'], f, 'furniture')
-                beam((aa + ww / 3 - .07, wy - .018, z + .9), (aa + ww / 3 - .07, wy - .018, z + 1.2), .008, 'frame' if upgraded_interior else 'brass', f, 'furniture')
-            furnishing('bed', room, box(bx - .05, by - .12, bx + bw + .05, by + bl + .04))
-            furnishing('wardrobe', room, box(wx, wy, wx + ww, wy + .6))
-            rect((bx - .32, by + .65, z + .012, bx + bw + .32, min(by + bl + .45, y1 - .65), z + .018), 'rug', f, 'rug')
-            if upgraded_interior and x1 - (bx + bw + .3) > .75 and y1 - .64 - (by + bl) > .2:
-                k.plant(x1 - .38, wy - .42, z, 'monstera', height=.95, f=f, pot=(.19, .36, 'planter'))
-        elif kind in ('living', 'family'):
-            # Position along the right wall so the entry axis remains open.
-            sy = y0 + .28; sx = x1 - .9; length = min(2.35, rd - .5)
-            if length > 1.5:
-                rb((sx + .2, sy + length / 2, z + .25), (.92, length, .28), 'fabric', f, r=.07)
-                rb((sx + .57, sy + length / 2, z + .65), (.20, length, .74), 'fabric', f, r=.06)
-                for end in (sy + .08, sy + length - .08):
-                    rb((sx + .16, end, z + .55), (.9, .18, .50), 'fabric', f, r=.06)
-                for j in range(3):
-                    yy = sy + .26 + j * (length - .50) / 3
-                    rb((sx + .1, yy + (length - .50) / 6, z + .46), (.69, (length - .54) / 3, .20), 'linen', f, r=.055)
-                for j in (0, 1):
-                    ball((sx + .18, sy + .5 + j * max(.6, length - 1.), z + .69), (.15, .27, .25), 'fabric-dark', f, 'furniture', (.2, .2, 0))
-                for yy in (sy + .2, sy + length - .2):
-                    cylinder((sx + .16, yy, z + .085), .025, .17, 'brass', f, 'furniture')
-                furnishing('sofa', room, box(sx - .28, sy - .02, sx + .69, sy + length + .02))
-                tx = sx - 1.0; ty = sy + length * .53
-                rb((tx, ty, z + .36), (.75, 1.1, .06), M['counter'] if upgraded_interior else 'stone', f, r=.09)
-                for xx in (tx - .22, tx + .22):
-                    cylinder((xx, ty, z + .18), .045, .33, M['table'], f, 'furniture')
-                furnishing('coffee-table', room, box(tx - .375, ty - .55, tx + .375, ty + .55))
-                rect((max(x0 + .12, tx - 1), max(y0 + .06, sy - .15), z + .014, x1 - .1, min(y1 - .06, sy + length + .15), z + .022), 'rug', f, 'rug')
-                # Books and a hollow ceramic vessel.
-                rect((tx - .22, ty - .28, z + .394, tx + .06, ty - .08, z + .427), 'linen', f, 'detail')
-                vessel = trimesh.creation.revolve(np.array([[.055, 0], [.08, .08], [.075, .16], [.055, .18], [.045, .18], [.064, .15], [.068, .08], [.04, .015]]), sections=24)
-                node(asset(vessel, smooth=True), 'ceramic', (tx + .13, ty + .1, z + .394), floor=f, role='detail')
-                if upgraded_interior:
-                    # Media wall opposite the sofa: timber slats, floating console, screen.
-                    mid = sy + length / 2
-                    if wall_behind(f, x0, mid, 1, 0, 1.25, .2, 2.6) and tx - .375 - x0 > 1.2:
-                        for j, yy in enumerate(np.arange(mid - 1.22, mid + 1.22, .075)):
-                            rect((x0 + .003, yy, z + .09, x0 + .03, yy + .05, z + 2.62), 'walnut', f, 'wall-panel')
-                        rect((x0 + .035, mid - .95, z + .26, x0 + .45, mid + .95, z + .6), 'walnut', f, 'furniture')
-                        rect((x0 + .045, mid - .73, z + 1.02, x0 + .085, mid + .73, z + 1.84), 'blackglass', f, 'detail')
-                        rect((x0 + .037, mid - .74, z + 1.01, x0 + .045, mid + .74, z + 1.85), 'frame', f, 'detail')
-                        furnishing('media-console', room, box(x0 + .035, mid - .95, x0 + .45, mid + .95))
-                    if wall_behind(f, x1, mid, -1, 0, .75, 1.25, 2.25):
-                        rect((x1 - .045, mid - .72, z + 1.3, x1 - .005, mid + .72, z + 2.22), 'frame', f, 'art')
-                        rect((x1 - .05, mid - .68, z + 1.34, x1 - .042, mid + .68, z + 2.18), 'art', f, 'art')
-                    # Arc floor lamp beside the sofa.
-                    fx, fy = sx + .2, sy - .2 if sy - .2 > y0 + .2 else sy + length + .2
-                    if y0 + .2 < fy < y1 - .2:
-                        cylinder((fx, fy, z + .02), .16, .04, 'basalt', f, 'furniture')
-                        beam((fx, fy, z + .04), (fx, fy, z + 1.55), .012, 'frame', f, 'furniture')
-                        beam((fx, fy, z + 1.55), (fx - .75, fy, z + 1.9), .012, 'frame', f, 'furniture')
-                        shade = trimesh.creation.cone(radius=.2, height=.2, sections=28)
-                        node(asset(shade, smooth=True), 'frame', (fx - .8, fy, z + 1.78), rot=(math.pi, 0, 0), floor=f, role='fixture')
-                        ball((fx - .8, fy, z + 1.74), (.05, .05, .05), 'lamp', f, 'fixture')
-                        k.light((fx - .8, fy, z + 1.7), 18, kind='lamp')
-                        furnishing('floor-lamp', room, box(fx - .18, fy - .18, fx + .18, fy + .18))
-            if rd > 3.4:
-                chair(x0 + .9, y1 - 1.1, z, f, -.45)
-            if rw > 3 and rd > 3:
-                k.plant(x0 + .38, y1 - .4, z, 'fiddle_leaf' if upgraded_interior else 'monstera', height=1.65 if upgraded_interior else .8, f=f,
-                        pot=(.21, .44, 'planter' if upgraded_interior else 'ceramic'))
-            lamp(cx, y0 + rd * .52, z + H - .9, f, True)
-        elif kind == 'dining':
-            # Keep left route to kitchen/stair clear.
-            tx = x0 + rw * .62; ty = y0 + rd * .48; tw = min(1.7, rw * .48); td = .85
-            rb((tx, ty, z + .75), (tw, td, .07), M['table'], f, r=.035)
-            for xx in (-tw * .35, tw * .35):
-                for yy in (-.26, .26):
-                    beam((tx + xx, ty + yy, z + .04), (tx + xx, ty + yy, z + .72), .038, M['table'], f, 'furniture')
-            for xx in (-tw * .27, tw * .27):
-                chair(tx + xx, ty - .67, z, f, math.pi); chair(tx + xx, ty + .67, z, f, 0)
-            furnishing('dining-set', room, box(tx - tw / 2 - .1, ty - .92, tx + tw / 2 + .1, ty + .92))
-            for xx in (-tw * .25, tw * .25):
-                for yy in (-.22, .22):
-                    cylinder((tx + xx, ty + yy, z + .798), .115, .013, 'ceramic', f, 'detail')
-                    cylinder((tx + xx + .15, ty + yy, z + .84), .034, .09, 'glass', f, 'detail')
-            if upgraded_interior:
-                chandelier(tx, ty, f)
-            else:
-                lamp(tx, ty, z + 2.20, f, True)
-        elif kind == 'kitchen':
-            # Real counter runs on non-circulation edges; separate fronts and handles.
-            dep = .6; run = max(1.8, rw - .15); ky = y0 + .08
-            fridge = upgraded_interior and run > 2.7
-            base_run = run - .78 if fridge else run
-            nseg = max(2, int(base_run / .6))
-            for j in range(nseg):
-                xx = x0 + .07 + j * base_run / nseg; ww = base_run / nseg
-                rect((xx, ky, z + .10, xx + ww - .02, ky + dep, z + .83), M['casework'], f, 'furniture')
-                for zz in (.30, .59):
-                    rect((xx + .02, ky + dep, z + zz, xx + ww - .035, ky + dep + .022, z + zz + .20), M['fronts'], f, 'furniture')
-                    beam((xx + .14, ky + dep + .04, z + zz + .15), (xx + ww - .14, ky + dep + .04, z + zz + .15), .007, 'frame', f, 'detail')
-            rect((x0 + .04, ky - .02, z + .83, x0 + base_run + .10, ky + dep + .06, z + .87), M['counter'], f, 'furniture')
-            if fridge:
-                fx0 = x0 + .07 + base_run + .02
-                rect((fx0, ky, z + .02, fx0 + .72, ky + dep + .05, z + 1.95), 'appliance', f, 'furniture')
-                beam((fx0 + .06, ky + dep + .08, z + 1.0), (fx0 + .06, ky + dep + .08, z + 1.6), .01, 'frame', f, 'detail')
-            # Sink opening represented with a real hollow vessel above an open inset.
-            basin = trimesh.creation.revolve(np.array([[.07, 0], [.20, .04], [.25, .11], [.25, .14], [.23, .15], [.22, .12], [.18, .06], [.07, .025]]), sections=32)
-            node(asset(basin, smooth=True), 'appliance' if upgraded_interior else 'frame', (x0 + base_run * .7, ky + .32, z + .865), floor=f, role='detail')
-            beam((x0 + base_run * .7, ky + .1, z + .88), (x0 + base_run * .7, ky + .1, z + 1.17), .012, 'brass', f, 'detail')
-            beam((x0 + base_run * .7, ky + .1, z + 1.17), (x0 + base_run * .7, ky + .28, z + 1.17), .012, 'brass', f, 'detail')
-            if upgraded_interior:
-                rect((x0 + .16, ky + .08, z + .87, x0 + .76, ky + .56, z + .877), 'blackglass', f, 'detail')
-            for xx in (.3, .59):
-                for yy in (.18, .42):
-                    cylinder((x0 + xx, ky + yy, z + .88), .095, .016, 'frame', f, 'detail')
-            if upgraded_interior and wall_behind(f, x0 + .07 + base_run / 2, y0, 0, 1, base_run / 2 - .05, .9, 2.3):
-                rect((x0 + .07, y0 + .002, z + .87, x0 + .07 + base_run, y0 + .014, z + 1.5), 'tilewall', f, 'wall-tile')
-                for j in range(nseg):
-                    xx = x0 + .07 + j * base_run / nseg; ww = base_run / nseg
-                    rect((xx, y0 + .015, z + 1.52, xx + ww - .015, y0 + .37, z + 2.28), M['fronts'], f, 'furniture')
-                rect((x0 + .07, y0 + .015, z + 1.505, x0 + .07 + base_run, y0 + .34, z + 1.515), 'lamp', f, 'fixture')
-                k.light((x0 + .07 + base_run / 2, y0 + .3, z + 1.4), 12, kind='undercabinet')
-            else:
-                rect((x0 + .15, ky + .08, z + 1.60, x0 + .92, ky + .5, z + 1.7), 'appliance' if upgraded_interior else 'frame', f, 'detail')
-            furnishing('kitchen-run', room, box(x0 + .04, ky - .02, x0 + run + .10, ky + dep + .06))
-            if rd > 2.8 and rw > 3.5:
-                ix = x0 + rw * .57; iy = y1 - .95
-                rect((ix - .70, iy - .30, z + .10, ix + .70, iy + .30, z + .86), M['casework'], f, 'furniture')
-                rb((ix, iy, z + .885), (1.48, .72, .055), M['counter'], f, r=.016)
-                furnishing('island', room, box(ix - .74, iy - .36, ix + .74, iy + .36))
-                if upgraded_interior:
-                    for xx in (ix - .45, ix + .45):
-                        lamp(xx, iy, z + 1.75, f, True)
-        elif kind == 'bathroom':
-            # Wall-side vanity with hollow basin, faucet and mirror frame.
-            vx = x1 - .80; vy = y1 - .52
-            if upgraded_interior:
-                lining(room, f, z + .009, z + 1.55, 'tilewall', 'wall-tile', .01)
-            rect((vx - .33, vy - .22, z + .20, vx + .33, vy + .22, z + .77), 'walnut' if upgraded_interior else 'timber', f, 'furniture')
-            rb((vx, vy, z + .79), (.72, .50, .045), M['counter'], f, r=.02)
-            bowl = trimesh.creation.revolve(np.array([[.035, 0], [.18, .03], [.245, .115], [.24, .15], [.22, .16], [.215, .13], [.17, .065], [.035, .028]]), sections=32)
-            node(asset(bowl, smooth=True), 'ceramic', (vx, vy, z + .812), floor=f, role='detail')
-            beam((vx + .21, vy + .10, z + .82), (vx + .21, vy + .10, z + 1.12), .012, 'frame' if upgraded_interior else 'brass', f, 'detail')
-            beam((vx + .21, vy + .10, z + 1.12), (vx + .08, vy + .10, z + 1.12), .012, 'frame' if upgraded_interior else 'brass', f, 'detail')
-            rect((vx - .31, y1 - .025, z + 1.08, vx + .31, y1 - .009, z + 1.82), 'mirror' if upgraded_interior else 'glass', f, 'mirror')
-            if upgraded_interior:
-                rect((vx - .33, y1 - .03, z + 1.84, vx + .33, y1 - .012, z + 1.86), 'lamp', f, 'fixture')
-                k.light((vx, y1 - .3, z + 1.9), 8, kind='mirror')
-            # WC sculpted bowl + seat ring (visual fixture, not a technical sanitary model).
-            wx = x1 - .55; wy = y0 + .44
-            ball((wx, wy, z + .22), (.20, .29, .22), 'ceramic', f, 'furniture')
-            torus = trimesh.creation.torus(major_radius=.17, minor_radius=.03, major_sections=24, minor_sections=8)
-            node(asset(torus, smooth=True), 'ceramic', (wx, wy - .04, z + .44), (.95, 1.45, 1), floor=f, role='detail')
-            rb((wx, wy + .27, z + .55), (.39, .18, .62), 'ceramic', f, r=.05)
-            furnishing('vanity', room, box(vx - .36, vy - .25, vx + .36, vy + .25))
-            furnishing('wc', room, box(wx - .23, wy - .4, wx + .23, wy + .37))
-            if upgraded_interior and rw >= 2.0 and rd >= 2.0:
-                # Walk-in shower: frameless glass screen, black rain head.
-                sxp = x0 + .95
-                if sxp < wx - .35:
-                    rect((sxp - .005, y0 + .01, z + .02, sxp + .005, y0 + min(1.25, rd * .55), z + 2.0), 'glass', f, 'glass')
-                    rect((sxp - .012, y0 + .01, z + 2.0, sxp + .012, y0 + min(1.25, rd * .55), z + 2.02), 'frame', f, 'detail')
-                    beam((x0 + .45, y0 + .06, z + 2.18), (x0 + .45, y0 + .42, z + 2.18), .01, 'frame', f, 'detail')
-                    cylinder((x0 + .45, y0 + .42, z + 2.16), .11, .012, 'frame', f, 'detail')
-                    rect((x0 + .3, y0 + .3, z + .009, x0 + .6, y0 + .34, z + .012), 'appliance', f, 'detail')
-        elif kind in ('study', 'utility'):
-            if kind == 'study':
-                tx = x0 + rw * .50; ty = y0 + .38; tw = min(1.6, rw - .4)
-                rect((tx - tw / 2, ty - .28, z + .72, tx + tw / 2, ty + .28, z + .77), M['table'], f, 'furniture')
-                for xx in (tx - tw / 2 + .07, tx + tw / 2 - .07):
-                    rect((xx - .03, ty - .22, z, xx + .03, ty + .22, z + .72), 'frame', f, 'furniture')
-                chair(tx, ty + .65, z, f)
-                furnishing('desk', room, box(tx - tw / 2, ty - .28, tx + tw / 2, ty + .94))
-                rect((tx - .20, ty - .1, z + .79, tx + .2, ty - .085, z + 1.10), 'blackglass' if upgraded_interior else 'frame', f, 'detail')
-                lamp(tx + tw / 2 - .15, ty, z + .77, f)
-                if rw > 3 and rd > 3:
-                    k.plant(x0 + .35, y1 - .38, z, 'monstera', height=.9, f=f, pot=(.18, .34, 'planter' if upgraded_interior else 'ceramic'))
-            else:
-                rb((x1 - .42, y1 - .39, z + .46), (.65, .60, .89), 'ceramic', f, r=.03)
-                ring = trimesh.creation.torus(major_radius=.20, minor_radius=.035, major_sections=24, minor_sections=8)
-                node(asset(ring, smooth=True), 'frame', (x1 - .42, y1 - .70, z + .45), rot=(math.pi / 2, 0, 0), floor=f, role='detail')
-                furnishing('laundry', room, box(x1 - .745, y1 - .69, x1 - .095, y1 - .09))
+        if kind in ('bedroom', 'bathroom', 'study', 'utility', 'dress', 'pooja', 'store', 'kitchen', 'hall'):
+            ctx = room_context(room)
+            if kind == 'bedroom':
+                bed_set(ctx, room['name'].startswith('Master'))
+                if wardrobe(ctx) is None:
+                    dresser(ctx)
+                if upgraded_interior and p.area > 12:
+                    corners = spots(ctx, .55, .55, front=0, height=1.3, step=.2)
+                    if corners:
+                        sp = min(corners, key=lambda s: min(s['s'], s['L'] - s['s']))
+                        px, py = P(sp, 0, .32)
+                        k.plant(px, py, z, 'monstera', height=.95, f=f, pot=(.19, .36, 'planter'))
+                wall_art(ctx)
+            elif kind == 'bathroom':
+                bath_set(ctx)
+            elif kind == 'kitchen':
+                kitchen_set(ctx)
+            elif kind == 'study':
+                desk_set(ctx)
+                wall_art(ctx)
+            elif kind == 'utility':
+                utility_set(ctx)
+            elif kind == 'dress':
+                dress_set(ctx)
+            elif kind == 'pooja':
+                pooja_set(ctx)
+            elif kind == 'store':
+                store_set(ctx)
+            elif kind == 'hall' and p.area > 3:
+                wall_art(ctx, .8, .6)
+            continue
 
     # ---------------------------------------------------------------- stairs & terraces
     for st in b['stairs']:
@@ -922,17 +1558,24 @@ def make_scene(building, report):
         if facade_style == 'tropical':
             for xx in np.arange(ex - cw / 2, ex + cw / 2, .18):
                 rect((xx, -canopy_depth - .25, cz + .2, xx + .05, .22, cz + .31), 'timber', 0, 'pergola')
+        # Facade accents go on the blank end of the front wall away from the door (the door may sit near either end).
+        door_left = ex < W / 2
         if facade_style == 'terracotta':
-            # Open slatted screen across only the blank stair facade.
-            for xx in np.arange(.35, min(2.25, W * .2), .18):
+            # Open slatted screen across only the blank end of the facade.
+            span = min(1.9, W * .2 - .35)
+            lo = W - .35 - span if door_left else .35
+            lo, hi = (max(lo, ex + .95), W - .35) if door_left else (lo, min(lo + span, ex - .95))
+            for xx in np.arange(lo, hi - .05, .18):
                 for yy in (0, .08):
                     rect((xx, -.24 - yy, .65, xx + .05, -.18 - yy, top + .5), 'stone', 0, 'screen')
         if facade_style in ('warm', 'graphite', 'concrete'):
             blank_width = 1.05 if storeys > 1 else .6
-            rect((.24, -.16, .15, .24 + blank_width, -.015, top + .36), 'stone', 0, 'accent', 'stone-blade')
-            if facade_style == 'graphite':
-                for xx in np.arange(.27, .24 + blank_width, .12):
-                    rect((xx, -.215, .25, xx + .023, -.17, top + .4), 'brass', 0, 'fin')
+            b0 = W - .24 - blank_width if door_left else .24
+            if (b0 > ex + .9) if door_left else (b0 + blank_width < ex - .9):
+                rect((b0, -.16, .15, b0 + blank_width, -.015, top + .36), 'stone', 0, 'accent', 'stone-blade')
+                if facade_style == 'graphite':
+                    for xx in np.arange(b0 + .03, b0 + blank_width, .12):
+                        rect((xx, -.215, .25, xx + .023, -.17, top + .4), 'brass', 0, 'fin')
         if facade_style in ('minimal', 'concrete'):
             for f in range(storeys):
                 rect((-.15, -.45, (f + 1) * H - .23, W + .15, .07, (f + 1) * H - .13), 'roof', f, 'canopy')
@@ -1388,7 +2031,7 @@ def make_scene(building, report):
                 rect((xx - .055, yy - .055, -.43, xx + .055, yy + .055, .07), 'frame', role='fixture')
                 rect((xx - .051, yy - .051, .06, xx + .051, yy + .051, .12), 'lamp', role='fixture')
                 k.light((xx, yy, .15), 6)
-    if v['pooja']:
+    if v['pooja'] and not any(s['kind'] == 'pooja' for s in b['spaces']):
         # An explicitly labelled niche in the 2D schedule, not an invented room.
         xx = W - .65; yy = b['brief']['floor_height_mm'] / 1000 + .3
         rect((xx - .27, yy - .13, .5, xx + .27, yy + .13, 1.0), M['casework'], 0, 'furniture', 'pooja-niche')

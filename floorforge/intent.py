@@ -54,6 +54,8 @@ def validate_values(values: dict) -> dict:
         raise DesignError('RATE_ORDER','Low scenario rate must not exceed high scenario rate.')
     for k in ('parking','pooja','eldercare','open_kitchen'):
         if type(d[k]) is not bool: raise DesignError('FIELD_TYPE',f'{k} must be a boolean.')
+    if d['attached_baths']!='all' and (type(d['attached_baths']) is not int or not 0<=d['attached_baths']<=8):
+        raise DesignError('FIELD_RANGE','attached_baths must be "all" or an integer between 0 and 8.')
     for key, choices in [('style',list(STYLES)),('exterior_theme',list(EXTERIOR_THEME_IDS)),
                          ('interior_theme',list(INTERIOR_THEME_IDS)),
                          ('change_policy',list(CHANGE_POLICIES)),
