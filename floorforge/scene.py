@@ -358,6 +358,73 @@ def make_scene(building, report):
                 placed += 1
         return rack if placed else Polygon()
 
+    def roof_sala(zone, z, S=2.5):
+        """A timber-slat sala on a floating deck, as in the reference garden: set in the corner of the roof terrace
+        farthest from the street and the stair tower, open towards the rest of the terrace, and only where the
+        loungers still fit beside it. Returns its footprint, or None."""
+        zx0, zy0, zx1, zy1 = zone.bounds
+        best = None
+        for sx in np.arange(zx0 + S / 2, zx1 - S / 2 + 1e-6, .2):
+            for sy in np.arange(zy0 + S / 2, zy1 - S / 2 + 1e-6, .2):
+                foot = box(sx - S / 2, sy - S / 2, sx + S / 2, sy + S / 2)
+                if not zone.contains(foot):
+                    continue
+                rest = [q for q in _parts(zone.difference(foot.buffer(.35, join_style=2))) if q.area > 3]
+                big = max(rest, key=lambda q: q.area) if rest else None
+                if big is None:
+                    continue
+                c = big.centroid
+                if not big.contains(box(c.x - .9, c.y - 1.1, c.x + .9, c.y + 1.1)):
+                    continue
+                score = sy + .5 * min(foot.distance(tower_fp), 3.) if not tower_fp.is_empty else sy
+                if best is None or score > best[0]:
+                    best = (score, sx, sy, c)
+        if best is None:
+            return None
+        _, sx, sy, c = best
+        # Open towards the rest of the terrace; the slatted screen closes the opposite side.
+        ox, oy = c.x - sx, c.y - sy
+        o = (np.sign(ox), 0.) if abs(ox) >= abs(oy) else (0., np.sign(oy))
+        h = S / 2
+        own = 'roof-sala'
+        rect((sx - h + .08, sy - h + .08, z, sx + h - .08, sy + h - .08, z + .1), 'frame', fr, 'sala', owner=own)
+        rect((sx - h, sy - h, z + .1, sx + h, sy + h, z + .16), 'deck', fr, 'sala', 'roof-sala-deck', own)
+        # A hidden LED strip under the deck's open edge.
+        ex_, ey_ = sx + o[0] * (h - .09), sy + o[1] * (h - .09)
+        if o[0]:
+            rect((ex_ - .005, sy - h + .15, z + .05, ex_ + .005, sy + h - .15, z + .09), 'lamp', fr, 'fixture', owner=own)
+        else:
+            rect((sx - h + .15, ey_ - .005, z + .05, sx + h - .15, ey_ + .005, z + .09), 'lamp', fr, 'fixture', owner=own)
+        k.light((sx + o[0] * (h + .3), sy + o[1] * (h + .3), z + .12), 5, kind='lantern')
+        top_z = z + 2.55
+        for px in (sx - h + .12, sx + h - .12):
+            for py in (sy - h + .12, sy + h - .12):
+                rect((px - .045, py - .045, z + .16, px + .045, py + .045, top_z), 'frame', fr, 'sala', owner=own)
+        rect((sx - h - .15, sy - h - .15, top_z, sx + h + .15, sy + h + .15, top_z + .1), 'frame', fr, 'sala', 'roof-sala-roof', own)
+        for t in np.arange(-h + .08, h - .05, .1):
+            if o[0]:
+                rect((sx - h + .05, sy + t, top_z - .06, sx + h - .05, sy + t + .045, top_z), 'timber', fr, 'sala', owner=own)
+            else:
+                rect((sx + t, sy - h + .05, top_z - .06, sx + t + .045, sy + h - .05, top_z), 'timber', fr, 'sala', owner=own)
+        # Vertical timber slats close the back.
+        bx_, by_ = sx - o[0] * (h - .12), sy - o[1] * (h - .12)
+        for t in np.arange(-h + .2, h - .2, .09):
+            if o[0]:
+                rect((bx_ - .02, sy + t, z + .16, bx_ + .02, sy + t + .04, top_z - .06), 'timber', fr, 'sala', owner=own)
+            else:
+                rect((sx + t, by_ - .02, z + .16, sx + t + .04, by_ + .02, top_z - .06), 'timber', fr, 'sala', owner=own)
+        # A daybed against the screen, a low table in front of it and a pendant over them.
+        dx_, dy_ = sx - o[0] * .55, sy - o[1] * .55
+        size = (.8, S - .7) if o[0] else (S - .7, .8)
+        rb((dx_, dy_, z + .16 + .2), (size[0], size[1], .2), 'frame', fr, 'outdoor-furniture', .02, owner=own)
+        rb((dx_, dy_, z + .16 + .36), (size[0] - .04, size[1] - .04, .14), 'fabric', fr, 'outdoor-furniture', .05, owner=own)
+        rb((sx - o[0] * .98, sy - o[1] * .98, z + .16 + .62), ((.16, S - .8, .4) if o[0] else (S - .8, .16, .4)), 'fabric-dark', fr, 'outdoor-furniture', .06, owner=own)
+        rb((sx + o[0] * .35, sy + o[1] * .35, z + .16 + .2), (.6, .6, .06), 'stone', fr, 'outdoor-furniture', .03, owner=own)
+        beam((sx, sy, top_z - .06), (sx, sy, top_z - .7), .006, 'frame', fr, 'fixture')
+        ball((sx, sy, top_z - .78), (.22, .22, .16), 'globe', fr, 'fixture')
+        k.light((sx, sy, top_z - .9), 14, kind='pendant')
+        return box(sx - h - .15, sy - h - .15, sx + h + .15, sy + h + .15)
+
     if modern:
         # A deep eave along the street front (shade, and a soffit of timber slats with downlights); 0.45 m on
         # the other sides. Terraces open in the roof and the porch canopy keep their own edges.
@@ -408,6 +475,10 @@ def make_scene(building, report):
             spots = sorted(_parts(free), key=lambda q: -q.area)
             if spots:
                 zone = spots[0]
+                sala = roof_sala(zone, top + .03)
+                if sala is not None:
+                    rest = sorted(_parts(zone.difference(sala.buffer(.35, join_style=2))), key=lambda q: -q.area)
+                    zone = rest[0]
                 cx, cy = zone.centroid.x, zone.centroid.y
                 for dx in (-.45, .45):
                     lx, ly = cx + dx, cy

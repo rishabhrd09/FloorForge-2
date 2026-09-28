@@ -63,7 +63,7 @@ The Modern Tropical exterior (`modern_exterior.py`) derives its assemblies from 
 - a frameless glass balcony with a timber deck, handrail cap and louvred pergola;
 - slim aluminium windows, with timber-lined pods on facade bedrooms and etched glass in wet rooms;
 - a floating roof slab with a deep street-side eave, a timber-slat soffit and downlights;
-- a stone-clad stair tower over the top-floor stair (`stair_tower`, shared with the other designed themes), beside an open roof terrace, and a solar rack;
+- a stone-clad stair tower over the top-floor stair (`stair_tower`, shared with the other designed themes), beside an open roof terrace, and a solar rack; a timber-slat sala on a floating deck (`roof-sala`) where the terrace has room for it beside the loungers;
 - a clad feature wall;
 - a carport and glass-roof pergola when the plot allows;
 - a Shapely-built landscape: driveway, entrance path, pebble beds, stepping stones, lawns, planting, lanterns and boundary; side passages with pale pavers staggered over black pebbles, timber-clad boundary walls with a breeze-block screen (`breeze_screen`), pots and a wash basin (`garden_basin`); a stone water wall with a lit trough on the rear boundary (`water_wall`) with the hedge parting around it;
