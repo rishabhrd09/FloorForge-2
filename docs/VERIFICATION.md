@@ -48,7 +48,7 @@ Per-shot mode, grade, room badge, probe state and metered exposure are in `evide
 
 They used Blender Cycles from the PyPI `bpy` 4.5.14 LTS wheel, on 4 CPU cores with OpenImageDenoise. Exteriors took 4½ to 8½ minutes, daylight interiors 11 to 13 minutes, and the lamp-lit dusk interior 27 minutes (the test suite ran alongside the first stills). The stills are stored as JPEG. Settings, exposure and timings are in `evidence/cycles-renders.json`. The first interior renders of this round showed a white skirting strip across the open floor between the living and dining rooms; it was fixed (see below) and every still was rendered again from the corrected scene.
 
-**Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 13 START_HERE links resolve.
+**Packaging.** Python compilation, JavaScript syntax (studio, bundle, viewer sources and harnesses) and Bash syntax passed. All 11 START_HERE links resolve.
 
 ## Planning, drawings, survey and garden: what the checks found
 
