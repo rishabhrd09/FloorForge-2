@@ -3,23 +3,23 @@
  "date": "2026-09-26",
  "all_original_requirements_complete": false,
  "pytest": {
-  "passed": 193,
+  "passed": 214,
   "failed": 0,
-  "seconds": 201.78,
+  "seconds": 479.3,
   "source": "evidence/pytest.txt"
  },
  "reproducibility": {
   "two_clean_generations": true,
   "equal_build_ids": true,
-  "files_compared": 23,
+  "files_compared": 24,
   "changed_artifacts": [],
-  "seconds": 7.392,
+  "seconds": 15.691,
   "scope": "Same process and dependency versions; not cross-platform bitwise equivalence."
  },
  "browser": {
   "studio": {
-   "checks_passed": 19,
-   "checks_total": 19,
+   "checks_passed": 21,
+   "checks_total": 21,
    "page_errors": 0,
    "transport": "Direct navigation to the real loopback studio server (scripts/capture_studio.mjs)",
    "renderer": {
@@ -38,19 +38,19 @@
    "page_errors": 0,
    "presentation_glb": {
     "file": "FloorForge-presentation.glb",
-    "bytes": 78478472,
+    "bytes": 80761636,
     "magic": "glTF"
    },
    "live_walk": {
     "entered": true,
     "probe": true,
     "jumped": true,
-    "peak_jump_m": 0.816,
+    "peak_jump_m": 0.817,
     "rooms": [
      "Street|Ground floor",
      "Garden|Ground floor",
-     "Living|Ground floor",
-     "Dining|Ground floor"
+     "Hall|Ground floor",
+     "Living|Ground floor"
     ]
    }
   },
@@ -58,26 +58,27 @@
  },
  "path_traced_stills": {
   "renderer": "Blender Cycles, PyPI bpy 4.5.14 LTS, CPU (4 cores), OpenImageDenoise",
-  "stills": 7,
+  "stills": 8,
   "resolution": [
    1600,
    900
   ],
   "all_completed": true,
   "seconds": [
-   144,
-   314,
-   291,
-   551,
-   569,
-   420,
-   1092
+   271,
+   515,
+   441,
+   770,
+   780,
+   648,
+   668,
+   1606
   ],
   "source": "evidence/cycles-renders.json",
   "scope": "Offline renders of preliminary geometry; not photographs; no camera or luminance calibration"
  },
  "pdf": {
-  "pages_rendered": 41,
+  "pages_rendered": 43,
   "examples": 3,
   "physical_page_bounds_issues": 0,
   "renderer": "PyMuPDF 1.28.2",
@@ -87,16 +88,36 @@
  "exports": {
   "demo": {
    "dxf": {
-    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
+    "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
     "autocad_gui": "NOT TESTED",
-    "dimension_entities": 4,
-    "entities": 478,
+    "dimension_chains": 91,
+    "dimension_entities": 91,
+    "entities": 788,
+    "layers": [
+     "A-WALL",
+     "A-WIND",
+     "A-DOOR",
+     "A-FLOR",
+     "A-FURN",
+     "A-ANNO",
+     "A-DIMS",
+     "A-STAIR",
+     "A-SITE",
+     "A-TAGS",
+     "A-GRID",
+     "A-LEVL",
+     "A-SECT",
+     "A-EXT",
+     "A-GATE",
+     "A-LAND",
+     "S-GRID"
+    ],
     "status": "ezdxf_reimport_pass",
     "units": "mm"
    },
    "glb": {
-    "geometries": 389,
-    "node_count": 1668,
+    "geometries": 530,
+    "node_count": 2250,
     "separate_viewer": "pending",
     "status": "trimesh_reimport_pass",
     "units": "m",
@@ -104,7 +125,7 @@
    },
    "ifc": {
     "bim_viewer": "NOT RUN",
-    "entities": 1725,
+    "entities": 2242,
     "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
     "independent_schema_validation": "NOT RUN",
     "schema": "IFC4",
@@ -114,23 +135,43 @@
    "exterior": {
     "theme": "modern_tropical",
     "assemblies": 4,
-    "landscape_features": 38,
-    "opening_refinements": 18,
+    "landscape_features": 49,
+    "opening_refinements": 16,
     "protected_interior": "unchanged"
    }
   },
   "compact": {
    "dxf": {
-    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
+    "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
     "autocad_gui": "NOT TESTED",
-    "dimension_entities": 2,
-    "entities": 223,
+    "dimension_chains": 42,
+    "dimension_entities": 42,
+    "entities": 301,
+    "layers": [
+     "A-WALL",
+     "A-WIND",
+     "A-DOOR",
+     "A-FLOR",
+     "A-FURN",
+     "A-ANNO",
+     "A-DIMS",
+     "A-STAIR",
+     "A-SITE",
+     "A-TAGS",
+     "A-GRID",
+     "A-LEVL",
+     "A-SECT",
+     "A-EXT",
+     "A-GATE",
+     "A-LAND",
+     "S-GRID"
+    ],
     "status": "ezdxf_reimport_pass",
     "units": "mm"
    },
    "glb": {
-    "geometries": 235,
-    "node_count": 856,
+    "geometries": 259,
+    "node_count": 934,
     "separate_viewer": "pending",
     "status": "trimesh_reimport_pass",
     "units": "m",
@@ -138,41 +179,7 @@
    },
    "ifc": {
     "bim_viewer": "NOT RUN",
-    "entities": 829,
-    "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
-    "independent_schema_validation": "NOT RUN",
-    "schema": "IFC4",
-    "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
-    "status": "STEP_reference_check_pass"
-   },
-   "exterior": {
-    "theme": "modern_tropical",
-    "assemblies": 1,
-    "landscape_features": 29,
-    "opening_refinements": 11,
-    "protected_interior": "unchanged"
-   }
-  },
-  "small": {
-   "dxf": {
-    "annotation_scope": "Floor plans and model-space dimensions; elevations and section are in PDF/SVG, not in this DXF.",
-    "autocad_gui": "NOT TESTED",
-    "dimension_entities": 2,
-    "entities": 184,
-    "status": "ezdxf_reimport_pass",
-    "units": "mm"
-   },
-   "glb": {
-    "geometries": 230,
-    "node_count": 717,
-    "separate_viewer": "pending",
-    "status": "trimesh_reimport_pass",
-    "units": "m",
-    "up": "Y"
-   },
-   "ifc": {
-    "bim_viewer": "NOT RUN",
-    "entities": 680,
+    "entities": 756,
     "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
     "independent_schema_validation": "NOT RUN",
     "schema": "IFC4",
@@ -182,6 +189,60 @@
    "exterior": {
     "theme": "modern_tropical",
     "assemblies": 2,
+    "landscape_features": 32,
+    "opening_refinements": 10,
+    "protected_interior": "unchanged"
+   }
+  },
+  "small": {
+   "dxf": {
+    "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
+    "autocad_gui": "NOT TESTED",
+    "dimension_chains": 39,
+    "dimension_entities": 39,
+    "entities": 287,
+    "layers": [
+     "A-WALL",
+     "A-WIND",
+     "A-DOOR",
+     "A-FLOR",
+     "A-FURN",
+     "A-ANNO",
+     "A-DIMS",
+     "A-STAIR",
+     "A-SITE",
+     "A-TAGS",
+     "A-GRID",
+     "A-LEVL",
+     "A-SECT",
+     "A-EXT",
+     "A-GATE",
+     "A-LAND",
+     "S-GRID"
+    ],
+    "status": "ezdxf_reimport_pass",
+    "units": "mm"
+   },
+   "glb": {
+    "geometries": 267,
+    "node_count": 826,
+    "separate_viewer": "pending",
+    "status": "trimesh_reimport_pass",
+    "units": "m",
+    "up": "Y"
+   },
+   "ifc": {
+    "bim_viewer": "NOT RUN",
+    "entities": 744,
+    "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC export remains wall/opening/space coordination only.",
+    "independent_schema_validation": "NOT RUN",
+    "schema": "IFC4",
+    "scope": "Walls, spaces, floor/roof slabs, real related apertures, storeys. No reinforcement, finishes or certified MEP.",
+    "status": "STEP_reference_check_pass"
+   },
+   "exterior": {
+    "theme": "modern_tropical",
+    "assemblies": 1,
     "landscape_features": 5,
     "opening_refinements": 9,
     "protected_interior": "unchanged"

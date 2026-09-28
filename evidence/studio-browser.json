@@ -48,8 +48,8 @@
         ],
         "controlsInside": true,
         "zoom_m": [
-          25.09,
-          17.57
+          25.16,
+          17.61
         ]
       }
     },
@@ -68,7 +68,7 @@
       "details": {
         "focus": {
           "span": [
-            0.692,
+            0.696,
             0.822
           ],
           "inside": true,
@@ -86,7 +86,7 @@
         "top": {
           "span": [
             0.795,
-            0.734
+            0.747
           ],
           "inside": true,
           "context": false,
@@ -126,14 +126,14 @@
       "passed": true,
       "details": {
         "file": "FloorForge-presentation.glb",
-        "bytes": 78478472
+        "bytes": 80761636
       }
     },
     {
-      "check": "nine generated drawing sheets selectable",
+      "check": "ten generated drawing sheets selectable (plans, site, elevations, section, schedules, axes)",
       "passed": true,
       "details": {
-        "sheets": 9
+        "sheets": 10
       }
     },
     {
@@ -151,6 +151,23 @@
     {
       "check": "fused-source preflight opens",
       "passed": true
+    },
+    {
+      "check": "compass sets the road side; bath choices and the derived open spaces follow the plot",
+      "passed": true,
+      "details": {
+        "facing": "90",
+        "note": "The front, gate and entrance face east.",
+        "baths": 4,
+        "summary": "2,400 ft² · 223 m² plot. Open spaces from its size: front 3.0 m, rear 1.2 m, sides 1.0 / 1.0 m → buildable 10.2 × 14.1 m."
+      }
+    },
+    {
+      "check": "the description is read back: phrases understood, and those not understood",
+      "passed": true,
+      "details": {
+        "chars": 1533
+      }
     },
     {
       "check": "UI POST generation completes for 30x40 with the Modern Tropical default",
@@ -227,57 +244,87 @@
       "status": 200
     },
     {
+      "path": "/api/intent",
+      "method": "POST",
+      "status": 200
+    },
+    {
       "path": "/api/generate",
       "method": "POST",
       "status": 202
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/api/jobs/d07d0d75c16d3589",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/sheets.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/report.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/building.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
       "method": "GET",
       "status": 200
     },
     {
-      "path": "/builds/2e4f5eb8d36a04d79d0a4f0c/scene.json",
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/jobs/3eee77b09a6f7b75",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/report.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/scene.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/building.json",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/builds/d22e8a9f8ec2e9dc5e21f4fb/sheets.json",
       "method": "GET",
       "status": 200
     }
