@@ -17,7 +17,7 @@ export function describeOpenings(scene, building = scene.opening_model) {
     parts: gate.parts.map(part => ({...part, pivot: point(part.pivot)})),
   }));
   for (const o of building.openings) {
-    if (o.kind === 'cased') continue;
+    if (o.kind === 'cased' || o.fixed) continue;
     const wall = walls.get(o.wall_id);
     if (!wall) continue;
     const dx = wall.b[0] - wall.a[0], dy = wall.b[1] - wall.a[1], len = Math.hypot(dx, dy);

@@ -261,10 +261,10 @@ def test_service_wing_and_clear_veranda_have_matching_physical_geometry():
     assert any(f['kind'].startswith('shelves') and f['room_id']=='g-kitchen-store' for f in s['furniture'])
     assert rooms['g-veranda']['clearAccess'] and rooms['g-veranda']['area_m2']>11
     assert not any(f['room_id']=='g-veranda' for f in s['furniture'])
-    for oid,width in [('g-care-living',2650),('g-care-veranda',3600)]:
+    for oid,width in [('g-care-living',2650),('g-care-veranda',2400)]:
         o=next(o for o in b['openings'] if o['id']==oid)
         assert o['sliding'] and o['sill']==0 and o['width']==width
-        assert {n['slidingPanel'] for n in s['nodes'] if n.get('owner')==oid and 'slidingPanel' in n}=={0,1,2}
+        assert {n['slidingPanel'] for n in s['nodes'] if n.get('owner')==oid and 'slidingPanel' in n}==set(range(o.get('slidingPanels',3)))
 
 
 def test_recliner_can_translate_and_turn_onto_the_clear_veranda():
@@ -440,9 +440,10 @@ def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     assert Polygon(r['g-caregiver']['clear']).bounds[::2]==Polygon(r['g-caregiver-bath']['clear']).bounds[::2]
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     assert sum(Polygon(l['polygon']).area for l in scene['lawns'])>12
-    # Both matching windows frame the centred TV and show the lawn from the recliner head.
+    # Both TV-side openings retain their horizontal positions and garden sightlines.
     for oid,target_y in [('g-care-lawn-window',8695),('g-care-lawn-window-left',12555)]:
-        op=ops[oid];assert op['width']==1000 and op['sill']==300 and op['height']==2100
+        op=ops[oid];assert op['width']==1000
+        assert (op['sill'],op['height'])==((0,2400) if oid=='g-care-lawn-window' else (300,2100))
         line=LineString([(11300,10875),(16800,target_y)])
         w=next(w for w in b['walls'] if w['id']==op['wall_id'])
         wall=LineString([w['a'],w['b']]);hit=wall.intersection(line)
@@ -608,30 +609,48 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text())
     p=project()
     assert p['brief']==old['brief']
-    assert p['customPlan']['floors'][0]==old['customPlan']['floors'][0]
+    approved={'g-care-veranda','g-care-lawn-window'}
+    def ground(fl):return {**fl,'openings':[o for o in fl['openings'] if o['id'] not in approved]}
+    assert ground(p['customPlan']['floors'][0])==ground(old['customPlan']['floors'][0])
     assert p['customPlan']['stairs']==old['customPlan']['stairs']
     before=generate_layout(fuse(old));after=generate_layout(fuse(p))
     for key in ('spaces','walls','openings','stairs','guards','floor_plates'):
-        assert [x for x in before[key] if x.get('floor')==0]==[x for x in after[key] if x.get('floor')==0]
+        assert [x for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[x for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
     assert geometry(before['roofs'][0]['ceiling']).equals(geometry(after['roofs'][0]['ceiling']))
     baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     # Roof finishes at the first-floor deck level legitimately follow the revised upper plate.
-    # All ground/site furniture, landscaping, walls, openings and interior finishes stay exact.
+    # Lock the original ground/site outside the two newly approved ICU openings.
+    # Skirting is compared geometrically because boolean cuts reorder mesh vertices.
+    corner=json.loads((ROOT/'tests/fixtures/desired_home_before_icu_corner_appearance.json').read_text())
+    affected=set(corner['affected'])
     nodes=[]
     for n in scene['nodes']:
         if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
+        if n.get('owner') in affected or n['role']=='skirting':continue
         nodes.append({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
-    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==baseline['nodes']
-    for key in ('furniture','colliders','vegetation'):
+    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==corner['nodes']
+    for key in ('furniture','vegetation'):
         assert digest([x for x in scene[key] if x.get('floor') in (0,-1)])==baseline[key]
+    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected])==corner['colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
         return value
-    assert digest(motion({k:v for k,v in scene['door_motion'].items() if k.startswith('g-')}))==baseline['doors']
+    assert digest(motion({k:v for k,v in scene['door_motion'].items() if k.startswith('g-') and k not in approved}))==corner['doors']
     assert all(scene['materials'][k]==v for k,v in baseline['materials'].items())
+    from shapely.geometry import shape
+    from shapely.ops import unary_union
+    for owner,expected in corner['skirting'].items():
+        polys=[]
+        for n in scene['nodes']:
+            if n.get('owner')!=owner or n['role']!='skirting':continue
+            mesh=scene['assets'][n['asset']]
+            for face in mesh['faces']:
+                poly=Polygon([mesh['vertices'][i][:2] for i in face])
+                if poly.area>1e-9:polys.append(poly)
+        assert unary_union(polys).symmetric_difference(shape(expected)).area<1e-8
 
 
 def test_first_floor_rooms_lobby_private_balcony_and_continuous_open_terrace():
@@ -650,3 +669,30 @@ def test_first_floor_rooms_lobby_private_balcony_and_continuous_open_terrace():
     assert any(g['owner']=='u-bedroom-balcony' and g['height']==1100 for g in b['guards'])
     # Close the exterior jog where the atrium glazing meets the front gallery.
     assert sum(LineString([w['a'],w['b']]).length for w in b['walls'] if w['id'].startswith('u-atrium-exterior-return'))>=800
+
+
+def test_icu_corner_keeps_fixed_pane_and_two_independent_wall_stacking_doors():
+    p=project();ops={o['id']:o for o in p['customPlan']['floors'][0]['openings']}
+    door=ops['g-care-veranda'];fixed=ops['g-care-lawn-window']
+    assert (door['offset'],door['width'],door['height'],door['sill'])==(4300,2400,2400,0)
+    assert door['stackingSliding'] and door['slidingPanels']==2
+    assert (fixed['width'],fixed['height'],fixed['sill'],fixed['fixed'])==(1000,2400,0,True)
+    assert ops['g-care-lawn-window-left']['sill']==300
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    assert 'g-care-lawn-window' not in scene['door_motion']
+    panes=[n for n in scene['nodes'] if n.get('owner') in (door['id'],fixed['id']) and n['role']=='glass']
+    assert len(panes)==3 and all(n['scale'][1]==.024 for n in panes)
+    motion=scene['door_motion'][door['id']]
+    assert motion['clearWidth']==2.3
+    assert {l['id'] for l in motion['layers']}=={'g-care-veranda/panel-b','g-care-veranda/panel-c'}
+    nodes={n['id']:n for n in scene['nodes']}
+    parked=[];handles=[]
+    for leaf in motion['layers']:
+        glass=next(nodes[i] for i in leaf['ids'] if nodes[i]['role']=='glass')
+        x=glass['position'][0]+leaf['slide'][0];y=glass['position'][1]
+        half=glass['scale'][0]/2
+        assert 11.4<x-half<x+half<12.8  # A bay plus its existing solid end pier
+        parked.append(y)
+        handles.append(leaf['handle'][0]+leaf['slide'][0])
+    assert abs(parked[0]-parked[1])>=.119  # separate tracks, including handle clearance
+    assert abs(handles[0]-handles[1])>.9  # independently targetable when stacked

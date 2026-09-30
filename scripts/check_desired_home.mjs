@@ -64,7 +64,7 @@ try{
  walked=await walkTo(4.75,11.1);check('Bedroom ensuite exit remains clear',walked.reached);
  await spawnAt(8.45,2.8);const kitchenRoute=[];for(const [x,y] of [[7.14,2.8],[7.14,2.3],[6.6,2.3]])kitchenRoute.push(await walkTo(x,y));console.log('Kitchen entry passage',kitchenRoute);check('Hall opening leads into kitchen clear of serving counter and rear storage',kitchenRoute.every(r=>r.reached));
  await spawnAt(3.9,4.15);for(let floor=0;floor<2;floor++){const positions=[];for(const [x,y] of [[.73,4.15],[.73,5.45],[3.9,5.45],[3.9,4.15]])positions.push(await walkTo(x,y));console.log('Stair floor',floor,positions);check(`Open stair preserves the climb from floor ${floor} to ${floor+1}`,positions.every(r=>r.reached)&&Math.abs(positions.at(-1).position[1]-(floor+1)*3.15)<.1);}
- await spawnAt(13.9,9.2);await openDoor('g-care-veranda');walked=await walkTo(13.9,7.2);check('Open sliding glass leads to the level clear veranda',walked.reached&&Math.abs(walked.position[1])<.1);
+ await spawnAt(13.9,9.2);for(const panel of ['b','c'])await openDoor('g-care-veranda/panel-'+panel);walked=await walkTo(13.9,7.2);check('Open sliding glass leads to the level clear veranda',walked.reached&&Math.abs(walked.position[1])<.1);
  walked=await walkTo(13.9,9.2);check('Veranda route works in both directions',walked.reached);
  await spawnAt(9.8,9.4);await openDoor('g-care-living');walked=await walkTo(9.8,7.9);console.log('Living glass',walked);check('Wide living glass connects directly to the care room',walked.reached);
  await spawnAt(10.7,7.7);await openDoor('g-living-veranda');walked=await walkTo(12.4,7.7);check('Living hall has its own direct sliding-glass route to veranda',walked.reached);

@@ -125,11 +125,11 @@ def opening_types(b):
             pre = 'V' if (o['sill'] >= 1500 or o['height'] <= 700) else 'W'
         else:
             pre = {'glazed': 'SD', 'cased': 'O'}.get(o['kind'], 'D')
-        key = (pre, o['kind'], round(o['width']), round(o['height']), round(o['sill']))
+        key = (pre, o['kind'], round(o['width']), round(o['height']), round(o['sill']), bool(o.get('fixed')), bool(o.get('stackingSliding')))
         if key not in types:
             counters[pre] = counters.get(pre, 0) + 1
             types[key] = {'tag': f'{pre}{counters[pre]}', 'kind': o['kind'], 'width': round(o['width']), 'height': round(o['height']),
-                          'sill': round(o['sill']), 'count': 0, 'rooms': []}
+                          'sill': round(o['sill']), 'count': 0, 'rooms': [], **({'fixed':True} if o.get('fixed') else {}), **({'stackingSliding':True} if o.get('stackingSliding') else {})}
         t = types[key]; t['count'] += 1; tags[o['id']] = t['tag']
         room = next((names[r] for r in o['connects'] if r in names and (o['kind'] == 'window' or r == o.get('swing'))), None) or \
             ' / '.join(names[r] for r in o['connects'] if r in names)
@@ -145,6 +145,10 @@ DESCRIPTION = {'entry': 'Main door, solid timber leaf in frame', 'door': 'Flush 
 
 
 def describe(t):
+    if t.get('fixed'):
+        return 'Fixed full-pane glazing, aluminium frame'
+    if t.get('stackingSliding'):
+        return 'Two independent sliding leaves, wall-stacking'
     if t['tag'].startswith('V'):
         return 'Ventilator, obscured glass / louvres'
     if t['kind'] == 'door' and t['width'] <= 800:

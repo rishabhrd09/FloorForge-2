@@ -39,7 +39,7 @@ try {
  await spawn(13,7.1);
  const route=[];for(const [x,y] of [[12.2,6.55],[14.5,6.55],[17.5,6.55],[16.1,6.1],[16.1,5.15]])route.push(await walk(x,y));console.log('veranda route',route);check('Veranda route reaches outside parking approach',route.every(r=>r.reached));
  await spawn(14.3,6.9);check('Drawing room door opens',await door('g-drawing-veranda',1));await walk(13.15,6.9);check('Drawing room remains accessible',(await walk(13.15,5.1)).reached);
- await spawn(14.45,7.45);check('ICU veranda slider opens',await door('g-care-veranda',1));check('ICU remains accessible',(await walk(14.45,9.2)).reached);
+ await spawn(14.45,7.45);for(const panel of ['b','c'])check('ICU veranda panel '+panel+' opens',await door('g-care-veranda/panel-'+panel,1));check('ICU remains accessible',(await walk(14.45,9.2)).reached);
  await spawn(17.5,9.3,3.15);const upper=[];for(const [x,y] of [[17.5,8.7],[17.5,7.7],[17.5,6.8],[15,6.8]])upper.push(await walk(x,y));console.log('upper route',upper);check('Upper terrace bypass remains walkable',upper.every(r=>r.reached));
  await spawn(17.5,7.9,3.15);check('Guard prevents entering daylight opening',!(await walk(16,7.9)).reached);
  check('No browser errors',errors.length===0);

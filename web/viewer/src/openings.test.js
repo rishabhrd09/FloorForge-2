@@ -187,3 +187,10 @@ test('paired timber and mesh leaves move independently and remain selectable aft
   assert.equal(w.sees(new THREE.Vector3(-.6,1,1),new THREE.Vector3(-.6,1,-1)),false);
   assert.equal(c.items[0].value,1);
 });
+
+test('fixed glazing stays in static geometry and has no opening target', () => {
+  const { data } = fixture('window');
+  const building = {walls:[{id:'wall',a:[-600,0],b:[600,0]}],openings:[{id:'opening',wall_id:'wall',floor:0,kind:'window',width:1200,offset:0,height:2400,sill:0,fixed:true}]};
+  assert.deepEqual(describeOpenings(data, building), []);
+  assert.equal(data.nodes.length, 2);
+});

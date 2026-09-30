@@ -631,6 +631,13 @@ def make_scene(building, report):
         if o['kind'] == 'cased':
             continue
         room_kinds = [space_kind.get(room, 'secondary') for room in w['rooms']]
+        if o['kind'] == 'window' and o.get('fixed'):
+            # Single fixed light: floor-level glazing matches adjacent door heads,
+            # without a spurious operable sash, centre mullion or raised sill.
+            for xx in (.025,ow-.025):part(xx,0,z0+zh/2,.05,.10,zh)
+            for zz in (z0+.025,z0+zh-.025):part(ow/2,0,zz,ow,.10,.05)
+            part(ow/2,0,z0+zh/2,ow-.10,.024,zh-.10,'glass','glass')
+            continue
         if o['kind'] == 'window':
             # One contemporary window system for every theme: slim powder-coated aluminium, staggered sliding
             # panes, a transom on tall glazing and a slim sill; wet rooms get obscured glass.
@@ -744,6 +751,36 @@ def make_scene(building, report):
         if o['kind'] == 'glazed' and o.get('sliding'):
             # Authored two- or three-track glazing; matching motion uses the same panel count.
             panel_count=o.get('slidingPanels',3)
+            if o.get('stackingSliding'):
+                # Both leaves park over the solid bay before the aperture, on
+                # separate indoor tracks. No door swings into the care route.
+                inside=next((space_poly[r] for r in w['rooms'] if space_kind.get(r) not in OUTDOOR),None)
+                if inside is not None and not inside.covers(Point(*(p+uv*ow/2+nv*.3))):nv=-nv
+                pw=(ow-.10)/2;layers=[]
+                for zz in (z0+.009,z0+zh-.025):
+                    part((ow-pw-.225)/2,t_half+.11,zz,ow+pw+.225,.24,.018 if zz<z0+.1 else .05)
+                for pane in range(2):
+                    mark=len(k.nodes);left=.05+pane*pw;cx=left+pw/2;depth=t_half+.05+pane*.12
+                    # Stagger the parked ends onto the existing solid end pier,
+                    # exposing B's pull beyond C so either can be closed first.
+                    park=-pw/2-(.20 if pane==0 else .04)
+                    part(cx,depth,z0+zh/2,pw-.05,.024,zh-.10,'glass','glass')
+                    for xx in (left,left+pw):part(xx,depth,z0+zh/2,.045,.06,zh-.06)
+                    for zz in (z0+.025,z0+zh-.025):part(cx,depth,zz,pw,.06,.05)
+                    # Opposite-edge pulls remain distinct when both leaves stack.
+                    hx=left+.075 if pane==0 else left+pw-.10
+                    for face in (-1,1):
+                        part(hx,depth+face*.065,z0+1.15,.022,.024,.50,'frame','door')
+                        for zz in (.92,1.38):part(hx,depth+face*.045,z0+zz,.022,.065,.022,'frame','door')
+                    for item in k.nodes[mark:]:item['slidingPanel']=pane
+                    handle=p+uv*hx+nv*depth
+                    layers.append({'id':f"{o['id']}/panel-{'b' if pane==0 else 'c'}",
+                                   'label':f"Glass door {'B' if pane==0 else 'C'}",
+                                   'ids':[n['id'] for n in k.nodes[mark:]],
+                                   'slide':[float(uv[0]*(park-cx)),float(uv[1]*(park-cx)),0],
+                                   'handle':[float(handle[0]),float(handle[1]),z0+1.15]})
+                door_motion[o['id']]={'layers':layers,'clearWidth':ow-.10}
+                continue
             if panel_count==2:
                 # Full-width glass meets room corners: park fabric ABOVE the head,
                 # instead of pushing side stacks into adjoining rooms or across glass.
