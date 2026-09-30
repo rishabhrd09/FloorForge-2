@@ -13,12 +13,14 @@ try {
  for(let i=0;i<100;i++)v.adapt(.05);v.updateProbe();for(let i=0;i<100;i++)v.adapt(.05);
  v.hud.show(false);v.updateLights();v.vegetation?.update(v.time,v.camera);v.composer.render(.016);
  },{eye,target,fov});await p.waitForTimeout(250);const bytes=await p.evaluate(async()=>Array.from(new Uint8Array(await (await __ff.viewer.snapshot({width:1600})).arrayBuffer())));writeFileSync(`evidence/desired-home/${name}.png`,Buffer.from(bytes));};
- await shot('first-floor-front',[23,8,19],[9.5,3.4,-4],50);
- await shot('first-floor-front-terrace',[14,4.78,-.8],[7,4.45,-2.3],75);
- await shot('first-floor-gallery',[6.0,4.78,-6.2],[10,3.7,-7.7],80);
- await shot('first-floor-master',[9.9,4.78,-9.25],[13.4,4.1,-11.2],80);
- await shot('first-floor-bedroom',[5.1,4.78,-9.1],[2.6,4,-11.4],85);
- await shot('first-floor-studio',[7.8,4.78,-3.5],[5.8,4.1,-2.4],80);
+ await shot('upper-refined-front',[23,8,19],[9.5,3.4,-4],50);
+ await shot('upper-refined-terrace',[14.6,4.78,-1.0],[11.5,3.5,-4.6],75);
+ await shot('upper-refined-master-balcony',[17.8,4.78,-11.8],[16.3,3.9,-7.7],75);
+ await shot('upper-refined-daylight',[17.65,4.78,-6.1],[15.5,3.65,-8.1],75);
+ await shot('upper-refined-gallery',[5.4,4.78,-7.8],[9.4,3.7,-5.9],78);
+
+
+
  const spawn=async(x,y)=>p.evaluate(({x,y})=>{const v=__ff.viewer;v.paused=true;v.setMode('walk');v.walker.teleport(v.walker.position.clone().set(x,3.15,-y));},{x,y});
  const door=async(id,goal)=>p.evaluate(({id,goal})=>{const v=__ff.viewer,d=v.openings.items.find(o=>o.id===id);if(!d)return false;d.goal=goal;for(let i=0;i<100;i++)v.openings.update(1/60);return d.value===goal;},{id,goal});
  const walk=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;let reached=false;for(let i=0;i<600;i++){const dx=x-w.position.x,dz=-y-w.position.z;if(Math.hypot(dx,dz)<.06){reached=true;break;}w.yaw=Math.atan2(-dx,-dz);w.update(1/60,{forward:1,strafe:0});}return {reached,position:w.position.toArray()};},{x,y});
@@ -30,10 +32,13 @@ try {
  await spawn(9.4,3.3);check('Studio door opens',await door('u-office-lobby',1));await route('Lobby to studio',[[8.8,3.2],[7.5,3.2]]);
  await spawn(9.5,3.4);check('Lobby terrace door opens',await door('u-lobby-terrace',1));await route('Lobby to front terrace',[[10.0,3.4],[11.6,3.4]]);
  await route('Front and right terraces form a continuous L',[[11.6,1],[5,1],[11.8,1],[12.5,3.5],[12.5,6.3],[17.5,6.3],[17.5,8.0]]);
- check('Master balcony is separated from shared terrace',!(await walk(17.5,9.2)).reached);
+ check('Shared terrace cannot enter private master-side balcony',!(await walk(17.5,9.2)).reached);
  await spawn(8.2,8.8);check('Master door opens',await door('u-bed-north-door',1));await route('Gallery to master bedroom',[[8.55,9.1],[9.8,9.1]]);
  await spawn(16.8,10.8);check('Master terrace door opens',await door('u-bed-north-terrace',1));await route('Master has direct terrace access',[[16.2,10.8],[14.8,10.8]]);
- await spawn(5.05,8.1);check('Small bedroom door opens',await door('u-bed-south-door',1));await route('Gallery to smaller bedroom',[[5.05,9.2],[4.4,10.3]]);
+ await spawn(5.05,8.1);check('Small bedroom door opens',await door('u-bed-south-door',1));await route('Gallery to smaller bedroom',[[5.05,9.2],[4.4,10.3],[3,10.8]]);
+ await shot('upper-refined-bedroom-entry',[5.05,4.78,-8.0],[4.5,4.0,-10.1],68);
+ await shot('upper-refined-bedroom-balcony',[5.0,4.78,-12.0],[1.5,3.65,-14.0],75);
+ await spawn(4.4,10.3);await route('Bedroom back to gallery',[[5.05,9.2],[5.05,8.0]]);
  await spawn(4.1,10.8);check('Private balcony door opens',await door('u-bedroom-balcony-door',1));await route('Bedroom to its private balcony',[[3.0,10.8],[3.0,12.5]]);
  await spawn(8.2,9.1);check('Shared bathroom door opens',await door('u-bath-door',1));await route('Gallery to bathroom',[[8.3,10.1]]);
  await spawn(17.5,7.9);check('Daylight-opening guard blocks entry',!(await walk(16,7.9)).reached);
@@ -44,6 +49,6 @@ try {
  const planPage=await browser.newPage({viewport:{width:1500,height:1060}});
  await planPage.setContent('<body style="margin:0;background:white"><img style="width:1500px;height:1060px;object-fit:contain" src="http://127.0.0.1:8765/samples/my-desired-home/sheets/A-102.svg"></body>');
  await planPage.waitForFunction(()=>document.querySelector('img').complete);
- await planPage.screenshot({path:'evidence/desired-home/first-floor-plan.png',fullPage:false,timeout:60000});
-} finally {writeFileSync('evidence/desired-home/first-floor-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();}
+ await planPage.screenshot({path:'evidence/desired-home/upper-refined-plan.png',fullPage:false,timeout:60000});
+} finally {writeFileSync('evidence/desired-home/upper-refinement-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();}
 if(checks.some(c=>!c.pass))process.exitCode=1;

@@ -61,14 +61,16 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle'},'walls':{'id','a','b'},
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall'},'walls':{'id','a','b','height','finishStyle'},
                          'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
                     o.setdefault('name',SPACE_REGISTRY[o['kind']]['label'])
                     if not isinstance(o['name'],str) or not 1<=len(o['name'])<=120:fail('SPACE_NAME','Room names need 1–120 characters.',o['id'],f)
-                    if 'finishStyle' in o and (o['finishStyle'] not in ('warm-stone','garden-lawn') or o['kind']!='veranda'):fail('FINISH_STYLE','Warm stone finish applies to verandas.',o['id'],f)
+                    if 'finishStyle' in o and not ((o['finishStyle'] in ('warm-stone','garden-lawn') and o['kind']=='veranda') or (o['finishStyle']=='honed-sandstone' and o['kind'] in ('terrace','balcony'))):fail('FINISH_STYLE','Choose a veranda finish or honed sandstone for an outdoor deck.',o['id'],f)
+                    if 'guardStyle' in o and (o['guardStyle']!='white-timber' or o['kind'] not in ('void','stair','terrace','balcony')):fail('GUARD_STYLE','White metal and timber guards apply to voids, stairs and decks.',o['id'],f)
+                    if 'wardrobeWall' in o and (o['kind']!='bedroom' or o['wardrobeWall'] not in SIDES):fail('WARDROBE_WALL','Choose a bedroom backing wall for storage.',o['id'],f)
                     if 'careLayout' in o and (o['kind']!='care-room' or o['careLayout']!='equipment-left'):fail('CARE_LAYOUT','Choose the equipment-left layout for a care room.',o['id'],f)
                     if 'prepStorageWall' in o and (o['kind']!='kitchen' or o['prepStorageWall'] not in SIDES):fail('PREP_WALL','Choose a kitchen backing wall for prep storage.',o['id'],f)
                     if 'kitchenLayout' in o and (o['kind']!='kitchen' or o['kitchenLayout']!='l-shaped-return'):fail('KITCHEN_LAYOUT','Choose an L-shaped return for a kitchen.',o['id'],f)
@@ -119,6 +121,8 @@ def normalize(plan,storeys):
                     for p in pts:point(p,'polygon')
                 elif key=='walls':
                     point(o.get('a'),'wall start');point(o.get('b'),'wall end')
+                    if 'height' in o:numeric(o['height'],1100,3000,'height')
+                    if 'finishStyle' in o and o['finishStyle']!='timber-screen':fail('WALL_FINISH','Choose timber-screen for an outdoor privacy wall.',o['id'],f)
                 else:
                     if not isinstance(o.get('roomId'),str) or o.get('side') not in SIDES:fail('OPENING_HOST','Choose a room and a front/right/rear/left wall.',o['id'],f)
                     if o.get('kind') not in ('door','entry','window','cased','glazed'):fail('OPENING_KIND','Unsupported opening type.',o['id'],f)
@@ -280,6 +284,7 @@ def compile_plan(intent):
                            **({'openToSky':True} if r.get('openToSky') else {}),
                            **({'glassCover':True} if r.get('glassCover') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
+                           **({key:r[key] for key in ('guardStyle','wardrobeWall') if key in r}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
                            **({'reclinerPosition':r['reclinerPosition']} if r.get('reclinerPosition') else {}),
                            **({'prepStorageWall':r['prepStorageWall']} if r.get('prepStorageWall') else {}),
@@ -328,8 +333,10 @@ def compile_plan(intent):
             # Disconnected segments of the same side need distinct stable suffixes.
             base=wid;n=1
             while any(w['id']==wid for w in floor_walls):n+=1;wid=base+'-'+str(n)
+            authored_spec=next((w for w in fl['walls'] if w['id']==authored),{})
             floor_walls.append({'id':wid,'floor':f,'floorId':fl['id'],'a':list(a),'b':list(b),'thickness':t,
-                                'height':v['floor_height_mm']-150,'rooms':sorted(owners),'external':len(owners)==1,
+                                'height':authored_spec.get('height',v['floor_height_mm']-150),
+                                **({'finishStyle':authored_spec['finishStyle']} if authored_spec.get('finishStyle') else {}),'rooms':sorted(owners),'external':len(owners)==1,
                                 'polygon':regions(wallpoly)[0]['polygon']})
         # Under-stair partitions are a separate vertical layer. They do not split
         # the full-height stair opening or consume the upper stair flight.
@@ -358,6 +365,15 @@ def compile_plan(intent):
         authored_lines=[LineString([w['a'],w['b']]).buffer(.01) for w in fl['walls']]
         floor_walls=[w for w in floor_walls if not atriums.intersection(w['rooms']) or
                      any(p.covers(LineString([w['a'],w['b']])) for p in authored_lines)]
+        # A handrailed open atrium must not inherit 75 mm corner wall stubs
+        # from the neighbouring gallery's offset outline. These are generated
+        # returns, not authored supports. Keep its slab/ceiling aperture intact.
+        clean_atriums=[local[r['id']].buffer(t*1.5,join_style=2) for r in fl['rooms']
+                       if r.get('openToBelow') and r.get('guardStyle')=='white-timber']
+        floor_walls=[w for w in floor_walls if not (
+            LineString([w['a'],w['b']]).length<=half+1 and
+            any(p.covers(LineString([w['a'],w['b']])) for p in clean_atriums) and
+            not any(p.buffer(half+1).intersects(LineString([w['a'],w['b']])) for p in authored_lines))]
         walls.extend(floor_walls)
         for o in fl['openings']:
             if o['roomId'] not in local:fail('OPENING_ROOM','Opening references a room on another or missing floor.',o['id'],f)

@@ -1,0 +1,101 @@
+{
+  "checks": [
+    {
+      "name": "Ground stair ascends south, turns twice, reaches upper lobby",
+      "pass": true
+    },
+    {
+      "name": "Stair arrives at first-floor level",
+      "pass": true
+    },
+    {
+      "name": "Gallery to arrival lobby",
+      "pass": true
+    },
+    {
+      "name": "Studio door opens",
+      "pass": true
+    },
+    {
+      "name": "Lobby to studio",
+      "pass": true
+    },
+    {
+      "name": "Lobby terrace door opens",
+      "pass": true
+    },
+    {
+      "name": "Lobby to front terrace",
+      "pass": true
+    },
+    {
+      "name": "Front and right terraces form a continuous L",
+      "pass": true
+    },
+    {
+      "name": "Shared terrace cannot enter private master-side balcony",
+      "pass": true
+    },
+    {
+      "name": "Master door opens",
+      "pass": true
+    },
+    {
+      "name": "Gallery to master bedroom",
+      "pass": true
+    },
+    {
+      "name": "Master terrace door opens",
+      "pass": true
+    },
+    {
+      "name": "Master has direct terrace access",
+      "pass": true
+    },
+    {
+      "name": "Small bedroom door opens",
+      "pass": true
+    },
+    {
+      "name": "Gallery to smaller bedroom",
+      "pass": true
+    },
+    {
+      "name": "Bedroom back to gallery",
+      "pass": true
+    },
+    {
+      "name": "Private balcony door opens",
+      "pass": true
+    },
+    {
+      "name": "Bedroom to its private balcony",
+      "pass": true
+    },
+    {
+      "name": "Shared bathroom door opens",
+      "pass": true
+    },
+    {
+      "name": "Gallery to bathroom",
+      "pass": true
+    },
+    {
+      "name": "Daylight-opening guard blocks entry",
+      "pass": true
+    },
+    {
+      "name": "Atrium guard blocks falling into living hall",
+      "pass": true
+    },
+    {
+      "name": "Private balcony guard blocks outer edge",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

@@ -1433,6 +1433,11 @@ def make_scene(building, report):
         room, f = ctx['room'], ctx['floor']; z = f * H
         for ww in lengths:
             cands = spots(ctx, ww, .6, front=.75, height=2.3) or spots(ctx, ww, .6, front=.6, height=2.3)
+            if room.get('wardrobeWall'):
+                x0,y0,x1,y1=ctx['clear'].bounds
+                side=room['wardrobeWall'];axis=0 if side in ('left','right') else 1
+                value={'left':x0,'right':x1,'front':y0,'rear':y1}[side]
+                cands=[sp for sp in cands if abs(sp['c'][axis]-value)<.01]
             if cands:
                 sp = min(cands, key=lambda s: (far_from_doors(ctx, s) if prefer_door else -far_from_doors(ctx, s), abs(s['s'] - s['L'] / 2)))
                 break
@@ -2171,9 +2176,23 @@ def make_scene(building, report):
     if custom or rooftop:
         for guard in rb_model.get('guards',[]):
             edge=LineString(np.array(guard['points'])/1000);f=guard['floor'];z=f*H;own=guard['owner']
-            poly_mesh(edge.buffer(.008,cap_style=2),z+.06,z+1.1,'glass',f,'railing',guard['id'],own)
-            poly_mesh(edge.buffer(.02,cap_style=2),z+1.1,z+1.13,'frame',f,'railing',guard['id']+'-cap',own)
+            space=next((s for s in b['spaces'] if s['id']==own),{})
+            styled_holes=[Polygon(np.array(s['clear'])/1000).boundary.buffer(.002)
+                          for s in b['spaces'] if s['floor']==f and s.get('openToSky')
+                          and s.get('guardStyle')=='white-timber']
+            timber_edge=edge if space.get('guardStyle')=='white-timber' else edge.intersection(unary_union(styled_holes))
+            glass_edge=edge.difference(timber_edge)
+            from .upper_finishes import white_timber_guard
+            for j,part in enumerate(get_parts(timber_edge)):
+                if part.geom_type=='LineString' and part.length>.01:
+                    white_timber_guard(k,materials,part,z,f,guard['id']+f'-section-{j}',own)
+            if not glass_edge.is_empty:
+                poly_mesh(glass_edge.buffer(.008,cap_style=2),z+.06,z+1.1,'glass',f,'railing',guard['id'],own)
+                poly_mesh(glass_edge.buffer(.02,cap_style=2),z+1.1,z+1.13,'frame',f,'railing',guard['id']+'-cap',own)
             colliders.append({'id':guard['id'],'floor':f,'polygon':list(edge.buffer(.06,cap_style=2).exterior.coords),'kind':'guard'})
+    from .upper_finishes import privacy_wall_finish
+    for w in b['walls']:
+        if w.get('finishStyle')=='timber-screen':privacy_wall_finish(k,w,H)
     for terr in [s for s in b['spaces'] if s['kind'] in ('terrace','veranda','balcony')]:
         p = Polygon(np.array(terr['polygon']) / 1000); f = terr['floor']; z = f * H
         for a, c in zip(list(p.exterior.coords), list(p.exterior.coords)[1:]):

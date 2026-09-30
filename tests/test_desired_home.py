@@ -398,7 +398,7 @@ def test_courtyard_and_balcony_preserve_unaffected_authored_spaces():
     for before,after in zip(old['plan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
-            if r['id'] not in allowed:assert {k:v for k,v in new[r['id']].items() if k!='ceilingStyle'}==r
+            if r['id'] not in allowed:assert {k:v for k,v in new[r['id']].items() if k not in ('ceilingStyle','guardStyle')}==r
         ops={o['id']:o for o in after['openings']}
         for o in before['openings']:
             if o['id'] not in changed_openings:assert ops[o['id']]==o
@@ -456,7 +456,7 @@ def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     for before,after in zip(old['customPlan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
-            if r['id'] not in changed:assert r=={k:v for k,v in new[r['id']].items() if k!='ceilingStyle'}
+            if r['id'] not in changed:assert r=={k:v for k,v in new[r['id']].items() if k not in ('ceilingStyle','guardStyle')}
     assert all(w in p['customPlan']['floors'][1]['walls'] for w in old['customPlan']['floors'][1]['walls'])
     b=generate_layout(fuse(p));g=validate(b)['graph'];r={r['id']:r for r in b['spaces']}
     assert set(g['g-caregiver'])=={'g-care','g-caregiver-bath','g-care-lawn'}
@@ -664,7 +664,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
     assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
     assert digest([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
-    assert digest([x for x in historic_items(scene,'colliders') if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected and not x['id'].startswith('g-kitchen/kitchen-')])==kitchen['colliders']
+    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['ground_colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
@@ -737,10 +737,10 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
         x,y,z=n['position']
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
-    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if not allowed(n) and not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not allowed(n) and not kitchen_casework_node(n)]
     digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
-    assert digest==before['entrance_unaffected_nodes']
+    assert digest==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['entrance_unaffected_ground_nodes']
 
 
 def test_front_gates_clear_porch_through_their_entire_motion():
@@ -797,9 +797,9 @@ def test_kitchen_change_preserves_every_other_rendered_area():
     import hashlib
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
-    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not kitchen_casework_node(n)]
     nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
-    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==before['unaffected_nodes']
+    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['kitchen_unaffected_ground_nodes']
 
 
 def test_simple_ceiling_removes_decor_and_kitchen_sink_is_clear_of_carcasses():

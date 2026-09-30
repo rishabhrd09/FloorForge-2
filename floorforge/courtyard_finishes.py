@@ -68,7 +68,11 @@ def layered_facade(k, materials, building, height):
     for r in building['spaces']:
         if r['kind'] not in ('terrace','balcony') or not r.get('clearAccess'):continue
         p=Polygon(np.array(r['clear'])/1000);f=r['floor'];z=f*height;x0,y0,x1,y1=p.bounds
-        k.poly_mesh(p,z+.012,z+.019,'facade-limestone',f,'finish',r['id']+'/stone-deck',r['id'])
+        if r.get('finishStyle')=='honed-sandstone':
+            from .upper_finishes import sandstone_deck
+            sandstone_deck(k,materials,p,z,f,r['id'])
+        else:
+            k.poly_mesh(p,z+.012,z+.019,'facade-limestone',f,'finish',r['id']+'/stone-deck',r['id'])
         # Floating fascia and warm soffit follow the authored L, not its bounding rectangle.
         rim=p.boundary.buffer(.025,join_style=2)
         k.poly_mesh(rim,z-.17,z-.055,'frame',f,'fascia',r['id']+'/slab-edge',r['id'])
