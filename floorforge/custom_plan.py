@@ -61,7 +61,7 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout'},'walls':{'id','a','b'},
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle'},'walls':{'id','a','b'},
                          'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
@@ -72,6 +72,7 @@ def normalize(plan,storeys):
                     if 'careLayout' in o and (o['kind']!='care-room' or o['careLayout']!='equipment-left'):fail('CARE_LAYOUT','Choose the equipment-left layout for a care room.',o['id'],f)
                     if 'prepStorageWall' in o and (o['kind']!='kitchen' or o['prepStorageWall'] not in SIDES):fail('PREP_WALL','Choose a kitchen backing wall for prep storage.',o['id'],f)
                     if 'kitchenLayout' in o and (o['kind']!='kitchen' or o['kitchenLayout']!='l-shaped-return'):fail('KITCHEN_LAYOUT','Choose an L-shaped return for a kitchen.',o['id'],f)
+                    if 'ceilingStyle' in o and o['ceilingStyle']!='plain-downlights':fail('CEILING_STYLE','Choose plain-downlights for a simple ceiling.',o['id'],f)
                     if 'altarWall' in o and (o['kind']!='pooja' or o['altarWall'] not in SIDES):fail('ALTAR_WALL','Choose a front/right/rear/left backing wall for the mandir.',o['id'],f)
                     if 'diningPosition' in o:
                         if o['kind'] not in ('living','family'):fail('DINING_POSITION','A dining position applies to a shared living or family room.',o['id'],f)
@@ -283,6 +284,7 @@ def compile_plan(intent):
                            **({'reclinerPosition':r['reclinerPosition']} if r.get('reclinerPosition') else {}),
                            **({'prepStorageWall':r['prepStorageWall']} if r.get('prepStorageWall') else {}),
                            **({'kitchenLayout':r['kitchenLayout']} if r.get('kitchenLayout') else {}),
+                           **({'ceilingStyle':r['ceilingStyle']} if r.get('ceilingStyle') else {}),
                            **({'altarWall':r['altarWall']} if r.get('altarWall') else {}),
                            **({'diningPosition':r['diningPosition']} if r.get('diningPosition') else {}),
                            **({'diningOrientation':r['diningOrientation']} if 'diningOrientation' in r else {}),

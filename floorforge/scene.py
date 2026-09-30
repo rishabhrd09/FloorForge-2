@@ -381,6 +381,7 @@ def make_scene(building, report):
             poly_mesh(p, level + .002, level + .009, mat, f, 'finish', s['id'] + '/floor', s['id'])
         # Ceiling coves with a concealed warm glow line.
         for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'drawing-room', 'family', 'bedroom', 'dining')]:
+            if s.get('ceilingStyle')=='plain-downlights':continue
             p = Polygon(np.array(s['clear']) / 1000)
             if custom:p=p.intersection(metres(geometry(b['roofs'][f]['ceiling'])))
             inner = p.buffer(-.16)
@@ -872,7 +873,12 @@ def make_scene(building, report):
             door_motion[o['id']]={'ids':[n['id'] for n in moving],'pivot':[float(pivot[0]),float(pivot[1]),base],'angle':angle}
 
     # ---------------------------------------------------------------- furniture
+    def plain_lighting(x,y,f):
+        return any(r.get('ceilingStyle')=='plain-downlights' and r['floor']==f and
+                   Polygon(np.array(r['clear'])/1000).covers(Point(x,y)) for r in b['spaces'])
+
     def lamp(x, y, z, f, pendant=False):
+        if pendant and plain_lighting(x,y,f):return
         if custom and pendant and not metres(geometry(b['roofs'][f]['ceiling'])).covers(Point(x,y)):return
         if pendant:
             beam((x, y, z), (x, y, f * H + H - .16), .006, 'frame', f, 'fixture')
@@ -886,6 +892,7 @@ def make_scene(building, report):
 
     def chandelier(x, y, f):
         """Branching globe pendant (warm glass spheres on black stems)."""
+        if plain_lighting(x,y,f):return
         if custom and not metres(geometry(b['roofs'][f]['ceiling'])).covers(Point(x,y)):return
         zc = f * H + H - .16
         hub = zc - .62
@@ -1129,7 +1136,7 @@ def make_scene(building, report):
             ctx['placed'].append(console)
             furnishing('media-console', room, console)
             k.editable('media-console', room, console, edit_mark)
-        if upgraded_interior:
+        if upgraded_interior and room.get('ceilingStyle')!='plain-downlights':
             # Arc floor lamp at the sofa's end, its shade reaching over the seat.
             for su in (-1, 1):
                 base = lpoly(sp, su * (h + .2) - .18, su * (h + .2) + .18, .52, .88)

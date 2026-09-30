@@ -11,6 +11,20 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 
+
+def historic_nodes(scene):
+    # Restore only the explicitly approved decorative removals when comparing
+    # older preservation baselines. A separate check requires them absent now.
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    return scene['nodes']+removed['removed_nodes']
+
+
+def historic_items(scene,key):
+    items=list(scene[key])
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    for entry in removed['removed_'+key]:items.insert(entry['index'],entry['item'])
+    return items
+
 def historic_finish(n):
     # The later approved veranda change affects only this surface material.
     if n['id']=='g-veranda/stone-finish':
@@ -384,7 +398,7 @@ def test_courtyard_and_balcony_preserve_unaffected_authored_spaces():
     for before,after in zip(old['plan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
-            if r['id'] not in allowed:assert new[r['id']]==r
+            if r['id'] not in allowed:assert {k:v for k,v in new[r['id']].items() if k!='ceilingStyle'}==r
         ops={o['id']:o for o in after['openings']}
         for o in before['openings']:
             if o['id'] not in changed_openings:assert ops[o['id']]==o
@@ -442,7 +456,7 @@ def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     for before,after in zip(old['customPlan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
-            if r['id'] not in changed:assert r==new[r['id']]
+            if r['id'] not in changed:assert r=={k:v for k,v in new[r['id']].items() if k!='ceilingStyle'}
     assert all(w in p['customPlan']['floors'][1]['walls'] for w in old['customPlan']['floors'][1]['walls'])
     b=generate_layout(fuse(p));g=validate(b)['graph'];r={r['id']:r for r in b['spaces']}
     assert set(g['g-caregiver'])=={'g-care','g-caregiver-bath','g-care-lawn'}
@@ -624,7 +638,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     p=project()
     assert p['brief']==old['brief']
     approved={'g-care-veranda','g-care-lawn-window'}
-    def strip_layout(o):return {k:v for k,v in o.items() if k!='kitchenLayout'}
+    def strip_layout(o):return {k:v for k,v in o.items() if k not in ('kitchenLayout','ceilingStyle')}
     def ground(fl):return {**fl,'rooms':[strip_layout(r) for r in fl['rooms']],'openings':[o for o in fl['openings'] if o['id'] not in approved]}
     assert ground(p['customPlan']['floors'][0])==ground(old['customPlan']['floors'][0])
     assert p['customPlan']['stairs']==old['customPlan']['stairs']
@@ -641,7 +655,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     corner=json.loads((ROOT/'tests/fixtures/desired_home_before_icu_corner_appearance.json').read_text())
     affected=set(corner['affected'])
     nodes=[]
-    for n in scene['nodes']:
+    for n in historic_nodes(scene):
         if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
         if n.get('owner') in affected or n['role']=='skirting' or kitchen_casework_node(n):continue
         nodes.append({k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
@@ -649,8 +663,8 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
     assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
-    assert digest([x for x in scene['furniture'] if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
-    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected and not x['id'].startswith('g-kitchen/kitchen-')])==kitchen['colliders']
+    assert digest([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
+    assert digest([x for x in historic_items(scene,'colliders') if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected and not x['id'].startswith('g-kitchen/kitchen-')])==kitchen['colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
@@ -723,7 +737,7 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
         x,y,z=n['position']
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
-    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n) and not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if not allowed(n) and not kitchen_casework_node(n)]
     digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     assert digest==before['entrance_unaffected_nodes']
@@ -783,6 +797,40 @@ def test_kitchen_change_preserves_every_other_rendered_area():
     import hashlib
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
-    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if not kitchen_casework_node(n)]
     nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
     assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==before['unaffected_nodes']
+
+
+def test_simple_ceiling_removes_decor_and_kitchen_sink_is_clear_of_carcasses():
+    import numpy as np
+    from floorforge.scene import transformation
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    def canon(n):return json.dumps({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))},sort_keys=True)
+    current={canon(n) for n in scene['nodes']}
+    assert all(canon(n) not in current for n in removed['removed_nodes'])
+    assert not any(f['kind']=='floor-lamp' and f['room_id'] in ('g-living','g-drawing') for f in scene['furniture'])
+    assert any(n['floor']==0 and n['role']=='downlight' for n in scene['nodes'])
+    nodes={n['id']:n for n in scene['nodes']}
+    prefix='g-kitchen/modular-kitchen/'
+    def bounds(n):
+        points=np.array(scene['assets'][n['asset']]['vertices']);m=transformation(n)
+        points=points@m[:3,:3].T+m[:3,3]
+        return points.min(axis=0),points.max(axis=0)
+    lo,hi=bounds(nodes[prefix+'sink-bottom'])
+    assert lo[0]>6.7 and .8<lo[1]<hi[1]<1.8
+    a,b=bounds(nodes[prefix+'hob'])
+    assert 4.9<a[0]<b[0]<5.8 and b[1]<.81
+    assert prefix+'integrated-hood' not in nodes
+    assert bounds(nodes[prefix+'rear-extractor'])[1][2]<1.1
+    # Counter/cabinet meshes must actually leave a hole, not fill the new basin.
+    basin=box(lo[0]+.02,lo[1]+.02,hi[0]-.02,hi[1]-.02)
+    for n in scene['nodes']:
+        if n['id'].startswith(prefix) and ('base-top' in n['id'] or n['id'].endswith('l-worktop')):
+            from shapely.geometry import MultiPoint
+            asset=scene['assets'][n['asset']];m=transformation(n)
+            pts=np.array(asset['vertices'])@m[:3,:3].T+m[:3,3]
+            for tri in np.array(asset['faces']).reshape(-1,3):
+                poly=MultiPoint(pts[tri,:2]).convex_hull
+                if poly.geom_type=='Polygon':assert poly.intersection(basin).area<1e-8
