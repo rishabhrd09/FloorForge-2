@@ -2831,6 +2831,10 @@ def make_scene(building, report):
         from .vehicle import parked_car
         parked_car(k, materials, car['x']/1000, car['y']/1000, g+.04)
 
+    if b.get('planning',{}).get('facadeStyle')=='warm-layered':
+        from .upper_floor_finishes import upper_floor_finishes
+        upper_floor_finishes(k,b,H)
+
     # Exact generated scene, not an image substitute.
     scene = {'editables': k.editables, 'input_audit':b.get('input_audit'),'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'schema': 'floorforge.scene/0.4', 'units': 'm', 'up': 'Z', 'materials': materials, 'assets': k.assets, 'nodes': k.nodes,
             'lights': lights, 'colliders': colliders, 'furniture': furniture, 'floor_height': H, 'storeys': storeys, 'roof_level': storeys if rooftop else None,

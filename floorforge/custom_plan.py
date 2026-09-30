@@ -576,7 +576,8 @@ def validate_custom(b):
     for s in spaces:
         if s['kind']=='bedroom' and len(found)==len(graph):
             cut=set(graph)-{s['id']}-reach(s['id'])
-            if any(by_id[i]['kind'] not in ('bathroom','dress') for i in cut):error('BEDROOM_THROUGH_ROUTE','This bedroom is the only route to another occupied space.',s)
+            # A private balcony is a valid bedroom amenity, but not a route to another room.
+            if any(by_id[i]['kind'] not in ('bathroom','dress','balcony') for i in cut):error('BEDROOM_THROUGH_ROUTE','This bedroom is the only route to another occupied space.',s)
     if not any(o['kind']=='entry' for o in b['openings']):errors.append({'code':'NO_ENTRY','message':'Add a main ground-floor entry opening.'})
     professional_screen(b,warnings)
     for warning in list(warnings):

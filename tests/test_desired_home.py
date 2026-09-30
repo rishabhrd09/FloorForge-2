@@ -90,7 +90,7 @@ def test_atrium_is_a_guarded_slab_and_ceiling_hole_with_an_overlooking_lobby():
     assert all(w['id'].startswith('u-atrium-exterior') for w in b['walls'] if 'u-living-void' in w['rooms'])
     guards=[g for g in b['guards'] if g['owner']=='u-living-void']
     assert len(guards)>=3 and all(g['height']==1100 for g in guards)
-    assert rooms['u-lounge']['walkable'] and len(rooms['u-lounge']['polygon'])==14
+    assert rooms['u-lounge']['walkable'] and len(rooms['u-lounge']['polygon'])==12
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     sofa=Polygon(next(f['footprint'] for f in scene['furniture'] if f['id']=='g-living/sofa'))
     # Seating now backs onto the drawing-room divider instead of filling the atrium.
@@ -364,6 +364,9 @@ def test_courtyard_and_balcony_preserve_unaffected_authored_spaces():
     p=project();assert p['brief']=={**old['brief'],'pooja':True}
     allowed={'g-kitchen','g-dining','g-living','g-bedroom','g-care','g-care-court','u-office','u-lobby','u-terrace-front','u-lounge','u-living-void','u-bed-south','u-bath','g-caregiver','g-caregiver-bath','g-veranda','g-court-ledge','g-stair','u-stair','u-terrace-north'}
     changed_openings={'g-living-veranda','g-dining-living','g-dining-east','g-dining-window','g-kitchen-dining','g-living-stair','g-bedroom-garden-window','g-bedroom-door','g-care-living','g-care-veranda','u-bed-south-door','u-bath-door','u-office-south','g-care-caregiver','g-caregiver-toilet','g-caregiver-veranda-window','g-care-garden-window','g-court-door','g-caregiver-garden-door','g-care-side-garden-window','g-bedroom-court','u-bedroom-court','g-stair-window','u-stair-window'}
+    allowed.add('u-bed-north')
+    changed_openings.update(o['id'] for o in old['plan']['floors'][1]['openings'] if o['roomId'] not in ('u-stair','u-living-void'))
+    changed_openings.add('u-stair-lounge')
     for before,after in zip(old['plan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
@@ -371,7 +374,8 @@ def test_courtyard_and_balcony_preserve_unaffected_authored_spaces():
         ops={o['id']:o for o in after['openings']}
         for o in before['openings']:
             if o['id'] not in changed_openings:assert ops[o['id']]==o
-        assert before['walls']==after['walls']
+        if before['id']=='floor-0':assert before['walls']==after['walls']
+        else:assert all(w in after['walls'] for w in before['walls'])
     assert p['customPlan']['stairs'][0]['rotation']==90
     assert p['customPlan']['parkedCar']==old['plan']['parkedCar']
 
@@ -412,17 +416,20 @@ def test_front_balcony_wraps_right_terrace_and_retains_window_views():
         assert 'u-terrace-front' in op['connects'] and op['kind']=='window'
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     assert any(n['id']=='u-terrace-front/stone-deck' for n in scene['nodes'])
-    assert not any(f['room_id']=='u-terrace-front' for f in scene['furniture'])
+    # The outdoor bench hugs the outer edge; the continuous walking strip remains clear.
+    for item in scene['furniture']:
+        if item['room_id']=='u-terrace-front':assert not Polygon(item['footprint']).intersects(box(11,1.8,12.2,5.8))
 
 
 def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     old=json.loads((ROOT/'tests/fixtures/desired_home_before_rear_caregiver.json').read_text())
     p=project();changed={'g-kitchen','g-dining','g-bedroom','g-living','g-care','g-caregiver','g-caregiver-bath','g-care-court','g-veranda','g-court-ledge','g-stair','u-stair','u-terrace-north'}
+    changed.update(r['id'] for r in old['customPlan']['floors'][1]['rooms'] if r['id'] not in ('u-living-void','u-stair','u-garden-daylight'))
     for before,after in zip(old['customPlan']['floors'],p['customPlan']['floors']):
         new={r['id']:r for r in after['rooms']}
         for r in before['rooms']:
             if r['id'] not in changed:assert r==new[r['id']]
-    assert p['customPlan']['floors'][1]['walls']==old['customPlan']['floors'][1]['walls']
+    assert all(w in p['customPlan']['floors'][1]['walls'] for w in old['customPlan']['floors'][1]['walls'])
     b=generate_layout(fuse(p));g=validate(b)['graph'];r={r['id']:r for r in b['spaces']}
     assert set(g['g-caregiver'])=={'g-care','g-caregiver-bath','g-care-lawn'}
     assert {'g-veranda','outside'}<=set(g['g-care-lawn'])
@@ -461,8 +468,8 @@ def test_parked_car_and_front_upper_window_keep_rooms_and_access_clear():
     assert any(n['id']=='parked-car-body' for n in s['nodes'])
     o=next(o for o in b['openings'] if o['id']=='u-lobby-east-window')
     wall=next(w for w in b['walls'] if w['id']==o['wall_id'])
-    assert o['floor']==1 and o['kind']=='window' and o['width']==2200 and o['height']==1500
-    assert wall['a'][1]==wall['b'][1]==1275
+    assert o['floor']==1 and o['kind']=='window' and o['width']==2200 and o['height']==2100
+    assert wall['a'][1]==wall['b'][1]==1875
     import pytest
     from floorforge.model import DesignError
     bad=project();bad['customPlan']['parkedCar']={'x':6000,'y':1500}
@@ -516,7 +523,7 @@ def test_puja_dining_and_rear_bedroom_recess_match_approved_changes():
         assert Polygon(w['polygon']).difference(opening_polygon(w,o)).area<1
     gap=Polygon(rooms['g-bedroom-airgap']['clear'])
     assert gap.bounds==(0,13426,3700,14326) and rooms['g-bedroom-airgap']['serviceOnly']
-    assert plate(b,1).covers(gap)  # Covered recess; the upper bedroom remains intact.
+    assert plate(b,1).covers(gap)  # Covered recess retained beneath the new private balcony slab.
     assert set(ops['g-bedroom-rear-window']['connects'])=={'g-bedroom','g-bedroom-airgap'}
     assert not any(o['kind']!='window' and 'g-bedroom-airgap' in o['connects'] for o in b['openings'])
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
@@ -593,3 +600,53 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
             assert 'slide' in leaf and 'angle' not in leaf
             assert abs(__import__('math').hypot(*leaf['slide'][:2])-1.23)<1e-7
         else:assert abs(abs(leaf['angle'])-__import__('math').pi/2)<1e-7
+
+
+def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
+    import hashlib
+    from floorforge.plan_geometry import geometry
+    old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text())
+    p=project()
+    assert p['brief']==old['brief']
+    assert p['customPlan']['floors'][0]==old['customPlan']['floors'][0]
+    assert p['customPlan']['stairs']==old['customPlan']['stairs']
+    before=generate_layout(fuse(old));after=generate_layout(fuse(p))
+    for key in ('spaces','walls','openings','stairs','guards','floor_plates'):
+        assert [x for x in before[key] if x.get('floor')==0]==[x for x in after[key] if x.get('floor')==0]
+    assert geometry(before['roofs'][0]['ceiling']).equals(geometry(after['roofs'][0]['ceiling']))
+    baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    # Roof finishes at the first-floor deck level legitimately follow the revised upper plate.
+    # All ground/site furniture, landscaping, walls, openings and interior finishes stay exact.
+    nodes=[]
+    for n in scene['nodes']:
+        if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
+        nodes.append({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
+    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==baseline['nodes']
+    for key in ('furniture','colliders','vegetation'):
+        assert digest([x for x in scene[key] if x.get('floor') in (0,-1)])==baseline[key]
+    def motion(value):
+        if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
+        if isinstance(value,list):return [motion(v) for v in value]
+        return value
+    assert digest(motion({k:v for k,v in scene['door_motion'].items() if k.startswith('g-')}))==baseline['doors']
+    assert all(scene['materials'][k]==v for k,v in baseline['materials'].items())
+
+
+def test_first_floor_rooms_lobby_private_balcony_and_continuous_open_terrace():
+    from floorforge.plan_geometry import geometry
+    b=generate_layout(fuse(project()));r={s['id']:s for s in b['spaces']};graph=validate(b)['graph']
+    assert {'u-stair','u-lobby','u-bed-south','u-bed-north','u-bath'}<=set(graph['u-lounge'])
+    assert 'u-office' in graph['u-lobby'] and 'u-terrace-front' in graph['u-lobby']
+    assert 'u-terrace-north' in graph['u-bed-north']
+    assert graph['u-bedroom-balcony']==['u-bed-south']
+    assert r['u-bed-north']['area_m2']>r['u-bed-south']['area_m2']>r['u-office']['area_m2']>=7.5
+    front=Polygon(r['u-terrace-front']['clear']);north=Polygon(r['u-terrace-north']['clear'])
+    assert front.covers(box(3174,0,15090,1800))
+    assert front.boundary.intersection(north.boundary).length>=3000
+    assert 'u-terrace-north' in graph['u-terrace-front']
+    assert geometry(b['roofs'][1]['ceiling']).intersection(front.union(north)).area<1
+    assert any(g['owner']=='u-bedroom-balcony' and g['height']==1100 for g in b['guards'])
+    # Close the exterior jog where the atrium glazing meets the front gallery.
+    assert sum(LineString([w['a'],w['b']]).length for w in b['walls'] if w['id'].startswith('u-atrium-exterior-return'))>=800
