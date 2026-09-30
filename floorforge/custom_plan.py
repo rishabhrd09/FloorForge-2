@@ -26,7 +26,7 @@ def fail(code,message,ident=None,floor=None,**extra):
 
 
 def normalize(plan,storeys):
-    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed'}:
+    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle'}:
         fail('PLAN_SCHEMA','Custom plan accepts schema, units, wallThickness, floors and stairs.')
     if plan.get('schema')!=SCHEMA or plan.get('units')!='mm':
         fail('PLAN_VERSION','Use floorforge.custom-plan/1 in millimetres.')
@@ -34,6 +34,7 @@ def normalize(plan,storeys):
     if 'doorsClosed' in result and type(result['doorsClosed']) is not bool:fail('DOOR_STATE','doorsClosed must be true or false.')
     if result.get('frontCourt','planted') not in ('planted','tiled'):fail('SITE_STYLE','Choose planted or tiled front court.')
     if result.get('facadeStyle','plain') not in ('plain','warm-layered'):fail('FACADE_STYLE','Choose plain or warm-layered facade finishes.')
+    if result.get('entranceStyle','standard') not in ('standard','wall-supported'):fail('ENTRANCE_STYLE','Choose standard or wall-supported entrance.')
     def ident(obj):
         key=obj.get('id')
         if not isinstance(key,str) or not ID.fullmatch(key) or key in seen:fail('PLAN_ID','Every floor, room, wall, opening and stair needs a unique stable ID.',key)
@@ -493,6 +494,7 @@ def compile_plan(intent):
     if 'doorsClosed' in plan:b['planning']['doorsClosed']=plan['doorsClosed']
     if 'parkedCar' in plan:b['planning']['parkedCar']=plan['parkedCar']
     if 'facadeStyle' in plan:b['planning']['facadeStyle']=plan['facadeStyle']
+    if 'entranceStyle' in plan:b['planning']['entranceStyle']=plan['entranceStyle']
     for space in spaces:
         if space.get('underStair'):
             host=next(q for q in spaces if q['id']==space['underStair'])

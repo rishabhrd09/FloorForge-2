@@ -294,9 +294,10 @@ def make_scene(building, report):
                 rect((x0, ymin - .02, g - .02, x1, ymin + wt + .02, g + (.105 if modern else .05)), 'step', role='gate', name='exterior-gate-sill', owner='exterior-pedestrian-gate')
                 L, hgt = x1 - x0 - .06, (fh - .05 if modern else .95 - g)
                 mark = len(k.nodes)
-                ang = 0 if doors_closed else math.radians(gate.get('open_deg', 85))
+                sliding_ped = gate.get('operation') == 'sliding'
+                ang = 0 if doors_closed or sliding_ped else math.radians(gate.get('open_deg', 85))
                 dx, dy = (-math.cos(ang), math.sin(ang)) if hinge_right else (math.cos(ang), math.sin(ang))
-                hx, hy = (x1 - .03 if hinge_right else x0 + .03), ymin + wt + .04
+                hx, hy = (x1 - .03 if hinge_right else x0 + .03), ymin + wt + (.12 if sliding_ped else .04)
                 rot = math.atan2(dy, dx)
                 at = lambda t, z: (hx + dx * t, hy + dy * t, z)
                 zb = g + (.11 if modern else .06)
@@ -313,7 +314,16 @@ def make_scene(building, report):
                     for t in np.arange(.13, L - .1, .12):
                         rb(at(t, zb + hgt / 2), (.025, .025, hgt - .08), 'frame', -1, 'gate', .004, rot=rot, owner='exterior-pedestrian-gate')
                 rb(at(L - .09, zb + 1.0), (.03, .09, .16), 'brass', -1, 'fixture', .01, rot=rot, owner='exterior-pedestrian-gate')
-                if doors_closed:
+                if sliding_ped:
+                    leaf_ids=[n['id'] for n in k.nodes[mark:]]
+                    travel=gate['travel_mm']/1000
+                    # Track behind the boundary jamb, outside the step footprint.
+                    rect((x0-travel,hy-.035,g+.02,x1,hy+.035,g+.038),'steel',-1,'gate',
+                         'exterior-pedestrian-track','exterior-pedestrian-track')
+                    gates.append({'id':'exterior-pedestrian-gate','label':'Sliding pedestrian gate','floor':-1,'kind':'gate',
+                                  'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
+                                  'parts':[{'ids':leaf_ids,'pivot':[hx,hy,zb],'slide':[-travel,0,0]}]})
+                elif doors_closed:
                     gates.append({'id':'exterior-pedestrian-gate','label':'Pedestrian gate','floor':-1,'kind':'gate',
                                   'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
                                   'parts':[{'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[hx,hy,zb],'angle':-math.pi/2 if hinge_right else math.pi/2}]})
@@ -2305,7 +2315,7 @@ def make_scene(building, report):
             sit = [q / 1000 for q in geo['sitout_x_mm']] if geo.get('sitout_x_mm') else None
             ret = geo.get('return_steps_mm', 0) / 1000
             right = geo.get('flight_side') == 'right'
-            fx0, fx1 = x0 - .3, x1 + .3
+            fx0, fx1 = (x0,x1) if geo.get('wall_supported') else (x0 - .3, x1 + .3)
             if sit:
                 fx0, fx1 = (sit[1], fx1) if sit[0] <= x0 + .01 else (fx0, sit[0])
             rise = (land - g) / 2
@@ -2342,11 +2352,23 @@ def make_scene(building, report):
                     cz = top + .22 - th
                 rect((x0 - .3, y0 - ov, cz, x1 + .3, 0, cz + th), 'roof', 0, 'canopy', aid + '-slab', aid)
             soffit_z = cz
-            for j, xx in enumerate(np.arange(x0 - .22, x1 + .22, .11)):
-                rect((xx, y0 - ov + .06, soffit_z - .025, xx + .06, -.02, soffit_z), 'timber', 0, 'soffit', aid + f'-soffit-{j}', aid)
-            for i, xx in enumerate(np.linspace(x0 + .5, x1 - .5, 3)):
-                cylinder((xx, (y0 - ov) * .5, soffit_z - .03), .045, .01, 'lamp', 0, 'downlight')
-                k.light((xx, (y0 - ov) * .5, soffit_z - .15), 14, kind='soffit')
+            cx0,cy0,cx1,_ = [q/1000 for q in geo['canopy_bounds_mm']] if geo.get('wall_supported') else [x0-.22,y0-ov,x1+.28,0]
+            if geo.get('wall_supported'):
+                # A wall ledger and three steel cantilever brackets express the
+                # canopy connection without a freestanding post in the approach.
+                rect((cx0,-.09,cz-.15,cx1,.07,cz+.035),'frame',0,'canopy',aid+'-wall-ledger',aid)
+                rect((cx0,cy0,cz-.12,cx1,cy0+.07,cz+.025),'frame',0,'canopy',aid+'-front-rail',aid)
+                for j,xx in enumerate(np.linspace(cx0+.12,cx1-.12,3)):
+                    rect((xx-.035,cy0,cz-.12,xx+.035,.02,cz),'frame',0,'canopy',aid+f'-bracket-{j}',aid)
+                    beam((xx,-.06,cz-.42),(xx,cy0+.28,cz-.12),.035,'frame',0,'canopy')
+                    k.nodes[-1]['owner']=aid
+            slats=np.arange(cx0,cx1-.06+.001,.11) if geo.get('wall_supported') else np.arange(x0-.22,x1+.22,.11)
+            for j, xx in enumerate(slats):
+                rect((xx, cy0 + .06, soffit_z - .025, xx + .06, -.02, soffit_z), 'timber', 0, 'soffit', aid + f'-soffit-{j}', aid)
+            light_x=np.linspace(cx0+.5,cx1-.5,3) if geo.get('wall_supported') else np.linspace(x0+.5,x1-.5,3)
+            for i, xx in enumerate(light_x):
+                cylinder((xx, cy0 * .5, soffit_z - .03), .045, .01, 'lamp', 0, 'downlight')
+                k.light((xx, cy0 * .5, soffit_z - .15), 14, kind='soffit')
             if sit:
                 # Sit-out: a stone-clad column at its outer front corner carries the canopy (or balcony) edge; a
                 # raised planter of grasses runs along the front beside it and a timber bench on a stone plinth
@@ -2693,6 +2715,11 @@ def make_scene(building, report):
             L, Wd, Hh = [q / 1000 for q in feature['size_mm']]
             k.hedge(x, y, g + .01, (L, Wd, Hh), feature.get('rotation', 0))
             k.ground.append(box(x - L / 2, y - Wd / 2, x + L / 2, y + Wd / 2))
+        elif fk == 'boundary_path_light':
+            x,y=[q/1000 for q in feature['position_mm']]
+            rect((x-.10,y-.006,g+.25,x+.10,y+.018,g+.38),'frame',-1,'fixture',feature['id']+'-recess',feature['id'])
+            rect((x-.075,y+.019,g+.27,x+.075,y+.024,g+.315),'lamp',-1,'fixture',feature['id']+'-glow',feature['id'])
+            k.light((x,y+.09,g+.28),5,kind='path')
         elif fk == 'lantern':
             x, y = [q / 1000 for q in feature['position_mm']]
             rect((x - .1, y - .1, g, x + .1, y + .1, g + .02), 'frame', -1, 'fixture', feature['id'] + '-base', feature['id'])

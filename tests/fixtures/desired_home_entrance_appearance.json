@@ -1,0 +1,6 @@
+{
+  "source_commit": "34674ae",
+  "scope": "Only porch, pedestrian gate, front paving and low front-court lamps may differ. Unaffected nodes hash is from the pre-entrance scene.",
+  "unaffected_nodes": "f57d362f54e83c2ec97373b363b407c14a6a1925d1b0361431d9daa6254bb721",
+  "approved_ground_nodes": "15106f929a80a5737b84dcdb5247eff1b953e11c00fd0a601a801e4259e45458"
+}

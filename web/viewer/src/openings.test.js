@@ -194,3 +194,14 @@ test('fixed glazing stays in static geometry and has no opening target', () => {
   assert.deepEqual(describeOpenings(data, building), []);
   assert.equal(data.nodes.length, 2);
 });
+
+test('sliding gate converts plan axes, clears passage and recloses without changing its appearance',()=>{
+  const {viewer,walker:w,data}=fixture();
+  data.nodes[0]={...data.nodes[0],id:'gate',owner:'gate',floor:-1,role:'gate',position:[0,0,.8],rotation:[0,0,0],scale:[1,.05,1.6]};
+  data.gate_model=[{id:'gate',label:'Sliding gate',kind:'gate',floor:-1,base:0,sill:0,start:[-.5,0,0],axis:[1,0,0],width:1,height:1.6,initial:0,parts:[{ids:['gate'],pivot:[-.5,0,0],slide:[-1.1,0,0]}]}];
+  const before=JSON.stringify(data),c=new OpeningController(viewer,describeOpenings(data)),d=c.items[0];
+  const from=new THREE.Vector3(0,1,1),to=new THREE.Vector3(0,1,-1);
+  assert.deepEqual(d.parts[0].slide.toArray(),[-1.1,0,-0]);
+  assert.equal(w.sees(from,to),false);d.goal=1;finish(c);assert.equal(d.value,1);assert.equal(w.sees(from,to),true);
+  d.goal=0;finish(c);assert.equal(d.value,0);assert.equal(w.sees(from,to),false);assert.equal(JSON.stringify(data),before);
+});

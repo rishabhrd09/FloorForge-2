@@ -14,7 +14,7 @@ export function describeOpenings(scene, building = scene.opening_model) {
   const result = (scene.gate_model || []).map(gate => ({
     ...gate, start: point(gate.start), axis: point(gate.axis),
     center: point(gate.start).addScaledVector(point(gate.axis), gate.width / 2).addScaledVector(up, gate.height / 2),
-    parts: gate.parts.map(part => ({...part, pivot: point(part.pivot)})),
+    parts: gate.parts.map(part => ({...part, ...(part.slide ? {slide: point(part.slide)} : {pivot: point(part.pivot)})})),
   }));
   for (const o of building.openings) {
     if (o.kind === 'cased' || o.fixed) continue;

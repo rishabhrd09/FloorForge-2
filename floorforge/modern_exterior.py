@@ -238,6 +238,15 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
             "kind": "pergola", "style": "glass_roof", "z_mm": 2750, "spacing_mm": 900, "height_mm": 160,
         }, THEME, [])
         assemblies.append(patio)
+    if porch and building.get('planning', {}).get('entranceStyle') == 'wall-supported':
+        # Resolve the entrance independently of the already designed upper balcony
+        # and facade accents. No porch base or column projects into the car gateway.
+        pg = porch['geometry']
+        half = next(o for o in building['openings'] if o['kind'] == 'entry')['width'] / 2
+        pg.update(bounds_mm=[round(ex-half-450), -1200, round(ex+half+450), 0],
+                  depth_mm=1200, width_mm=round(2*half+900), sitout_x_mm=None,
+                  return_steps_mm=0, support_count=0, wall_supported=True,
+                  canopy_bounds_mm=[pg['bounds_mm'][0], -1200, round(ex+half+600), 0])
     landscape = modern_landscape(building, porch, carport, patio)
     return {
         "id": f"{THEME}-candidate-01",
@@ -314,6 +323,11 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
     }
     ped = next(g for g in frontage["gates"] if g["kind"] == "pedestrian")
     vehicle = next((g for g in frontage["gates"] if g["kind"] == "vehicle"), None)
+    if porch and porch['geometry'].get('wall_supported'):
+        # This shallow court has no safe inward swing over its entry steps.
+        # Park the unchanged slatted leaf inside the long boundary wall to the left.
+        ped.update(operation='sliding', park='left', travel_mm=ped['x1_mm']-ped['x0_mm']+40)
+        if vehicle:vehicle.update(operation='swing', leaves=2, open_deg=90)
     front_y0 = ymin + wt + 30
     landing_y = -porch["geometry"]["depth_mm"] if porch else 0
     steps_y = landing_y - 620 if porch else -900
@@ -593,6 +607,13 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         # The porch reservation is wider than its actual steps. Tile beneath it
         # too, so its side pockets do not expose the viewer's green ground plane.
         add_poly('front-tiled-court','path',front.difference(unary_union(paving)),material_role='site.flagstone')
+
+    if building.get('planning',{}).get('entranceStyle')=='wall-supported':
+        # Recess the front-court lights in the boundary instead of leaving bollards
+        # standing in the pedestrian corridor. Retain the existing warm light rhythm.
+        for f in features:
+            if f['kind']=='lantern' and f.get('position_mm',[0,1])[1]<0:
+                f.update(kind='boundary_path_light',position_mm=[f['position_mm'][0],round(ymin+wt)])
 
     return {
         "schema": "floorforge.landscape/0.2",

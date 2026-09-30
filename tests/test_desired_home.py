@@ -630,7 +630,9 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
         if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
         if n.get('owner') in affected or n['role']=='skirting':continue
         nodes.append({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
-    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==corner['nodes']
+    # The later, approved entrance cleanup changes the front porch/site only.
+    entrance=json.loads((ROOT/'tests/fixtures/desired_home_entrance_appearance.json').read_text())
+    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==entrance['approved_ground_nodes']
     for key in ('furniture','vegetation'):
         assert digest([x for x in scene[key] if x.get('floor') in (0,-1)])==baseline[key]
     assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected])==corner['colliders']
@@ -696,3 +698,49 @@ def test_icu_corner_keeps_fixed_pane_and_two_independent_wall_stacking_doors():
         handles.append(leaf['handle'][0]+leaf['slide'][0])
     assert abs(parked[0]-parked[1])>=.119  # separate tracks, including handle clearance
     assert abs(handles[0]-handles[1])>.9  # independently targetable when stacked
+
+
+def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
+    import hashlib
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    def allowed(n):
+        owner=n.get('owner','')
+        if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
+        x,y,z=n['position']
+        return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
+    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n)]
+    digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    before=json.loads((ROOT/'tests/fixtures/desired_home_entrance_appearance.json').read_text())
+    assert digest==before['unaffected_nodes']
+
+
+def test_front_gates_clear_porch_through_their_entire_motion():
+    import numpy as np
+    from shapely.geometry import MultiPoint
+    from shapely.affinity import rotate,translate
+    from floorforge.scene import transformation
+    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    nodes={n['id']:n for n in s['nodes']}
+    assert 'exterior-porch-01-column' not in nodes
+    assert not any(n['owner']=='exterior-porch-01' and n['role']=='outdoor-furniture' for n in nodes.values())
+    def solid(n):
+        vertices=np.array(s['assets'][n['asset']]['vertices']);m=transformation(n)
+        vertices=vertices@m[:3,:3].T+m[:3,3]
+        return MultiPoint(vertices[:,:2]).convex_hull,vertices[:,2].min(),vertices[:,2].max()
+    porch=[solid(n) for n in nodes.values() if n['owner']=='exterior-porch-01' and n['role'] in ('porch','step')]
+    for gate in s['gate_model']:
+        for part in gate['parts']:
+            # A conservative solid leaf envelope includes the spaces between slats.
+            solids=[solid(nodes[i]) for i in part['ids']]
+            from shapely.ops import unary_union
+            leaf=unary_union([p for p,_,_ in solids]).convex_hull
+            lo,hi=min(a for _,a,_ in solids),max(b for _,_,b in solids)
+            for t in np.linspace(0,1,181):
+                p=translate(leaf,xoff=part['slide'][0]*t,yoff=part['slide'][1]*t) if 'slide' in part else rotate(leaf,part['angle']*t,origin=part['pivot'][:2],use_radians=True)
+                for obstacle,z0,z1 in porch:
+                    if min(hi,z1)>max(lo,z0):assert p.intersection(obstacle).area<1e-8
+    # The front porch stays well left of the vehicle gateway, including nosings.
+    vehicle=next(g for g in s['gate_model'] if g['id']=='exterior-vehicle-gate')
+    assert vehicle['start'][0]-max(p.bounds[2] for p,_,_ in porch)>.30
+    ped=next(g for g in s['gate_model'] if g['id']=='exterior-pedestrian-gate')
+    assert ped['parts'][0]['slide'][0]<-ped['width']
