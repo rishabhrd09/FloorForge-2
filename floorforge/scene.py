@@ -69,6 +69,15 @@ def make_scene(building, report):
     rng = random.Random(int(rng_seed[:12], 16))
     k = Kit(rng)
     materials = material_library(style, interior_theme, modern)
+    ivory_floor = b.get('planning',{}).get('interiorFloor') == 'ivory-vitrified'
+    if ivory_floor:
+        # Dedicated floor finishes keep stone counters and outdoor paving intact.
+        # Two tiles per repeat give a quiet 1200 x 600 mm rectangular grid.
+        materials['ivory-vitrified'] = dict(color='#e2d9c8',alt='#d3c5ae',roughness=.28,
+            texture='tile',kind='tile',tile_m=[2.4,1.2],params=[2,.003,.065,.6],
+            normal=.35,clearcoat=.16,clearcoat_roughness=.22)
+        materials['ivory-vitrified-matte'] = {**materials['ivory-vitrified'],
+            'roughness':.72,'roughness_scale':1.7,'params':[2,.003,.065,0],'normal':.5,'clearcoat':0}
     node, rect, rb, cylinder, ball, beam, poly_mesh = k.node, k.rect, k.rb, k.cylinder, k.ball, k.beam, k.poly_mesh
     cube, cyl, asset = k.cube, k.cyl, k.asset
     gates = []; door_motion = {}
@@ -378,6 +387,8 @@ def make_scene(building, report):
         for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] not in ({'stair'} | NON_WALKABLE)]:
             p = Polygon(np.array(s['clear']) / 1000)
             mat = 'woodfloor' if s['kind'] in ('bedroom', 'study') else 'wetfloor' if s['kind'] in ('bathroom', 'powder-room', 'utility','drying-room') else 'deck' if (s['kind'] == 'terrace' and modern) else 'floor'
+            if ivory_floor and s['kind'] not in OUTDOOR:
+                mat = 'ivory-vitrified-matte' if s['kind'] in ('bathroom','powder-room','utility','drying-room') else 'ivory-vitrified'
             poly_mesh(p, level + .002, level + .009, mat, f, 'finish', s['id'] + '/floor', s['id'])
         # Ceiling coves with a concealed warm glow line.
         for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'drawing-room', 'family', 'bedroom', 'dining')]:

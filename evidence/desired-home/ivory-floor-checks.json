@@ -1,0 +1,9 @@
+{
+  "checks": [
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

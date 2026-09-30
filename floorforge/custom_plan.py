@@ -26,11 +26,12 @@ def fail(code,message,ident=None,floor=None,**extra):
 
 
 def normalize(plan,storeys):
-    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle'}:
+    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor'}:
         fail('PLAN_SCHEMA','Custom plan accepts schema, units, wallThickness, floors and stairs.')
     if plan.get('schema')!=SCHEMA or plan.get('units')!='mm':
         fail('PLAN_VERSION','Use floorforge.custom-plan/1 in millimetres.')
     result=copy.deepcopy(plan); seen=set()
+    if result.get('interiorFloor','standard') not in ('standard','ivory-vitrified'):fail('FLOOR_STYLE','Choose standard or ivory-vitrified interior flooring.')
     if 'doorsClosed' in result and type(result['doorsClosed']) is not bool:fail('DOOR_STATE','doorsClosed must be true or false.')
     if result.get('frontCourt','planted') not in ('planted','tiled'):fail('SITE_STYLE','Choose planted or tiled front court.')
     if result.get('facadeStyle','plain') not in ('plain','warm-layered'):fail('FACADE_STYLE','Choose plain or warm-layered facade finishes.')
@@ -512,6 +513,7 @@ def compile_plan(intent):
        'spaces':spaces,'walls':walls,'openings':openings,'stairs':stairs,'floor_plates':plates,'roofs':roofs,'guards':guards,
        'planHash':intent['planHash'],'draftRevision':intent.get('draftRevision',0),'banner':__import__('floorforge').BANNER}
     if 'doorsClosed' in plan:b['planning']['doorsClosed']=plan['doorsClosed']
+    if 'interiorFloor' in plan:b['planning']['interiorFloor']=plan['interiorFloor']
     if 'parkedCar' in plan:b['planning']['parkedCar']=plan['parkedCar']
     if 'facadeStyle' in plan:b['planning']['facadeStyle']=plan['facadeStyle']
     if 'entranceStyle' in plan:b['planning']['entranceStyle']=plan['entranceStyle']

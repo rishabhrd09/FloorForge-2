@@ -102,7 +102,7 @@ def project():
         opening('u-office-south','u-office','left',200,1100,'window',1500,750),
         dict(**opening('u-bedroom-balcony-door','u-bed-south','rear',900,2700,'glazed'),sliding=True),
         opening('u-stair-window','u-stair','front',50,1274,'window',2500,350)]
-    plan=dict(schema='floorforge.custom-plan/1',units='mm',wallThickness=150,frontCourt='tiled',facadeStyle='warm-layered',entranceStyle='wall-supported',doorsClosed=True,parkedCar=dict(x=17030,y=2600),
+    plan=dict(schema='floorforge.custom-plan/1',units='mm',wallThickness=150,frontCourt='tiled',facadeStyle='warm-layered',entranceStyle='wall-supported',interiorFloor='ivory-vitrified',doorsClosed=True,parkedCar=dict(x=17030,y=2600),
               floors=[dict(id='floor-0',rooms=g,walls=[],openings=go),dict(id='floor-1',rooms=u,walls=[dict(id='u-balcony-privacy',a=[15463,8650],b=[18063,8650],height=1800,finishStyle='timber-screen'),dict(id='u-atrium-exterior',a=[11375,5725],b=[11375,8325]),dict(id='u-atrium-exterior-return-a',a=[10899,5375],b=[10899,5725]),dict(id='u-atrium-exterior-return-b',a=[10899,5725],b=[11375,5725])],openings=uo)],
               stairs=[dict(id='south-stair-core',roomIds=['g-stair','u-stair'],flightWidth=1100,well=200,landing=1162,tread=250,rotation=90)])
     p=dict(schema='floorforge.project/0.4',brief=dict(title='My Desired Home',width_mm=18288,depth_mm=16764,road_bearing_deg=90,

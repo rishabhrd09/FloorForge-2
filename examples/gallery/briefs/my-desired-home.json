@@ -29,6 +29,7 @@
     "frontCourt": "tiled",
     "facadeStyle": "warm-layered",
     "entranceStyle": "wall-supported",
+    "interiorFloor": "ivory-vitrified",
     "doorsClosed": true,
     "parkedCar": {
       "x": 17030,
@@ -1679,6 +1680,7 @@
       "frontCourt": "tiled",
       "facadeStyle": "warm-layered",
       "entranceStyle": "wall-supported",
+      "interiorFloor": "ivory-vitrified",
       "doorsClosed": true,
       "parkedCar": {
         "x": 17030,

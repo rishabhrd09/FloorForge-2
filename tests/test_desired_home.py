@@ -25,12 +25,22 @@ def historic_items(scene,key):
     for entry in removed['removed_'+key]:items.insert(entry['index'],entry['item'])
     return items
 
+def historic_interior_floor(n):
+    # The later whole-home flooring approval changes only interior finish materials.
+    if n['material'] in ('ivory-vitrified','ivory-vitrified-matte'):
+        rooms={r['id']:r for f in project()['customPlan']['floors'] for r in f['rooms']}
+        kind=rooms[n['owner']]['kind']
+        assert n['id']==n['owner']+'/floor' and n['role']=='finish'
+        mat='woodfloor' if kind in ('bedroom','study') else 'wetfloor' if kind in ('bathroom','powder-room','utility','drying-room') else 'floor'
+        return {**n,'material':mat}
+    return n
+
 def historic_finish(n):
     # The later approved veranda change affects only this surface material.
     if n['id']=='g-veranda/stone-finish':
         assert n['material']=='veranda-jodhpuri'
         return {**n,'material':'porch-limestone'}
-    return n
+    return historic_interior_floor(n)
 
 def kitchen_casework_node(n):
     if n.get('owner','').startswith('g-kitchen/modular-kitchen'):return True

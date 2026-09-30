@@ -9,6 +9,7 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.model import DesignError
 from scripts.build_desired_home import project
+from test_desired_home import historic_interior_floor
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -24,7 +25,7 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
     assert p['customPlan']['floors'][0]==before['ground_plan']
     for key,value in before['ground_building'].items():
         assert digest([x for x in b[key] if x.get('floor')==0])==value
-    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
+    nodes=[{k:v for k,v in historic_interior_floor(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
            for n in scene['nodes'] if n['floor'] in (0,-1) and n['role']!='plinth']
     assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
     for key in ('furniture','colliders','vegetation'):
