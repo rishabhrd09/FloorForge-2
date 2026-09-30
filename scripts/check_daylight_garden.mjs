@@ -25,11 +25,11 @@ try {
  const spawn=async(x,y,z=0)=>p.evaluate(({x,y,z})=>{const w=__ff.viewer.walker;w.teleport(w.position.clone().set(x,z,-y));},{x,y,z});
  const door=async(id,goal)=>p.evaluate(({id,goal})=>{const v=__ff.viewer,d=v.openings.items.find(o=>o.id===id);d.goal=goal;for(let i=0;i<100;i++)v.openings.update(1/60);return d.value===goal;},{id,goal});
  const walk=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;let reached=false;for(let i=0;i<600;i++){const dx=x-w.position.x,dz=-y-w.position.z;if(Math.hypot(dx,dz)<.06){reached=true;break;}w.yaw=Math.atan2(-dx,-dz);w.update(1/60,{forward:1,strafe:0});}return {reached,position:w.position.toArray()};},{x,y});
- const leaves=['timber-left','timber-right','mesh-left','mesh-right'].map(x=>'g-living-veranda/'+x);
- check('Living doorway has four independent timber and mesh leaves',await p.evaluate(ids=>ids.every(id=>__ff.viewer.openings.items.some(o=>o.id===id&&o.clearWidth===2.46)),leaves));
+ const leaves=['timber-left','timber-right','mesh-right'].map(x=>'g-living-veranda/'+x);
+ check('Living doorway has hinged timber and sliding mesh leaves',await p.evaluate(ids=>ids.every(id=>__ff.viewer.openings.items.some(o=>o.id===id)),leaves));
  await spawn(10.2,7.1);check('Closed living doors block walking',!(await walk(12.8,7.1)).reached);
  await spawn(14,7.1);for(const id of leaves)check(id+' opens',await door(id,1));
- await spawn(10.2,7.1);check('Open living doors allow walking',(await walk(12.8,7.1)).reached);
+ await spawn(10.2,7.7);check('Open living doors allow walking',(await walk(12.8,7.7)).reached);
  const route=[];for(const [x,y] of [[12.2,6.55],[14.5,6.55],[17.5,6.55],[16.1,6.1],[16.1,5.15]])route.push(await walk(x,y));console.log('veranda route',route);check('Veranda route reaches outside parking approach',route.every(r=>r.reached));
  await spawn(14.3,6.9);check('Drawing room door opens',await door('g-drawing-veranda',1));await walk(13.15,6.9);check('Drawing room remains accessible',(await walk(13.15,5.1)).reached);
  await spawn(14.45,7.45);check('ICU veranda slider opens',await door('g-care-veranda',1));check('ICU remains accessible',(await walk(14.45,9.2)).reached);

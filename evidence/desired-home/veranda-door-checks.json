@@ -5,7 +5,7 @@
       "pass": true
     },
     {
-      "name": "Four independently controlled leaves",
+      "name": "Two hinged timber leaves and one sliding mesh panel",
       "pass": true
     },
     {
@@ -29,15 +29,11 @@
       "pass": true
     },
     {
-      "name": "g-living-veranda/mesh-left opens",
-      "pass": true
-    },
-    {
       "name": "g-living-veranda/mesh-right opens",
       "pass": true
     },
     {
-      "name": "Both layers open allow full central passage",
+      "name": "Stacked mesh clears the right-hand passage",
       "pass": true
     },
     {
@@ -50,10 +46,6 @@
     },
     {
       "name": "g-living-veranda/timber-right closes",
-      "pass": true
-    },
-    {
-      "name": "g-living-veranda/mesh-left closes",
       "pass": true
     },
     {

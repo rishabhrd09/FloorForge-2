@@ -269,11 +269,17 @@ def plan_elements(b, scene, floor=0):
             continue
         if o.get('timberScreen'):
             radius=(o['width']-140)/2-4
-            for normal in (n,-n):
+            for normal in ((n,) if o.get('screenSliding') else (n,-n)):
                 for h,along in ((p+u*70+normal*105,u),(q-u*70+normal*105,-u)):
                     elems.append(L(h,h+normal*radius,INK,.2,'A-DOOR'))
                     arc=[h+radius*(along*math.cos(th)+normal*math.sin(th)) for th in np.linspace(0,math.pi/2,25)]
                     for v0,v1 in zip(arc,arc[1:]):elems.append(L(v0,v1,INK,.1,'A-DOOR',True))
+            if o.get('screenSliding'):
+                elems.append(L(p+u*70-n*105,m-n*105,GLASS,.2,'A-DOOR'))
+                elems.append(L(m-n*245,q-u*70-n*245,GLASS,.2,'A-DOOR'))
+                tip=m-n*350-u*200
+                elems.append(L(tip+u*400,tip,INK,.13,'A-DOOR'))
+                elems.append(L(tip,tip+u*80+n*50,INK,.13,'A-DOOR'))
         elif o['kind'] == 'glazed':
             half = o['width'] / 2 + 40
             for s0, s1, off in ((0, half, 22), (o['width'] - half, o['width'], -22)):

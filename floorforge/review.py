@@ -36,7 +36,7 @@ def swing_sector(o,w,rooms):
     if o.get('timberScreen'):
         radius=(o['width']-140)/2-4
         return unary_union([Polygon([h]+[h+radius*(along*math.cos(th)+normal*math.sin(th)) for th in np.linspace(0,math.pi/2,25)])
-                            for normal in (n,-n) for h,along in ((p+u*70+normal*105,u),(q-u*70+normal*105,-u))])
+                            for normal in ((n,) if o.get('screenSliding') else (n,-n)) for h,along in ((p+u*70+normal*105,u),(q-u*70+normal*105,-u))])
     hinge,free=(p,q) if o.get('hinge','start')=='start' else (q,p)
     h=hinge+n*t;along=(free-hinge)/o['width']
     return Polygon([h]+[h+o['width']*(along*math.cos(th)+n*math.sin(th)) for th in np.linspace(0,math.pi/2,13)])

@@ -584,7 +584,12 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     assert not panes
     motion=s['door_motion'][op['id']]
     assert motion['clearWidth']==2.46
-    assert len(motion['layers'])==4
+    assert len(motion['layers'])==3
+    assert s['materials']['insect-mesh']['color']=='#f5f3ed'
     assert len({i for leaf in motion['layers'] for i in leaf['ids']})==sum(len(leaf['ids']) for leaf in motion['layers'])
     for leaf in motion['layers']:
-        assert leaf['ids'] and abs(abs(leaf['angle'])-__import__('math').pi/2)<1e-7
+        assert leaf['ids']
+        if '/mesh-' in leaf['id']:
+            assert 'slide' in leaf and 'angle' not in leaf
+            assert abs(__import__('math').hypot(*leaf['slide'][:2])-1.23)<1e-7
+        else:assert abs(abs(leaf['angle'])-__import__('math').pi/2)<1e-7

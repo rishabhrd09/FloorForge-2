@@ -52,7 +52,7 @@ def project():
         opening('g-drawing-veranda','g-veranda','front',1250,900,'door',2100),
         opening('g-drawing-veranda-window','g-veranda','front',2550,1000,'window',1500,750),
         opening('g-drawing-parking-window','g-drawing','right',700,3000,'window',1500,750),
-        dict(**opening('g-living-veranda','g-veranda','left',0,2600,'door'),timberScreen=True,swingRoomId='g-veranda'),
+        dict(**opening('g-living-veranda','g-veranda','left',0,2600,'door'),timberScreen=True,screenSliding=True,swingRoomId='g-veranda'),
         opening('g-kitchen-east','g-kitchen','front',900,2600,'window',1100,1100),
         opening('g-kitchen-south','g-kitchen','left',300,900,'door',2100),
         opening('g-kitchen-wash','g-kitchen','left',2250,900,'door',2100),

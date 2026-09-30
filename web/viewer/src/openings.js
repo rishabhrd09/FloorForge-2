@@ -34,8 +34,8 @@ export function describeOpenings(scene, building = scene.opening_model) {
       const motion = scene.door_motion[o.id];
       if (motion.layers) {
         for (const leaf of motion.layers) result.push({...desc, id: leaf.id,
-          label: `${leaf.label} · ${label}`, initial: 0, clearWidth: motion.clearWidth,
-          handle: point(leaf.handle), parts: [{ids: leaf.ids, pivot: point(leaf.pivot), angle: leaf.angle}]});
+          label: `${leaf.label} · ${label}`, initial: 0, clearWidth: leaf.clearWidth ?? motion.clearWidth,
+          handle: point(leaf.handle), parts: [{ids: leaf.ids, ...(leaf.slide ? {slide: point(leaf.slide)} : {pivot: point(leaf.pivot), angle: leaf.angle})}]});
         continue;
       }
       desc.parts.push({...motion, pivot: point(motion.pivot)});

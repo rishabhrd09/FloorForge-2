@@ -680,15 +680,20 @@ def make_scene(building, report):
             continue
         if o.get('timberScreen'):
             # Two full timber leaves outside, two independent insect-screen leaves inside.
-            # Opposing swings keep the layers separate and clear the full central passage.
+            # Timber swings outward; the optional screen bypasses its fixed companion.
             outside=space_poly[o['swing']]
-            materials['insect-mesh']={'color':'#3b403b','roughness':.9,'alpha':.09,'kind':'insect-mesh','spacing':.008,'wire':.00035}
+            materials['insect-mesh']={'color':'#f5f3ed','roughness':.9,'alpha':.09,'kind':'insect-mesh','spacing':.008,'wire':.00035}
+            materials['screen-wire-white']={'color':'#f5f3ed','roughness':.9}
             if not outside.covers(Point(*(p+uv*ow/2+nv*.3))):nv=-nv
             for xx in (.035,ow-.035):part(xx,0,z0+zh/2,.07,.30,zh,'walnut')
             part(ow/2,0,z0+zh-.035,ow,.30,.07,'walnut')
             layers=[];lw=(ow-.14)/2-.004;lh=zh-.09
-            for layer,depth,direction in [('timber',.105,1),('mesh',-.105,-1)]:
+            if o.get('screenSliding'):
+                # Recessed floor guide and slim head track stay inside the existing reveal.
+                for zz in (z0+.008,z0+zh-.054):part(ow/2,-.175,zz,ow-.14,.18,.016,'frame')
+            for layer,layer_depth,direction in [('timber',.105,1),('mesh',-.105,-1)]:
                 for side in range(2):
+                    depth=layer_depth-(.14*side if layer=='mesh' and o.get('screenSliding') else 0)
                     mark=len(k.nodes);sgn=1 if side==0 else -1
                     hinge_x=.07 if side==0 else ow-.07
                     cx=hinge_x+sgn*lw/2
@@ -712,7 +717,7 @@ def make_scene(building, report):
                         for zz in np.arange(-mh/2,mh/2+.001,.008):
                             wires.append(trimesh.creation.box(extents=(mw,.00035,.00035)).apply_translation((0,.0002,zz)))
                         q=p+uv*cx+nv*depth
-                        node(asset(trimesh.util.concatenate(wires)),'frame',(q[0],q[1],z0+.13+mh/2),rot=(0,0,ang),floor=o['floor'],role='screen-wire',owner=o['id'])
+                        node(asset(trimesh.util.concatenate(wires)),'screen-wire-white',(q[0],q[1],z0+.13+mh/2),rot=(0,0,ang),floor=o['floor'],role='screen-wire',owner=o['id'])
                         # Filtered mesh surface in the live view; fine wire geometry remains
                         # in exports. The thin closed surface supplies stable screen collision.
                         part(cx,depth,z0+.13+mh/2,mw,.001,mh,'insect-mesh','door')
@@ -725,10 +730,11 @@ def make_scene(building, report):
                     pivot=p+uv*hinge_x+nv*depth
                     angle=sgn*direction*math.atan2(uv[0]*nv[1]-uv[1]*nv[0],float(np.dot(uv,nv)))
                     handle=p+uv*hx+nv*depth
+                    if layer=='mesh' and o.get('screenSliding') and side==0:continue
                     layers.append({'id':f"{o['id']}/{layer}-{'left' if side==0 else 'right'}",
                                    'label':f"{'Timber door' if layer=='timber' else 'Mesh screen'} · {'left' if side==0 else 'right'} leaf",
                                    'ids':[n['id'] for n in k.nodes[mark:]],
-                                   'pivot':[float(pivot[0]),float(pivot[1]),base], 'angle':angle,
+                                   **({'slide':[-float(uv[0])*(lw+.004),-float(uv[1])*(lw+.004),0], 'clearWidth':lw-.06} if layer=='mesh' and o.get('screenSliding') else {'pivot':[float(pivot[0]),float(pivot[1]),base], 'angle':angle}),
                                    'handle':[float(handle[0]),float(handle[1]),z0+1.15]})
             door_motion[o['id']]={'layers':layers,'clearWidth':ow-.14}
             continue

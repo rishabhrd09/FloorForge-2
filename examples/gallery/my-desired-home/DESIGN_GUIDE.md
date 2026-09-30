@@ -51,4 +51,4 @@ The cell overview summarizes the largest room overlap per cell. It is not a seco
 
 The supplied roof stair is an open inter-floor well with a 3.162 m-long rotated slab opening. Bedrooms 2 and 3, office, overlooking lobby and east/north terraces are upstairs. The living atrium is L-shaped, 4.800 × 2.800 m overall with 1.10 m guards; the lower ceiling and upper slab are cut at this opening. Morning light reaches east-facing rooms; the application sun study uses an illustrative location until a real site is entered.
 
-Plan hash: 7295ab5190de48ac400e85caf416462ead0086782df45c57b7ada44d3d1212ce
+Plan hash: c0368f37019dc646f3cfbb385b1e78f7a0d98900827b79f0242f156c0a0e4b76

@@ -762,6 +762,7 @@
             "sill": 0,
             "hinge": "start",
             "timberScreen": true,
+            "screenSliding": true,
             "swingRoomId": "g-veranda"
           },
           {
@@ -2322,6 +2323,7 @@
               "sill": 0,
               "hinge": "start",
               "timberScreen": true,
+              "screenSliding": true,
               "swingRoomId": "g-veranda"
             },
             {

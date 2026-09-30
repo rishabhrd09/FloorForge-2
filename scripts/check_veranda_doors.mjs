@@ -19,8 +19,8 @@ try {
  const spawn=async(x,y,z=0)=>p.evaluate(({x,y,z})=>{const w=__ff.viewer.walker;w.teleport(w.position.clone().set(x,z,-y));},{x,y,z});
  const door=async(id,goal)=>p.evaluate(({id,goal})=>{const v=__ff.viewer,d=v.openings.items.find(o=>o.id===id);d.goal=goal;for(let i=0;i<100;i++)v.openings.update(1/60);return d.value===goal;},{id,goal});
  const walk=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;let reached=false;for(let i=0;i<600;i++){const dx=x-w.position.x,dz=-y-w.position.z;if(Math.hypot(dx,dz)<.06){reached=true;break;}w.yaw=Math.atan2(-dx,-dz);w.update(1/60,{forward:1,strafe:0});}return {reached,position:w.position.toArray()};},{x,y});
- const leafIds=['timber-left','timber-right','mesh-left','mesh-right'].map(x=>'g-living-veranda/'+x);
- check('Four independently controlled leaves',await p.evaluate(ids=>ids.every(id=>{const d=__ff.viewer.openings.items.find(o=>o.id===id);return d&&d.parts.length===1&&d.handle&&Math.abs(d.clearWidth-2.46)<.001;}),leafIds));
+ const leafIds=['timber-left','timber-right','mesh-right'].map(x=>'g-living-veranda/'+x);
+ check('Two hinged timber leaves and one sliding mesh panel',await p.evaluate(ids=>ids.every(id=>{const d=__ff.viewer.openings.items.find(o=>o.id===id);return d&&d.parts.length===1&&d.handle&&(id.includes('/mesh-')?d.parts[0].slide&&Math.abs(d.clearWidth-1.166)<.001:Math.abs(d.clearWidth-2.46)<.001);}),leafIds));
  await spawn(10.2,7.1);check('Closed timber and mesh block walking',!(await walk(12.8,7.1)).reached);
  await spawn(14,7.1);
  for(const id of leafIds.slice(0,2))check(id+' opens',await door(id,1));
@@ -30,7 +30,7 @@ try {
  await spawn(14,7.1);for(const id of leafIds.slice(2))check(id+' opens',await door(id,1));
  await shot('veranda-doors-open',[14.2,1.6,-7.1],[11.35,1.25,-7.1],70);
  await shot('living-doors-garden-view',[9.8,1.6,-7.1],[15.6,1.0,-7.5],70);
- await spawn(10.2,7.1);check('Both layers open allow full central passage',(await walk(13,7.1)).reached);
+ await spawn(10.2,7.7);check('Stacked mesh clears the right-hand passage',(await walk(13,7.7)).reached);
  // Open handles move with their leaves and can still be targeted for closing.
  check('Open leaves remain individually targetable',await p.evaluate(ids=>{const v=__ff.viewer;return ids.every(id=>{const d=v.openings.items.find(o=>o.id===id);const h=d.handle.clone().applyMatrix4(d.parts[0].group.matrixWorld);const eye=h.clone();eye.z=-7.1;eye.y=1.63;v.walker.position.set(eye.x,0,eye.z);const found=v.openings.findTarget(eye,h.clone().sub(eye).normalize());return found?.id===id;});},leafIds));
  await spawn(14,7.1);for(const id of leafIds)check(id+' closes',await door(id,0));
