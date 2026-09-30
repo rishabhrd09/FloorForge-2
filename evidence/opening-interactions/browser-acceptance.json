@@ -1,0 +1,166 @@
+{
+  "checks": [
+    {
+      "name": "Saved example has an interactive object for every door and window",
+      "pass": true
+    },
+    {
+      "name": "Window is reachable from one side with an Open prompt",
+      "pass": true
+    },
+    {
+      "name": "F opens the actual window geometry",
+      "pass": true,
+      "data": {
+        "value": 1,
+        "goal": 1,
+        "message": "",
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          -0.75,
+          1
+        ]
+      }
+    },
+    {
+      "name": "The same window is reachable from the opposite side",
+      "pass": true
+    },
+    {
+      "name": "Tap/click closes that same window",
+      "pass": true
+    },
+    {
+      "name": "Room door is reachable",
+      "pass": true
+    },
+    {
+      "name": "F closes the room door",
+      "pass": true,
+      "data": {
+        "value": 0,
+        "goal": 0,
+        "message": "",
+        "matrix": [
+          6.123233995736766e-17,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1,
+          0,
+          6.123233995736766e-17,
+          0,
+          -7.58,
+          0,
+          -11.78,
+          1
+        ]
+      }
+    },
+    {
+      "name": "F reopens the room door",
+      "pass": true
+    },
+    {
+      "name": "Balcony glass leaf has an Open fully action",
+      "pass": true
+    },
+    {
+      "name": "Balcony leaf clears the wider opening",
+      "pass": true,
+      "data": {
+        "value": 1,
+        "goal": 1,
+        "message": "",
+        "matrix": [
+          6.123233995736766e-17,
+          0,
+          -1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          6.123233995736766e-17,
+          0,
+          10.706,
+          0,
+          7.606000000000001,
+          1
+        ]
+      }
+    },
+    {
+      "name": "Typing F in a form does not operate a door",
+      "pass": true
+    },
+    {
+      "name": "New G+2 scene supports interactions without a companion building file",
+      "pass": true
+    },
+    {
+      "name": "Custom authored door has the same interaction",
+      "pass": true
+    },
+    {
+      "name": "Custom authored door closes with its own stable object ID",
+      "pass": true,
+      "data": {
+        "value": 0,
+        "goal": 0,
+        "message": "",
+        "matrix": [
+          6.123233995736766e-17,
+          0,
+          -1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          6.123233995736766e-17,
+          0,
+          8.73,
+          0,
+          -1.1799999999999997,
+          1
+        ]
+      }
+    },
+    {
+      "name": "Input review names overriding inputs and unapplied requests",
+      "pass": true
+    },
+    {
+      "name": "Input coverage stays visible outside the review dialog",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

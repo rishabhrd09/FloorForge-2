@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "name": "All five guide issues are present without a clipped inner list",
+      "pass": true
+    },
+    {
+      "name": "Each floor shows its own issue count",
+      "pass": true
+    },
+    {
+      "name": "Conversion and guide actions stay in the desktop viewport",
+      "pass": true
+    },
+    {
+      "name": "Ground guide has exactly 16 cells and retains every painted label",
+      "pass": true
+    },
+    {
+      "name": "Selecting an issue switches to the affected upper floor",
+      "pass": true
+    },
+    {
+      "name": "Conversion stays reachable on a phone without horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Custom validation reports both empty floors together",
+      "pass": true
+    },
+    {
+      "name": "Opening saved guides explicitly preserves active Custom Plan",
+      "pass": true
+    },
+    {
+      "name": "Return to Custom Plan keeps authored geometry",
+      "pass": true
+    },
+    {
+      "name": "Reported board clears wall topology and reaches genuine room-size/access validation",
+      "pass": true
+    },
+    {
+      "name": "Generated door connects Living to Veranda",
+      "pass": true
+    },
+    {
+      "name": "Generated window connects Living to Courtyard",
+      "pass": true
+    },
+    {
+      "name": "Model, scene and report share the authored revision hash",
+      "pass": true
+    },
+    {
+      "name": "Input coverage remains available without displacing the design",
+      "pass": true
+    },
+    {
+      "name": "Zero-bedroom custom geometry can submit from the main form",
+      "pass": true
+    },
+    {
+      "name": "Exact metric plot dimensions remain valid when displayed in feet",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "Failed generation retains the stale warning and disables current-design exports",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

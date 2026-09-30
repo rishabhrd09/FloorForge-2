@@ -40,12 +40,13 @@ DEFAULTS = {
     'solar_date': '2026-03-21', 'solar_hour': 15.,
     'soil': 'unknown', 'plinth_mm': 450, 'floor_height_mm': 3150,
     'rate_low_inr_ft2': 2000., 'rate_high_inr_ft2': 2800.,
-    'cost_contingency_pct': 10., 'variant': 0,
+    'cost_contingency_pct': 10., 'variant': 0, 'roof_access': False,
     'exterior_theme': 'modern_tropical', 'interior_theme': 'bright_natural',
     'change_policy': 'exterior_refinement', 'interior_layout_locked': True,
     'seed': 0, 'theme_version': '1',
 }
-SOURCE_PRIORITY = {'defaults':0, 'derived':5, 'survey':10, 'text':20, 'sketch':30, 'grid':40, 'plan':40, 'edit':50}
+SOURCE_PRIORITY = {'defaults':0, 'derived':5, 'survey':10, 'text':20, 'sketch':30, 'grid':40, 'plan':40, 'edit':50,
+                   'form':60, 'proposal':70}
 STYLES = {
     'warm': {'label':'Warm stone & timber','wall':'#e5ddc9','accent':'#827762','wood':'#785035','frame':'#293732','roof':'#3a413b','signature':'Deep framed portal, stone blade and timber soffit'},
     'minimal': {'label':'Quiet modern','wall':'#e9e8df','accent':'#777d79','wood':'#907356','frame':'#252e2e','roof':'#424c4a','signature':'Thin horizontal canopies and a recessed steel entry'},

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
+    "test": "node --test src/*.test.js",
     "watch": "node build.mjs --watch"
   },
   "dependencies": {

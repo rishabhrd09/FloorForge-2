@@ -18,6 +18,8 @@ from .model import sha, STYLES, enu_to_local
 from .exterior import apply_exterior_preferences, get_exterior_theme, get_interior_theme
 from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT
 from .frontage import gate_openings
+from .plan_geometry import plate, roof, geometry, floor_outline
+from .spaces import OUTDOOR, NON_WALKABLE
 
 __all__ = ['make_scene', 'glb_bytes', 'transformation', 'extrude', 'rounded_box', 'opening_polygon']
 
@@ -47,6 +49,11 @@ TERRACE_FINISH = {'modern_tropical': {'slab': 'roof', 'cap': 'frame', 'pergola':
 def make_scene(building, report):
     b = building if building.get('exterior') else apply_exterior_preferences(building)
     v = b['brief']; exterior = b['exterior']; theme_id = exterior['theme']
+    custom = bool(b.get('planning',{}).get('custom'))
+    from .rooftop import with_rooftop_objects
+    rb_model = with_rooftop_objects(b)
+    rooftop = b.get('rooftop')
+    metres = lambda p: pscale(p,xfact=.001,yfact=.001,origin=(0,0))
     modern = theme_id == 'modern_tropical'
     facade_style = {'warm_modern_minimal': 'minimal', 'tropical_verandah': 'tropical', 'earth_terracotta': 'terracotta',
                     'modern_tropical': 'minimal'}.get(theme_id, v['style'])
@@ -64,6 +71,8 @@ def make_scene(building, report):
     materials = material_library(style, interior_theme, modern)
     node, rect, rb, cylinder, ball, beam, poly_mesh = k.node, k.rect, k.rb, k.cylinder, k.ball, k.beam, k.poly_mesh
     cube, cyl, asset = k.cube, k.cyl, k.asset
+    gates = []; door_motion = {}
+    doors_closed = b.get('planning',{}).get('doorsClosed',False)
     lights, colliders, furniture, furnishing = k.lights, k.colliders, k.furniture, k.furnishing
     upgraded_interior = modern or interior_id != 'current'
     M = {  # interior material roles (legacy palette keeps its original assignments)
@@ -75,7 +84,7 @@ def make_scene(building, report):
     }
 
     xmin, ymin, xmax, ymax = plot.bounds
-    hosts = {w['id']: w for w in b['walls']}
+    hosts = {w['id']: w for w in rb_model['walls']}
     entry = next(o for o in b['openings'] if o['kind'] == 'entry'); ew = hosts[entry['wall_id']]
     u = (np.array(ew['b']) - ew['a']) / math.dist(ew['a'], ew['b']); em = np.array(ew['a']) + u * (entry['offset'] + entry['width'] / 2); ex = em[0] / 1000
     landscape = exterior.get('landscape', {}) or {}
@@ -83,7 +92,9 @@ def make_scene(building, report):
     features = landscape.get('features', []) if theme_id != 'current' else []
     assemblies = exterior.get('assemblies', []) if theme_id != 'current' else []
     porch_asm = next((a for a in assemblies if a['geometry'].get('kind') == 'porch'), None)
-    wall_union = {f: unary_union([Polygon(np.array(w['polygon']) / 1000) for w in b['walls'] if w['floor'] == f]) for f in range(storeys)}
+    # Fully open zoning edges cannot support art, cabinetry, or skirting.
+    open_hosts = {o['wall_id'] for o in b['openings'] if o.get('openSide')}
+    wall_union = {f: unary_union([Polygon(np.array(w['polygon']) / 1000) for w in b['walls'] if w['floor'] == f and w['id'] not in open_hosts]) for f in range(storeys)}
     opening_polys = {f: [] for f in range(storeys)}
     for o in b['openings']:
         opening_polys[o['floor']].append((o, pscale(opening_polygon(hosts[o['wall_id']], o, 60), xfact=.001, yfact=.001, origin=(0, 0))))
@@ -139,8 +150,20 @@ def make_scene(building, report):
         else:
             fh, sh, solid, cap, pier_mat, tall = .72 - g, .65 - g, .72 - g, 'stone', 'stone', 1.35 - g
         for xa, ya, xb, yb in [(xmin, ymin, xmin + wt, ymax), (xmax - wt, ymin, xmax, ymax), (xmin, ymax - wt, xmax, ymax)]:
-            rect((xa, ya, g, xb, yb, g + sh), 'wall', role='site')
-            rect((xa - .012, ya - .012, g + sh, xb + .012, yb + .012, g + sh + (.035 if modern else .04)), cap, role='site')
+            # Rear wings can meet the boundary. Do not draw a second site wall
+            # or its dark cap through their interior finishes.
+            boundary_run = box(xa, ya, xb, yb)
+            cap_run = box(xa - .012, ya - .012, xb + .012, yb + .012)
+            if custom:
+                boundary_run = boundary_run.difference(fp.buffer(.02))
+                cap_run = cap_run.difference(fp.buffer(.02))
+                for part in _parts(boundary_run):
+                    poly_mesh(part, g, g + sh, 'wall', role='site')
+                for part in _parts(cap_run):
+                    poly_mesh(part, g + sh, g + sh + (.035 if modern else .04), cap, role='site')
+            else:
+                rect((xa, ya, g, xb, yb, g + sh), 'wall', role='site')
+                rect((xa - .012, ya - .012, g + sh, xb + .012, yb + .012, g + sh + (.035 if modern else .04)), cap, role='site')
         openings = [(x0 / 1000, x1 / 1000, gate) for x0, x1, gate in gate_openings(boundary)]
         lb = boundary.get('letterbox_pier')
         lbx = (lb['x0_mm'] / 1000, lb['x1_mm'] / 1000) if lb else None
@@ -200,22 +223,44 @@ def make_scene(building, report):
                         k.light((px, ymin - .2, g + fh + .05), 7, kind='pillar')
                     else:
                         pier(px)
-                # Closed sliding leaf just inside the wall line on a flush track that runs on behind the wall.
-                gy, top_z = ymin + wt + .02, g + (fh + .15 if modern else .95 - g)
-                rect((x0 - .1, gy, g + .05, x1 + .1, gy + .05, g + .1), 'frame', role='gate', name='exterior-vehicle-gate', owner='exterior-vehicle-gate')
-                rect((x0 - .1, gy, top_z - .05, x1 + .1, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
-                for xx in (x0 - .1, (x0 + x1) / 2 - .025, x1 + .05):
-                    rect((xx, gy, g + .05, xx + .05, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
-                if modern:
-                    # Tall vertical timber slats on a black steel frame, as on the reference house.
-                    for xx in np.arange(x0 - .05, x1 + .05 - .045, .08):
-                        rect((xx, gy + .005, g + .1, xx + .05, gy + .045, top_z - .05), 'timber', role='gate', owner='exterior-vehicle-gate')
+                if custom:
+                    # Two inward-opening leaves retain the closed frontage and clear the car gateway.
+                    gy, top_z = ymin + wt + .02, g + (fh + .15 if modern else .95 - g)
+                    middle = (x0 + x1) / 2
+                    parts = []
+                    for leaf, (la, lb, pivot, angle) in enumerate(((x0-.1, middle-.012, x0, math.pi/2),
+                                                                  (middle+.012, x1+.1, x1, -math.pi/2))):
+                        mark = len(k.nodes)
+                        owner = 'exterior-vehicle-gate'
+                        rect((la, gy, g+.05, lb, gy+.05, g+.1), 'frame', role='gate',
+                             name=owner if leaf == 0 else owner+'-right', owner=owner)
+                        rect((la, gy, top_z-.05, lb, gy+.05, top_z), 'frame', role='gate', owner=owner)
+                        for xx in (la, lb-.05):
+                            rect((xx, gy, g+.05, xx+.05, gy+.05, top_z), 'frame', role='gate', owner=owner)
+                        for xx in np.arange(la+.05, lb-.055, .08 if modern else .12):
+                            rect((xx, gy+.005, g+.1, min(xx+(.05 if modern else .025),lb-.025), gy+.045, top_z-.05),
+                                 'timber' if modern else 'frame', role='gate', owner=owner)
+                        parts.append({'ids':[n['id'] for n in k.nodes[mark:]], 'pivot':[pivot,gy+.025,g], 'angle':angle})
+                    gates.append({'id':'exterior-vehicle-gate','label':'Main vehicle gate','floor':-1,'kind':'gate',
+                                  'start':[x0,gy+.025,g], 'axis':[1,0,0], 'width':x1-x0,'height':top_z-g,
+                                  'base':g,'sill':0,'initial':0,'parts':parts})
                 else:
-                    for xx in np.arange(x0 + .06, x1 - .03, .12):
-                        rect((xx, gy + .01, g + .1, xx + .025, gy + .04, top_z - .05), 'frame', role='gate', owner='exterior-vehicle-gate')
-                span = min(x1 - x0, gate.get('park_run_mm', (x1 - x0) * 1000) / 1000) + .1
-                t0, t1 = (x0 - span, x1 + .1) if gate.get('park') == 'left' else (x0 - .1, x1 + span)
-                rect((max(t0, xmin + wt), ymin + wt + .01, g - .02, min(t1, xmax - wt), ymin + wt + .07, g + .012), 'steel', role='gate', owner='exterior-vehicle-gate')
+                    # Preserve the authored frontage of legacy automatic presets.
+                    gy, top_z = ymin + wt + .02, g + (fh + .15 if modern else .95 - g)
+                    rect((x0 - .1, gy, g + .05, x1 + .1, gy + .05, g + .1), 'frame', role='gate', name='exterior-vehicle-gate', owner='exterior-vehicle-gate')
+                    rect((x0 - .1, gy, top_z - .05, x1 + .1, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
+                    for xx in (x0 - .1, (x0 + x1) / 2 - .025, x1 + .05):
+                        rect((xx, gy, g + .05, xx + .05, gy + .05, top_z), 'frame', role='gate', owner='exterior-vehicle-gate')
+                    if modern:
+                        for xx in np.arange(x0 - .05, x1 + .05 - .045, .08):
+                            rect((xx, gy + .005, g + .1, xx + .05, gy + .045, top_z - .05), 'timber', role='gate', owner='exterior-vehicle-gate')
+                    else:
+                        for xx in np.arange(x0 + .06, x1 - .03, .12):
+                            rect((xx, gy + .01, g + .1, xx + .025, gy + .04, top_z - .05), 'frame', role='gate', owner='exterior-vehicle-gate')
+                    span = min(x1 - x0, gate.get('park_run_mm', (x1 - x0) * 1000) / 1000) + .1
+                    t0, t1 = (x0 - span, x1 + .1) if gate.get('park') == 'left' else (x0 - .1, x1 + span)
+                    rect((max(t0, xmin + wt), ymin + wt + .01, g - .02, min(t1, xmax - wt), ymin + wt + .07, g + .012), 'steel', role='gate', owner='exterior-vehicle-gate')
+
             else:
                 hinge_right = gate.get('hinge') == 'right'
                 pier_left = bool(lbx and lbx[1] <= x0 + .01)
@@ -248,7 +293,8 @@ def make_scene(building, report):
                 # The leaf stands open into the court against its hinge jamb; a flush stone sill marks the gateway.
                 rect((x0, ymin - .02, g - .02, x1, ymin + wt + .02, g + (.105 if modern else .05)), 'step', role='gate', name='exterior-gate-sill', owner='exterior-pedestrian-gate')
                 L, hgt = x1 - x0 - .06, (fh - .05 if modern else .95 - g)
-                ang = math.radians(gate.get('open_deg', 85))
+                mark = len(k.nodes)
+                ang = 0 if doors_closed else math.radians(gate.get('open_deg', 85))
                 dx, dy = (-math.cos(ang), math.sin(ang)) if hinge_right else (math.cos(ang), math.sin(ang))
                 hx, hy = (x1 - .03 if hinge_right else x0 + .03), ymin + wt + .04
                 rot = math.atan2(dy, dx)
@@ -267,6 +313,10 @@ def make_scene(building, report):
                     for t in np.arange(.13, L - .1, .12):
                         rb(at(t, zb + hgt / 2), (.025, .025, hgt - .08), 'frame', -1, 'gate', .004, rot=rot, owner='exterior-pedestrian-gate')
                 rb(at(L - .09, zb + 1.0), (.03, .09, .16), 'brass', -1, 'fixture', .01, rot=rot, owner='exterior-pedestrian-gate')
+                if doors_closed:
+                    gates.append({'id':'exterior-pedestrian-gate','label':'Pedestrian gate','floor':-1,'kind':'gate',
+                                  'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
+                                  'parts':[{'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[hx,hy,zb],'angle':-math.pi/2 if hinge_right else math.pi/2}]})
     else:
         for xa, ya, xb, yb in [(xmin, ymin, xmin + .15, ymax), (xmax - .15, ymin, xmax, ymax), (xmin, ymax - .15, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, .65), 'wall', role='site'); rect((xa - .02, ya - .02, .65, xb + .02, yb + .02, .69), 'stone', role='site')
@@ -307,18 +357,23 @@ def make_scene(building, report):
     stair_holes = {}
     for f in range(storeys):
         level = f * H; slab = fp
-        if f:
+        if custom:
+            slab=metres(plate(b,f))
+            stair_holes[f]=metres(floor_outline(b,f)).difference(slab)
+        elif f:
             st = b['stairs'][f]; sx = st['x'] / 1000; sy = st['y'] / 1000
             stair_holes[f] = box(sx, sy + 1.05, sx + st['width'] / 1000, sy + st['depth'] / 1000)
             slab = slab.difference(stair_holes[f])
         poly_mesh(slab, level - .15, level, 'slab', f, 'floor', f'F{f}-floor')
-        for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] != 'stair']:
+        for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] not in ({'stair'} | NON_WALKABLE)]:
             p = Polygon(np.array(s['clear']) / 1000)
-            mat = 'woodfloor' if s['kind'] in ('bedroom', 'study') else 'wetfloor' if s['kind'] in ('bathroom', 'utility') else 'deck' if (s['kind'] == 'terrace' and modern) else 'floor'
+            mat = 'woodfloor' if s['kind'] in ('bedroom', 'study') else 'wetfloor' if s['kind'] in ('bathroom', 'powder-room', 'utility','drying-room') else 'deck' if (s['kind'] == 'terrace' and modern) else 'floor'
             poly_mesh(p, level + .002, level + .009, mat, f, 'finish', s['id'] + '/floor', s['id'])
         # Ceiling coves with a concealed warm glow line.
-        for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'family', 'bedroom', 'dining')]:
-            p = Polygon(np.array(s['clear']) / 1000); inner = p.buffer(-.16)
+        for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'drawing-room', 'family', 'bedroom', 'dining')]:
+            p = Polygon(np.array(s['clear']) / 1000)
+            if custom:p=p.intersection(metres(geometry(b['roofs'][f]['ceiling'])))
+            inner = p.buffer(-.16)
             if inner.is_empty:
                 continue
             ring = p.difference(inner)
@@ -329,15 +384,23 @@ def make_scene(building, report):
     terraces = [Polygon(np.array(s['polygon']) / 1000) for s in b['spaces'] if s['floor'] == storeys - 1 and s['kind'] == 'terrace']
     for terrace in terraces:
         roof_fp = roof_fp.difference(terrace)
+    if custom or rooftop:roof_fp=metres(roof(b,storeys-1))
     for f in range(storeys):
         ceil = roof_fp if f == storeys - 1 else fp.difference(stair_holes.get(f + 1, Polygon()))
+        if custom:ceil=metres(geometry(b['roofs'][f]['ceiling']))
         poly_mesh(ceil, (f + 1) * H - .157, (f + 1) * H - .151, 'ceiling', f, 'ceiling', f'F{f}-ceiling')
 
     # ---------------------------------------------------------------- roof
-    poly_mesh(roof_fp, top - .15, top, 'roof', storeys - 1, 'roof', 'roof-slab')
+    if custom:
+        for f in range(storeys):
+            poly_mesh(metres(roof(b,f)),(f+1)*H-.15,(f+1)*H,'roof',f,'roof',b['roofs'][f]['id'])
+    else:
+        poly_mesh(roof_fp, top - .15, top, 'roof', storeys - 1, 'roof', 'roof-slab')
     fr = storeys - 1
     tower = next((a for a in assemblies if a['geometry'].get('kind') == 'stair_tower'), None)
     tower_fp = box(*[q / 1000 for q in tower['geometry']['bounds_mm']]) if tower else Polygon()
+    if rooftop:
+        tower_fp=unary_union([box(*[q/1000 for q in core['bounds']]) for core in rooftop['cores']])
 
     def solar(field, rear, z):
         """Photovoltaic modules on a light rack over the rear of the roof, tilted toward the midday sun."""
@@ -426,7 +489,13 @@ def make_scene(building, report):
         k.light((sx, sy, top_z - .9), 14, kind='pendant')
         return box(sx - h - .15, sy - h - .15, sx + h + .15, sy + h + .15)
 
-    if modern:
+    if custom:
+        # Per-floor roof edges use the selected palette, without bridging an authored terrace or void.
+        for f in range(storeys):
+            field=metres(roof(b,f));edge=field.difference(field.buffer(-.15,join_style=2)).difference(tower_fp);z=(f+1)*H
+            poly_mesh(edge,z,z+.22,'roof' if modern else 'wall',f,'parapet','custom-roof-edge-'+str(f))
+            poly_mesh(field.buffer(-.15,join_style=2),z,z+.025,'paver' if rooftop and f==storeys-1 else 'gravel',f,'roof','custom-roof-finish-'+str(f))
+    elif modern:
         # A deep eave along the street front (shade, and a soffit of timber slats with downlights); 0.45 m on
         # the other sides. Terraces open in the roof and the porch canopy keep their own edges.
         fb = fp.bounds
@@ -438,12 +507,13 @@ def make_scene(building, report):
         if porch_asm and not porch_asm['geometry'].get('canopy_is_balcony'):
             pa = [q / 1000 for q in porch_asm['geometry']['bounds_mm']]
             front = front.difference(box(pa[0] - .3, pa[1] - porch_asm['geometry'].get('canopy_overhang_mm', 300) / 1000 - .05, pa[2] + .3, .01))
-        over = roof_fp.buffer(.45, join_style=2).union(front)
+        roof_outline = metres(geometry(rooftop['outline'])) if rooftop else roof_fp
+        over = roof_outline.buffer(.45, join_style=2).union(front)
         for terrace in terraces:
             over = over.difference(terrace)
         if porch_asm and not porch_asm['geometry'].get('canopy_is_balcony'):
             over = over.difference(box(pa[0] - .3, pa[1] - porch_asm['geometry'].get('canopy_overhang_mm', 300) / 1000, pa[2] + .3, 0))
-        poly_mesh(over.difference(roof_fp), top - .15, top + .22, 'roof', fr, 'fascia', 'roof-overhang')
+        poly_mesh(over.difference(roof_outline), top - .15, top + .22, 'roof', fr, 'fascia', 'roof-overhang')
         eave = front.intersection(over).difference(fp.buffer(.02, join_style=2))
         for xx in np.arange(fb[0] - .4, fb[2] + .4, .11):
             for part in _parts(eave.intersection(box(xx, -.97, xx + .06, -.03))):
@@ -459,7 +529,7 @@ def make_scene(building, report):
         if tower:
             # Open roof terrace beside the stair tower: pavers, a frameless glass balustrade, loungers, planters.
             poly_mesh(field, top, top + .03, 'paver', fr, 'roof', 'roof-terrace-pavers')
-            rail = roof_fp.buffer(-.3, join_style=2).exterior.difference(tower_fp.buffer(.32, join_style=2))
+            rail = LineString() if rooftop else roof_fp.buffer(-.3, join_style=2).exterior.difference(tower_fp.buffer(.32, join_style=2))
             for piece in getattr(rail, 'geoms', [rail]):
                 if piece.length < .3:
                     continue
@@ -513,15 +583,15 @@ def make_scene(building, report):
     # claim junctions first and later walls keep only what is still unfilled, so no two solids share a face
     # (coincident faces shade black in path tracers and z-fight in other viewers). Colliders keep full polygons.
     tiled = {}
-    for f in range(storeys):
+    for f in range(storeys + bool(rooftop)):
         taken = Polygon()
-        for w in sorted((w for w in b['walls'] if w['floor'] == f), key=lambda w: not w['external']):
+        for w in sorted((w for w in rb_model['walls'] if w['floor'] == f), key=lambda w: (not bool(w.get('underStair')),not w['external'])):
             full = Polygon(np.array(w['polygon']) / 1000)
             own = full.difference(taken) if not taken.is_empty else full
             tiled[w['id']] = unary_union([q for q in get_parts(own) if q.geom_type == 'Polygon' and q.area > 1e-5])
             taken = taken.union(full)
-    for w in b['walls']:
-        openings = [o for o in b['openings'] if o['wall_id'] == w['id']]
+    for w in rb_model['walls']:
+        openings = [o for o in rb_model['openings'] if o['wall_id'] == w['id']]
         wp = tiled.get(w['id'], Polygon(np.array(w['polygon']) / 1000)); cuts = {0, w['height'] / 1000}
         for o in openings:
             cuts.update((o['sill'] / 1000, (o['sill'] + o['height']) / 1000))
@@ -541,12 +611,17 @@ def make_scene(building, report):
                 colliders.append({'id': w['id'] + f'/{j}', 'floor': w['floor'], 'polygon': [[float(x), float(y)] for x, y in list(p.exterior.coords)[:-1]], 'kind': 'wall'})
 
     # ---------------------------------------------------------------- openings
-    space_kind = {s['id']: s['kind'] for s in b['spaces']}
-    space_poly = {s['id']: Polygon(np.array(s['polygon']) / 1000) for s in b['spaces']}
-    for o in b['openings']:
+    space_kind = {s['id']: s['kind'] for s in rb_model['spaces']}
+    space_poly = {s['id']: Polygon(np.array(s['polygon']) / 1000, [np.array(h)/1000 for h in s.get('holes',[])]) for s in rb_model['spaces']}
+    for o in rb_model['openings']:
         w = hosts[o['wall_id']]; a = np.array(w['a']) / 1000; bb = np.array(w['b']) / 1000; uv = (bb - a) / np.linalg.norm(bb - a); nv = np.array([-uv[1], uv[0]]); ang = math.atan2(uv[1], uv[0]); p = a + uv * o['offset'] / 1000
         if not fp.covers(Point(*(p + uv * o['width'] / 2000 + nv * .4))):
             nv = -nv
+        if custom and o['kind']=='window':
+            # Courtyards and terraces also belong to the footprint. Pick the enclosed
+            # room explicitly so curtains stay indoors and projecting reveals outdoors.
+            indoor=next((space_poly[r] for r in w['rooms'] if space_kind.get(r) not in OUTDOOR and space_kind.get(r) not in NON_WALKABLE),None)
+            if indoor is not None and not indoor.covers(Point(*(p+uv*o['width']/2000+nv*.3))):nv=-nv
         base = o['floor'] * H; ow = o['width'] / 1000; z0 = base + o['sill'] / 1000; zh = o['height'] / 1000
         t_half = w['thickness'] / 2000
 
@@ -559,11 +634,11 @@ def make_scene(building, report):
         if o['kind'] == 'window':
             # One contemporary window system for every theme: slim powder-coated aluminium, staggered sliding
             # panes, a transom on tall glazing and a slim sill; wet rooms get obscured glass.
-            wet = bool(set(room_kinds) & {'bathroom', 'utility', 'toilet', 'wc', 'powder'})
+            wet = bool(set(room_kinds) & {'bathroom', 'utility', 'drying-room', 'toilet', 'wc', 'powder'})
             fw, fd = .045, .075
             part(fw / 2, 0, z0 + zh / 2, fw, fd, zh); part(ow - fw / 2, 0, z0 + zh / 2, fw, fd, zh)
             part(ow / 2, 0, z0 + zh - fw / 2, ow, fd, fw); part(ow / 2, 0, z0 + fw / 2, ow, fd, fw)
-            panels = max(1 if ow < .9 else 2, math.ceil(ow / 1.25))
+            panels = 1 if 'pooja' in room_kinds and zh < .7 else max(1 if ow < .9 else 2, math.ceil(ow / 1.25))
             for i in range(1, panels):
                 part(ow * i / panels, 0, z0 + zh / 2, .04, fd, zh - 2 * fw)
             if zh > 2.4:
@@ -572,11 +647,11 @@ def make_scene(building, report):
                 part(ow * (i + .5) / panels, (i % 2) * .028 - .014, z0 + zh / 2, ow / panels - .04, .012, zh - 2 * fw, 'frosted' if wet else 'glass', 'glass')
             if o['sill'] > 100:
                 part(ow / 2, t_half - .05, z0 - .02, ow, .14, .03, M['counter'], 'sill')
-            pod = w['external'] and 'bedroom' in room_kinds and zh < 2.6
+            pod = zh < 2.6 and ((w['external'] and 'bedroom' in room_kinds) or (b.get('planning',{}).get('facadeStyle')=='warm-layered' and o['floor']==1 and 'courtyard' not in room_kinds and o['sill']>100))
             if pod:
                 # Window pod: a slim projecting box, lined with warm timber, gives bedroom glazing depth and shade.
                 shell, reveal = WINDOW_POD.get(theme_id, WINDOW_POD['current'])
-                d = .34; y = -t_half - d / 2
+                d = .16 if 'terrace' in room_kinds else .34; y = -t_half - d / 2
                 part(-.025, y, z0 + zh / 2, .05, d, zh + .1, shell, 'window-surround')
                 part(ow + .025, y, z0 + zh / 2, .05, d, zh + .1, shell, 'window-surround')
                 part(ow / 2, y, z0 + zh + .025, ow + .1, d, .05, shell, 'window-surround')
@@ -587,12 +662,12 @@ def make_scene(building, report):
                     part(ow / 2, y, z0 + zh - .008, ow - .032, d - .02, .016, reveal, 'window-surround')
             elif o['sill'] > 100 and w['external']:
                 part(ow / 2, -t_half - .03, z0 - .015, ow + .06, .09, .03, 'frame', 'sill')
-            if w['external'] and not modern and not pod and zh < 2.6 and set(room_kinds) & {'living', 'family', 'dining'}:
+            if w['external'] and not modern and not pod and zh < 2.6 and set(room_kinds) & {'living', 'drawing-room', 'family', 'dining'}:
                 # A slim floating eyebrow in the theme's accent shades the living-room glazing.
                 part(ow / 2, -t_half - .225, z0 + zh + .1, ow + .3, .45, .05, WINDOW_EYEBROW.get(theme_id, 'frame'), 'window-hood')
         if o['kind'] == 'window':
             # Pleated sheer curtains on the room side.
-            if zh > 1. and not ('bathroom' in room_kinds or 'utility' in room_kinds):
+            if zh > 1. and not ('bathroom' in room_kinds or 'utility' in room_kinds or 'drying-room' in room_kinds):
                 for edge in (.12, ow - .12):
                     verts = []; fs = []
                     for j in range(17):
@@ -606,7 +681,25 @@ def make_scene(building, report):
         frame_mat = 'frame' if (o['kind'] in ('entry', 'glazed') or not upgraded_interior) else M['doorframe']
         part(.025, 0, z0 + zh / 2, .05, .10, zh, frame_mat); part(ow - .025, 0, z0 + zh / 2, .05, .10, zh, frame_mat)
         part(ow / 2, 0, z0 + zh - .025, ow - .1, .10, .05, frame_mat)
-        if o['kind'] == 'glazed':
+        if o['kind'] == 'glazed' and o.get('sliding'):
+            # Three-track glass door: two leaves stack over the first, leaving 2/3 clear.
+            for pane in range(3):
+                mark=len(k.nodes);pw=(ow-.1)/3;left=.05+pane*pw;depth=pane*.035
+                part(left+pw/2,depth,z0+zh/2,pw-.035,.018,zh-.1,'glass','glass')
+                for xx in (left,left+pw):part(xx,depth,z0+zh/2,.035,.045,zh-.06)
+                for zz in (z0+.025,z0+zh-.025):part(left+pw/2,depth,zz,pw,.045,.05)
+                for item in k.nodes[mark:]:item['slidingPanel']=pane
+            continue
+        mark = len(k.nodes)
+        if o['kind'] == 'glazed' and doors_closed:
+            # Closed full-width hinged glazing; fixed jambs are outside the moving set.
+            part(ow/2,0,z0+zh/2,ow-.1,.018,zh-.1,'glass','glass')
+            for xx in (.05,ow-.05):part(xx,0,z0+zh/2,.035,.07,zh-.06)
+            for zz in (z0+.04,z0+zh-.04):part(ow/2,0,zz,ow-.1,.07,.04)
+            pivot=p+uv*(ow-.05)
+            angle=math.atan2(-uv[0]*nv[1]+uv[1]*nv[0],-uv[0]*nv[0]-uv[1]*nv[1])
+            door_motion[o['id']]={'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[float(pivot[0]),float(pivot[1]),base],'angle':angle}
+        elif o['kind'] == 'glazed':
             # A partly-open sliding glass leaf, not an opaque balcony door.
             part(ow * .74, 0, z0 + zh / 2, ow * .47, .018, zh - .1, 'glass', 'glass')
             for xx in (ow * .505, ow - .04):
@@ -633,7 +726,7 @@ def make_scene(building, report):
                 if not space_poly[o['swing']].buffer(.05).contains(Point(*(p + uv * ow / 2 + nv * (t_half + .3)))):
                     nv = -nv
             hinge = p + uv * (.055 if o.get('hinge', 'start') == 'start' else ow - .055); leafcenter = hinge + nv * (ow - .1) / 2
-            leaf_mat = 'walnut' if (o['kind'] == 'entry' and upgraded_interior) else M['door']
+            leaf_mat = 'walnut' if (upgraded_interior and (o['kind'] == 'entry' or (w['external'] and 'hall' in room_kinds and b.get('planning',{}).get('facadeStyle')=='warm-layered'))) else M['door']
             rb((leafcenter[0], leafcenter[1], base + zh / 2), (.042, ow - .1, zh - .05), leaf_mat, o['floor'], 'door', .008, ang, owner=o['id'])
             knob = hinge + nv * (ow - .18)
             if upgraded_interior:
@@ -648,8 +741,23 @@ def make_scene(building, report):
             else:
                 ball((knob[0] + uv[0] * .04, knob[1] + uv[1] * .04, base + 1.), (.035, .035, .035), 'brass', o['floor'], 'door')
 
+        if doors_closed and o['kind'] in ('door','entry'):
+            # Store closed canonical geometry for exports, with explicit inward runtime motion.
+            pivot = pv if o['kind']=='entry' and modern else hinge
+            direction = uv if o.get('hinge','start')=='start' or (o['kind']=='entry' and modern) else -uv
+            angle = math.atan2(direction[0]*nv[1]-direction[1]*nv[0],float(np.dot(direction,nv)))
+            cc,ss=math.cos(-angle),math.sin(-angle)
+            moving=[n for n in k.nodes[mark:] if n['role']=='door']
+            for item in moving:
+                xx,yy=item['position'][0]-pivot[0],item['position'][1]-pivot[1]
+                item['position'][0]=float(pivot[0]+cc*xx-ss*yy)
+                item['position'][1]=float(pivot[1]+ss*xx+cc*yy)
+                item['rotation'][2]-=angle
+            door_motion[o['id']]={'ids':[n['id'] for n in moving],'pivot':[float(pivot[0]),float(pivot[1]),base],'angle':angle}
+
     # ---------------------------------------------------------------- furniture
     def lamp(x, y, z, f, pendant=False):
+        if custom and pendant and not metres(geometry(b['roofs'][f]['ceiling'])).covers(Point(x,y)):return
         if pendant:
             beam((x, y, z), (x, y, f * H + H - .16), .006, 'frame', f, 'fixture')
             shade = trimesh.creation.cone(radius=.23, height=.18, sections=28)
@@ -662,6 +770,7 @@ def make_scene(building, report):
 
     def chandelier(x, y, f):
         """Branching globe pendant (warm glass spheres on black stems)."""
+        if custom and not metres(geometry(b['roofs'][f]['ceiling'])).covers(Point(x,y)):return
         zc = f * H + H - .16
         hub = zc - .62
         beam((x, y, hub), (x, y, zc), .008, 'frame', f, 'fixture')
@@ -687,6 +796,8 @@ def make_scene(building, report):
 
     def downlights(room, f, z):
         p = Polygon(np.array(room['clear']) / 1000)
+        if custom:p=p.intersection(metres(geometry(b['roofs'][f]['ceiling'])))
+        if p.is_empty:return
         x0, y0, x1, y1 = p.bounds
         nx = max(1, round((x1 - x0 - .9) / 1.5) + 1); ny = max(1, round((y1 - y0 - .9) / 1.5) + 1)
         placed = 0
@@ -739,14 +850,38 @@ def make_scene(building, report):
         """Sofa facing a media wall at viewing distance (floating in the room if need be), coffee table, rug, arc
         lamp and a lounge chair; failing a media wall, a sofa backed by a wall (a low sill is acceptable)."""
         room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        if room.get('seatingExtension'):
+            # A wall-backed sofa may span the zoning edge of an adjoining open
+            # hall. The physical walls, door swings and passage remain intact.
+            other = next((r for r in b['spaces'] if r['id']==room['seatingExtension'] and r['floor']==f and r['kind']=='hall'), None)
+            links = [o for o in b['openings'] if o['kind']=='cased' and o['width']>=2400 and not o.get('servingCounter') and set(o['connects'])=={room['id'],room['seatingExtension']}]
+            if other is None or not links:
+                raise ValueError('Authored seating extension requires a directly connected open hall.')
+            extra = room_context(other)
+            bridges = [metres(opening_polygon(hosts[o['wall_id']],o,200)) for o in links]
+            clear = unary_union([clear,extra['clear'],*bridges])
+            link_ids = {o['id'] for o in links}
+            ctx = {**ctx, 'clear':clear, 'inside':prep(clear.buffer(.004)),
+                   'doors':[(q,o) for q,o in ctx['doors']+extra['doors'] if o.get('id') not in link_ids and o['kind']!='open'],
+                   'windows':ctx['windows']+extra['windows'], 'placed':ctx['placed']+extra['placed']}
         keep = [q for q, _ in ctx['doors']]
+        if 'diningOrientation' in room:
+            keep += [Polygon(item['footprint']).buffer(.9,join_style=2) for item in furniture if item['room_id']==room['id'] and item['kind']=='dining-set']
 
         def fits(sp, length, table=True):
             pieces = [lpoly(sp, -length / 2, length / 2, .2, 1.18)] + ([lpoly(sp, -.55, .55, 1.525, 2.275)] if table else [])
             legroom = lpoly(sp, -length / 2 + .3, length / 2 - .3, 1.18, 1.75)
             return all(ctx['inside'].covers(q) and not hits(q, keep) and not hits(q, ctx['placed']) for q in pieces) and ctx['inside'].covers(legroom)
         choice = None
-        for m in sorted(spots(ctx, 2.5, .45, front=2.4, height=2.62, step=.1), key=lambda s: abs(s['s'] - s['L'] / 2)):
+        if room.get('sofaPosition'):
+            theta=math.radians(room['sofaOrientation']);n=np.round([math.cos(theta),math.sin(theta)],8)
+            centre=np.array(room['sofaPosition'])/1000
+            sp={'c':centre-n*.7,'t':np.array([n[1],-n[0]]),'n':n,'s':0.,'L':0.}
+            if not fits(sp,2.35):raise ValueError('Authored sofa and coffee table obstruct a wall, furniture or doorway.')
+            back=sp['c']+n*.16
+            if not wall_behind(f,*back,*n,1.175,.2,.95):raise ValueError('Authored sofa needs a solid backing wall.')
+            choice=(sp,2.35,None)
+        for m in ([] if choice else sorted(spots(ctx, 2.5, .45, front=2.4, height=2.62, step=.1), key=lambda s: abs(s['s'] - s['L'] / 2))):
             for D in (4.0, 3.8, 3.6):
                 for length in (2.35, 2.1, 1.8):
                     sp = {'c': m['c'] + m['n'] * D, 't': -m['t'], 'n': -m['n'], 's': 0., 'L': 0.}
@@ -790,10 +925,45 @@ def make_scene(building, report):
                                 best = (score, sp, length)
                 if best:
                     break
+            if best is None and custom:
+                # In an open care/living connection, prefer a freestanding sofa without
+                # a coffee table to leaving the lounge empty or blocking the glass doors.
+                for length in (2.35,2.1,1.8):
+                    for nx_,ny_ in ((0,1),(0,-1),(1,0),(-1,0)):
+                        n_=np.array([nx_,ny_],float);t_=np.array([ny_,-nx_],float)
+                        for cx_ in np.arange(x0+.4,x1-.4,.2):
+                            for cy_ in np.arange(y0+.4,y1-.4,.2):
+                                sp={'c':np.array([cx_,cy_]),'t':t_,'n':n_,'s':0.,'L':0.}
+                                q=lpoly(sp,-length/2,length/2,.2,1.18)
+                                if not fits(sp,length,False) or not ctx['inside'].covers(q.buffer(.15)) or hits(q.buffer(.05),keep):continue
+                                score=(length,-q.centroid.distance(clear.centroid))
+                                if best is None or score>best[0]:best=(score,sp,length)
+                    if best:break
             if best is None:
                 return None
             choice = (best[1], best[2], None)
+        if custom and not room.get('sofaPosition'):
+            above = unary_union([metres(Polygon(r['polygon'])) for r in b['spaces'] if r['floor']==f+1 and r['kind']=='void'])
+            above = above.difference(metres(geometry(b['roofs'][f]['ceiling'])))
+            if not above.is_empty and above.intersection(clear).area > 2:
+                # Keep the seating visible from the authored upper overlook.
+                # Door approaches and usable legroom still take precedence.
+                best = None
+                for length in (2.35, 2.1, 1.8):
+                    for nx_,ny_ in ((0,1),(0,-1),(1,0),(-1,0)):
+                        for cx_ in np.arange(above.bounds[0], above.bounds[2], .15):
+                            for cy_ in np.arange(above.bounds[1], above.bounds[3], .15):
+                                sp={'c':np.array([cx_,cy_]),'t':np.array([ny_,-nx_],float),'n':np.array([nx_,ny_],float),'s':0.,'L':0.}
+                                q=lpoly(sp,-length/2,length/2,.2,1.18)
+                                if not fits(sp,length,False) or q.intersection(above).area/q.area < .8:continue
+                                # Keep the complete lounge setting when the dining
+                                # arrangement needs a little more space beside it.
+                                score=(int(fits(sp,length,True)),length,-q.centroid.distance(above.centroid))
+                                if best is None or score>best[0]:best=(score,sp,length)
+                if best:choice=(best[1],best[2],None)
         sp, length, fw = choice
+        edit_mark = k.edit_mark()
+        seating_edit_start = len(k.editables)
         h = length / 2
         lrb(sp, 0, .7, z + .25, (length, .92, .28), 'fabric', f, r=.07)
         lrb(sp, 0, .33, z + .65, (length, .20, .74), 'fabric', f, r=.06)
@@ -810,8 +980,10 @@ def make_scene(building, report):
         sofa = lpoly(sp, -h, h, .2, 1.18)
         ctx['placed'].append(sofa)
         furnishing('sofa', room, sofa)
+        k.editable('sofa', room, sofa, edit_mark)
         table = lpoly(sp, -.55, .55, 1.525, 2.275)
         if ctx['inside'].covers(table) and not hits(table, keep) and not hits(table, ctx['placed']):
+            edit_mark = k.edit_mark()
             lrb(sp, 0, 1.9, z + .36, (1.1, .75, .06), M['counter'] if upgraded_interior else 'stone', f, r=.09)
             for vv in (1.68, 2.12):
                 x, y = P(sp, 0, vv)
@@ -822,6 +994,7 @@ def make_scene(building, report):
             vessel = trimesh.creation.revolve(np.array([[.055, 0], [.08, .08], [.075, .16], [.055, .18], [.045, .18], [.064, .15], [.068, .08], [.04, .015]]), sections=24)
             x, y = P(sp, .1, 1.77)
             node(asset(vessel, smooth=True), 'ceramic', (x, y, z + .394), floor=f, role='detail')
+            k.editable('coffee-table', room, table, edit_mark)
         rug = lpoly(sp, -h - .15, h + .15, .1, 2.9).intersection(clear.buffer(-.1))
         if not rug.is_empty and rug.geom_type == 'Polygon':
             rx0, ry0, rx1, ry1 = rug.bounds
@@ -832,20 +1005,23 @@ def make_scene(building, report):
             if wall_behind(f, wx, wy, m['n'][0], m['n'][1], 1.25, .2, 2.6):
                 for uu in np.arange(-1.22, 1.22, .075):
                     lbox(m, uu, uu + .05, .003, .03, z + .09, z + 2.62, 'walnut', f, 'wall-panel')
+            edit_mark = k.edit_mark()
             lbox(m, -.95, .95, .035, .45, z + .26, z + .6, 'walnut', f)
             lbox(m, -.74, .74, .037, .045, z + 1.01, z + 1.85, 'frame', f, 'detail')
             lbox(m, -.73, .73, .045, .085, z + 1.02, z + 1.84, 'blackglass', f, 'detail')
             console = lpoly(m, -.95, .95, .035, .45)
             ctx['placed'].append(console)
             furnishing('media-console', room, console)
+            k.editable('media-console', room, console, edit_mark)
         if upgraded_interior:
             # Arc floor lamp at the sofa's end, its shade reaching over the seat.
             for su in (-1, 1):
                 base = lpoly(sp, su * (h + .2) - .18, su * (h + .2) + .18, .52, .88)
-                if ctx['inside'].covers(base) and not hits(base, ctx['placed']) and not hits(base, [q for q, _ in ctx['doors']]):
+                if ctx['inside'].covers(base) and not hits(base, ctx['placed']) and not hits(base, keep):
                     bx_, by_ = P(sp, su * (h + .2), .7)
                     ex_, ey_ = P(sp, su * (h + .2) - su * .75, .9)
                     sx_, sy_ = P(sp, su * (h + .2) - su * .8, .9)
+                    edit_mark = k.edit_mark()
                     cylinder((bx_, by_, z + .02), .16, .04, 'basalt', f, 'furniture')
                     beam((bx_, by_, z + .04), (bx_, by_, z + 1.55), .012, 'frame', f, 'furniture')
                     beam((bx_, by_, z + 1.55), (ex_, ey_, z + 1.9), .012, 'frame', f, 'furniture')
@@ -855,36 +1031,76 @@ def make_scene(building, report):
                     k.light((sx_, sy_, z + 1.7), 18, kind='lamp')
                     ctx['placed'].append(base)
                     furnishing('floor-lamp', room, base)
+                    k.editable('floor-lamp', room, base, edit_mark)
                     break
         # A lounge chair at the side of the table, turned toward it.
-        for su in (1, -1):
+        for su in (() if room.get('sofaPosition') else (1, -1)):
             spot = lpoly(sp, su * (h + .75) - .35, su * (h + .75) + .35, 1.55, 2.25)
-            if ctx['inside'].covers(spot) and not hits(spot, ctx['placed']) and not hits(spot, [q for q, _ in ctx['doors']]):
+            if ctx['inside'].covers(spot) and not hits(spot, ctx['placed']) and not hits(spot, keep):
                 cx_, cy_ = P(sp, su * (h + .75), 1.9)
                 face = -su * sp['t']
+                edit_mark = k.edit_mark()
                 chair(cx_, cy_, z, f, math.atan2(face[0], -face[1]))
+                furnishing('lounge-chair', room, spot)
+                k.editable('lounge-chair', room, spot, edit_mark)
                 ctx['placed'].append(spot)
                 break
         px, py = P(sp, 0, 1.9)
         lamp(px, py, z + H - .9, f, True)
+        if room.get('seatingExtension'):
+            for item in k.editables[seating_edit_start:]:
+                item['placementArea']=[list(p) for p in clear.exterior.coords[:-1]]
+                item['placementRoomIds']=[room['id'],room['seatingExtension']]
         return sp
 
-    def dining_group(ctx, route=None, anchor=None, sizes=(1.8, 1.5, 1.2, 1.0)):
+    def dining_group(ctx, route=None, anchor=None, sizes=(1.8, 1.5, 1.2, 1.0), open_plan=False):
         """A table for six (four in a small room) with chairs, free-standing where a 0.8 m route stays open; centred
         in the room, or drawn toward `anchor` (the kitchen side of a combined living and dining room)."""
         room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
         x0, y0, x1, y1 = clear.bounds
-        zones = [q for q, _ in ctx['doors']] + ctx['placed']
+        serving = next((c for c in b.get('built_in_counters', []) if room['id'] in c['roomIds']), None)
+        if serving and anchor is None:
+            # Place a generous dining setting near the serving ledge while the
+            # existing passage solver protects every door and the open half.
+            ledge = metres(Polygon(serving['polygon'])).centroid
+            centre = clear.centroid
+            dx, dy = centre.x - ledge.x, centre.y - ledge.y
+            length = max(.001, math.hypot(dx, dy))
+            anchor = Point(ledge.x + dx / length * 1.8, ledge.y + dy / length * 1.8)
+            sizes = (2.2, 1.8, 1.5, 1.2)
+        zones = [q for q, o in ctx['doors'] if not ((open_plan or serving) and o['kind']=='cased' and o['width']>=2000)] + ctx['placed']
+        def connected_passages(zone):
+            # A wide, wall-free opening needs a route through it, rather than an
+            # empty strip along its entire length. Reserve a continuous 800 mm path.
+            free=clear.buffer(-.4).difference(unary_union([zone,*ctx['placed']]).buffer(.4,join_style=2))
+            portals=[]
+            for q,o in ctx['doors']:
+                if 'wall_id' not in o:continue  # existing open-plan furniture keepout
+                w=hosts[o['wall_id']];a=np.array(w['a'])/1000;end=np.array(w['b'])/1000
+                u=(end-a)/np.linalg.norm(end-a);n=np.array([-u[1],u[0]])
+                mid=a+u*(o['offset']+o['width']/2)/1000
+                if clear.distance(Point(*(mid+n*.5)))>clear.distance(Point(*(mid-n*.5))):n=-n
+                inset=min(.4,o['width']/2000-.01)
+                portals.append(LineString([a+u*(o['offset']/1000+inset)+n*(w['thickness']/2000+.45),
+                                           a+u*((o['offset']+o['width'])/1000-inset)+n*(w['thickness']/2000+.45)]))
+            pieces=[free] if free.geom_type=='Polygon' else list(getattr(free,'geoms',[]))
+            return any(all(piece.intersects(portal) for portal in portals) for piece in pieces)
         best = None
         for tw in sizes:
-            for along_x in (True, False):
+            for along_x in ((room['diningOrientation']==0,) if 'diningOrientation' in room else (True, False)):
                 wx_, wy_ = (tw + .2, 2.0) if along_x else (2.0, tw + .2)
                 for cx_ in np.arange(x0 + wx_ / 2 + .25, x1 - wx_ / 2 - .25 + 1e-6, .1):
                     for cy_ in np.arange(y0 + wy_ / 2 + .25, y1 - wy_ / 2 - .25 + 1e-6, .1):
                         zone = box(cx_ - wx_ / 2, cy_ - wy_ / 2, cx_ + wx_ / 2, cy_ + wy_ / 2)
-                        if not ctx['inside'].covers(zone.buffer(.25)) or hits(zone.buffer(.1), zones):
+                        # Compact authored dining may approach the open hall edge;
+                        # actual furniture containment and connected paths still apply.
+                        edge_margin=.05 if room.get('diningCounterGap',900)<900 else .25
+                        if not ctx['inside'].covers(zone.buffer(edge_margin)) or hits(zone.buffer(.1), zones):
                             continue
+                        if 'diningOrientation' in room and serving and zone.distance(metres(Polygon(serving['polygon'])))<room.get('diningCounterGap',900)/1000-1e-6:continue
                         if route and not free_path(ctx, zone, *route):
+                            continue
+                        if (open_plan or serving) and not connected_passages(zone):
                             continue
                         c = anchor or clear.centroid
                         score = (tw, -abs(cx_ - c.x) - abs(cy_ - c.y))
@@ -892,12 +1108,15 @@ def make_scene(building, report):
                             best = (score, cx_, cy_, tw, along_x)
             if best:
                 break
+        if not best and custom and not open_plan and any(o['kind']=='cased' and o['width']>=2000 for _,o in ctx['doors']):
+            return dining_group(ctx,route,anchor,sizes,open_plan=True)
         if not best:
             # A table for four against a wall: two chairs along the open side, one at each end.
             for cands in (spots(ctx, 2.3, .8, front=.6, height=.8, step=.05),):
                 ok = [c for c in cands if not route or free_path(ctx, lpoly(c, -1.15, 1.15, 0, 1.4), *route)]
                 if ok:
                     sp = min(ok, key=lambda c: -far_from_doors(ctx, c))
+                    edit_mark = k.edit_mark()
                     lrb(sp, 0, .4, z + .75, (1.2, .8, .07), M['table'], f, r=.035)
                     for uu in (-.52, .52):
                         for vv in (.08, .72):
@@ -913,6 +1132,7 @@ def make_scene(building, report):
                     zone = lpoly(sp, -1.15, 1.15, .02, 1.35)
                     ctx['placed'].append(zone)
                     furnishing('dining-set', room, zone)
+                    k.editable('dining-set', room, zone, edit_mark)
                     x, y = P(sp, 0, .4)
                     lamp(x, y, z + 2.2, f, True)
                     return (x, y)
@@ -920,11 +1140,18 @@ def make_scene(building, report):
         _, tx, ty, tw, along_x = best
         td = .9
         size = (tw, td) if along_x else (td, tw)
-        rb((tx, ty, z + .75), (size[0], size[1], .07), M['table'], f, r=.035)
-        for a in (-tw * .35, tw * .35):
-            for bb2 in (-.26, .26):
-                xx, yy = (tx + a, ty + bb2) if along_x else (tx + bb2, ty + a)
-                beam((xx, yy, z + .04), (xx, yy, z + .72), .038, M['table'], f, 'furniture')
+        edit_mark = k.edit_mark()
+        rb((tx, ty, z + .75), (size[0], size[1], .07), M['counter'] if serving else M['table'], f, r=.12 if serving else .035)
+        if serving:
+            # Two broad oak pedestals leave the upholstered chairs uncluttered.
+            for a in (-tw * .27, tw * .27):
+                xx, yy = (tx + a, ty) if along_x else (tx, ty + a)
+                rb((xx, yy, z + .38), (.18, .55, .69) if along_x else (.55, .18, .69), M['table'], f, r=.04)
+        else:
+            for a in (-tw * .35, tw * .35):
+                for bb2 in (-.26, .26):
+                    xx, yy = (tx + a, ty + bb2) if along_x else (tx + bb2, ty + a)
+                    beam((xx, yy, z + .04), (xx, yy, z + .72), .038, M['table'], f, 'furniture')
         seats = (-tw * .3, 0., tw * .3) if tw >= 1.8 else (-tw * .27, tw * .27)
         for a in seats:
             if along_x:
@@ -938,6 +1165,7 @@ def make_scene(building, report):
         zone = box(tx - (tw / 2 + .1 if along_x else .92), ty - (.92 if along_x else tw / 2 + .1), tx + (tw / 2 + .1 if along_x else .92), ty + (.92 if along_x else tw / 2 + .1))
         ctx['placed'].append(zone)
         furnishing('dining-set', room, zone)
+        k.editable('dining-set', room, zone, edit_mark)
         if upgraded_interior:
             chandelier(tx, ty, f)
         else:
@@ -976,6 +1204,8 @@ def make_scene(building, report):
             if o['kind'] == 'window':
                 windows.append((Polygon([q0, q1, q1 + nrm * .5, q0 + nrm * .5]), o))
                 continue
+            # Open alcove edges are room zoning, not door approaches.
+            if o.get('openSide') or o.get('servingCounter')=='full':continue
             # A passage 0.6 m deep in front of every opening, and the quarter circle a leaf sweeps into this room.
             zone = Polygon([q0, q1, q1 + nrm * .6, q0 + nrm * .6])
             if o['kind'] == 'door' and o.get('swing') == room['id']:
@@ -986,12 +1216,12 @@ def make_scene(building, report):
                 zone = zone.union(Polygon(arc).buffer(.02))
             doors.append((zone, o))
         return {'room': room, 'clear': clear, 'inside': prep(clear.buffer(.004)), 'doors': doors, 'windows': windows,
-                'floor': f, 'placed': []}
+                'floor': f, 'placed': [metres(Polygon(c['polygon'])).intersection(clear) for c in b.get('built_in_counters',[]) if room['id'] in c['roomIds']]}
 
     def hits(poly, zones):
         return any(poly.intersects(q) and poly.intersection(q).area > 2e-4 for q in zones)
 
-    def spots(ctx, width, depth, front=.6, height=1., step=.1, sides=0., tall=None):
+    def spots(ctx, width, depth, front=.6, height=1., step=.1, sides=0., tall=None, low_wall=False):
         """Placements of a width x depth piece backed by solid wall: [{'c', 't', 'n', 'foot', 's', 'L'}]. `c` is the
         wall-face point at the piece's centre, `t` runs along the wall and `n` into the room (a proper rotation)."""
         clear, f = ctx['clear'], ctx['floor']
@@ -1022,7 +1252,7 @@ def make_scene(building, report):
                                 c + tt * width / 2 + nrm * depth, c - tt * width / 2 + nrm * depth])
                 if not ctx['inside'].covers(foot):
                     continue
-                if not all(solid[f].contains(Point(*(c + tt * q - nrm * .07))) for q in np.linspace(-width / 2 + .04, width / 2 - .04, 4)):
+                if not all(solid[f].contains(Point(*(c + tt * q - nrm * .07))) for q in np.linspace(-width / 2 + .04, width / 2 - .04, 4)) and not (low_wall and wall_behind(f, c[0], c[1], nrm[0], nrm[1], width/2-.04, .10, height)):
                     continue
                 upright = foot if tall is None else Polygon([c - tt * width / 2 + nrm * .003, c + tt * width / 2 + nrm * .003,
                                                              c + tt * width / 2 + nrm * tall, c - tt * width / 2 + nrm * tall])
@@ -1064,10 +1294,15 @@ def make_scene(building, report):
     def wall_art(ctx, width=.9, height=.7, zc=1.55):
         """A framed print on the widest solid wall stretch not already used, above any furniture."""
         f = ctx['floor']; z = f * H
-        cands = spots(ctx, width + .3, .03, front=0, height=zc + height / 2 + .1, step=.2)
+        serving_hosts=[hosts[o['wall_id']] for o in b['openings'] if o.get('servingCounter')=='full' and ctx['room']['id'] in o['connects']]
+        art_ctx={**ctx,'doors':[],'placed':[]} if serving_hosts else ctx
+        cands = spots(art_ctx, width + .3, .03, front=0, height=zc + height / 2 + .1, step=.05 if serving_hosts else .2)
+        if serving_hosts:
+            cands = [s for s in cands if wall_behind(f, *s['c'], s['n'][0], s['n'][1], width / 2 + .02, zc - height / 2, zc + height / 2)]
         if not cands:
             return
-        sp = max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L']))
+        preferred=[s for s in cands if any(LineString(np.array([w['a'],w['b']])/1000).distance(Point(*s['c']))<.1 for w in serving_hosts)]
+        sp = max(preferred or cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L']))
         lbox(sp, -width / 2, width / 2, .004, .035, z + zc - height / 2, z + zc + height / 2, 'frame', f, 'art')
         lbox(sp, -width / 2 + .04, width / 2 - .04, .035, .042, z + zc - height / 2 + .04, z + zc + height / 2 - .04, 'art', f, 'art')
 
@@ -1080,6 +1315,7 @@ def make_scene(building, report):
                 break
         else:
             return None
+        edit_mark = k.edit_mark()
         # Frame, top, three or four leaves with bar handles, on a recessed plinth.
         for u0, u1, v0, v1 in ((-ww / 2, -ww / 2 + .035, 0, .6), (ww / 2 - .035, ww / 2, 0, .6), (-ww / 2, ww / 2, 0, .035)):
             lbox(sp, u0, u1, v0, v1, z + .08, z + 2.25, M['casework'], f)
@@ -1094,6 +1330,7 @@ def make_scene(building, report):
         foot = lpoly(sp, -ww / 2, ww / 2, 0, .6)
         ctx['placed'].append(foot)
         furnishing(name, room, foot)
+        k.editable(name, room, foot, edit_mark)
         return sp
 
     def dresser(ctx):
@@ -1102,6 +1339,7 @@ def make_scene(building, report):
             cands = spots(ctx, dw_, .48, front=.6, height=.85, step=.05)
             if cands:
                 sp = min(cands, key=lambda s: abs(s['s'] - s['L'] / 2))
+                edit_mark = k.edit_mark()
                 lbox(sp, -dw_ / 2, dw_ / 2, .02, .48, z + .08, z + .82, M['casework'], f)
                 for j in range(3):
                     lbox(sp, -dw_ / 2 + .03, dw_ / 2 - .03, .48, .5, z + .12 + j * .23, z + .31 + j * .23, M['casework'], f)
@@ -1110,6 +1348,7 @@ def make_scene(building, report):
                 foot = lpoly(sp, -dw_ / 2, dw_ / 2, .02, .5)
                 ctx['placed'].append(foot)
                 furnishing('wardrobe', room, foot)
+                k.editable('wardrobe', room, foot, edit_mark)
                 return sp
         return None
 
@@ -1120,7 +1359,8 @@ def make_scene(building, report):
         bl = 2.05
         head = 1.25
         good = []
-        for tables, bw_, height in ((.52, bw, 1.3), (.0, bw, 1.3), (.0, min(bw, 1.35), 1.3), (.0, min(bw, 1.5), .8), (.0, 1.35, .8)):
+        options=((.0,1.0,1.3),(.0,1.0,.8)) if room.get('bedType')=='single' else ((.52, bw, 1.3), (.0, bw, 1.3), (.0, min(bw, 1.35), 1.3), (.0, min(bw, 1.5), .8), (.0, 1.35, .8))
+        for tables, bw_, height in options:
             bw = bw_
             if height < 1:
                 head = .72              # a low headboard below the window sill
@@ -1137,6 +1377,7 @@ def make_scene(building, report):
             return None
         # The command position: the headboard on the wall farthest from the door, centred on it.
         sp = max(good, key=lambda s: (round(far_from_doors(ctx, s), 1), -abs(s['s'] - s['L'] / 2)))
+        edit_mark = k.edit_mark()
         v0 = .1
         lbox(sp, -bw / 2, bw / 2, v0, v0 + bl, z + .07, z + .28, M['bedframe'], f, owner=room['id'])
         lrb(sp, 0, v0 + bl / 2, z + .39, (bw + .04, bl + .03, .25), 'linen', f, r=.075, owner=room['id'])
@@ -1144,8 +1385,8 @@ def make_scene(building, report):
         if upgraded_interior and head > 1 and wall_behind(f, *P(sp, 0, 0), sp['n'][0], sp['n'][1], 1.45, .05, 2.55):
             for uu in np.arange(-1.42, 1.42, .085):
                 lbox(sp, uu, uu + .06, .003, .028, z + .1, z + 2.55, M['casework'], f, 'wall-panel')
-        for pu in (-bw / 4, bw / 4):
-            lrb(sp, pu, v0 + .38, z + .58, (bw / 2 - .12, .42, .17), 'linen', f, r=.07, extra=.035)
+        for pu in ((0,) if bw<1.2 else (-bw / 4, bw / 4)):
+            lrb(sp, pu, v0 + .38, z + .58, (bw-.2 if bw<1.2 else bw / 2 - .12, .42, .17), 'linen', f, r=.07, extra=.035)
         vv, ff = [], []
         nx, ny = 22, 24
         for j in range(ny):
@@ -1170,6 +1411,7 @@ def make_scene(building, report):
         foot = lpoly(sp, -bw / 2 - tables, bw / 2 + tables, .02, v0 + bl + .04)
         ctx['placed'].append(foot)
         furnishing('bed', room, lpoly(sp, -bw / 2 - .05, bw / 2 + .05, .02, v0 + bl + .04))
+        k.editable('bed', room, foot, edit_mark)
         rug = lpoly(sp, -bw / 2 - .32, bw / 2 + .32, v0 + .65, v0 + bl + .45).intersection(clear.buffer(-.12))
         if not rug.is_empty and rug.geom_type == 'Polygon':
             x0r, y0r, x1r, y1r = rug.bounds
@@ -1189,7 +1431,7 @@ def make_scene(building, report):
 
         def pick_shower():
             showers = spots(ctx, sw, sd, front=0, height=1.0, step=.05)
-            if not showers or clear.area < 2.0:
+            if room['kind']=='powder-room' or not showers or clear.area < 2.0:
                 return None
             sp = max(showers, key=lambda s: (round(far_from_doors(ctx, s), 1), -min(s['s'], s['L'] - s['s'])))
             ctx['placed'].append(lpoly(sp, -sw / 2, sw / 2, 0, sd))
@@ -1217,7 +1459,7 @@ def make_scene(building, report):
             ctx['placed'][:] = base
             wc = pick_wc(); basin, vw = pick_basin(); shower = pick_shower()
         wet = None
-        if shower is None:
+        if shower is None and room['kind']!='powder-room':
             heads = spots(ctx, .6, .05, front=.6, height=1.0, step=.05)
             if heads:
                 wet = max(heads, key=lambda s: round(far_from_doors(ctx, s), 1))
@@ -1289,6 +1531,7 @@ def make_scene(building, report):
         def lit(s):
             return any(o['sill'] / 1000 >= .8 and q.intersects(lpoly(s, -tw / 2, tw / 2, 0, .8)) for q, o in ctx['windows'])
         sp = max(desks, key=lambda s: (lit(s), -abs(s['s'] - s['L'] / 2)))
+        edit_mark = k.edit_mark()
         lbox(sp, -tw / 2, tw / 2, .02, .6, z + .72, z + .77, M['table'], f)
         for su in (-1, 1):
             lbox(sp, su * (tw / 2 - .07) - .03, su * (tw / 2 - .07) + .03, .08, .52, z, z + .72, 'frame', f)
@@ -1300,10 +1543,12 @@ def make_scene(building, report):
         foot = lpoly(sp, -tw / 2, tw / 2, .02, 1.25)
         ctx['placed'].append(foot)
         furnishing('desk', room, foot)
+        k.editable('desk', room, foot, edit_mark)
         # A bookcase on another wall.
         cases = spots(ctx, 1.2, .35, front=.7, height=2.0, step=.1)
         if cases:
             bk = max(cases, key=lambda s: -abs(s['s'] - s['L'] / 2))
+            edit_mark = k.edit_mark()
             for u0, u1 in ((-.6, -.575), (.575, .6)):
                 lbox(bk, u0, u1, 0, .35, z, z + 2.0, M['casework'], f)
             for zz in (.02, .42, .82, 1.22, 1.62, 1.97):
@@ -1316,6 +1561,7 @@ def make_scene(building, report):
             foot = lpoly(bk, -.6, .6, 0, .35)
             ctx['placed'].append(foot)
             furnishing('bookcase', room, foot)
+            k.editable('bookcase', room, foot, edit_mark)
         if clear.area > 9:
             corners = spots(ctx, .5, .5, front=0, height=1.2, step=.2)
             if corners:
@@ -1332,6 +1578,7 @@ def make_scene(building, report):
         else:
             return
         sp = max(runs, key=lambda s: -abs(s['s'] - s['L'] / 2))
+        edit_mark = k.edit_mark()
         # Front-loading washer, a steel wash sink on a counter, and a drying rack above.
         lrb(sp, -run / 2 + .33, .31, z + .44, (.6, .6, .86), 'ceramic', f, r=.03)
         ring = trimesh.creation.torus(major_radius=.2, minor_radius=.035, major_sections=24, minor_sections=8)
@@ -1348,6 +1595,7 @@ def make_scene(building, report):
         foot = lpoly(sp, -run / 2, run / 2, .02, .62)
         ctx['placed'].append(foot)
         furnishing('laundry', room, foot)
+        k.editable('laundry', room, foot, edit_mark)
 
     def dress_set(ctx):
         room, f = ctx['room'], ctx['floor']; z = f * H
@@ -1365,13 +1613,17 @@ def make_scene(building, report):
         """A mandir: a teak cabinet with a marble altar shelf, a carved back panel lit from behind, brass lamps
         and a bell, on the wall facing the door."""
         room, f = ctx['room'], ctx['floor']; z = f * H
-        for mw in (1.2, 1.0, .8, .6):
+        for mw in ((1.4,1.2,1.0,.8,.6) if room.get('altarWall') else (1.2,1.0,.8,.6)):
             cands = spots(ctx, mw, .45, front=.7, height=2.1, step=.05)
+            if room.get('altarWall'):
+                normal={'front':(0,1),'rear':(0,-1),'left':(1,0),'right':(-1,0)}[room['altarWall']]
+                cands=[s for s in cands if np.allclose(s['n'],normal)]
             if cands:
                 break
         else:
             return
         sp = max(cands, key=lambda s: (round(far_from_doors(ctx, s), 1), -abs(s['s'] - s['L'] / 2)))
+        edit_mark = k.edit_mark()
         lbox(sp, -mw / 2, mw / 2, .02, .45, z, z + .75, 'walnut', f)
         lbox(sp, -mw / 2 - .01, mw / 2 + .01, 0, .47, z + .75, z + .8, 'stone', f)
         for su in (-1, 1):
@@ -1392,6 +1644,7 @@ def make_scene(building, report):
         foot = lpoly(sp, -mw / 2, mw / 2, .02, .47)
         ctx['placed'].append(foot)
         furnishing('mandir', room, foot)
+        k.editable('mandir', room, foot, edit_mark)
         fx_, fy_ = P(sp, 0, .95)
         rect((fx_ - .35, fy_ - .25, z + .012, fx_ + .35, fy_ + .25, z + .018), 'rug', f, 'rug')
 
@@ -1402,6 +1655,7 @@ def make_scene(building, report):
                 cands = spots(ctx, sw_, .45, front=.5, height=top, step=.1)
                 if cands:
                     sp = max(cands, key=lambda s: s['L'])
+                    edit_mark = k.edit_mark()
                     for zz in [q for q in (.05, .5, .95, 1.4, 1.85) if q < top - .1]:
                         lbox(sp, -sw_ / 2, sw_ / 2, 0, .45, z + zz, z + zz + .025, 'steel' if not upgraded_interior else M['casework'], f)
                     for su in (-1, 1):
@@ -1411,6 +1665,7 @@ def make_scene(building, report):
                     foot = lpoly(sp, -sw_ / 2, sw_ / 2, 0, .45)
                     ctx['placed'].append(foot)
                     furnishing(f'shelves-{i}', room, foot)
+                    k.editable(f'shelves-{i}', room, foot, edit_mark)
                     break
 
     def kitchen_set(ctx):
@@ -1479,6 +1734,59 @@ def make_scene(building, report):
         foot = lpoly(sp, u0 - .03, u0 + run + .03, .005, .66)
         ctx['placed'].append(foot)
         furnishing('kitchen-run', room, foot)
+        if custom and clear.area >= 12 and (room.get('prepStorageWall') or any(room['id'] in c['roomIds'] for c in b.get('built_in_counters', []))):
+            # A second modular prep/storage run complements the serving ledge.
+            # Reuse collision-aware wall placement so pantry/wash doors stay clear.
+            candidates=[]
+            for prep_width in (2.2,1.8,1.4,1.1):
+                candidates=spots(ctx,prep_width+.08,.66,front=.95,height=.92,step=.1,low_wall=True)
+                if room.get('prepStorageWall'):
+                    normal={'front':(0,1),'rear':(0,-1),'left':(1,0),'right':(-1,0)}[room['prepStorageWall']]
+                    candidates=[c for c in candidates if np.allclose(c['n'],normal)]
+                if candidates:break
+            if not candidates and not room.get('prepStorageWall'):
+                # At a relocated serving ledge, tuck base cabinets beneath its kitchen side.
+                # Keep the working aisle and the open half of the portal unobstructed.
+                for counter in b.get('built_in_counters',[]):
+                    if room['id'] not in counter['roomIds']:continue
+                    cp=metres(Polygon(counter['polygon']));ax,ay,bx,by=cp.bounds
+                    horizontal=bx-ax>by-ay
+                    for sign in (-1,1):
+                        c=np.array([(ax+bx)/2,ay if sign<0 else by]) if horizontal else np.array([ax if sign<0 else bx,(ay+by)/2])
+                        tt=np.array([1.,0.]) if horizontal else np.array([0.,1.])
+                        nn=np.array([0.,float(sign)]) if horizontal else np.array([float(sign),0.])
+                        width=(bx-ax if horizontal else by-ay)-.08
+                        candidate={'c':c,'t':tt,'n':nn,'s':0.,'L':width}
+                        zone=lpoly(candidate,-width/2,width/2,.01,.66)
+                        aisle=lpoly(candidate,-width/2,width/2,.01,1.61)
+                        if width>=1.1 and ctx['inside'].covers(aisle) and not hits(aisle,[q for q,op in ctx['doors'] if op['id']!=counter['openingId']]) and not hits(zone,ctx['placed']):
+                            candidates=[candidate];prep_width=width;break
+                    if candidates:break
+            if candidates:
+                prep = max(candidates, key=lambda q: np.linalg.norm(q['c'] - sp['c']))
+                segments=max(2,round(prep_width/.55));module=prep_width/segments
+                for j in range(segments):
+                    a = -prep_width/2 + j * module
+                    lbox(prep, a, a + module-.02, 0, .60, z + .10, z + .83, M['casework'], f)
+                    for zz in (.30, .59):
+                        lbox(prep, a + .02, a + module-.04, .60, .622, z + zz, z + zz + .20, M['fronts'], f)
+                        h0, h1 = P(prep, a + .14, .64), P(prep, a + module-.11, .64)
+                        beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
+                lbox(prep, -prep_width/2-.03, prep_width/2+.03, 0, .66, z + .83, z + .87, M['counter'], f)
+                prep_foot = lpoly(prep, -prep_width/2-.03, prep_width/2+.03, .005, .66)
+                ctx['placed'].append(prep_foot)
+                furnishing('kitchen-prep-run', room, prep_foot)
+                if room.get('prepStorageWall') and wall_behind(f,*P(prep,0,0),prep['n'][0],prep['n'][1],prep_width/2,.9,2.3):
+                    lbox(prep,-prep_width/2,prep_width/2,.002,.014,z+.87,z+1.5,'tilewall',f,'wall-tile')
+                    for j in range(segments):
+                        a=-prep_width/2+j*module
+                        lbox(prep,a,a+module-.02,.015,.35,z+1.52,z+2.28,M['casework'],f)
+                        lbox(prep,a+.012,a+module-.032,.35,.373,z+1.535,z+2.265,M['fronts'],f)
+                        h0,h1=P(prep,a+module-.09,.386),P(prep,a+module-.09,.386)
+                        beam((h0[0],h0[1],z+1.59),(h1[0],h1[1],z+1.80),.007,'frame',f,'detail')
+                    lbox(prep,-prep_width/2,prep_width/2,.02,.32,z+1.505,z+1.515,'lamp',f,'fixture')
+                    lx,ly=P(prep,0,.32);k.light((lx,ly,z+1.43),12,kind='undercabinet')
+                    furnishing('kitchen-upper-storage',room,lpoly(prep,-prep_width/2,prep_width/2,.015,.386))
         # An island parallel to the run with a 1.05 m aisle, in a kitchen big enough to walk round it.
         if clear.area > 11:
             for iw in (1.6, 1.3):
@@ -1486,29 +1794,159 @@ def make_scene(building, report):
                 ring = isl.buffer(.9, join_style=2)
                 if ctx['inside'].covers(isl) and ctx['inside'].covers(ring.intersection(clear.buffer(-.01)).buffer(0)) and not hits(isl, [q for q, _ in ctx['doors']]) and not hits(ring, [q for q, _ in ctx['doors']] + [p_ for p_ in ctx['placed'] if p_ is not foot]):
                     ix0, iy0, ix1, iy1 = isl.bounds
+                    edit_mark = k.edit_mark()
                     rect((ix0 + .04, iy0 + .04, z + .10, ix1 - .04, iy1 - .04, z + .86), M['casework'], f, 'furniture')
                     rect((ix0, iy0, z + .86, ix1, iy1, z + .91), M['counter'], f, 'furniture')
                     ctx['placed'].append(isl)
                     furnishing('island', room, isl)
+                    k.editable('island', room, isl, edit_mark)
                     if upgraded_interior:
                         for du in (-iw / 4, iw / 4):
                             x, y = P(sp, du, .66 + 1.05 + .375)
                             lamp(x, y, z + 1.75, f, True)
                     break
 
+    def care_room_set(ctx):
+        """One residential recliner facing north (+x), with editable support furniture.
+
+        The monitor is an illustrative prop, not a clinical equipment specification.
+        All pieces use the existing house materials and respect door approaches.
+        """
+        room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
+        # Furnish the main rectangular bay of an L-shaped care room, rather
+        # than its bounding box (whose centre may lie in the missing corner).
+        xs = sorted({pt[0] for pt in clear.exterior.coords})
+        ys = sorted({pt[1] for pt in clear.exterior.coords})
+        bays = [box(a, c, bb, d) for i, a in enumerate(xs) for bb in xs[i+1:]
+                for j, c in enumerate(ys) for d in ys[j+1:]
+                if clear.covers(box(a, c, bb, d))]
+        main_bay = max(bays, key=lambda q: q.area) if bays else clear
+        x0, y0, x1, y1 = main_bay.bounds; cx, cy = (x0+x1)/2, (y0+y1)/2
+        if room.get('reclinerPosition'):
+            cx,cy=np.array(room['reclinerPosition'])/1000
+            # The TV stays on the solid wall directly in front of the authored chair.
+            ray=clear.intersection(LineString([(cx,cy),(clear.bounds[2]+1,cy)]))
+            x1=ray.bounds[2]
+        def allowed(foot):
+            return ctx['inside'].covers(foot) and not hits(foot, ctx['placed']+[q for q,_ in ctx['doors']])
+        def finish(kind, foot, mark):
+            furnishing(kind,room,foot);k.editable(kind,room,foot,mark);ctx['placed'].append(foot)
+        foot=box(cx-1.1,cy-.55,cx+1.1,cy+.55)
+        if allowed(foot):
+            mark=k.edit_mark()
+            rb((cx,cy,z+.26),(2.15,1.1,.25),M['bedframe'],f,r=.04,owner=room['id'])
+            rb((cx+.28,cy,z+.48),(1.5,1.1,.22),'linen',f,r=.07,owner=room['id'])
+            rb((cx-.70,cy,z+.64),(.70,1.1,.20),'linen',f,r=.07,owner=room['id'])
+            k.nodes[-1]['rotation'][1]=.40
+            rb((cx-.90,cy,z+.86),(.40,.94,.15),'linen',f,r=.06,owner=room['id'])
+            for xx in (cx-.9,cx+.9):
+                for yy in (cy-.45,cy+.45):cylinder((xx,yy,z+.10),.05,.15,'steel',f)
+            finish('reclining-bed',foot,mark)
+        # Facing +x, the occupant's left is +y and the veranda is to the right.
+        equipment_left=room.get('careLayout')=='equipment-left'
+        seats=([(name,x0+1.45+i*.85,y0+1.30,math.pi) for i,name in enumerate(('care-chair-right','care-chair-right-2','care-chair-right-3'))]
+               if equipment_left else [(name,cx-.55,yy,math.pi/2) for name,yy in [('care-chair-left',cy+.85),('care-chair-right',cy-.85)]])
+        for name,xx,yy,angle in seats:
+            foot=box(xx-.28,yy-.27,xx+.28,yy+.27)
+            if allowed(foot):
+                mark=k.edit_mark();chair(xx,yy,z,f,angle);finish(name,foot,mark)
+        xx,yy=(x0+2.0,y1-.55) if equipment_left else ((cx-1.55 if room.get('reclinerPosition') else cx+.75),cy-.85)
+        foot=box(xx-.40,yy-.25,xx+.40,yy+.25)
+        if allowed(foot):
+            mark=k.edit_mark()
+            rb((xx,yy,z+.77),(.80,.50,.07),M['counter'],f,r=.025)
+            for dx in (-.32,.32):
+                for dy in (-.18,.18):beam((xx+dx,yy+dy,z+.06),(xx+dx,yy+dy,z+.74),.018,'steel',f,'furniture')
+            rb((xx+.13,yy,z+.84),(.20,.22,.05),'frame',f,r=.015)
+            beam((xx+.13,yy,z+.85),(xx+.13,yy,z+1.03),.022,'steel',f,'furniture')
+            rb((xx+.13,yy,z+1.13),(.06,.32,.25),'frame',f,r=.02)
+            rect((xx+.095,yy-.135,z+1.03,xx+.101,yy+.135,z+1.22),'blackglass',f,'furniture')
+            rb((xx-.20,yy,z+.83),(.20,.28,.045),M['casework'],f,r=.015)
+            finish('equipment-table',foot,mark)
+        xx,yy=(x0+.52,y1-.22) if equipment_left else ((x0+1.7,cy+.1) if room.get('reclinerPosition') else (cx+.65,cy+1.10))
+        cupboard_depth=.40 if equipment_left else .45
+        foot=box(xx-.45,yy-cupboard_depth/2,xx+.45,yy+cupboard_depth/2)
+        if allowed(foot):
+            mark=k.edit_mark()
+            rb((xx,yy,z+.52),(.90,cupboard_depth,1.0),M['casework'],f,r=.02)
+            for dx in (-.225,.225):
+                rb((xx+dx,yy-cupboard_depth/2-.007,z+.54),(.43,.025,.90),M['bedframe'],f,r=.006)
+                beam((xx+dx,yy-cupboard_depth/2-.030,z+.55),(xx+dx,yy-cupboard_depth/2-.030,z+.70),.008,'steel',f,'furniture')
+            finish('care-cupboard',foot,mark)
+        ty=cy+room.get('tvOffset',0)/1000
+        mark=k.edit_mark()
+        rect((x1-.06,ty-.70,z+1.05,x1-.01,ty+.70,z+1.85),'frame',f,'furniture',owner=room['id'])
+        rect((x1-.067,ty-.65,z+1.10,x1-.059,ty+.65,z+1.80),'blackglass',f,'furniture',owner=room['id'])
+        foot=box(x1-.07,ty-.70,x1,ty+.70)
+        finish('large-tv',foot,mark)
+
+    for counter in b.get('built_in_counters',[]):
+        f=counter['floor'];z=f*H;counter_top=metres(Polygon(counter['polygon']));body=counter_top.buffer(-.025,join_style=2);mark=k.edit_mark()
+        room=next((r for r in b['spaces'] if r['id'] in counter['roomIds'] and r['kind']=='kitchen'),None)
+        if room is None:room=next(r for r in b['spaces'] if r['id'] in counter['roomIds'] and r['kind'] in ('hall','dining','living','family'))
+        poly_mesh(body,z,z+.89,'wall',f,'furniture',counter['id']+'/base',room['id'])
+        poly_mesh(counter_top,z+.89,z+.95,M['casework'],f,'furniture',counter['id']+'/top',room['id'])
+        center=counter_top.centroid;x0,y0,x1,y1=counter_top.bounds
+        horizontal=x1-x0>y1-y0
+        px,py=(x0+.34,center.y) if horizontal else (center.x,y0+.34)
+        bx,by=(x1-.40,center.y) if horizontal else (center.x,y1-.40)
+        for i in range(5):cylinder((px,py,z+.96+i*.017),.12,.015,'ceramic',f,'detail')
+        rb((bx,by,z+.976),(.40,.27,.04) if horizontal else (.27,.40,.04),M['table'],f,r=.025)
+        furnishing('serving-counter',room,counter_top);k.editable('serving-counter',room,counter_top,mark)
+
+    room_lawns=[]
     for room in b['spaces']:
         f = room['floor']; z = f * H; p = Polygon(np.array(room['clear']) / 1000)
         kind = room['kind']
-        if kind not in ('stair', 'terrace'):
+        if kind not in ({'stair'} | OUTDOOR | NON_WALKABLE):
             lining(room, f, z + .009, z + .09, 'skirting', 'skirting')
-            downlights(room, f, z + H - .157)
-        if kind in ('living', 'family', 'dining'):
+            downlights(room, f, z + room['ceilingHeight']/1000 - .007 if 'ceilingHeight' in room else z + H - .157)
+            if room.get('underStair'):
+                poly_mesh(p,z+2.10,z+2.14,'ceiling',f,'ceiling',room['id']+'/ceiling',room['id'])
+            if room.get('mechanicalVentilation'):
+                cp=p.representative_point();ch=room.get('ceilingHeight',H*1000-150)/1000
+                rect((cp.x-.12,cp.y-.12,z+ch-.02,cp.x+.12,cp.y+.12,z+ch-.01),'frame',f,'fixture',room['id']+'/exhaust-grille',room['id'])
+        if custom and kind == 'drying-yard' and room.get('drain'):
+            x0,y0,x1,y1=p.bounds;xx=(x0+x1)/2;yy=y0+.28;mark=k.edit_mark()
+            rb((xx,yy,z+.40),(.64,.48,.78),M['casework'],f,r=.02)
+            rb((xx,yy,z+.83),(.70,.52,.10),'ceramic',f,r=.06)
+            rb((xx,yy,z+.884),(.47,.30,.012),'steel',f,r=.03)
+            beam((xx,yy-.18,z+.85),(xx,yy-.18,z+1.08),.018,'steel',f,'fixture')
+            beam((xx,yy-.18,z+1.08),(xx,yy,z+1.08),.018,'steel',f,'fixture')
+            foot=box(xx-.35,yy-.26,xx+.35,yy+.26);furnishing('wash-basin',room,foot);k.editable('wash-basin',room,foot,mark)
+            rect((x1-.22,y1-.22,z+.01,x1-.1,y1-.1,z+.02),'steel',f,'drain',room['id']+'-drain',room['id'])
+            continue
+        if custom and room.get('finishStyle')=='garden-lawn':
+            from .courtyard_finishes import sheltered_lawn
+            room_lawns.extend(sheltered_lawn(k,materials,room,H))
+            continue
+        if custom and kind == 'courtyard' and room.get('glassCover'):
+            from .courtyard_finishes import skylit_garden
+            skylit_garden(k,materials,room,H)
+            continue
+        if custom and kind == 'courtyard' and room.get('garden'):
+            # A low planted border on the far edge leaves the window-side path clear.
+            # It sits above the authored courtyard slab, not below it at site grade.
+            x0,y0,x1,y1=p.bounds
+            bed=p.buffer(-.15,join_style=2).intersection(box(x0+.15,y1-.65,x1-.15,y1-.15))
+            poly_mesh(bed,z+.012,z+.04,'soil',f,'landscape',room['id']+'/garden-bed',room['id'])
+            for i,xx in enumerate(np.arange(x0+.45,x1-.35,1.25)):
+                yy=y1-.40
+                if bed.covers(Point(xx,yy).buffer(.19)):
+                    k.plant(xx,yy,z+.04,'shrub_round',height=.55)
+            continue
+        if kind == 'care-room':
+            care_room_set(room_context(room))
+            continue
+        if kind in ('living', 'drawing-room', 'family', 'dining'):
             ctx = room_context(room)
             ctx['doors'] = ctx['doors'] + [(q, {'kind': 'open'}) for q in open_keepouts(ctx)]
-            if kind in ('living', 'family'):
+            if kind in ('living', 'drawing-room', 'family'):
                 mark = k.checkpoint(); before = (list(ctx['placed']), list(ctx['doors']))
+                if room.get('diningPosition'):
+                    dining_group(ctx,anchor=Point(*(np.array(room['diningPosition'])/1000)),sizes=(room['diningLength']/1000,) if room.get('diningLength') else (2.2,1.8,1.5),open_plan=True)
                 sofa_group(ctx)
-                if 'dining' in room['name'].lower() and dining_group(ctx) is None:
+                if not room.get('diningPosition') and 'dining' in room['name'].lower() and dining_group(ctx) is None:
                     # Too tight for a table once the lounge group is down: seat the table first and fit the lounge
                     # around it, keeping that only if both groups found a place.
                     def reset():
@@ -1526,16 +1964,19 @@ def make_scene(building, report):
                         sp = min(corners, key=lambda s: min(s['s'], s['L'] - s['s']))
                         px, py = P(sp, 0, .34)
                         k.plant(px, py, z, 'fiddle_leaf', height=1.65, f=f, pot=(.21, .44, 'planter'))
-                wall_art(ctx, 1.2, .8)
+                wall_art(ctx, 1.0 if any(o.get('servingCounter')=='full' and room['id'] in o['connects'] for o in b['openings']) else 1.2, .8)
             else:
                 dining_group(ctx, public_route(room))
                 wall_art(ctx, 1.0, .7)
             continue
-        if kind in ('bedroom', 'bathroom', 'study', 'utility', 'dress', 'pooja', 'store', 'kitchen', 'hall'):
+        if kind in ('bedroom', 'bathroom', 'powder-room', 'study', 'utility', 'drying-room', 'dress', 'pooja', 'store', 'kitchen', 'hall'):
             ctx = room_context(room)
             if kind == 'bedroom':
                 bed_set(ctx, room['name'].startswith('Master'))
-                if wardrobe(ctx) is None:
+                # A compact single-bed L-shaped room needs circulation at its return.
+                compact_return = room.get('bedType') == 'single' and p.area < 10 and len(p.exterior.coords) > 5
+                storage = wardrobe(ctx, (.9,)) if compact_return else wardrobe(ctx)
+                if storage is None:
                     dresser(ctx)
                 if upgraded_interior and p.area > 12:
                     corners = spots(ctx, .55, .55, front=0, height=1.3, step=.2)
@@ -1544,15 +1985,17 @@ def make_scene(building, report):
                         px, py = P(sp, 0, .32)
                         k.plant(px, py, z, 'monstera', height=.95, f=f, pot=(.19, .36, 'planter'))
                 wall_art(ctx)
-            elif kind == 'bathroom':
+            elif kind in ('bathroom','powder-room'):
                 bath_set(ctx)
             elif kind == 'kitchen':
                 kitchen_set(ctx)
             elif kind == 'study':
                 desk_set(ctx)
                 wall_art(ctx)
-            elif kind == 'utility':
+            elif kind in ('utility','drying-room'):
                 utility_set(ctx)
+                if kind=='drying-room' and room.get('drain'):
+                    cp=p.representative_point();rect((cp.x-.06,cp.y-.06,z+.009,cp.x+.06,cp.y+.06,z+.012),'steel',f,'drain',room['id']+'-drain',room['id'])
             elif kind == 'dress':
                 dress_set(ctx)
             elif kind == 'pooja':
@@ -1565,7 +2008,8 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- stairs & terraces
     for st in b['stairs']:
-        p = box(st['x'] / 1000, st['y'] / 1000, (st['x'] + st['width']) / 1000, (st['y'] + st['depth']) / 1000)
+        from .stair_geometry import footprint as stair_footprint
+        p = metres(stair_footprint(st))
         colliders.append({'id': st['id'] + '/stair-walk-not-supported', 'floor': st['floor'], 'polygon': list(p.exterior.coords), 'kind': 'stair'})
     # Guarding follows the actual open terrace perimeter; it is a visual scheme, not a certified balustrade.
     if upgraded_interior:
@@ -1583,6 +2027,7 @@ def make_scene(building, report):
             half, deep = entry['width'] / 2000 + .7, 1.9
             quad = lambda t0, t1: Polygon([em + eu * t0, em + eu * t1, em + eu * t1 + en * deep, em + eu * t0 + en * deep])
             zone = quad(-half, half).intersection(hclear.buffer(-.03))
+            if custom:zone=zone.intersection(metres(geometry(b['roofs'][0]['ceiling'])))
             if not zone.is_empty and zone.geom_type == 'Polygon' and zone.area > 2.:
                 poly_mesh(zone, H - .2, H - .156, 'walnut', 0, 'ceiling-feature', 'foyer-ceiling', 'foyer-ceiling')
                 for t in np.arange(-half + .06, half - .04, .085):
@@ -1596,11 +2041,17 @@ def make_scene(building, report):
                         cylinder((lx, ly, H - .261), .034, .004, 'lamp', 0, 'downlight')
                         k.light((lx, ly, H - .45), 9, kind='downlight')
 
-    for terr in [s for s in b['spaces'] if s['kind'] == 'terrace']:
+    if custom or rooftop:
+        for guard in rb_model.get('guards',[]):
+            edge=LineString(np.array(guard['points'])/1000);f=guard['floor'];z=f*H;own=guard['owner']
+            poly_mesh(edge.buffer(.008,cap_style=2),z+.06,z+1.1,'glass',f,'railing',guard['id'],own)
+            poly_mesh(edge.buffer(.02,cap_style=2),z+1.1,z+1.13,'frame',f,'railing',guard['id']+'-cap',own)
+            colliders.append({'id':guard['id'],'floor':f,'polygon':list(edge.buffer(.06,cap_style=2).exterior.coords),'kind':'guard'})
+    for terr in [s for s in b['spaces'] if s['kind'] in ('terrace','veranda','balcony')]:
         p = Polygon(np.array(terr['polygon']) / 1000); f = terr['floor']; z = f * H
         for a, c in zip(list(p.exterior.coords), list(p.exterior.coords)[1:]):
             edge = LineString([a, c])
-            if fp.boundary.buffer(.01).covers(edge):
+            if not custom and fp.boundary.buffer(.01).covers(edge):
                 if modern:
                     glass = edge.buffer(.008, cap_style=2); poly_mesh(glass, z + .06, z + 1.1, 'glass', f, 'railing')
                     poly_mesh(edge.buffer(.03, cap_style=2), z + .009, z + .08, 'frame', f, 'railing')
@@ -1610,12 +2061,39 @@ def make_scene(building, report):
                     for t0 in np.arange(.08, edge.length, .95):
                         q = edge.interpolate(t0); beam((q.x, q.y, z + .02), (q.x, q.y, z + 1.1), .018, 'frame', f, 'railing')
                     glass = edge.buffer(.012, cap_style=2); poly_mesh(glass, z + .12, z + 1.05, 'glass', f, 'railing')
+        if terr.get('finishStyle')=='warm-stone':
+            # Finish-only layers: the authored floor, doors and clear circulation stay fixed.
+            materials['porch-limestone']={'color':'#d7cebd','alt':'#b8ac96','roughness':.78,'texture':'paver','kind':'paver','params':[4,2,.003,.08],'tile_m':2.4}
+            poly_mesh(p,z+.011,z+.017,'porch-limestone',f,'finish',terr['id']+'/stone-finish',terr['id'])
+            inset=p.buffer(-.18,join_style=2);x0,y0,x1,y1=p.bounds
+            for j,xx in enumerate(np.arange(x0+.18,x1-.18,.18)):
+                strip=inset.intersection(box(xx,y0,xx+.135,y1))
+                if not strip.is_empty:
+                    poly_mesh(strip,z+H-.205,z+H-.17,'oak',f,'ceiling',terr['id']+f'/ceiling-slat-{j}',terr['id'])
+            # Wall lamps sit above door heads, never in the clear glass openings.
+            for wall in [w for w in b['walls'] if terr['id'] in w['rooms']]:
+                a=np.array(wall['a'])/1000;c=np.array(wall['b'])/1000;length=np.linalg.norm(c-a)
+                if length<1.2:continue
+                t=(c-a)/length;n=np.array([-t[1],t[0]])
+                if not p.buffer(.01).covers(Point(*( (a+c)/2+n*.12))):n=-n
+                for j,tt in enumerate(np.arange(.45,length-.25,2.3)):
+                    q=a+t*tt+n*(wall['thickness']/2000+.035)
+                    if not p.buffer(.02).covers(Point(*q)):continue
+                    rb((q[0],q[1],z+2.60),(.10,.075,.22),'frame',f,'fixture',r=.015,rot=math.atan2(t[1],t[0]))
+                    rb((q[0],q[1],z+2.485),(.075,.055,.012),'lamp',f,'fixture',r=.003)
+                    k.light((q[0]+n[0]*.08,q[1]+n[1]*.08,z+2.46),22,kind='wall')
+            # Thin timber bands dress the plot-side wall; nothing stands in the walkway.
+            if abs(x1-(xmax-.15))<.05:
+                for j,zz in enumerate(np.arange(.35,1.46,.16)):
+                    rect((x1-.07,max(0,ymin)+.18,z+zz,x1-.045,y1-.18,z+zz+.10),'oak',f,'wall-panel',terr['id']+f'/boundary-band-{j}',terr['id'])
         center = p.representative_point()
+        if terr.get('clearAccess'):continue
         if modern:
             tx0, ty0, tx1, ty1 = p.bounds
             for i, xx in enumerate((tx0 + .5, tx1 - .5)):
                 k.plant(xx, ty0 + .45, z, 'cordyline' if i else 'shrub_round', height=.8, f=f, pot=(.24, .5, 'planter'))
             if tx1 - tx0 > 2.6 and ty1 - ty0 > 1.9:
+                edit_mark = k.edit_mark()
                 for j, xx in enumerate((center.x - .55, center.x + .55)):
                     rb((xx, center.y + .1, z + .22), (.62, 1.5, .12), 'sling', f, 'outdoor-furniture', .04)
                     rb((xx, center.y + .72, z + .4), (.62, .35, .1), 'sling', f, 'outdoor-furniture', .04)
@@ -1623,6 +2101,7 @@ def make_scene(building, report):
                         for dy in (-.6, .75):
                             beam((xx + dx, center.y + dy, z + .01), (xx + dx, center.y + dy, z + .17), .013, 'frame', f, 'outdoor-furniture')
                 furnishing('lounge', terr, box(center.x - .9, center.y - .66, center.x + .9, center.y + .95))
+                k.editable('lounge', terr, box(center.x - .9, center.y - .66, center.x + .9, center.y + .95), edit_mark)
         else:
             k.plant(center.x, center.y, z, 'shrub_flowering', height=.75, f=f, pot=(.2, .32, 'ceramic'))
     # A true U stair: 18 risers, two flights, mid/top landings, no upper slab over the well.
@@ -1630,23 +2109,39 @@ def make_scene(building, report):
         if st['to_floor'] is None:
             continue
         f = st['floor']; z = f * H; x = st['x'] / 1000; y = st['y'] / 1000; r = st['riser_mm'] / 1000; t = st['tread_mm'] / 1000; fw = st['flight_width'] / 1000; well = st['well'] / 1000; land = st['landing_mm'] / 1000
-        for j in range(8):
+        node_start=len(k.nodes)
+        n=st['riser_count']//2;steps=n-1
+        for j in range(steps):
             yy = y + land + j * t
             rect((x, yy, z + max(0, j * r - .08), x + fw, yy + t, z + (j + 1) * r), M['tread'], f, 'stair')
         # Landings and structural-stringer intent are visual coordination only.
-        mid_y = y + land + 8 * t
-        rect((x, mid_y, z + 9 * r - .16, x + 2 * fw + well, mid_y + land, z + 9 * r), M['tread'], f, 'stair')
-        for j in range(8):
-            yy = y + land + (7 - j) * t
-            rect((x + fw + well, yy, z + 9 * r + j * r - .09, x + 2 * fw + well, yy + t, z + (10 + j) * r), M['tread'], f, 'stair')
+        mid_y = y + land + steps * t
+        rect((x, mid_y, z + n * r - .16, x + 2 * fw + well, mid_y + land, z + n * r), M['tread'], f, 'stair')
+        for j in range(steps):
+            yy = y + land + (steps - 1 - j) * t
+            rect((x + fw + well, yy, z + n * r + j * r - .09, x + 2 * fw + well, yy + t, z + (n + 1 + j) * r), M['tread'], f, 'stair')
         rect((x, y, z + H - .16, x + 2 * fw + well, y + land, z + H), M['tread'], f + 1, 'stair')
         # Handrails and pickets follow the two flight slopes.
-        for xrail, start_z, ascending in [(x + fw - .04, z, True), (x + fw + well + .04, z + H, False)]:
-            za = start_z + r if ascending else start_z; zb = z + 9 * r
+        rails=[(x + fw - .04, z, True), (x + fw + well + .04, z + H, False)]
+        if 'left' in st.get('open_sides',[]):rails.append((x+.04,z,True))
+        if 'right' in st.get('open_sides',[]):rails.append((x+2*fw+well-.04,z+H,False))
+        for xrail, start_z, ascending in rails:
+            za = start_z + r if ascending else start_z; zb = z + n * r
             beam((xrail, y + land, za + .9), (xrail, mid_y, zb + .9), .025, 'timber' if not upgraded_interior else 'walnut', f, 'railing')
-            for j in range(9):
+            for j in range(n):
                 yy = y + land + j * t; zz = (z + (j + 1) * r) if ascending else (z + H - j * r)
                 beam((xrail, yy, zz), (xrail, yy, zz + .89), .010, 'frame', f, 'railing')
+
+        if st.get('rotation')==90:
+            from .stair_geometry import point as stair_point
+            for item in k.nodes[node_start:]:
+                item['position'][:2]=stair_point(st,item['position'][:2],scale=.001)
+                item['rotation'][2]+=math.pi/2
+
+    if b.get('planning',{}).get('facadeStyle')=='warm-layered':
+        from .courtyard_finishes import layered_facade, open_puja_entry
+        layered_facade(k,materials,b,H)
+        open_puja_entry(k,b)
 
     # ---------------------------------------------------------------- legacy facade recipes
     if not modern:
@@ -1750,7 +2245,7 @@ def make_scene(building, report):
                 cx = sx0 + .17 if on_left else sx1 - .17
                 rect((cx - .15, y0 + .02, land, cx + .15, y0 + .32, cz), 'cladding', 0, 'cladding', aid + '-column', aid)
                 pa, pb = (cx + .2, sx1 - .05) if on_left else (sx0 + .05, cx - .2)
-                if pb - pa > .5:
+                if pb - pa > .5 and b.get('planning',{}).get('frontCourt')!='tiled':
                     rect((pa, y0 + .03, land, pb, y0 + .43, land + .42), 'planter', 0, 'planter', aid + '-sitout-planter', aid)
                     rect((pa + .04, y0 + .07, land + .42, pb - .04, y0 + .39, land + .43), 'soil', 0, 'planter', owner=aid)
                     for xx in np.arange(pa + .22, pb - .1, .42):
@@ -1946,6 +2441,7 @@ def make_scene(building, report):
                 for j, xx in enumerate(np.arange(x0, x1, spacing)):
                     rect((xx, y0, 0, min(x1, xx + geo.get('slat_depth_mm', 55) / 1000), y1, h), material, 0, 'screen', aid + f'-slat-{j}', aid)
         elif kind == 'stair_tower':
+            if rooftop:continue  # physical hollow headhouses are rendered from canonical roof objects below
             # The stair's headroom over the roof: a rendered box with stone cladding on the faces that continue
             # the facade, a floating lid, a slot window to the street and a glazed door onto the roof terrace.
             zt, z1 = top, top + geo.get('height_mm', 2700) / 1000
@@ -2014,8 +2510,25 @@ def make_scene(building, report):
             for j, xx in enumerate(np.arange(x0 + .15, x1, .42)):
                 rect((xx, y0, z, min(x1, xx + .09), y1, z + .12), 'timber', 0, 'pergola', aid + f'-slat-{j}', aid)
 
+    if rooftop:
+        for core in rooftop['cores']:
+            x0,y0,x1,y1=[q/1000 for q in core['bounds']];zt=top;z1=top+core['height']/1000;aid=core['id']
+            # Keep the established rendered wall, stone and floating-lid vocabulary; the inside remains hollow.
+            rect((x0-.18,y0-.18,z1-.2,x1+.18,y1+.18,z1),'roof',storeys,'roof',aid+'-lid',aid)
+            rect((x0-.19,y0-.19,z1-.21,x1+.19,y0-.17,z1-.19),'frame',storeys,'massing',owner=aid)
+            door=next(o for o in rooftop['openings'] if o['id']==core['doorId'])
+            for face in ('front','left','right'):
+                wall=next(w for w in rooftop['walls'] if w['id']==core['stairId']+'-roof-wall-'+face)
+                if wall['id']==door['wall_id']:continue
+                if face=='front':rect((x0,y0-.04,zt+.22,x1,y0,z1-.2),'cladding',storeys,'massing',owner=aid)
+                elif face=='left' and x0<.2:rect((x0-.04,y0,zt+.22,x0,y1,z1-.2),'cladding',storeys,'massing',owner=aid)
+                elif face=='right' and x1>W-.2:rect((x1,y0,zt+.22,x1+.04,y1,z1-.2),'cladding',storeys,'massing',owner=aid)
+
+    for step in b.get('entrance_steps',[]):
+        poly_mesh(Polygon(np.array(step['polygon'])/1000),step['bottom']/1000,step['top']/1000,'step',0,'step',step['id'],step['openingId'])
+
     # ---------------------------------------------------------------- landscape features
-    lawns = []
+    lawns = list(room_lawns)
     for feature in features:
         fk = feature['kind']
         if 'polygon' in feature:
@@ -2031,7 +2544,7 @@ def make_scene(building, report):
             border = poly.buffer(.045).difference(poly)
             poly_mesh(border, g + .025, g + .12, 'stone', -1, 'landscape', feature['id'] + '-raised-edge', feature['id'])
         elif fk == 'court':
-            poly_mesh(poly, g - .02, g + .04, 'cobble', -1, 'court', feature['id'], feature['id'])
+            poly_mesh(poly, g - .02, g + .04, 'porch-limestone' if feature.get('material_role')=='site.limestone' else 'cobble', -1, 'court', feature['id'], feature['id'])
         elif fk == 'patio':
             poly_mesh(poly, g - .02, g + .06, 'encaustic', -1, 'patio', feature['id'], feature['id'])
         elif fk == 'deck':
@@ -2210,7 +2723,7 @@ def make_scene(building, report):
         cylinder((xx, yy, 1.17), .06, .18, 'brass', 0, 'detail')
 
     # ---------------------------------------------------------------- lawns for legacy themes
-    if not lawns:
+    if not lawns and b.get('planning',{}).get('frontCourt')!='tiled':
         inner = plot.buffer(-.2)
         taken = unary_union([fp.buffer(.25)] + [q.buffer(.05) for q in k.ground]) if k.ground else fp.buffer(.25)
         for i, part in enumerate(_parts(inner.difference(taken))):
@@ -2220,7 +2733,8 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- walk + rooms metadata
     rooms = [{'id': s['id'], 'name': s['name'], 'kind': s['kind'], 'floor': s['floor'],
-              'polygon': [[round(x / 1000, 4), round(y / 1000, 4)] for x, y in s['clear']]} for s in b['spaces']]
+              'holes': [[[round(x / 1000, 4), round(y / 1000, 4)] for x,y in ring] for ring in s.get('holes',[])],
+              'polygon': [[round(x / 1000, 4), round(y / 1000, 4)] for x, y in s['clear']]} for s in rb_model['spaces']]
     # The walk starts on the street outside the open pedestrian gate, facing the house, so the visitor arrives the
     # way a guest does (the vehicle gate beside it stays closed).
     arrive_x = ex
@@ -2231,26 +2745,38 @@ def make_scene(building, report):
         arrive_x = min(max(ex, gate_c - slack), gate_c + slack)
     walk = {'eye_height': 1.63, 'arrival': {'position': [round(arrive_x, 3), round(ymin - 1.3, 3), round(g + (.1 if modern else 0), 3)], 'yaw_deg': 0}, 'floors': []}
     for f in range(storeys):
-        options = [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'family', 'dining', 'hall')]
+        options = [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'drawing-room', 'family', 'dining', 'hall')]
         if not options:
             continue
         s = options[0]
         c = Polygon(np.array(s['clear']) / 1000).representative_point()
         walk['floors'].append({'floor': f, 'position': [round(c.x, 3), round(c.y, 3), round(f * H, 3)], 'yaw_deg': 180 if f else 0})
 
+    car = b.get('planning', {}).get('parkedCar')
+    if car:
+        from .vehicle import parked_car
+        parked_car(k, materials, car['x']/1000, car['y']/1000, g+.04)
+
     # Exact generated scene, not an image substitute.
-    return {'schema': 'floorforge.scene/0.4', 'units': 'm', 'up': 'Z', 'materials': materials, 'assets': k.assets, 'nodes': k.nodes,
-            'lights': lights, 'colliders': colliders, 'furniture': furniture, 'floor_height': H, 'storeys': storeys,
-            'bounds': [xmin, ymin, -plinth, xmax, ymax, top + .7], 'footprint': (np.array(b['footprint']) / 1000).tolist(),
+    scene = {'editables': k.editables, 'input_audit':b.get('input_audit'),'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'schema': 'floorforge.scene/0.4', 'units': 'm', 'up': 'Z', 'materials': materials, 'assets': k.assets, 'nodes': k.nodes,
+            'lights': lights, 'colliders': colliders, 'furniture': furniture, 'floor_height': H, 'storeys': storeys, 'roof_level': storeys if rooftop else None,
+            'bounds': [xmin, ymin, -plinth, xmax, ymax, top + (2.7 if rooftop else .7)], 'footprint': (np.array(b['footprint']) / 1000).tolist(),
             'entry': [float(ex), -.15, 1.6], 'solar': report['solar'], 'style': v['style'],
             'exterior_theme': theme_id, 'interior_theme': interior_id,
             'exterior_revision': exterior.get('revision'), 'exterior_review': exterior.get('review', {}),
             'vegetation': k.vegetation, 'lawns': lawns, 'rooms': rooms, 'walk': walk,
+            # Canonical opening hosts let the offline viewer animate the actual authored leaves.
+            # These descriptors do not alter the exported design's initial geometry or plan hash.
+            'opening_model': {'openings': rb_model['openings'], 'walls': rb_model['walls']},
+            'gate_model': gates,
+            'door_motion': door_motion,
             'cameras': {'hero': {'position': [W * 1.90, -max(16, D * 1.34), top * .68 + 3.0], 'target': [W * .47, D * .25, top * .40], 'fov': 43},
                         'dollhouse': {'position': [W * 1.45, -D * .52, top + max(W, D) * 1.55], 'target': [W * .5, D * .5, 1.], 'fov': 42},
                         'interior': {'position': [ex, .65, 1.6], 'target': [W * .72, 4.0, 1.35], 'fov': 66}},
             'quality': 'Authored procedural geometry with physically based surface recipes and procedural planting; not a verified photographic render.',
             'banner': b['banner']}
+    from .placement_edits import apply_furniture_edits
+    return apply_furniture_edits(scene, b)
 
 
 def transformation(node):
@@ -2275,5 +2801,5 @@ def glb_bytes(scene):
         convert = trimesh.transformations.rotation_matrix(-math.pi / 2, [1, 0, 0])
         out.graph.update(frame_to=n['id'], matrix=convert @ transformation(n), geometry=key,
                          metadata={'owner': n['owner'], 'floor': n['floor'], 'role': n['role']})
-    out.metadata = {'banner': scene['banner'], 'units': 'm', 'up': 'Y', 'geometry_scope': 'individual closed components plus thin decorative surfaces; not a boolean-unioned building'}
+    out.metadata = {'planHash':scene.get('planHash'),'draftRevision':scene.get('draftRevision',0),'banner': scene['banner'], 'units': 'm', 'up': 'Y', 'geometry_scope': 'individual closed components plus thin decorative surfaces; not a boolean-unioned building'}
     return out.export(file_type='glb')

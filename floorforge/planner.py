@@ -32,12 +32,15 @@ HALF = INT // 2
 SNAP = 50
 STAIR_W, STAIR_D = 2500, 4450
 BIG = 10_000.
+PLACEMENT_CELL_WEIGHT = 150.       # one 4 x 4-cell miss matters more than a small soft size preference
+PLACEMENT_MISSING = 700.           # strongly prefer candidates that contain every requested semantic room
+PLACEMENT_MAX_DISTANCE = 2.25      # deliberately coarse tolerance: a little over half of the four-cell board
 
 PUBLIC = frozenset({'living', 'dining', 'hall', 'family', 'foyer'})
 WET = frozenset({'bathroom', 'utility', 'kitchen'})
-LIT = frozenset({'bedroom', 'living', 'family', 'study', 'kitchen'})       # need a window on an outside wall
+LIT = frozenset({'drawing-room', 'bedroom', 'living', 'family', 'study', 'kitchen'})       # need a window on an outside wall
 AIRED = frozenset({'bathroom', 'utility'})                                 # need a ventilator (else a duct)
-HABITABLE_BELOW = frozenset({'living', 'dining', 'bedroom', 'kitchen', 'study', 'family', 'pooja'})
+HABITABLE_BELOW = frozenset({'drawing-room', 'living', 'dining', 'bedroom', 'kitchen', 'study', 'family', 'pooja'})
 
 # kind: (hard min clear width m, hard min clear area m2, comfortable width m, target area on a tight plot and on a
 #        generous one m2, area above which the room is wastefully large m2, largest comfortable aspect ratio)
@@ -45,6 +48,7 @@ RULES = {
     'master':   (2.4, 9.5, 3.3, 12.5, 19.0, 27.0, 1.50),
     'bedroom':  (2.4, 7.5, 2.9, 10.5, 15.0, 21.0, 1.55),
     'living':   (3.0, 9.5, 3.5, 14.0, 30.0, 46.0, 2.20),
+    'drawing-room': (2.4, 7.5, 2.8, 9.0, 13.0, 20.0, 1.8),
     'family':   (2.4, 9.5, 3.0, 12.0, 24.0, 38.0, 2.40),
     'dining':   (2.4, 6.0, 2.7, 7.5, 14.0, 21.0, 1.80),
     'kitchen':  (1.8, 5.0, 2.2, 6.5, 11.0, 16.5, 2.30),
@@ -316,6 +320,8 @@ def unit_rooms(u, rect, side, W, D, behind, g, front_public):
         return suite_rooms(u, rect, side, W, D, behind, g)
     if t == 'toilet':
         return [[Rm('cbath', 'Common bath', 'bathroom', [rect] + merged, 'hall', (inner, y0), 'door', 750, role='common')]]
+    if t == 'drawing-room':
+        return [[Rm('drawing-room', 'Drawing room', 'drawing-room', [rect] + merged, 'hall', (inner, y0), 'door', 900)]]
     if t == 'study':
         return [[Rm('study', 'Study', 'study', [rect] + merged, 'hall', (inner, y0), 'door', 900)]]
     if t == 'store':
@@ -344,7 +350,7 @@ def unit_rooms(u, rect, side, W, D, behind, g, front_public):
 
 # ------------------------------------------------------------------------------------------------ stacks
 UNIT_DEPTH = {  # (min, max) gross depth mm, before the width-dependent target
-    'suite': (2900, 7800), 'toilet': (1500, 2400), 'study': (2700, 4400), 'store': (1100, 2400),
+    'drawing-room': (2700, 4400), 'suite': (2900, 7800), 'toilet': (1500, 2400), 'study': (2700, 4400), 'store': (1100, 2400),
     'pooja': (1200, 2400), 'utility': (1250, 2200), 'kitchen': (2600, 4300),
 }
 
@@ -681,7 +687,7 @@ def front_row(W, yF, floor, stair, prog, fr):
         name = 'Living & dining' if prog['combined'] else 'Living'
         rooms.append(Rm('living', name, 'living', [(x0, 0, x1, yF)]))
         if fr:
-            rooms.append(Rm('front', 'Study' if prog['front_kind'] == 'study' else 'Guest room', prog['front_kind'],
+            rooms.append(Rm('drawing-room' if prog['front_kind']=='drawing-room' else 'front', 'Drawing room' if prog['front_kind']=='drawing-room' else 'Study' if prog['front_kind'] == 'study' else 'Guest room', prog['front_kind'],
                             [(x1, 0, W, yF)], 'living', (x1, yF / 2), 'door', 900))
     else:
         tx0, ty0, tx1, ty1 = terrace_rect(W, prog['style'])
@@ -739,10 +745,12 @@ class House:
 
     def __init__(self, v, W, D):
         self.v, self.W, self.D0 = v, W, D
+        self.placement = [dict(label=p[0],x=float(p[1]),y=float(p[2]),source=p[3],floor=p[4] if len(p)>4 else None)
+                          for p in v.get('_placement_hints',())]
         self.storeys = v['storeys']
-        self.stair = self.storeys == 2
+        self.stair = self.storeys > 1
         total = v['bedrooms']
-        self.counts = [total] if self.storeys == 1 else [max(1, total // 2), total - max(1, total // 2)]
+        self.counts = [total] if self.storeys == 1 else ([max(1,total//2),total-max(1,total//2)] if self.storeys==2 else [total//3+(1 if f>=3-total%3 else 0) for f in range(3)])
         if max(self.counts) > 4:
             raise DesignError('PROGRAMME_CAPACITY', 'At most four bedrooms per floor in this bounded generator.')
         want = v.get('attached_baths', 'all')
@@ -755,20 +763,82 @@ class House:
             for i in range(k):
                 self.suites.append({'t': 'suite', 'key': f'bed-{num}', 'num': num, 'floor': f})
                 num += 1
-        master = [s for s in self.suites if s['floor'] == self.storeys - 1][-1]
+        for hint in self.placement:
+            if hint['floor'] is None:continue
+            label=hint['label'];m=__import__('re').fullmatch(r'bedroom-([1-8])',label)
+            num=total if label=='master-bedroom' else int(m[1]) if m else None
+            if num is not None:
+                for suite in self.suites:
+                    if suite['num']==num:suite['floor']=hint['floor']
+        self.counts=[sum(s['floor']==f for s in self.suites) for f in range(self.storeys)]
+        if any(n<1 or n>4 for n in self.counts):
+            names=['Ground','First','Second']
+            issues=[{'floor':f,'label':'bedrooms','message':f'{names[f]} has {n} bedrooms after your floor assignments; Quick Guide needs 1–4 on each active floor. Assign a bedroom here, change the storey count, or turn the cells into Custom Plan rooms.',
+                     'cells':[], 'actual':n, 'required_min':1,'required_max':4} for f,n in enumerate(self.counts) if not 1<=n<=4]
+            raise DesignError('PLACEMENT_FLOOR_CAPACITY',issues[0]['message'],{'rooms':issues})
+        master = next(s for s in self.suites if s['num']==total)
         master['master'] = True
         master['key'] = 'bed-m'
-        order = [master] + [s for s in self.suites if s['floor'] == 0 and s is not master] + [s for s in self.suites if s['floor'] == 1 and s is not master]
+        order = [master] + [s for s in self.suites if s['floor'] == 0 and s is not master] + [s for s in self.suites if s['floor'] > 0 and s is not master]
         if v.get('eldercare') and self.storeys == 2:
-            order = [s for s in order if s['floor'] == 0][:1] + [s for s in order if not (s['floor'] == 0 and s is order[0])]
+            ground_first=next((s for s in order if s['floor']==0),None)
+            if ground_first is not None:order=[ground_first]+[s for s in order if s is not ground_first]
         for s in order[:attached]:
             s['ensuite'] = True
+        self.bedroom_keys={s['num']:s['key'] for s in self.suites}
+        self.bathroom_keys={s['num']:('bath-m' if s['key']=='bed-m' else 'bath-'+s['key'].split('-')[1]) for s in self.suites}
+        self.suite_floors={s['num']:s['floor'] for s in self.suites}
         self.attached = attached
         ups = [s for s in self.suites if s['floor'] == 1]
         need = any(not s.get('ensuite') for s in ups)
         required = [{'t': 'toilet', 'key': 'cbath'}] if need else []
         optional = ([] if need else [{'t': 'toilet', 'key': 'cbath'}]) + [{'t': 'study', 'key': 'study'}]
+        if self.wants_guest(1):required.append({'t':'drawing-room','key':'drawing-room'})
         self.fcombos = assignments([], required, optional, sorted(ups, key=lambda s: bool(s.get('master')))) if self.stair else []
+        self.upper_combos={1:self.fcombos}
+        for f in range(2,self.storeys):
+            suites=[s for s in self.suites if s['floor']==f];need=any(not s.get('ensuite') for s in suites)
+            required=[{'t':'toilet','key':'cbath'}] if need else []
+            optional=([] if need else [{'t':'toilet','key':'cbath'}])+[{'t':'study','key':'study'}]
+            if self.wants_guest(f):required.append({'t':'drawing-room','key':'drawing-room'})
+            self.upper_combos[f]=assignments([],required,optional,sorted(suites,key=lambda s:bool(s.get('master'))))
+
+    def wants_guest(self, floor):
+        return any(h['label']=='drawing-room' and (h['floor'] if h['floor'] is not None else 0)==floor for h in self.placement)
+
+    def matches_hint(self, label, room):
+        """Semantic matching is intentionally independent of dimensions. Numbered bedrooms/baths bind to the
+        programme's stable keys; generic service labels bind by role/kind."""
+        m=__import__('re').fullmatch(r'bedroom-([1-8])',label)
+        if m:return room.key==self.bedroom_keys.get(int(m[1]))
+        m=__import__('re').fullmatch(r'bathroom-([1-8])',label)
+        if m:return room.key==self.bathroom_keys.get(int(m[1]))
+        if label=='master-bedroom':return room.role=='master'
+        if label=='bathroom':return room.role=='common'
+        if label=='dining' and room.key=='living' and 'dining' in room.name.lower():return True
+        if label=='store':return room.kind=='store'
+        return room.key==label or room.kind==label
+
+    def hint_floor(self, label):
+        """Choose the floor on which an existence-sensitive hint is preserved during the per-floor search.
+
+        This fallback serves legacy whole-home and text hints; explicitly painted floors take precedence.
+        Stable programme rooms keep their assigned programme floor;
+        the one genuinely floor-optional room, a study, uses the upper floor in G+1 homes and the ground floor in a
+        single-storey home. This prevents both floor searches from adding duplicate optional rooms merely to avoid a
+        local missing-room penalty.
+        """
+        m=__import__('re').fullmatch(r'(?:bedroom|bathroom)-([1-8])',label)
+        if m:return self.suite_floors.get(int(m[1]),0)
+        if label=='master-bedroom':return self.storeys-1
+        if label=='family':return 1
+        if label=='study':return self.storeys-1
+        return 0
+
+    def missing_hints(self, rooms, floor):
+        """Hints assigned to this floor whose semantic room is absent from a candidate."""
+        return [h for h in self.placement if (h['floor'] if h['floor'] is not None else self.hint_floor(h['label']))==floor and
+                not any(self.matches_hint(h['label'],room) for room in rooms)]
 
     def ground_combos(self):
         suites = sorted([s for s in self.suites if s['floor'] == 0], key=lambda s: bool(s.get('master')))
@@ -776,6 +846,7 @@ class House:
         for fixed, req, opt in (([{'t': 'kitchen', 'key': 'kitchen'}], [{'t': 'toilet', 'key': 'cbath'}], [{'t': 'pooja', 'key': 'pooja'}, {'t': 'study', 'key': 'study'}]),
                                 ([{'t': 'utility', 'key': 'utility'}], [{'t': 'toilet', 'key': 'cbath'}], [{'t': 'pooja', 'key': 'pooja'}, {'t': 'study', 'key': 'study'}]),
                                 ([], [], [{'t': 'pooja', 'key': 'pooja'}, {'t': 'study', 'key': 'study'}])):
+            if self.wants_guest(0):req=[*req,{'t':'drawing-room','key':'drawing-room'}]
             n = max(n, len(assignments(fixed, req, opt, suites)))
         return n
 
@@ -801,7 +872,7 @@ class House:
         fr = p['fr'] if (W - (STAIR_W if stair else 0) - p['fr']) >= 5200 else 0
         suites = [s for s in self.suites if s['floor'] == 0]
         combined = p['gmode'] == 'compact'
-        prog = {'combined': combined, 'front_kind': 'study', 'style': v['style']}
+        prog = {'combined': combined, 'front_kind': 'drawing-room' if self.wants_guest(0) else 'study', 'style': v['style']}
         rooms = front_row(W, yF, 0, stair, prog, fr)
         needs = {'pooja': 25. if v['pooja'] else 0., 'utility': 10., 'common': 60. if any(not s.get('ensuite') for s in suites) else 22.,
                  'ensuite': 45., 'ensuite_count': sum(1 for s in suites if s.get('ensuite'))}
@@ -818,10 +889,12 @@ class House:
             xh0 = p['xh']
             if stair and xh0 < STAIR_W:
                 return None
+            if self.wants_guest(0) and not fr:required.append({'t':'drawing-room','key':'drawing-room'})
             combos = assignments([kitchen], required, optional, sorted(suites, key=lambda s: bool(s.get('master'))))
+            if not combos:return None
             left, right = combos[p['ga'] % len(combos)]
             res = back_region(W, D, y0, xh0, p['wh'], left, right, g, (p['s1'], p['s2']), above)
-            return self._finish(rooms, res, W, D, g, needs)
+            return self._finish(rooms, res, W, D, g, needs, floor=0)
         # Three rows: kitchen (+ utility) | dining | pooja / common bath behind the living; suites at the rear.
         dM, xk, wd = p['dM'], p['xk'], p['wd']
         yD = yF + dM
@@ -839,7 +912,7 @@ class House:
             mid.append(Rm('kitchen', 'Kitchen', 'kitchen', [(0, yF, xk, yD)], 'dining', (xk, yF + dM / 2 + 250),
                           'cased' if v['open_kitchen'] else 'door', 1200 if v['open_kitchen'] else 900))
         mid.append(Rm('dining', 'Dining', 'dining', [(xk, yF, xs, yD)], 'living'))
-        taken = {'study'} if fr else set()
+        taken = {prog['front_kind']} if fr else set()
         if xs < W:
             opt = p['right']
             parts = opt.split('|')
@@ -857,6 +930,9 @@ class House:
                     mid.append(Rm('cbath', 'Common bath', 'bathroom', [(xs, a, W, b)], 'dining', (xs, b), 'door', 750, role='common'))
                 elif part == 'store':
                     mid.append(Rm('store', 'Store', 'store', [(xs, a, W, b)], 'dining', (xs, (a + b) / 2), 'door', 750))
+                elif part == 'drawing-room':
+                    if 'drawing-room' in taken:return None
+                    mid.append(Rm('drawing-room','Drawing room','drawing-room',[(xs,a,W,b)],'dining',(xs,a),'door',900))
                 elif part == 'study':
                     if fr:
                         return None
@@ -873,24 +949,28 @@ class House:
         if v['pooja'] and 'pooja' not in taken:
             optional.append({'t': 'pooja', 'key': 'pooja'})
         fixed = [] if util_in_slot else [{'t': 'utility', 'key': 'utility'}]
+        if self.wants_guest(0) and 'drawing-room' not in taken:required.append({'t':'drawing-room','key':'drawing-room'})
         combos = assignments(fixed, required, optional, sorted(suites, key=lambda s: bool(s.get('master'))))
         if not combos:
             return None
         left, right = combos[p['ga'] % len(combos)]
         res = back_region(W, D, yD, xh0, wh, left, right, g, (p['s1'], p['s2']), lambda a, b: 'dining' if (a >= xk and b <= xs) else None)
-        return self._finish(rooms, res, W, D, g, needs)
+        return self._finish(rooms, res, W, D, g, needs, floor=0)
 
     # -------------------------------------------------------------------------------------------- upper floor
-    def upper(self, p, D):
+    def upper(self, p, D, floor=1):
         v, W = self.v, self.W
-        suites = [s for s in self.suites if s['floor'] == 1]
+        suites = [s for s in self.suites if s['floor'] == floor]
         prog = {'combined': False, 'front_kind': None, 'style': v['style']}
-        rooms = front_row(W, STAIR_D, 1, True, prog, 0)
+        rooms = front_row(W, STAIR_D, floor, True, prog, 0)
+        if floor<self.storeys-1:
+            for r in rooms:
+                if r.kind=='terrace':r.kind='veranda';r.key='veranda';r.name='Covered veranda'
         needs = {'common': 60. if any(not s.get('ensuite') for s in suites) else 0., 'ensuite': 45.,
                  'ensuite_count': sum(1 for s in suites if s.get('ensuite'))}
         kinds = ['family'] + ['bedroom'] * len(suites) + ['bathroom'] * (needs['ensuite_count'] + (1 if needs['common'] else 0))
         g = generosity(W, D, kinds, 11. + 7.)
-        combos = self.fcombos
+        combos = self.upper_combos[floor]
         if not combos:
             return None
         left, right = combos[p['fa'] % len(combos)]
@@ -898,9 +978,9 @@ class House:
         if xh0 < STAIR_W:
             return None
         res = back_region(W, D, STAIR_D, xh0, p['fwh'], left, right, g, (p['f1'], p['f2']), public_above(rooms))
-        return self._finish(rooms, res, W, D, g, needs, self.below)
+        return self._finish(rooms, res, W, D, g, needs, self.below, floor=floor)
 
-    def _finish(self, rooms, res, W, D, g, needs, below=()):
+    def _finish(self, rooms, res, W, D, g, needs, below=(), floor=0):
         """Pick the best subdivision of every unit and the best owner of the bay behind the hall; upstairs, suites
         keep their baths off the kitchen and pooja of the ground floor below (`below`)."""
         if res is None:
@@ -923,6 +1003,14 @@ class House:
             plan = fixed + [r for grp in chosen for r in grp]
             for alt in [plan] + pooja_corners(plan, needs, hall[0]):
                 cost = floor_cost(alt, W, D, g, needs) + below_cost(alt, below)
+                if self.placement:
+                    # Do not let the local search prune the only candidate containing an explicitly positioned
+                    # optional room. Floor assignment remains planner-owned (hint_floor); within that floor, room
+                    # existence is strict while physical feasibility is still enforced by floor_cost/BIG.
+                    if self.missing_hints(alt,floor):
+                        continue
+                    # Search against the better global hand here; the final hand is selected once both floors pair.
+                    cost += min(BIG*.35,.35*placement_cost([alt],W,D,self,include_missing=False,best_hand=True,floor_numbers=[floor]))
                 if best is None or cost < best[0]:
                     best = (cost, alt)
         return best
@@ -945,6 +1033,57 @@ class House:
                     if shared(r, o):
                         c += 30 if o.kind == 'pooja' else -2
         return c
+
+
+def placement_matches(floors, W, D, house, mirror=False, floor_numbers=None):
+    """Match semantic targets to rooms and measure their centre-to-target distance. Coordinates are normalised by
+    the chosen footprint, so a board never supplies or implies millimetres."""
+    floor_numbers=floor_numbers if floor_numbers is not None else list(range(len(floors)))
+    available=[(floor,r) for floor,rooms in zip(floor_numbers,floors) for r in rooms]
+    matches=[];unmatched=[]
+    for hint in house.placement:
+        candidates=[]
+        for floor,r in available:
+            if hint.get('floor') is not None and hint['floor']!=floor:continue
+            if not house.matches_hint(hint['label'],r):continue
+            cx,cy=r.centre();ax=(W-cx if mirror else cx)/max(W,1);ay=cy/max(D,1)
+            distance=math.hypot((ax-hint['x'])*4,(ay-hint['y'])*4)
+            candidates.append((distance,floor,r,ax,ay))
+        if not candidates:
+            unmatched.append(hint);continue
+        distance,floor,r,ax,ay=min(candidates,key=lambda item:(item[0],item[1],item[2].key))
+        matches.append({'hint':hint,'room':r,'floor':floor,'actual_x':ax,'actual_y':ay,'distance_cells':distance})
+    return matches,unmatched
+
+
+def placement_cost(floors, W, D, house, include_missing=True, best_hand=False, mirror=False, floor_numbers=None):
+    def one(hand):
+        matches,unmatched=placement_matches(floors,W,D,house,hand,floor_numbers)
+        total=sum(PLACEMENT_CELL_WEIGHT*(1.5 if m['hint']['source']=='grid' else 1.)*m['distance_cells']**2 for m in matches)
+        if include_missing:total += PLACEMENT_MISSING*sum(1.5 if h['source']=='grid' else 1. for h in unmatched)
+        return total
+    return min(one(False),one(True)) if best_hand else one(mirror)
+
+
+def placement_audit(house, floors, W, D, mirror):
+    matches,unmatched=placement_matches(floors,W,D,house,mirror)
+    items=[]
+    for m in matches:
+        h,r=m['hint'],m['room']
+        zone_match=((h['x']>.25 or m['actual_x']<.5) and (h['x']<.75 or m['actual_x']>.5) and
+                    (h['y']>.25 or m['actual_y']<.5) and (h['y']<.75 or m['actual_y']>.5))
+        items.append({'label':h['label'],'source':h['source'],'target_normalized':[round(h['x'],4),round(h['y'],4)],
+                      'actual_normalized':[round(m['actual_x'],4),round(m['actual_y'],4)],
+                      'distance_cells':round(m['distance_cells'],3),'floor':m['floor'],
+                      'space_id':f'F{m["floor"]}-{r.key}','space_name':r.name,
+                      'zone_match':zone_match,
+                      'status':'applied' if zone_match and m['distance_cells']<=PLACEMENT_MAX_DISTANCE else 'unsatisfied'})
+    distances=[x['distance_cells'] for x in items]
+    return {'mode':'spatial_hint','grid_size':[4,4],'front':'row 0 / road edge','dimensions':'planner-determined',
+            'matched':items,'unmatched':[h['label'] for h in unmatched],
+            'tolerance_cells':PLACEMENT_MAX_DISTANCE,
+            'mean_distance_cells':round(sum(distances)/len(distances),3) if distances else None,
+            'max_distance_cells':round(max(distances),3) if distances else None}
 
 
 # ------------------------------------------------------------------------------------------------ search
@@ -1022,6 +1161,10 @@ def plan_house(v, W, D):
             if best is None or cost < best[0]:
                 best = (cost, Wp, found)
     if best is None:
+        if v.get('_placement_hints'):
+            raise DesignError('PLACEMENT_PROGRAMME_DOES_NOT_FIT','The base programme fits, but not with every requested room-placement target in this bounded planner.',
+                              {'labels':[h[0] for h in v['_placement_hints']],
+                               'advice':'Remove the named room from the guide, move it to a broader zone, or enlarge the buildable area.'})
         raise DesignError('PROGRAMME_DOES_NOT_FIT', 'The rooms of this brief do not fit the buildable area at the minimum sizes '
                           '(NBC-style habitable 9.5 m2 / 2.4 m, kitchen 5 m2, bath 2.8 m2). No extra storey or smaller room was '
                           'invented. Reduce the bedrooms, add a floor, or review the setbacks.')
@@ -1051,6 +1194,7 @@ def plan_width(v, W, D, quick=False, only=None):
         's1': [0, -600, -300, 300, 600],
         's2': [0, -600, -300, 300, 600],
     }
+    if house.wants_guest(0):gspace['right'] += ['drawing-room']
     base = {'gmode': 'three', 'yF': STAIR_D if stair else 4200, 'fr': 0, 'dM': 3600, 'xk': 3000, 'wd': 3300, 'right': gspace['right'][0],
             'rsplit': 1800, 'hpos': 'C', 'wh': 1350, 'xh': max(STAIR_W if stair else 2400, min(centre, halls[-1])), 'ga': 0, 's1': 0, 's2': 0}
 
@@ -1084,7 +1228,7 @@ def plan_width(v, W, D, quick=False, only=None):
         grs = best_floor(gspace, lambda p: house.ground(p, Dp), gseeds, **kw)
         if not grs or grs[0][0] >= BIG:
             continue
-        pairs = [(g[0], g, None) for g in grs]
+        pairs = [(g[0]+(placement_cost([g[2]],W,Dp,house,include_missing=True,best_hand=True) if house.placement else 0),g,None) for g in grs]
         if stair:
             house.below = tuple(r for r in grs[0][2] if r.kind in ('kitchen', 'pooja'))
             ups = best_floor(fspace, lambda p: house.upper(p, Dp), fseeds, **kw)
@@ -1092,13 +1236,22 @@ def plan_width(v, W, D, quick=False, only=None):
                 continue
             # The upper search steered clear of the best ground floor's kitchen and pooja; each pairing is costed on
             # what actually lies below it instead.
-            pairs = [(g[0] + u[0] - below_cost(u[2], house.below) + stacking_cost(g[2], u[2]) + (5 if studies(g[2]) and studies(u[2]) else 0), g, u)
+            pairs = [(g[0] + u[0] - below_cost(u[2], house.below) + stacking_cost(g[2], u[2]) +
+                      (placement_cost([g[2],u[2]],W,Dp,house,include_missing=True,best_hand=True) if house.placement else 0) +
+                      (5 if studies(g[2]) and studies(u[2]) else 0), g, u)
                      for g in grs for u in ups]
         cost, g, u = min(pairs, key=lambda t: t[0])
         cost += (D - Dp) / 300 * 1.6
-        if cost >= BIG:
+        if cost >= BIG and not house.placement:
             continue
         floors = [g[2]] + ([u[2]] if stair else [])
+        if house.storeys==3:
+            house.below=tuple(r for r in floors[-1] if r.kind in ('kitchen','pooja'))
+            second_space={**fspace,'fa':list(range(len(house.upper_combos[2])))}
+            seconds=best_floor(second_space,lambda p:house.upper(p,Dp,2),fseeds,**kw)
+            if not seconds or seconds[0][0]>=BIG:continue
+            second=min(seconds,key=lambda u:u[0]+stacking_cost(floors[-1],u[2])+(placement_cost([u[2]],W,Dp,house,include_missing=False,best_hand=True,floor_numbers=[2]) if house.placement else 0))
+            floors.append(second[2]);cost+=second[0]
         params = {**g[1], **(u[1] if u else {}), 'Dp': Dp, 'Wp': W}
         results.append((Dp, (house, floors, Dp, cost, params)))
     return results
@@ -1125,10 +1278,11 @@ def _cached(key):
     return plan_house(v, W, D), W, D
 
 
-def plan_key(v):
+def plan_key(v, placement_hints=()):
     fields = ('width_mm', 'depth_mm', 'left_mm', 'right_mm', 'front_mm', 'rear_mm', 'variant', 'storeys', 'bedrooms',
               'attached_baths', 'pooja', 'open_kitchen', 'eldercare', 'style')
-    return tuple((k, v.get(k)) for k in fields)
+    placement=tuple((h['label'],round(float(h['x']),6),round(float(h['y']),6),h.get('source','text'),h.get('floor')) for h in placement_hints)
+    return tuple((k, v.get(k)) for k in fields)+(('_placement_hints',placement),)
 
 
 def vastu_hand(house, floors, W, D, v):
@@ -1139,3 +1293,17 @@ def vastu_hand(house, floors, W, D, v):
     a = vastu_cost(floors, W, D, v['road_bearing_deg'], False)
     b = vastu_cost(floors, W, D, v['road_bearing_deg'], True)
     return b + 1e-9 < a, min(a, b) * weight
+
+
+def choose_hand(house, floors, W, D, v):
+    """Placement is evaluated before Vastu because it is a direct room-position instruction. Vastu remains a soft
+    preference inside the selected brief and breaks close placement ties."""
+    weight=VASTU_WEIGHT.get(v.get('vastu','off'),0.)
+    scores=[]
+    for mirror in (False,True):
+        p=placement_cost(floors,W,D,house,include_missing=True,mirror=mirror) if house.placement else 0.
+        va=vastu_cost(floors,W,D,v['road_bearing_deg'],mirror)*weight
+        scores.append((p+va,mirror,p,va))
+    picked=min(scores,key=lambda item:(item[0],item[1]))
+    return picked[1],{'unmirrored':round(scores[0][0],3),'mirrored':round(scores[1][0],3),
+                      'placement':round(picked[2],3),'vastu':round(picked[3],3)}

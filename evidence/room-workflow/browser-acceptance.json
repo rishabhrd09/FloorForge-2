@@ -1,0 +1,70 @@
+{
+  "checks": [
+    {
+      "name": "Click-to-place guest drawing room at real dimensions",
+      "pass": true
+    },
+    {
+      "name": "Drawing-room inspector explains seating, not drainage",
+      "pass": true
+    },
+    {
+      "name": "Native palette drag-and-drop reserves a shared 150 mm wall",
+      "pass": true
+    },
+    {
+      "name": "Overlapping palette drop is explained and not committed",
+      "pass": true
+    },
+    {
+      "name": "Dragging outside keeps clear size and outer walls inside boundary",
+      "pass": true
+    },
+    {
+      "name": "Typed boundary conflict is immediate and named",
+      "pass": true
+    },
+    {
+      "name": "Move inside repair keeps exact dimensions and stable ID",
+      "pass": true
+    },
+    {
+      "name": "Boundary repair is undoable",
+      "pass": true
+    },
+    {
+      "name": "Guide preflight identifies the empty floor before generation",
+      "pass": true
+    },
+    {
+      "name": "Unsupported courtyard remains visible with a Custom Plan route",
+      "pass": true
+    },
+    {
+      "name": "Cell conversion creates four editable rooms and keeps original board",
+      "pass": true
+    },
+    {
+      "name": "Suggested doors and windows produce a validated access graph",
+      "pass": true
+    },
+    {
+      "name": "Converted drawing room reaches the 3D scene with sofa seating",
+      "pass": true
+    },
+    {
+      "name": "Generated model, 3D and report share the draft hash",
+      "pass": true
+    },
+    {
+      "name": "Mobile editor keeps every control in document width",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

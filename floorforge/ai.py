@@ -86,10 +86,21 @@ class Assist:
             raise DesignError('AI_REQUEST_FAILED','Provider request failed. Credentials and provider response bodies are not logged. Check model ID, endpoint, quota and provider status.') from None
         proposal=parse_proposal(message)
         # Re-run deterministic intent, geometry, and the available checks before returning an applicable patch.
-        candidate={**project,'sources':list(project.get('sources',[]))+[{'id':'ai-proposal','kind':'edit','values':proposal['patch'],'enabled':True}]}
-        if any(s.get('id')=='ai-proposal' for s in project.get('sources',[])):candidate['sources']=[s for s in candidate['sources'] if s.get('id')!='ai-proposal']+[{'id':'ai-proposal','kind':'edit','values':proposal['patch'],'enabled':True}]
+        candidate=proposal_candidate(project,proposal['patch'])
         validated=validate(generate_layout(fuse(candidate)))
         return {**proposal,'candidate_project':candidate,'validation':validated['status'],'structural_gate':'NOT AVAILABLE; not a construction-ready proposal','estimated_cost':estimate,'applied':False,'critique_status':'unverified model commentary'}
+
+def proposal_candidate(project,patch):
+    """Layer a proposal above existing sources without destroying their fallback values."""
+    previous={};sources=[]
+    for source in project.get('sources',[]):
+        if source.get('id')=='ai-proposal':
+            if source.get('enabled',True) and isinstance(source.get('values'),dict):previous.update(source['values'])
+            continue
+        sources.append(dict(source))
+    values={**previous,**patch}
+    if values:sources.append({'id':'ai-proposal','kind':'proposal','values':values,'enabled':True})
+    return {**project,'sources':sources}
 
 def parse_proposal(message):
     if not isinstance(message,str) or len(message)>30000:raise DesignError('AI_SCHEMA','Invalid AI response size.')

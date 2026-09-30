@@ -57,6 +57,7 @@ export async function exportPresentation(viewer, { context = true, grass = true,
   };
   const group = new THREE.Group();
   group.name = 'FloorForge presentation';
+  group.userData = { planHash: viewer.data?.planHash, draftRevision: viewer.data?.draftRevision, openingPoses: viewer.openings?.items.map(item => ({ id: item.id, openness: item.value })), poseScope: 'Walkthrough presentation state; canonical design exports retain authored opening poses.' };
   const matrix = new THREE.Matrix4(), tint = new THREE.Color(), at = new THREE.Vector3();
   const centre = viewer.center || new THREE.Vector3();
   const add = (mesh, name, radius = Infinity) => {
@@ -95,6 +96,7 @@ export async function exportPresentation(viewer, { context = true, grass = true,
     group.add(out);
   };
   viewer.meshes.forEach((mesh, i) => {
+    if (mesh.userData.vehicle && !viewer.carVisible) return;
     const b = mesh.userData.bucket || {};
     add(mesh, `${b.material || 'surface'}-${b.floor ?? 'site'}-${i}`);
   });

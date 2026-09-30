@@ -1,0 +1,123 @@
+{
+  "schema": "floorforge.project/0.4",
+  "brief": {
+    "roof_access": true
+  },
+  "sources": [],
+  "text": "",
+  "attachments": [],
+  "draftRevision": 2,
+  "editorState": {
+    "mode": "automatic",
+    "guideFloors": [
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": false,
+    "customPlan": {
+      "schema": "floorforge.custom-plan/1",
+      "units": "mm",
+      "wallThickness": 150,
+      "floors": [
+        {
+          "id": "floor-0",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-1",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        }
+      ],
+      "stairs": []
+    }
+  },
+  "furnitureLayout": [
+    {
+      "id": "F0-living/coffee-table",
+      "anchorHash": "18a18b42ba68cb0a28065524929640f8f9a17ffffca140467dbc97d7b3c13f54",
+      "dx": 0.2,
+      "dy": 0,
+      "angle": 0
+    }
+  ]
+}

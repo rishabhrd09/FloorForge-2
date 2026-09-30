@@ -1,0 +1,466 @@
+{
+  "checks": [
+    {
+      "name": "Actual bundled startup model includes First → roof stair and remains G+1",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: climb floor 0 → 1 through both flights",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          0.6492575701578382,
+          3.1500000953674316,
+          -0.7833951951556019
+        ],
+        "floor": 1
+      }
+    },
+    {
+      "name": "automatic-g1: climb floor 1 → 2 through both flights",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          0.64920789945776,
+          6.300000190734863,
+          -0.7834606239432199
+        ],
+        "floor": 2
+      }
+    },
+    {
+      "name": "automatic-g1: roof is a distinct walking level, not another occupied floor",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: closed rooftop door physically blocks passage",
+      "pass": true,
+      "data": {
+        "reached": false,
+        "position": [
+          2.233999944592958,
+          6.300000190734863,
+          -0.7138037383069007
+        ],
+        "floor": 2
+      }
+    },
+    {
+      "name": "automatic-g1: rooftop door is targetable from inside",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: F opens the actual rooftop door",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: walk out onto the roof without teleporting",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          3.4574577198268233,
+          6.329999923706055,
+          -0.7808924823708321
+        ],
+        "floor": 2
+      }
+    },
+    {
+      "name": "automatic-g1: roof surface supports walking",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          3.3225121721960837,
+          6.329999923706055,
+          -2.4430905915998364
+        ],
+        "floor": 2
+      }
+    },
+    {
+      "name": "automatic-g1: close door from terrace to clear its swing",
+      "pass": true,
+      "data": {
+        "target": "ST-1-roof-door",
+        "value": 0,
+        "goal": 0,
+        "message": ""
+      }
+    },
+    {
+      "name": "automatic-g1: return along terrace to doorway",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: rooftop door also works from terrace side",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: floor selector cannot teleport during walking",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: step clear of the door swing",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: reopen door from terrace",
+      "pass": true,
+      "data": {
+        "target": "ST-1-roof-door",
+        "value": 1,
+        "goal": 1,
+        "message": ""
+      }
+    },
+    {
+      "name": "automatic-g1: re-enter roof landing through open door",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: descend floor 2 → 1",
+      "pass": true,
+      "data": {
+        "a": {
+          "reached": true,
+          "position": [
+            1.9526178262962874,
+            4.724999904632568,
+            -3.910779440925763
+          ],
+          "floor": 1
+        },
+        "b": {
+          "reached": true,
+          "position": [
+            0.6541043163407488,
+            4.724999904632568,
+            -3.8180265189312372
+          ],
+          "floor": 1
+        },
+        "c": {
+          "reached": true,
+          "position": [
+            0.753117363696647,
+            3.1500000953674316,
+            -0.6775692394607442
+          ],
+          "floor": 1
+        }
+      }
+    },
+    {
+      "name": "automatic-g1: descend floor 1 → 0",
+      "pass": true,
+      "data": {
+        "a": {
+          "reached": true,
+          "position": [
+            1.946686263689945,
+            1.5750000476837158,
+            -3.923647069731046
+          ],
+          "floor": 0
+        },
+        "b": {
+          "reached": true,
+          "position": [
+            0.6492043826730785,
+            1.5750000476837158,
+            -3.8165487266304354
+          ],
+          "floor": 0
+        },
+        "c": {
+          "reached": true,
+          "position": [
+            0.7533203953523916,
+            0,
+            -0.6762435592815622
+          ],
+          "floor": 0
+        }
+      }
+    },
+    {
+      "name": "automatic-g1: roof slab remains visible in roof cutaway",
+      "pass": true
+    },
+    {
+      "name": "automatic-g1: entering Walk from roof cutaway starts at ground arrival",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: climb floor 0 → 1 through both flights",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          0.949257570157838,
+          3.1500000953674316,
+          -5.683395195155602
+        ],
+        "floor": 1
+      }
+    },
+    {
+      "name": "custom-rear-g2: climb floor 1 → 2 through both flights",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          0.9492078994577605,
+          6.300000190734863,
+          -5.683460623943219
+        ],
+        "floor": 2
+      }
+    },
+    {
+      "name": "custom-rear-g2: climb floor 2 → 3 through both flights",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          0.9492082659341916,
+          9.475000381469727,
+          -5.683461051150599
+        ],
+        "floor": 3
+      }
+    },
+    {
+      "name": "custom-rear-g2: roof is a distinct walking level, not another occupied floor",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: closed rooftop door physically blocks passage",
+      "pass": true,
+      "data": {
+        "reached": false,
+        "position": [
+          2.5339998972702897,
+          9.475000381469727,
+          -5.613803744076249
+        ],
+        "floor": 3
+      }
+    },
+    {
+      "name": "custom-rear-g2: rooftop door is targetable from inside",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: F opens the actual rooftop door",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: walk out onto the roof without teleporting",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          3.757457673005061,
+          9.475000381469727,
+          -5.680892479005504
+        ],
+        "floor": 3
+      }
+    },
+    {
+      "name": "custom-rear-g2: roof surface supports walking",
+      "pass": true,
+      "data": {
+        "reached": true,
+        "position": [
+          3.621371749971804,
+          9.475000381469727,
+          -7.346627476668413
+        ],
+        "floor": 3
+      }
+    },
+    {
+      "name": "custom-rear-g2: close door from terrace to clear its swing",
+      "pass": true,
+      "data": {
+        "target": "main-stair-2-roof-door",
+        "value": 0,
+        "goal": 0,
+        "message": ""
+      }
+    },
+    {
+      "name": "custom-rear-g2: return along terrace to doorway",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: rooftop door also works from terrace side",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: floor selector cannot teleport during walking",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: step clear of the door swing",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: reopen door from terrace",
+      "pass": true,
+      "data": {
+        "target": "main-stair-2-roof-door",
+        "value": 1,
+        "goal": 1,
+        "message": ""
+      }
+    },
+    {
+      "name": "custom-rear-g2: re-enter roof landing through open door",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: descend floor 3 → 2",
+      "pass": true,
+      "data": {
+        "a": {
+          "reached": true,
+          "position": [
+            2.2526327769498624,
+            7.875,
+            -8.810729149969069
+          ],
+          "floor": 2
+        },
+        "b": {
+          "reached": true,
+          "position": [
+            0.9541155294103896,
+            7.875,
+            -8.718031434486372
+          ],
+          "floor": 2
+        },
+        "c": {
+          "reached": true,
+          "position": [
+            1.0531168525729249,
+            6.300000190734863,
+            -5.577573838576315
+          ],
+          "floor": 2
+        }
+      }
+    },
+    {
+      "name": "custom-rear-g2: descend floor 2 → 1",
+      "pass": true,
+      "data": {
+        "a": {
+          "reached": true,
+          "position": [
+            2.2466862809246044,
+            4.724999904632568,
+            -8.823646669333082
+          ],
+          "floor": 1
+        },
+        "b": {
+          "reached": true,
+          "position": [
+            0.9492043637888221,
+            4.724999904632568,
+            -8.716548758893794
+          ],
+          "floor": 1
+        },
+        "c": {
+          "reached": true,
+          "position": [
+            1.053320394810266,
+            3.1500000953674316,
+            -5.576243592617954
+          ],
+          "floor": 1
+        }
+      }
+    },
+    {
+      "name": "custom-rear-g2: descend floor 1 → 0",
+      "pass": true,
+      "data": {
+        "a": {
+          "reached": true,
+          "position": [
+            2.246679389106143,
+            1.5750000476837158,
+            -8.823765654262003
+          ],
+          "floor": 0
+        },
+        "b": {
+          "reached": true,
+          "position": [
+            0.9492082006140673,
+            1.5750000476837158,
+            -8.716539009953474
+          ],
+          "floor": 0
+        },
+        "c": {
+          "reached": true,
+          "position": [
+            1.0533206170659073,
+            0,
+            -5.576233586314351
+          ],
+          "floor": 0
+        }
+      }
+    },
+    {
+      "name": "custom-rear-g2: roof slab remains visible in roof cutaway",
+      "pass": true
+    },
+    {
+      "name": "custom-rear-g2: entering Walk from roof cutaway starts at ground arrival",
+      "pass": true
+    },
+    {
+      "name": "Roof access option restores from saved project",
+      "pass": true
+    },
+    {
+      "name": "Moving one linked stair updates all three floor cores",
+      "pass": true
+    },
+    {
+      "name": "One undo restores all linked stair positions",
+      "pass": true
+    },
+    {
+      "name": "One redo reapplies all linked stair positions",
+      "pass": true
+    },
+    {
+      "name": "Generate wires relocated core and roof into matching active 3D",
+      "pass": true
+    },
+    {
+      "name": "Replacing a walking scene clears its old walking overlay",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

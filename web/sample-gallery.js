@@ -1,0 +1,19 @@
+/* Bundled sample browsing leaves the active draft and model untouched. */
+'use strict';
+class FloorForgeSampleGallery {
+ constructor(options){this.options=options;this.items=[];this.selected=null;this.busy=false;this.$=id=>document.getElementById(id);
+  this.$('sample-gallery-open').onclick=()=>this.open();
+  this.$('sample-cards').onclick=e=>{const b=e.target.closest('[data-sample]');if(b)this.explore(b.dataset.sample);};
+  this.$('sample-preview-frame').addEventListener('load',()=>{const frame=this.$('sample-preview-frame');if(!frame.getAttribute('src'))return;const doc=frame.contentDocument;if(!doc)return;const style=doc.createElement('style');style.textContent='header,aside{display:none!important}main{display:block!important;height:100vh!important}section{height:100vh!important}';doc.head.append(style);const v=frame.contentWindow.__ff?.viewer;if(v){v.frameInsets={top:(doc.querySelector('.tools')?.offsetHeight||64)+24,bottom:48,left:10,right:10};v.resize();v.setView('hero');}});
+  this.$('sample-preview-back').onclick=()=>{if(this.busy)return;this.closePreview();this.open();};
+  this.$('sample-preview-close').onclick=()=>{if(!this.busy)this.closePreview();};this.$('sample-preview-dialog').addEventListener('cancel',e=>{if(this.busy)e.preventDefault();});
+  this.$('sample-preview-dialog').addEventListener('close',()=>{this.$('sample-preview-frame').removeAttribute('src');this.syncBrowsing();});this.$('sample-gallery-dialog').addEventListener('close',()=>this.syncBrowsing());
+  this.$('sample-preview-use').onclick=()=>this.use();
+ }
+ escape(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ syncBrowsing(){this.options.browsing?.(this.$('sample-gallery-dialog').open||this.$('sample-preview-dialog').open);}
+ async open(){if(!this.$('sample-gallery-dialog').open)this.$('sample-gallery-dialog').showModal();this.syncBrowsing();this.$('sample-cards').textContent='Loading sample homes…';try{const data=await this.options.getCatalogue();this.items=data.samples;this.$('sample-cards').innerHTML=this.items.map(s=>`<article class="sample-card"><button type="button" class="sample-cover" data-sample="${this.escape(s.id)}" aria-label="Explore ${this.escape(s.title)}"><img src="${this.escape(s.thumbnailUrl)}" alt="Rendered exterior of ${this.escape(s.title)}" loading="lazy"></button><div class="sample-card-body"><span class="overline">${this.escape(s.style)}</span><h4>${this.escape(s.title)}</h4><p class="sample-facts">${s.widthFt} × ${s.depthFt} ft · ${s.bedrooms} bedroom${s.bedrooms===1?'':'s'} · ${s.storeys===1?'Ground only':'G+'+(s.storeys-1)}</p><p>${this.escape(s.description)}</p><button type="button" class="secondary wide" data-sample="${this.escape(s.id)}">Explore in 3D ↗</button></div></article>`).join('');}catch(e){this.$('sample-cards').textContent='Could not load the samples. '+e.message;}}
+ explore(id){const s=this.items.find(x=>x.id===id);if(!s)return;this.selected=s;this.$('sample-gallery-dialog').close();this.$('sample-preview-title').textContent=s.title;this.$('sample-preview-dialog').showModal();this.syncBrowsing();this.$('sample-preview-frame').src=s.baseUrl+'preview.html';}
+ closePreview(){this.$('sample-preview-dialog').close();this.$('sample-preview-frame').removeAttribute('src');}
+ async use(){if(!this.selected||this.busy)return;this.busy=true;this.$('sample-preview-use').disabled=true;this.$('sample-preview-use').textContent='Opening sample…';this.$('sample-preview-frame').removeAttribute('src');try{await this.options.use(this.selected);this.closePreview();}catch(e){this.options.error(e);this.$('sample-preview-frame').src=this.selected.baseUrl+'preview.html';}finally{this.busy=false;this.$('sample-preview-use').disabled=false;this.$('sample-preview-use').textContent='Open project & all views';}}
+}

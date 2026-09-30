@@ -11,7 +11,7 @@ WET={'bathroom','utility'}
 
 def coords(poly): return [[round(float(x),3),round(float(y),3)] for x,y in list(poly.exterior.coords)[:-1]]
 
-def automatic_spaces(v):
+def automatic_spaces(v, placement_hints=()):
     """Planned rooms for a brief (floorforge.planner), the stair records, the footprint and the planned doors."""
     from shapely.affinity import scale
     from . import planner
@@ -21,12 +21,23 @@ def automatic_spaces(v):
     if v['parking'] and v['front_mm']<5500:
         raise DesignError('PARKING_DEPTH','Requested parking needs a 5.5 m depth assumption. Increase front open space or remove parking; no car was silently inserted.')
     n=v['storeys']; total=v['bedrooms']
-    if total<n: raise DesignError('PROGRAMME_SPLIT','This two-floor generator requires at least one bedroom per floor.')
-    (house,floors,Wp,Dp,cost,params),W,D=planner._cached(planner.plan_key(v))
+    if total<n: raise DesignError('PROGRAMME_SPLIT','The bounded guide planner requires at least one bedroom per floor. Use Custom Plan for a different programme.')
+    try:
+        (house,floors,Wp,Dp,cost,params),W,D=planner._cached(planner.plan_key(v,placement_hints))
+    except DesignError as error:
+        if placement_hints:
+            detail=error.details if isinstance(error.details,dict) else {}
+            error.details={**detail,'rooms':detail.get('rooms') or list(placement_hints)}
+        raise
     # Variants are geometric mirrors, never a change to the road/north interpretation; Vastu may pick the hand.
-    mirror,vastu=planner.vastu_hand(house,floors,Wp,Dp,v)
-    vastu_mirror=mirror
-    if v['variant']==1: mirror=not mirror
+    mirror,hand_scores=planner.choose_hand(house,floors,Wp,Dp,v)
+    vastu_preferred_mirror=planner.vastu_hand(house,floors,Wp,Dp,v)[0]
+    placement_mirror=mirror if placement_hints else None
+    # A direct room-position instruction outranks the survey's generic "mirrored hub" variant. Without a placement
+    # instruction, variant 1 retains its original deterministic mirror behaviour.
+    variant_mirror_superseded=bool(placement_hints and v['variant']==1)
+    if v['variant']==1 and not placement_hints: mirror=not mirror
+    vastu_mirror=bool(not placement_hints and v.get('vastu')!='off' and mirror and vastu_preferred_mirror)
     spaces=[];access={}
     for f,rooms in enumerate(floors):
         for r in rooms:
@@ -40,7 +51,7 @@ def automatic_spaces(v):
                 access[sid]={'from':f'F{f}-{r.access}','near':None if near is None else [round(near[0]),round(near[1])],
                              'opening':r.opening,'width':r.dw}
     stairs=[]
-    if n==2:
+    if n>1:
         for f in range(n):
             s={'id':f'ST-{f}','floor':f,'x':250,'y':250,'width':2200,'depth':4100,
                'flight_width':1000,'well':200,'riser_count':18,'riser_mm':v['floor_height_mm']/18,
@@ -48,11 +59,31 @@ def automatic_spaces(v):
             if mirror: s['x']=Wp-s['x']-s['width'];s['mirrored']=True
             stairs.append(s)
     ensuites=sum(1 for rooms in floors for r in rooms if r.role=='ensuite')
+    placement=None
+    if placement_hints:
+        placement=planner.placement_audit(house,floors,Wp,Dp,mirror)
+        supplied={(h.get('floor'),h['label']):h for h in placement_hints}
+        for item in placement['matched']:
+            original=supplied.get((item['floor'],item['label'])) or supplied[(None,item['label'])]
+            if 'cells' in original:item['target_cells']=original['cells']
+            if 'phrase' in original:item['phrase']=original['phrase']
+        if placement['unmatched']:
+            raise DesignError('PLACEMENT_UNMATCHED','The automatic programme cannot represent every requested spatial-guide room.',
+                              {'labels':placement['unmatched'],'rooms':[h for h in placement_hints if h['label'] in placement['unmatched'] and not any(i['label']==h['label'] and i['floor']==h.get('floor') for i in placement['matched'])],'advice':'Align room labels with the bedroom count and enabled must-haves.'})
+        unsatisfied=[item for item in placement['matched'] if item['status']=='unsatisfied']
+        if unsatisfied:
+            raise DesignError('PLACEMENT_UNSATISFIED','The bounded planner could not honour every requested relative room position.',
+                              {'rooms':[{'label':x['label'],'floor':x['floor'],'cells':x.get('target_cells',[]),'distance_cells':x['distance_cells'],'zone_match':x['zone_match'],
+                                         'target_normalized':x['target_normalized'],'actual_normalized':x['actual_normalized']} for x in unsatisfied],
+                               'tolerance_cells':placement['tolerance_cells'],'advice':'Move the room nearer its broad front/rear or left/right zone, or simplify competing hints.'})
     planning={'method':'parti search scored against residential planning rules (floorforge/planner.py)',
               'parti':'three-row: living | kitchen, dining, services | suites' if params['gmode']=='three' else 'compact: living and dining | kitchen and suites',
               'envelope_mm':[W,D],'footprint_mm':[Wp,Dp],'score':round(cost,2),'mirrored':mirror,'vastu_mirrored':vastu_mirror,
+              'placement_mirrored':placement_mirror,'vastu_preferred_mirror':vastu_preferred_mirror,
+              'variant_mirror_superseded':variant_mirror_superseded,'hand_scores':hand_scores,
               'attached_baths':{'requested':house.attached,'provided':ensuites},
               'rules':'NBC 2016 Part 3 style minimums (hard) with comfortable targets, proportions, light and air, wet-area clustering and circulation economy (scored)'}
+    if placement:planning['placement']=placement
     return spaces,stairs,box(0,0,Wp,Dp),access,planning
 
 
@@ -117,7 +148,7 @@ def derive_walls(spaces,footprint,v):
                 if ks.issubset(PUBLIC) or ks=={'stair','living'} or ks=={'stair','dining'} or ks=={'stair','family'}:
                     continue
             external=len(adjacent)==1
-            if external and kinds[adjacent[0]]=='terrace':continue
+            if external and kinds[adjacent[0]] in ('terrace','veranda'):continue
             t=230 if external or any(kinds[r]=='terrace' for r in adjacent) else 150
             # One-sided external thickness, centred internal thickness.
             poly=seg.buffer(t if external else t/2,cap_style=3,join_style=2).intersection(footprint)
@@ -224,7 +255,7 @@ def derive_openings(spaces,walls,v,access=None):
             elif other in ('bathroom','utility'):target='door';width=750
             elif other=='kitchen':target='cased' if v['open_kitchen'] else 'door';width=1500 if v['open_kitchen'] else 900
             elif other=='stair':target='cased';width=1100
-            elif other=='terrace':target='glazed';width=1800;height=2300
+            elif other in ('terrace','veranda'):target='glazed';width=1800;height=2300
             if not target: continue
             width=min(width,round(length-300))
             if width<700:raise DesignError('PORTAL_WIDTH','A room connection is too narrow.')
@@ -249,7 +280,7 @@ def derive_openings(spaces,walls,v,access=None):
             target='window';width=min(2100,round(length*.55));height=1450;sill=850
             if ks.intersection(WET):width=min(900,width);height=600;sill=1750
             if ks=={'utility'}:width=min(1200,round(length*.6));height=1050;sill=1000
-            if ks.intersection({'living','dining','family'}):height=2200;sill=300
+            if ks.intersection({'living','drawing-room','dining','family'}):height=2200;sill=300
             if ks=={'kitchen'}:height=1150;sill=1100
             if ks=={'dress'}:width=min(900,width);height=1200;sill=1000
             if ks=={'store'}:width=min(600,width);height=450;sill=1800
@@ -277,10 +308,26 @@ def derive_openings(spaces,walls,v,access=None):
 
 
 def generate_layout(intent):
+    from .rooftop import add_roof_access
     v=intent['values']
-    spaces,stairs,footprint,access,planning=grid_spaces(intent['grid'],v) if intent.get('grid') else automatic_spaces(v)
+    if intent.get('customPlan') is not None:
+        from .custom_plan import compile_plan
+        b = compile_plan(intent)
+        b['input_audit'] = intent.get('input_audit')
+        b['furnitureLayout'] = intent.get('furnitureLayout', [])
+        return add_roof_access(b)
+    grid=intent.get('grid')
+    if intent.get('placement_hints'):
+        from .plan_tools import guide_check
+        check=guide_check(intent)
+        if not check['valid']:raise DesignError('GUIDE_CONFLICT',check['message'],{'rooms':check['rooms']})
+    exact_grid=grid and not (isinstance(grid,dict) and grid.get('mode')=='spatial_hint')
+    spaces,stairs,footprint,access,planning=grid_spaces(grid,v) if exact_grid else automatic_spaces(v,intent.get('placement_hints',()))
+    from .placement_edits import room_anchors, apply_room_edits
+    anchors=room_anchors(spaces)
+    apply_room_edits(spaces,stairs,footprint,access,intent.get('roomEdits',[]),anchors)
     walls=derive_walls(spaces,footprint,v);openings=derive_openings(spaces,walls,v,access)
-    return {'schema':'floorforge.building/0.2','units':'mm','up':'Z','brief':v,'planning':planning or {'method':'manual grid'},
+    return add_roof_access({'roomEditBase':anchors,'roomEdits':intent.get('roomEdits',[]),'furnitureLayout':intent.get('furnitureLayout',[]),'input_audit':intent.get('input_audit'),'planHash':intent.get('planHash'),'draftRevision':intent.get('draftRevision',0),'schema':'floorforge.building/0.2','units':'mm','up':'Z','brief':v,'planning':planning or {'method':'manual grid'},
             'footprint':coords(footprint),'plot':coords(box(-v['left_mm'],-v['front_mm'],v['width_mm']-v['left_mm'],v['depth_mm']-v['front_mm'])),
-            'spaces':[asdict(s) for s in spaces],'walls':[asdict(w) for w in walls],'openings':[asdict(o) for o in openings],
-            'stairs':stairs,'storeys':v['storeys'],'banner':__import__('floorforge').BANNER}
+            'floors':[{'id':(grid.get('floorIds') or [f'floor-{i}' for i in range(v['storeys'])])[f] if grid and grid.get('mode')=='spatial_hint' else f'floor-{f}','index':f} for f in range(v['storeys'])],'spaces':[asdict(s) for s in spaces],'walls':[asdict(w) for w in walls],'openings':[asdict(o) for o in openings],
+            'stairs':stairs,'storeys':v['storeys'],'banner':__import__('floorforge').BANNER})

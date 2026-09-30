@@ -11,7 +11,7 @@ def test_orientation_basis(bearing):
     assert abs(e-math.sin(math.radians(bearing)))<1e-9
     assert abs(n-math.cos(math.radians(bearing)))<1e-9
 
-@pytest.mark.parametrize('key,value',[('width_mm',True),('width_mm',4999),('depth_mm',float('nan')),('storeys',3),('bedrooms',0),('budget_lakh',-1),('road_bearing_deg',360),('latitude',91),('longitude',200),('floor_height_mm',1000),('front_mm',-1),('style','unknown'),('solar_date','2026-02-30'),('parking','yes')])
+@pytest.mark.parametrize('key,value',[('width_mm',True),('width_mm',4999),('depth_mm',float('nan')),('storeys',4),('bedrooms',0),('budget_lakh',-1),('road_bearing_deg',360),('latitude',91),('longitude',200),('floor_height_mm',1000),('front_mm',-1),('style','unknown'),('solar_date','2026-02-30'),('parking','yes')])
 def test_invalid_field_rejected(key,value):
     with pytest.raises(DesignError):fuse({'brief':{key:value}})
 
@@ -70,8 +70,9 @@ def test_text_reports_what_it_did_not_understand():
     r=parse_text('40x60 ft east-facing, 3 bedrooms. A home theatre and a courtyard with a swing.')
     assert r['reading']['not_understood']==['A home theatre and a courtyard with a swing']
     assert {k for u in r['reading']['understood'] for k in u['values']}>={'width_mm','depth_mm','road_bearing_deg','bedrooms'}
-    g=parse_text('G+3 house, 20 x 30')
-    assert g['values']['storeys']==2 and any('G+1' in a for a in g['reading']['assumptions'])
+    g=parse_text('G+2 house, 20 x 30')
+    assert g['values']['storeys']==3
+    with pytest.raises(DesignError):parse_text('G+3 house, 20 x 30')
     assert any('feet' in a for a in g['reading']['assumptions'])
 
 

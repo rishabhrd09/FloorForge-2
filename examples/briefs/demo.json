@@ -1,6 +1,8 @@
 {
   "schema": "floorforge.project/0.3",
   "brief": {
+    "storeys": 2,
+    "roof_access": true,
     "exterior_theme": "modern_tropical",
     "interior_theme": "bright_natural"
   }

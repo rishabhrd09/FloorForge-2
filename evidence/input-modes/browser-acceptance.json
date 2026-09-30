@@ -1,0 +1,82 @@
+{
+  "checks": [
+    {
+      "name": "Bundled example starts with home-screen settings, not an old custom plan",
+      "pass": true
+    },
+    {
+      "name": "Saved rooms, guide and object edits are retained while deselected",
+      "pass": true
+    },
+    {
+      "name": "Opening the room editor alone does not activate it",
+      "pass": true
+    },
+    {
+      "name": "Guide can be enabled independently of saved custom rooms",
+      "pass": true
+    },
+    {
+      "name": "Saved room plan can be selected without the guide",
+      "pass": true
+    },
+    {
+      "name": "Edit displayed design uses the shown house and preserves inactive sketches",
+      "pass": true
+    },
+    {
+      "name": "Reset clears inactive saved placement overrides",
+      "pass": true
+    },
+    {
+      "name": "Undo restores saved placements without activating deselected inputs",
+      "pass": true
+    },
+    {
+      "name": "Main Generate needs no drawing dialog and submits only selected inputs",
+      "pass": true
+    },
+    {
+      "name": "Main fields change the generated home",
+      "pass": true
+    },
+    {
+      "name": "All viewer actions are visible above the canvas",
+      "pass": true
+    },
+    {
+      "name": "Drag-to-look turns the view without capturing the cursor",
+      "pass": true
+    },
+    {
+      "name": "Fullscreen remains clickable during walking and releases held movement",
+      "pass": true
+    },
+    {
+      "name": "All actions remain visible inside fullscreen",
+      "pass": true
+    },
+    {
+      "name": "Virtual tour is accessible from Walk mode",
+      "pass": true
+    },
+    {
+      "name": "Escape pauses walking and leaves the cursor free",
+      "pass": true
+    },
+    {
+      "name": "Viewer controls stay visible after focusing and pausing Walk mode",
+      "pass": true
+    },
+    {
+      "name": "Phone viewer actions stay visible above the walk view",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

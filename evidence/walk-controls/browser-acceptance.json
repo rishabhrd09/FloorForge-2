@@ -1,0 +1,146 @@
+{
+  "checks": [
+    {
+      "name": "ArrowLeft requests turning without strafe or input-read side effects",
+      "pass": true
+    },
+    {
+      "name": "ArrowLeft turns in place",
+      "pass": true,
+      "data": {
+        "before": {
+          "yaw": 0,
+          "position": [
+            3.8,
+            -0.3499999940395355,
+            4.3
+          ],
+          "input": {
+            "forward": 0,
+            "strafe": 0,
+            "run": false,
+            "jump": false,
+            "crouch": false,
+            "turn": 0
+          }
+        },
+        "after": {
+          "yaw": 1.6800000000000013,
+          "position": [
+            3.8,
+            -0.3499999940395355,
+            4.3
+          ],
+          "input": {
+            "forward": 0,
+            "strafe": 0,
+            "run": false,
+            "jump": false,
+            "crouch": false,
+            "turn": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "ArrowLeft stops turning on release",
+      "pass": true
+    },
+    {
+      "name": "ArrowRight requests turning without strafe or input-read side effects",
+      "pass": true
+    },
+    {
+      "name": "ArrowRight turns in place",
+      "pass": true,
+      "data": {
+        "before": {
+          "yaw": 0,
+          "position": [
+            3.8,
+            -0.3499999940395355,
+            4.3
+          ],
+          "input": {
+            "forward": 0,
+            "strafe": 0,
+            "run": false,
+            "jump": false,
+            "crouch": false,
+            "turn": 0
+          }
+        },
+        "after": {
+          "yaw": -1.6800000000000013,
+          "position": [
+            3.8,
+            -0.3499999940395355,
+            4.3
+          ],
+          "input": {
+            "forward": 0,
+            "strafe": 0,
+            "run": false,
+            "jump": false,
+            "crouch": false,
+            "turn": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "ArrowRight stops turning on release",
+      "pass": true
+    },
+    {
+      "name": "ArrowUp retains its intended forward control",
+      "pass": true
+    },
+    {
+      "name": "ArrowDown retains its intended forward control",
+      "pass": true
+    },
+    {
+      "name": "a retains its intended strafe control",
+      "pass": true
+    },
+    {
+      "name": "d retains its intended strafe control",
+      "pass": true
+    },
+    {
+      "name": "q retains its intended turn control",
+      "pass": true
+    },
+    {
+      "name": "e retains its intended turn control",
+      "pass": true
+    },
+    {
+      "name": "Forward and turn can be held together",
+      "pass": true
+    },
+    {
+      "name": "Opposite turning keys cancel",
+      "pass": true
+    },
+    {
+      "name": "Editing a form does not turn the camera",
+      "pass": true
+    },
+    {
+      "name": "Losing window focus releases held turn keys",
+      "pass": true
+    },
+    {
+      "name": "Walk overlay explains the new arrow mapping",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

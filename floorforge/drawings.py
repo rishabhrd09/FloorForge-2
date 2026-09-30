@@ -113,6 +113,9 @@ def principal_rect(poly):
 
 
 def opening_types(b):
+    if b.get('rooftop') and not any(o['floor']==b['storeys'] for o in b['openings']):
+        from .rooftop import with_rooftop_objects
+        b=with_rooftop_objects(b)
     """Tags by type (D door, SD sliding door, O cased opening, W window, V ventilator): one tag per distinct kind
     and size, numbered in order of appearance; returns ({opening id: tag}, schedule rows)."""
     names = {s['id']: s['name'] for s in b['spaces']}
@@ -216,14 +219,25 @@ def bounds_of(elems, pad=250):
 
 # ---------------------------------------------------------------------------------------------- floor plans
 def plan_elements(b, scene, floor=0):
+    if b.get('rooftop'):
+        from .rooftop import with_rooftop_objects
+        b=with_rooftop_objects(b)
     elems = []; v = b['brief']; H = v['floor_height_mm']; fp = Polygon(b['footprint']); W, D = fp.bounds[2:]
     spaces = [s for s in b['spaces'] if s['floor'] == floor]
-    polys = {s['id']: Polygon(s['polygon']) for s in b['spaces']}
+    polys = {s['id']: Polygon(s['polygon'], s.get('holes', [])) for s in b['spaces']}
     hosts = {w['id']: w for w in b['walls']}
     tags, _ = opening_types(b)
     plinth = v['plinth_mm']
     for room in spaces:
         elems.append(P(room['clear'], '#eef2ef' if room['kind'] in ('bathroom', 'utility') else '#fbfbf7', 'none', layer='A-FLOR'))
+    if b.get('floor_plates') or b.get('rooftop'):
+        from .plan_geometry import plate
+        for part in get_parts(plate(b,floor)):
+            if part.geom_type!='Polygon':continue
+            elems.append(P(list(part.exterior.coords),'none',LIGHT,.15,'A-FLOR'))
+            for hole in part.interiors:elems.append(P(list(hole.coords),'none',INK,.2,'A-FLOR'))
+        for guard in b.get('guards',[]):
+            if guard['floor']==floor:elems.append(P(guard['points'],'none',ACCENT,.3,'A-FLOR',False))
     # Walls cut at +1.2 m: solid poché with every opening that crosses the cut removed.
     for wall in [w for w in b['walls'] if w['floor'] == floor]:
         p = Polygon(wall['polygon'])
@@ -231,7 +245,7 @@ def plan_elements(b, scene, floor=0):
             if o['wall_id'] == wall['id'] and o['sill'] <= 1200 < o['sill'] + o['height']:
                 p = p.difference(opening_polygon(wall, o))
         for part in get_parts(p):
-            if part.geom_type == 'Polygon':
+            if part.geom_type == 'Polygon' and not part.is_empty:
                 elems.append(P(list(part.exterior.coords), INK, INK, .25))
     # Openings, each with its type tag.
     for o in [o for o in b['openings'] if o['floor'] == floor]:
@@ -276,17 +290,21 @@ def plan_elements(b, scene, floor=0):
     # Stairs: treads, the walking line with its arrow, UP/DN and the riser note.
     for st in [s for s in b['stairs'] if s['floor'] == floor]:
         x, y = st['x'], st['y']; fw = st['flight_width']; land = st['landing_mm']; tr = st['tread_mm']
-        for k in range(9):
+        from .stair_geometry import point as stair_point
+        pt=lambda p: stair_point(st,p)
+        for k in range(st['riser_count']//2):
             yy = y + land + k * tr
-            elems.append(L((x, yy), (x + fw, yy), INK, .14, 'A-STAIR'))
-            elems.append(L((x + fw + st['well'], yy), (x + st['width'], yy), INK, .14, 'A-STAIR'))
-        top = y + land + 8 * tr
+            elems.append(L(pt((x, yy)), pt((x + fw, yy)), INK, .14, 'A-STAIR'))
+            elems.append(L(pt((x + fw + st['well'], yy)), pt((x + st['width'], yy)), INK, .14, 'A-STAIR'))
+        top = y + land + (st['riser_count']//2-1) * tr
         walk = [(x + fw / 2, y + land), (x + fw / 2, top + land / 2), (x + st['width'] - fw / 2, top + land / 2), (x + st['width'] - fw / 2, y + land)]
-        elems.append(P(walk, 'none', INK, .2, 'A-STAIR', False))
+        elems.append(P([pt(p) for p in walk], 'none', INK, .2, 'A-STAIR', False))
         ex, ey = walk[-1]
-        elems.append(P([(ex - 70, ey + 140), (ex + 70, ey + 140), (ex, ey)], INK, INK, .15, 'A-STAIR'))
-        elems.append(T(x + fw / 2, y + land - 260, 'UP' if floor == 0 else 'DN', 170, 'A-STAIR'))
-        elems.append(T(x + st['width'] / 2, y + 300, f'{st["riser_count"]}R @ {st["riser_mm"]:.0f} / T {tr}', 140, 'A-STAIR'))
+        elems.append(P([pt(p) for p in [(ex - 70, ey + 140), (ex + 70, ey + 140), (ex, ey)]], INK, INK, .15, 'A-STAIR'))
+        elems.append(T(*pt((x + fw / 2, y + land - 260)), 'UP TO ROOF' if st.get('roof_access') else 'UP' if floor == 0 else 'UP / DN', 170, 'A-STAIR'))
+        elems.append(T(*pt((x + st['width'] / 2, y + 300)), f'{st["riser_count"]}R @ {st["riser_mm"]:.0f} / T {tr}', 140, 'A-STAIR'))
+    if floor==0:
+        for step in b.get('entrance_steps',[]):elems.append(P(step['polygon'],'none',INK,.15,'A-STAIR'))
     for item in scene['furniture']:
         if item['floor'] == floor:
             elems.append(P(np.array(item['footprint']) * 1000, 'none', '#a3aaa1', .12, 'A-FURN'))
@@ -301,7 +319,7 @@ def plan_elements(b, scene, floor=0):
             elems.append(T((x0 + x1) / 2, y0 + 120 if y1 - y0 > 600 else y0 - 250, assembly['role'].replace('_', ' ').upper(), 130, 'A-EXT'))
     # Room tags: name, clear principal size and clear area, at the room's pole of inaccessibility.
     for room in spaces:
-        clear = Polygon(room['clear'])
+        clear = Polygon(room['clear'],room.get('holes',[]))
         if clear.is_empty:
             continue
         spot = polylabel(clear, 10)
@@ -380,7 +398,7 @@ def plan_elements(b, scene, floor=0):
     # Finished floor level near the entrance (ground) or in the lounge (upper floor).
     entry = next((o for o in b['openings'] if o['kind'] == 'entry'), None)
     lvl = plinth + floor * H
-    target = next((s for s in spaces if s['kind'] in ('living', 'family')), spaces[0])
+    target = next((s for s in spaces if s['kind'] in ('living', 'drawing-room', 'family')), spaces[0])
     lp = polylabel(Polygon(target['clear']), 10)
     lx0, ly0, lx1, ly1 = Polygon(target['clear']).bounds
     level(elems, min(lx1 - 1400, lp.x + 1300), max(ly0 + 450, lp.y - 900), f'FFL {("+" if lvl else "±")}{lvl / 1000:.3f}')
@@ -466,20 +484,47 @@ def building_levels(b, top_extra=0):
 
 
 def elevation_elements(b, direction, scene=None):
+    from .rooftop import with_rooftop_objects
+    b=with_rooftop_objects(b)
     v = b['brief']; W, D = Polygon(b['footprint']).bounds[2:]; H = v['floor_height_mm']; top = b['storeys'] * H; elems = []
     horizontal = direction in ('Front', 'Rear'); span = W if horizontal else D
-    elems.append(P([(0, -v['plinth_mm']), (span, -v['plinth_mm']), (span, top + 600), (0, top + 600)], '#f2f0e7', INK, .25))
+    if b.get('planning',{}).get('custom'):
+        from .plan_geometry import plate,roof
+        axis=0 if horizontal else 1
+        for w in b['walls']:
+            bb=Polygon(w['polygon']).bounds;a,c=bb[axis],bb[axis+2];z=w['floor']*H
+            elems.append(P([(a,z),(c,z),(c,z+w['height']),(a,z+w['height'])],'#f2f0e7',INK,.2))
+        for f in range(b['storeys']):
+            for geom,z in ((plate(b,f),f*H),(roof(b,f),(f+1)*H)):
+                for part in get_parts(geom):
+                    if part.geom_type!='Polygon':continue
+                    bb=part.bounds;a,c=bb[axis],bb[axis+2]
+                    elems.append(P([(a,z-150),(c,z-150),(c,z),(a,z)],'#dadbd4',INK,.25))
+    else:
+        elems.append(P([(0, -v['plinth_mm']), (span, -v['plinth_mm']), (span, top + 600), (0, top + 600)], '#f2f0e7', INK, .25))
     elems.append(L((-1500, -v['plinth_mm']), (span + 1500, -v['plinth_mm']), INK, .5, 'A-SITE'))
-    for f in range(b['storeys'] + 1):
+    for f in ([] if b.get('planning',{}).get('custom') else range(b['storeys'] + 1)):
         elems.append(L((0, f * H), (span, f * H), INK, .35))
+    if b.get('rooftop'):
+        for core in b['rooftop']['cores']:
+            x0,y0,x1,y1=core['bounds'];a,c=(x0,x1) if horizontal else (y0,y1);z1=top+core['height']
+            elems.append(P([(a,top),(c,top),(c,z1),(a,z1)],'#e3ddd2',ACCENT,.3,'A-EXT'))
+            elems.append(T((a+c)/2,z1+130,'ROOF STAIR ACCESS',130,'A-EXT'))
     hosts = {w['id']: w for w in b['walls']}
     tags, _ = opening_types(b)
     for o in b['openings']:
         w = hosts[o['wall_id']]
-        if not w['external']:
+        custom=b.get('planning',{}).get('custom')
+        if not w['external'] and not (custom and any(space['kind'] in ('terrace','balcony','veranda','courtyard','drying-yard','outer-lobby') and space['id'] in w['rooms'] for space in b['spaces'])):
             continue
         selected = (direction == 'Front' and max(w['a'][1], w['b'][1]) < 240) or (direction == 'Rear' and min(w['a'][1], w['b'][1]) > D - 240) or \
                    (direction == 'Left' and max(w['a'][0], w['b'][0]) < 240) or (direction == 'Right' and min(w['a'][0], w['b'][0]) > W - 240)
+        if custom or (b.get('rooftop') and w['floor']==b['storeys']):
+            axis=0 if horizontal else 1
+            selected=abs(w['a'][1-axis]-w['b'][1-axis])<.01
+            toward={'Front':(0,-1),'Rear':(0,1),'Left':(-1,0),'Right':(1,0)}[direction]
+            mid=(np.array(w['a'])+w['b'])/2+np.array(toward)*(w['thickness']/2+1)
+            if any(space.get('enclosed',True) and space['id'] in w['rooms'] and Polygon(space['clear']).covers(Point(mid)) for space in b['spaces']):selected=False
         if not selected:
             continue
         u = (np.array(w['b']) - w['a']) / math.dist(w['a'], w['b']); p = np.array(w['a']) + u * o['offset']; q = p + u * o['width']
@@ -491,6 +536,7 @@ def elevation_elements(b, direction, scene=None):
     for assembly in b.get('exterior', {}).get('assemblies', []):
         geo = assembly['geometry']; x0, y0, x1, y1 = geo['bounds_mm']; kind = geo.get('kind'); floor = assembly.get('floor_id', 0)
         if kind == 'stair_tower':
+            if b.get('rooftop'):continue
             a, c = (x0, x1) if horizontal else (y0, y1); z1 = top + geo.get('height_mm', 2700)
             elems.append(P([(a, top), (c, top), (c, z1), (a, z1)], '#e3ddd2', ACCENT, .3, 'A-EXT'))
             elems.append(T((a + c) / 2, z1 + 130, 'STAIR TOWER', 130, 'A-EXT'))
@@ -519,7 +565,7 @@ def section_cut(b):
     """The plan x (mm) of section A-A: along the up flight of the stair, or through the living room of a single-storey
     house, kept clear of the overall dimension figure at mid-width."""
     W = Polygon(b['footprint']).bounds[2]
-    if b['storeys'] > 1 and b['stairs']:
+    if b['stairs'] and (b['storeys'] > 1 or b.get('rooftop')):
         st = b['stairs'][0]
         return round(st['x'] + st['flight_width'] / 2)
     living = next((s for s in b['spaces'] if s['floor'] == 0 and s['kind'] == 'living'), None)
@@ -564,6 +610,9 @@ def listing(names, limit):
 
 
 def schedule_tables(b, report):
+    if b.get('rooftop'):
+        from .rooftop import with_rooftop_objects
+        b=with_rooftop_objects(b)
     tags, types = opening_types(b)
     doors = [['TAG', 'DESCRIPTION', 'SIZE W x H (mm)', 'SILL', 'NO.', 'LOCATION']]
     for t in types:
@@ -578,7 +627,7 @@ def schedule_tables(b, report):
         if s['kind'] in ('stair',):
             continue
         rx0, ry0, rx1, ry1 = principal_rect(Polygon(s['clear']))
-        rooms.append([s['name'], 'Ground' if s['floor'] == 0 else 'First' if s['floor'] == 1 else str(s['floor']),
+        rooms.append([s['name'], 'Roof terrace' if b.get('rooftop') and s['floor']==b['storeys'] else 'Ground' if s['floor'] == 0 else 'First' if s['floor'] == 1 else str(s['floor']),
                       f'{(rx1 - rx0) / 1000:.2f} x {(ry1 - ry0) / 1000:.2f}', f'{ftin(rx1 - rx0)} x {ftin(ry1 - ry0)}',
                       f'{s["area_m2"]:.2f}', f'{s["area_m2"] * 10.7639:.0f}'])
     return [{'title': 'DOOR AND WINDOW SCHEDULE', 'x': 22, 'widths': [13, 60, 30, 13, 9, 70], 'rows': doors},
@@ -592,7 +641,7 @@ def make_sheets(b, scene, report):
     def add(id, title, elements, bounds, notes, table=None, schedule=None):
         width = bounds[2] - bounds[0]; height = bounds[3] - bounds[1]
         scale = next((s for s in [50, 75, 100, 125, 150, 200, 250, 300, 500, 750, 1000] if width / s <= AREA[0] and height / s <= AREA[1]), 1000)
-        sheets.append({'id': id, 'title': title, 'elements': elements, 'bounds': bounds, 'scale': scale, 'notes': notes, 'table': table or [],
+        sheets.append({'planHash':b.get('planHash'),'id': id, 'title': title, 'elements': elements, 'bounds': bounds, 'scale': scale, 'notes': notes, 'table': table or [],
                        'schedule': schedule or [], 'page_mm': [420, 297]})
     for f in range(b['storeys']):
         e, bb = plan_elements(b, scene, f)
@@ -602,12 +651,22 @@ def make_sheets(b, scene, report):
                 rx0, ry0, rx1, ry1 = principal_rect(Polygon(s['clear']))
                 star = '' if Polygon(s['clear']).buffer(1).covers(box(*Polygon(s['clear']).bounds)) else '*'
                 rows.append([s['name'], f'{(rx1 - rx0) / 1000:.2f} x {(ry1 - ry0) / 1000:.2f}{star}', f'{s["area_m2"]:.2f}'])
-        add(f'A-10{f + 1}', 'Ground floor plan' if f == 0 else 'First floor plan', e, bb,
+        add(f'A-10{f + 1}', ['Ground floor plan','First floor plan','Second floor plan'][f], e, bb,
             ['All dimensions in millimetres; levels in metres above natural ground level (NGL).',
              'Room sizes are clear sizes between finished wall faces; * marks the principal rectangle of an L-shaped room.',
              'Dimension chains: openings, walls, overall. Tags: D door, SD sliding door, O cased opening, W window, V ventilator (see A-601).',
              'Door leaves are drawn in the room they open into. Windows above the +1.2 m cut are dashed; furniture is schematic at true scale.',
              'Grid bubbles are coordination axes only, not column positions. No certified IS 962 or local-code compliance is claimed.'], rows)
+    if b.get('rooftop'):
+        e,bb=plan_elements(b,scene,b['storeys'])
+        for core in b['rooftop']['cores']:
+            for part in core['hole']:
+                e.append(P(part['polygon'],'none',INK,.2,'A-STAIR'))
+                cx,cy=Polygon(part['polygon']).centroid.coords[0];e.append(T(cx,cy,'STAIR WELL / DOWN',150,'A-STAIR'))
+        add('A-104','Roof terrace and stair access',e,bb,
+            ['Roof access level, not an additional occupied storey.', 'Use the linked stair and its landing door to reach the guarded terrace.',
+             'Roof openings and headhouse positions follow the authored stair core.'],
+            [['SPACE','AREA m2'],['Open roof terrace',f"{b['rooftop']['spaces'][-1]['area_m2']:.2f}"]])
     e, bb = site_elements(b, scene)
     add('A-001', 'Site plan', e, bb, ['Setbacks shown are design assumptions, not verified byelaws.', 'Road width, property line and levels need a survey.',
                                      'No surveyed drainage fall or flood datum supplied.', 'Default steps are not a step-free route.'],
@@ -657,7 +716,7 @@ def svg_sheet(sheet, b):
     def xy(x, y):
         return (x0 + (x - bb[0]) / s, 297 - y0 - (y - bb[1]) / s)
     out = ['<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">',
-           '<rect width="420" height="297" fill="white"/><g font-family="Arial,Helvetica,sans-serif">']
+           f'<metadata>planHash:{b.get("planHash","legacy")}</metadata><rect width="420" height="297" fill="white"/><g font-family="Arial,Helvetica,sans-serif">']
 
     def txt(x, y, t, size=3, anchor='start', color=INK, rot=0):
         extra = f' transform="rotate({-rot:.1f} {x:.4f} {y:.4f})"' if rot else ''
@@ -717,6 +776,7 @@ def svg_sheet(sheet, b):
 
 def pdf_sheets(sheets, b, report):
     buf = io.BytesIO(); c = canvas.Canvas(buf, pagesize=(420 * 72 / 25.4, 297 * 72 / 25.4), invariant=1, pageCompression=1)
+    c.setSubject('planHash:'+b.get('planHash','legacy')); c.setKeywords('FloorForge planHash:'+b.get('planHash','legacy'))
     mm = 72 / 25.4
 
     def text(x, y, t, size=3, anchor='start', rot=0):
@@ -832,6 +892,7 @@ def dxf_export(b, scene, path):
     from ezdxf.enums import TextEntityAlignment
     doc = ezdxf.new('R2018', setup=True); doc.units = 4
     doc.ezdxf_metadata()['CREATED_BY_EZDXF'] = 'ezdxf ' + ezdxf.__version__ + ' / FloorForge deterministic export'
+    doc.ezdxf_metadata()['PLAN_HASH'] = b.get('planHash','legacy')
     doc.header['$INSUNITS'] = 4; doc.header['$MEASUREMENT'] = 1
     for k in ('$TDCREATE', '$TDUPDATE', '$TDUCREATE', '$TDUUPDATE'):
         doc.header[k] = 2451544.5
@@ -846,7 +907,7 @@ def dxf_export(b, scene, path):
         ds.dxf.dimdec = 0; ds.dxf.dimtad = 1
     doc.appids.new('FLOORFORGE'); msp = doc.modelspace(); W = Polygon(b['footprint']).bounds[2]
     dims = 0
-    for f in range(b['storeys']):
+    for f in range(b['storeys']+bool(b.get('rooftop'))):
         offset = f * (W + 12000); elements, _ = plan_elements(b, scene, f)
         for e in elements:
             layer = e['layer']; attrs = {'layer': layer}

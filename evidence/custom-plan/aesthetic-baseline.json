@@ -1,0 +1,79 @@
+{
+  "presets": {
+    "demo": {
+      "input": {
+        "schema": "floorforge.project/0.3",
+        "brief": {
+          "exterior_theme": "modern_tropical",
+          "interior_theme": "bright_natural"
+        }
+      },
+      "building": "95d777d5d1ccbeb80decb9c6a605a99a7a9e3c28e07314b2e41a3c573a0482fb",
+      "scene": "e50e5703445c10f3ec716d4f6802d1ed043dd9f344f830fca5f57bf6c9be0f50",
+      "visual": "d09fc758cc956652e163fc4e1c4c71e592e7e65bfdd752030f27dbfda6a28d31"
+    },
+    "compact": {
+      "input": {
+        "schema": "floorforge.project/0.3",
+        "brief": {
+          "width_mm": 9144,
+          "depth_mm": 12192,
+          "storeys": 1,
+          "bedrooms": 2,
+          "front_mm": 1800,
+          "rear_mm": 900,
+          "left_mm": 750,
+          "right_mm": 750,
+          "budget_lakh": 25
+        }
+      },
+      "building": "1baed6077a746de70882f7faae0017899d4dda6de8df2d42c992d640f441c472",
+      "scene": "ec24b99929474066aa1482772532c463d822596ec581e0cf1cbbfd0a278cd430",
+      "visual": "a44fd7c92090bc877f3305ace23df8fa5ed178681faba5499fae951abace2a09"
+    },
+    "small": {
+      "input": {
+        "schema": "floorforge.project/0.3",
+        "brief": {
+          "width_mm": 7620,
+          "depth_mm": 10668,
+          "storeys": 1,
+          "bedrooms": 1,
+          "front_mm": 1200,
+          "rear_mm": 600,
+          "left_mm": 450,
+          "right_mm": 450,
+          "budget_lakh": 18
+        }
+      },
+      "building": "ea0d904325e0117a9a57f3d22658ad141f3432c162c6c7d58e8bc677c4c03e06",
+      "scene": "b8b34120c64fadd95e75f14ffcc3c73042aff019a0e3c165d71561afced37318",
+      "visual": "23f36e3e8a6dbe6b34ace7e6288dc6e66bd7f38253e889e2f82777791b1dce26"
+    }
+  },
+  "references": {
+    "evidence/realistic-front.png": "62be5fbe63a918368fbaa1ba19a33e9c82b956819a528070bf5d8c8035b165fa",
+    "evidence/realistic-aerial.png": "116dacb7cab92f596f83f2d30163615a86c28345f312c4fa0f645c556385f810",
+    "evidence/preview-exterior.png": "d489adbef6b5dbf81f0a3fe28853507c72ac5e8952ac12fb0e1e29ce2436ecb1",
+    "evidence/cycles-living-day.jpg": "f02172ca1881731f06f4f3eda8d728aa5ded437c6da45aa62e2d5c83f1de97aa"
+  },
+  "locked_sources": {
+    "floorforge/scene_kit.py": "802e86df421c1de00c1c05e289af089de790fb67e467e8099b6a5280e2ccfa00",
+    "web/viewer/src/materials.js": "a5132f1f802e217828bff8ecc43e21cc9c0156aaea68739c987ed19032853d37",
+    "web/viewer/src/walker.js": "ef876e38ee206a77cafa8811901700f8c4bf8f938184b8652d8b43b5ffffc6e3",
+    "web/viewer/src/scene-builder.js": "d1b12d3891ccbfc30bfd2b6e56dcdb1e5a567de4fe2b72137699743d4cd6f4fc",
+    "web/viewer/src/util.js": "9f18cf1c8491644db002157d95dec10ed6aa512e93c2c5020505c18d1ed05bc9",
+    "web/viewer/src/export.js": "c47be280fc7ff580bd8ae13b8942826b2a20406452df1b709051502265ac7fb1",
+    "web/viewer/src/plant-builders.js": "d3a2bedba7d1281e766e2b333408ded70db35deb9b8fc003d24b3e11687de271",
+    "web/viewer/src/index.js": "7226b5186d28f786f512ccbd7d12a9f9c0f5926f31ea2e0bee2ae1905d763a23",
+    "web/viewer/src/vegetation.js": "a76d99ef0db0426c535614aebc34f5b022285e3d0e5ac886ff6dd742ea3ae497",
+    "web/viewer/src/grade.js": "10f6726b4da0fc4bbe9cb50b99535017b9ee85d9fb43a1bc57d3b179d6fbb870",
+    "web/viewer/src/textures.js": "dbeedbc56d59b84c764ceb2347eed8ccedd0dcad63cbd43833a058f631920941",
+    "web/viewer/src/context.js": "6d437eab509944f18fb3672d3572054052546356517919fda403550c7076802f",
+    "web/viewer/src/foliage-textures.js": "0cb14f5b19b82c65b235593b6e3ccf0776b2fae597484998b5c24b7ab9fa2686",
+    "web/viewer/src/framing.js": "77e849a35b9c23ab3ada4612d6d461c3c0ee4ff17b529cddf772ec61b7f023f0",
+    "web/viewer/src/hud.js": "0674c04e31bd9a2a0fd33742c0dde2bb25c1a5ed94ce15e4c076d24f3f165e50",
+    "web/viewer/src/environment.js": "f90e5ebe5b6328d5bc972e14eb9853aa5e0a77936480687f0acba14e122bea3b",
+    "web/viewer/src/grass.js": "d4913e8bc1cf224f6e1e23e04040f4e4f07bc582487a34569f6ae7f930edb351"
+  }
+}

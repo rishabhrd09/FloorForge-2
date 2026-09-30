@@ -1,0 +1,503 @@
+{
+  "brief": {
+    "storeys": 3,
+    "bedrooms": 1,
+    "width_mm": 10000,
+    "depth_mm": 12000,
+    "left_mm": 500,
+    "right_mm": 500,
+    "front_mm": 1000,
+    "rear_mm": 1000,
+    "roof_access": false
+  },
+  "customPlan": {
+    "floors": [
+      {
+        "id": "floor-0",
+        "openings": [
+          {
+            "height": 2100,
+            "hinge": "start",
+            "id": "suggest-0d4f3a792704f4c21774bc",
+            "kind": "door",
+            "offset": 1550,
+            "roomId": "drawing",
+            "side": "left",
+            "sill": 0,
+            "width": 900
+          },
+          {
+            "height": 2100,
+            "hinge": "start",
+            "id": "suggest-3bf7545713fe490dd1000f",
+            "kind": "door",
+            "offset": 1550,
+            "roomId": "bed",
+            "side": "front",
+            "sill": 0,
+            "width": 900
+          },
+          {
+            "height": 1500,
+            "hinge": "start",
+            "id": "suggest-4a9f5bee8c50529eb83a9b",
+            "kind": "window",
+            "offset": 1450,
+            "roomId": "living",
+            "side": "left",
+            "sill": 750,
+            "width": 1100
+          },
+          {
+            "height": 1500,
+            "hinge": "start",
+            "id": "suggest-8e2fdd55147cb0da25b55e",
+            "kind": "window",
+            "offset": 1450,
+            "roomId": "bed",
+            "side": "rear",
+            "sill": 750,
+            "width": 1100
+          },
+          {
+            "height": 1500,
+            "hinge": "start",
+            "id": "suggest-a7c846b361b5118f9782ac",
+            "kind": "window",
+            "offset": 1450,
+            "roomId": "drawing",
+            "side": "front",
+            "sill": 750,
+            "width": 1100
+          },
+          {
+            "height": 900,
+            "hinge": "start",
+            "id": "suggest-ae4f1c82c293cc88c5eca0",
+            "kind": "window",
+            "offset": 1100,
+            "roomId": "kitchen",
+            "side": "left",
+            "sill": 1200,
+            "width": 1800
+          },
+          {
+            "height": 2100,
+            "hinge": "start",
+            "id": "suggest-bb707129088cca7fcaaad8",
+            "kind": "door",
+            "offset": 1550,
+            "roomId": "kitchen",
+            "side": "front",
+            "sill": 0,
+            "width": 900
+          },
+          {
+            "height": 2100,
+            "hinge": "start",
+            "id": "suggest-d8308d5816af5d4c393bb3",
+            "kind": "entry",
+            "offset": 150,
+            "roomId": "living",
+            "side": "front",
+            "sill": 0,
+            "width": 1000
+          }
+        ],
+        "rooms": [
+          {
+            "id": "bed",
+            "kind": "bedroom",
+            "name": "Bedroom",
+            "polygon": [
+              [
+                4300,
+                4300
+              ],
+              [
+                8300,
+                4300
+              ],
+              [
+                8300,
+                8300
+              ],
+              [
+                4300,
+                8300
+              ]
+            ]
+          },
+          {
+            "id": "drawing",
+            "kind": "drawing-room",
+            "name": "Drawing room",
+            "polygon": [
+              [
+                4300,
+                150
+              ],
+              [
+                8300,
+                150
+              ],
+              [
+                8300,
+                4150
+              ],
+              [
+                4300,
+                4150
+              ]
+            ]
+          },
+          {
+            "id": "kitchen",
+            "kind": "kitchen",
+            "name": "Kitchen",
+            "polygon": [
+              [
+                150,
+                4300
+              ],
+              [
+                4150,
+                4300
+              ],
+              [
+                4150,
+                8300
+              ],
+              [
+                150,
+                8300
+              ]
+            ]
+          },
+          {
+            "id": "living",
+            "kind": "living",
+            "name": "Living",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                4150,
+                150
+              ],
+              [
+                4150,
+                4150
+              ],
+              [
+                150,
+                4150
+              ]
+            ]
+          }
+        ],
+        "walls": []
+      }
+    ],
+    "schema": "floorforge.custom-plan/1",
+    "stairs": [],
+    "units": "mm",
+    "wallThickness": 150
+  },
+  "schema": "floorforge.project/0.4",
+  "sources": [
+    {
+      "id": "studio-field-edits",
+      "kind": "form",
+      "enabled": true,
+      "values": {
+        "storeys": 1
+      }
+    }
+  ],
+  "text": "",
+  "attachments": [],
+  "draftRevision": 16,
+  "editorState": {
+    "mode": "custom",
+    "guideFloors": [
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": false,
+    "customPlan": {
+      "floors": [
+        {
+          "id": "floor-0",
+          "openings": [
+            {
+              "height": 2100,
+              "hinge": "start",
+              "id": "suggest-0d4f3a792704f4c21774bc",
+              "kind": "door",
+              "offset": 1550,
+              "roomId": "drawing",
+              "side": "left",
+              "sill": 0,
+              "width": 900
+            },
+            {
+              "height": 2100,
+              "hinge": "start",
+              "id": "suggest-3bf7545713fe490dd1000f",
+              "kind": "door",
+              "offset": 1550,
+              "roomId": "bed",
+              "side": "front",
+              "sill": 0,
+              "width": 900
+            },
+            {
+              "height": 1500,
+              "hinge": "start",
+              "id": "suggest-4a9f5bee8c50529eb83a9b",
+              "kind": "window",
+              "offset": 1450,
+              "roomId": "living",
+              "side": "left",
+              "sill": 750,
+              "width": 1100
+            },
+            {
+              "height": 1500,
+              "hinge": "start",
+              "id": "suggest-8e2fdd55147cb0da25b55e",
+              "kind": "window",
+              "offset": 1450,
+              "roomId": "bed",
+              "side": "rear",
+              "sill": 750,
+              "width": 1100
+            },
+            {
+              "height": 1500,
+              "hinge": "start",
+              "id": "suggest-a7c846b361b5118f9782ac",
+              "kind": "window",
+              "offset": 1450,
+              "roomId": "drawing",
+              "side": "front",
+              "sill": 750,
+              "width": 1100
+            },
+            {
+              "height": 900,
+              "hinge": "start",
+              "id": "suggest-ae4f1c82c293cc88c5eca0",
+              "kind": "window",
+              "offset": 1100,
+              "roomId": "kitchen",
+              "side": "left",
+              "sill": 1200,
+              "width": 1800
+            },
+            {
+              "height": 2100,
+              "hinge": "start",
+              "id": "suggest-bb707129088cca7fcaaad8",
+              "kind": "door",
+              "offset": 1550,
+              "roomId": "kitchen",
+              "side": "front",
+              "sill": 0,
+              "width": 900
+            },
+            {
+              "height": 2100,
+              "hinge": "start",
+              "id": "suggest-d8308d5816af5d4c393bb3",
+              "kind": "entry",
+              "offset": 150,
+              "roomId": "living",
+              "side": "front",
+              "sill": 0,
+              "width": 1000
+            }
+          ],
+          "rooms": [
+            {
+              "id": "bed",
+              "kind": "bedroom",
+              "name": "Bedroom",
+              "polygon": [
+                [
+                  4300,
+                  4300
+                ],
+                [
+                  8300,
+                  4300
+                ],
+                [
+                  8300,
+                  8300
+                ],
+                [
+                  4300,
+                  8300
+                ]
+              ]
+            },
+            {
+              "id": "drawing",
+              "kind": "drawing-room",
+              "name": "Drawing room",
+              "polygon": [
+                [
+                  4300,
+                  150
+                ],
+                [
+                  8300,
+                  150
+                ],
+                [
+                  8300,
+                  4150
+                ],
+                [
+                  4300,
+                  4150
+                ]
+              ]
+            },
+            {
+              "id": "kitchen",
+              "kind": "kitchen",
+              "name": "Kitchen",
+              "polygon": [
+                [
+                  150,
+                  4300
+                ],
+                [
+                  4150,
+                  4300
+                ],
+                [
+                  4150,
+                  8300
+                ],
+                [
+                  150,
+                  8300
+                ]
+              ]
+            },
+            {
+              "id": "living",
+              "kind": "living",
+              "name": "Living",
+              "polygon": [
+                [
+                  150,
+                  150
+                ],
+                [
+                  4150,
+                  150
+                ],
+                [
+                  4150,
+                  4150
+                ],
+                [
+                  150,
+                  4150
+                ]
+              ]
+            }
+          ],
+          "walls": []
+        }
+      ],
+      "schema": "floorforge.custom-plan/1",
+      "stairs": [],
+      "units": "mm",
+      "wallThickness": 150
+    }
+  }
+}

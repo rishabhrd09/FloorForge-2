@@ -1,0 +1,194 @@
+{
+  "checks": [
+    {
+      "name": "G+2 editor has three floor tabs",
+      "pass": true
+    },
+    {
+      "name": "Exact 4 × 4 m room",
+      "pass": true
+    },
+    {
+      "name": "Typed dimensions retained",
+      "pass": true
+    },
+    {
+      "name": "Undo returns exact width",
+      "pass": true
+    },
+    {
+      "name": "Pointer drawing creates exact snapped room",
+      "pass": true
+    },
+    {
+      "name": "Pointer drawing creates orthogonal wall",
+      "pass": true
+    },
+    {
+      "name": "Moving a wall retains its ID and length",
+      "pass": true
+    },
+    {
+      "name": "Editing an opening retains stable ID",
+      "pass": true
+    },
+    {
+      "name": "Remove floor is explicit",
+      "pass": true
+    },
+    {
+      "name": "Undo restores floor and linked stairs",
+      "pass": true
+    },
+    {
+      "name": "Same revision in model, scene and report",
+      "pass": true,
+      "data": {
+        "hash": "5283f6d31ed6a96cd674a68b38384c7930b1e1a26148cea9fd180d1dcf3fa3db",
+        "buildingHash": "5283f6d31ed6a96cd674a68b38384c7930b1e1a26148cea9fd180d1dcf3fa3db",
+        "reportHash": "5283f6d31ed6a96cd674a68b38384c7930b1e1a26148cea9fd180d1dcf3fa3db",
+        "floors": 3
+      }
+    },
+    {
+      "name": "2D selection highlights matching stable 3D room",
+      "pass": true
+    },
+    {
+      "name": "Older in-flight generation does not replace current draft",
+      "pass": true
+    },
+    {
+      "name": "Failure visibly marks previous design and blocks current export",
+      "pass": true
+    },
+    {
+      "name": "Failed generation retains previous build identity",
+      "pass": true
+    },
+    {
+      "name": "Floor 0 always has 16 cells",
+      "pass": true
+    },
+    {
+      "name": "Floor 1 always has 16 cells",
+      "pass": true
+    },
+    {
+      "name": "Floor 2 always has 16 cells",
+      "pass": true
+    },
+    {
+      "name": "All three distinct boards submitted",
+      "pass": true,
+      "data": {
+        "mode": "spatial_hint",
+        "rows": 4,
+        "cols": 4,
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floors": [
+          [
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "bedroom-1",
+              "",
+              "",
+              ""
+            ]
+          ],
+          [
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "bedroom-2",
+              "",
+              "",
+              ""
+            ]
+          ],
+          [
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "bedroom-3",
+              "",
+              "",
+              ""
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Autosave restores all floors and terrace",
+      "pass": true
+    },
+    {
+      "name": "Save/reopen retains plan hash",
+      "pass": true
+    },
+    {
+      "name": "Mobile editor does not overflow document",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

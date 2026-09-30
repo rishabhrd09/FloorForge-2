@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "name": "Preview offers one-click Hide car",
+      "pass": true
+    },
+    {
+      "name": "Preview hides all car surfaces and collision",
+      "pass": true
+    },
+    {
+      "name": "Hidden preference survives refresh",
+      "pass": true
+    },
+    {
+      "name": "View switching keeps the car hidden",
+      "pass": true
+    },
+    {
+      "name": "Showing car is blocked while standing in its space",
+      "pass": true
+    },
+    {
+      "name": "Showing car restores geometry and collision",
+      "pass": true
+    },
+    {
+      "name": "Visible preference survives refresh",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ]
+}

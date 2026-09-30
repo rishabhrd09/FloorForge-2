@@ -59,7 +59,7 @@ export function buildLawn(lawns, density, uniforms, baseColor) {
     for (let i = 0; i < n && tries < n * 4; tries++) {
       const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0);
       if (!pointInPolygon(x, y, poly) || holes.some((h) => pointInPolygon(x, y, h))) continue;
-      points.push([x, y, lawn.z ?? 0]);
+      points.push([x, y, lawn.z ?? 0, Math.max(.2, Math.min(2, lawn.heightScale ?? 1))]);
       i++;
     }
   }
@@ -91,10 +91,10 @@ uniform float ffTime; uniform float ffWind; uniform float ffFadeNear; uniform fl
   const mesh = new THREE.InstancedMesh(geo, material, points.length);
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
   const c = new THREE.Color();
-  points.forEach(([x, y, z], i) => {
+  points.forEach(([x, y, z, heightScale], i) => {
     q.setFromAxisAngle(up, rnd() * Math.PI * 2);
     const k = .75 + rnd() * .6;
-    s.set(k, k * (.8 + rnd() * .5), k);
+    s.set(k, k * (.8 + rnd() * .5) * heightScale, k);
     p.set(x, z, -y);
     m.compose(p, q, s);
     mesh.setMatrixAt(i, m);

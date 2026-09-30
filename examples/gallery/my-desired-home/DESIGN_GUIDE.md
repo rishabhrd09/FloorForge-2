@@ -1,0 +1,53 @@
+# My Desired Home
+
+East road/front · south left · north right · west rear
+
+East-facing 60 × 55 ft concept. An olive-gold Škoda Kylaq representation occupies the right parking bay with a walking strip beside it. Use Show car / Hide car in the 3D toolbar; the view remembers your choice. A 2.2 × 1.5 m front-facing window lights the upper lobby above the entrance. The front-right 10 ft parking lane beside drawing now continues farther back to the veranda. The 5 ft left lane beside the kitchen ends at the extended staircase enclosure; the 8 ft tiled front court remains. The stair rises south, turns right west at the landing, then right north. Its 1.10 m flights and 1.162 m landings align through the first floor and roof. Tall east-facing glazing overlooks the side corridor; the south wall is solid. Bedroom windows previously facing the side-lane recess move to their rear walls because the expanded stair enclosure occupies that recess. The caregiver door swings into the caregiver bedroom. Boundary-reaching portions are subject to local approval. The master bedroom entry now faces the stair landing; its main bay is 200 mm narrower and its private bathroom is retained. Drawing is a separate 4.116 × 5.500 m room with exactly three doors: the retained front entrance, a small dining door and a small veranda door. There is no door to living. Large parking-facing glazing and a separate veranda window provide views. The home care room is a full 6.788 × 4.150 m rectangle, with no caregiver recess behind the recliner. The straight rear-left caregiver unit has a 2.400 × 3.126 m single bedroom and a 2.400 × 1.300 m attached toilet in line. Its 1 m ICU door is on the head-wall side; the independent 1.1 m sliding garden exit leads along the 1.326 m rear path to the lawn, veranda and outside. The bedroom-side courtyard is now a smaller 1.85 × 0.90 m planted lightwell, with a 0.75 m covered edge beneath the retained upper gallery. Bedroom 1 extends 900 mm toward the stairs and its rear wall moves forward 900 mm, creating a covered rear ventilation recess open along its rear edge. The upper bedroom remains above this recess; it is not open to sky. The attached bathroom and all first-floor room footprints stay fixed. The TV remains centred on the 4.15 m garden-facing wall with two matching 1 m-wide low-sill windows. The recliner is 500 mm farther back and 250 mm to the seated person's left of the previous centred position. The first two panels of the long left-wall window, nearest the caregiver entrance, are replaced by solid wall; the last three panels remain. The cupboard sits in the corner beside the caregiver entrance. Three visitor chairs are on the recliner's right; the left side is reserved for equipment, with the existing equipment table along the new solid wall. The right lawn expands to a 2.7 × 5.776 m garden, using the old caregiver site and the end of the veranda side return; almost its full area is green grass with pots at the perimeter. The main veranda remains 6.688 × 2.600 m, with the original living and ICU sliding doors. The living-to-ICU glass opening is still a generous 2.65 m. The rear caregiver exit remains independent of the ICU. Warm stone flooring, timber ceiling accents and warm wall lights finish the veranda without adding furniture or changing its access routes. One recliner, three right-side chairs, equipment table and corner cupboard furnish the care room. Living seating and the guarded double-height opening move rearward, with direct connections to dining, stairs, master, care and veranda. The veranda has a clear 6.688 × 2.600 m main bay, totalling 17.39 m², kept clear for recliner movement. A 1.8 × 1.65 m open puja alcove sits immediately left of the opaque wooden entry door, with the mandir against the east wall below a wide single-pane clerestory. Only the east backing wall and the short full-height kitchen divider remain; both hall-facing sides are completely open without doors or corner posts. A limestone entry feature, timber detailing and warm light integrate the clerestory and wooden entrance into the front elevation. The former projecting hall counter is removed. The kitchen rear wall retains approximately 1.4 m of full-height painting wall followed by a 1.425 m-wide, 950 mm-high serving counter on the same wall line, with an open hatch above and a small end jamb. Kitchen base and upper storage are shortened to the solid backing wall. The compact 1.5 m four-seat dining table runs parallel to the serving counter and moves closer to it, with its light centred above. The sofa backs onto the continuous drawing-room divider, using the open entry-hall edge, and faces the kitchen and stairs; its coffee table moves with it, leaving the centre of the lounge open. Dining stays beside the stairs; the pantry and wash yard remain accessible through the kitchen. Doors and gates start closed and can be opened in the walkthrough. The small lightwell is closed off from the living hall by a plain solid wall, with no door or passage. The narrow ICU window behind the recliner is replaced by plain wall. Windows from Bedroom 1 and the caregiver bathroom, drainage and the ventilated clear-glass canopy are retained for daylight and ventilation. No opaque upper slab or roof covers it. The upper gallery reroutes in front of the lightwell. The front upper office and lobby walls are set back 1.2 m to create a continuous L-shaped balcony linked to the right terrace, with clear glass guards and visible room windows. Stone accents, timber soffits and restrained lighting refine the exterior. Bathrooms require designed mechanical ventilation. Side setback fields describe minimum clearance at the boundary-reaching wings. Structural support, boundary permissions, daylight, ventilation and actual equipment clearances require detailed design review. This is a residential care concept, not a clinically specified ICU.
+
+## Measurements
+
+Plot: 60 × 55 ft (18.288 × 16.764 m). Buildable envelope: approximately 60 × 47 ft.
+Wall thickness: 150 mm. Floor height: 3.15 m. Ground + first; roof terrace is not another occupied storey.
+
+| Floor | Space | Clear width × depth (m) | Clear width × depth (ft) | Area (m²) |
+|---|---|---|---|---|
+| Ground | Master attached bathroom | 1.950 × 2.376 | 6.40 × 7.80 | 4.63 |
+| Ground | Master bedroom · southwest | 5.450 × 5.626 | 17.88 × 18.46 | 27.57 |
+| Ground | Rear bedroom ventilation recess | 3.700 × 0.900 | 12.14 × 2.95 | 3.33 |
+| Ground | Home care room | 6.788 × 4.150 | 22.27 × 13.62 | 28.17 |
+| Ground | Ventilation lightwell | 1.850 × 0.900 | 6.07 × 2.95 | 1.67 |
+| Ground | Care lawn and rear garden path | 9.638 × 5.776 | 31.62 × 18.95 | 24.79 |
+| Ground | Caregiver bedroom · rear strip | 2.400 × 3.126 | 7.87 × 10.26 | 7.50 |
+| Ground | Caregiver attached toilet | 2.400 × 1.300 | 7.87 × 4.27 | 3.12 |
+| Ground | Covered lightwell edge | 0.750 × 0.900 | 2.46 × 2.95 | 0.68 |
+| Ground | Entry hall | 3.300 × 4.000 | 10.83 × 13.12 | 9.69 |
+| Ground | Drawing room · northeast | 4.116 × 5.500 | 13.50 × 18.04 | 22.64 |
+| Ground | Modular kitchen · southeast | 4.200 × 3.300 | 13.78 × 10.83 | 13.86 |
+| Ground | Kitchen pantry | 1.350 × 1.850 | 4.43 × 6.07 | 2.50 |
+| Ground | Living and dining hall | 6.676 × 4.800 | 21.90 × 15.75 | 27.57 |
+| Ground | Open puja alcove | 1.800 × 1.650 | 5.91 × 5.41 | 2.97 |
+| Ground | Open staircase · south | 4.324 × 3.900 | 14.19 × 12.80 | 16.86 |
+| Ground | Care veranda · north | 6.688 × 2.600 | 21.94 × 8.53 | 17.39 |
+| Ground | Open wash area | 1.350 × 1.300 | 4.43 × 4.27 | 1.75 |
+| First | Upper bathroom | 1.200 × 2.952 | 3.94 × 9.69 | 3.54 |
+| First | Bedroom 3 · northwest | 6.188 × 2.952 | 20.30 × 9.69 | 18.27 |
+| First | Bedroom 2 · southwest | 5.650 × 5.626 | 18.54 × 18.46 | 31.14 |
+| First | Double-height living · open below | 4.800 × 2.800 | 15.75 × 9.19 | 10.70 |
+| First | Upper arrival lobby | 4.300 × 2.800 | 14.11 × 9.19 | 10.24 |
+| First | Overlooking living lobby | 10.664 × 5.800 | 34.99 × 19.03 | 22.89 |
+| First | Office · southeast | 4.000 × 2.100 | 13.12 × 6.89 | 8.40 |
+| First | Open staircase · roof access | 4.324 × 4.800 | 14.19 × 15.75 | 20.76 |
+| First | L-shaped front balcony | 11.916 × 5.650 | 39.09 × 18.54 | 32.62 |
+| First | North open terrace | 6.688 × 8.376 | 21.94 × 27.48 | 32.39 |
+
+For L-shaped rooms, width × depth is the overall bounding box, not a rectangle; use the listed polygon area. Roof dimensions are its bounding box; the area excludes the stair headhouse. The care-room veranda has a level sliding glass opening; the living connection is 2.65 m wide. A 1 m door behind the recliner leads directly to the rear caregiver bedroom and its attached toilet. The right parking lane is preserved beside the drawing room until the veranda.
+
+## Open and edit
+
+In FloorForge choose Sample projects → My Desired Home → Open project & all views. Use Specifications, Room editor, Cell guide, 2D plans or 3D home. The project selector keeps separate saved working copies on this device. Save project also downloads the editable JSON.
+
+The cell overview summarizes the largest room overlap per cell. It is not a second exact geometry source. Small bathrooms may not appear separately. The exact editor and generated drawings contain every room.
+
+The supplied roof stair is an open inter-floor well with a 3.162 m-long rotated slab opening. Bedrooms 2 and 3, office, overlooking lobby and east/north terraces are upstairs. The living atrium is L-shaped, 4.800 × 2.800 m overall with 1.10 m guards; the lower ceiling and upper slab are cut at this opening. Morning light reaches east-facing rooms; the application sun study uses an illustrative location until a real site is entered.
+
+Plan hash: 3346df11beead86620d264e602261f8609e45e42b484d13b894f64901f641616

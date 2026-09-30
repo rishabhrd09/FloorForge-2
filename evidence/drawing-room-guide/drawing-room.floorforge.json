@@ -1,0 +1,178 @@
+{
+  "brief": {
+    "storeys": 2,
+    "roof_access": true
+  },
+  "schema": "floorforge.project/0.4",
+  "sources": [],
+  "text": "",
+  "attachments": [],
+  "draftRevision": 14,
+  "editorState": {
+    "mode": "guide",
+    "guideFloors": [
+      [
+        [
+          "",
+          "",
+          "",
+          "drawing-room"
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": true,
+    "customPlan": {
+      "schema": "floorforge.custom-plan/1",
+      "units": "mm",
+      "wallThickness": 150,
+      "floors": [
+        {
+          "id": "floor-0",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-1",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        }
+      ],
+      "stairs": []
+    }
+  },
+  "grid": {
+    "mode": "spatial_hint",
+    "rows": 4,
+    "cols": 4,
+    "floorIds": [
+      "floor-0",
+      "floor-1"
+    ],
+    "floors": [
+      [
+        [
+          "",
+          "",
+          "",
+          "drawing-room"
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ]
+  }
+}

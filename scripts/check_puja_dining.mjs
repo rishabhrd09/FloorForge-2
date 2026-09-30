@@ -1,0 +1,32 @@
+import {writeFileSync} from 'node:fs';
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
+const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const checks=[],errors=[];const check=(name,pass)=>{checks.push({name,pass:!!pass});console.log(pass?'PASS':'FAIL',name);if(!pass)throw Error(name);};
+try {
+ const p=await browser.newPage({viewport:{width:1500,height:1000}});p.on('pageerror',e=>errors.push(e.message));
+ await p.goto('http://127.0.0.1:8765/samples/my-desired-home/preview.html');await p.waitForFunction(()=>window.__ff?.ready,null,{timeout:180000});
+ console.log('Loaded plan',await p.evaluate(()=>__ff.scene.planHash));
+ check('All doors and gates begin closed',await p.evaluate(()=>__ff.viewer.openings.items.filter(o=>o.kind!=='window').every(o=>o.value===0&&!o.partial)));
+ const shot=async(name,eye,target,fov=70)=>{await p.evaluate(({eye,target,fov})=>{const v=__ff.viewer;v.setMode('solid');v.paused=false;v.fitHeld=null;v.zoomAnim=null;v.camera.fov=fov;v.camera.updateProjectionMatrix();v.camera.position.set(...eye);v.controls.target.set(...target);v.controls.update();v.dirty=true;},{eye,target,fov});await p.waitForTimeout(700);await p.screenshot({path:`evidence/desired-home/${name}.png`});};
+ await shot('puja-entry-closed',[10.15,1.7,-2.95],[8.55,1.45,-.75],80);
+ await shot('puja-front-elevation',[9.15,2.5,4.9],[9.1,1.55,0],65);
+ await shot('dining-by-stairs',[10.15,1.7,-7.9],[6.6,1.35,-4.0],78);
+ await shot('sofa-divider-wall',[5.1,1.7,-7.3],[8.5,1.3,-4.1],80);
+ await shot('kitchen-storage-wall',[6.5,1.65,-1.55],[5.35,1.3,-3.45],80);
+ await p.evaluate(()=>{const v=__ff.viewer;v.paused=true;v.setMode('walk');});
+ const spawn=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;w.teleport(w.position.clone().set(x,0,-y));},{x,y});
+ const door=async(id,goal)=>{const state=await p.evaluate(({id,goal})=>{const v=__ff.viewer,d=v.openings.items.find(o=>o.id===id);d.goal=goal;for(let i=0;i<100;i++)v.openings.update(1/60);return {pass:d.value===goal,value:d.value,message:v.openings.message};},{id,goal});if(!state.pass)console.log(id,state);return state.pass;};
+ const walk=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;let reached=false;for(let i=0;i<600;i++){const dx=x-w.position.x,dz=-y-w.position.z;if(Math.hypot(dx,dz)<.06){reached=true;break;}w.yaw=Math.atan2(-dx,-dz);w.update(1/60,{forward:1,strafe:0});}return {reached,position:w.position.toArray()};},{x,y});
+ const pedestrian=await p.evaluate(()=>{const g=__ff.scene.gate_model.find(g=>g.id==='exterior-pedestrian-gate');return {x:g.start[0]+g.width/2,y:g.start[1]};});
+ await spawn(pedestrian.x,pedestrian.y-.9);check('Pedestrian gate opens',await door('exterior-pedestrian-gate',1));check('Pedestrian gate allows arrival',(await walk(pedestrian.x,pedestrian.y+.7)).reached);
+ await spawn(10.2,1.1);check('Opaque entry blocks passage when closed',!(await walk(10.2,-.6)).reached);await spawn(10.2,1.4);check('Wooden entry opens',await door('g-dining-east',1));check('Wooden entry provides outside access',(await walk(10.2,-1.6)).reached);
+ await spawn(10.05,1.25);check('Open puja has no door',await p.evaluate(()=>!__ff.viewer.openings.items.some(o=>o.id==='g-puja-door')));check('Puja is accessible directly from entry side',(await walk(8.5,1.25)).reached);check('Puja is accessible directly from hall side',(await walk(8.5,2.7)).reached);check('Open corner has no remaining wall post',(await walk(9.8,1.5)).reached);
+ await shot('puja-interior',[10.3,1.7,-3.9],[8.2,1.3,-.45],72);
+ await p.evaluate(()=>{__ff.viewer.paused=true;__ff.viewer.setMode('walk');});
+ await spawn(6.8,2.3);check('Serving counter blocks walking through its hatch',!(await walk(6.8,4.0)).reached);await spawn(8.5,2.5);const route=[];for(const [x,y] of [[7.05,2.5],[6.6,2.5],[8.3,2.5],[8.25,3.1],[8.25,4.1],[5.0,4.1],[5.0,7.25],[5.05,7.25]])route.push(await walk(x,y));console.log('dining route',route);check('Kitchen entry, relocated serving counter and stair-side bedroom route stay clear',route.every(r=>r.reached));
+ await spawn(8.25,4.2);const loungeRoute=[];for(const [x,y] of [[8.25,5.55],[9.4,5.55],[9.4,7.4],[10.65,7.4]])loungeRoute.push(await walk(x,y));check('Sofa approach and central lounge passage remain clear',loungeRoute.every(r=>r.reached));await spawn(5.05,7.25);
+ check('Bedroom door opens',await door('g-bedroom-door',1));check('Shifted bedroom is accessible',(await walk(5.05,8.6)).reached);
+ await shot('bedroom-rear-ventilation',[1.9,1.7,-10.7],[1.85,1.65,-13.9],75);
+ await p.evaluate(()=>{__ff.viewer.paused=true;__ff.viewer.setMode('walk');});await spawn(9.2,11.7);check('Caregiver door still opens inward',await door('g-care-caregiver',1));check('Caregiver route remains clear',(await walk(7.8,11.7)).reached);
+ check('No browser errors',errors.length===0);
+} finally {writeFileSync('evidence/desired-home/puja-dining-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();}

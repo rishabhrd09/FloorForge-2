@@ -1,13 +1,33 @@
 import json,threading,urllib.request,urllib.error,pytest
-from floorforge.ai import Assist,parse_proposal,NoRedirect
+from floorforge.ai import Assist,parse_proposal,proposal_candidate,NoRedirect
+from floorforge.intent import fuse
 from floorforge.model import DesignError
-from floorforge.server import make_server
+from floorforge.server import make_server,serve
 
 @pytest.mark.parametrize('proposal',[{'patch':{'execute':'rm'},'critique':[],'rationale':''},{'patch':{'soil':'rocky'},'critique':[],'rationale':''},{'patch':{},'critique':'bad','rationale':''},{'patch':{},'critique':[],'rationale':'','extra':1}])
 def test_ai_never_accepts_arbitrary_code_or_protected_assumptions(proposal):
     with pytest.raises(DesignError):parse_proposal(json.dumps(proposal))
 
 def test_ai_schema_valid():assert parse_proposal('{"patch":{"style":"tropical"},"critique":[],"rationale":"Preference"}')['patch']['style']=='tropical'
+
+def test_ai_proposal_supersedes_prior_edits_without_discarding_unrelated_values():
+    project={'brief':{},'sources':[
+        {'id':'studio-field-edits','kind':'form','enabled':True,'values':{'bedrooms':4,'pooja':False}},
+        {'id':'imported-edit','kind':'edit','enabled':True,'values':{'bedrooms':5,'parking':True}},
+    ]}
+    candidate=proposal_candidate(project,{'bedrooms':2})
+    values=fuse(candidate)['values']
+    assert values['bedrooms']==2 and values['pooja'] is False and values['parking'] is True
+    assert project['sources'][0]['values']['bedrooms']==4
+    assert candidate['sources'][-1]['kind']=='proposal'
+
+    disabled={**candidate,'sources':[{**s,'enabled':False} if s['id']=='ai-proposal' else s for s in candidate['sources']]}
+    assert fuse(disabled)['values']['bedrooms']==4
+
+    second=proposal_candidate(candidate,{'style':'tropical'})
+    second_values=fuse(second)['values']
+    assert second_values['bedrooms']==2 and second_values['style']=='tropical'
+    assert proposal_candidate(second,{})['sources'][-1]['values']=={'bedrooms':2,'style':'tropical'}
 
 def test_ai_session_memory_and_clear(tmp_path):
     a=Assist();a.configure({'provider':'anthropic','model':'user-model','key':'secret-test-key'});s=a.status()
@@ -60,3 +80,30 @@ def test_health_and_static_ui(http_server):
     code,data=request(http_server,'/');assert code==200 and b'Generate my home' in data
     assert request(http_server,'/viewer.js')[0]==200
     assert request(http_server,'/api/ai/status')[0]==200
+
+def test_second_launch_reuses_studio_without_replacing_session(http_server,capsys,monkeypatch):
+    opened=[];monkeypatch.setattr('floorforge.server.webbrowser.open',opened.append)
+    token=http_server.state.token
+    assert serve(http_server.state.out,http_server.server_port)==0
+    assert 'already running' in capsys.readouterr().out
+    assert opened==[f'http://127.0.0.1:{http_server.server_port}/']
+    assert json.loads(request(http_server,'/api/session')[1])['token']==token
+    assert not http_server.state.jobs
+
+def test_second_launch_does_not_ignore_different_output_directory(http_server,tmp_path,monkeypatch):
+    monkeypatch.setattr('floorforge.server.webbrowser.open',lambda *_:pytest.fail('must not open another project'))
+    with pytest.raises(DesignError) as error:serve(tmp_path/'different-project',http_server.server_port)
+    assert error.value.code=='PORT_IN_USE'
+    assert '--port 0' in str(error.value)
+
+def test_occupied_non_floorforge_port_reports_a_clear_error(tmp_path):
+    from http.server import HTTPServer,BaseHTTPRequestHandler
+    class OtherApp(BaseHTTPRequestHandler):
+        def do_GET(self):self.send_response(200);self.end_headers();self.wfile.write(b'{"defaults":{},"version":"1"}')
+        def log_message(self,*args):pass
+    server=HTTPServer(('127.0.0.1',0),OtherApp)
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    try:
+        with pytest.raises(DesignError) as error:serve(tmp_path,server.server_port,False)
+        assert error.value.code=='PORT_IN_USE'
+    finally:server.shutdown();server.server_close();thread.join()

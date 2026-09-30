@@ -1,0 +1,212 @@
+{
+  "title": "My Desired Home",
+  "planHash": "11547b5d5fb712086b00ec8ec42a0917b9bb076126ce0d137767588ac2ce6342",
+  "orientation": "East road/front \u00b7 south left \u00b7 north right \u00b7 west rear",
+  "notes": "East-facing 50 \u00d7 50 ft concept. Front 8 ft; south 5 ft; north 10 ft; zero rear setback is a user-requested concept subject to local approval. The building extends to the rear boundary. The larger drawing room is 4.018 \u00d7 3.300 m; the master bedroom is 4.150 \u00d7 3.802 m; the home care room has 6.068 \u00d7 3.500 m overall extents with a rear service recess. The caregiver bedroom narrows to 3.000 m, with an attached toilet and direct care-room connection. Rear windows are omitted; the caregiver bedroom receives north daylight, and internal toilets need mechanical ventilation design. The common bathroom returns to the rear service zone between the bedroom and care suite, accessed from the living hall, with a full-height ceiling. The former care-supplies room joins that bathroom; the care-room cupboard remains. The staircase is completely clear beneath both flights. A 1.65 m serving counter, 0.40 m deep and 0.95 m high, forms a half divider between kitchen and dining; the remaining 1.65 m stays open for walking. One centered recliner faces the north-wall TV, with two chairs, equipment table and left-hand cupboard. The veranda opens to the right. A new dining glass door opens to a tiled front court. Open kitchen, dining, living and stairs remain connected; the kitchen/stair partition remains. The upstairs lobby overlooks the guarded living void. Two occupied floors and a walkable roof terrace. Materials and lighting remain unchanged. Room dimensions for L shapes are overall extents; areas follow their actual polygons. This is a residential care-room illustration, not a clinically specified ICU. Local setbacks, ventilation, drainage, structure and access require qualified review.",
+  "plotFt": [
+    50,
+    50
+  ],
+  "setbacksFt": {
+    "east": 8,
+    "south": 5,
+    "north": 10,
+    "west": 0
+  },
+  "rearSetbackProvisional": true,
+  "buildableFt": [
+    35,
+    42
+  ],
+  "rooms": [
+    {
+      "id": "g-bath",
+      "name": "Common bathroom \u00b7 rear",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 1.368,
+      "depthM": 3.802,
+      "areaM2": 5.201136
+    },
+    {
+      "id": "g-bedroom",
+      "name": "Master bedroom \u00b7 southwest",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 4.15,
+      "depthM": 3.802,
+      "areaM2": 15.7783
+    },
+    {
+      "id": "g-care",
+      "name": "Home care room",
+      "floor": 0,
+      "kind": "care-room",
+      "widthM": 6.068,
+      "depthM": 3.5,
+      "areaM2": 17.4405
+    },
+    {
+      "id": "g-caregiver",
+      "name": "Caregiver bedroom",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 3.0,
+      "depthM": 2.502,
+      "areaM2": 7.506
+    },
+    {
+      "id": "g-caregiver-bath",
+      "name": "Caregiver attached toilet",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 1.4,
+      "depthM": 2.502,
+      "areaM2": 3.5028
+    },
+    {
+      "id": "g-dining",
+      "name": "Open dining",
+      "floor": 0,
+      "kind": "dining",
+      "widthM": 2.728,
+      "depthM": 3.3,
+      "areaM2": 9.0024
+    },
+    {
+      "id": "g-drawing",
+      "name": "Drawing room \u00b7 northeast",
+      "floor": 0,
+      "kind": "drawing-room",
+      "widthM": 4.018,
+      "depthM": 3.3,
+      "areaM2": 13.2594
+    },
+    {
+      "id": "g-kitchen",
+      "name": "Kitchen \u00b7 southeast",
+      "floor": 0,
+      "kind": "kitchen",
+      "widthM": 3.322,
+      "depthM": 3.3,
+      "areaM2": 10.9626
+    },
+    {
+      "id": "g-living",
+      "name": "Living hall",
+      "floor": 0,
+      "kind": "living",
+      "widthM": 4.9,
+      "depthM": 5.1,
+      "areaM2": 17.813
+    },
+    {
+      "id": "g-stair",
+      "name": "Open staircase \u00b7 south",
+      "floor": 0,
+      "kind": "stair",
+      "widthM": 2.8,
+      "depthM": 5.1,
+      "areaM2": 14.28
+    },
+    {
+      "id": "g-veranda",
+      "name": "Care veranda \u00b7 north",
+      "floor": 0,
+      "kind": "veranda",
+      "widthM": 2.518,
+      "depthM": 2.75,
+      "areaM2": 6.9245
+    },
+    {
+      "id": "u-bath",
+      "name": "Upper bathroom",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 1.4,
+      "depthM": 3.802,
+      "areaM2": 5.3228
+    },
+    {
+      "id": "u-bed-north",
+      "name": "Bedroom 3 \u00b7 northwest",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 4.518,
+      "depthM": 3.802,
+      "areaM2": 17.177436
+    },
+    {
+      "id": "u-bed-south",
+      "name": "Bedroom 2 \u00b7 southwest",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 4.15,
+      "depthM": 3.802,
+      "areaM2": 15.7783
+    },
+    {
+      "id": "u-living-void",
+      "name": "Double-height living \u00b7 open below",
+      "floor": 1,
+      "kind": "void",
+      "widthM": 3.378,
+      "depthM": 2.75,
+      "areaM2": 9.2895
+    },
+    {
+      "id": "u-lobby",
+      "name": "Upper arrival lobby",
+      "floor": 1,
+      "kind": "hall",
+      "widthM": 2.728,
+      "depthM": 3.3,
+      "areaM2": 9.0024
+    },
+    {
+      "id": "u-lounge",
+      "name": "Overlooking living lobby",
+      "floor": 1,
+      "kind": "hall",
+      "widthM": 4.9,
+      "depthM": 5.1,
+      "areaM2": 14.7588
+    },
+    {
+      "id": "u-office",
+      "name": "Office \u00b7 southeast",
+      "floor": 1,
+      "kind": "study",
+      "widthM": 3.322,
+      "depthM": 3.3,
+      "areaM2": 10.9626
+    },
+    {
+      "id": "u-stair",
+      "name": "Open staircase \u00b7 roof access",
+      "floor": 1,
+      "kind": "stair",
+      "widthM": 2.8,
+      "depthM": 5.1,
+      "areaM2": 14.28
+    },
+    {
+      "id": "u-terrace-front",
+      "name": "East open terrace",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 4.168,
+      "depthM": 3.45,
+      "areaM2": 14.3796
+    },
+    {
+      "id": "u-terrace-north",
+      "name": "North open terrace",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 2.518,
+      "depthM": 5.25,
+      "areaM2": 13.2195
+    }
+  ]
+}

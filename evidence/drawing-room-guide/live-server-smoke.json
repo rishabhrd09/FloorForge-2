@@ -1,0 +1,7 @@
+{
+  "checks": [
+    "Inactive-only board is not submitted",
+    "Undo restores the active guide and all painted cells",
+    "Running server serves the updated frontend"
+  ]
+}

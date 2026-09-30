@@ -12,7 +12,7 @@ from .exterior import exterior_review, protected_interior_fingerprint
 # 2.8 m2 / 1.2 m) and common practice for the rooms NBC does not size. A screening reference, NOT a verified
 # statutory rule pack: local byelaws govern.
 GUIDELINES={
- 'bedroom':(9.5,2400), 'living':(9.5,2400),'family':(9.5,2400),
+ 'bedroom':(9.5,2400), 'living':(9.5,2400), 'drawing-room':(7.5,2400),'family':(9.5,2400),
  'kitchen':(5.,1800),'bathroom':(2.8,1200),'utility':(1.8,1000),
  'study':(7.5,2100),'pooja':(1.,850),'dress':(2.,1200),'store':(1.,900),
 }
@@ -23,7 +23,7 @@ WINDOW_SHARE=.10      # openable glazing as a share of floor area for habitable 
 BATH_VENT_M2=.3       # opening to external air for a bath or WC (NBC-style screening value)
 CORRIDOR_MIN=1000     # clear corridor width, mm
 SUITE_KINDS={'bathroom','dress'}
-LIT_KINDS={'bedroom','living','family','dining','study','kitchen'}
+LIT_KINDS={'bedroom','care-room','living','drawing-room','family','dining','study','kitchen'}
 
 
 def swing_sector(o,w,rooms):
@@ -46,7 +46,7 @@ def professional_screen(b,warnings):
     def glazing(ids):
         # Windows plus glazed doors to open air or a terrace; solid doors are excluded as NBC excludes doors.
         return sum(o['width']*o['height']/1e6 for o in b['openings'] if set(o['connects'])&ids and
-                   (o['kind']=='window' or (o['kind']=='glazed' and ({'outside'}|{i for i in kinds if kinds[i]=='terrace'})&set(o['connects']))))
+                   (o['kind']=='window' or (o['kind']=='glazed' and ({'outside'}|{i for i in kinds if kinds[i] in ('terrace','veranda','balcony','courtyard','outer-lobby','drying-yard')})&set(o['connects']))))
     seen=set()
     for s in spaces:
         if s['kind'] not in LIT_KINDS or s['id'] in seen:continue
@@ -57,9 +57,12 @@ def professional_screen(b,warnings):
         area=sum(clear[i].area for i in group)/1e6;share=glazing(group)/max(area,.01)
         if share<WINDOW_SHARE:
             warnings.append({'code':'LOW_DAYLIGHT','id':s['id'],'glazing_to_floor_pct':round(share*100,1),'required_pct':WINDOW_SHARE*100,
-                             'message':f'{s["name"]}: openings are {share*100:.0f}% of the floor area; NBC-style screening asks for at least 10%.'})
+                             'message':f'{s["name"]}: openings are {share*100:.2f}% of the floor area; NBC-style screening asks for at least 10%.'})
     for s in spaces:
-        if s['kind']=='bathroom':
+        if s['kind'] in ('bathroom','powder-room'):
+            if s.get('mechanicalVentilation'):
+                warnings.append({'code':'MECHANICAL_EXHAUST_DESIGN','id':s['id'],'message':f'{s["name"]}: mechanical exhaust selected; duct route and capacity require design.'})
+                continue
             vent=sum(o['width']*o['height']/1e6 for o in b['openings'] if o['kind']=='window' and s['id'] in o['connects'])
             if vent<BATH_VENT_M2:
                 warnings.append({'code':'BATH_VENTILATION','id':s['id'],'opening_m2':round(vent,3),'required_m2':BATH_VENT_M2,
@@ -90,6 +93,9 @@ def professional_screen(b,warnings):
                          'message':f'{want["provided"]} of {want["requested"]} requested attached baths fit this plot.'})
 
 def validate(b):
+    if b.get('planning',{}).get('custom'):
+        from .custom_plan import validate_custom
+        return validate_custom(b)
     v=b['brief'];errors=[];warnings=[];checks=[]; spaces=b['spaces']; fp=Polygon(b['footprint'])
     ids=[s['id'] for key in ('spaces','walls','openings') for s in b[key]]
     if len(ids)!=len(set(ids)):
@@ -134,7 +140,7 @@ def validate(b):
                     errors.append({'code':'CORRIDOR_WIDTH','id':s['id'],'clear_width_mm':round(minwidth),'required_mm':CORRIDOR_MIN})
                 share=c.area/max(1.,sum(Polygon(t['clear']).area for t in ss))
                 if share>.12:
-                    warnings.append({'code':'LONG_CIRCULATION','id':s['id'],'message':f'Circulation takes {share*100:.0f}% of this floor; review whether rooms can open off a shorter hall.'})
+                    warnings.append({'code':'LONG_CIRCULATION','id':s['id'],'message':f'Circulation takes {share*100:.2f}% of this floor; review whether rooms can open off a shorter hall.'})
         if abs(unary_union([Polygon(s['polygon']) for s in ss]).area-fp.area)>2:
             errors.append({'code':'UNTILED_FLOOR','floor':floor})
     hosts={w['id']:w for w in b['walls']}
@@ -169,7 +175,7 @@ def validate(b):
             # Only the bedroom's own attached bath and dressing room may lie beyond it.
             if any(kinds.get(r) not in SUITE_KINDS for r in cut):errors.append({'code':'BEDROOM_THROUGH_ROUTE','id':s['id']})
             elif cut:suites[s['id']]=sorted(cut)
-        if s['kind'] in {'bedroom','living','kitchen','study','family'}:
+        if s['kind'] in {'bedroom','living','drawing-room','kitchen','study','family'}:
             if not any(o['kind']=='window' and s['id'] in o['connects'] for o in b['openings']):
                 errors.append({'code':'NO_EXTERNAL_WINDOW','id':s['id']})
     if sum(s['kind']=='bedroom' for s in spaces)!=v['bedrooms']:errors.append({'code':'BEDROOM_COUNT'})
@@ -200,7 +206,7 @@ def validate(b):
             'external-window presence','bedroom and floor counts','stair proportions and vertical alignment',
             'corridor width and circulation share','daylight share of habitable rooms (1/10)','bath and WC ventilation',
             'pooja beside or below wet areas','door swing clashes','attached baths against the request']+checks_extra
-    result={'status':'blocked' if errors else 'preliminary_geometry_pass','checks':checks,'errors':errors,'warnings':warnings,
+    result={'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'status':'blocked' if errors else 'preliminary_geometry_pass','checks':checks,'errors':errors,'warnings':warnings,
             'rule_source':RULE_SOURCE,'regulatory':'NOT EVALUATED','structural':'NOT DESIGNED','accessibility':'NOT CERTIFIED',
             'collision_scope':'2D circle against opening-cut walls and furnishings; not a full-body physics certification.',
             'construction_ready':False,'graph':{k:sorted(val) for k,val in graph.items()},
@@ -233,10 +239,13 @@ def reports(b,review):
     import copy
     review=copy.deepcopy(review)
     v=b['brief'];fp=Polygon(b['footprint']); plot=Polygon(b['plot']); gross=fp.area/1e6*b['storeys'];ft2=gross*10.7639104
+    if 'floor_plates' in b:
+        from .plan_geometry import plate
+        gross=sum(plate(b,f).area for f in range(b['storeys']))/1e6;ft2=gross*10.7639104
     low=ft2*v['rate_low_inr_ft2'];high=ft2*v['rate_high_inr_ft2'];factor=1+v['cost_contingency_pct']/100
     areas={'plot_m2':round(plot.area/1e6,3),'footprint_m2':round(fp.area/1e6,3),'gross_floor_m2':round(gross,3),
            'gross_floor_ft2':round(ft2,2),'ground_coverage_pct':round(fp.area/plot.area*100,2),
-           'geometric_far':round(fp.area*b['storeys']/plot.area,3),'open_terrace_m2':round(sum(Polygon(s['polygon']).area for s in b['spaces'] if s['kind']=='terrace')/1e6,3),
+           'geometric_far':round(gross*1e6/plot.area,3),'roof_terrace_m2':b.get('rooftop',{}).get('spaces',[{}])[-1].get('area_m2',0),'open_terrace_m2':round(sum(Polygon(s['polygon']).area for s in b['spaces'] if s['kind']=='terrace')/1e6,3),
            'area_basis':'Gross plan envelopes include wall/stair cells and open terraces; not carpet area or statutory floor area.',
            'far_legal_definition':'Unverified local inclusions/exclusions; geometric ratio only.'}
     cost={'low_lakh':round(low*factor/1e5,2),'high_lakh':round(high*factor/1e5,2),'budget_lakh':v['budget_lakh'],
@@ -266,7 +275,7 @@ def reports(b,review):
            'limitation':'Preference heuristic from supplied brief, not a safety or scientific rating. Strict requests are flagged, not guaranteed.'}
     if v['vastu']=='strict' and any(x['rating']=='avoid' for x in zones):
         review['warnings'].append({'code':'VASTU_STRICT_UNRESOLVED','message':'Not all strict Vastu preferences are satisfied. This is a visible unresolved preference, not a compliant design.'})
-    mep={'status':'schematic intent only','wet_spaces':[s['id'] for s in b['spaces'] if s['kind'] in ('bathroom','kitchen','utility')],
+    mep={'status':'schematic intent only','wet_spaces':[s['id'] for s in b['spaces'] if s['kind'] in ('bathroom','kitchen','utility','drying-room','drying-yard')],
          'notes':['Cluster wet areas; a plumbing designer must size and route stacks, vents and gradients.',
                   'No electrical cable sizing, protection coordination or circuit approval.',
                   'No medical gas, life-support power or ICU services design.'],
@@ -287,7 +296,7 @@ def reports(b,review):
     openingvol=sum(o['width']*o['height']*next(w['thickness'] for w in b['walls'] if w['id']==o['wall_id']) for o in b['openings'])/1e9
     quantities={'nominal_wall_solid_m3':round(wallvol-openingvol,3),'status':'Approximate geometry volume; overlapping wall joints and unbuilt assumptions prevent BOQ certification.',
                 'cement_bags':None,'reinforcement_kg':None,'reason':'Material quantities need mix designs, reinforcement schedules and measured assemblies; not invented from floor area.'}
-    return {'banner':__import__('floorforge').BANNER,'areas':areas,'cost':cost,'timeline':timeline,'vastu':vastu,'structure':structure,'mep':mep,
+    return {'input_audit':b.get('input_audit'),'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'banner':__import__('floorforge').BANNER,'areas':areas,'cost':cost,'timeline':timeline,'vastu':vastu,'structure':structure,'mep':mep,
             'daylight':daylight,'solar':solar_position(v),'quantities':quantities,'review':review,
             'exterior': exterior_review(b),
             'unresolved_requests':unresolved(b)}

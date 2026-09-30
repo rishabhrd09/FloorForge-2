@@ -1003,6 +1003,11 @@ def apply_exterior_preferences(building: dict[str, Any]) -> dict[str, Any]:
     anchors = derive_facade_anchors(building)
     protected_before = protected_interior_fingerprint(building)
     candidates = generate_exterior_candidates(building, preferences)
+    if building.get('planning',{}).get('custom'):
+        # Exact authored openings and floor topology outrank facade refinements.
+        for candidate in candidates:
+            candidate['opening_changes']=[]
+            candidate['assemblies']=[a for a in candidate.get('assemblies',[]) if a['geometry'].get('kind') in ('porch','verandah','screen','accent','carport')]
     evaluated = [
         evaluate_candidate(candidate, building, protected_before)
         for candidate in candidates
@@ -1068,7 +1073,7 @@ def apply_exterior_preferences(building: dict[str, Any]) -> dict[str, Any]:
             "visual_review": "PENDING_OWNER_REVIEW",
         },
     }
-    revision["schema"] = "floorforge.building/0.3"
+    revision["schema"] = "floorforge.building/0.4" if building.get("planning",{}).get("custom") else "floorforge.building/0.3"
     revision["exterior"] = exterior
     return revision
 

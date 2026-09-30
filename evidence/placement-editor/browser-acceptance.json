@@ -1,0 +1,90 @@
+{
+  "checks": [
+    {
+      "name": "1 occupied floors in the matching example",
+      "pass": true
+    },
+    {
+      "name": "2 occupied floors in the matching example",
+      "pass": true
+    },
+    {
+      "name": "3 occupied floors in the matching example",
+      "pass": true
+    },
+    {
+      "name": "Default example is G+1",
+      "pass": true
+    },
+    {
+      "name": "Malformed floor count is a clear 400",
+      "pass": true
+    },
+    {
+      "name": "Fresh studio defaults to two occupied floors",
+      "pass": true
+    },
+    {
+      "name": "G+1 has two floors plus a separate roof level",
+      "pass": true
+    },
+    {
+      "name": "Actual pointer drag records a 200 mm table move",
+      "pass": true
+    },
+    {
+      "name": "Undo removes the placement",
+      "pass": true
+    },
+    {
+      "name": "Placement actions remain reachable on a phone",
+      "pass": true
+    },
+    {
+      "name": "Only the table assembly changes in the generated scene",
+      "pass": true
+    },
+    {
+      "name": "Materials, assets, lighting and cameras are unchanged",
+      "pass": true
+    },
+    {
+      "name": "Saved project retains the furniture transform",
+      "pass": true
+    },
+    {
+      "name": "Save/reopen yields the generated plan hash",
+      "pass": true
+    },
+    {
+      "name": "Invalid placement is explained without replacing the valid model",
+      "pass": true
+    },
+    {
+      "name": "Dropping a bedroom onto another records both destination polygons",
+      "pass": true
+    },
+    {
+      "name": "Applied bedroom swap changes the canonical room and keeps G+1",
+      "pass": true
+    },
+    {
+      "name": "Reducing G+2 to G+1 removes the editor Second floor",
+      "pass": true
+    },
+    {
+      "name": "Floor removal is undoable",
+      "pass": true
+    },
+    {
+      "name": "Example loader follows the selected G+1 count",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

@@ -11,6 +11,8 @@ import { MaterialLibrary } from './materials.js';
 import { Environment, GRADES } from './environment.js';
 import { buildBuckets, visibilityClass } from './scene-builder.js';
 import { Walker } from './walker.js';
+import { ParkedVehicle } from './vehicle.js';
+import { OpeningController, describeOpenings } from './openings.js';
 import { GradeEffect } from './grade.js';
 import { Vegetation } from './vegetation.js';
 import { Hud } from './hud.js';
@@ -27,7 +29,7 @@ const QUALITY = {
 };
 const ORDER = ['ultra', 'high', 'balanced', 'performance'];
 const DIRECTED = new Set(['downlight', 'soffit', 'uplight']);
-const WALK_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyC', 'ControlLeft', 'KeyE', 'KeyQ']);
+const WALK_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyC', 'ControlLeft', 'KeyE', 'KeyQ', 'KeyF']);
 
 const s2t = (p) => new THREE.Vector3(p[0], p[2], -p[1]); // scene (Z-up) point -> Three (Y-up)
 // Share of the frame the home fills: the studio's hero view keeps a little street around it; Focus fills the view.
@@ -94,7 +96,7 @@ class FloorForgeViewer {
     this.bindInput();
     this.resizeObserver = new ResizeObserver(() => { this.resized = true; this.dirty = true; });
     this.resizeObserver.observe(canvas);
-    this.hud = new Hud(canvas, { onLock: () => this.lock(), onJump: () => { this.input.jump = true; }, inset: hudInset });
+    this.hud = new Hud(canvas, { onLock: () => this.lock(), onJump: () => { this.input.jump = true; }, onInteract: () => this.interactOpening(), inset: hudInset });
     const loop = () => { if (this.disposed) return; this.raf = requestAnimationFrame(loop); this.tick(); };
     this.raf = requestAnimationFrame(loop);
   }
@@ -149,26 +151,21 @@ class FloorForgeViewer {
   }
 
   // ---------- scene ----------
-  setScene(data) {
+  setScene(data, building = data.opening_model) {
     if (data.up !== 'Z' || data.units !== 'm') throw Error('Scene must use Z-up metres.');
     const started = performance.now();
+    if (this.mode === 'walk') this.leaveWalk();
+    this.highlightRoom(null);
     this.clearScene();
     this.data = data;
     this.H = data.floor_height;
     this.materials = new MaterialLibrary(this.synth, data.materials);
-    const buckets = buildBuckets(data, this.materials);
+    const descriptors = describeOpenings(data, data.opening_model || building);
+    const movingIds = new Set(descriptors.flatMap(d => d.parts.flatMap(p => p.ids)));
+    const buckets = buildBuckets({ ...data, nodes: data.nodes.filter(n => !movingIds.has(n.id) && n.owner !== 'parked-car') }, this.materials);
     const collision = [];
     for (const b of buckets) {
-      const clipped = b.cls === 'clip';
-      const mat = this.materials.get(b.material, clipped);
-      const material = b.doubleSided && mat.side !== THREE.DoubleSide ? this.doubleSided(mat, b.material, clipped) : mat;
-      const mesh = new THREE.Mesh(b.geometry, material);
-      mesh.castShadow = !b.transparent && !(this.data.materials[b.material]?.emission);
-      mesh.receiveShadow = !b.transparent;
-      mesh.userData = { bucket: b, baseMaterial: material };
-      if (b.transparent) mesh.renderOrder = 2;
-      this.root.add(mesh);
-      this.meshes.push(mesh);
+      this.addBucket(b);
       if (b.collide) collision.push(b.geometry);
     }
     // Site bounds, sun and shadow frustum.
@@ -195,6 +192,9 @@ class FloorForgeViewer {
       max: new THREE.Vector3(x1 + pad, z1 + 10, -(y0 - pad)),
     });
     this.walker.respawn = () => this.spawn('arrival');
+    this.openings = new OpeningController(this, descriptors);
+    const carNodes = data.nodes.filter(n => n.owner === 'parked-car');
+    this.vehicle = carNodes.length ? new ParkedVehicle(this, carNodes) : null;
     this.rooms = (data.rooms || []).map((r) => ({ ...r }));
     this.rebuildLightPool();
     this.setGrade(this.gradeName);
@@ -202,9 +202,58 @@ class FloorForgeViewer {
     this.mode = this.mode === 'walk' ? 'solid' : this.mode;
     this.reset();
     this.applyVisibility();
+    this.onModeChange?.(this.mode);
+    this.onFloorChange?.(this.floor);
     this.dirty = true;
     const ms = Math.round(performance.now() - started);
     this.onStatus(`${data.nodes.length.toLocaleString()} objects · ${this.meshes.length} merged surfaces · ${this.vegetation.count} plants · realistic render ready in ${ms} ms`);
+  }
+
+  addBucket(b, parent = this.root) {
+    const clipped = b.cls === 'clip', mat = this.materials.get(b.material, clipped);
+    const material = b.doubleSided && mat.side !== THREE.DoubleSide ? this.doubleSided(mat, b.material, clipped) : mat;
+    const mesh = new THREE.Mesh(b.geometry, material);
+    mesh.castShadow = !b.transparent && !this.data.materials[b.material]?.emission;
+    mesh.receiveShadow = !b.transparent;
+    mesh.userData = { bucket: b, baseMaterial: material };
+    if (b.transparent) mesh.renderOrder = 2;
+    parent.add(mesh); this.meshes.push(mesh);
+    return mesh;
+  }
+
+  get hasCar() { return Boolean(this.vehicle); }
+  get carVisible() { return Boolean(this.vehicle?.visible); }
+  setCarVisible(visible) { return this.vehicle?.setVisible(visible) ?? false; }
+
+  interactOpening() {
+    if (this.mode !== 'walk') return false;
+    const result = this.openings?.interact() || false;
+    this.canvas.focus?.();
+    return result;
+  }
+
+  highlightRoom(id) {
+    if (this.roomHighlight) {
+      this.root.remove(this.roomHighlight);
+      this.roomHighlight.traverse((object) => { object.geometry?.dispose(); object.material?.dispose(); });
+      this.roomHighlight = null;
+    }
+    this.selectedRoomId = null;
+    const room = id && this.data?.rooms?.find((item) => item.id === id);
+    if (!room) { this.dirty = true; return; }
+    const shape = new THREE.Shape(room.polygon.map(([x, y]) => new THREE.Vector2(x, y)));
+    const mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshBasicMaterial({
+      color: '#55cc91', transparent: true, opacity: .48, side: THREE.DoubleSide, depthTest: false, depthWrite: false,
+    }));
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.position.y = room.floor * this.H + .04;
+    mesh.renderOrder = 100;
+    this.roomHighlight = mesh;
+    this.selectedRoomId = id;
+    this.root.add(mesh);
+    this.setFloor(room.floor);
+    this.setMode('dollhouse');
+    this.dirty = true;
   }
 
   doubleSided(mat, name, clipped) {
@@ -245,6 +294,9 @@ class FloorForgeViewer {
 
   clearScene() {
     this.clearProbes();
+    this.openings?.dispose(); this.openings = null;
+    this.vehicle?.dispose(); this.vehicle = null;
+    this.hud?.setInteraction(null);
     for (const m of this.meshes) m.geometry.dispose();
     this.meshes = [];
     this.vegetation?.dispose();
@@ -357,7 +409,8 @@ class FloorForgeViewer {
   isIndoors(p) {
     if (!this.footprint) return false;
     const x = p.x, y = -p.z, z = p.y;
-    if (z > this.topZ || !pointInPolygon(x, y, this.footprint)) return false;
+    if (z > this.topZ) return z < this.topZ + 2.5 && this.rooms.some(r => r.floor === this.data.roof_level && r.kind === 'stair' && pointInPolygon(x, y, r.polygon));
+    if (!pointInPolygon(x, y, this.footprint)) return false;
     const floor = clamp(Math.floor(z / this.H), 0, this.data.storeys - 1);
     for (const r of this.rooms) if (r.kind === 'terrace' && r.floor === floor && pointInPolygon(x, y, r.polygon)) return false;
     return true;
@@ -421,13 +474,13 @@ class FloorForgeViewer {
   // ---------- room light probes ----------
   // The room (scene rooms metadata) containing a Three-space point, on the storey the point stands on.
   // Storey a standing height (feet, Three Y) belongs to; half-way up the stair still counts as the lower floor.
-  levelOf(y) { return clamp(Math.floor((y + .6) / this.H), 0, this.data.storeys - 1); }
+  levelOf(y) { return clamp(Math.floor((y + .6) / this.H), 0, this.data.roof_level ?? this.data.storeys - 1); }
 
   roomAt(p) {
     if (!this.rooms?.length) return null;
     const sx = p.x, sy = -p.z;
     const floor = this.levelOf(p.y);
-    for (const r of this.rooms) if (r.floor === floor && pointInPolygon(sx, sy, r.polygon)) return r;
+    for (const r of this.rooms) if (r.floor === floor && pointInPolygon(sx, sy, r.polygon) && !(r.holes || []).some(h => pointInPolygon(sx, sy, h))) return r;
     return null;
   }
 
@@ -486,6 +539,7 @@ class FloorForgeViewer {
     const cut = this.mode === 'dollhouse' || this.mode === 'plan';
     const H = this.H;
     const f = this.floor;
+    const overlooksBelow = this.mode === 'dollhouse' && (this.data.rooms || []).some(r => r.floor === f && r.kind === 'void');
     this.materials.clipPlane.constant = cut ? f * H + 1.22 : 1e6;
     for (const mesh of this.meshes) {
       const b = mesh.userData.bucket;
@@ -493,9 +547,10 @@ class FloorForgeViewer {
       if (cut) {
         if (b.floor > f) visible = false;
         else if (b.cls === 'overhead' || b.cls === 'opening') visible = false;
-        else if (b.floor >= 0 && b.floor < f && !(b.cls === 'clip' && b.roles.includes('wall')) && b.cls !== 'floor') visible = false;
+        else if (b.floor >= 0 && b.floor < f && !overlooksBelow && !(b.cls === 'clip' && b.roles.includes('wall')) && b.cls !== 'floor') visible = false;
       }
-      mesh.visible = visible;
+      if (cut && f === this.data.roof_level && b.floor === f - 1 && b.roles.includes('roof')) visible = true;
+      mesh.visible = visible && (!mesh.userData.vehicle || this.carVisible);
     }
     this.vegetation?.setCutaway(cut, f, H);
     if (this.groundMesh) this.groundMesh.visible = true;
@@ -538,7 +593,7 @@ class FloorForgeViewer {
     if (!this.data) return;
     this.sideView = false;
     this.showContext(this.contextWanted());
-    if (this.mode === 'walk') { this.spawn(this.floor > 0 ? 'floor' : 'arrival'); return; }
+    if (this.mode === 'walk') { this.spawn('arrival'); return; }
     const key = this.mode === 'dollhouse' || this.mode === 'plan' ? 'dollhouse' : 'hero';
     const c = this.data.cameras[key];
     const d = [c.position[0] - c.target[0], c.position[1] - c.target[1], c.position[2] - c.target[2]];
@@ -595,8 +650,8 @@ class FloorForgeViewer {
 
   setFloor(f) {
     if (!this.data) return;
-    this.floor = clamp(Number(f) || 0, 0, this.data.storeys - 1);
-    if (this.mode === 'walk') this.spawn(this.floor > 0 ? 'floor' : 'arrival');
+    if (this.mode === 'walk') { this.onStatus('Use the staircase to change floor while walking.'); this.onFloorChange?.(this.floor); return; }
+    this.floor = clamp(Number(f) || 0, 0, this.data.roof_level ?? this.data.storeys - 1);
     this.applyVisibility();
   }
 
@@ -729,10 +784,11 @@ class FloorForgeViewer {
     this._tour = false;
     this.camera.fov = this.walkFov || 62;
     this.camera.updateProjectionMatrix();
+    if (this.floor === this.data.roof_level) { this.floor = 0; this.onFloorChange?.(0); }
     this.spawn(this.floor > 0 ? 'floor' : 'arrival');
     this.hud.show(true);
     this.canvas.focus?.();
-    this.onStatus('Walk · click the view to look around · W A S D to move · Shift run · Space jump · C crouch · Esc to release');
+    this.onStatus('Walk · drag the view to look · cursor stays free · ↑/↓ forward/back · ←/→ turn · A/D sideways · Shift run · Space jump · C crouch · F open/close · Esc to pause');
   }
 
   leaveWalk() {
@@ -768,8 +824,10 @@ class FloorForgeViewer {
 
   lock() {
     if (this.mode !== 'walk') return;
-    if (matchMedia?.('(pointer: coarse)').matches || !this.canvas.requestPointerLock) { this.hud.setLocked(true); return; }
-    try { const r = this.canvas.requestPointerLock(); r?.catch?.(() => this.hud.setLocked(true)); } catch (e) { this.hud.setLocked(true); }
+    // Walking keeps the system cursor free. Drag on the canvas to look around.
+    if (document.pointerLockElement === this.canvas) document.exitPointerLock?.();
+    this.canvas.focus?.();
+    this.hud.setLocked(true);
   }
 
   bindInput() {
@@ -779,7 +837,7 @@ class FloorForgeViewer {
     on(c, 'pointerdown', (e) => {
       if (this.mode !== 'walk') return;
       c.focus?.();
-      if (e.pointerType === 'mouse' && document.pointerLockElement !== c) { this.lock(); }
+      this.lock();
       drag = { x: e.clientX, y: e.clientY, id: e.pointerId, touch: e.pointerType !== 'mouse' };
       if (drag.touch) {
         const rect = c.getBoundingClientRect();
@@ -821,11 +879,12 @@ class FloorForgeViewer {
       if (this.mode !== 'walk' || editable(e.target)) return;
       const focused = document.activeElement === c || document.pointerLockElement === c;
       if (!focused) return;
-      if (e.code === 'Escape' && document.pointerLockElement !== c) { this.setMode('solid'); this.onModeChange?.('solid'); return; }
-      if (WALK_KEYS.has(e.code)) { e.preventDefault(); this.keys.add(e.code); if (e.code === 'Space' && !e.repeat) this.input.jump = true; }
+      if (e.code === 'Escape') { this.keys.clear();this.touchMove=null;drag=null;c.blur();this.hud.setLocked(false);return; }
+      if (WALK_KEYS.has(e.code)) { e.preventDefault(); this.keys.add(e.code); if (e.code === 'Space' && !e.repeat) this.input.jump = true; if (e.code === 'KeyF' && !e.repeat) this.interactOpening(); }
     });
     on(window, 'keyup', (e) => { this.keys.delete(e.code); });
     on(window, 'blur', () => this.keys.clear());
+    on(c, 'blur', () => { this.keys.clear(); this.touchMove=null; drag=null; });
     on(document, 'pointerlockchange', () => { this.hud.setLocked(document.pointerLockElement === c); });
     on(document, 'visibilitychange', () => { this.lastTick = performance.now(); });
   }
@@ -834,13 +893,11 @@ class FloorForgeViewer {
     const k = this.keys;
     const i = this.input;
     i.forward = (k.has('KeyW') || k.has('ArrowUp') ? 1 : 0) - (k.has('KeyS') || k.has('ArrowDown') ? 1 : 0);
-    i.strafe = (k.has('KeyD') || k.has('ArrowRight') ? 1 : 0) - (k.has('KeyA') || k.has('ArrowLeft') ? 1 : 0);
+    i.strafe = (k.has('KeyD') ? 1 : 0) - (k.has('KeyA') ? 1 : 0);
+    i.turn = (k.has('ArrowLeft') || k.has('KeyQ') ? 1 : 0) - (k.has('ArrowRight') || k.has('KeyE') ? 1 : 0);
     if (this.touchMove) { i.forward = this.touchMove.forward; i.strafe = this.touchMove.strafe; }
     i.run = k.has('ShiftLeft') || k.has('ShiftRight');
     i.crouch = k.has('KeyC') || k.has('ControlLeft');
-    // Q/E turn for keyboard-only visitors.
-    if (k.has('KeyQ')) this.walker.yaw += .028;
-    if (k.has('KeyE')) this.walker.yaw -= .028;
     return i;
   }
 
@@ -852,7 +909,7 @@ class FloorForgeViewer {
     const room = level < -.2 ? null : this.roomAt(p);
     let label = room ? room.name : null;
     if (!label) label = level > this.H * .5 ? 'Terrace' : this.isIndoors(p) ? 'Hall' : -p.z < this.data.bounds[1] ? 'Street' : 'Garden';
-    this.hud.setLocation(label, floor === 0 ? 'Ground floor' : floor === 1 ? 'First floor' : `Level ${floor}`);
+    this.hud.setLocation(label, floor === this.data.roof_level ? `Roof terrace · level ${floor}` : floor === 0 ? 'Ground floor' : floor === 1 ? 'First floor' : `Level ${floor}`);
   }
 
   // ---------- frame ----------
@@ -863,6 +920,7 @@ class FloorForgeViewer {
     this.time += dt;
     if (!this.data || this.paused) return;
     if (this.resized) this.resize();
+    this.openings?.update(dt);
     let render = this.dirty;
     if (this.mode === 'walk' && this.walker) {
       this.walker.update(dt, this.readInput());
@@ -872,6 +930,7 @@ class FloorForgeViewer {
       const f = this.levelOf(this.walker.position.y);
       if (f !== this.floor) { this.floor = f; this.onFloorChange?.(f); }
       this.hudUpdate();
+      this.openings?.updateTarget();
       this.adapt(dt);
       this.updateProbe();
       render = true;

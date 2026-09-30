@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "name": "Narrow ICU window and its frame/curtains removed",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

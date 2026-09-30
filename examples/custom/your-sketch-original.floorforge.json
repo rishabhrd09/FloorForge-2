@@ -1,0 +1,242 @@
+{
+  "schema": "floorforge.project/0.4",
+  "brief": {
+    "title": "Your Sketch \u2014 Terrace House",
+    "width_mm": 12192,
+    "depth_mm": 18288,
+    "road_bearing_deg": 180.0,
+    "bedrooms": 3,
+    "storeys": 1,
+    "budget_lakh": 65.0,
+    "attached_baths": "all",
+    "style": "warm",
+    "finish": "standard",
+    "open_kitchen": true,
+    "parking": false,
+    "pooja": false,
+    "eldercare": false,
+    "vastu": "off",
+    "front_mm": 3300,
+    "rear_mm": 1200,
+    "left_mm": 1100,
+    "right_mm": 1100,
+    "latitude": 22.72,
+    "longitude": 75.86,
+    "timezone_hours": 5.5,
+    "solar_date": "2026-03-21",
+    "solar_hour": 15.0,
+    "soil": "unknown",
+    "plinth_mm": 450,
+    "floor_height_mm": 3150,
+    "rate_low_inr_ft2": 2000.0,
+    "rate_high_inr_ft2": 2800.0,
+    "cost_contingency_pct": 10.0,
+    "variant": 0,
+    "roof_access": true,
+    "exterior_theme": "modern_tropical",
+    "interior_theme": "bright_natural",
+    "change_policy": "exterior_refinement",
+    "interior_layout_locked": true,
+    "seed": 0,
+    "theme_version": "1"
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "floors": [
+      {
+        "id": "floor-0",
+        "rooms": [
+          {
+            "id": "kitchen",
+            "kind": "kitchen",
+            "name": "Kitchen",
+            "polygon": [
+              [
+                1000,
+                1800
+              ],
+              [
+                3200,
+                1800
+              ],
+              [
+                3200,
+                5500
+              ],
+              [
+                1000,
+                5500
+              ]
+            ]
+          },
+          {
+            "id": "dining",
+            "kind": "dining",
+            "name": "Dining",
+            "polygon": [
+              [
+                3350,
+                2300
+              ],
+              [
+                4900,
+                2300
+              ],
+              [
+                4900,
+                5500
+              ],
+              [
+                3350,
+                5500
+              ]
+            ]
+          },
+          {
+            "id": "drawing",
+            "kind": "drawing-room",
+            "name": "Drawing room \u00b7 guests",
+            "polygon": [
+              [
+                5050,
+                2300
+              ],
+              [
+                7700,
+                2300
+              ],
+              [
+                7700,
+                5500
+              ],
+              [
+                5050,
+                5500
+              ]
+            ]
+          },
+          {
+            "id": "stair",
+            "kind": "stair",
+            "name": "Stair",
+            "polygon": [
+              [
+                1000,
+                5650
+              ],
+              [
+                1900,
+                5650
+              ],
+              [
+                1900,
+                9250
+              ],
+              [
+                1000,
+                9250
+              ]
+            ]
+          },
+          {
+            "id": "living",
+            "kind": "living",
+            "name": "Living",
+            "polygon": [
+              [
+                2050,
+                5650
+              ],
+              [
+                4950,
+                5650
+              ],
+              [
+                4950,
+                9250
+              ],
+              [
+                2050,
+                9250
+              ]
+            ]
+          },
+          {
+            "id": "veranda",
+            "kind": "veranda",
+            "name": "Veranda",
+            "polygon": [
+              [
+                5100,
+                5700
+              ],
+              [
+                7900,
+                5700
+              ],
+              [
+                7900,
+                9250
+              ],
+              [
+                5100,
+                9250
+              ]
+            ]
+          },
+          {
+            "id": "bed-rear-left",
+            "kind": "bedroom",
+            "name": "Bed Rear Left",
+            "polygon": [
+              [
+                1000,
+                9400
+              ],
+              [
+                4000,
+                9400
+              ],
+              [
+                4000,
+                12600
+              ],
+              [
+                1000,
+                12600
+              ]
+            ]
+          },
+          {
+            "id": "bed-rear-right",
+            "kind": "bedroom",
+            "name": "Bed Rear Right",
+            "polygon": [
+              [
+                4150,
+                9400
+              ],
+              [
+                7750,
+                9400
+              ],
+              [
+                7750,
+                12600
+              ],
+              [
+                4150,
+                12600
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": []
+      }
+    ],
+    "stairs": []
+  }
+}

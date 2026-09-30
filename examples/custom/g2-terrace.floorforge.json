@@ -1,0 +1,559 @@
+{
+  "schema": "floorforge.project/0.4",
+  "draftRevision": 0,
+  "brief": {
+    "title": "Courtyard Terrace House",
+    "width_mm": 12192,
+    "depth_mm": 18288,
+    "road_bearing_deg": 180.0,
+    "bedrooms": 3,
+    "storeys": 3,
+    "budget_lakh": 65.0,
+    "attached_baths": "all",
+    "style": "warm",
+    "finish": "standard",
+    "open_kitchen": true,
+    "parking": false,
+    "pooja": false,
+    "eldercare": false,
+    "vastu": "off",
+    "front_mm": 3300,
+    "rear_mm": 1200,
+    "left_mm": 1100,
+    "right_mm": 1100,
+    "latitude": 22.72,
+    "longitude": 75.86,
+    "timezone_hours": 5.5,
+    "solar_date": "2026-03-21",
+    "solar_hour": 15.0,
+    "soil": "unknown",
+    "plinth_mm": 450,
+    "floor_height_mm": 3150,
+    "rate_low_inr_ft2": 2000.0,
+    "rate_high_inr_ft2": 2800.0,
+    "cost_contingency_pct": 10.0,
+    "variant": 0,
+    "exterior_theme": "modern_tropical",
+    "interior_theme": "bright_natural",
+    "change_policy": "exterior_refinement",
+    "interior_layout_locked": true,
+    "seed": 0,
+    "theme_version": "1"
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "floors": [
+      {
+        "id": "custom-floor-0",
+        "rooms": [
+          {
+            "id": "custom-F0-stair",
+            "name": "Stair",
+            "kind": "stair",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                2350,
+                150
+              ],
+              [
+                2350,
+                4250
+              ],
+              [
+                150,
+                4250
+              ]
+            ]
+          },
+          {
+            "id": "custom-F0-hall",
+            "name": "Hall",
+            "kind": "hall",
+            "polygon": [
+              [
+                2500,
+                150
+              ],
+              [
+                3700,
+                150
+              ],
+              [
+                3700,
+                8400
+              ],
+              [
+                2500,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F0-bedroom",
+            "name": "Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                3850,
+                4400
+              ],
+              [
+                7850,
+                4400
+              ],
+              [
+                7850,
+                8400
+              ],
+              [
+                3850,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F0-kitchen",
+            "name": "Kitchen",
+            "kind": "kitchen",
+            "polygon": [
+              [
+                150,
+                4400
+              ],
+              [
+                2350,
+                4400
+              ],
+              [
+                2350,
+                8400
+              ],
+              [
+                150,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F0-living",
+            "name": "Living",
+            "kind": "living",
+            "polygon": [
+              [
+                3850,
+                150
+              ],
+              [
+                7850,
+                150
+              ],
+              [
+                7850,
+                4250
+              ],
+              [
+                3850,
+                4250
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": [
+          {
+            "id": "custom-F0-stair-door",
+            "roomId": "custom-F0-stair",
+            "side": "right",
+            "kind": "door",
+            "offset": 50,
+            "width": 900
+          },
+          {
+            "id": "custom-F0-bed-door",
+            "roomId": "custom-F0-bedroom",
+            "side": "left",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F0-bed-window",
+            "roomId": "custom-F0-bedroom",
+            "side": "right",
+            "kind": "window",
+            "offset": 900,
+            "width": 2100
+          },
+          {
+            "id": "custom-F0-service-door",
+            "roomId": "custom-F0-kitchen",
+            "side": "right",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F0-service-window",
+            "roomId": "custom-F0-kitchen",
+            "side": "left",
+            "kind": "window",
+            "offset": 900,
+            "width": 1200
+          },
+          {
+            "id": "custom-F0-entry",
+            "roomId": "custom-F0-hall",
+            "side": "front",
+            "kind": "entry",
+            "offset": 50,
+            "width": 1100
+          },
+          {
+            "id": "custom-F0-living-door",
+            "roomId": "custom-F0-living",
+            "side": "left",
+            "kind": "cased",
+            "offset": 1600,
+            "width": 1500
+          },
+          {
+            "id": "custom-F0-living-window",
+            "roomId": "custom-F0-living",
+            "side": "right",
+            "kind": "window",
+            "offset": 900,
+            "width": 2100
+          }
+        ]
+      },
+      {
+        "id": "custom-floor-1",
+        "rooms": [
+          {
+            "id": "custom-F1-stair",
+            "name": "Stair",
+            "kind": "stair",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                2350,
+                150
+              ],
+              [
+                2350,
+                4250
+              ],
+              [
+                150,
+                4250
+              ]
+            ]
+          },
+          {
+            "id": "custom-F1-hall",
+            "name": "Hall",
+            "kind": "hall",
+            "polygon": [
+              [
+                2500,
+                150
+              ],
+              [
+                3700,
+                150
+              ],
+              [
+                3700,
+                8400
+              ],
+              [
+                2500,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F1-bedroom",
+            "name": "Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                3850,
+                4400
+              ],
+              [
+                7850,
+                4400
+              ],
+              [
+                7850,
+                8400
+              ],
+              [
+                3850,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F1-drying-room",
+            "name": "Drying Room",
+            "kind": "drying-room",
+            "polygon": [
+              [
+                150,
+                4400
+              ],
+              [
+                2350,
+                4400
+              ],
+              [
+                2350,
+                8400
+              ],
+              [
+                150,
+                8400
+              ]
+            ],
+            "drain": true
+          },
+          {
+            "id": "custom-F1-terrace",
+            "name": "Terrace",
+            "kind": "terrace",
+            "polygon": [
+              [
+                3850,
+                0
+              ],
+              [
+                8000,
+                0
+              ],
+              [
+                8000,
+                4250
+              ],
+              [
+                3850,
+                4250
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": [
+          {
+            "id": "custom-F1-stair-door",
+            "roomId": "custom-F1-stair",
+            "side": "right",
+            "kind": "door",
+            "offset": 50,
+            "width": 900
+          },
+          {
+            "id": "custom-F1-bed-door",
+            "roomId": "custom-F1-bedroom",
+            "side": "left",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F1-bed-window",
+            "roomId": "custom-F1-bedroom",
+            "side": "right",
+            "kind": "window",
+            "offset": 900,
+            "width": 2100
+          },
+          {
+            "id": "custom-F1-service-door",
+            "roomId": "custom-F1-drying-room",
+            "side": "right",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F1-service-window",
+            "roomId": "custom-F1-drying-room",
+            "side": "left",
+            "kind": "window",
+            "offset": 900,
+            "width": 1200
+          },
+          {
+            "id": "custom-F1-terrace-door",
+            "roomId": "custom-F1-hall",
+            "side": "right",
+            "kind": "glazed",
+            "offset": 1500,
+            "width": 1800
+          }
+        ]
+      },
+      {
+        "id": "custom-floor-2",
+        "rooms": [
+          {
+            "id": "custom-F2-stair",
+            "name": "Stair",
+            "kind": "stair",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                2350,
+                150
+              ],
+              [
+                2350,
+                4250
+              ],
+              [
+                150,
+                4250
+              ]
+            ]
+          },
+          {
+            "id": "custom-F2-hall",
+            "name": "Hall",
+            "kind": "hall",
+            "polygon": [
+              [
+                2500,
+                150
+              ],
+              [
+                3700,
+                150
+              ],
+              [
+                3700,
+                8400
+              ],
+              [
+                2500,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F2-bedroom",
+            "name": "Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                3850,
+                4400
+              ],
+              [
+                7850,
+                4400
+              ],
+              [
+                7850,
+                8400
+              ],
+              [
+                3850,
+                8400
+              ]
+            ]
+          },
+          {
+            "id": "custom-F2-study",
+            "name": "Study",
+            "kind": "study",
+            "polygon": [
+              [
+                150,
+                4400
+              ],
+              [
+                2350,
+                4400
+              ],
+              [
+                2350,
+                8400
+              ],
+              [
+                150,
+                8400
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": [
+          {
+            "id": "custom-F2-stair-door",
+            "roomId": "custom-F2-stair",
+            "side": "right",
+            "kind": "door",
+            "offset": 50,
+            "width": 900
+          },
+          {
+            "id": "custom-F2-bed-door",
+            "roomId": "custom-F2-bedroom",
+            "side": "left",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F2-bed-window",
+            "roomId": "custom-F2-bedroom",
+            "side": "right",
+            "kind": "window",
+            "offset": 900,
+            "width": 2100
+          },
+          {
+            "id": "custom-F2-service-door",
+            "roomId": "custom-F2-study",
+            "side": "right",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "custom-F2-service-window",
+            "roomId": "custom-F2-study",
+            "side": "left",
+            "kind": "window",
+            "offset": 900,
+            "width": 1200
+          }
+        ]
+      }
+    ],
+    "stairs": [
+      {
+        "id": "main-stair",
+        "roomIds": [
+          "custom-F0-stair",
+          "custom-F1-stair",
+          "custom-F2-stair"
+        ]
+      }
+    ]
+  }
+}

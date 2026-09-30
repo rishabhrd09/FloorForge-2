@@ -12,7 +12,7 @@ Owner-supplied `indian-home-design-rules.md` gives useful targets, but `GENESIS_
 
 One orientation convention replaces the documented legacy ambiguity: outward road azimuth, road at local −Y. A requested ground-only house is never auto-promoted. Infeasible input blocks publication instead.
 
-The public rooms form a connected open zone, with a shorter services/circulation core, private rooms behind, aligned upper wet areas/stairs and a real roof-open upper terrace. The bounded strategy is a transparent baseline, not a claim of architectural optimisation over every Indian plot. Six styles change geometry as well as palette, but their variety/photoreal bar is still not accepted.
+The public rooms form a connected open zone, with a shorter services/circulation core, private rooms behind, aligned upper wet areas/stairs and a real roof-open upper terrace. The bounded strategy is a transparent baseline, not a claim of architectural optimisation over every Indian plot. The current studio exposes the designed exterior and interior themes that have direct downstream effects; the older style field remains only for saved-project/text compatibility because a named exterior theme can supersede much of it.
 
 ### Planning like a practising architect (September 2026)
 

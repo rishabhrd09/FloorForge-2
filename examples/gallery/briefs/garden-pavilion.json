@@ -1,0 +1,18 @@
+{
+  "schema": "floorforge.project/0.4",
+  "brief": {
+    "width_mm": 9144,
+    "depth_mm": 12192,
+    "storeys": 1,
+    "bedrooms": 2,
+    "front_mm": 1800,
+    "rear_mm": 900,
+    "left_mm": 750,
+    "right_mm": 750,
+    "budget_lakh": 25,
+    "title": "The Garden Pavilion",
+    "exterior_theme": "earth_terracotta",
+    "interior_theme": "earthy_modern_indian",
+    "roof_access": false
+  }
+}
