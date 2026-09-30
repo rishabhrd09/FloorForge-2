@@ -35,8 +35,9 @@ export function describeOpenings(scene, building = scene.opening_model) {
       desc.parts.push({...motion, pivot: point(motion.pivot)});
       desc.initial = 0;
     } else if (o.kind === 'glazed' && o.sliding && glass.length) {
-      for (const pane of [1,2]) desc.parts.push({ids: owned.filter(n => n.slidingPanel === pane).map(n => n.id), slide: point([-u[0]*(width-.1)/3*pane,-u[1]*(width-.1)/3*pane,0])});
-      desc.initial = 0; desc.clearWidth = (width-.1)*2/3-.04;
+      const panelCount = o.slidingPanels || 3;
+      for (let pane=1;pane<panelCount;pane++) desc.parts.push({ids: owned.filter(n => n.slidingPanel === pane).map(n => n.id), slide: point([-u[0]*(width-.1)/panelCount*pane,-u[1]*(width-.1)/panelCount*pane,0])});
+      desc.initial = 0; desc.clearWidth = (width-.1)*(panelCount-1)/panelCount-.04;
     } else if (o.kind === 'window' && glass.length) {
       if (glass.length > 1) {
         // The first sash slides onto its neighbour; other panes and the fixed frame stay put.

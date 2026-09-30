@@ -1,4 +1,4 @@
-"""Transparent garden covers and restrained surface finishes; no room geometry changes."""
+"""Garden planting, drainage and restrained surface finishes for authored outdoor geometry."""
 import numpy as np
 from shapely.geometry import Polygon, LineString, Point, box
 
@@ -165,3 +165,49 @@ def open_puja_entry(k, building):
         k.rect((sx-.038,face-.105,1.48,sx+.038,face-.035,1.79),'frame',0,'fixture',owner+'/wall-light',owner)
         k.rect((sx-.023,face-.111,1.53,sx+.023,face-.106,1.74),'lamp',0,'fixture',owner+'/wall-light-glow',owner)
         k.light((sx,face-.19,1.65),10,kind='porch')
+
+
+def daylight_veranda(k, materials, building, room, height):
+    """Low planting beneath a real slab cut, with perimeter drainage and a clear route."""
+    owner=room['id'];f=room['floor'];z=f*height
+    bed=box(*(np.array(room['gardenBed'])/1000));x0,y0,x1,y1=bed.bounds
+    # Keep roots/soil below a flush stone edge; grass and foliage are actual geometry.
+    k.poly_mesh(bed,z+.018,z+.024,'soil',f,'landscape',owner+'/garden-soil',owner)
+    lawn=bed.buffer(-.07,join_style=2)
+    k.poly_mesh(lawn,z+.025,z+.030,'lawn',f,'lawn',owner+'/garden-grass',owner)
+    k.poly_mesh(bed.difference(lawn),z+.018,z+.025,'stone',f,'landscape',owner+'/flush-edge',owner)
+    for i,(xx,yy,species,h,r) in enumerate([(x1-.28,y1-.25,'strelitzia',1.35,.18),(x1-.27,y0+.25,'monstera',.68,.16)]):
+        k.plant(xx,yy,z+.025,species,height=h,f=f,pot=(r,.30,'planter'))
+    for xx in (x0+.35,x0+1.05):
+        k.plant(xx,y1-.20,z+.028,'grass_ornamental',height=.28,f=f)
+    for i,xx in enumerate((x0+.35,x1-.38)):
+        k.rect((xx-.03,y1-.12,z+.04,xx+.03,y1-.06,z+.23),'frame',f,'fixture',owner+f'/garden-light-{i}',owner)
+        k.rect((xx-.025,y1-.125,z+.17,xx+.025,y1-.12,z+.215),'lamp',f,'fixture',owner+f'/garden-glow-{i}',owner)
+        k.light((xx,y1-.16,z+.19),6,kind='garden')
+    # Ground catch drain and terrace collector discharge down a visible boundary pipe.
+    k.rect((x1-.14,y0+.40,z+.027,x1-.04,y0+.60,z+.033),'steel',f,'drain',owner+'/bed-drain',owner)
+    for j in range(6):
+        yy=y0+.415+j*.03
+        k.rect((x1-.135,yy,z+.034,x1-.045,yy+.008,z+.037),'frame',f,'drain',owner+f'/drain-slot-{j}',owner)
+    sky=next(s for s in building['spaces'] if s.get('openToSky') and s['floor']==f+1 and Polygon(np.array(s['clear'])/1000).intersects(bed))
+    hole=Polygon(np.array(sky['clear'])/1000);a,b,c,d=hole.bounds;top=z+height
+    # A 100 mm waterproofing curb sits OUTSIDE the aperture; no opaque cap spans it.
+    ring=hole.buffer(.07,join_style=2).difference(hole)
+    k.poly_mesh(ring,top,top+.10,'stone',f+1,'drain',sky['id']+'/waterproof-curb',sky['id'])
+    channel=hole.buffer(.115,join_style=2).difference(hole.buffer(.075,join_style=2))
+    # Restrict collector to the supported deck, not the open-to-below area.
+    from .plan_geometry import geometry
+    deck=geometry(building['floor_plates'][f+1]['regions'])
+    from shapely.affinity import scale
+    channel=channel.intersection(scale(deck,xfact=.001,yfact=.001,origin=(0,0)))
+    k.poly_mesh(channel,top+.006,top+.013,'steel',f+1,'drain',sky['id']+'/collection-channel',sky['id'])
+    # Concealed-under-deck collector run, plus an accessible downpipe on the boundary.
+    k.rect((c+.08,y0+.11,top-.115,x1-.10,y0+.17,top-.055),'frame',f,'drain',owner+'/collector-run',owner)
+    k.cylinder((x1-.10,y0+.14,z+(height-.075)/2+.02),.035,height-.075,'frame',f,'drain')
+    # Warm soffit lights are on the covered route, away from the daylight aperture.
+    rx0,ry0,rx1,ry1=Polygon(np.array(room['clear'])/1000).bounds
+    for xx in np.linspace(rx0+.85,rx1-.54,3):
+        yy=ry0+.38
+        k.cylinder((xx,yy,top-.215),.035,.012,'lamp',f,'fixture')
+        k.light((xx,yy,top-.25),10,kind='porch')
+    return [{'id':owner+'/garden-grass','polygon':[list(q) for q in list(lawn.exterior.coords)[:-1]],'holes':[],'z':z+.030,'heightScale':.27}]

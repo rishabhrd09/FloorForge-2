@@ -60,8 +60,8 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall'},'walls':{'id','a','b'},
-                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','swingRoomId','openSide'}}[key]
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall'},'walls':{'id','a','b'},
+                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
@@ -93,6 +93,12 @@ def normalize(plan,storeys):
                         numeric(o['tvOffset'],-3000,3000,'tvOffset')
                     if 'reclinerPosition' in o and (o['kind']!='care-room' or not isinstance(o['reclinerPosition'],list) or len(o['reclinerPosition'])!=2 or not all(isinstance(v,(int,float)) and math.isfinite(v) for v in o['reclinerPosition'])):fail('CARE_POSITION','Care furniture needs a finite x/y position.',o['id'],f)
                     if 'serviceOnly' in o and (type(o['serviceOnly']) is not bool or o['kind'] not in ('courtyard','veranda')):fail('SERVICE_SPACE','Service-only space applies to a lightwell or its covered outdoor edge.',o['id'],f)
+                    if 'openToSky' in o and (type(o['openToSky']) is not bool or o['kind']!='void' or not o.get('openToBelow')):fail('SKY_VOID','An open sky cut requires an open-to-below void.',o['id'],f)
+                    if 'gardenBed' in o:
+                        bed=o['gardenBed']
+                        if o['kind']!='veranda' or not isinstance(bed,list) or len(bed)!=4:fail('GARDEN_BED','A veranda bed needs four rectangle bounds.',o['id'],f)
+                        for n in bed:numeric(n,0,60000,'gardenBed')
+                        if bed[2]<=bed[0] or bed[3]<=bed[1] or not Polygon(o['polygon']).covers(box(*bed)):fail('GARDEN_BED','Planting must fit inside the veranda.',o['id'],f)
                     if 'glassCover' in o and (type(o['glassCover']) is not bool or o['kind']!='courtyard'):fail('GLASS_COVER','A clear canopy applies to a courtyard.',o['id'],f)
                     if 'garden' in o and (type(o['garden']) is not bool or o['kind']!='courtyard'):fail('GARDEN','Garden planting applies to a courtyard.',o['id'],f)
                     if 'clearAccess' in o and (type(o['clearAccess']) is not bool or o['kind'] not in ('veranda','terrace','balcony')):fail('CLEAR_ACCESS','Clear access applies to outdoor decks.',o['id'],f)
@@ -115,6 +121,7 @@ def normalize(plan,storeys):
                     if o.get('kind') not in ('door','entry','window','cased','glazed'):fail('OPENING_KIND','Unsupported opening type.',o['id'],f)
                     o.setdefault('sill',850 if o['kind']=='window' else 0);o.setdefault('height',1450 if o['kind']=='window' else 2100);o.setdefault('hinge','start')
                     if 'openSide' in o and (type(o['openSide']) is not bool or o['kind']!='cased'):fail('OPEN_SIDE','An open side must be a full-height cased connection.',o['id'],f)
+                    if 'slidingPanels' in o and (not o.get('sliding') or type(o['slidingPanels']) is not int or o['slidingPanels'] not in (2,3)):fail('SLIDING_PANELS','Choose two or three sliding glass panels.',o['id'],f)
                     if 'sliding' in o and (type(o['sliding']) is not bool or o['kind']!='glazed'):fail('SLIDING_OPENING','Sliding panels require a glazed door.',o['id'],f)
                     if 'servingCounter' in o and ((type(o['servingCounter']) is not bool and o['servingCounter']!='full') or o.get('kind')!='cased' or o.get('width',0)<(900 if o['servingCounter']=='full' else 2400)):
                         fail('COUNTER_OPENING','Use a cased opening: at least 2.4 m for a half counter or 0.9 m for a full serving hatch.',o['id'],f)
@@ -256,12 +263,14 @@ def compile_plan(intent):
             spec=SPACE_REGISTRY[r['kind']];local[r['id']]=p;polys[r['id']]=p;room_map[r['id']]=(f,r)
             spaces.append({'id':r['id'],'floorId':fl['id'],'name':r['name'],'kind':r['kind'],'floor':f,
                            'polygon':r['polygon'],'clear':r['polygon'],'area_m2':round(p.area/1e6,6),
-                           'enclosed':spec['enclosed'],'roofed':spec['roofed'],'walkable':spec['floor'],
+                           'enclosed':spec['enclosed'],'roofed':spec['roofed'] and not r.get('openToSky'),'walkable':spec['floor'],
                            'wet':spec['wet'],'drain':r.get('drain',False),
                            **({'mechanicalVentilation':True} if r.get('mechanicalVentilation') else {}),
                            **({'clearAccess':True} if r.get('clearAccess') else {}),
                            **({'serviceOnly':True} if r.get('serviceOnly') else {}),
                            **({'garden':True} if r.get('garden') else {}),
+                           **({'gardenBed':r['gardenBed']} if r.get('gardenBed') else {}),
+                           **({'openToSky':True} if r.get('openToSky') else {}),
                            **({'glassCover':True} if r.get('glassCover') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
@@ -371,7 +380,7 @@ def compile_plan(intent):
                     fail('OPENING_OVERLAP','Two openings overlap.',o['id'],f,ids=[o['id'],old['id']])
             openings.append({'id':o['id'],'wall_id':host['id'],'floor':f,'kind':o['kind'],'offset':offset,
                              'width':width,'sill':o['sill'],'height':o['height'],'connects':connects,
-                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {})})
+                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {})})
     linked=set()
     for st in plan['stairs']:
         ids=st['roomIds']
@@ -426,7 +435,7 @@ def compile_plan(intent):
         outline=geometry(plates[f]['outline']);below=geometry(plates[f-1]['outline'])
         if outline.difference(below.buffer(.1)).area>1:fail('UNSUPPORTED_FLOOR','Upper-floor geometry projects beyond the supporting floor below.',plan['floors'][f]['id'],f)
         for s in spaces:
-            if s['floor']<f and s['kind'] in OPEN_SKY and s['kind']!='void':
+            if s['floor']<f and ((s['kind'] in OPEN_SKY and s['kind']!='void') or s.get('openToSky')):
                 if outline.intersection(polys[s['id']]).area>1:fail('OPEN_SKY_BLOCKED','A higher floor covers this open-air space. Move it or use a covered veranda.',s['id'],s['floor'])
     for s in spaces:
         if s['kind']=='void':
@@ -436,11 +445,14 @@ def compile_plan(intent):
         if s['kind']=='lift-shaft' and s['floor']>0:
             below=[q for q in spaces if q['floor']==s['floor']-1 and q['kind']=='lift-shaft']
             if not any(polys[s['id']].symmetric_difference(polys[q['id']]).area<1 for q in below):fail('SHAFT_ALIGNMENT','Stack the shaft over a matching shaft on the floor below.',s['id'],s['floor'])
+    for s in spaces:
+        if s.get('gardenBed') and not any(q.get('openToSky') and q['floor']==s['floor']+1 and polys[q['id']].intersection(box(*s['gardenBed'])).area>1 for q in spaces):
+            fail('GARDEN_DAYLIGHT','Place an open-sky void above the veranda garden.',s['id'],s['floor'])
     roofs=[]
     for f in range(v['storeys']):
         outline=geometry(plates[f]['outline']);covered=outline
         for s in spaces:
-            if s['floor']==f and s['kind'] in OPEN_SKY:covered=covered.difference(polys[s['id']])
+            if s['floor']==f and (s['kind'] in OPEN_SKY or s.get('openToSky')):covered=covered.difference(polys[s['id']])
         # Double-height voids receive their roof at the next occupied roof level, not above the lower room.
         if f+1<v['storeys']:
             for s in spaces:
@@ -455,6 +467,10 @@ def compile_plan(intent):
             p=polys[s['id']];other=unary_union([q for i,q in floor_polys[f].items() if i!=s['id'] and room_map[i][1]['kind'] not in NON_WALKABLE])
             wall_union=unary_union([Polygon(w['polygon']) for w in walls if w['floor']==f])
             edge=(p.boundary if s['kind'] in NON_WALKABLE else p.boundary.difference(other.buffer(.1))).difference(wall_union.buffer(.1))
+            if s.get('openToSky'):
+                # Shared terrace edges already carry a guard; retain guards on any indoor edges.
+                outdoor_edges=unary_union([q.boundary for i,q in floor_polys[f].items() if room_map[i][1]['kind'] in OUTDOOR])
+                edge=edge.difference(outdoor_edges.buffer(.1))
             for j,line in enumerate(get_parts(edge)):
                 if line.geom_type=='LineString' and line.length>1:guards.append({'id':s['id']+'-guard-'+str(j),'owner':s['id'],'floor':f,'points':[list(c) for c in line.coords],'height':1100})
     overall=unary_union([geometry(p['outline']) for p in plates])

@@ -682,9 +682,18 @@ def make_scene(building, report):
         part(.025, 0, z0 + zh / 2, .05, .10, zh, frame_mat); part(ow - .025, 0, z0 + zh / 2, .05, .10, zh, frame_mat)
         part(ow / 2, 0, z0 + zh - .025, ow - .1, .10, .05, frame_mat)
         if o['kind'] == 'glazed' and o.get('sliding'):
-            # Three-track glass door: two leaves stack over the first, leaving 2/3 clear.
-            for pane in range(3):
-                mark=len(k.nodes);pw=(ow-.1)/3;left=.05+pane*pw;depth=pane*.035
+            # Authored two- or three-track glazing; matching motion uses the same panel count.
+            panel_count=o.get('slidingPanels',3)
+            if panel_count==2:
+                # Full-width glass meets room corners: park fabric ABOVE the head,
+                # instead of pushing side stacks into adjoining rooms or across glass.
+                inside=next((space_poly[r] for r in w['rooms'] if space_kind.get(r) not in OUTDOOR),None)
+                cn=nv if inside is None or inside.covers(Point(*(p+uv*ow/2+nv*.2))) else -nv
+                for fold in range(4):
+                    q=p+uv*ow/2+cn*(.16+fold*.012)
+                    node(cube,'linen',(q[0],q[1],z0+zh+.065+fold*.035),(ow-.1,.075,.033),(0,0,ang),o['floor'],'curtain',owner=o['id'])
+            for pane in range(panel_count):
+                mark=len(k.nodes);pw=(ow-.1)/panel_count;left=.05+pane*pw;depth=pane*.035
                 part(left+pw/2,depth,z0+zh/2,pw-.035,.018,zh-.1,'glass','glass')
                 for xx in (left,left+pw):part(xx,depth,z0+zh/2,.035,.045,zh-.06)
                 for zz in (z0+.025,z0+zh-.025):part(left+pw/2,depth,zz,pw,.045,.05)
@@ -2063,13 +2072,18 @@ def make_scene(building, report):
                     glass = edge.buffer(.012, cap_style=2); poly_mesh(glass, z + .12, z + 1.05, 'glass', f, 'railing')
         if terr.get('finishStyle')=='warm-stone':
             # Finish-only layers: the authored floor, doors and clear circulation stay fixed.
-            materials['porch-limestone']={'color':'#d7cebd','alt':'#b8ac96','roughness':.78,'texture':'paver','kind':'paver','params':[4,2,.003,.08],'tile_m':2.4}
-            poly_mesh(p,z+.011,z+.017,'porch-limestone',f,'finish',terr['id']+'/stone-finish',terr['id'])
-            inset=p.buffer(-.18,join_style=2);x0,y0,x1,y1=p.bounds
+            materials['porch-limestone']={**materials['floor'],'roughness':.72,'clearcoat':0}
+            bed=box(*(np.array(terr['gardenBed'])/1000)) if terr.get('gardenBed') else Polygon()
+            poly_mesh(p.difference(bed),z+.011,z+.017,'porch-limestone',f,'finish',terr['id']+'/stone-finish',terr['id'])
+            inset=p.buffer(-.18,join_style=2).intersection(metres(geometry(b['roofs'][f]['ceiling'])));x0,y0,x1,y1=p.bounds
             for j,xx in enumerate(np.arange(x0+.18,x1-.18,.18)):
                 strip=inset.intersection(box(xx,y0,xx+.135,y1))
                 if not strip.is_empty:
                     poly_mesh(strip,z+H-.205,z+H-.17,'oak',f,'ceiling',terr['id']+f'/ceiling-slat-{j}',terr['id'])
+            if terr.get('gardenBed'):
+                from .courtyard_finishes import daylight_veranda
+                room_lawns.extend(daylight_veranda(k,materials,b,terr,H))
+                colliders.append({'id':terr['id']+'/garden-bed','floor':f,'polygon':list(bed.exterior.coords),'kind':'landscape'})
             # Wall lamps sit above door heads, never in the clear glass openings.
             for wall in [w for w in b['walls'] if terr['id'] in w['rooms']]:
                 a=np.array(wall['a'])/1000;c=np.array(wall['b'])/1000;length=np.linalg.norm(c-a)

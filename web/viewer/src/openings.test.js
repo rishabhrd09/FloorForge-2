@@ -147,3 +147,16 @@ test('closed authored doors use explicit swing data and keep collision aligned',
   item.goal=1;finish(c);assert.equal(item.value,1);assert.equal(w.sees(from,to),true);
   item.goal=0;finish(c);assert.equal(w.sees(from,to),false);assert.equal(JSON.stringify(data),before);
 });
+
+test('two-panel living slider opens half the aperture and keeps its fixed panel in place', () => {
+  const {viewer,walker:w,data}=fixture('glazed');const template=data.nodes[0];
+  data.nodes=[0,1].map(pane=>({...template,id:`pane-${pane}`,owner:'opening',role:'glass',slidingPanel:pane,position:[-.625+pane*1.25,pane*.035,1.2],scale:[1.215,.018,2.3]}));
+  viewer.data=data;
+  const building={walls:[{id:'wall',a:[-1300,0],b:[1300,0]}],openings:[{id:'opening',wall_id:'wall',kind:'glazed',sliding:true,slidingPanels:2,floor:0,offset:0,width:2600,height:2400,sill:0}]};
+  const c=new OpeningController(viewer,describeOpenings(data,building)),item=c.items[0];
+  assert.equal(item.parts.length,1);assert.equal(item.clearWidth,1.21);
+  assert.deepEqual(item.parts[0].ids,['pane-1']);
+  const from=new THREE.Vector3(.65,1,1),to=new THREE.Vector3(.65,1,-1);
+  assert.equal(w.sees(from,to),false);item.goal=1;finish(c);assert.equal(w.sees(from,to),true);
+  item.goal=0;finish(c);assert.equal(w.sees(from,to),false);
+});

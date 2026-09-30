@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "name": "All doors and gates begin closed",
+      "pass": true
+    },
+    {
+      "name": "Two-panel living glass has one moving leaf and 1.21m clear opening",
+      "pass": true
+    },
+    {
+      "name": "Closed living glass blocks walking",
+      "pass": true
+    },
+    {
+      "name": "Living glass opens",
+      "pass": true
+    },
+    {
+      "name": "Open living glass allows walking",
+      "pass": true
+    },
+    {
+      "name": "Veranda route reaches outside parking approach",
+      "pass": true
+    },
+    {
+      "name": "Drawing room door opens",
+      "pass": true
+    },
+    {
+      "name": "Drawing room remains accessible",
+      "pass": true
+    },
+    {
+      "name": "ICU veranda slider opens",
+      "pass": true
+    },
+    {
+      "name": "ICU remains accessible",
+      "pass": true
+    },
+    {
+      "name": "Upper terrace bypass remains walkable",
+      "pass": true
+    },
+    {
+      "name": "Guard prevents entering daylight opening",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}
