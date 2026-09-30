@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "name": "Kitchen entrance stays clear",
+      "pass": true
+    },
+    {
+      "name": "Sink approach stays clear",
+      "pass": true
+    },
+    {
+      "name": "Return hob approach stays clear",
+      "pass": true
+    },
+    {
+      "name": "Fridge approach stays clear",
+      "pass": true
+    },
+    {
+      "name": "Pantry door opens fully",
+      "pass": true
+    },
+    {
+      "name": "Wash door opens fully",
+      "pass": true
+    },
+    {
+      "name": "Pantry approach stays clear",
+      "pass": true
+    },
+    {
+      "name": "Pantry threshold remains walkable",
+      "pass": true
+    },
+    {
+      "name": "Return from pantry stays clear",
+      "pass": true
+    },
+    {
+      "name": "Central service aisle stays clear",
+      "pass": true
+    },
+    {
+      "name": "Passage beside open wash door stays clear",
+      "pass": true
+    },
+    {
+      "name": "Wash approach stays clear",
+      "pass": true
+    },
+    {
+      "name": "Wash threshold remains walkable",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

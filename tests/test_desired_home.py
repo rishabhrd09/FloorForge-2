@@ -9,6 +9,12 @@ from floorforge.exterior import apply_exterior_preferences
 
 ROOT=Path(__file__).resolve().parents[1]
 
+
+def kitchen_casework_node(n):
+    if n.get('owner','').startswith('g-kitchen/modular-kitchen'):return True
+    x,y,z=n['position']
+    return n.get('owner','').startswith('object-') and n['floor']==0 and n['role'] in ('furniture','detail','wall-tile','fixture') and 3.174<x<7.374 and .15<=y<=3.45 and 0<=z<2.4
+
 def test_requested_direction_dimensions_and_connections():
     p=project();b=generate_layout(fuse(p));assert not validate(b)['errors']
     v=b['brief'];assert (v['width_mm'],v['depth_mm'],v['road_bearing_deg'])==(18288,16764,90)
@@ -55,7 +61,7 @@ def test_saved_model_contains_care_furniture_and_matching_editable_rooms():
 def test_sample_furnishes_the_requested_dining_and_office():
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     assert Polygon(next(f['footprint'] for f in scene['furniture'] if f['kind']=='dining-set' and f['room_id']=='g-living')).area>3.0
-    assert any(f['kind']=='kitchen-prep-run' for f in scene['furniture'])
+    assert any(f['kind']=='kitchen-fridge' for f in scene['furniture'])
     assert any(f['kind']=='desk' and f['room_id']=='u-office' for f in scene['furniture'])
     for rid in ('g-bedroom','g-caregiver','u-bed-south','u-bed-north'):
         assert any(f['kind']=='bed' and f['room_id']==rid for f in scene['furniture'])
@@ -222,10 +228,10 @@ def test_aligned_serving_hatch_is_shared_by_editor_scene_and_exports():
     opening=next(o for o in b['openings'] if o['id']=='g-dining-pier-open')
     pier=next(w for w in b['walls'] if w['id']==opening['wall_id'])
     assert Polygon(pier['polygon']).difference(opening_polygon(pier,opening)).is_empty
-    prep=Polygon(next(f['footprint'] for f in s['furniture'] if f['kind']=='kitchen-prep-run'))
-    assert abs(prep.bounds[3]-3.445)<1e-6 and prep.bounds[1]>2.7
+    prep=Polygon(next(f['footprint'] for f in s['furniture'] if f['kind']=='kitchen-fridge'))
+    assert abs(prep.bounds[3]-3.37)<1e-6 and prep.bounds[1]>2.6
     upper=Polygon(next(f['footprint'] for f in s['furniture'] if f['kind']=='kitchen-upper-storage'))
-    assert upper.bounds[2]<5.949 and prep.bounds[2]<5.949
+    assert upper.bounds[0]>6.9 and upper.bounds[3]<1.95 and prep.bounds[2]<5.949
     assert any(n.get('role')=='art' and 4.8<n['position'][0]<5.6 and 3.6<n['position'][1]<3.7 for n in s['nodes'])
     dining=Polygon(next(f['footprint'] for f in s['furniture'] if f['kind']=='dining-set'))
     serving=Polygon(next(f['footprint'] for f in s['furniture'] if f['kind']=='serving-counter'))
@@ -610,12 +616,13 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     p=project()
     assert p['brief']==old['brief']
     approved={'g-care-veranda','g-care-lawn-window'}
-    def ground(fl):return {**fl,'openings':[o for o in fl['openings'] if o['id'] not in approved]}
+    def strip_layout(o):return {k:v for k,v in o.items() if k!='kitchenLayout'}
+    def ground(fl):return {**fl,'rooms':[strip_layout(r) for r in fl['rooms']],'openings':[o for o in fl['openings'] if o['id'] not in approved]}
     assert ground(p['customPlan']['floors'][0])==ground(old['customPlan']['floors'][0])
     assert p['customPlan']['stairs']==old['customPlan']['stairs']
     before=generate_layout(fuse(old));after=generate_layout(fuse(p))
     for key in ('spaces','walls','openings','stairs','guards','floor_plates'):
-        assert [x for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[x for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
+        assert [strip_layout(x) for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[strip_layout(x) for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
     assert geometry(before['roofs'][0]['ceiling']).equals(geometry(after['roofs'][0]['ceiling']))
     baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
@@ -628,14 +635,14 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     nodes=[]
     for n in scene['nodes']:
         if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
-        if n.get('owner') in affected or n['role']=='skirting':continue
+        if n.get('owner') in affected or n['role']=='skirting' or kitchen_casework_node(n):continue
         nodes.append({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
-    # The later, approved entrance cleanup changes the front porch/site only.
-    entrance=json.loads((ROOT/'tests/fixtures/desired_home_entrance_appearance.json').read_text())
-    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==entrance['approved_ground_nodes']
-    for key in ('furniture','vegetation'):
-        assert digest([x for x in scene[key] if x.get('floor') in (0,-1)])==baseline[key]
-    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected])==corner['colliders']
+    # Baseline is from before the approved kitchen swap; compare all other contents.
+    kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
+    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
+    assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
+    assert digest([x for x in scene['furniture'] if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
+    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1) and x['id'].split('/')[0] not in affected and not x['id'].startswith('g-kitchen/kitchen-')])==kitchen['colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
@@ -708,10 +715,10 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
         x,y,z=n['position']
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
-    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n)]
+    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n) and not kitchen_casework_node(n)]
     digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
-    before=json.loads((ROOT/'tests/fixtures/desired_home_entrance_appearance.json').read_text())
-    assert digest==before['unaffected_nodes']
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
+    assert digest==before['entrance_unaffected_nodes']
 
 
 def test_front_gates_clear_porch_through_their_entire_motion():
@@ -744,3 +751,30 @@ def test_front_gates_clear_porch_through_their_entire_motion():
     assert vehicle['start'][0]-max(p.bounds[2] for p,_,_ in porch)>.30
     ped=next(g for g in s['gate_model'] if g['id']=='exterior-pedestrian-gate')
     assert ped['parts'][0]['slide'][0]<-ped['width']
+
+
+def test_modular_kitchen_has_connected_l_and_opposite_uncovered_fridge():
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    items={f['kind']:Polygon(f['footprint']) for f in scene['furniture'] if f['room_id']=='g-kitchen'}
+    worktop,fridge,upper=(items[k] for k in ('kitchen-run','kitchen-fridge','kitchen-upper-storage'))
+    assert 'kitchen-prep-run' not in items
+    assert worktop.is_valid and worktop.geom_type=='Polygon'
+    assert worktop.covers(box(6.8,.3,7.2,1.7))  # return replaces old fridge
+    assert worktop.covers(box(4.3,.3,6.8,.7))  # continuous window run
+    assert not worktop.covers(box(4.3,1,5.3,1.5))  # open central aisle
+    assert fridge.bounds[1]>2.6 and fridge.bounds[3]>3.3
+    assert upper.bounds[0]>6.9 and upper.bounds[3]<1.8
+    assert fridge.distance(upper)>1.7
+    assert fridge.distance(worktop)>1.5
+    # The hall entry and service-door approaches remain outside the cabinetry.
+    for opening in (box(7.1,1.95,7.374,3.3),box(3.174,.45,4.08,1.35),box(3.174,2.4,4.08,3.3)):
+        assert all(not opening.intersects(p) for p in (worktop,fridge,upper))
+
+
+def test_kitchen_change_preserves_every_other_rendered_area():
+    import hashlib
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not kitchen_casework_node(n)]
+    nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
+    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==before['unaffected_nodes']

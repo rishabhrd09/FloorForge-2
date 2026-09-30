@@ -1788,6 +1788,10 @@ def make_scene(building, report):
         """The longest solid wall takes the counter (a window above the worktop is welcome); sink under the window,
         hob clear of it, tall fridge at the end, wall cabinets and a lit backsplash where the wall is blank, and an
         island in a large kitchen."""
+        if ctx['room'].get('kitchenLayout')=='l-shaped-return':
+            from .modular_kitchen import l_shaped_kitchen
+            l_shaped_kitchen(k,ctx,H,M)
+            return
         room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
         x0, y0, x1, y1 = clear.bounds
         found = None
