@@ -61,7 +61,7 @@ def normalize(plan,storeys):
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
                 allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall'},'walls':{'id','a','b'},
-                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','swingRoomId','openSide'}}[key]
+                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','timberScreen','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
@@ -121,6 +121,7 @@ def normalize(plan,storeys):
                     if o.get('kind') not in ('door','entry','window','cased','glazed'):fail('OPENING_KIND','Unsupported opening type.',o['id'],f)
                     o.setdefault('sill',850 if o['kind']=='window' else 0);o.setdefault('height',1450 if o['kind']=='window' else 2100);o.setdefault('hinge','start')
                     if 'openSide' in o and (type(o['openSide']) is not bool or o['kind']!='cased'):fail('OPEN_SIDE','An open side must be a full-height cased connection.',o['id'],f)
+                    if 'timberScreen' in o and (type(o['timberScreen']) is not bool or o['kind']!='door' or o.get('sliding') or o['width']<1800):fail('TIMBER_SCREEN','Paired timber and screen leaves require a hinged door at least 1.8 m wide.',o['id'],f)
                     if 'slidingPanels' in o and (not o.get('sliding') or type(o['slidingPanels']) is not int or o['slidingPanels'] not in (2,3)):fail('SLIDING_PANELS','Choose two or three sliding glass panels.',o['id'],f)
                     if 'sliding' in o and (type(o['sliding']) is not bool or o['kind']!='glazed'):fail('SLIDING_OPENING','Sliding panels require a glazed door.',o['id'],f)
                     if 'servingCounter' in o and ((type(o['servingCounter']) is not bool and o['servingCounter']!='full') or o.get('kind')!='cased' or o.get('width',0)<(900 if o['servingCounter']=='full' else 2400)):
@@ -380,7 +381,7 @@ def compile_plan(intent):
                     fail('OPENING_OVERLAP','Two openings overlap.',o['id'],f,ids=[o['id'],old['id']])
             openings.append({'id':o['id'],'wall_id':host['id'],'floor':f,'kind':o['kind'],'offset':offset,
                              'width':width,'sill':o['sill'],'height':o['height'],'connects':connects,
-                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {})})
+                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {})})
     linked=set()
     for st in plan['stairs']:
         ids=st['roomIds']

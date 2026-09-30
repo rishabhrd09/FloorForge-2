@@ -32,6 +32,12 @@ export function describeOpenings(scene, building = scene.opening_model) {
     const glass = owned.filter(node => node.role === 'glass');
     if (scene.door_motion?.[o.id]) {
       const motion = scene.door_motion[o.id];
+      if (motion.layers) {
+        for (const leaf of motion.layers) result.push({...desc, id: leaf.id,
+          label: `${leaf.label} · ${label}`, initial: 0, clearWidth: motion.clearWidth,
+          handle: point(leaf.handle), parts: [{ids: leaf.ids, pivot: point(leaf.pivot), angle: leaf.angle}]});
+        continue;
+      }
       desc.parts.push({...motion, pivot: point(motion.pivot)});
       desc.initial = 0;
     } else if (o.kind === 'glazed' && o.sliding && glass.length) {
@@ -140,6 +146,9 @@ export class OpeningController {
       const delta = eye.clone().sub(item.start), along = Math.max(.08, Math.min(item.width - .08, delta.dot(item.axis)));
       const target = item.start.clone().addScaledVector(item.axis, along);
       target.y = Math.max(item.start.y + .12, Math.min(item.start.y + item.height - .12, eye.y));
+      // Layered doors are selected at their actual handles, including after swinging
+      // aside. This lets the visitor reach the screen and close either timber leaf.
+      if (item.handle) target.copy(item.handle).applyMatrix4(item.parts[0].group.matrixWorld);
       const vector = target.clone().sub(eye), distance = vector.length();
       if (distance > 2.1 || distance < .05 || vector.normalize().dot(direction) < .6) continue;
       const ray = new THREE.Ray(eye, vector);

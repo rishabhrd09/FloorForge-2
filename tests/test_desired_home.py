@@ -18,7 +18,7 @@ def test_requested_direction_dimensions_and_connections():
     assert len([s for s in b['spaces'] if s['kind']=='bedroom' and s['floor']==0])==2
     assert len([s for s in b['spaces'] if s['kind']=='bedroom' and s['floor']==1])==2
     assert by['g-care']['area_m2']>=26
-    for a,c,kind in [('g-care','g-veranda','glazed'),('g-care','g-living','glazed'),('g-kitchen','g-dining','cased'),('g-dining','g-drawing','door'),('g-dining','g-living','cased'),('g-living','g-veranda','glazed'),('g-drawing','g-veranda','door')]:
+    for a,c,kind in [('g-care','g-veranda','glazed'),('g-care','g-living','glazed'),('g-kitchen','g-dining','cased'),('g-dining','g-drawing','door'),('g-dining','g-living','cased'),('g-living','g-veranda','door'),('g-drawing','g-veranda','door')]:
         assert any(set(o['connects'])=={a,c} and o['kind']==kind and o['sill']==0 for o in b['openings'])
     assert by['g-kitchen']['polygon'][0]==[3174,150]
     assert by['g-bedroom']['polygon'][0]==[150,7650]
@@ -329,7 +329,7 @@ def test_partition_ensuite_and_reclaimed_rear_hall():
     assert Polygon(rooms['g-care-court']['clear']).covers(box(5750,8550,7600,9450))
     assert care.intersection(living).area==0
     op=next(o for o in b['openings'] if o['id']=='g-living-veranda')
-    assert op['sliding'] and op['width']==2600 and op['sill']==0
+    assert op['timberScreen'] and op['width']==2600 and op['sill']==0
     assert rooms['g-kitchen']['area_m2']>13.8
 
 
@@ -537,7 +537,7 @@ def test_closed_canonical_doors_span_their_openings_and_preserve_inward_swing():
     walls={w['id']:w for w in b['walls']};nodes={n['id']:n for n in s['nodes']}
     assert b['planning']['doorsClosed']
     for o in b['openings']:
-        if o['kind'] not in ('entry','door','glazed') or o.get('sliding'):continue
+        if o['kind'] not in ('entry','door','glazed') or o.get('sliding') or o.get('timberScreen'):continue
         m=s['door_motion'][o['id']];assert m['ids']
         wall=walls[o['wall_id']];axis=LineString([[x/1000 for x in wall[k]] for k in ('a','b')])
         moving=[nodes[i] for i in m['ids']]
@@ -579,6 +579,12 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     floor=s['materials']['floor'];porch=s['materials']['porch-limestone']
     assert all(floor[k]==porch[k] for k in ('color','texture','params'))
     op=next(o for o in b['openings'] if o['id']=='g-living-veranda')
-    assert op['width']==2600 and op['slidingPanels']==2
+    assert op['width']==2600 and op['timberScreen']
     panes=[n for n in s['nodes'] if n.get('owner')==op['id'] and n.get('role')=='glass']
-    assert len(panes)==2
+    assert not panes
+    motion=s['door_motion'][op['id']]
+    assert motion['clearWidth']==2.46
+    assert len(motion['layers'])==4
+    assert len({i for leaf in motion['layers'] for i in leaf['ids']})==sum(len(leaf['ids']) for leaf in motion['layers'])
+    for leaf in motion['layers']:
+        assert leaf['ids'] and abs(abs(leaf['angle'])-__import__('math').pi/2)<1e-7

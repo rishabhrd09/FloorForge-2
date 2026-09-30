@@ -267,7 +267,14 @@ def plan_elements(b, scene, floor=0):
             c = m + out * (t + 380)
             elems.append(T(c[0], c[1] - 60, tags[o['id']], 150, 'A-TAGS'))
             continue
-        if o['kind'] == 'glazed':
+        if o.get('timberScreen'):
+            radius=(o['width']-140)/2-4
+            for normal in (n,-n):
+                for h,along in ((p+u*70+normal*105,u),(q-u*70+normal*105,-u)):
+                    elems.append(L(h,h+normal*radius,INK,.2,'A-DOOR'))
+                    arc=[h+radius*(along*math.cos(th)+normal*math.sin(th)) for th in np.linspace(0,math.pi/2,25)]
+                    for v0,v1 in zip(arc,arc[1:]):elems.append(L(v0,v1,INK,.1,'A-DOOR',True))
+        elif o['kind'] == 'glazed':
             half = o['width'] / 2 + 40
             for s0, s1, off in ((0, half, 22), (o['width'] - half, o['width'], -22)):
                 a0 = p + u * s0; a1 = p + u * s1

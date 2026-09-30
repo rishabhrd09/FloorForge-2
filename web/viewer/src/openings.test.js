@@ -160,3 +160,30 @@ test('two-panel living slider opens half the aperture and keeps its fixed panel 
   assert.equal(w.sees(from,to),false);item.goal=1;finish(c);assert.equal(w.sees(from,to),true);
   item.goal=0;finish(c);assert.equal(w.sees(from,to),false);
 });
+
+test('paired timber and mesh leaves move independently and remain selectable after opening', () => {
+  const {viewer,walker:w,data}=fixture();const template=data.nodes[0];
+  const layers=[];data.nodes=[];
+  for(const [layer,depth,sign] of [['timber',.1,1],['mesh',-.1,-1]]) for(const side of [-1,1]) {
+    const id=`${layer}-${side}`;
+    data.nodes.push({...template,id,position:[side*.62,depth,1.2],scale:[1.22,.03,2.3]});
+    layers.push({id,label:id,ids:[id],pivot:[side*1.23,depth,0],angle:-side*sign*Math.PI/2,handle:[side*.13,depth,1.15]});
+  }
+  data.door_motion={opening:{layers,clearWidth:2.46}};
+  const building={walls:[{id:'wall',a:[-1300,0],b:[1300,0]}],openings:[{id:'opening',wall_id:'wall',kind:'door',floor:0,offset:0,width:2600,height:2400,sill:0}]};
+  const c=new OpeningController(viewer,describeOpenings(data,building));
+  assert.equal(c.items.length,4);assert.ok(c.items.every(i=>i.value===0));
+  w.teleport(new THREE.Vector3(0,0,3));
+  c.items[0].goal=1;finish(c);
+  assert.equal(c.items[0].value,1);assert.ok(c.items.slice(1).every(i=>i.value===0));
+  const item=c.items[0],handle=item.handle.clone().applyMatrix4(item.parts[0].group.matrixWorld);
+  const eye=handle.clone();eye.x=0;eye.y=1.63;w.position.set(eye.x,0,eye.z);
+  assert.equal(c.findTarget(eye,handle.clone().sub(eye).normalize()),item);
+  w.teleport(new THREE.Vector3(0,0,3));
+  for(const i of c.items)i.goal=1;finish(c);
+  const from=new THREE.Vector3(0,1,1),to=new THREE.Vector3(0,1,-1);
+  assert.equal(w.sees(from,to),true);
+  c.items[2].goal=0;finish(c);
+  assert.equal(w.sees(new THREE.Vector3(-.6,1,1),new THREE.Vector3(-.6,1,-1)),false);
+  assert.equal(c.items[0].value,1);
+});

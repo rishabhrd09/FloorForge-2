@@ -757,12 +757,12 @@
             "side": "left",
             "offset": 0,
             "width": 2600,
-            "kind": "glazed",
+            "kind": "door",
             "height": 2400,
             "sill": 0,
             "hinge": "start",
-            "sliding": true,
-            "slidingPanels": 2
+            "timberScreen": true,
+            "swingRoomId": "g-veranda"
           },
           {
             "id": "g-kitchen-east",
@@ -2317,12 +2317,12 @@
               "side": "left",
               "offset": 0,
               "width": 2600,
-              "kind": "glazed",
+              "kind": "door",
               "height": 2400,
               "sill": 0,
               "hinge": "start",
-              "sliding": true,
-              "slidingPanels": 2
+              "timberScreen": true,
+              "swingRoomId": "g-veranda"
             },
             {
               "id": "g-kitchen-east",

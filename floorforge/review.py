@@ -33,6 +33,10 @@ def swing_sector(o,w,rooms):
     a=np.array(w['a'],float);c=np.array(w['b'],float);u=(c-a)/np.linalg.norm(c-a);n=np.array([-u[1],u[0]])
     p=a+u*o['offset'];q=p+u*o['width'];t=w['thickness']/2
     if not rooms[o['swing']].buffer(5).contains(Point(*((p+q)/2+n*(t+300)))):n=-n
+    if o.get('timberScreen'):
+        radius=(o['width']-140)/2-4
+        return unary_union([Polygon([h]+[h+radius*(along*math.cos(th)+normal*math.sin(th)) for th in np.linspace(0,math.pi/2,25)])
+                            for normal in (n,-n) for h,along in ((p+u*70+normal*105,u),(q-u*70+normal*105,-u))])
     hinge,free=(p,q) if o.get('hinge','start')=='start' else (q,p)
     h=hinge+n*t;along=(free-hinge)/o['width']
     return Polygon([h]+[h+o['width']*(along*math.cos(th)+n*math.sin(th)) for th in np.linspace(0,math.pi/2,13)])
@@ -56,8 +60,9 @@ def professional_screen(b,warnings):
         seen|=group
         area=sum(clear[i].area for i in group)/1e6;share=glazing(group)/max(area,.01)
         if share<WINDOW_SHARE:
-            warnings.append({'code':'LOW_DAYLIGHT','id':s['id'],'glazing_to_floor_pct':round(share*100,1),'required_pct':WINDOW_SHARE*100,
-                             'message':f'{s["name"]}: openings are {share*100:.2f}% of the floor area; NBC-style screening asks for at least 10%.'})
+            screened=any(o.get('timberScreen') and set(o['connects'])&group for o in b['openings'])
+            warnings.append({'code':'TIMBER_SCREEN_DAYLIGHT' if screened else 'LOW_DAYLIGHT','id':s['id'],'glazing_to_floor_pct':round(share*100,1),'required_pct':WINDOW_SHARE*100,
+                             'message':f'{s["name"]}: the timber door blocks daylight when closed; mesh transmits light only with timber leaves open. Permanent glazing screening is not satisfied.' if screened else f'{s["name"]}: openings are {share*100:.2f}% of the floor area; NBC-style screening asks for at least 10%.'})
     for s in spaces:
         if s['kind'] in ('bathroom','powder-room'):
             if s.get('mechanicalVentilation'):

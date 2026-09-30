@@ -678,6 +678,60 @@ def make_scene(building, report):
                         kk = j * 2; fs.extend([[kk, kk + 1, kk + 3], [kk, kk + 3, kk + 2]])
                     node(asset(trimesh.Trimesh(vertices=verts, faces=fs, process=False), smooth=True), 'linen', floor=o['floor'], role='curtain', owner=o['id'])
             continue
+        if o.get('timberScreen'):
+            # Two full timber leaves outside, two independent insect-screen leaves inside.
+            # Opposing swings keep the layers separate and clear the full central passage.
+            outside=space_poly[o['swing']]
+            materials['insect-mesh']={'color':'#3b403b','roughness':.9,'alpha':.09,'kind':'insect-mesh','spacing':.008,'wire':.00035}
+            if not outside.covers(Point(*(p+uv*ow/2+nv*.3))):nv=-nv
+            for xx in (.035,ow-.035):part(xx,0,z0+zh/2,.07,.30,zh,'walnut')
+            part(ow/2,0,z0+zh-.035,ow,.30,.07,'walnut')
+            layers=[];lw=(ow-.14)/2-.004;lh=zh-.09
+            for layer,depth,direction in [('timber',.105,1),('mesh',-.105,-1)]:
+                for side in range(2):
+                    mark=len(k.nodes);sgn=1 if side==0 else -1
+                    hinge_x=.07 if side==0 else ow-.07
+                    cx=hinge_x+sgn*lw/2
+                    if layer=='timber':
+                        part(cx,depth,z0+.025+lh/2,lw,.055,lh,'walnut','door')
+                        # Inset warm oak field and thin dark reveals on both faces.
+                        for face in (-1,1):
+                            part(cx,depth+face*.029,z0+.025+lh/2,lw-.13,.006,lh-.14,'oak','door')
+                            for groove in (-.30,0,.30):
+                                part(cx+groove,depth+face*.033,z0+.025+lh/2,.004,.003,lh-.16,'walnut','door')
+                    else:
+                        for xx in (hinge_x+sgn*.021,hinge_x+sgn*(lw-.021)):
+                            part(xx,depth,z0+.025+lh/2,.042,.032,lh,'frame','door')
+                        for zz in (z0+.046,z0+.025+lh-.021):
+                            part(cx,depth,zz,lw,.032,.042,'frame','door')
+                        part(cx,depth,z0+.10,lw,.033,.12,'frame','door')
+                        # Real wire mesh with open holes; shared mesh asset, no glass wash.
+                        wires=[];mw=lw-.084;mh=lh-.16
+                        for xx in np.arange(-mw/2,mw/2+.001,.008):
+                            wires.append(trimesh.creation.box(extents=(.00035,.00035,mh)).apply_translation((xx,0,0)))
+                        for zz in np.arange(-mh/2,mh/2+.001,.008):
+                            wires.append(trimesh.creation.box(extents=(mw,.00035,.00035)).apply_translation((0,.0002,zz)))
+                        q=p+uv*cx+nv*depth
+                        node(asset(trimesh.util.concatenate(wires)),'frame',(q[0],q[1],z0+.13+mh/2),rot=(0,0,ang),floor=o['floor'],role='screen-wire',owner=o['id'])
+                        # Filtered mesh surface in the live view; fine wire geometry remains
+                        # in exports. The thin closed surface supplies stable screen collision.
+                        part(cx,depth,z0+.13+mh/2,mw,.001,mh,'insect-mesh','door')
+                    hx=hinge_x+sgn*(lw-.12)
+                    for face in (-1,1):
+                        d=depth+face*(.075 if layer=='timber' else .05)
+                        part(hx,d,z0+1.15,.025,.026,.72 if layer=='timber' else .28,'frame','door')
+                        for zz in ((.81,1.49) if layer=='timber' else (1.03,1.27)):
+                            part(hx,depth+face*.047,z0+zz,.025,.075,.024,'frame','door')
+                    pivot=p+uv*hinge_x+nv*depth
+                    angle=sgn*direction*math.atan2(uv[0]*nv[1]-uv[1]*nv[0],float(np.dot(uv,nv)))
+                    handle=p+uv*hx+nv*depth
+                    layers.append({'id':f"{o['id']}/{layer}-{'left' if side==0 else 'right'}",
+                                   'label':f"{'Timber door' if layer=='timber' else 'Mesh screen'} · {'left' if side==0 else 'right'} leaf",
+                                   'ids':[n['id'] for n in k.nodes[mark:]],
+                                   'pivot':[float(pivot[0]),float(pivot[1]),base], 'angle':angle,
+                                   'handle':[float(handle[0]),float(handle[1]),z0+1.15]})
+            door_motion[o['id']]={'layers':layers,'clearWidth':ow-.14}
+            continue
         frame_mat = 'frame' if (o['kind'] in ('entry', 'glazed') or not upgraded_interior) else M['doorframe']
         part(.025, 0, z0 + zh / 2, .05, .10, zh, frame_mat); part(ow - .025, 0, z0 + zh / 2, .05, .10, zh, frame_mat)
         part(ow / 2, 0, z0 + zh - .025, ow - .1, .10, .05, frame_mat)
