@@ -10,6 +10,14 @@ from floorforge.exterior import apply_exterior_preferences
 ROOT=Path(__file__).resolve().parents[1]
 
 
+
+def historic_finish(n):
+    # The later approved veranda change affects only this surface material.
+    if n['id']=='g-veranda/stone-finish':
+        assert n['material']=='veranda-jodhpuri'
+        return {**n,'material':'porch-limestone'}
+    return n
+
 def kitchen_casework_node(n):
     if n.get('owner','').startswith('g-kitchen/modular-kitchen'):return True
     x,y,z=n['position']
@@ -636,7 +644,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     for n in scene['nodes']:
         if n.get('floor') not in (0,-1) or n['role'] in ('plinth','roof','parapet'):continue
         if n.get('owner') in affected or n['role']=='skirting' or kitchen_casework_node(n):continue
-        nodes.append({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
+        nodes.append({k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
     # Baseline is from before the approved kitchen swap; compare all other contents.
     kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
@@ -715,7 +723,7 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
         x,y,z=n['position']
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
-    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n) and not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not allowed(n) and not kitchen_casework_node(n)]
     digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     assert digest==before['entrance_unaffected_nodes']
@@ -775,6 +783,6 @@ def test_kitchen_change_preserves_every_other_rendered_area():
     import hashlib
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
-    nodes=[{k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not kitchen_casework_node(n)]
+    nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in scene['nodes'] if not kitchen_casework_node(n)]
     nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
     assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==before['unaffected_nodes']

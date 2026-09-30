@@ -2184,8 +2184,13 @@ def make_scene(building, report):
         if terr.get('finishStyle')=='warm-stone':
             # Finish-only layers: the authored floor, doors and clear circulation stay fixed.
             materials['porch-limestone']={**materials['floor'],'roughness':.72,'clearcoat':0}
+            # Warm Jodhpuri sandstone: 900 x 600 mm slabs, fine joints and a
+            # softly granular matte face. Keep the driveway finish independent.
+            materials['veranda-jodhpuri']={'color':'#cba477','alt':'#ddb989',
+                'kind':'paver','texture':'paver','tile_m':[1.8,1.2],
+                'params':[2,2,.003,0],'roughness':.8,'normal':1.2,'clearcoat':0}
             bed=box(*(np.array(terr['gardenBed'])/1000)) if terr.get('gardenBed') else Polygon()
-            poly_mesh(p.difference(bed),z+.011,z+.017,'porch-limestone',f,'finish',terr['id']+'/stone-finish',terr['id'])
+            poly_mesh(p.difference(bed),z+.011,z+.017,'veranda-jodhpuri',f,'finish',terr['id']+'/stone-finish',terr['id'])
             inset=p.buffer(-.18,join_style=2).intersection(metres(geometry(b['roofs'][f]['ceiling'])));x0,y0,x1,y1=p.bounds
             for j,xx in enumerate(np.arange(x0+.18,x1-.18,.18)):
                 strip=inset.intersection(box(xx,y0,xx+.135,y1))
