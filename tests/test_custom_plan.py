@@ -1,5 +1,6 @@
 """End-to-end acceptance for exact geometry, revision identity and per-floor guides."""
-import copy,json
+import copy,json,gzip
+from geometry_snapshot import assert_visual_snapshot
 from pathlib import Path
 import pytest
 from shapely.geometry import Polygon,box
@@ -127,9 +128,10 @@ def test_guide_unsupported_floor_room_returns_specific_conflict():
 
 def test_legacy_presets_keep_aesthetic_geometry():
     baseline=read_json(ROOT/'evidence/custom-plan/aesthetic-baseline.json')
+    snapshots=json.loads(gzip.decompress((ROOT/'tests/fixtures/legacy_visual_geometry.json.gz').read_bytes()))
     for name,record in baseline['presets'].items():
         b=apply_exterior_preferences(build(record['input']));s=make_scene(b,reports(b,validate(b)))
-        assert sha({k:s[k] for k in ('nodes','assets','materials','lights','cameras','vegetation','lawns')})==record['visual'],name
+        assert_visual_snapshot(s,snapshots[name])
 
 
 def test_veranda_is_covered_and_two_terraces_share_an_open_edge(project):

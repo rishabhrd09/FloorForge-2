@@ -1,4 +1,5 @@
 """First-floor-only changes must preserve the occupied ground floor exactly."""
+from geometry_snapshot import assert_plate_snapshot
 import hashlib
 import json
 from pathlib import Path
@@ -30,7 +31,11 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
     # The later Option A approval removes only veranda overhead cover.
     b['roofs'][0]=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())['ground_roof']
     for key,value in before['ground_building'].items():
-        assert digest([x for x in b[key] if x.get('floor')==0])==value
+        actual=[x for x in b[key] if x.get('floor')==0]
+        if key=='floor_plates':
+            assert_plate_snapshot(actual,json.loads((ROOT/'tests/fixtures/desired_home_ground_plate.json').read_text()))
+        else:
+            assert digest(actual)==value,key
     nodes=[{k:v for k,v in historic_interior_floor(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
            for n in historic_caregiver_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth']
     assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
