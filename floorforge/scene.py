@@ -1987,7 +1987,11 @@ def make_scene(building, report):
             finish('reclining-bed',foot,mark)
         # Facing +x, the occupant's left is +y and the veranda is to the right.
         equipment_left=room.get('careLayout')=='equipment-left'
-        seats=([(name,x0+1.45+i*.85,y0+1.30,math.pi) for i,name in enumerate(('care-chair-right','care-chair-right-2','care-chair-right-3'))]
+        # Keep the bedside visitor seat; place the other two at the head wall,
+        # facing into the room and short of the caregiver doorway approach.
+        seats=([('care-chair-right',x0+.40,y0+1.00,math.pi/2),
+                ('care-chair-right-2',x0+.40,y0+1.85,math.pi/2),
+                ('care-chair-right-3',x0+1.45+2*.85,y0+1.30,math.pi)]
                if equipment_left else [(name,cx-.55,yy,math.pi/2) for name,yy in [('care-chair-left',cy+.85),('care-chair-right',cy-.85)]])
         for name,xx,yy,angle in seats:
             foot=box(xx-.28,yy-.27,xx+.28,yy+.27)

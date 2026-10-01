@@ -12,6 +12,13 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 
+def historic_care_chair_items(scene,key):
+    # Only the two visitor chairs moved in the later approved seating change.
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_care_chair_move.json').read_text())
+    replacements={n['id']:n for n in prior.get(key,[])}
+    return [replacements.get(n.get('id'),n) for n in scene[key]]
+
+
 def historic_veranda_items(scene,key):
     # Restore the bounded, approved overhead removal and balcony support additions
     # only when comparing historical appearance snapshots. New tests validate the
@@ -23,7 +30,7 @@ def historic_veranda_items(scene,key):
         return json.dumps(n,sort_keys=True)
     added=prior['support_colliders'] if key=='colliders' else prior['added_'+key]
     counts=Counter(canonical(n) for n in added);items=[]
-    for n in scene[key]:
+    for n in historic_care_chair_items(scene,key):
         k=canonical(n)
         if counts[k]:counts[k]-=1
         else:items.append(n)
@@ -46,7 +53,7 @@ def historic_nodes(scene):
 
 
 def historic_items(scene,key):
-    items=list(scene[key])
+    items=historic_care_chair_items(scene,key)
     removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
     for entry in removed['removed_'+key]:items.insert(entry['index'],entry['item'])
     return items
@@ -186,7 +193,11 @@ def test_care_suite_moves_forward_and_left_with_tv_and_clear_routes():
     assert recliner.bounds[2]-recliner.bounds[0]>recliner.bounds[3]-recliner.bounds[1]
     assert items['large-tv'].centroid.x>cx and abs(items['large-tv'].centroid.y-10.625)<.001
     assert 'care-chair-left' not in items
-    assert all(items[k].centroid.y<cy for k in ('care-chair-right','care-chair-right-2','care-chair-right-3'))
+    assert items['care-chair-right-3'].centroid.y<cy
+    for name in ('care-chair-right','care-chair-right-2'):
+        assert items[name].bounds[2]<recliner.bounds[0]
+        assert abs(items[name].centroid.x-(care.bounds[0]+.40))<.001
+    assert abs(items['care-chair-right-2'].centroid.y-items['care-chair-right'].centroid.y-.85)<.001
     assert items['care-cupboard'].bounds[0]<8.6 and items['care-cupboard'].bounds[3]>12.65
     assert items['care-cupboard'].centroid.y>cy and items['equipment-table'].centroid.y>cy
     # Furniture must leave every care doorway's approach clear, including the new suite.

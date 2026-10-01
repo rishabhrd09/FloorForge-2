@@ -9,7 +9,7 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.model import DesignError
 from scripts.build_desired_home import project
-from test_desired_home import historic_interior_floor, historic_caregiver_nodes, historic_veranda_items
+from test_desired_home import historic_interior_floor, historic_caregiver_nodes, historic_veranda_items, historic_care_chair_items
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -35,7 +35,7 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
            for n in historic_caregiver_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth']
     assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
     for key in ('furniture','colliders','vegetation'):
-        assert digest([n for n in (historic_veranda_items(scene,key) if key=='colliders' else scene[key]) if n.get('floor') in (0,-1)])==before['ground_'+key]
+        assert digest([n for n in (historic_veranda_items(scene,key) if key=='colliders' else historic_care_chair_items(scene,key)) if n.get('floor') in (0,-1)])==before['ground_'+key]
     restored=sorted([n for n in historic_veranda_items(scene,'lights') if n['position'][2]<3.15],key=lambda n:json.dumps(n,sort_keys=True))
     prior_lights=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())['ground_lights']
     assert restored==sorted(prior_lights,key=lambda n:json.dumps(n,sort_keys=True))
