@@ -1,0 +1,462 @@
+{
+  "nodes": [
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00468",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        12.975,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.05,
+        0.1,
+        2.4
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00469",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        14.024999999999999,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.05,
+        0.1,
+        2.4
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00470",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.5,
+        2.375
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        1.0,
+        0.1,
+        0.05
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00471",
+      "material": "glass",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.166666666666666,
+        1.2
+      ],
+      "role": "glass",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.29833333333333334,
+        0.018,
+        2.3
+      ],
+      "slidingPanel": 0
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00472",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.0,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 0
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00473",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.333333333333332,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 0
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00474",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.166666666666666,
+        0.025
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 0
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00475",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.425,
+        13.166666666666666,
+        2.375
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 0
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00476",
+      "material": "glass",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.39,
+        13.5,
+        1.2
+      ],
+      "role": "glass",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.29833333333333334,
+        0.018,
+        2.3
+      ],
+      "slidingPanel": 1
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00477",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.39,
+        13.333333333333332,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 1
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00478",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.39,
+        13.666666666666666,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 1
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00479",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.39,
+        13.5,
+        0.025
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 1
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00480",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.39,
+        13.5,
+        2.375
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 1
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00481",
+      "material": "glass",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.355,
+        13.833333333333332,
+        1.2
+      ],
+      "role": "glass",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.29833333333333334,
+        0.018,
+        2.3
+      ],
+      "slidingPanel": 2
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00482",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.355,
+        13.666666666666666,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 2
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00483",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.355,
+        14.0,
+        1.2
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.035,
+        0.045,
+        2.34
+      ],
+      "slidingPanel": 2
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00484",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.355,
+        13.833333333333332,
+        0.025
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 2
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "object-00485",
+      "material": "frame",
+      "owner": "g-caregiver-garden-door",
+      "position": [
+        8.355,
+        13.833333333333332,
+        2.375
+      ],
+      "role": "joinery",
+      "rotation": [
+        0.0,
+        0.0,
+        1.5707963267948966
+      ],
+      "scale": [
+        0.3333333333333333,
+        0.045,
+        0.05
+      ],
+      "slidingPanel": 2
+    }
+  ],
+  "opening": {
+    "connects": [
+      "g-care-lawn",
+      "g-caregiver"
+    ],
+    "floor": 0,
+    "height": 2400,
+    "hinge": "start",
+    "id": "g-caregiver-garden-door",
+    "kind": "glazed",
+    "offset": 100.0,
+    "sill": 0,
+    "sliding": true,
+    "swing": null,
+    "wall_id": "wall-431f33c21b0f67ca5e",
+    "width": 1100
+  },
+  "plan_opening": {
+    "height": 2400,
+    "hinge": "start",
+    "id": "g-caregiver-garden-door",
+    "kind": "glazed",
+    "offset": 1900,
+    "roomId": "g-caregiver",
+    "side": "right",
+    "sill": 0,
+    "sliding": true,
+    "width": 1100
+  }
+}

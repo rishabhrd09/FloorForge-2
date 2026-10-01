@@ -9,7 +9,7 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.model import DesignError
 from scripts.build_desired_home import project
-from test_desired_home import historic_interior_floor
+from test_desired_home import historic_interior_floor, historic_caregiver_nodes
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -22,11 +22,15 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     p=project();b=generate_layout(fuse(p))
-    assert p['customPlan']['floors'][0]==before['ground_plan']
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_caregiver_timber_door.json').read_text())
+    ground=p['customPlan']['floors'][0]
+    ground={**ground,'openings':[prior['plan_opening'] if o['id']=='g-caregiver-garden-door' else o for o in ground['openings']]}
+    assert ground==before['ground_plan']
+    b['openings']=[prior['opening'] if o['id']=='g-caregiver-garden-door' else o for o in b['openings']]
     for key,value in before['ground_building'].items():
         assert digest([x for x in b[key] if x.get('floor')==0])==value
     nodes=[{k:v for k,v in historic_interior_floor(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
-           for n in scene['nodes'] if n['floor'] in (0,-1) and n['role']!='plinth']
+           for n in historic_caregiver_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth']
     assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
     for key in ('furniture','colliders','vegetation'):
         assert digest([n for n in scene[key] if n.get('floor') in (0,-1)])==before['ground_'+key]

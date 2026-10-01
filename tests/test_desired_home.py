@@ -12,11 +12,18 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 
+def historic_caregiver_nodes(scene):
+    # Restore only the later approved glass-to-timber rear entrance for old baselines.
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_caregiver_timber_door.json').read_text())
+    key='g-caregiver-garden-door'
+    moving=set(scene['door_motion'][key]['ids'])
+    return [n for n in scene['nodes'] if n.get('owner')!=key and n['id'] not in moving]+before['nodes']
+
 def historic_nodes(scene):
     # Restore only the explicitly approved decorative removals when comparing
     # older preservation baselines. A separate check requires them absent now.
     removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
-    return scene['nodes']+removed['removed_nodes']
+    return historic_caregiver_nodes(scene)+removed['removed_nodes']
 
 
 def historic_items(scene,key):
@@ -474,6 +481,8 @@ def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     assert r['g-caregiver']['area_m2']<10
     ops={o['id']:o for o in b['openings']};assert set(ops['g-care-caregiver']['connects'])=={'g-care','g-caregiver'}
     assert ops['g-caregiver-garden-door']['width']==1100
+    assert ops['g-caregiver-garden-door']['kind']=='door' and ops['g-caregiver-garden-door']['swing']=='g-caregiver'
+    assert ops['g-caregiver-garden-door']['hinge']=='end'
     assert Polygon(r['g-care']['clear']).equals(box(8500,8550,15288,12700))
     assert Polygon(r['g-caregiver']['clear']).bounds[::2]==Polygon(r['g-caregiver-bath']['clear']).bounds[::2]
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
@@ -647,7 +656,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text())
     p=project()
     assert p['brief']==old['brief']
-    approved={'g-care-veranda','g-care-lawn-window'}
+    approved={'g-care-veranda','g-care-lawn-window','g-caregiver-garden-door'}
     def strip_layout(o):return {k:v for k,v in o.items() if k not in ('kitchenLayout','ceilingStyle')}
     def ground(fl):return {**fl,'rooms':[strip_layout(r) for r in fl['rooms']],'openings':[o for o in fl['openings'] if o['id'] not in approved]}
     assert ground(p['customPlan']['floors'][0])==ground(old['customPlan']['floors'][0])
