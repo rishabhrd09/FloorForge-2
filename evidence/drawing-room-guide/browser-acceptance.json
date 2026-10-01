@@ -1,0 +1,127 @@
+{
+  "checks": [
+    {
+      "name": "Drawing room is visible as a guest-seating card",
+      "pass": true
+    },
+    {
+      "name": "Drawing room is offered by Quick Guide",
+      "pass": true
+    },
+    {
+      "name": "Drying room is explicitly laundry/service",
+      "pass": true
+    },
+    {
+      "name": "Guest room is clearly distinct from shared Living",
+      "pass": true
+    },
+    {
+      "name": "An explicitly selected G+2 remains three occupied floors",
+      "pass": true
+    },
+    {
+      "name": "Stair restriction is identified as a planner limitation",
+      "pass": true
+    },
+    {
+      "name": "Stair issue has a direct exact-editor action",
+      "pass": true
+    },
+    {
+      "name": "G+1 submits only Ground and First, with separate roof access",
+      "pass": true
+    },
+    {
+      "name": "Original three guide boards stay saved for undo",
+      "pass": true
+    },
+    {
+      "name": "The guide shows exactly two floor tabs and 16 cells",
+      "pass": true
+    },
+    {
+      "name": "Floor change has working undo",
+      "pass": true
+    },
+    {
+      "name": "Save/reopen does not resurrect the unwanted Second floor",
+      "pass": true
+    },
+    {
+      "name": "Stair action opens and selects the authored stair without moving it to a front corner",
+      "pass": true
+    },
+    {
+      "name": "Main floor count still synchronizes an active Custom Plan",
+      "pass": true
+    },
+    {
+      "name": "Custom floor removal keeps working undo",
+      "pass": true
+    },
+    {
+      "name": "Dragging the card writes a drawing-room hint to the selected cell",
+      "pass": true
+    },
+    {
+      "name": "Guide actions remain reachable on a phone",
+      "pass": true
+    },
+    {
+      "name": "Generated G+1 contains a separate Drawing room and Living",
+      "pass": true
+    },
+    {
+      "name": "Guest room has a sofa and coffee table in the actual scene",
+      "pass": true
+    },
+    {
+      "name": "Roof terrace is reachable above First without another occupied floor",
+      "pass": true,
+      "data": [
+        {
+          "depth": 4100,
+          "flight_width": 1000,
+          "floor": 0,
+          "id": "ST-0",
+          "landing_mm": 1050,
+          "riser_count": 18,
+          "riser_mm": 175,
+          "to_floor": 1,
+          "tread_mm": 250,
+          "well": 200,
+          "width": 2200,
+          "x": 250,
+          "y": 250
+        },
+        {
+          "depth": 4100,
+          "flight_width": 1000,
+          "floor": 1,
+          "id": "ST-1",
+          "landing_mm": 1050,
+          "riser_count": 18,
+          "riser_mm": 175,
+          "roof_access": true,
+          "to_floor": 2,
+          "tread_mm": 250,
+          "well": 200,
+          "width": 2200,
+          "x": 250,
+          "y": 250
+        }
+      ]
+    },
+    {
+      "name": "Building and scene share the generated plan hash",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

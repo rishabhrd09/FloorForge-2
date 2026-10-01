@@ -1,0 +1,126 @@
+{
+  "brief": {
+    "width_mm": 9000,
+    "depth_mm": 10000,
+    "front_mm": 500,
+    "rear_mm": 500,
+    "left_mm": 500,
+    "right_mm": 500,
+    "storeys": 1,
+    "bedrooms": 1,
+    "parking": false,
+    "pooja": false,
+    "roof_access": false
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "stairs": [],
+    "floors": [
+      {
+        "id": "ground",
+        "walls": [],
+        "rooms": [
+          {
+            "id": "living",
+            "name": "Living",
+            "kind": "living",
+            "polygon": [
+              [
+                4150.0,
+                150.0
+              ],
+              [
+                4150.0,
+                6150.0
+              ],
+              [
+                150.0,
+                6150.0
+              ],
+              [
+                150.0,
+                150.0
+              ]
+            ]
+          },
+          {
+            "id": "veranda",
+            "name": "Veranda",
+            "kind": "veranda",
+            "polygon": [
+              [
+                6500.0,
+                75.0
+              ],
+              [
+                6500.0,
+                3150.0
+              ],
+              [
+                4225.0,
+                3150.0
+              ],
+              [
+                4225.0,
+                75.0
+              ]
+            ]
+          },
+          {
+            "id": "courtyard",
+            "name": "Courtyard",
+            "kind": "courtyard",
+            "polygon": [
+              [
+                6500.0,
+                3150.0
+              ],
+              [
+                6500.0,
+                6225.0
+              ],
+              [
+                4225.0,
+                6225.0
+              ],
+              [
+                4225.0,
+                3150.0
+              ]
+            ]
+          }
+        ],
+        "openings": [
+          {
+            "id": "entrance",
+            "roomId": "living",
+            "side": "front",
+            "kind": "entry",
+            "offset": 500,
+            "width": 1000
+          },
+          {
+            "id": "veranda-door",
+            "roomId": "living",
+            "side": "right",
+            "kind": "door",
+            "offset": 500,
+            "width": 900
+          },
+          {
+            "id": "courtyard-window",
+            "roomId": "living",
+            "side": "right",
+            "kind": "window",
+            "offset": 3250,
+            "width": 1700,
+            "height": 1500,
+            "sill": 750
+          }
+        ]
+      }
+    ]
+  }
+}

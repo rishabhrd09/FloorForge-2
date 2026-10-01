@@ -1,0 +1,43 @@
+import {spawn,execFileSync} from 'node:child_process';
+import {mkdirSync,mkdtempSync,writeFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
+const root=resolve(import.meta.dirname,'..'),out=resolve(root,'evidence/input-modes'),url='http://127.0.0.1:8886';mkdirSync(out,{recursive:true});
+const saved=JSON.parse(execFileSync(resolve(root,'.venv/bin/python'),['-c','import json;from tests.test_smart_fit import screenshot_sketch;print(json.dumps(screenshot_sketch()))'],{cwd:root}));
+saved.text='2 bedrooms';saved.editorState={mode:'custom',guideFloors:Array.from({length:3},()=>Array.from({length:4},()=>Array(4).fill(''))),customPlan:saved.customPlan};saved.editorState.guideFloors[0][3][0]='kitchen';
+saved.furnitureLayout=[{id:'old-sofa',anchorHash:'old',dx:1,dy:0,angle:0}];
+const server=spawn(resolve(root,'.venv/bin/python'),['-m','floorforge','serve','--no-browser','--port','8886','--out',mkdtempSync('/tmp/ff-input-modes-')],{cwd:root,stdio:['ignore','pipe','pipe']});server.stderr.on('data',d=>process.stderr.write(d));
+let browser;const checks=[],errors=[];const check=(name,pass,data)=>{checks.push({name,pass:!!pass,data});console.log(pass?'PASS':'FAIL',name);if(!pass)throw Error(name);};
+try{
+ for(let i=0;i<100;i++){try{if((await fetch(url+'/api/session')).ok)break;}catch{}await new Promise(r=>setTimeout(r,200));}
+ browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(p=>localStorage.setItem('floorforge-draft-v1',JSON.stringify(p)),saved);
+ await page.goto(url);await page.waitForFunction(()=>window.__ffApp?.viewer&&window.__ff?.ready&&document.getElementById('draft-state').textContent.includes('switched off'),null,{timeout:180000});await page.evaluate(()=>window.__ffApp.viewer.paused=true);
+ let p=await page.evaluate(()=>window.__ffApp.collect());
+ check('Bundled example starts with home-screen settings, not an old custom plan',p.editorState.mode==='automatic'&&!p.customPlan&&!p.grid&&!p.furnitureLayout&&p.brief.storeys===2&&p.text==='');
+ check('Saved rooms, guide and object edits are retained while deselected',p.editorState.customPlan.floors[0].rooms.length===8&&p.editorState.guideFloors[0][3][0]==='kitchen'&&p.editorState.savedFurnitureLayout.length===1);
+ await page.click('#custom-open');check('Opening the room editor alone does not activate it',await page.locator('#plan-mode').inputValue()==='automatic');await page.click('[data-close="plan-dialog"]');
+ await page.selectOption('#plan-mode','guide');p=await page.evaluate(()=>window.__ffApp.collect());check('Guide can be enabled independently of saved custom rooms',p.grid&&!p.customPlan);
+ await page.selectOption('#plan-mode','custom');p=await page.evaluate(()=>window.__ffApp.collect());check('Saved room plan can be selected without the guide',p.customPlan&&!p.grid&&p.customPlan.floors[0].rooms.length===8);
+ await page.click('#use-shown-design');p=await page.evaluate(()=>window.__ffApp.collect());check('Edit displayed design uses the shown house and preserves inactive sketches',p.editorState.mode==='automatic'&&!p.customPlan&&!p.grid&&p.brief.storeys===2&&p.editorState.customPlan.floors[0].rooms.length===8);
+ await page.click('#reset-placements');p=await page.evaluate(()=>window.__ffApp.collect());check('Reset clears inactive saved placement overrides',p.editorState.savedFurnitureLayout.length===0&&!p.furnitureLayout);await page.click('#reset-placements');p=await page.evaluate(()=>window.__ffApp.collect());check('Undo restores saved placements without activating deselected inputs',p.editorState.savedFurnitureLayout.length===1&&!p.furnitureLayout);
+ await page.fill('#bedrooms','4');await page.locator('#adv-variant').evaluate(e=>{e.closest('details').open=true;e.closest('#advanced-fields')?.closest('details')?.setAttribute('open','');});await page.selectOption('#adv-variant','1');
+ let submitted;page.on('request',r=>{if(r.url().endsWith('/api/generate'))submitted=r.postDataJSON();});await page.click('#generate');
+ await page.waitForFunction(()=>!window.__ffApp.draftStale&&!document.getElementById('generate').disabled,null,{timeout:240000});
+ check('Main Generate needs no drawing dialog and submits only selected inputs',submitted&&!submitted.customPlan&&!submitted.grid&&!submitted.roomEdits&&!submitted.furnitureLayout&&!await page.locator('#plan-dialog').isVisible());
+ check('Main fields change the generated home',await page.evaluate(()=>window.__ff.building.brief.bedrooms===4&&window.__ff.building.brief.variant===1&&window.__ff.building.planHash===window.__ff.scene.planHash));
+ const controlsVisible=()=>page.evaluate(()=>['fullscreen','tour','focus','reset-camera','snapshot','export-glb','record'].every(id=>{const r=document.getElementById(id).getBoundingClientRect();return r.width>0&&r.top>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}));
+ await page.locator('#home-panel').scrollIntoViewIfNeeded();check('All viewer actions are visible above the canvas',await controlsVisible());
+ await page.click('[data-mode="walk"]');await page.locator('.ff-start').click();
+ const canvas=await page.locator('#scene').boundingBox(),x=canvas.x+canvas.width*.55,y=canvas.y+Math.min(canvas.height*.4,150),yaw=await page.evaluate(()=>window.__ffApp.viewer.walker.yaw);
+ await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x+80,y+20,{steps:5});await page.mouse.up();
+ check('Drag-to-look turns the view without capturing the cursor',await page.evaluate(a=>document.pointerLockElement===null&&Math.abs(window.__ffApp.viewer.walker.yaw-a)>.1,yaw));
+ await page.focus('#scene');await page.keyboard.down('ArrowUp');await page.click('#fullscreen');
+ check('Fullscreen remains clickable during walking and releases held movement',await page.evaluate(()=>document.querySelector('.canvas-wrap').classList.contains('expanded')&&window.__ffApp.viewer.keys.size===0&&window.__ffApp.viewer.mode==='walk'));await page.keyboard.up('ArrowUp');
+ check('All actions remain visible inside fullscreen',await controlsVisible());await page.click('#fullscreen');
+ await page.click('#tour');check('Virtual tour is accessible from Walk mode',await page.evaluate(()=>window.__ffApp.viewer.tour&&window.__ffApp.viewer.mode!=='walk'));await page.click('#tour');
+ await page.click('[data-mode="walk"]');await page.focus('#scene');await page.keyboard.press('Escape');check('Escape pauses walking and leaves the cursor free',await page.evaluate(()=>window.__ffApp.viewer.mode==='walk'&&window.__ffApp.viewer.keys.size===0&&!document.pointerLockElement));
+ check('Viewer controls stay visible after focusing and pausing Walk mode',await controlsVisible());await page.screenshot({path:out+'/desktop-controls.png'});
+ await page.setViewportSize({width:390,height:844});await page.locator('#home-panel').scrollIntoViewIfNeeded();check('Phone viewer actions stay visible above the walk view',await controlsVisible());await page.screenshot({path:out+'/mobile-controls.png'});
+ check('No browser runtime errors',errors.length===0,errors);
+}finally{writeFileSync(out+'/browser-acceptance.json',JSON.stringify({checks,errors},null,2)+'\n');if(browser)await browser.close();server.kill('SIGINT');}

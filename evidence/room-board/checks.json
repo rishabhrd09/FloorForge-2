@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "name": "Design rooms opens the simple board with no dimension inputs",
+      "pass": true
+    },
+    {
+      "name": "Drawing room is directly available",
+      "pass": true
+    },
+    {
+      "name": "Tap an empty spot then a room adds it exactly there",
+      "pass": true
+    },
+    {
+      "name": "Two taps swap rooms",
+      "pass": true
+    },
+    {
+      "name": "Undo restores the arrangement",
+      "pass": true
+    },
+    {
+      "name": "Drag moves a room into an empty spot",
+      "pass": true
+    },
+    {
+      "name": "Moving stairs updates both floors",
+      "pass": true
+    },
+    {
+      "name": "One action builds validated connected geometry",
+      "pass": true
+    },
+    {
+      "name": "Preview does not replace the drawing before approval",
+      "pass": true
+    },
+    {
+      "name": "No keeps the arrangement unchanged",
+      "pass": true
+    },
+    {
+      "name": "Approval generates matching canonical 3D",
+      "pass": true
+    },
+    {
+      "name": "Saved spatial arrangement reopens unchanged",
+      "pass": true
+    },
+    {
+      "name": "Build action remains visible on a phone",
+      "pass": true
+    },
+    {
+      "name": "Touch adds a room without entering measurements",
+      "pass": true
+    },
+    {
+      "name": "Automatic home-screen generation excludes the saved board geometry",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

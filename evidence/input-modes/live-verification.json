@@ -1,0 +1,7 @@
+{
+  "server": "http://127.0.0.1:8765",
+  "defaultExampleRetained": true,
+  "newInputSchemaAccepted": true,
+  "frontend": "ff-independent-inputs-20260930-v11",
+  "freeCursorBundle": true
+}

@@ -1,0 +1,20 @@
+{
+  "storeys": 2,
+  "roofLevel": 2,
+  "position": [
+    0.6492575701578382,
+    3.1500000953674316,
+    -0.7833951951556019
+  ],
+  "stairs": [
+    {
+      "floor": 0,
+      "to_floor": 1
+    },
+    {
+      "floor": 1,
+      "to_floor": 2
+    }
+  ],
+  "hashMatches": true
+}

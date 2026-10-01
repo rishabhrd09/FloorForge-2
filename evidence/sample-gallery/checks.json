@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "Five ready-made samples are visible",
+      "pass": true
+    },
+    {
+      "name": "All cards show actual rendered thumbnails",
+      "pass": true
+    },
+    {
+      "name": "Sample opens furnished 3D with floor switching",
+      "pass": true
+    },
+    {
+      "name": "Browsing samples preserves the current project and model",
+      "pass": true
+    },
+    {
+      "name": "Use this sample loads matching editable project and generated model",
+      "pass": true
+    },
+    {
+      "name": "Previous project remains available",
+      "pass": true
+    },
+    {
+      "name": "Sample view and previous project recovery survive a refresh",
+      "pass": true
+    },
+    {
+      "name": "Return restores prior settings and 3D",
+      "pass": true
+    },
+    {
+      "name": "Gallery fits a phone without horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

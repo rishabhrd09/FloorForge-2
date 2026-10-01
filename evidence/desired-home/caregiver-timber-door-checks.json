@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "name": "Rear timber door fully opens",
+      "pass": true
+    },
+    {
+      "name": "Walk through rear entrance into caregiver room",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

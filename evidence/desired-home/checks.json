@@ -1,0 +1,197 @@
+{
+  "checks": [
+    {
+      "name": "Desired home loads matching 60 × 55 ft east-facing settings and all authored rooms",
+      "pass": true
+    },
+    {
+      "name": "Specifications include care room, exact room sizes and provisional rear setback",
+      "pass": true
+    },
+    {
+      "name": "Room editor opens the exact geometry without re-packing",
+      "pass": true
+    },
+    {
+      "name": "Editor accepts the service wing, bedroom ensuite and half counter",
+      "pass": true
+    },
+    {
+      "name": "Matching ground-floor cell overview has sixteen cells and kitchen at front-left",
+      "pass": true
+    },
+    {
+      "name": "Dimensioned ground and first floor drawing sheets are available",
+      "pass": true
+    },
+    {
+      "name": "First-floor cutaway reveals lower furniture through the guarded living void",
+      "pass": true
+    },
+    {
+      "name": "Saved editor retains the open atrium and full-height stair opening",
+      "pass": true
+    },
+    {
+      "name": "Single recliner, three right-side chairs, equipment table, corner cupboard and TV are individually editable",
+      "pass": true
+    },
+    {
+      "name": "Closed main gate blocks passage",
+      "pass": true
+    },
+    {
+      "name": "Main gate shows its open prompt from the street",
+      "pass": true
+    },
+    {
+      "name": "F opens both main gate panels",
+      "pass": true
+    },
+    {
+      "name": "Open main gate allows walking into the parking court",
+      "pass": true
+    },
+    {
+      "name": "Main gate shows its close prompt from inside",
+      "pass": true
+    },
+    {
+      "name": "F closes the main gate from inside",
+      "pass": true
+    },
+    {
+      "name": "Parked car leaves a clear walking route from gate to veranda",
+      "pass": true
+    },
+    {
+      "name": "Upper lobby window and parked car appear in the saved scene",
+      "pass": true
+    },
+    {
+      "name": "One click hides car geometry and removes its collision",
+      "pass": true
+    },
+    {
+      "name": "Hidden car leaves the full parking bay walkable",
+      "pass": true
+    },
+    {
+      "name": "One click restores Kylaq and its collision",
+      "pass": true
+    },
+    {
+      "name": "New dining door and steps allow a real walk to the tiled court",
+      "pass": true
+    },
+    {
+      "name": "Dining entrance steps allow the return indoors",
+      "pass": true
+    },
+    {
+      "name": "Bedroom ensuite can be entered standing",
+      "pass": true
+    },
+    {
+      "name": "Bedroom ensuite exit remains clear",
+      "pass": true
+    },
+    {
+      "name": "Hall opening leads into kitchen clear of serving counter and rear storage",
+      "pass": true
+    },
+    {
+      "name": "Open stair preserves the climb from floor 0 to 1",
+      "pass": true
+    },
+    {
+      "name": "Open stair preserves the climb from floor 1 to 2",
+      "pass": true
+    },
+    {
+      "name": "Open sliding glass leads to the level clear veranda",
+      "pass": true
+    },
+    {
+      "name": "Veranda route works in both directions",
+      "pass": true
+    },
+    {
+      "name": "Wide living glass connects directly to the care room",
+      "pass": true
+    },
+    {
+      "name": "Living hall has its own direct sliding-glass route to veranda",
+      "pass": true
+    },
+    {
+      "name": "Restored drawing-room wall physically separates it from living",
+      "pass": true
+    },
+    {
+      "name": "Drawing room has a separate door to the veranda",
+      "pass": true
+    },
+    {
+      "name": "Caregiver bedroom is reached behind the recliner",
+      "pass": true
+    },
+    {
+      "name": "Caregiver can walk via rear garden and veranda to outside without the ICU",
+      "pass": true
+    },
+    {
+      "name": "Rear caregiver attached toilet is accessible",
+      "pass": true
+    },
+    {
+      "name": "Bedroom entrance faces the stair-side hall",
+      "pass": true
+    },
+    {
+      "name": "Plain living-hall wall prevents entry into the ventilation lightwell",
+      "pass": true
+    },
+    {
+      "name": "Removed lightwell door has no interactive panel",
+      "pass": true
+    },
+    {
+      "name": "Former caregiver footprint has real lawn grass and planted pots",
+      "pass": true
+    },
+    {
+      "name": "Separate drawing room connects through the small dining door",
+      "pass": true
+    },
+    {
+      "name": "Kitchen pantry is reachable from the kitchen",
+      "pass": true
+    },
+    {
+      "name": "Open wash yard is reachable from the kitchen",
+      "pass": true
+    },
+    {
+      "name": "View switching preserves the generated plan hash and input mode",
+      "pass": true
+    },
+    {
+      "name": "Current project can be restored from the saved project switcher",
+      "pass": true
+    },
+    {
+      "name": "Desired home and project switcher survive refresh",
+      "pass": true
+    },
+    {
+      "name": "Project navigation wraps on a phone",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

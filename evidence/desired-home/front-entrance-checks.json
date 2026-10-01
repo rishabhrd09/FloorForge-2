@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "name": "No porch column",
+      "pass": true
+    },
+    {
+      "name": "Closed pedestrian gate blocks walking",
+      "pass": true
+    },
+    {
+      "name": "Closed vehicle gate blocks walking",
+      "pass": true
+    },
+    {
+      "name": "Pedestrian slider opens fully",
+      "pass": true
+    },
+    {
+      "name": "Vehicle leaves open fully",
+      "pass": true
+    },
+    {
+      "name": "Entry path and porch steps are walkable",
+      "pass": true
+    },
+    {
+      "name": "Vehicle approach clear through open gate",
+      "pass": true
+    },
+    {
+      "name": "Passage beside parked car stays clear",
+      "pass": true
+    },
+    {
+      "name": "Pedestrian slider closes fully",
+      "pass": true
+    },
+    {
+      "name": "Vehicle leaves close fully",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

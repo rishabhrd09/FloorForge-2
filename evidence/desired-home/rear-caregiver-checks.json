@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "name": "Lawn is raised to match the garden floor",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

@@ -11,7 +11,7 @@ const FLOORISH = new Set(['floor', 'finish', 'stair', 'rug', 'threshold']);
 // Roles that never block the walking capsule (thin, decorative or overhead light fittings).
 const NO_COLLIDE = new Set(['curtain', 'rug', 'detail', 'fixture', 'plant-proxy', 'light-glow', 'downlight', 'cove', 'art', 'decor', 'blind', 'lamp']);
 // Proxies exist for GLB/drawings; the realistic viewer grows the actual plants procedurally.
-export const SKIP_RENDER = new Set(['plant-proxy']);
+export const SKIP_RENDER = new Set(['plant-proxy', 'screen-wire']);
 const GRAIN = new Set(['wood', 'woodfloor', 'deck', 'brushed', 'stoneclad']);
 
 export function visibilityClass(role) {

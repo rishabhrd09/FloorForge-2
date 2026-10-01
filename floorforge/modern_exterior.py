@@ -238,6 +238,15 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
             "kind": "pergola", "style": "glass_roof", "z_mm": 2750, "spacing_mm": 900, "height_mm": 160,
         }, THEME, [])
         assemblies.append(patio)
+    if porch and building.get('planning', {}).get('entranceStyle') == 'wall-supported':
+        # Resolve the entrance independently of the already designed upper balcony
+        # and facade accents. No porch base or column projects into the car gateway.
+        pg = porch['geometry']
+        half = next(o for o in building['openings'] if o['kind'] == 'entry')['width'] / 2
+        pg.update(bounds_mm=[round(ex-half-450), -1200, round(ex+half+450), 0],
+                  depth_mm=1200, width_mm=round(2*half+900), sitout_x_mm=None,
+                  return_steps_mm=0, support_count=0, wall_supported=True,
+                  canopy_bounds_mm=[pg['bounds_mm'][0], -1200, round(ex+half+600), 0])
     landscape = modern_landscape(building, porch, carport, patio)
     return {
         "id": f"{THEME}-candidate-01",
@@ -296,6 +305,16 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         steps_x = (s0 - (ret if pg.get("flight_side") == "left" else 0), s1 + (ret if pg.get("flight_side") == "right" else 0))
     if carport:
         carport_x = tuple(carport["geometry"]["bounds_mm"][0::2])
+    side_parking = bool(building.get('planning', {}).get('custom') and v['parking'] and Rm >= 3000 and not carport)
+    if side_parking:
+        carport_x = (xmax-Rm+(150 if Rm < 3300 else 300), xmax-(300 if Rm < 3300 else 450))
+    elif building.get('planning', {}).get('custom') and v['parking'] and not carport:
+        # An irregular rear wing may touch the boundary while the front-right
+        # parking bay remains open. Test actual geometry, not a uniform setback.
+        bay = box(xmax-3000, ymin+200, xmax-200, ymin+5700)
+        if inner.covers(bay) and not house.intersects(bay):
+            side_parking = True
+            carport_x = (xmax-3000, xmax-250)
     frontage = plan_frontage(plot.bounds, ex, steps_x=steps_x, parking=v["parking"], front_mm=F, carport_x=carport_x, wall_mm=wt)
     boundary = {
         **frontage, "movement_clearance_mm": 500,
@@ -304,6 +323,11 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
     }
     ped = next(g for g in frontage["gates"] if g["kind"] == "pedestrian")
     vehicle = next((g for g in frontage["gates"] if g["kind"] == "vehicle"), None)
+    if porch and porch['geometry'].get('wall_supported'):
+        # This shallow court has no safe inward swing over its entry steps.
+        # Park the unchanged slatted leaf inside the long boundary wall to the left.
+        ped.update(operation='sliding', park='left', travel_mm=ped['x1_mm']-ped['x0_mm']+40)
+        if vehicle:vehicle.update(operation='swing', leaves=2, open_deg=90)
     front_y0 = ymin + wt + 30
     landing_y = -porch["geometry"]["depth_mm"] if porch else 0
     steps_y = landing_y - 620 if porch else -900
@@ -346,7 +370,14 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             if carport:
                 c0, cy0, c1, cy1 = carport["geometry"]["bounds_mm"]
                 drive = box(d0, front_y0, d1, cy0 + 10).union(box(c0 - 150, cy0, c1 + 150, cy1 + 150))
-            add_poly("site-driveway", "court", drive.difference(path.buffer(60)), material_role="site.cobble")
+            elif side_parking:
+                lane_end = min(ymax-300, front_y0+6200)
+                if building.get('planning', {}).get('custom'):
+                    obstruction=house.intersection(box(carport_x[0],0,carport_x[1],ymax))
+                    if not obstruction.is_empty:
+                        lane_end=max(lane_end,obstruction.bounds[1]-60)
+                drive = drive.union(box(carport_x[0], front_y0, carport_x[1], lane_end))
+            add_poly("site-driveway", "court", drive.difference(path.buffer(60)), material_role="site.limestone" if any(r.get("finishStyle")=="warm-stone" for r in building["spaces"]) else "site.cobble")
         cx0, cx1 = g0, g1
         court_shape = unary_union([f for f in occupied[1:]]) if len(occupied) > 1 else path
         bed_d = min(950, max(500, F * .24))
@@ -425,6 +456,13 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             cy += 1800
             k += 1
 
+    # A boundary-reaching bedroom can terminate an otherwise open left lane.
+    # Pave only the actual exterior remainder; never fill through a room.
+    if building.get('planning', {}).get('custom') and Lm < 700:
+        front_band = fp.intersection(box(xmin, 0, xmax, 500))
+        if not front_band.is_empty and front_band.bounds[0]-xmin >= 700:
+            add_poly('left-service-lane', 'path', box(xmin+wt, 0, front_band.bounds[0]-60, D), material_role='site.flagstone')
+
     # ---- Side passages -------------------------------------------------------
     # A side garden as renovated in the reference: large two-tone slabs laid across the passage with a pebble
     # drip strip against the house, the boundary wall clad in horizontal timber boards, tall pots of planting
@@ -438,6 +476,8 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         else:
             x0, x1 = W + 60, xmax - wt
         y0 = 0 if F >= 700 else ymin + wt
+        if side == 'right' and side_parking:
+            y0 = max(y0, front_y0 + 6200)
         y1 = D + min(RE, 600)
         wid = x1 - x0
         fence = {"id": f"{side}-fence-cladding", "kind": "fence_cladding", "side": side,
@@ -556,6 +596,24 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
         if depth >= 1500:
             for i, x in enumerate((xmin + wt + 900, xmax - wt - 900)):
                 add_point(f"rear-tree-{i}", "tree", x, D + 60 + depth * .45, species="tree_standard", scale=.85)
+
+    if building.get('planning',{}).get('frontCourt')=='tiled':
+        # Only this authored option changes the entrance court; other samples retain planting.
+        features=[f for f in features if not (
+            (f['kind'] in ('plant','planter','tree','hedge') and f.get('position_mm',[0,1])[1]<0) or
+            (f['id'].startswith('front-') and f['kind'] in ('lawn','pebble_bed','stepping_stones')))]
+        front=box(xmin+wt,front_y0,xmax-wt,0)
+        paving=[Polygon(f['polygon']) for f in features if f['kind'] in ('court','path','patio','deck') and 'polygon' in f]
+        # The porch reservation is wider than its actual steps. Tile beneath it
+        # too, so its side pockets do not expose the viewer's green ground plane.
+        add_poly('front-tiled-court','path',front.difference(unary_union(paving)),material_role='site.flagstone')
+
+    if building.get('planning',{}).get('entranceStyle')=='wall-supported':
+        # Recess the front-court lights in the boundary instead of leaving bollards
+        # standing in the pedestrian corridor. Retain the existing warm light rhythm.
+        for f in features:
+            if f['kind']=='lantern' and f.get('position_mm',[0,1])[1]<0:
+                f.update(kind='boundary_path_light',position_mm=[f['position_mm'][0],round(ymin+wt)])
 
     return {
         "schema": "floorforge.landscape/0.2",

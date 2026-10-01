@@ -184,6 +184,7 @@ class Kit:
         self.nodes = []
         self.colliders = []
         self.furniture = []
+        self.editables = []
         self.lights = []
         self.vegetation = []
         self.ground = []  # (polygon, top z) of ground-level hardscape, for lawn derivation
@@ -194,14 +195,15 @@ class Kit:
     def checkpoint(self):
         """A mark to return to when a trial furniture arrangement is abandoned."""
         return (len(self.nodes), len(self.colliders), len(self.furniture), len(self.lights), len(self.vegetation), len(self.ground),
-                set(self.assets), self.rng.getstate())
+                set(self.assets), self.rng.getstate(), len(self.editables))
 
     def rollback(self, mark):
-        n, c, fu, li, ve, gr, keys, state = mark
+        n, c, fu, li, ve, gr, keys, state, ed = mark
         del self.nodes[n:], self.colliders[c:], self.furniture[fu:], self.lights[li:], self.vegetation[ve:], self.ground[gr:]
         for key in set(self.assets) - keys:
             del self.assets[key]
         self.rng.setstate(state)
+        del self.editables[ed:]
 
     def asset(self, mesh, key=None, smooth=False):
         key = key or sha({'v': np.round(mesh.vertices, 5).tolist(), 'f': mesh.faces.tolist()})[:20]
@@ -261,6 +263,20 @@ class Kit:
 
     def obstacle(self, p, f, ident):
         self.colliders.append({'id': ident, 'floor': f, 'polygon': [[float(x), float(y)] for x, y in list(p.exterior.coords)[:-1]], 'kind': 'furniture'})
+
+    def edit_mark(self):
+        return len(self.nodes), len(self.lights)
+
+    def editable(self, kind, room, polygon, mark):
+        n, li = mark
+        nodes = [node for node in self.nodes[n:] if node['role'] != 'wall-panel']
+        self.editables.append({'id': f'{room["id"]}/{kind}', 'label': kind.replace('-', ' ').title(),
+            'roomId': room['id'], 'floor': room['floor'],
+            'footprint': [list(p) for p in polygon.exterior.coords[:-1]],
+            'pivot': list(polygon.centroid.coords[0]), 'nodeIds': [node['id'] for node in nodes],
+            'lightIndices': list(range(li, len(self.lights))),
+            'anchorHash': sha({'room': room['clear'], 'nodes': nodes}),
+            'placement': {'dx': 0, 'dy': 0, 'angle': 0}})
 
     def furnishing(self, kind, room, p):
         self.furniture.append({'id': f'{room["id"]}/{kind}', 'kind': kind, 'floor': room['floor'], 'room_id': room['id'],

@@ -1,0 +1,920 @@
+{
+  "source_commit": "5ef4756",
+  "removed_nodes": [
+    {
+      "asset": "e79da7dd781b3d0c24bd",
+      "floor": 0,
+      "id": "object-00165",
+      "material": "ceiling",
+      "owner": "object-00165",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "5eb57c9d20bc32dc0af6",
+      "floor": 0,
+      "id": "object-00166",
+      "material": "lamp",
+      "owner": "object-00166",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "cove",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "5eefcad695b0de9ffef5",
+      "floor": 0,
+      "id": "object-00167",
+      "material": "ceiling",
+      "owner": "object-00167",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "c5d7129f7b99de53d53e",
+      "floor": 0,
+      "id": "object-00168",
+      "material": "lamp",
+      "owner": "object-00168",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "cove",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01326",
+      "material": "basalt",
+      "owner": "object-01326",
+      "position": [
+        14.274000000000001,
+        1.524999999999999,
+        0.02
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.16,
+        0.16,
+        0.04
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01327",
+      "material": "frame",
+      "owner": "object-01327",
+      "position": [
+        14.274000000000001,
+        1.524999999999999,
+        0.795
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.012,
+        0.012,
+        1.51
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01328",
+      "material": "frame",
+      "owner": "object-01328",
+      "position": [
+        14.174,
+        1.899999999999999,
+        1.725
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        1.1471862021031995,
+        1.831398718542239
+      ],
+      "scale": [
+        0.012,
+        0.012,
+        0.8514693182963203
+      ]
+    },
+    {
+      "asset": "3e5ffcd72037654dfe0d",
+      "floor": 0,
+      "id": "object-01329",
+      "material": "frame",
+      "owner": "object-01329",
+      "position": [
+        14.074,
+        2.3249999999999993,
+        1.78
+      ],
+      "role": "fixture",
+      "rotation": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01330",
+      "material": "lamp",
+      "owner": "object-01330",
+      "position": [
+        14.074,
+        2.3249999999999993,
+        1.74
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01331",
+      "material": "frame",
+      "owner": "object-01331",
+      "position": [
+        13.074,
+        2.899999999999999,
+        2.62
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.7399999999999998
+      ]
+    },
+    {
+      "asset": "cb0f20cd06d7859449c7",
+      "floor": 0,
+      "id": "object-01332",
+      "material": "frame",
+      "owner": "object-01332",
+      "position": [
+        13.074,
+        2.899999999999999,
+        2.25
+      ],
+      "role": "fixture",
+      "rotation": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01333",
+      "material": "lamp",
+      "owner": "object-01333",
+      "position": [
+        13.074,
+        2.899999999999999,
+        2.19
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01527",
+      "material": "frame",
+      "owner": "object-01527",
+      "position": [
+        6.623999999999996,
+        5.349999999999998,
+        2.6799999999999997
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.008,
+        0.008,
+        0.6200000000000001
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01528",
+      "material": "frame",
+      "owner": "object-01528",
+      "position": [
+        6.729087013803813,
+        5.382507222732745,
+        2.3299999999999996
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        1.9195673303788046,
+        0.2999999999999992
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.23409399821439208
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01529",
+      "material": "globe",
+      "owner": "object-01529",
+      "position": [
+        6.834174027607629,
+        5.415014445465492,
+        2.2899999999999996
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01530",
+      "material": "frame",
+      "owner": "object-01530",
+      "position": [
+        6.685981244696805,
+        5.508298216369717,
+        2.2749999999999995
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        2.0803885916038225,
+        1.1975979010256539
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.38948684188300875
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01531",
+      "material": "globe",
+      "owner": "object-01531",
+      "position": [
+        6.747962489393613,
+        5.666596432739436,
+        2.1799999999999997
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01532",
+      "material": "frame",
+      "owner": "object-01532",
+      "position": [
+        6.568923740752024,
+        5.445218725402358,
+        2.293333333333333
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        2.179485634122309,
+        2.0951958020513097
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.2681624714815832
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01533",
+      "material": "globe",
+      "owner": "object-01533",
+      "position": [
+        6.513847481504052,
+        5.540437450804719,
+        2.2166666666666663
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01534",
+      "material": "frame",
+      "owner": "object-01534",
+      "position": [
+        6.455878525954851,
+        5.375202578536479,
+        2.3116666666666665
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        1.9013443081853185,
+        2.992793703076965
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.3594594707489447
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01535",
+      "material": "globe",
+      "owner": "object-01535",
+      "position": [
+        6.287757051909705,
+        5.400405157072961,
+        2.253333333333333
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01536",
+      "material": "frame",
+      "owner": "object-01536",
+      "position": [
+        6.543424227489537,
+        5.275116457853924,
+        2.3299999999999996
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        1.9195673303788041,
+        -2.392793703076965
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.23409399821439242
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01537",
+      "material": "globe",
+      "owner": "object-01537",
+      "position": [
+        6.462848454979079,
+        5.200232915707851,
+        2.2899999999999996
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01538",
+      "material": "frame",
+      "owner": "object-01538",
+      "position": [
+        6.636839850148464,
+        5.180485581002189,
+        2.2749999999999995
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        2.080388591603823,
+        -1.495195802051311
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.38948684188300864
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01539",
+      "material": "globe",
+      "owner": "object-01539",
+      "position": [
+        6.6496797002969315,
+        5.010971162004379,
+        2.1799999999999997
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01540",
+      "material": "frame",
+      "owner": "object-01540",
+      "position": [
+        6.714935851554526,
+        5.28810758607024,
+        2.293333333333333
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        2.1794856341223086,
+        -0.5975979010256545
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.2681624714815835
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01541",
+      "material": "globe",
+      "owner": "object-01541",
+      "position": [
+        6.805871703109056,
+        5.226215172140482,
+        2.2166666666666663
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.095,
+        0.095,
+        0.095
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01559",
+      "material": "basalt",
+      "owner": "object-01559",
+      "position": [
+        10.284,
+        3.05,
+        0.02
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.16,
+        0.16,
+        0.04
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01560",
+      "material": "frame",
+      "owner": "object-01560",
+      "position": [
+        10.284,
+        3.05,
+        0.795
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.012,
+        0.012,
+        1.51
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01561",
+      "material": "frame",
+      "owner": "object-01561",
+      "position": [
+        10.184000000000001,
+        3.425,
+        1.725
+      ],
+      "role": "furniture",
+      "rotation": [
+        0.0,
+        1.1471862021031995,
+        1.831398718542239
+      ],
+      "scale": [
+        0.012,
+        0.012,
+        0.8514693182963203
+      ]
+    },
+    {
+      "asset": "3e5ffcd72037654dfe0d",
+      "floor": 0,
+      "id": "object-01562",
+      "material": "frame",
+      "owner": "object-01562",
+      "position": [
+        10.084,
+        3.8499999999999996,
+        1.78
+      ],
+      "role": "fixture",
+      "rotation": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01563",
+      "material": "lamp",
+      "owner": "object-01563",
+      "position": [
+        10.084,
+        3.8499999999999996,
+        1.74
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-01564",
+      "material": "frame",
+      "owner": "object-01564",
+      "position": [
+        9.084,
+        4.425,
+        2.62
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.006,
+        0.006,
+        0.7399999999999998
+      ]
+    },
+    {
+      "asset": "cb0f20cd06d7859449c7",
+      "floor": 0,
+      "id": "object-01565",
+      "material": "frame",
+      "owner": "object-01565",
+      "position": [
+        9.084,
+        4.425,
+        2.25
+      ],
+      "role": "fixture",
+      "rotation": [
+        3.141592653589793,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-sphere",
+      "floor": 0,
+      "id": "object-01566",
+      "material": "lamp",
+      "owner": "object-01566",
+      "position": [
+        9.084,
+        4.425,
+        2.19
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    }
+  ],
+  "removed_furniture": [
+    {
+      "index": 19,
+      "item": {
+        "floor": 0,
+        "footprint": [
+          [
+            14.454,
+            1.344999999999999
+          ],
+          [
+            14.454,
+            1.704999999999999
+          ],
+          [
+            14.094,
+            1.704999999999999
+          ],
+          [
+            14.094,
+            1.344999999999999
+          ]
+        ],
+        "id": "g-drawing/floor-lamp",
+        "kind": "floor-lamp",
+        "room_id": "g-drawing"
+      }
+    },
+    {
+      "index": 28,
+      "item": {
+        "floor": 0,
+        "footprint": [
+          [
+            10.464,
+            2.87
+          ],
+          [
+            10.464,
+            3.2299999999999995
+          ],
+          [
+            10.104,
+            3.2299999999999995
+          ],
+          [
+            10.104,
+            2.87
+          ]
+        ],
+        "id": "g-living/floor-lamp",
+        "kind": "floor-lamp",
+        "room_id": "g-living"
+      }
+    }
+  ],
+  "removed_colliders": [
+    {
+      "index": 175,
+      "item": {
+        "floor": 0,
+        "id": "g-drawing/floor-lamp",
+        "kind": "furniture",
+        "polygon": [
+          [
+            14.454,
+            1.344999999999999
+          ],
+          [
+            14.454,
+            1.704999999999999
+          ],
+          [
+            14.094,
+            1.704999999999999
+          ],
+          [
+            14.094,
+            1.344999999999999
+          ]
+        ]
+      }
+    },
+    {
+      "index": 184,
+      "item": {
+        "floor": 0,
+        "id": "g-living/floor-lamp",
+        "kind": "furniture",
+        "polygon": [
+          [
+            10.464,
+            2.87
+          ],
+          [
+            10.464,
+            3.2299999999999995
+          ],
+          [
+            10.104,
+            3.2299999999999995
+          ],
+          [
+            10.104,
+            2.87
+          ]
+        ]
+      }
+    }
+  ]
+}

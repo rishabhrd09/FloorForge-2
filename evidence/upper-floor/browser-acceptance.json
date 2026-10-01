@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "name": "One click loads the matching sample model and editable ground plan",
+      "pass": true
+    },
+    {
+      "name": "Sample keeps drawing room and veranda on Ground",
+      "pass": true
+    },
+    {
+      "name": "First floor shows footprint and aligned stair overlays before validation",
+      "pass": true
+    },
+    {
+      "name": "Upper suggestion is a preview and leaves the draft unchanged",
+      "pass": true
+    },
+    {
+      "name": "No keeps both floors unchanged",
+      "pass": true
+    },
+    {
+      "name": "Yes adapts only the upper floor",
+      "pass": true
+    },
+    {
+      "name": "One Undo restores the original upper design",
+      "pass": true
+    },
+    {
+      "name": "Dropping a second stair onto the inherited stair reuses it",
+      "pass": true
+    },
+    {
+      "name": "Unsupported upper room is named while drawing",
+      "pass": true
+    },
+    {
+      "name": "Sample includes separate fixed cell guides for both floors",
+      "pass": true
+    },
+    {
+      "name": "Dollhouse shows sample first floor from the same building",
+      "pass": true
+    },
+    {
+      "name": "Sample regenerates through the real editor with matching export hashes",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

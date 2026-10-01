@@ -1,0 +1,74 @@
+{
+  "checks": [
+    {
+      "name": "Rough overlapping placements are kept instead of rejected",
+      "pass": true
+    },
+    {
+      "name": "No wall-gap error interrupts rough sketching",
+      "pass": true
+    },
+    {
+      "name": "Fitting proposes changes without modifying the sketch",
+      "pass": true
+    },
+    {
+      "name": "Proposed room dimensions and dashed outlines are reviewable",
+      "pass": true
+    },
+    {
+      "name": "No preserves every room and opening",
+      "pass": true
+    },
+    {
+      "name": "Yes and No fit on a phone",
+      "pass": true
+    },
+    {
+      "name": "Yes fixes small rooms, stair dimensions and openings",
+      "pass": true
+    },
+    {
+      "name": "All eight rooms and their floor assignments survive",
+      "pass": true
+    },
+    {
+      "name": "One Undo restores the entire rough sketch",
+      "pass": true
+    },
+    {
+      "name": "Manual walls remain available in Fine-tune",
+      "pass": true
+    },
+    {
+      "name": "Approval of an outdated proposal preserves newly typed dimensions",
+      "pass": true
+    },
+    {
+      "name": "An old browser session automatically reconnects after server restart",
+      "pass": true
+    },
+    {
+      "name": "Reconnect and proposal preserve the draft",
+      "pass": true
+    },
+    {
+      "name": "Accepted fit generates the matching eight-room building and 3D",
+      "pass": true
+    },
+    {
+      "name": "Stair reaches the roof without adding an occupied floor",
+      "pass": true
+    },
+    {
+      "name": "Saved fitted project reopens with the generated plan hash",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

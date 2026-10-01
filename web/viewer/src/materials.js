@@ -80,6 +80,27 @@ export class MaterialLibrary {
     const d = this.descriptor(name);
     const color = new THREE.Color(d.color || '#cccccc');
     const alpha = d.alpha ?? 1;
+    if (d.kind === 'insect-mesh') {
+      const m = new THREE.MeshStandardMaterial({color, roughness: .9, metalness: 0,
+        transparent: true, depthWrite: false});
+      // Integrate the wire pattern over each pixel footprint instead of aliasing
+      // subpixel wires. UVs are measured in metres by the scene builder.
+      m.onBeforeCompile = shader => {
+        shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vMeshUV;')
+          .replace('#include <uv_vertex>', '#include <uv_vertex>\nvMeshUV = uv;');
+        shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>
+          varying vec2 vMeshUV;
+          vec2 meshIntegral(vec2 x) { return floor(x)*${d.wire/d.spacing} + min(fract(x),vec2(${d.wire/d.spacing})); }`)
+          .replace('#include <alphamap_fragment>', `#include <alphamap_fragment>
+          vec2 grid = vMeshUV / ${d.spacing};
+          vec2 span = max(fwidth(grid), vec2(.001));
+          vec2 cov = clamp((meshIntegral(grid+span*.5)-meshIntegral(grid-span*.5))/span,0.,1.);
+          diffuseColor.a *= 1. - (1.-cov.x)*(1.-cov.y);`);
+      };
+      m.customProgramCacheKey = () => `mesh-${d.spacing}-${d.wire}`;
+      m.name = name;
+      return m;
+    }
     // Glass: reflective, lightly tinted, double-sided; lets exterior light and views through.
     if (alpha < 1) {
       const m = new THREE.MeshPhysicalMaterial({

@@ -1,0 +1,212 @@
+{
+  "brief": {
+    "storeys": 1,
+    "bedrooms": 1,
+    "width_mm": 9292,
+    "depth_mm": 13440,
+    "left_mm": 500,
+    "right_mm": 500,
+    "front_mm": 1000,
+    "rear_mm": 1000,
+    "roof_access": true
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "floors": [
+      {
+        "id": "floor-0",
+        "rooms": [
+          {
+            "id": "master",
+            "kind": "bedroom",
+            "name": "Master",
+            "polygon": [
+              [
+                150,
+                9020
+              ],
+              [
+                2970,
+                9020
+              ],
+              [
+                2970,
+                11290
+              ],
+              [
+                150,
+                11290
+              ]
+            ]
+          },
+          {
+            "id": "bed",
+            "kind": "bedroom",
+            "name": "Bed",
+            "polygon": [
+              [
+                3120,
+                9000
+              ],
+              [
+                5870,
+                9000
+              ],
+              [
+                5870,
+                11290
+              ],
+              [
+                3120,
+                11290
+              ]
+            ]
+          },
+          {
+            "id": "veranda",
+            "kind": "veranda",
+            "name": "Veranda",
+            "polygon": [
+              [
+                6020,
+                8840
+              ],
+              [
+                8220,
+                8840
+              ],
+              [
+                8220,
+                11440
+              ],
+              [
+                6020,
+                11440
+              ]
+            ]
+          },
+          {
+            "id": "stair",
+            "kind": "stair",
+            "name": "Stair",
+            "polygon": [
+              [
+                150,
+                6200
+              ],
+              [
+                1430,
+                6200
+              ],
+              [
+                1430,
+                8870
+              ],
+              [
+                150,
+                8870
+              ]
+            ]
+          },
+          {
+            "id": "living",
+            "kind": "living",
+            "name": "Living",
+            "polygon": [
+              [
+                1730,
+                6500
+              ],
+              [
+                6050,
+                6500
+              ],
+              [
+                6050,
+                8770
+              ],
+              [
+                1730,
+                8770
+              ]
+            ]
+          },
+          {
+            "id": "kitchen",
+            "kind": "kitchen",
+            "name": "Kitchen",
+            "polygon": [
+              [
+                150,
+                2800
+              ],
+              [
+                1540,
+                2800
+              ],
+              [
+                1540,
+                6050
+              ],
+              [
+                150,
+                6050
+              ]
+            ]
+          },
+          {
+            "id": "dining",
+            "kind": "dining",
+            "name": "Dining",
+            "polygon": [
+              [
+                1690,
+                2630
+              ],
+              [
+                3170,
+                2630
+              ],
+              [
+                3170,
+                6200
+              ],
+              [
+                1690,
+                6200
+              ]
+            ]
+          },
+          {
+            "id": "drawing",
+            "kind": "drawing-room",
+            "name": "Drawing",
+            "polygon": [
+              [
+                3320,
+                3200
+              ],
+              [
+                5570,
+                3200
+              ],
+              [
+                5570,
+                6500
+              ],
+              [
+                3320,
+                6500
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": []
+      }
+    ],
+    "stairs": []
+  }
+}

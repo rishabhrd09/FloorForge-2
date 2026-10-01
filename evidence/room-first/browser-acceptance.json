@@ -1,0 +1,78 @@
+{
+  "checks": [
+    {
+      "name": "Rough placement keeps rooms near the chosen positions without rejecting overlaps",
+      "pass": true
+    },
+    {
+      "name": "Arrange rooms is the default, with wall and opening tools hidden",
+      "pass": true
+    },
+    {
+      "name": "Room dimensions stay available without technical position fields",
+      "pass": true
+    },
+    {
+      "name": "One action fixes shared wall space and adds openings",
+      "pass": true
+    },
+    {
+      "name": "Every authored room retains its exact 4 × 4 m size",
+      "pass": true
+    },
+    {
+      "name": "Assistance explains its changes",
+      "pass": true
+    },
+    {
+      "name": "Undo restores the whole rough plan",
+      "pass": true
+    },
+    {
+      "name": "Room edge handles allow later size refinement",
+      "pass": true
+    },
+    {
+      "name": "A delayed preparation never overwrites dimensions being typed",
+      "pass": true
+    },
+    {
+      "name": "Fine-tune reveals exact wall and opening tools",
+      "pass": true
+    },
+    {
+      "name": "Phone preview action stays inside the viewport",
+      "pass": true
+    },
+    {
+      "name": "Empty floors are explained one at a time without raw error codes",
+      "pass": true
+    },
+    {
+      "name": "Copy below starts an editable floor in one step",
+      "pass": true
+    },
+    {
+      "name": "Unused floors are removed only by an explicit action",
+      "pass": true
+    },
+    {
+      "name": "Rough rooms reach a matching generated building and scene",
+      "pass": true
+    },
+    {
+      "name": "Exact dimensions survive all the way to the building",
+      "pass": true
+    },
+    {
+      "name": "Assisted G+1 preview has two occupied floors and stair access to its roof",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": []
+}

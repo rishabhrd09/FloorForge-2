@@ -13,6 +13,10 @@ const CSS = `
 .ffhud.locked .ff-start{display:none}
 .ffhud .ff-tip{position:absolute;right:16px;top:16px;padding:6px 10px;border-radius:6px;background:rgba(18,22,20,.4);font-size:11px;opacity:.85}
 @media (max-width:520px){.ffhud .ff-tip{display:none}}
+.ffhud .ff-interact{position:absolute;left:50%;top:60%;transform:translateX(-50%);pointer-events:auto;max-width:min(440px,90%);border:1px solid #ffffff80;border-radius:9px;background:#162d24ee;color:white;padding:12px 18px;cursor:pointer;font:600 14px system-ui}
+.ffhud .ff-interact[hidden]{display:none}.ffhud .ff-interact small{display:block;font:400 11px system-ui;margin-top:5px;opacity:.85}
+.ffhud .ff-interact:disabled{cursor:default}.ffhud:not(.locked) .ff-interact{top:78%}
+.ffhud.locked .ff-interact{top:60%}
 .ffhud .ff-touch{display:none}
 @media (pointer:coarse){.ffhud .ff-touch{display:block}.ffhud .ff-start{top:32%}}
 .ffhud .ff-stick{position:absolute;left:22px;bottom:22px;width:112px;height:112px;border-radius:50%;border:2px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08)}
@@ -20,7 +24,7 @@ const CSS = `
 `;
 
 export class Hud {
-  constructor(canvas, { onLock = () => {}, onJump = () => {}, inset = 16 } = {}) {
+  constructor(canvas, { onLock = () => {}, onJump = () => {}, onInteract = () => {}, inset = 16 } = {}) {
     this.canvas = canvas;
     const parent = canvas.parentElement;
     this.parent = parent;
@@ -37,9 +41,12 @@ export class Hud {
     el.innerHTML = `<div class="ff-cross"></div>
 <div class="ff-where"><b>Arrival court</b><span>Ground floor</span></div>
 <div class="ff-start" role="button" tabindex="0" aria-label="Start walking"><strong>Click to walk through your home</strong>
-<div class="ff-keys"><span><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></span><span>move</span><span>Mouse</span><span>look around</span>
+<div class="ff-keys"><span><kbd>↑</kbd> <kbd>↓</kbd> / <kbd>W</kbd> <kbd>S</kbd></span><span>forward / back</span>
+<span><kbd>←</kbd> <kbd>→</kbd> / <kbd>Q</kbd> <kbd>E</kbd></span><span>turn left / right</span>
+<span><kbd>A</kbd> <kbd>D</kbd></span><span>move sideways</span><span>Drag mouse</span><span>look · cursor stays free</span>
 <span><kbd>Shift</kbd></span><span>run</span><span><kbd>Space</kbd></span><span>jump</span><span><kbd>C</kbd></span><span>crouch</span>
-<span><kbd>Q</kbd> <kbd>E</kbd></span><span>turn</span><span>Scroll</span><span>lens width</span><span><kbd>Esc</kbd></span><span>release mouse</span></div></div>
+<span><kbd>F</kbd></span><span>open / close nearby</span><span>Scroll</span><span>lens width</span><span><kbd>Esc</kbd></span><span>pause walking</span></div></div>
+<button class="ff-interact" type="button" hidden></button>
 <div class="ff-tip">Walk up the stairs to change floor</div>
 <div class="ff-touch"><div class="ff-stick"></div><button class="ff-jump" type="button">Jump</button></div>`;
     parent?.appendChild(el);
@@ -50,6 +57,8 @@ export class Hud {
     const start = el.querySelector('.ff-start');
     start.addEventListener('click', (e) => { e.preventDefault(); onLock(); canvas.focus?.(); });
     start.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onLock(); } });
+    this.interactButton = el.querySelector('.ff-interact');
+    this.interactButton.addEventListener('click', e => { e.preventDefault(); onInteract(); });
     this.jumpButton = el.querySelector('.ff-jump');
     this.jumpButton.addEventListener('pointerdown', (e) => { e.preventDefault(); onJump(); });
     this.visible = false;
@@ -59,6 +68,17 @@ export class Hud {
   show(on) { this.visible = on; this.el.hidden = !on; if (!on) this.setLocked(false); }
 
   setLocked(on) { this.el.classList.toggle('locked', on); }
+
+  setInteraction(prompt) {
+    const button = this.interactButton;
+    const key = JSON.stringify(prompt);
+    if (key === this.lastInteraction) return;
+    this.lastInteraction = key; button.hidden = !prompt;
+    if (!prompt) return;
+    button.replaceChildren(document.createTextNode(prompt.text)); button.disabled = Boolean(prompt.disabled);
+    if (prompt.note) { const note = document.createElement('small'); note.textContent = prompt.note; button.append(note); }
+    button.setAttribute('aria-label', prompt.text);
+  }
 
   setLocation(room, floor) {
     const text = room + '|' + floor;

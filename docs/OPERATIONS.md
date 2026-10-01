@@ -12,7 +12,7 @@ For a matching offline machine, run `scripts/make_wheelhouse.py` on a networked 
 
 ## Where projects live
 
-Generated builds and caches default to `~/.floorforge`. A saved `.floorforge.json` can be kept anywhere. The output directory can be changed with `--out`. Project JSON contains structured input, original prose and reference-image metadata, not the uploaded image bytes or AI keys. Back up the original images separately.
+Generated builds and caches default to `~/.floorforge`. A saved `.floorforge.json` can be kept anywhere. The output directory can be changed with `--out`. Project JSON contains structured input, original prose, the fixed 4 × 4 semantic placement guide and reference-image metadata, not the uploaded image bytes or AI keys. Back up the original images separately. Reference-image pixels are not inspected by generation; their records are for a person to consult.
 
 A build directory is immutable. Do not edit it in place. Copy external CAD edits elsewhere; they are not automatically imported into FloorForge. To revise the design, change the project and generate a new build. A cache mismatch means remove only the relevant `.cache` folder after preserving evidence; do not delete your saved projects as a repair.
 
@@ -24,10 +24,13 @@ A build directory is immutable. Do not edit it in place. Copy external CAD edits
 | Package download failed | Check internet/proxy/Python wheel availability; retry setup or use a matching wheelhouse. |
 | 3D unavailable | Enable supported WebGL2 hardware acceleration or use Drawing set; the standalone sample embeds a drawing fallback. |
 | Browser cannot connect | Keep the launcher running; use the printed `127.0.0.1` URL and actual random port. |
-| Port conflict | Default port `0` chooses a free port; do not force an occupied port. |
+| Port conflict | Launching on a port already serving this FloorForge project reuses that server and opens its URL. Its current settings stay in force. If another application or a different project owns the port, use `--port 0` to choose a free port. |
 | Design rejected | Read the error. Relax the programme, enlarge the plot or explicitly choose G+1; the generator will not secretly add floors. |
-| Grid rejected | Ensure connected room labels, exterior light and portal routes, adequate room dimensions, and a fitting ground-only programme. |
-| “Nothing changed” | Read the visible build ID and manifest. Style selection requires regeneration. |
+| 16-cell guide rejected | The board must be exactly 4 × 4, contain at least one supported room label and agree with the programme (for example, do not paint bedroom 4 in a two-bedroom brief). Each requested floor has a separate board; floor assignment is retained, while cell boundaries remain relative. |
+| Room appears in the wrong area | Confirm **Apply this positional guide** is on, generate a new build, then inspect the building's placement audit. The planner uses relative targets while retaining minimum sizes, circulation and the painted floor assignment; a cell is not an exact boundary. |
+| Description did not change the plan | Open **Review what we understood**. Only listed structured values and supported room-location phrases are applied. Anything under “not understood”, or a disabled description, remains a note. |
+| Reference image did not change the plan | Expected: images are metadata/manual references only. Enter the required fact in a supported field, recognised description phrase or the 16-cell guide. |
+| “Nothing changed” | Read the visible build ID and manifest and confirm the relevant source is enabled. Theme, brief, description and guide changes require regeneration. |
 | Provider error | Verify the exact model ID, endpoint, quota and key; AI stays optional. Keys expire after 30 minutes. |
 | IFC viewer rejects a file | Preserve its validation report and do not label IFC accepted; use SVG/DXF/GLB for review while fixing the exporter. |
 
@@ -48,4 +51,23 @@ Both native build scripts remain **unexecuted on their target platforms**. A Lin
 
 ## Rollback and updates
 
-Keep the prior release folder and project backups. Shut down its server, install the new source into a **new folder**, recreate its environment and reopen a saved project. Roll back by closing the new server and starting the prior folder. The tool does not auto-migrate or delete project files. No automatic update service or telemetry is implemented. Version 0.2 project schemas do not promise backward compatibility with the unavailable legacy repository.
+Keep the prior release folder and project backups. Shut down its server, install the new source into a **new folder**, recreate its environment and reopen a saved project. Roll back by closing the new server and starting the prior folder. The tool does not auto-migrate or delete project files. No automatic update service or telemetry is implemented. Version 0.2 project schemas do not promise general backward compatibility with the unavailable legacy repository.
+
+One narrow compatibility path is retained for this repository's earlier metric grids: a project containing `cell_mm` and the legacy `floors` matrix can still be read/generated with the old exact, ground-floor rules. When the current studio opens that board, it maps every distinct room label to the nearest free 4 × 4 cell around that room's old centroid; it refuses migration if more than 16 distinct labels would force data loss. A subsequent save emits the current semantic-grid contract and no longer promises the old millimetre cells. Keep a backup if the exact legacy payload matters.
+
+For exact geometry and stale-preview troubleshooting, see [Custom Plan](CUSTOM_PLAN.md). Failed generation keeps the previous design visibly labelled and disables exports for the current draft.
+
+
+## Opening doors and windows while walking
+
+Approach a generated door or window, look toward its opening and press **F**, or tap/click the contextual button. Both sides work within 2.1 m on the same floor; intervening walls, furniture and other leaves block the interaction. **↑/↓** move forward/back; **←/→** turn; **A/D** strafe; **Q/E** also turn. Held F does not repeatedly toggle the opening, and typing in form fields does not control the walk.
+
+Room and entrance doors swing between their authored open pose and closed pose. A sliding window's first sash moves onto its neighbour; single-pane windows pivot. Raised sills, fixed frames, guards and walls remain physical obstacles. Use a door for gallery/balcony access. Existing balcony glazing is authored half-open: **Open fully** clears its remaining leaf, and **Return to half-open** restores the authored pose. It does not pretend that this partial-panel design can seal the whole aperture.
+
+Moving leaf geometry and walking collision use the same transforms. A panel stops if the visitor enters its sweep; step clear and operate it again. Operating an opening changes only the walkthrough pose, not the draft revision or plan hash. Reloading a design restores authored poses. Canonical GLB/IFC/drawings retain those design poses; a presentation GLB records the currently visible poses in its metadata. Previously exported standalone HTML contains its old embedded viewer; generate a new export for these controls. Old scenes opened in the current studio are supported through their companion building file.
+
+## Combining inputs
+
+**Review what we understood** and **Generate** populate a persistent **Input coverage** panel. It records applied/confirmed fields, overridden values and their winning source, unparsed description requests, disabled sources, inactive plan drafts, reference images and notes. Exact custom geometry controls its rooms, openings and stairs: automatic programme switches and description placements are explicitly reported when they cannot rewrite that geometry. A source is not labelled applied merely because it is enabled. Input coverage is stored with the same plan hash in intent, building, scene and report JSON. Coverage from an older revision is labelled as previous when the draft changes.
+
+Images and arbitrary prose still need manual interpretation; the coverage panel makes that limitation visible. Conflicting equal-priority fields and invalid geometry remain generation errors.

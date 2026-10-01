@@ -1,0 +1,8 @@
+{
+  "source_commit": "c68a751",
+  "unaffected_nodes": "b48fe9a4f6ab590a9c5f681fd7a51eebf4372a4adcaf414cc1965be16184545c",
+  "ground_nodes": "13c94860dc566ea28f5fd117676552e903597ac0b029c4f70046e1c5be70231b",
+  "entrance_unaffected_nodes": "549da1a0b98080997c6bbdb18401494f4d8f70995cf47fc04c16568ffa0db852",
+  "furniture": "105ddf070a3e356b9c12dc32d1ba1195c828032feb5be4e8e97f492ae13566ed",
+  "colliders": "a3ef80fd7374ea4adcce69ac88b3a382d351b4d793a7c8138168a66319034c46"
+}

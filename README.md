@@ -17,11 +17,12 @@ Choose **Walk in**, click the view and explore on foot:
 | Input | Action |
 |---|---|
 | Mouse (pointer lock) or drag | Look around |
-| `W` `A` `S` `D` / arrow keys | Walk |
+| `↑` / `↓` or `W` / `S` | Walk forward / backward |
+| `←` / `→` or `Q` / `E` | Turn left / right |
+| `A` / `D` | Move sideways left / right |
 | `Shift` | Run |
 | `Space` | Jump |
 | `C` | Crouch |
-| `Q` / `E` | Turn (keyboard only) |
 | Scroll | Lens width (field of view) |
 | `Esc` | Release the mouse; press again to return to the exterior |
 
@@ -36,6 +37,10 @@ The walk starts on the footpath outside the open pedestrian gate, facing the hou
 **Windows and terraces.** Every exterior theme uses one contemporary window system: slim aluminium frames with staggered sliding panes, slim sills, and obscured glass in bathrooms. Bedroom windows on the facade sit in slim projecting pods lined with timber. First-floor terraces have a timber deck, a frameless glass balustrade with a slim handrail, a pergola of timber louvres with downlights, and seating between planted corners.
 
 The full extracted folder must stay together for the PDF/DXF/GLB/IFC links beside a preview to work. Viewing a sample is not generating a new design.
+
+## Start simply, refine later
+
+Choose **Design rooms → Arrange rooms** to place and size rooms. **Smart fit rooms** proposes room sizes, wall spacing, stairs, doors and windows. Choose **Yes** to use the fit or **No** to keep your sketch; one Undo restores the original. **Fit & preview 3D** also generates after approval. **Fine-tune** reveals detailed drafting tools when needed. See [the short user guide](docs/QUICK_START.md).
 
 ## Generate your own home
 
@@ -72,20 +77,24 @@ Start with a tested preset: 40×60 ft / G+1 / three bedrooms; 30×40 ft / ground
 7. **Must-haves** — pooja room, car parking, open kitchen.
 8. **Budget** in lakh (a context, not a quote).
 
-Everything else has a sensible default under “Go deeper” (open spaces, plinth, floor height, soil, cost rates, plan variant); typing your authority's own setbacks there switches the derived ones off. You can also **describe the home in words** — “30 by 40 north facing site, 3BHK duplex, all bedrooms with attached bathrooms, pooja room, car parking, open kitchen, budget 80 lakhs, vastu compliant” — and **Review what we understood** lists each phrase that was read and what it set, the phrases that were not understood (kept as notes, not applied), and any assumption made (such as “30 by 40 read as feet” or “1200 sq ft read as the standard 30 × 40 ft plot”). Plot areas in sq ft, sq yd/gaj, sq m, cents, guntha and marla, budgets in lakh or crore, G+1/duplex, BHK and bath counts, setbacks and floor heights are understood. Inspect the home, drawing set and design review; save a project JSON or export the entire design package.
+Everything else has a sensible default under “Go deeper” (open spaces, plinth, floor height, soil, cost rates, plan variant); typing your authority's own setbacks there switches the derived ones off. You can also **describe the home in words** — “30 by 40 north facing site, 3BHK duplex, all bedrooms with attached bathrooms, pooja room, car parking, open kitchen, budget 80 lakhs, vastu compliant” — and **Review what we understood** lists each phrase that was read and what it set, the phrases that were not understood (kept as notes, not applied), and any assumption made (such as “30 by 40 read as feet” or “1200 sq ft read as the standard 30 × 40 ft plot”). Plot areas in sq ft, sq yd/gaj, sq m, cents, guntha and marla, budgets in lakh or crore, G+1/duplex, BHK and bath counts, setbacks and floor heights are understood. Explicit room-location phrases such as “kitchen on the left”, “master bedroom at the rear” or “south-east kitchen” are also compiled as spatial hints. Unlisted or unparsed prose remains a reference note; it is not sent through to the planner as a hidden constraint. If a visible form control is changed after older description, imported-plan or AI data, that touched control is recorded as the final authoritative value; the review table shows the winning source and whether each visible input affects plan/site geometry, vertical 3D, finishes, metadata or reports only. Inspect the home, drawing set and design review; save a project JSON or export the entire design package.
+
+**Quick Guide has a fixed 16-cell board per floor.** Ground, First and Second tabs retain room assignments and request broad front/rear/left/right placement. Cells carry no physical size and do not define exact boundaries. The bounded planner either meets the placement screen or reports a floor- and cell-specific conflict. For exact dimensions, authored openings, different floor plates and first-floor open terraces, choose **Custom Plan** and open the dimensioned editor. See [the editor workflow and geometry contract](docs/CUSTOM_PLAN.md).
+
+Reference images are different: they are **manual visual references only**. The core does not inspect, trace or infer rooms, style or dimensions from their pixels. A saved project contains their name, hash and note, not their bytes, so keep the originals separately.
 
 ### How the plan is made
 
 `floorforge/planner.py` plans the way an architect sketches: a public spine (living, dining, hall) with two stacks of rooms beside it — bedroom suites with attached baths and a dressing room for the master, the common bath, study, kitchen with its utility, pooja and store. It searches hall positions, stack orders and room depths and scores every candidate against residential planning rules: NBC 2016 Part 3 style minimums as hard limits (habitable room 9.5 m² / 2.4 m wide, a second bedroom 7.5 m², kitchen 5 m², bath 2.8 m² / 1.2 m), comfortable sizes that grow with the plot, proportions, a window on an outside wall for every habitable room and air for every bath, wet rooms clustered for short plumbing, a bath on every bedroom floor, a short hall, no bath beside or above the pooja or over the kitchen, and the Vastu hand (the plan or its mirror image). A pooja that finds no slot in the stacks is carved from a rear corner of the living room. Doors swing into the rooms they serve and are hinged at the nearer corner; windows come in stock module widths.
 
-The generator is bounded, not universal. Infeasible requests return explicit errors rather than adding floors or silently shrinking an exact grid. The tiny-plot example has one bedroom deliberately; a two-bedroom request has not been smuggled into a second floor.
+The generator is bounded, not universal. Infeasible requests return explicit errors rather than adding floors or pretending a positional cell supplied buildable dimensions. The tiny-plot example has one bedroom deliberately; a two-bedroom request has not been smuggled into a second floor.
 
-The grid is exact when enabled: cells form real connected polygons, including L-shaped rooms and footprints. Manual grids are currently ground-floor only. Uploaded photos/sketches are **manual references**, not automatically recognised geometry. Image bytes remain in the browser session; project files preserve their metadata, not the image files. Save your originals separately.
+New projects use only the fixed 4 × 4 semantic placement guide described above. Older project JSON that contains a metric `cell_mm` exact grid remains readable through the legacy compatibility path, including its old ground-floor and connectivity restrictions. The studio does not expose a variable grid or cell-size control; once an older grid is edited and saved in the current studio, it is represented as the 16-cell spatial guide rather than a promise to preserve its old metric cell geometry.
 
 ## What is included
 
 - Deterministic source fusion and a cached, content-addressed Python DAG.
-- G / G+1 reference-family generation, actual room polygons, opening-cut walls, aligned stair cores and a roof-open upper terrace.
+- G / G+1 / G+2 reference-family generation and an authoritative orthogonal custom-plan compiler, actual room polygons, opening-cut walls, aligned stair cores and a roof-open upper terrace.
 - A responsive studio and the bundled realistic walkthrough viewer (Three.js, fully offline): furnished interiors, orbit/dollhouse/plan/walk modes, first-person walking with stairs, five lighting grades, PNG capture and an orbit-recording control. Six legacy facade recipes remain available.
 - Four explicit exterior architecture families, with Modern Tropical as the default for new projects. Each has real porch, balcony, opening, facade-screen, landscape and planting geometry. There are also five independent interior palette choices, with Bright Natural as the default. The exterior upgrade contract and evidence are in `docs/exterior-upgrade/`.
 - SVG drawings and an A3 PDF drawing/review set at 1:100 where the plot allows: plans with three dimension chains per side (openings, walls, overall), typed door and window tags (D, SD, O, W, V), coordination grid bubbles, finished floor levels, a north point and the section marker; a door, window and room schedule sheet (A-601); layered DXF floor plans with true DIMENSION entities; GLB; an IFC4 STEP exporter with a deliberately limited acceptance claim.
@@ -153,7 +162,7 @@ The supplied archive held 120 images and six videos, not the original FloorForge
 
 The output has **no structural design, official NBC clause validation, sanctioned byelaw pack, geotechnical assessment, reinforcement schedule or accessibility/ICU certification**. The cost range uses editable example rates, not market quotations. “Strict Vastu” is reported as unresolved when unmet; it does not create a false pass.
 
-The live renderer is a real-time raster approximation of photographic lighting. It has no path-traced global illumination and no ray-traced reflections; one light probe per room approximates bounce light. Its looks were verified in software-rendered Chromium, not on real GPUs. Path-traced stills come from the separate offline Cycles path, not the live viewer. 4K path-traced output, an interior cinematic film, drag-resize design editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
+The live renderer is a real-time raster approximation of photographic lighting. It has no path-traced global illumination and no ray-traced reflections; one light probe per room approximates bounce light. Its looks were verified in software-rendered Chromium, not on real GPUs. Path-traced stills come from the separate offline Cycles path, not the live viewer. 4K path-traced output, an interior cinematic film, individual furniture drag/rotate editing, automatic sketch/CV interpretation, a complete questionnaire and all native installers are not finished requirements.
 
 ## Rebuilding the viewer (developers only)
 
@@ -173,3 +182,17 @@ No `.dmg`, `.exe` or `.msi` binary is disguised inside this ZIP. `packaging/` co
 See `docs/ARCHITECTURE.md`, `docs/REQUIREMENT_MATRIX.md`, `docs/AI_ASSIST.md`, `docs/RENDERING.md`, `docs/OPERATIONS.md`, `docs/ACCEPTANCE_PLAN.md`, `docs/RESEARCH_AND_DECISIONS.md` and `licenses/LEDGER.json`.
 
 **Use this to develop and review a design with a competent local professional—not to instruct construction.**
+
+### Exact per-floor plans
+
+Choose **Quick Guide** for separate Ground/First/Second 16-cell placement boards, or **Custom Plan** for the full-screen dimensioned editor. Custom plans preserve clear room geometry, authored openings, floor assignments and linked U stairs; valid geometry bypasses the automatic planner. The G+2 example includes bedrooms and an accessible first-floor open terrace. Edits visibly mark old 3D and exports stale until the matching revision generates successfully.
+
+See [the custom-plan contract, workflow and limits](docs/CUSTOM_PLAN.md). The editor supports orthogonal plans with a uniform wall allowance; it is not unrestricted architectural CAD or a construction-approval system.
+
+Enable **Stairs to roof terrace** and regenerate to extend the actual linked core through the roof, with a landing door, walkable terrace and guards. In Walk mode use the stairs and **F** to open the door; the floor selector cannot teleport you. Custom core placement follows the drawing, and **Move linked stairs on every floor** keeps counterparts aligned in one undoable edit. Existing saved projects retain their old roof until this option is enabled.
+
+## Sample project gallery
+
+Open **Sample projects · explore in 3D** in the left sidebar for five completed homes with rendered thumbnails: the saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
+
+Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.

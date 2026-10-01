@@ -1,0 +1,8 @@
+{
+  "python_tests": 298,
+  "verification": "290 passed in the full sandboxed run; the seven loopback tests were blocked by sandbox networking and then passed with localhost permission (24 security tests passed). The additional mesh-export test and all 12 placement tests passed.",
+  "node_tests": 13,
+  "browser_checks": 21,
+  "aesthetic_baseline": "Existing preset scene-data hashes match; furniture-only edits preserve unrelated nodes, assets, materials, lighting, cameras, planting and lawns.",
+  "ifc": "Reference integrity and furniture mesh membership checked; independent IFC schema/BIM-viewer acceptance remains unverified."
+}
