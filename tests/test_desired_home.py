@@ -631,7 +631,7 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     spaces={r['id']:r for r in b['spaces']}
     hole=Polygon(spaces['u-garden-daylight']['clear'])
-    assert hole.equals(Polygon(spaces['g-veranda']['clear']))
+    assert hole.equals(box(15438,5800,18138,8400))
     assert geometry(b['floor_plates'][1]['regions']).intersection(hole).area==0
     for roof in b['roofs']:
         assert geometry(roof['regions']).intersection(hole).area==0
@@ -683,8 +683,8 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     before=generate_layout(fuse(old));after=generate_layout(fuse(p))
     for key in ('spaces','walls','openings','stairs','guards','floor_plates'):
         assert [strip_layout(x) for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[strip_layout(x) for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
-    sky=box(11450,5800,18138,8400)
-    assert geometry(before['roofs'][0]['ceiling']).difference(sky).equals(geometry(after['roofs'][0]['ceiling']))
+    sky=box(15438,5800,18138,8400)
+    assert geometry(before['roofs'][0]['ceiling']).union(box(15288,7400,16938,8400)).difference(sky).equals(geometry(after['roofs'][0]['ceiling']))
     baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()

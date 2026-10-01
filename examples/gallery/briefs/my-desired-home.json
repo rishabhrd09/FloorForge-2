@@ -1025,38 +1025,7 @@
                 1800
               ]
             ],
-            "finishStyle": "honed-sandstone",
-            "canopyStyle": "clear-glass",
-            "canopyPosts": [
-              [
-                3300,
-                120
-              ],
-              [
-                6200,
-                120
-              ],
-              [
-                9200,
-                120
-              ],
-              [
-                12200,
-                120
-              ],
-              [
-                14970,
-                120
-              ],
-              [
-                14970,
-                2900
-              ],
-              [
-                14970,
-                5670
-              ]
-            ]
+            "finishStyle": "honed-sandstone"
           },
           {
             "id": "u-studio-terrace",
@@ -1081,14 +1050,7 @@
               ]
             ],
             "clearAccess": true,
-            "finishStyle": "honed-sandstone",
-            "canopyStyle": "clear-glass",
-            "canopyPosts": [
-              [
-                3300,
-                3320
-              ]
-            ]
+            "finishStyle": "honed-sandstone"
           },
           {
             "id": "u-stair",
@@ -1265,12 +1227,37 @@
             ]
           },
           {
-            "id": "u-garden-daylight",
-            "kind": "void",
-            "name": "Open sky above the entire veranda",
+            "id": "u-veranda-terrace",
+            "kind": "terrace",
+            "name": "Open terrace above the covered veranda",
             "polygon": [
               [
                 11450,
+                5800
+              ],
+              [
+                15438,
+                5800
+              ],
+              [
+                15438,
+                8400
+              ],
+              [
+                11450,
+                8400
+              ]
+            ],
+            "clearAccess": true,
+            "finishStyle": "honed-sandstone"
+          },
+          {
+            "id": "u-garden-daylight",
+            "kind": "void",
+            "name": "Outer sky gap before the garden balcony",
+            "polygon": [
+              [
+                15438,
                 5800
               ],
               [
@@ -1282,7 +1269,7 @@
                 8400
               ],
               [
-                11450,
+                15438,
                 8400
               ]
             ],
@@ -1619,7 +1606,7 @@
       }
     ]
   },
-  "notes": "East-facing 60 \u00d7 55 ft concept. An olive-gold \u0160koda Kylaq representation occupies the right parking bay with a walking strip beside it. Use Show car / Hide car in the 3D toolbar; the view remembers your choice. Broad aligned 2.4 m-high window heads light the first-floor studio and arrival lobby behind a 1.8 m-deep open front terrace. The front-right 10 ft parking lane beside drawing now continues farther back to the veranda. The 5 ft left lane beside the kitchen ends at the extended staircase enclosure; the 8 ft tiled front court remains. The stair rises south, turns right west at the landing, then right north. Its 1.10 m flights and 1.162 m landings align through the first floor and roof. Tall east-facing glazing overlooks the side corridor; the south wall is solid. Bedroom windows previously facing the side-lane recess move to their rear walls because the expanded stair enclosure occupies that recess. The caregiver door swings into the caregiver bedroom. Boundary-reaching portions are subject to local approval. The master bedroom entry now faces the stair landing; its main bay is 200 mm narrower and its private bathroom is retained. Drawing is a separate 4.116 \u00d7 5.500 m room with exactly three doors: the retained front entrance, a small dining door and a small veranda door. There is no door to living. Large parking-facing glazing and a separate veranda window provide views. The home care room is a full 6.788 \u00d7 4.150 m rectangle, with no caregiver recess behind the recliner. The straight rear-left caregiver unit has a 2.400 \u00d7 3.126 m single bedroom and a 2.400 \u00d7 1.300 m attached toilet in line. Its 1 m ICU door is on the head-wall side; the independent 1.1 m timber garden door, hinged inward at the rear jamb, leads along the 1.326 m rear path to the lawn, veranda and outside. The bedroom-side courtyard is now a smaller 1.85 \u00d7 0.90 m planted lightwell, with a 0.75 m covered edge beneath the retained upper gallery. Bedroom 1 extends 900 mm toward the stairs and its rear wall moves forward 900 mm, creating a covered rear ventilation recess open along its rear edge. The upper bedroom private balcony slab remains above this recess; the ground-floor recess is still covered. The ground-floor attached bathroom stays fixed. The TV stays in place. Its left window is retained; the right window becomes a single fixed 1 m-wide, 2.4 m-high floor-level pane. Around the corner, the farthest 1.2 m veranda glazing bay becomes solid wall. The remaining two full-height glass doors slide independently along separate tracks and stack in front of that wall, creating coordinated L-shaped glazing with the fixed TV-side pane. The corner pier is retained; glass thickness is visual modelling, not a construction specification. The recliner is 500 mm farther back and 250 mm to the seated person's left of the previous centred position. The first two panels of the long left-wall window, nearest the caregiver entrance, are replaced by solid wall; the last three panels remain. The cupboard sits in the corner beside the caregiver entrance. Three visitor chairs are on the recliner's right; the left side is reserved for equipment, with the existing equipment table along the new solid wall. The right lawn expands to a 2.7 \u00d7 5.776 m garden, using the old caregiver site and the end of the veranda side return; almost its full area is green grass with pots at the perimeter. The main veranda remains 6.688 \u00d7 2.600 m, with the living door unchanged and the ICU opening reduced to two wall-stacking glass doors. The living-to-ICU glass opening is still a generous 2.65 m. The rear caregiver exit remains independent of the ICU. Warm matte Jodhpuri sandstone slabs in a restrained honey-buff palette and warm wall lights finish the open-sky veranda without adding furniture or changing its access routes. One recliner, three right-side chairs, equipment table and corner cupboard furnish the care room. Living seating and the guarded double-height opening move rearward, with direct connections to dining, stairs, master, care and veranda. The veranda retains its 6.688 \u00d7 2.600 m outline. A 2.700 \u00d7 1.000 m low garden occupies its outer rear edge, leaving a continuous 1.600 m paved route in front. The upper connecting deck is removed over the whole 6.688 \u00d7 2.600 m veranda, which is now open to sky. The front/right L-shaped terrace and the separate master garden balcony each have independent sloping glass canopy roofs, with no canopy or bridge across the sky gap. The master balcony has outer-edge columns aligned with its canopy posts and dedicated ground-level piers; these are concept support lines requiring structural sizing and foundation design. Edge collectors, gutters and downpipes drain the retained decks and canopy roofs. The ground garden drain remains. The living glass remains 2.60 m wide with two broad sliding panels, approximately 1.21 m clear when open. Warm 900 \u00d7 600 mm Jodhpuri sandstone slabs with fine staggered joints finish the veranda; the interior flooring and flush threshold stay unchanged. Low planting keeps the view open, with taller pots at the outer boundary. The sofa remains against the drawing-room divider facing the kitchen and stairs. This partition blocks the garden from the centre seat; dining and the living glass have the garden view. Fabric is gathered above the glazing head because side stacks would extend beyond the room corners. A 1.8 \u00d7 1.65 m open puja alcove sits immediately left of the opaque wooden entry door, with the mandir against the east wall below a wide single-pane clerestory. Only the east backing wall and the short full-height kitchen divider remain; both hall-facing sides are completely open without doors or corner posts. A limestone entry feature, timber detailing and warm light integrate the clerestory and wooden entrance into the front elevation. The former projecting hall counter is removed. The kitchen rear wall retains approximately 1.4 m of full-height painting wall followed by a 1.425 m-wide, 950 mm-high serving counter on the same wall line, with an open hatch above and a small end jamb. The modular kitchen has one continuous L-shaped marble worktop under the front window and along the puja-divider wall, with an inset sink on the return, a stove at the former sink position below the front window, a low rear extractor and coordinated upper cupboards. The former rear preparation counter is removed; a standalone fridge sits on that opposite wall with no cupboard above it. The central kitchen aisle remains clear. The compact 1.5 m four-seat dining table runs parallel to the serving counter and moves closer to it, under retained circular downlights. The ground-floor living, dining, drawing and kitchen ceilings use plain surfaces without decorative POP coves or hanging lights; the living and drawing floor lamps are removed. The sofa backs onto the continuous drawing-room divider, using the open entry-hall edge, and faces the kitchen and stairs; its coffee table moves with it, leaving the centre of the lounge open. Dining stays beside the stairs; the pantry and wash yard remain accessible through the kitchen. Doors and gates start closed and can be opened in the walkthrough. The small lightwell is closed off from the living hall by a plain solid wall, with no door or passage. The narrow ICU window behind the recliner is replaced by plain wall. Windows from Bedroom 1 and the caregiver bathroom, drainage and the ventilated clear-glass canopy are retained for daylight and ventilation. No opaque upper slab or roof covers it. The upper gallery reroutes in front of the lightwell. The first-floor studio and lobby are set back 1.8 m behind the east-facing terrace. The open terrace turns along the north/right side, with direct sliding-door access from the lobby. The master suite opens onto its separate garden balcony. The studio is 3.55 \u00d7 2.20 m; Bedroom 2 is 5.45 \u00d7 3.00 m with a private rear balcony; the master suite is 6.188 \u00d7 3.952 m. A continuous guarded gallery connects every room to the existing stairs and overlooks the unchanged living atrium. Its generated corner posts are removed and an ivory metal balustrade with a continuous oak handrail follows the retained opening. The arrival lobby opens fully into the gallery. Bedroom 2 has a 950 mm entry and rear-wall storage away from its entrance. Coordinated matte sandstone paving finishes every upper terrace and balcony. The garden daylight aperture and drainage remain intact with a white metal and timber surround. The shared bathroom remains off the gallery. New internal partitions are concept layouts: final framing and load transfer require structural design. Stone accents, timber soffits and restrained lighting refine the exterior. Bathrooms require designed mechanical ventilation. Side setback fields describe minimum clearance at the boundary-reaching wings. Structural support, boundary permissions, daylight, ventilation and actual equipment clearances require detailed design review. This is a residential care concept, not a clinically specified ICU. The front porch has no freestanding column or projecting sit-out base. A shorter timber canopy uses a wall ledger and brackets; compact front steps leave the right parking approach clear. The black slatted pedestrian gate slides left behind the boundary wall, while the vehicle gate retains two inward-opening leaves. Low boundary lights replace front-court bollards.",
+  "notes": "East-facing 60 \u00d7 55 ft concept. An olive-gold \u0160koda Kylaq representation occupies the right parking bay with a walking strip beside it. Use Show car / Hide car in the 3D toolbar; the view remembers your choice. Broad aligned 2.4 m-high window heads light the first-floor studio and arrival lobby behind a 1.8 m-deep open front terrace. The front-right 10 ft parking lane beside drawing now continues farther back to the veranda. The 5 ft left lane beside the kitchen ends at the extended staircase enclosure; the 8 ft tiled front court remains. The stair rises south, turns right west at the landing, then right north. Its 1.10 m flights and 1.162 m landings align through the first floor and roof. Tall east-facing glazing overlooks the side corridor; the south wall is solid. Bedroom windows previously facing the side-lane recess move to their rear walls because the expanded stair enclosure occupies that recess. The caregiver door swings into the caregiver bedroom. Boundary-reaching portions are subject to local approval. The master bedroom entry now faces the stair landing; its main bay is 200 mm narrower and its private bathroom is retained. Drawing is a separate 4.116 \u00d7 5.500 m room with exactly three doors: the retained front entrance, a small dining door and a small veranda door. There is no door to living. Large parking-facing glazing and a separate veranda window provide views. The home care room is a full 6.788 \u00d7 4.150 m rectangle, with no caregiver recess behind the recliner. The straight rear-left caregiver unit has a 2.400 \u00d7 3.126 m single bedroom and a 2.400 \u00d7 1.300 m attached toilet in line. Its 1 m ICU door is on the head-wall side; the independent 1.1 m timber garden door, hinged inward at the rear jamb, leads along the 1.326 m rear path to the lawn, veranda and outside. The bedroom-side courtyard is now a smaller 1.85 \u00d7 0.90 m planted lightwell, with a 0.75 m covered edge beneath the retained upper gallery. Bedroom 1 extends 900 mm toward the stairs and its rear wall moves forward 900 mm, creating a covered rear ventilation recess open along its rear edge. The upper bedroom private balcony slab remains above this recess; the ground-floor recess is still covered. The ground-floor attached bathroom stays fixed. The TV stays in place. Its left window is retained; the right window becomes a single fixed 1 m-wide, 2.4 m-high floor-level pane. Around the corner, the farthest 1.2 m veranda glazing bay becomes solid wall. The remaining two full-height glass doors slide independently along separate tracks and stack in front of that wall, creating coordinated L-shaped glazing with the fixed TV-side pane. The corner pier is retained; glass thickness is visual modelling, not a construction specification. The recliner is 500 mm farther back and 250 mm to the seated person's left of the previous centred position. The first two panels of the long left-wall window, nearest the caregiver entrance, are replaced by solid wall; the last three panels remain. The cupboard sits in the corner beside the caregiver entrance. Three visitor chairs are on the recliner's right; the left side is reserved for equipment, with the existing equipment table along the new solid wall. The right lawn expands to a 2.7 \u00d7 5.776 m garden, using the old caregiver site and the end of the veranda side return; almost its full area is green grass with pots at the perimeter. The main veranda remains 6.688 \u00d7 2.600 m, with the living door unchanged and the ICU opening reduced to two wall-stacking glass doors. The living-to-ICU glass opening is still a generous 2.65 m. The rear caregiver exit remains independent of the ICU. Warm matte Jodhpuri sandstone slabs in a restrained honey-buff palette and warm wall lights finish the sheltered veranda without adding furniture or changing its access routes. One recliner, three right-side chairs, equipment table and corner cupboard furnish the care room. Living seating and the guarded double-height opening move rearward, with direct connections to dining, stairs, master, care and veranda. The veranda retains its 6.688 \u00d7 2.600 m outline. A 2.700 \u00d7 1.000 m low garden occupies its outer rear edge, leaving a continuous 1.600 m paved route in front. A 3.988 \u00d7 2.600 m terrace extension covers the main veranda between the drawing and care rooms. Only the outer 2.700 \u00d7 2.600 m section, beyond the car porch and immediately before the garden balcony, remains open to sky. The shared terrace has no overhead canopy. Only the separate master garden balcony has a sloping glass canopy roof, with no bridge across the sky gap. The master bedroom retains a full-height exterior wall facing the veranda and its existing side balcony door. The master balcony has outer-edge columns aligned with its canopy posts and dedicated ground-level piers; these are concept support lines requiring structural sizing and foundation design. Edge collectors, gutters and downpipes drain the retained decks and canopy roofs. The ground garden drain remains. The living glass remains 2.60 m wide with two broad sliding panels, approximately 1.21 m clear when open. Warm 900 \u00d7 600 mm Jodhpuri sandstone slabs with fine staggered joints finish the veranda; the interior flooring and flush threshold stay unchanged. Low planting keeps the view open, with taller pots at the outer boundary. The sofa remains against the drawing-room divider facing the kitchen and stairs. This partition blocks the garden from the centre seat; dining and the living glass have the garden view. Fabric is gathered above the glazing head because side stacks would extend beyond the room corners. A 1.8 \u00d7 1.65 m open puja alcove sits immediately left of the opaque wooden entry door, with the mandir against the east wall below a wide single-pane clerestory. Only the east backing wall and the short full-height kitchen divider remain; both hall-facing sides are completely open without doors or corner posts. A limestone entry feature, timber detailing and warm light integrate the clerestory and wooden entrance into the front elevation. The former projecting hall counter is removed. The kitchen rear wall retains approximately 1.4 m of full-height painting wall followed by a 1.425 m-wide, 950 mm-high serving counter on the same wall line, with an open hatch above and a small end jamb. The modular kitchen has one continuous L-shaped marble worktop under the front window and along the puja-divider wall, with an inset sink on the return, a stove at the former sink position below the front window, a low rear extractor and coordinated upper cupboards. The former rear preparation counter is removed; a standalone fridge sits on that opposite wall with no cupboard above it. The central kitchen aisle remains clear. The compact 1.5 m four-seat dining table runs parallel to the serving counter and moves closer to it, under retained circular downlights. The ground-floor living, dining, drawing and kitchen ceilings use plain surfaces without decorative POP coves or hanging lights; the living and drawing floor lamps are removed. The sofa backs onto the continuous drawing-room divider, using the open entry-hall edge, and faces the kitchen and stairs; its coffee table moves with it, leaving the centre of the lounge open. Dining stays beside the stairs; the pantry and wash yard remain accessible through the kitchen. Doors and gates start closed and can be opened in the walkthrough. The small lightwell is closed off from the living hall by a plain solid wall, with no door or passage. The narrow ICU window behind the recliner is replaced by plain wall. Windows from Bedroom 1 and the caregiver bathroom, drainage and the ventilated clear-glass canopy are retained for daylight and ventilation. No opaque upper slab or roof covers it. The upper gallery reroutes in front of the lightwell. The first-floor studio and lobby are set back 1.8 m behind the east-facing terrace. The open terrace turns along the north/right side, with direct sliding-door access from the lobby. The master suite opens onto its separate garden balcony. The studio is 3.55 \u00d7 2.20 m; Bedroom 2 is 5.45 \u00d7 3.00 m with a private rear balcony; the master suite is 6.188 \u00d7 3.952 m. A continuous guarded gallery connects every room to the existing stairs and overlooks the unchanged living atrium. Its generated corner posts are removed and an ivory metal balustrade with a continuous oak handrail follows the retained opening. The arrival lobby opens fully into the gallery. Bedroom 2 has a 950 mm entry and rear-wall storage away from its entrance. Coordinated matte sandstone paving finishes every upper terrace and balcony. The garden daylight aperture and drainage remain intact with a white metal and timber surround. The shared bathroom remains off the gallery. New internal partitions are concept layouts: final framing and load transfer require structural design. Stone accents, timber soffits and restrained lighting refine the exterior. Bathrooms require designed mechanical ventilation. Side setback fields describe minimum clearance at the boundary-reaching wings. Structural support, boundary permissions, daylight, ventilation and actual equipment clearances require detailed design review. This is a residential care concept, not a clinically specified ICU. The front porch has no freestanding column or projecting sit-out base. A shorter timber canopy uses a wall ledger and brackets; compact front steps leave the right parking approach clear. The black slatted pedestrian gate slides left behind the boundary wall, while the vehicle gate retains two inward-opening leaves. Low boundary lights replace front-court bollards.",
   "editorState": {
     "mode": "custom",
     "guideFloors": [
@@ -2706,38 +2693,7 @@
                   1800
                 ]
               ],
-              "finishStyle": "honed-sandstone",
-              "canopyStyle": "clear-glass",
-              "canopyPosts": [
-                [
-                  3300,
-                  120
-                ],
-                [
-                  6200,
-                  120
-                ],
-                [
-                  9200,
-                  120
-                ],
-                [
-                  12200,
-                  120
-                ],
-                [
-                  14970,
-                  120
-                ],
-                [
-                  14970,
-                  2900
-                ],
-                [
-                  14970,
-                  5670
-                ]
-              ]
+              "finishStyle": "honed-sandstone"
             },
             {
               "id": "u-studio-terrace",
@@ -2762,14 +2718,7 @@
                 ]
               ],
               "clearAccess": true,
-              "finishStyle": "honed-sandstone",
-              "canopyStyle": "clear-glass",
-              "canopyPosts": [
-                [
-                  3300,
-                  3320
-                ]
-              ]
+              "finishStyle": "honed-sandstone"
             },
             {
               "id": "u-stair",
@@ -2946,12 +2895,37 @@
               ]
             },
             {
-              "id": "u-garden-daylight",
-              "kind": "void",
-              "name": "Open sky above the entire veranda",
+              "id": "u-veranda-terrace",
+              "kind": "terrace",
+              "name": "Open terrace above the covered veranda",
               "polygon": [
                 [
                   11450,
+                  5800
+                ],
+                [
+                  15438,
+                  5800
+                ],
+                [
+                  15438,
+                  8400
+                ],
+                [
+                  11450,
+                  8400
+                ]
+              ],
+              "clearAccess": true,
+              "finishStyle": "honed-sandstone"
+            },
+            {
+              "id": "u-garden-daylight",
+              "kind": "void",
+              "name": "Outer sky gap before the garden balcony",
+              "polygon": [
+                [
+                  15438,
                   5800
                 ],
                 [
@@ -2963,7 +2937,7 @@
                   8400
                 ],
                 [
-                  11450,
+                  15438,
                   8400
                 ]
               ],

@@ -67,7 +67,7 @@ def test_upper_gallery_guards_storage_and_deck_finishes():
     assert not wardrobe.intersects(box(4.65,8.55,5.59,10.3))
     assert not any(w['id']=='u-balcony-privacy' for w in b['walls'])
     assert rooms['u-garden-daylight']['openToSky']
-    assert Polygon(rooms['u-garden-daylight']['clear']).area==6688*2600
+    assert Polygon(rooms['u-garden-daylight']['clear']).area==2700*2600
 
 
 @pytest.mark.parametrize('field,value',[('guardStyle','unsupported'),('wardrobeWall','ceiling'),('finishStyle','glossy')])

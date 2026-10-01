@@ -13,10 +13,12 @@ try {
  for(let i=0;i<100;i++)v.adapt(.05);v.updateProbe();for(let i=0;i<100;i++)v.adapt(.05);
  v.hud.show(false);v.updateLights();v.vegetation?.update(v.time,v.camera);v.composer.render(.016);
  },{eye,target,fov});await p.waitForTimeout(250);const bytes=await p.evaluate(async()=>Array.from(new Uint8Array(await (await __ff.viewer.snapshot({width:1600})).arrayBuffer())));writeFileSync(`evidence/desired-home/${name}.png`,Buffer.from(bytes));};
- await shot('open-veranda-aerial',[25,12,-.5],[13,3.6,-7.0],60);
- await shot('open-veranda-front',[22,6.8,16],[12.5,3.6,-5.5],55);
- await shot('open-veranda-sky',[16.2,1.65,-6.7],[16.8,5.3,-8.8],83);
- await shot('open-veranda-canopy',[17.25,4.78,-12.8],[17.2,5.35,-8.45],75);
+ await shot('corrected-veranda-aerial',[25,12,-.5],[13,3.6,-7.0],60);
+ await shot('corrected-veranda-front',[22,6.8,16],[12.5,3.6,-5.5],55);
+ await shot('corrected-veranda-sky',[16.2,1.65,-6.7],[16.8,5.3,-8.8],83);
+ await shot('corrected-veranda-shelter',[12.8,1.65,-6.3],[14,3.8,-8.5],78);
+ await shot('corrected-veranda-bedroom-wall',[16.8,4.9,-6.4],[12.8,4.6,-8.475],75);
+ await shot('corrected-veranda-canopy',[17.25,4.78,-12.8],[17.2,5.35,-8.45],75);
  const spawn=async(x,y)=>p.evaluate(({x,y})=>{const v=__ff.viewer;v.paused=true;v.setMode('walk');v.walker.teleport(v.walker.position.clone().set(x,3.15,-y));},{x,y});
  const door=async(id,goal)=>p.evaluate(({id,goal})=>{const v=__ff.viewer,d=v.openings.items.find(o=>o.id===id);if(!d)return false;d.goal=goal;for(let i=0;i<100;i++)v.openings.update(1/60);return d.value===goal;},{id,goal});
  const walk=async(x,y)=>p.evaluate(({x,y})=>{const w=__ff.viewer.walker;let reached=false;for(let i=0;i<600;i++){const dx=x-w.position.x,dz=-y-w.position.z;if(Math.hypot(dx,dz)<.06){reached=true;break;}w.yaw=Math.atan2(-dx,-dz);w.update(1/60,{forward:1,strafe:0});}return {reached,position:w.position.toArray()};},{x,y});
@@ -28,7 +30,9 @@ try {
  await spawn(9.4,3.3);check('Studio door opens',await door('u-office-lobby',1));await route('Lobby to studio',[[8.8,3.2],[7.5,3.2]]);
  await spawn(9.5,3.4);check('Lobby terrace door opens',await door('u-lobby-terrace',1));await route('Lobby to front terrace',[[10.0,3.4],[11.6,3.4]]);
  await route('Front and right terraces form a continuous L',[[11.6,1],[5,1],[11.8,1],[12.5,3.5],[13.5,5.0]]);
- check('Shared terrace guard stops entry into sky gap',!(await walk(13.5,6.3)).reached);
+ await route('Covered veranda terrace connects to the shared L',[[13.5,6.3],[14.7,7.5]]);
+ check('Shared terrace guard stops entry into outer sky gap',!(await walk(16.5,7.5)).reached);
+ check('Master bedroom wall blocks entry from terrace',!(await walk(14.7,9.2)).reached);
  await spawn(8.2,8.8);check('Master door opens',await door('u-bed-north-door',1));await route('Gallery to master bedroom',[[8.55,9.1],[9.8,9.1]]);
  await spawn(16.8,10.8);check('Master terrace door opens',await door('u-bed-north-terrace',1));await route('Master has direct terrace access',[[16.2,10.8],[14.8,10.8]]);
  await spawn(5.05,8.1);check('Small bedroom door opens',await door('u-bed-south-door',1));await route('Gallery to smaller bedroom',[[5.05,9.2],[4.4,10.3],[3,10.8]]);
@@ -39,7 +43,7 @@ try {
  await spawn(8.2,9.1);check('Shared bathroom door opens',await door('u-bath-door',1));await route('Gallery to bathroom',[[8.3,10.1]]);
  await spawn(16.8,9.0);check('Private master balcony guard stops entry into sky gap',!(await walk(16.8,7.5)).reached);
  await p.evaluate(()=>{const v=__ff.viewer;v.walker.teleport(v.walker.position.clone().set(16.5,0,-6.5));});
- await route('Veranda clear paved route beneath open sky',[[14.8,6.5],[12.3,6.5],[14.8,6.5],[17.5,6.5]]);
+ await route('Veranda paved route remains clear',[[14.8,6.5],[12.3,6.5],[14.8,6.5],[17.5,6.5]]);
  await spawn(6.0,6.3);check('Atrium guard blocks falling into living hall',!(await walk(7.2,6.3)).reached);
  await spawn(3,12.5);check('Private balcony guard blocks outer edge',!(await walk(3,14.8)).reached);
  check('No browser errors',errors.length===0);
@@ -47,6 +51,6 @@ try {
  const planPage=await browser.newPage({viewport:{width:1500,height:1060}});
  await planPage.setContent('<body style="margin:0;background:white"><img style="width:1500px;height:1060px;object-fit:contain" src="http://127.0.0.1:8765/samples/my-desired-home/sheets/A-102.svg"></body>');
  await planPage.waitForFunction(()=>document.querySelector('img').complete);
- await planPage.screenshot({path:'evidence/desired-home/open-veranda-plan.png',fullPage:false,timeout:60000});
-} finally {writeFileSync('evidence/desired-home/open-veranda-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();}
+ await planPage.screenshot({path:'evidence/desired-home/corrected-veranda-plan.png',fullPage:false,timeout:60000});
+} finally {writeFileSync('evidence/desired-home/corrected-veranda-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();}
 if(checks.some(c=>!c.pass))process.exitCode=1;

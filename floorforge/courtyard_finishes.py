@@ -205,6 +205,13 @@ def daylight_veranda(k, materials, building, room, height):
     # Restrict collector to the supported deck, not the open-to-below area.
     channel=channel.intersection(deck)
     k.poly_mesh(channel,top+.006,top+.013,'steel',f+1,'drain',sky['id']+'/collection-channel',sky['id'])
+    # Drain the terrace edge beside a side-open sky gap to the planted edge,
+    # keeping the main door approaches and paved route clear of roof runoff.
+    pipe_x,pipe_y=a-.09,d-.18
+    if deck.covers(Point(pipe_x,pipe_y).buffer(.025)):
+        k.rect((pipe_x-.035,pipe_y-.05,top-.08,pipe_x+.035,pipe_y+.05,top+.015),'frame',f+1,'drain',sky['id']+'/collector-outlet',sky['id'])
+        k.cylinder((pipe_x,pipe_y,z+height/2),.028,height-.06,'frame',f,'drain')
+        k.rect((pipe_x-.07,pipe_y-.07,z+.019,pipe_x+.07,pipe_y+.07,z+.03),'steel',f,'drain',owner+'/terrace-rain-outlet',owner)
     # Soffit fittings only survive where there is actual overhead cover.
     cover=scale(geometry(building['roofs'][f]['ceiling']),xfact=.001,yfact=.001,origin=(0,0))
     rx0,ry0,rx1,ry1=Polygon(np.array(room['clear'])/1000).bounds

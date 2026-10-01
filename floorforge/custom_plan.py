@@ -371,7 +371,9 @@ def compile_plan(intent):
         # An explicitly open atrium retains the wall allowance in the slab outline,
         # but its indoor edges have guards rather than opaque full-height walls.
         # Authored walls (e.g. the atrium's exterior glazing host) remain authoritative.
-        atriums={r['id'] for r in fl['rooms'] if r.get('openToBelow')}
+        # Outdoor sky gaps must keep adjoining rooms enclosed. Only indoor
+        # atriums intentionally replace their walls with open guarded edges.
+        atriums={r['id'] for r in fl['rooms'] if r.get('openToBelow') and not r.get('openToSky')}
         authored_lines=[LineString([w['a'],w['b']]).buffer(.01) for w in fl['walls']]
         floor_walls=[w for w in floor_walls if not atriums.intersection(w['rooms']) or
                      any(p.covers(LineString([w['a'],w['b']])) for p in authored_lines)]

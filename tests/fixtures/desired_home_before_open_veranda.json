@@ -117,466 +117,6 @@
       ]
     },
     {
-      "asset": "4783f00968b8f4ede773",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-0",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "6fd0a8775babbcfe2d9a",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-1",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "8e5f0c638d78e77210d0",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-2",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "735a259a6dba1174f5a3",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-3",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "2e5dab37519471e2a4f2",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-4",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "789b4d07a51b758861f9",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-5",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "c781903fcf523078fdd2",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-6",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "3548757d453cdd3e2141",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-7",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "728948e0b24ccec65d82",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-8",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "57d8872c9da196c0a358",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-9",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "67c992d8054324007695",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-10",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "ddc117a838c6f96b1ed1",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-11",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "fc49dfcc8a4956ec399c",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-12",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "86b29113f9491a1629f6",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-13",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "ff7b0b36348dc59f2fec",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-14",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "3a70811a75faa766979e",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-15",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "95c8728cd2fd3ba47fcd",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-16",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "7c6a2fae1e342e982031",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-17",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "ade1b7eb6e2fd38807df",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-18",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "asset": "53ccf2d1f2c38cfee7a9",
-      "floor": 0,
-      "id": "g-veranda/ceiling-slat-19",
-      "material": "oak",
-      "owner": "g-veranda",
-      "position": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "role": "ceiling",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ]
-    },
-    {
       "asset": "9f29909a827047f04b52",
       "floor": 0,
       "id": "g-veranda/ceiling-slat-20",
@@ -993,52 +533,6 @@
     {
       "asset": "unit-cylinder",
       "floor": 0,
-      "id": "object-02203",
-      "material": "lamp",
-      "owner": "object-02203",
-      "position": [
-        12.299999999999999,
-        6.18,
-        2.935
-      ],
-      "role": "fixture",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        0.035,
-        0.035,
-        0.012
-      ]
-    },
-    {
-      "asset": "unit-cylinder",
-      "floor": 0,
-      "id": "object-02204",
-      "material": "lamp",
-      "owner": "object-02204",
-      "position": [
-        14.949000000000002,
-        6.18,
-        2.935
-      ],
-      "role": "fixture",
-      "rotation": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        0.035,
-        0.035,
-        0.012
-      ]
-    },
-    {
-      "asset": "unit-cylinder",
-      "floor": 0,
       "id": "object-02205",
       "material": "lamp",
       "owner": "object-02205",
@@ -1062,7 +556,7 @@
   ],
   "added_nodes": [
     {
-      "asset": "edda27df11df3a9fea29",
+      "asset": "ebd435618a2e1e8e69cd",
       "floor": -1,
       "id": "object-00141",
       "material": "basalt",
@@ -1085,7 +579,7 @@
       ]
     },
     {
-      "asset": "06159847fdbe284637cd",
+      "asset": "dbdf8153ec63a0e10a47",
       "floor": -1,
       "id": "plinth-band",
       "material": "basalt",
@@ -1108,7 +602,7 @@
       ]
     },
     {
-      "asset": "2f9b027ccb65d762b3f6",
+      "asset": "f9330bd29e0bfdd558de",
       "floor": 0,
       "id": "F0-ceiling",
       "material": "ceiling",
@@ -1131,7 +625,7 @@
       ]
     },
     {
-      "asset": "7ca15119055529da3355",
+      "asset": "d356e3bf651a84ca05f0",
       "floor": 0,
       "id": "roof-floor-0",
       "material": "roof",
@@ -1154,7 +648,7 @@
       ]
     },
     {
-      "asset": "01d4ea2823e9151b1414",
+      "asset": "1454c3f9f2d707754be9",
       "floor": 0,
       "id": "custom-roof-edge-0",
       "material": "roof",
@@ -1174,6 +668,98 @@
         1.0,
         1.0,
         1.0
+      ]
+    },
+    {
+      "asset": "8d98b77bc290dcb62efb",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-20",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "fc18bb6978fab67d2b9b",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-21",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-02089",
+      "material": "frame",
+      "owner": "object-02089",
+      "position": [
+        15.348,
+        8.22,
+        1.575
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.028,
+        0.028,
+        3.09
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "g-veranda/terrace-rain-outlet",
+      "material": "steel",
+      "owner": "g-veranda",
+      "position": [
+        15.348,
+        8.22,
+        0.0245
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.14000000000000057,
+        0.14000000000000057,
+        0.011
       ]
     },
     {
@@ -2022,55 +1608,11 @@
       "fixture_visible": true,
       "kind": "porch",
       "position": [
-        12.299999999999999,
-        6.18,
-        2.9
-      ],
-      "power_w": 10
-    },
-    {
-      "color": "#ffdfae",
-      "fixture_visible": true,
-      "kind": "porch",
-      "position": [
-        14.949000000000002,
-        6.18,
-        2.9
-      ],
-      "power_w": 10
-    },
-    {
-      "color": "#ffdfae",
-      "fixture_visible": true,
-      "kind": "porch",
-      "position": [
         17.598000000000003,
         6.18,
         2.9
       ],
       "power_w": 10
-    },
-    {
-      "color": "#ffdfae",
-      "fixture_visible": true,
-      "kind": "porch",
-      "position": [
-        12.049999999999999,
-        6.2,
-        2.9499999999999997
-      ],
-      "power_w": 12
-    },
-    {
-      "color": "#ffdfae",
-      "fixture_visible": true,
-      "kind": "porch",
-      "position": [
-        13.85,
-        6.2,
-        2.9499999999999997
-      ],
-      "power_w": 12
     },
     {
       "color": "#ffdfae",
