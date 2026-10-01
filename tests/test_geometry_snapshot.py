@@ -39,3 +39,17 @@ def test_mesh_accepts_retriangulation_but_rejects_missing_faces():
     with pytest.raises(AssertionError):assert_mesh_snapshot(other,mesh,'slab')
     other=copy.deepcopy(mesh);other['faces']=[[2,1,0],[3,2,0]]
     with pytest.raises(AssertionError):assert_mesh_snapshot(other,mesh,'slab')
+
+
+def test_visual_matches_anonymous_parts_by_geometry_not_traversal_index():
+    mesh={'vertices':[[0.,0.,0.],[1.,0.,0.],[0.,1.,0.]],'faces':[[0,1,2]],'normals':None,'closed':False}
+    other=copy.deepcopy(mesh);other['vertices']=[[x+2,y,z] for x,y,z in other['vertices']]
+    expected={'assets':{'left':mesh,'right':other},
+              'nodes':[{'id':'object-00001','owner':'object-00001','asset':'left','material':'oak'},
+                       {'id':'object-00002','owner':'object-00002','asset':'right','material':'oak'}],
+              **{key:[] for key in ('materials','lights','cameras','vegetation','lawns')}}
+    actual=copy.deepcopy(expected)
+    actual['nodes'][0]['asset']='right';actual['nodes'][1]['asset']='left'
+    assert_visual_snapshot(actual,expected)
+    actual['nodes'][0]['material']='glass'
+    with pytest.raises(AssertionError):assert_visual_snapshot(actual,expected)

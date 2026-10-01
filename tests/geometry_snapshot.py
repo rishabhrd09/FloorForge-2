@@ -1,5 +1,5 @@
 """Compare geometry snapshots without treating machine rounding as design edits."""
-import math
+import math,json
 from numbers import Real
 from collections import defaultdict
 import numpy as np
@@ -57,10 +57,20 @@ def assert_visual_snapshot(actual,expected):
     # the referenced meshes themselves, including topology and smooth normals.
     assert len(actual['assets'])==len(expected['assets'])
     assert len(actual['nodes'])==len(expected['nodes'])
+    def metadata(node):
+        # Anonymous nodes inherit traversal indices from GEOS multipart output.
+        # Named semantic objects retain their identity in the comparison.
+        return {k:v for k,v in node.items() if k!='asset'
+                and not (k in ('id','owner') and isinstance(v,str) and v.startswith('object-'))}
+    def ordered(scene):
+        def key(node):
+            vertices=np.asarray(scene['assets'][node['asset']]['vertices'])
+            bounds=np.round([vertices.min(axis=0),vertices.max(axis=0)],6).tolist()
+            return json.dumps([metadata(node),bounds],sort_keys=True)
+        return sorted(scene['nodes'],key=key)
     checked=set()
-    for a,e in zip(actual['nodes'],expected['nodes']):
-        assert_snapshot({k:v for k,v in a.items() if k!='asset'},
-                        {k:v for k,v in e.items() if k!='asset'},a['id'])
+    for a,e in zip(ordered(actual),ordered(expected)):
+        assert_snapshot(metadata(a),metadata(e),a['id'])
         pair=(a['asset'],e['asset'])
         if pair not in checked:
             assert_mesh_snapshot(actual['assets'][pair[0]],expected['assets'][pair[1]],
