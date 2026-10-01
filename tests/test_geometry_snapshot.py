@@ -27,3 +27,15 @@ def test_visual_checks_mesh_even_when_cache_key_changes():
     assert_visual_snapshot(actual,expected)
     actual['assets']['new']['vertices'][1][0]=1.01
     with pytest.raises(AssertionError):assert_visual_snapshot(actual,expected)
+
+
+def test_mesh_accepts_retriangulation_but_rejects_missing_faces():
+    from geometry_snapshot import assert_mesh_snapshot
+    mesh={'vertices':[[0.,0.,0.],[1.,0.,0.],[1.,1.,0.],[0.,1.,0.]],
+          'faces':[[0,1,2],[0,2,3]],'normals':None,'closed':False}
+    other=copy.deepcopy(mesh);other['faces']=[[0,1,3],[1,2,3]]
+    assert_mesh_snapshot(other,mesh,'slab')
+    other['faces'].pop()
+    with pytest.raises(AssertionError):assert_mesh_snapshot(other,mesh,'slab')
+    other=copy.deepcopy(mesh);other['faces']=[[2,1,0],[3,2,0]]
+    with pytest.raises(AssertionError):assert_mesh_snapshot(other,mesh,'slab')
