@@ -1686,7 +1686,10 @@ def make_scene(building, report):
         # A bookcase on another wall.
         cases = spots(ctx, 1.2, .35, front=.7, height=2.0, step=.1)
         if cases:
-            bk = max(cases, key=lambda s: -abs(s['s'] - s['L'] / 2))
+            # Resolve equally central wall positions by world coordinates, not
+            # sub-nanometre GEOS differences or polygon traversal order.
+            bk = max(cases, key=lambda s: (round(-abs(s['s'] - s['L'] / 2),8),
+                                           -round(float(s['c'][1]),8),-round(float(s['c'][0]),8)))
             edit_mark = k.edit_mark()
             for u0, u1 in ((-.6, -.575), (.575, .6)):
                 lbox(bk, u0, u1, 0, .35, z, z + 2.0, M['casework'], f)
@@ -1704,7 +1707,8 @@ def make_scene(building, report):
         if clear.area > 9:
             corners = spots(ctx, .5, .5, front=0, height=1.2, step=.2)
             if corners:
-                sp = max(corners, key=lambda s: min(s['s'], s['L'] - s['s']) * -1)
+                sp = max(corners, key=lambda s: (round(-min(s['s'], s['L'] - s['s']),8),
+                                                round(P(s,0,.3)[1],8),round(P(s,0,.3)[0],8)))
                 px, py = P(sp, 0, .3)
                 k.plant(px, py, z, 'monstera', height=.9, f=f, pot=(.18, .34, 'planter' if upgraded_interior else 'ceramic'))
 
