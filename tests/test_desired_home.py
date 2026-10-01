@@ -12,12 +12,31 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 
+def historic_veranda_items(scene,key):
+    # Restore the bounded, approved overhead removal and balcony support additions
+    # only when comparing historical appearance snapshots. New tests validate the
+    # actual open-sky geometry and every retained ground-floor object separately.
+    from collections import Counter
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())
+    def canonical(n):
+        if key=='nodes':n={k:v for k,v in n.items() if k!='id' and not(k=='owner' and isinstance(v,str) and v.startswith('object-'))}
+        return json.dumps(n,sort_keys=True)
+    added=prior['support_colliders'] if key=='colliders' else prior['added_'+key]
+    counts=Counter(canonical(n) for n in added);items=[]
+    for n in scene[key]:
+        k=canonical(n)
+        if counts[k]:counts[k]-=1
+        else:items.append(n)
+    assert not any(counts.values()), 'Approved veranda additions changed unexpectedly'
+    return items+prior.get('removed_'+key,[])
+
+
 def historic_caregiver_nodes(scene):
     # Restore only the later approved glass-to-timber rear entrance for old baselines.
     before=json.loads((ROOT/'tests/fixtures/desired_home_before_caregiver_timber_door.json').read_text())
     key='g-caregiver-garden-door'
     moving=set(scene['door_motion'][key]['ids'])
-    return [n for n in scene['nodes'] if n.get('owner')!=key and n['id'] not in moving]+before['nodes']
+    return [n for n in historic_veranda_items(scene,'nodes') if n.get('owner')!=key and n['id'] not in moving]+before['nodes']
 
 def historic_nodes(scene):
     # Restore only the explicitly approved decorative removals when comparing
@@ -612,7 +631,7 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     spaces={r['id']:r for r in b['spaces']}
     hole=Polygon(spaces['u-garden-daylight']['clear'])
-    assert hole.area==1650000
+    assert hole.equals(Polygon(spaces['g-veranda']['clear']))
     assert geometry(b['floor_plates'][1]['regions']).intersection(hole).area==0
     for roof in b['roofs']:
         assert geometry(roof['regions']).intersection(hole).area==0
@@ -623,11 +642,11 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     route=box(11450,5800,18138,7400)
     assert Polygon(spaces['g-veranda']['clear']).covers(route)
     assert route.intersection(bed).area==0
-    upper_route=box(16938,5800,18138,14176)
+    upper_route=box(15600,8600,17750,13950)
     assert Polygon(spaces['u-terrace-north']['clear']).covers(upper_route)
     from shapely.ops import unary_union
     guards=unary_union([LineString(g['points']) for g in b['guards'] if g['owner']=='u-terrace-north'])
-    assert guards.buffer(1).covers(LineString([(15439,8400),(16938,8400),(16938,7400),(15288,7400),(15288,8249)]))
+    assert guards.buffer(1).covers(LineString([(15439,8400),(18137,8400)]))
     assert any(n.get('id')=='u-garden-daylight/collection-channel' for n in s['nodes'])
     assert any(n.get('id')=='g-veranda/bed-drain' for n in s['nodes'])
     assert any(l['id']=='g-veranda/garden-grass' for l in s['lawns'])
@@ -664,7 +683,8 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     before=generate_layout(fuse(old));after=generate_layout(fuse(p))
     for key in ('spaces','walls','openings','stairs','guards','floor_plates'):
         assert [strip_layout(x) for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[strip_layout(x) for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
-    assert geometry(before['roofs'][0]['ceiling']).equals(geometry(after['roofs'][0]['ceiling']))
+    sky=box(11450,5800,18138,8400)
+    assert geometry(before['roofs'][0]['ceiling']).difference(sky).equals(geometry(after['roofs'][0]['ceiling']))
     baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
     def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -683,7 +703,7 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
     assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
     assert digest([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
-    assert digest([x for x in scene['colliders'] if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['ground_colliders']
+    assert digest([x for x in historic_veranda_items(scene,'colliders') if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['ground_colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
@@ -713,8 +733,8 @@ def test_first_floor_rooms_lobby_private_balcony_and_continuous_open_terrace():
     assert r['u-bed-north']['area_m2']>r['u-bed-south']['area_m2']>r['u-office']['area_m2']>=7.5
     front=Polygon(r['u-terrace-front']['clear']);north=Polygon(r['u-terrace-north']['clear'])
     assert front.covers(box(3174,0,15090,1800))
-    assert front.boundary.intersection(north.boundary).length>=3000
-    assert 'u-terrace-north' in graph['u-terrace-front']
+    assert front.distance(north)>=2600
+    assert 'u-terrace-north' not in graph['u-terrace-front']
     assert geometry(b['roofs'][1]['ceiling']).intersection(front.union(north)).area<1
     assert any(g['owner']=='u-bedroom-balcony' and g['height']==1100 for g in b['guards'])
     # Close the exterior jog where the atrium glazing meets the front gallery.

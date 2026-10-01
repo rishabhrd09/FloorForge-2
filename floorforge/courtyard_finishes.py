@@ -196,22 +196,21 @@ def daylight_veranda(k, materials, building, room, height):
     sky=next(s for s in building['spaces'] if s.get('openToSky') and s['floor']==f+1 and Polygon(np.array(s['clear'])/1000).intersects(bed))
     hole=Polygon(np.array(sky['clear'])/1000);a,b,c,d=hole.bounds;top=z+height
     # A 100 mm waterproofing curb sits OUTSIDE the aperture; no opaque cap spans it.
-    ring=hole.buffer(.07,join_style=2).difference(hole)
+    from .plan_geometry import geometry
+    from shapely.affinity import scale
+    deck=scale(geometry(building['floor_plates'][f+1]['regions']),xfact=.001,yfact=.001,origin=(0,0))
+    ring=hole.buffer(.07,join_style=2).difference(hole).intersection(deck)
     k.poly_mesh(ring,top,top+.10,'stone',f+1,'drain',sky['id']+'/waterproof-curb',sky['id'])
     channel=hole.buffer(.115,join_style=2).difference(hole.buffer(.075,join_style=2))
     # Restrict collector to the supported deck, not the open-to-below area.
-    from .plan_geometry import geometry
-    deck=geometry(building['floor_plates'][f+1]['regions'])
-    from shapely.affinity import scale
-    channel=channel.intersection(scale(deck,xfact=.001,yfact=.001,origin=(0,0)))
+    channel=channel.intersection(deck)
     k.poly_mesh(channel,top+.006,top+.013,'steel',f+1,'drain',sky['id']+'/collection-channel',sky['id'])
-    # Concealed-under-deck collector run, plus an accessible downpipe on the boundary.
-    k.rect((c+.08,y0+.11,top-.115,x1-.10,y0+.17,top-.055),'frame',f,'drain',owner+'/collector-run',owner)
-    k.cylinder((x1-.10,y0+.14,z+(height-.075)/2+.02),.035,height-.075,'frame',f,'drain')
-    # Warm soffit lights are on the covered route, away from the daylight aperture.
+    # Soffit fittings only survive where there is actual overhead cover.
+    cover=scale(geometry(building['roofs'][f]['ceiling']),xfact=.001,yfact=.001,origin=(0,0))
     rx0,ry0,rx1,ry1=Polygon(np.array(room['clear'])/1000).bounds
     for xx in np.linspace(rx0+.85,rx1-.54,3):
         yy=ry0+.38
-        k.cylinder((xx,yy,top-.215),.035,.012,'lamp',f,'fixture')
-        k.light((xx,yy,top-.25),10,kind='porch')
+        if cover.covers(Point(xx,yy).buffer(.05)):
+            k.cylinder((xx,yy,top-.215),.035,.012,'lamp',f,'fixture')
+            k.light((xx,yy,top-.25),10,kind='porch')
     return [{'id':owner+'/garden-grass','polygon':[list(q) for q in list(lawn.exterior.coords)[:-1]],'holes':[],'z':z+.030,'heightScale':.27}]

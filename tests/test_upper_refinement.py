@@ -9,7 +9,7 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.model import DesignError
 from scripts.build_desired_home import project
-from test_desired_home import historic_interior_floor, historic_caregiver_nodes
+from test_desired_home import historic_interior_floor, historic_caregiver_nodes, historic_veranda_items
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -27,14 +27,19 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
     ground={**ground,'openings':[prior['plan_opening'] if o['id']=='g-caregiver-garden-door' else o for o in ground['openings']]}
     assert ground==before['ground_plan']
     b['openings']=[prior['opening'] if o['id']=='g-caregiver-garden-door' else o for o in b['openings']]
+    # The later Option A approval removes only veranda overhead cover.
+    b['roofs'][0]=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())['ground_roof']
     for key,value in before['ground_building'].items():
         assert digest([x for x in b[key] if x.get('floor')==0])==value
     nodes=[{k:v for k,v in historic_interior_floor(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
            for n in historic_caregiver_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth']
     assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
     for key in ('furniture','colliders','vegetation'):
-        assert digest([n for n in scene[key] if n.get('floor') in (0,-1)])==before['ground_'+key]
-    assert digest([n for n in scene['lights'] if n['position'][2]<3.15])==before['ground_lights']
+        assert digest([n for n in (historic_veranda_items(scene,key) if key=='colliders' else scene[key]) if n.get('floor') in (0,-1)])==before['ground_'+key]
+    restored=sorted([n for n in historic_veranda_items(scene,'lights') if n['position'][2]<3.15],key=lambda n:json.dumps(n,sort_keys=True))
+    prior_lights=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())['ground_lights']
+    assert restored==sorted(prior_lights,key=lambda n:json.dumps(n,sort_keys=True))
+    assert digest(prior_lights)==before['ground_lights']
     assert all(scene['materials'][key]==value for key,value in before['materials'].items())
     # An extra collinear upper-boundary vertex may retriangulate the plinth;
     # compare its actual surface extent and height, not its asset checksum.
@@ -60,11 +65,9 @@ def test_upper_gallery_guards_storage_and_deck_finishes():
     wardrobe=Polygon(next(f['footprint'] for f in scene['furniture'] if f['id']=='u-bed-south/wardrobe'))
     assert wardrobe.bounds[1]>=10.9
     assert not wardrobe.intersects(box(4.65,8.55,5.59,10.3))
-    screen=next(w for w in b['walls'] if w['id']=='u-balcony-privacy')
-    assert screen['height']==1800 and screen['floor']==1
-    assert LineString(screen['polygon']).intersects(LineString([(17500,8000),(17500,9400)]))
+    assert not any(w['id']=='u-balcony-privacy' for w in b['walls'])
     assert rooms['u-garden-daylight']['openToSky']
-    assert Polygon(rooms['u-garden-daylight']['clear']).area==1650000
+    assert Polygon(rooms['u-garden-daylight']['clear']).area==6688*2600
 
 
 @pytest.mark.parametrize('field,value',[('guardStyle','unsupported'),('wardrobeWall','ceiling'),('finishStyle','glossy')])

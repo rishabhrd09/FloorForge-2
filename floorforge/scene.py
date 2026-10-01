@@ -66,7 +66,7 @@ def make_scene(building, report):
     storeys = b['storeys']; top = storeys * H
     # Palette changes must not perturb procedural furniture or planting layout.
     rng_seed = sha({'footprint': b['footprint'], 'spaces': [(s['id'], s['polygon']) for s in b['spaces']], 'seed': v.get('seed', 0)})
-    rng = random.Random(int(rng_seed[:12], 16))
+    rng = random.Random(int(b.get('planning',{}).get('sceneSeed',rng_seed)[:12], 16))
     k = Kit(rng)
     materials = material_library(style, interior_theme, modern)
     ivory_floor = b.get('planning',{}).get('interiorFloor') == 'ivory-vitrified'
@@ -2308,6 +2308,9 @@ def make_scene(building, report):
     if b.get('planning',{}).get('facadeStyle')=='warm-layered':
         from .courtyard_finishes import layered_facade, open_puja_entry
         layered_facade(k,materials,b,H)
+        from .upper_finishes import glass_deck_canopy
+        for deck in b['spaces']:
+            if deck.get('canopyStyle')=='clear-glass':glass_deck_canopy(k,materials,deck,H)
         open_puja_entry(k,b)
 
     # ---------------------------------------------------------------- legacy facade recipes

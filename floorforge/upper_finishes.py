@@ -50,3 +50,68 @@ def privacy_wall_finish(k, wall, height):
             x=q.x-dy*side*(half+.012);y=q.y+dx*side*(half+.012)
             segment=LineString([(x-dx*.018,y-dy*.018),(x+dx*.018,y+dy*.018)])
             k.poly_mesh(segment.buffer(.012,cap_style=2),z+.18,top-.12,'oak',f,'wall-panel',owner+f'/batten-{i}-{side}',owner)
+
+
+def glass_deck_canopy(k, materials, room, height):
+    """Concept glass roof with a consistent fall, frame, drainage and support lines.
+
+    Member sizes describe the visual model, not a structural specification.
+    Ground columns align with canopy posts and have independent pier bases.
+    """
+    import numpy as np
+    from shapely.geometry import Polygon, box
+    from .scene_kit import extrude
+    p=Polygon(np.array(room['clear'])/1000).buffer(-.035,join_style=2)
+    x0,y0,x1,y1=p.bounds;f=room['floor'];z=f*height;owner=room['id']
+    # All panels share a 1:40 fall towards the outer edge and its gutter.
+    # The common origin aligns the adjoining front and studio-return roofs.
+    origin=x0
+    roof_z=lambda x:z+2.98-.025*(x-origin)
+    materials['canopy-glass']={**materials['glass'],'color':'#c8e1e5','alpha':.24,'roughness':.08,'roughness_override':.08}
+    materials['canopy-metal']={'color':'#354249','roughness':.42,'metalness':.65}
+    def slope(poly,low,high,mat,name):
+        if poly.is_empty or poly.area<1e-8:return
+        mesh=extrude(poly,low,high)
+        mesh.vertices[:,2]+=z+2.98-.025*(mesh.vertices[:,0]-origin)
+        k.node(k.asset(mesh),mat,floor=f,role='canopy',name=owner+'/'+name,owner=owner)
+    # Small separate panes, with visible glazing bars and a continuous perimeter beam.
+    nx=max(1,math.ceil((x1-x0)/1.1));ny=max(1,math.ceil((y1-y0)/1.25))
+    xs=np.linspace(x0,x1,nx+1);ys=np.linspace(y0,y1,ny+1)
+    for i in range(nx):
+        for j in range(ny):
+            pane=p.intersection(box(xs[i]+.024,ys[j]+.024,xs[i+1]-.024,ys[j+1]-.024))
+            slope(pane,.012,.032,'canopy-glass',f'glass-{i}-{j}')
+    slope(p.boundary.buffer(.042,join_style=2).intersection(p),-.14,.012,'canopy-metal','perimeter-frame')
+    for i,x in enumerate(xs[1:-1]):
+        slope(p.intersection(box(x-.025,y0,x+.025,y1)),-.075,.016,'canopy-metal',f'rafter-{i}')
+    for j,y in enumerate(ys[1:-1]):
+        slope(p.intersection(box(x0,y-.022,x1,y+.022)),-.065,.012,'canopy-metal',f'crossbar-{j}')
+    for i,(xx,yy) in enumerate(room.get('canopyPosts',[])):
+        x,y=xx/1000,yy/1000;foot=box(x-.06,y-.06,x+.06,y+.06)
+        k.poly_mesh(foot,z+.025,roof_z(x)-.01,'canopy-metal',f,'column',owner+f'/canopy-post-{i}',owner)
+        k.rect((x-.095,y-.095,z+.022,x+.095,y+.095,z+.047),'canopy-metal',f,'column',owner+f'/post-base-{i}',owner)
+        k.obstacle(foot,f,owner+f'/canopy-post-{i}')
+        # Short cantilever brackets tie the roof edge back to each support.
+        slope(p.intersection(box(x-.055,y-.22,x+.055,y+.22)),-.18,-.13,'canopy-metal',f'post-head-{i}')
+    for i,(xx,yy) in enumerate(room.get('supportColumns',[])):
+        x,y=xx/1000,yy/1000;foot=box(x-.11,y-.11,x+.11,y+.11)
+        k.poly_mesh(foot,-.30,z-.16,'wall',0,'column',owner+f'/ground-column-{i}',owner)
+        k.rect((x-.16,y-.16,-.32,x+.16,y+.16,.04),'stone',0,'column',owner+f'/pier-{i}',owner)
+        k.obstacle(box(x-.16,y-.16,x+.16,y+.16),0,owner+f'/ground-column-{i}')
+    if room.get('supportColumns'):
+        # Continuous edge beam lands on all three outer columns; wall-side bearing
+        # remains on the existing care-room wall line.
+        x=room['supportColumns'][0][0]/1000
+        k.rect((x-.11,y0,z-.32,x+.11,y1,z-.16),'wall',0,'beam',owner+'/balcony-support-beam',owner)
+    # Outer gutter is an open U section, with a downpipe beside the end post.
+    edge=p.intersection(box(x1-.11,y0,x1,y1))
+    slope(edge,-.06,-.042,'canopy-metal','gutter-bottom')
+    for a,b in ((x1-.11,x1-.098),(x1-.012,x1)):
+        slope(p.intersection(box(a,y0,b,y1)),-.042,.045,'canopy-metal','gutter-lip-'+str(a))
+    if room.get('canopyPosts'):
+        xx,yy=max(room['canopyPosts'],key=lambda q:(q[0],q[1]));x,y=xx/1000-(.17 if room.get('supportColumns') else .09),yy/1000
+        # Short outlet links the gutter to the pipe, clear of the wider ground pier.
+        k.rect((x-.025,y-.025,roof_z(x1)-.08,x1-.035,y+.025,roof_z(x1)-.03),'canopy-metal',f,'drain',owner+'/gutter-outlet',owner)
+        bottom=.06 if room.get('supportColumns') else z+.045
+        k.cylinder((x,y,(bottom+roof_z(x)-.04)/2),.028,roof_z(x)-.04-bottom,'canopy-metal',f,'drain')
+        k.rect((x-.08,y-.08,bottom-.01,x+.08,y+.08,bottom+.006),'steel',0 if room.get('supportColumns') else f,'drain',owner+'/drain-outlet',owner)

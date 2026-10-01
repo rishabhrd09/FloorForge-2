@@ -26,12 +26,13 @@ def fail(code,message,ident=None,floor=None,**extra):
 
 
 def normalize(plan,storeys):
-    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor'}:
+    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor','sceneSeed'}:
         fail('PLAN_SCHEMA','Custom plan accepts schema, units, wallThickness, floors and stairs.')
     if plan.get('schema')!=SCHEMA or plan.get('units')!='mm':
         fail('PLAN_VERSION','Use floorforge.custom-plan/1 in millimetres.')
     result=copy.deepcopy(plan); seen=set()
     if result.get('interiorFloor','standard') not in ('standard','ivory-vitrified'):fail('FLOOR_STYLE','Choose standard or ivory-vitrified interior flooring.')
+    if 'sceneSeed' in result and (not isinstance(result['sceneSeed'],str) or not re.fullmatch(r'[0-9a-f]{64}',result['sceneSeed'])):fail('SCENE_SEED','Use a 64-character hexadecimal scene seed.')
     if 'doorsClosed' in result and type(result['doorsClosed']) is not bool:fail('DOOR_STATE','doorsClosed must be true or false.')
     if result.get('frontCourt','planted') not in ('planted','tiled'):fail('SITE_STYLE','Choose planted or tiled front court.')
     if result.get('facadeStyle','plain') not in ('plain','warm-layered'):fail('FACADE_STYLE','Choose plain or warm-layered facade finishes.')
@@ -62,7 +63,7 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall'},'walls':{'id','a','b','height','finishStyle'},
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns'},'walls':{'id','a','b','height','finishStyle'},
                          'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
@@ -70,6 +71,14 @@ def normalize(plan,storeys):
                     o.setdefault('name',SPACE_REGISTRY[o['kind']]['label'])
                     if not isinstance(o['name'],str) or not 1<=len(o['name'])<=120:fail('SPACE_NAME','Room names need 1–120 characters.',o['id'],f)
                     if 'finishStyle' in o and not ((o['finishStyle'] in ('warm-stone','garden-lawn') and o['kind']=='veranda') or (o['finishStyle']=='honed-sandstone' and o['kind'] in ('terrace','balcony'))):fail('FINISH_STYLE','Choose a veranda finish or honed sandstone for an outdoor deck.',o['id'],f)
+                    if 'canopyStyle' in o and (o['canopyStyle']!='clear-glass' or o['kind'] not in ('terrace','balcony')):fail('CANOPY_STYLE','Glass canopies apply to terraces and balconies.',o['id'],f)
+                    for field in ('canopyPosts','supportColumns'):
+                        if field in o:
+                            if not o.get('canopyStyle') or not isinstance(o[field],list) or not 1<=len(o[field])<=32:fail('CANOPY_SUPPORT','Provide support points for a glass canopy.',o['id'],f)
+                            for q in o[field]:
+                                point(q,field)
+                                if not Polygon(o['polygon']).buffer(-60).covers(Point(q)):fail('CANOPY_SUPPORT','Support points must lie inside their deck.',o['id'],f)
+                            if field=='supportColumns' and (f!=1 or any(q not in o.get('canopyPosts',[]) for q in o[field])):fail('CANOPY_SUPPORT','Ground columns must align with first-floor canopy posts.',o['id'],f)
                     if 'guardStyle' in o and (o['guardStyle']!='white-timber' or o['kind'] not in ('void','stair','terrace','balcony')):fail('GUARD_STYLE','White metal and timber guards apply to voids, stairs and decks.',o['id'],f)
                     if 'wardrobeWall' in o and (o['kind']!='bedroom' or o['wardrobeWall'] not in SIDES):fail('WARDROBE_WALL','Choose a bedroom backing wall for storage.',o['id'],f)
                     if 'careLayout' in o and (o['kind']!='care-room' or o['careLayout']!='equipment-left'):fail('CARE_LAYOUT','Choose the equipment-left layout for a care room.',o['id'],f)
@@ -285,7 +294,7 @@ def compile_plan(intent):
                            **({'openToSky':True} if r.get('openToSky') else {}),
                            **({'glassCover':True} if r.get('glassCover') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
-                           **({key:r[key] for key in ('guardStyle','wardrobeWall') if key in r}),
+                           **({key:r[key] for key in ('guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns') if key in r}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
                            **({'reclinerPosition':r['reclinerPosition']} if r.get('reclinerPosition') else {}),
                            **({'prepStorageWall':r['prepStorageWall']} if r.get('prepStorageWall') else {}),
@@ -391,7 +400,7 @@ def compile_plan(intent):
             if len(connects)!=2:fail('OPENING_CONNECTION','An opening needs two adjacent spaces or one space and outside.',o['id'],f)
             if o['kind']=='entry' and (f!=0 or 'outside' not in connects):fail('ENTRY_LOCATION','The main entry must connect the ground floor to outside.',o['id'],f)
             if 'outside' in connects and f>0 and o['kind']!='window':fail('UPPER_EXIT','An upper-floor door must open onto an authored balcony, terrace or landing.',o['id'],f)
-            if o['kind']=='window' and all(i!='outside' and room_map[i][1]['kind'] not in OUTDOOR for i in connects):
+            if o['kind']=='window' and all(i!='outside' and room_map[i][1]['kind'] not in OUTDOOR and not room_map[i][1].get('openToSky') for i in connects):
                 fail('WINDOW_AIR','A window must face outside, an outdoor zone or an open ventilation shaft.',o['id'],f)
             if 'swingRoomId' in o and (o['kind'] not in ('door','entry') or o['swingRoomId'] not in local or o['swingRoomId'] not in connects):fail('DOOR_SWING_ROOM','Choose an adjoining room for the door swing.',o['id'],f)
             offset=LineString([host['a'],host['b']]).project(Point(start))
@@ -496,7 +505,8 @@ def compile_plan(intent):
             if s.get('openToSky'):
                 # Shared terrace edges already carry a guard; retain guards on any indoor edges.
                 outdoor_edges=unary_union([q.boundary for i,q in floor_polys[f].items() if room_map[i][1]['kind'] in OUTDOOR])
-                edge=edge.difference(outdoor_edges.buffer(.1))
+                # A sky gap needs guards only where an occupied deck touches it.
+                edge=edge.intersection(other.buffer(.1)).difference(outdoor_edges.buffer(.1))
             for j,line in enumerate(get_parts(edge)):
                 if line.geom_type=='LineString' and line.length>1:guards.append({'id':s['id']+'-guard-'+str(j),'owner':s['id'],'floor':f,'points':[list(c) for c in line.coords],'height':1100})
     overall=unary_union([geometry(p['outline']) for p in plates])
@@ -513,6 +523,7 @@ def compile_plan(intent):
        'spaces':spaces,'walls':walls,'openings':openings,'stairs':stairs,'floor_plates':plates,'roofs':roofs,'guards':guards,
        'planHash':intent['planHash'],'draftRevision':intent.get('draftRevision',0),'banner':__import__('floorforge').BANNER}
     if 'doorsClosed' in plan:b['planning']['doorsClosed']=plan['doorsClosed']
+    if 'sceneSeed' in plan:b['planning']['sceneSeed']=plan['sceneSeed']
     if 'interiorFloor' in plan:b['planning']['interiorFloor']=plan['interiorFloor']
     if 'parkedCar' in plan:b['planning']['parkedCar']=plan['parkedCar']
     if 'facadeStyle' in plan:b['planning']['facadeStyle']=plan['facadeStyle']
