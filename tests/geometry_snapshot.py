@@ -76,7 +76,14 @@ def assert_visual_snapshot(actual,expected):
             return json.dumps(sort_value([metadata(node),bounds]),sort_keys=True)
         return sorted(scene['nodes'],key=key)
     checked=set()
-    for a,e in zip(ordered(actual),ordered(expected)):
+    actual_order,expected_order=ordered(actual),ordered(expected)
+    # Keep CI failures reviewable without exporting an entire scene.
+    actual_keys={json.dumps(sort_value(metadata(n)),sort_keys=True) for n in actual_order}
+    expected_keys={json.dumps(sort_value(metadata(n)),sort_keys=True) for n in expected_order}
+    if actual_keys!=expected_keys:
+        print('Unexpected object metadata:',sorted(actual_keys-expected_keys)[:12])
+        print('Missing object metadata:',sorted(expected_keys-actual_keys)[:12])
+    for a,e in zip(actual_order,expected_order):
         assert_snapshot(metadata(a),metadata(e),a['id'])
         pair=(a['asset'],e['asset'])
         if pair not in checked:
