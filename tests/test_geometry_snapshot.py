@@ -53,3 +53,13 @@ def test_visual_matches_anonymous_parts_by_geometry_not_traversal_index():
     assert_visual_snapshot(actual,expected)
     actual['nodes'][0]['material']='glass'
     with pytest.raises(AssertionError):assert_visual_snapshot(actual,expected)
+
+
+def test_visual_order_is_not_changed_by_signed_zero():
+    mesh={'vertices':[[0.,0.,0.],[1.,0.,0.],[0.,1.,0.]],'faces':[[0,1,2]],'normals':None,'closed':False}
+    expected={'assets':{'mesh':mesh},
+              'nodes':[{'id':'object-1','asset':'mesh','position':[0.,1.,0.]},
+                       {'id':'object-2','asset':'mesh','position':[0.,2.,0.]}],
+              **{key:[] for key in ('materials','lights','cameras','vegetation','lawns')}}
+    actual=copy.deepcopy(expected);actual['nodes'][1]['position'][0]=-0.0
+    assert_visual_snapshot(actual,expected)

@@ -62,11 +62,18 @@ def assert_visual_snapshot(actual,expected):
         # Named semantic objects retain their identity in the comparison.
         return {k:v for k,v in node.items() if k!='asset'
                 and not (k in ('id','owner') and isinstance(v,str) and v.startswith('object-'))}
+    def sort_value(value):
+        if isinstance(value,dict):return {k:sort_value(v) for k,v in value.items()}
+        if isinstance(value,list):return [sort_value(v) for v in value]
+        if isinstance(value,float):
+            rounded=round(value,8)
+            return rounded if rounded else 0.0
+        return value
     def ordered(scene):
         def key(node):
             vertices=np.asarray(scene['assets'][node['asset']]['vertices'])
             bounds=np.round([vertices.min(axis=0),vertices.max(axis=0)],6).tolist()
-            return json.dumps([metadata(node),bounds],sort_keys=True)
+            return json.dumps(sort_value([metadata(node),bounds]),sort_keys=True)
         return sorted(scene['nodes'],key=key)
     checked=set()
     for a,e in zip(ordered(actual),ordered(expected)):
