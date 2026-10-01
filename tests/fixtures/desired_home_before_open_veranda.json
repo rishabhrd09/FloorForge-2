@@ -1,0 +1,3809 @@
+{
+  "checkpoint": "60e55ad",
+  "removed_nodes": [
+    {
+      "asset": "8a6a7cadd6092518e635",
+      "floor": -1,
+      "id": "object-00141",
+      "material": "basalt",
+      "owner": "object-00141",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "plinth",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "23d530c193d9191b7cf5",
+      "floor": -1,
+      "id": "plinth-band",
+      "material": "basalt",
+      "owner": "plinth-band",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "plinth",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "2af2eb1bac49a687a0c4",
+      "floor": 0,
+      "id": "F0-ceiling",
+      "material": "ceiling",
+      "owner": "F0-ceiling",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "b57b6f610a86f74cd386",
+      "floor": 0,
+      "id": "roof-floor-0",
+      "material": "roof",
+      "owner": "roof-floor-0",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "roof",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "94563987101996d036af",
+      "floor": 0,
+      "id": "custom-roof-edge-0",
+      "material": "roof",
+      "owner": "custom-roof-edge-0",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "parapet",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "9f29909a827047f04b52",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-20",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "81a878d9215c456f18ba",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-21",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "b6a6ee7b1b524b8aef65",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-22",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "793e792fb893d00fab1d",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-23",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "2a4aab8ebcfd97561a0e",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-24",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "6e8e80a646adacb39d5d",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-25",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "54b35c35db936c297f28",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-26",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "fe1d3b15da9a21af4ad3",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-27",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "befd499cbce2d940ae26",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-28",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "26f1ada1a73bfd86a7ee",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-29",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "c17a86191384f845c04f",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-30",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "ac0e191b659147cdf6d2",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-31",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "548739aeb9a3f8ffbe83",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-32",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "cd050d10530870ca00c0",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-33",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "dc782a3c645a42017df1",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-34",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "0ef9f0a45a8862b62232",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-35",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "g-veranda/collector-run",
+      "material": "frame",
+      "owner": "g-veranda",
+      "position": [
+        17.528,
+        7.540000000000001,
+        3.0649999999999995
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0200000000000031,
+        0.05999999999999961,
+        0.06000000000000005
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-02202",
+      "material": "frame",
+      "owner": "object-02202",
+      "position": [
+        18.038,
+        7.54,
+        1.5574999999999999
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.035,
+        0.035,
+        3.0749999999999997
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-02205",
+      "material": "lamp",
+      "owner": "object-02205",
+      "position": [
+        17.598000000000003,
+        6.18,
+        2.935
+      ],
+      "role": "fixture",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.035,
+        0.035,
+        0.012
+      ]
+    }
+  ],
+  "added_nodes": [
+    {
+      "asset": "ebd435618a2e1e8e69cd",
+      "floor": -1,
+      "id": "object-00141",
+      "material": "basalt",
+      "owner": "object-00141",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "plinth",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "dbdf8153ec63a0e10a47",
+      "floor": -1,
+      "id": "plinth-band",
+      "material": "basalt",
+      "owner": "plinth-band",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "plinth",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "f9330bd29e0bfdd558de",
+      "floor": 0,
+      "id": "F0-ceiling",
+      "material": "ceiling",
+      "owner": "F0-ceiling",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "d356e3bf651a84ca05f0",
+      "floor": 0,
+      "id": "roof-floor-0",
+      "material": "roof",
+      "owner": "roof-floor-0",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "roof",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "1454c3f9f2d707754be9",
+      "floor": 0,
+      "id": "custom-roof-edge-0",
+      "material": "roof",
+      "owner": "custom-roof-edge-0",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "parapet",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "8d98b77bc290dcb62efb",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-20",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "fc18bb6978fab67d2b9b",
+      "floor": 0,
+      "id": "g-veranda/ceiling-slat-21",
+      "material": "oak",
+      "owner": "g-veranda",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "ceiling",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-cylinder",
+      "floor": 0,
+      "id": "object-02089",
+      "material": "frame",
+      "owner": "object-02089",
+      "position": [
+        15.348,
+        8.22,
+        1.575
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.028,
+        0.028,
+        3.09
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "g-veranda/terrace-rain-outlet",
+      "material": "steel",
+      "owner": "g-veranda",
+      "position": [
+        15.348,
+        8.22,
+        0.0245
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.14000000000000057,
+        0.14000000000000057,
+        0.011
+      ]
+    },
+    {
+      "asset": "913c93447c09ce90ac49",
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-0",
+      "material": "wall",
+      "owner": "u-terrace-north",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "u-terrace-north/pier-0",
+      "material": "stone",
+      "owner": "u-terrace-north",
+      "position": [
+        17.99,
+        8.55,
+        -0.14
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.3200000000000003,
+        0.3200000000000003,
+        0.36
+      ]
+    },
+    {
+      "asset": "8ff20446da148f786eed",
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-1",
+      "material": "wall",
+      "owner": "u-terrace-north",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "u-terrace-north/pier-1",
+      "material": "stone",
+      "owner": "u-terrace-north",
+      "position": [
+        17.99,
+        11.25,
+        -0.14
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.3200000000000003,
+        0.3200000000000003,
+        0.36
+      ]
+    },
+    {
+      "asset": "dfacd72cdfcc05d07a26",
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-2",
+      "material": "wall",
+      "owner": "u-terrace-north",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "u-terrace-north/pier-2",
+      "material": "stone",
+      "owner": "u-terrace-north",
+      "position": [
+        17.99,
+        14.02,
+        -0.14
+      ],
+      "role": "column",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.3200000000000003,
+        0.3200000000000003,
+        0.36
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "u-terrace-north/balcony-support-beam",
+      "material": "wall",
+      "owner": "u-terrace-north",
+      "position": [
+        17.99,
+        11.288,
+        2.91
+      ],
+      "role": "beam",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.21999999999999886,
+        5.7059999999999995,
+        0.1599999999999997
+      ]
+    },
+    {
+      "asset": "unit-box",
+      "floor": 0,
+      "id": "u-terrace-north/drain-outlet",
+      "material": "steel",
+      "owner": "u-terrace-north",
+      "position": [
+        17.819999999999997,
+        14.02,
+        0.057999999999999996
+      ],
+      "role": "drain",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.1599999999999966,
+        0.16000000000000014,
+        0.016000000000000007
+      ]
+    }
+  ],
+  "ground_roof": {
+    "ceiling": [
+      {
+        "holes": [
+          [
+            [
+              5750.0,
+              11650.0
+            ],
+            [
+              5750.0,
+              9525.0
+            ],
+            [
+              5750.0,
+              9450.0
+            ],
+            [
+              5750.0,
+              8550.0
+            ],
+            [
+              7600.0,
+              8550.0
+            ],
+            [
+              7600.0,
+              9450.0
+            ],
+            [
+              5800.0,
+              9450.0
+            ],
+            [
+              5800.0,
+              9600.0
+            ],
+            [
+              5800.0,
+              10900.0
+            ],
+            [
+              5800.0,
+              10975.0
+            ],
+            [
+              5800.0,
+              11050.0
+            ],
+            [
+              5800.0,
+              11650.0
+            ]
+          ],
+          [
+            [
+              15288.0,
+              8400.0
+            ],
+            [
+              15288.0,
+              7400.0
+            ],
+            [
+              16938.0,
+              7400.0
+            ],
+            [
+              16938.0,
+              8400.0
+            ]
+          ],
+          [
+            [
+              10824.0,
+              5800.0
+            ],
+            [
+              11300.0,
+              5800.0
+            ],
+            [
+              11300.0,
+              8250.0
+            ],
+            [
+              8950.0,
+              8250.0
+            ],
+            [
+              8950.0,
+              7200.0
+            ],
+            [
+              6500.0,
+              7200.0
+            ],
+            [
+              6500.0,
+              5450.0
+            ],
+            [
+              10824.0,
+              5450.0
+            ]
+          ],
+          [
+            [
+              150.0,
+              6000.0
+            ],
+            [
+              150.0,
+              3600.0
+            ],
+            [
+              3312.0,
+              3600.0
+            ],
+            [
+              3312.0,
+              6000.0
+            ]
+          ]
+        ],
+        "polygon": [
+          [
+            1524.0,
+            2150.0
+          ],
+          [
+            1599.0,
+            2150.0
+          ],
+          [
+            1674.0,
+            2150.0
+          ],
+          [
+            3024.0,
+            2150.0
+          ],
+          [
+            3024.0,
+            3450.0
+          ],
+          [
+            1674.0,
+            3450.0
+          ],
+          [
+            1599.0,
+            3450.0
+          ],
+          [
+            150.0,
+            3450.0
+          ],
+          [
+            75.0,
+            3450.0
+          ],
+          [
+            0.0,
+            3450.0
+          ],
+          [
+            0.0,
+            3600.0
+          ],
+          [
+            0.0,
+            7500.0
+          ],
+          [
+            0.0,
+            7575.0
+          ],
+          [
+            0.0,
+            7650.0
+          ],
+          [
+            0.0,
+            13276.0
+          ],
+          [
+            0.0,
+            13351.0
+          ],
+          [
+            0.0,
+            13426.0
+          ],
+          [
+            0.0,
+            14326.0
+          ],
+          [
+            3700.0,
+            14326.0
+          ],
+          [
+            3850.0,
+            14326.0
+          ],
+          [
+            5800.0,
+            14326.0
+          ],
+          [
+            5875.0,
+            14326.0
+          ],
+          [
+            5950.0,
+            14326.0
+          ],
+          [
+            8350.0,
+            14326.0
+          ],
+          [
+            8425.0,
+            14326.0
+          ],
+          [
+            8500.0,
+            14326.0
+          ],
+          [
+            8500.0,
+            14251.0
+          ],
+          [
+            8500.0,
+            14176.0
+          ],
+          [
+            18138.0,
+            14176.0
+          ],
+          [
+            18138.0,
+            8400.0
+          ],
+          [
+            18138.0,
+            5800.0
+          ],
+          [
+            15240.0,
+            5800.0
+          ],
+          [
+            15240.0,
+            5650.0
+          ],
+          [
+            15240.0,
+            150.0
+          ],
+          [
+            15240.0,
+            75.0
+          ],
+          [
+            15240.0,
+            0.0
+          ],
+          [
+            15090.0,
+            0.0
+          ],
+          [
+            10974.0,
+            0.0
+          ],
+          [
+            10899.0,
+            0.0
+          ],
+          [
+            10824.0,
+            0.0
+          ],
+          [
+            9474.0,
+            0.0
+          ],
+          [
+            9399.0,
+            0.0
+          ],
+          [
+            9324.0,
+            0.0
+          ],
+          [
+            7524.0,
+            0.0
+          ],
+          [
+            7449.0,
+            0.0
+          ],
+          [
+            7374.0,
+            0.0
+          ],
+          [
+            3174.0,
+            0.0
+          ],
+          [
+            3099.0,
+            0.0
+          ],
+          [
+            3024.0,
+            0.0
+          ],
+          [
+            1674.0,
+            0.0
+          ],
+          [
+            1599.0,
+            0.0
+          ],
+          [
+            1524.0,
+            0.0
+          ],
+          [
+            1524.0,
+            150.0
+          ],
+          [
+            1524.0,
+            2000.0
+          ],
+          [
+            1524.0,
+            2075.0
+          ]
+        ]
+      }
+    ],
+    "floor": 0,
+    "id": "roof-floor-0",
+    "regions": [
+      {
+        "holes": [],
+        "polygon": [
+          [
+            1599.0,
+            2150.0
+          ],
+          [
+            1674.0,
+            2150.0
+          ],
+          [
+            3024.0,
+            2150.0
+          ],
+          [
+            3024.0,
+            3450.0
+          ],
+          [
+            3099.0,
+            3450.0
+          ],
+          [
+            3174.0,
+            3450.0
+          ],
+          [
+            3174.0,
+            1800.0
+          ],
+          [
+            3174.0,
+            0.0
+          ],
+          [
+            3099.0,
+            0.0
+          ],
+          [
+            3024.0,
+            0.0
+          ],
+          [
+            1674.0,
+            0.0
+          ],
+          [
+            1599.0,
+            0.0
+          ],
+          [
+            1524.0,
+            0.0
+          ],
+          [
+            1524.0,
+            150.0
+          ],
+          [
+            1524.0,
+            2000.0
+          ],
+          [
+            1524.0,
+            2075.0
+          ],
+          [
+            1524.0,
+            2150.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            8350.0,
+            14326.0
+          ],
+          [
+            8425.0,
+            14326.0
+          ],
+          [
+            8500.0,
+            14326.0
+          ],
+          [
+            8500.0,
+            14251.0
+          ],
+          [
+            8500.0,
+            14176.0
+          ],
+          [
+            15438.0,
+            14176.0
+          ],
+          [
+            15438.0,
+            12652.0
+          ],
+          [
+            15363.0,
+            12652.0
+          ],
+          [
+            15288.0,
+            12652.0
+          ],
+          [
+            9100.0,
+            12652.0
+          ],
+          [
+            9025.0,
+            12652.0
+          ],
+          [
+            8950.0,
+            12652.0
+          ],
+          [
+            7750.0,
+            12652.0
+          ],
+          [
+            7600.0,
+            12652.0
+          ],
+          [
+            7600.0,
+            12577.0
+          ],
+          [
+            7600.0,
+            12502.0
+          ],
+          [
+            7600.0,
+            9700.0
+          ],
+          [
+            7600.0,
+            9625.0
+          ],
+          [
+            7600.0,
+            9550.0
+          ],
+          [
+            7600.0,
+            9450.0
+          ],
+          [
+            5800.0,
+            9450.0
+          ],
+          [
+            5800.0,
+            9600.0
+          ],
+          [
+            5800.0,
+            10900.0
+          ],
+          [
+            5800.0,
+            10975.0
+          ],
+          [
+            5800.0,
+            11050.0
+          ],
+          [
+            5800.0,
+            11650.0
+          ],
+          [
+            5750.0,
+            11650.0
+          ],
+          [
+            5750.0,
+            11700.0
+          ],
+          [
+            5675.0,
+            11700.0
+          ],
+          [
+            5600.0,
+            11700.0
+          ],
+          [
+            5600.0,
+            11800.0
+          ],
+          [
+            5950.0,
+            11800.0
+          ],
+          [
+            5950.0,
+            14326.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            9100.0,
+            8250.0
+          ],
+          [
+            9100.0,
+            8325.0
+          ],
+          [
+            9100.0,
+            8400.0
+          ],
+          [
+            11300.0,
+            8400.0
+          ],
+          [
+            11300.0,
+            8325.0
+          ],
+          [
+            11300.0,
+            8250.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            15288.0,
+            8250.0
+          ],
+          [
+            11450.0,
+            8250.0
+          ],
+          [
+            11450.0,
+            8325.0
+          ],
+          [
+            11450.0,
+            8400.0
+          ],
+          [
+            15213.0,
+            8400.0
+          ],
+          [
+            15288.0,
+            8400.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            15240.0,
+            5650.0
+          ],
+          [
+            15240.0,
+            150.0
+          ],
+          [
+            15240.0,
+            75.0
+          ],
+          [
+            15240.0,
+            0.0
+          ],
+          [
+            15090.0,
+            0.0
+          ],
+          [
+            15090.0,
+            5800.0
+          ],
+          [
+            15240.0,
+            5800.0
+          ]
+        ]
+      }
+    ]
+  },
+  "removed_lights": [
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        17.598000000000003,
+        6.18,
+        2.9
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        15.65,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        17.450000000000003,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    }
+  ],
+  "added_lights": [
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        16.038,
+        8.8,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    }
+  ],
+  "support_colliders": [
+    {
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-0",
+      "kind": "furniture",
+      "polygon": [
+        [
+          18.15,
+          8.39
+        ],
+        [
+          18.15,
+          8.71
+        ],
+        [
+          17.83,
+          8.71
+        ],
+        [
+          17.83,
+          8.39
+        ]
+      ]
+    },
+    {
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-1",
+      "kind": "furniture",
+      "polygon": [
+        [
+          18.15,
+          11.09
+        ],
+        [
+          18.15,
+          11.41
+        ],
+        [
+          17.83,
+          11.41
+        ],
+        [
+          17.83,
+          11.09
+        ]
+      ]
+    },
+    {
+      "floor": 0,
+      "id": "u-terrace-north/ground-column-2",
+      "kind": "furniture",
+      "polygon": [
+        [
+          18.15,
+          13.86
+        ],
+        [
+          18.15,
+          14.18
+        ],
+        [
+          17.83,
+          14.18
+        ],
+        [
+          17.83,
+          13.86
+        ]
+      ]
+    }
+  ],
+  "ground_furniture": [
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          7.3740000000000006,
+          3.75
+        ],
+        [
+          7.3740000000000006,
+          3.3000000000000003
+        ],
+        [
+          5.949,
+          3.3000000000000003
+        ],
+        [
+          5.949,
+          3.75
+        ]
+      ],
+      "id": "g-kitchen/serving-counter",
+      "kind": "serving-counter",
+      "room_id": "g-kitchen"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          5.78,
+          12.620000000000001
+        ],
+        [
+          5.78,
+          13.080000000000002
+        ],
+        [
+          5.06,
+          13.080000000000002
+        ],
+        [
+          5.06,
+          12.620000000000001
+        ]
+      ],
+      "id": "g-bath/wc",
+      "kind": "wc",
+      "room_id": "g-bath"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          5.78,
+          11.850000000000001
+        ],
+        [
+          5.78,
+          12.5
+        ],
+        [
+          5.279999999999999,
+          12.5
+        ],
+        [
+          5.279999999999999,
+          11.850000000000001
+        ]
+      ],
+      "id": "g-bath/vanity",
+      "kind": "vanity",
+      "room_id": "g-bath"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          2.34,
+          8.355999999999998
+        ],
+        [
+          2.34,
+          10.255999999999997
+        ],
+        [
+          0.16999999999999998,
+          10.255999999999997
+        ],
+        [
+          0.16999999999999998,
+          8.355999999999998
+        ]
+      ],
+      "id": "g-bedroom/bed",
+      "kind": "bed",
+      "room_id": "g-bedroom"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          4.5500000000000025,
+          7.65
+        ],
+        [
+          4.5500000000000025,
+          8.25
+        ],
+        [
+          2.450000000000002,
+          8.25
+        ],
+        [
+          2.450000000000002,
+          7.65
+        ]
+      ],
+      "id": "g-bedroom/wardrobe",
+      "kind": "wardrobe",
+      "room_id": "g-bedroom"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          13.299999999999999,
+          10.325
+        ],
+        [
+          13.299999999999999,
+          11.425
+        ],
+        [
+          11.1,
+          11.425
+        ],
+        [
+          11.1,
+          10.325
+        ]
+      ],
+      "id": "g-care/reclining-bed",
+      "kind": "reclining-bed",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          10.229999999999999,
+          9.580000000000002
+        ],
+        [
+          10.229999999999999,
+          10.120000000000001
+        ],
+        [
+          9.67,
+          10.120000000000001
+        ],
+        [
+          9.67,
+          9.580000000000002
+        ]
+      ],
+      "id": "g-care/care-chair-right",
+      "kind": "care-chair-right",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          11.079999999999998,
+          9.580000000000002
+        ],
+        [
+          11.079999999999998,
+          10.120000000000001
+        ],
+        [
+          10.52,
+          10.120000000000001
+        ],
+        [
+          10.52,
+          9.580000000000002
+        ]
+      ],
+      "id": "g-care/care-chair-right-2",
+      "kind": "care-chair-right-2",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          11.929999999999998,
+          9.580000000000002
+        ],
+        [
+          11.929999999999998,
+          10.120000000000001
+        ],
+        [
+          11.37,
+          10.120000000000001
+        ],
+        [
+          11.37,
+          9.580000000000002
+        ]
+      ],
+      "id": "g-care/care-chair-right-3",
+      "kind": "care-chair-right-3",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          10.9,
+          11.899999999999999
+        ],
+        [
+          10.9,
+          12.399999999999999
+        ],
+        [
+          10.1,
+          12.399999999999999
+        ],
+        [
+          10.1,
+          11.899999999999999
+        ]
+      ],
+      "id": "g-care/equipment-table",
+      "kind": "equipment-table",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          9.469999999999999,
+          12.28
+        ],
+        [
+          9.469999999999999,
+          12.679999999999998
+        ],
+        [
+          8.57,
+          12.679999999999998
+        ],
+        [
+          8.57,
+          12.28
+        ]
+      ],
+      "id": "g-care/care-cupboard",
+      "kind": "care-cupboard",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          15.288,
+          9.925
+        ],
+        [
+          15.288,
+          11.325
+        ],
+        [
+          15.218,
+          11.325
+        ],
+        [
+          15.218,
+          9.925
+        ]
+      ],
+      "id": "g-care/large-tv",
+      "kind": "large-tv",
+      "room_id": "g-care"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          7.05,
+          11.986
+        ],
+        [
+          7.05,
+          14.156
+        ],
+        [
+          5.95,
+          14.156
+        ],
+        [
+          5.95,
+          11.986
+        ]
+      ],
+      "id": "g-caregiver/bed",
+      "kind": "bed",
+      "room_id": "g-caregiver"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          6.55,
+          11.076
+        ],
+        [
+          6.55,
+          11.975999999999999
+        ],
+        [
+          5.95,
+          11.975999999999999
+        ],
+        [
+          5.95,
+          11.076
+        ]
+      ],
+      "id": "g-caregiver/wardrobe",
+      "kind": "wardrobe",
+      "room_id": "g-caregiver"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          6.69,
+          9.77
+        ],
+        [
+          6.69,
+          10.23
+        ],
+        [
+          5.97,
+          10.23
+        ],
+        [
+          5.97,
+          9.77
+        ]
+      ],
+      "id": "g-caregiver-bath/wc",
+      "kind": "wc",
+      "room_id": "g-caregiver-bath"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          8.33,
+          9.8
+        ],
+        [
+          8.33,
+          10.8
+        ],
+        [
+          7.83,
+          10.8
+        ],
+        [
+          7.83,
+          9.8
+        ]
+      ],
+      "id": "g-caregiver-bath/vanity",
+      "kind": "vanity",
+      "room_id": "g-caregiver-bath"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          14.774000000000001,
+          1.724999999999999
+        ],
+        [
+          14.774000000000001,
+          4.074999999999999
+        ],
+        [
+          13.794,
+          4.074999999999999
+        ],
+        [
+          13.794,
+          1.724999999999999
+        ]
+      ],
+      "id": "g-drawing/sofa",
+      "kind": "sofa",
+      "room_id": "g-drawing"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          13.449,
+          2.3499999999999988
+        ],
+        [
+          13.449,
+          3.4499999999999993
+        ],
+        [
+          12.699,
+          3.4499999999999993
+        ],
+        [
+          12.699,
+          2.3499999999999988
+        ]
+      ],
+      "id": "g-drawing/coffee-table",
+      "kind": "coffee-table",
+      "room_id": "g-drawing"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          11.424,
+          1.949999999999999
+        ],
+        [
+          11.424,
+          3.8499999999999988
+        ],
+        [
+          11.009,
+          3.8499999999999988
+        ],
+        [
+          11.009,
+          1.949999999999999
+        ]
+      ],
+      "id": "g-drawing/media-console",
+      "kind": "media-console",
+      "room_id": "g-drawing"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          7.354,
+          0.16999999999999998
+        ],
+        [
+          4.184,
+          0.16999999999999998
+        ],
+        [
+          4.184,
+          0.81
+        ],
+        [
+          6.714,
+          0.81
+        ],
+        [
+          6.714,
+          1.7799999999999998
+        ],
+        [
+          7.354,
+          1.7799999999999998
+        ],
+        [
+          7.354,
+          0.81
+        ]
+      ],
+      "id": "g-kitchen/kitchen-run",
+      "kind": "kitchen-run",
+      "room_id": "g-kitchen"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          7.354,
+          0.16999999999999998
+        ],
+        [
+          7.354,
+          1.7799999999999998
+        ],
+        [
+          6.977,
+          1.7799999999999998
+        ],
+        [
+          6.977,
+          0.16999999999999998
+        ]
+      ],
+      "id": "g-kitchen/kitchen-upper-storage",
+      "kind": "kitchen-upper-storage",
+      "room_id": "g-kitchen"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          5.374,
+          2.6149999999999998
+        ],
+        [
+          5.374,
+          3.37
+        ],
+        [
+          4.594,
+          3.37
+        ],
+        [
+          4.594,
+          2.6149999999999998
+        ]
+      ],
+      "id": "g-kitchen/kitchen-fridge",
+      "kind": "kitchen-fridge",
+      "room_id": "g-kitchen"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          2.124,
+          0.20000000000000007
+        ],
+        [
+          2.124,
+          2.0
+        ],
+        [
+          1.674,
+          2.0
+        ],
+        [
+          1.674,
+          0.20000000000000007
+        ]
+      ],
+      "id": "g-kitchen-store/shelves-0",
+      "kind": "shelves-0",
+      "room_id": "g-kitchen-store"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          3.024,
+          1.55
+        ],
+        [
+          3.024,
+          2.0
+        ],
+        [
+          2.1239999999999997,
+          2.0
+        ],
+        [
+          2.1239999999999997,
+          1.55
+        ]
+      ],
+      "id": "g-kitchen-store/shelves-1",
+      "kind": "shelves-1",
+      "room_id": "g-kitchen-store"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          7.473999999999996,
+          4.429999999999998
+        ],
+        [
+          7.473999999999996,
+          6.269999999999998
+        ],
+        [
+          5.7739999999999965,
+          6.269999999999998
+        ],
+        [
+          5.7739999999999965,
+          4.429999999999998
+        ]
+      ],
+      "id": "g-living/dining-set",
+      "kind": "dining-set",
+      "room_id": "g-living"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          10.784,
+          3.25
+        ],
+        [
+          10.784,
+          5.6
+        ],
+        [
+          9.804,
+          5.6
+        ],
+        [
+          9.804,
+          3.25
+        ]
+      ],
+      "id": "g-living/sofa",
+      "kind": "sofa",
+      "room_id": "g-living"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          9.459,
+          3.875
+        ],
+        [
+          9.459,
+          4.975
+        ],
+        [
+          8.709,
+          4.975
+        ],
+        [
+          8.709,
+          3.875
+        ]
+      ],
+      "id": "g-living/coffee-table",
+      "kind": "coffee-table",
+      "room_id": "g-living"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          9.123999999999999,
+          0.16999999999999998
+        ],
+        [
+          9.123999999999999,
+          0.62
+        ],
+        [
+          7.723999999999999,
+          0.62
+        ],
+        [
+          7.723999999999999,
+          0.16999999999999998
+        ]
+      ],
+      "id": "g-puja/mandir",
+      "kind": "mandir",
+      "room_id": "g-puja"
+    },
+    {
+      "floor": 0,
+      "footprint": [
+        [
+          2.6990000000000003,
+          2.17
+        ],
+        [
+          2.6990000000000003,
+          2.6899999999999995
+        ],
+        [
+          1.999,
+          2.6899999999999995
+        ],
+        [
+          1.999,
+          2.17
+        ]
+      ],
+      "id": "g-wash/wash-basin",
+      "kind": "wash-basin",
+      "room_id": "g-wash"
+    }
+  ],
+  "ground_vegetation": [
+    {
+      "floor": 0,
+      "id": "plant-000",
+      "position": [
+        3.38,
+        11.925,
+        0.345
+      ],
+      "rotation": 0.579,
+      "scale": 0.95,
+      "seed": 514396072,
+      "species": "monstera"
+    },
+    {
+      "floor": 0,
+      "id": "plant-001",
+      "position": [
+        17.938,
+        9.75,
+        0.095
+      ],
+      "rotation": 1.319,
+      "scale": 0.5227,
+      "seed": 1990085022,
+      "species": "strelitzia"
+    },
+    {
+      "floor": 0,
+      "id": "plant-002",
+      "position": [
+        17.938,
+        11.2,
+        0.095
+      ],
+      "rotation": 0.831,
+      "scale": 0.9286,
+      "seed": 2760468296,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-003",
+      "position": [
+        17.938,
+        12.65,
+        0.095
+      ],
+      "rotation": 0.07,
+      "scale": 0.5227,
+      "seed": 1328980230,
+      "species": "strelitzia"
+    },
+    {
+      "floor": 0,
+      "id": "plant-004",
+      "position": [
+        17.668,
+        8.76,
+        0.427
+      ],
+      "rotation": 0.907,
+      "scale": 0.75,
+      "seed": 3961357011,
+      "species": "strelitzia"
+    },
+    {
+      "floor": 0,
+      "id": "plant-005",
+      "position": [
+        17.708,
+        13.776,
+        0.427
+      ],
+      "rotation": 1.601,
+      "scale": 1.6875,
+      "seed": 2073668053,
+      "species": "cordyline"
+    },
+    {
+      "floor": 0,
+      "id": "plant-006",
+      "position": [
+        16.918,
+        13.796,
+        0.427
+      ],
+      "rotation": 5.397,
+      "scale": 0.85,
+      "seed": 3008802154,
+      "species": "monstera"
+    },
+    {
+      "floor": 0,
+      "id": "plant-007",
+      "position": [
+        9.2,
+        14.046,
+        0.095
+      ],
+      "rotation": 1.158,
+      "scale": 0.6,
+      "seed": 4038832935,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-008",
+      "position": [
+        10.3,
+        14.046,
+        0.095
+      ],
+      "rotation": 4.124,
+      "scale": 0.6,
+      "seed": 2264874832,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-009",
+      "position": [
+        11.4,
+        14.046,
+        0.095
+      ],
+      "rotation": 5.93,
+      "scale": 0.6,
+      "seed": 300389877,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-010",
+      "position": [
+        12.5,
+        14.046,
+        0.095
+      ],
+      "rotation": 0.953,
+      "scale": 0.6,
+      "seed": 73568600,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-011",
+      "position": [
+        13.6,
+        14.046,
+        0.095
+      ],
+      "rotation": 0.276,
+      "scale": 0.6,
+      "seed": 2357815403,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-012",
+      "position": [
+        14.7,
+        14.046,
+        0.095
+      ],
+      "rotation": 5.67,
+      "scale": 0.6,
+      "seed": 3646093400,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-013",
+      "position": [
+        15.8,
+        14.046,
+        0.095
+      ],
+      "rotation": 2.413,
+      "scale": 0.6,
+      "seed": 1877387945,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-014",
+      "position": [
+        14.75,
+        0.45,
+        0.425
+      ],
+      "rotation": 4.404,
+      "scale": 0.9167,
+      "seed": 3256175437,
+      "species": "fiddle_leaf"
+    },
+    {
+      "floor": 0,
+      "id": "plant-015",
+      "position": [
+        6.09,
+        8.1,
+        0.425
+      ],
+      "rotation": 5.581,
+      "scale": 0.9167,
+      "seed": 3597663947,
+      "species": "fiddle_leaf"
+    },
+    {
+      "floor": 0,
+      "id": "plant-018",
+      "position": [
+        17.858,
+        8.15,
+        0.31
+      ],
+      "rotation": 5.263,
+      "scale": 0.6136,
+      "seed": 1989598892,
+      "species": "strelitzia"
+    },
+    {
+      "floor": 0,
+      "id": "plant-019",
+      "position": [
+        17.868,
+        7.65,
+        0.31
+      ],
+      "rotation": 1.391,
+      "scale": 0.68,
+      "seed": 834107339,
+      "species": "monstera"
+    },
+    {
+      "floor": 0,
+      "id": "plant-020",
+      "position": [
+        15.788,
+        8.2,
+        0.028
+      ],
+      "rotation": 5.861,
+      "scale": 0.4,
+      "seed": 172687833,
+      "species": "grass_ornamental"
+    },
+    {
+      "floor": 0,
+      "id": "plant-021",
+      "position": [
+        16.488,
+        8.2,
+        0.028
+      ],
+      "rotation": 4.99,
+      "scale": 0.4,
+      "seed": 3722826999,
+      "species": "grass_ornamental"
+    }
+  ],
+  "ground_lights": [
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        0.8945714285714285,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        2.6837142857142853,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        4.472857142857142,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        6.262,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        8.051142857142857,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        9.840285714285713,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "uplight",
+      "position": [
+        11.629428571428571,
+        -2.738,
+        -0.33
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "pillar",
+      "position": [
+        14.184000000000001,
+        -2.7880000000000003,
+        1.35
+      ],
+      "power_w": 6
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.373999999999999,
+        -2.438,
+        1.55
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "pillar",
+      "position": [
+        14.608,
+        -2.6380000000000003,
+        1.1
+      ],
+      "power_w": 7
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "pillar",
+      "position": [
+        18.018,
+        -2.6380000000000003,
+        1.1
+      ],
+      "power_w": 7
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        4.45,
+        12.4,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        5.2,
+        12.4,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "mirror",
+      "position": [
+        5.5,
+        12.175,
+        1.9
+      ],
+      "power_w": 8
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        0.75,
+        8.25,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        0.75,
+        11.200666666666667,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        2.166666666666666,
+        8.25,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        2.166666666666666,
+        11.200666666666667,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        3.5833333333333326,
+        8.25,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        3.5833333333333326,
+        11.200666666666667,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        4.999999999999999,
+        9.725333333333333,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "lamp",
+      "position": [
+        0.4,
+        10.505999999999997,
+        0.8900000000000001
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "lamp",
+      "position": [
+        0.4,
+        8.105999999999998,
+        0.8900000000000001
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        9.1,
+        9.15,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        9.1,
+        12.099999999999998,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        10.497,
+        10.625,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        11.894,
+        9.15,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        11.894,
+        12.099999999999998,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.291,
+        10.625,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        14.687999999999999,
+        9.15,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        14.687999999999999,
+        12.099999999999998,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        17.988000000000003,
+        9.200000000000001,
+        0.57
+      ],
+      "power_w": 13
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        17.988000000000003,
+        10.55,
+        0.57
+      ],
+      "power_w": 13
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        17.988000000000003,
+        11.9,
+        0.57
+      ],
+      "power_w": 13
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        17.988000000000003,
+        13.25,
+        0.57
+      ],
+      "power_w": 13
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        6.55,
+        11.65,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        7.749999999999999,
+        11.65,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        6.55,
+        10.25,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "mirror",
+      "position": [
+        8.049999999999999,
+        10.3,
+        1.9
+      ],
+      "power_w": 8
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        8.124,
+        3.55,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        10.224,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        10.224,
+        3.55,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        11.574,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        11.574,
+        3.6166666666666663,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.032,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.032,
+        3.6166666666666663,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        14.489999999999998,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        14.489999999999998,
+        3.6166666666666663,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        3.774,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        3.774,
+        2.8500000000000005,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        5.273999999999999,
+        1.8000000000000003,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        6.773999999999999,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        6.773999999999999,
+        2.8500000000000005,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "undercabinet",
+      "position": [
+        6.984,
+        0.9749999999999999,
+        1.48
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        2.349,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        5.223999999999999,
+        4.2,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        5.223999999999999,
+        6.6000000000000005,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        6.593,
+        7.800000000000001,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        8.124,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        8.724,
+        0.75,
+        2.7929999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "lamp",
+      "position": [
+        8.424,
+        0.4,
+        1.5
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.373999999999999,
+        0.725,
+        2.6999999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "downlight",
+      "position": [
+        13.373999999999999,
+        1.425,
+        2.6999999999999997
+      ],
+      "power_w": 9
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        15.788,
+        8.24,
+        0.19
+      ],
+      "power_w": 6
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "garden",
+      "position": [
+        17.758000000000003,
+        8.24,
+        0.19
+      ],
+      "power_w": 6
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        12.299999999999999,
+        6.18,
+        2.9
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        14.949000000000002,
+        6.18,
+        2.9
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        17.598000000000003,
+        6.18,
+        2.9
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        11.565,
+        6.25,
+        2.46
+      ],
+      "power_w": 22
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        11.899999999999999,
+        5.915,
+        2.46
+      ],
+      "power_w": 22
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        14.2,
+        5.915,
+        2.46
+      ],
+      "power_w": 22
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        11.899999999999999,
+        8.285,
+        2.46
+      ],
+      "power_w": 22
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        14.2,
+        8.285,
+        2.46
+      ],
+      "power_w": 22
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        0.6,
+        12.1,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        2.4,
+        12.1,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        4.199999999999999,
+        12.1,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        3.774,
+        2.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        3.774,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        5.574,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        7.374,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        9.174,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        10.974,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        12.774,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        14.573999999999998,
+        0.4,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        12.049999999999999,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        13.85,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        15.65,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        17.450000000000003,
+        6.2,
+        2.9499999999999997
+      ],
+      "power_w": 12
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        8.424,
+        -0.28,
+        2.76
+      ],
+      "power_w": 14
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        10.224,
+        -0.28,
+        2.76
+      ],
+      "power_w": 14
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "porch",
+      "position": [
+        9.508999999999999,
+        -0.19,
+        1.65
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "step",
+      "position": [
+        13.373999999999999,
+        -2.1,
+        -0.2
+      ],
+      "power_w": 6
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "soffit",
+      "position": [
+        11.574,
+        -0.6,
+        2.72
+      ],
+      "power_w": 14
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "soffit",
+      "position": [
+        12.824,
+        -0.6,
+        2.72
+      ],
+      "power_w": 14
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "soffit",
+      "position": [
+        14.074,
+        -0.6,
+        2.72
+      ],
+      "power_w": 14
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        12.324,
+        -0.35,
+        2.1
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "wall",
+      "position": [
+        14.424000000000001,
+        -0.35,
+        2.1
+      ],
+      "power_w": 10
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "path",
+      "position": [
+        1.283,
+        -2.198,
+        -0.16999999999999998
+      ],
+      "power_w": 5
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "path",
+      "position": [
+        4.297,
+        -2.198,
+        -0.16999999999999998
+      ],
+      "power_w": 5
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "path",
+      "position": [
+        7.31,
+        -2.198,
+        -0.16999999999999998
+      ],
+      "power_w": 5
+    },
+    {
+      "color": "#ffdfae",
+      "fixture_visible": true,
+      "kind": "path",
+      "position": [
+        10.324,
+        -2.198,
+        -0.16999999999999998
+      ],
+      "power_w": 5
+    }
+  ]
+}

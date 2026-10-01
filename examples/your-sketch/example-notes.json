@@ -1,0 +1,39 @@
+{
+  "source": "Reconstructed from the supplied screenshot dimensions and relative positions; coordinates estimated from the image.",
+  "groundAdjustments": [
+    {
+      "id": "bed-rear-left",
+      "message": "Ground \u00b7 Bed Rear Left: 3 \u00d7 3.2 \u2192 3 \u00d7 3.2 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "bed-rear-right",
+      "message": "Ground \u00b7 Bed Rear Right: 3.6 \u00d7 3.2 \u2192 3.6 \u00d7 3.2 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "dining",
+      "message": "Ground \u00b7 Dining: 1.55 \u00d7 3.2 \u2192 2.4 \u00d7 3.2 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "drawing",
+      "message": "Ground \u00b7 Drawing room \u00b7 guests: 2.65 \u00d7 3.2 \u2192 2.65 \u00d7 3.2 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "kitchen",
+      "message": "Ground \u00b7 Kitchen: 2.2 \u00d7 3.7 \u2192 2.7 \u00d7 3.7 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "living",
+      "message": "Ground \u00b7 Living: 2.9 \u00d7 3.6 \u2192 3.75 \u00d7 4.1 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "stair",
+      "message": "Ground \u00b7 Stair: 0.9 \u00d7 3.6 \u2192 2.2 \u00d7 4.1 m; position adjusted for walls and the stair connection."
+    },
+    {
+      "id": "veranda",
+      "message": "Ground \u00b7 Veranda: 2.8 \u00d7 3.55 \u2192 2.8 \u00d7 4.1 m; position adjusted for walls and the stair connection."
+    }
+  ],
+  "upperDesign": "Aligned stair; three bedrooms, family lounge, bathroom, lobby and open terrace. Roof reached by the final stair flight.",
+  "guide": "The 16 cells summarize the exact room plan by largest overlap. They show broad placement only; custom geometry is authoritative."
+}

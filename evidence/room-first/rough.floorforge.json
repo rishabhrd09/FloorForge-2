@@ -1,0 +1,120 @@
+{
+  "brief": {
+    "storeys": 1,
+    "bedrooms": 1,
+    "width_mm": 10000,
+    "depth_mm": 12000,
+    "left_mm": 500,
+    "right_mm": 500,
+    "front_mm": 1000,
+    "rear_mm": 1000,
+    "roof_access": false
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "floors": [
+      {
+        "id": "floor-0",
+        "rooms": [
+          {
+            "id": "living",
+            "kind": "living",
+            "name": "Living",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                4150,
+                150
+              ],
+              [
+                4150,
+                4150
+              ],
+              [
+                150,
+                4150
+              ]
+            ]
+          },
+          {
+            "id": "drawing",
+            "kind": "drawing-room",
+            "name": "Drawing room",
+            "polygon": [
+              [
+                4150,
+                150
+              ],
+              [
+                8150,
+                150
+              ],
+              [
+                8150,
+                4150
+              ],
+              [
+                4150,
+                4150
+              ]
+            ]
+          },
+          {
+            "id": "kitchen",
+            "kind": "kitchen",
+            "name": "Kitchen",
+            "polygon": [
+              [
+                150,
+                4150
+              ],
+              [
+                4150,
+                4150
+              ],
+              [
+                4150,
+                8150
+              ],
+              [
+                150,
+                8150
+              ]
+            ]
+          },
+          {
+            "id": "bed",
+            "kind": "bedroom",
+            "name": "Bedroom",
+            "polygon": [
+              [
+                4150,
+                4150
+              ],
+              [
+                8150,
+                4150
+              ],
+              [
+                8150,
+                8150
+              ],
+              [
+                4150,
+                8150
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": []
+      }
+    ],
+    "stairs": []
+  }
+}

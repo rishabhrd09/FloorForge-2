@@ -23,6 +23,7 @@ export const WALK_SETTINGS = {
   walkSpeed: 2.3,
   runSpeed: 5.0,
   crouchSpeed: 1.2,
+  turnSpeed: 1.68, // radians per second; arrow keys and Q/E have the same rate at every frame rate
   accel: 14,
   airAccel: 3,
   gravity: 16.5,
@@ -34,6 +35,8 @@ export class Walker {
     this.s = { ...WALK_SETTINGS, ...settings };
     this.geometry = geometry;
     this.bvh = new MeshBVH(geometry, { maxLeafSize: 8 });
+    this.dynamicBVHs = [];
+    this.optionalBVHs = [];
     this.bounds = bounds; // {min: Vector3, max: Vector3} in Three space
     this.position = new THREE.Vector3();
     this.velocity = new THREE.Vector3();
@@ -70,7 +73,7 @@ export class Walker {
     for (const [ox, oz] of offsets) {
       _ray.origin.set(pos.x + ox, top, pos.z + oz);
       _ray.direction.set(0, -1, 0);
-      const hits = this.bvh.raycast(_ray, THREE.DoubleSide, 0, s.stepUp + .05 + drop);
+      const hits = this.surfaces.flatMap(bvh => bvh.raycast(_ray, THREE.DoubleSide, 0, s.stepUp + .05 + drop));
       let y = null, dist = Infinity;
       for (const hit of hits) {
         if (hit.face && hit.face.normal.y < .3) continue; // underside/back face or a wall side
@@ -89,14 +92,24 @@ export class Walker {
     _dir.divideScalar(dist);
     _ray.origin.copy(from).addScaledVector(_dir, margin);
     _ray.direction.copy(_dir);
-    return !this.bvh.raycastFirst(_ray, THREE.DoubleSide, 0, dist - margin * 2);
+    return !this.surfaces.some(bvh => bvh.raycastFirst(_ray, THREE.DoubleSide, 0, dist - margin * 2));
   }
 
   ceilingClear(pos, height) {
     _ray.origin.set(pos.x, pos.y + .3, pos.z);
     _ray.direction.set(0, 1, 0);
-    const hit = this.bvh.raycastFirst(_ray, THREE.DoubleSide, 0, height);
-    return hit ? hit.distance + .3 : Infinity;
+    return Math.min(...this.surfaces.map(bvh => bvh.raycastFirst(_ray, THREE.DoubleSide, 0, height)?.distance ?? Infinity)) + .3;
+  }
+
+  get surfaces() { return [this.bvh, ...this.dynamicBVHs, ...this.optionalBVHs]; }
+
+  overlaps(bvh) {
+    const r = this.s.radius, p = this.position;
+    _seg.start.set(p.x, p.y + r, p.z);
+    _seg.end.set(p.x, p.y + (this.crouching ? this.s.crouchHeight : this.s.height) - r, p.z);
+    _box.makeEmpty().expandByPoint(_seg.start).expandByPoint(_seg.end).expandByScalar(r);
+    return bvh.shapecast({ intersectsBounds: box => box.intersectsBox(_box),
+      intersectsTriangle: tri => tri.closestPointToSegment(_seg, _tri, _cap) < r - .002 });
   }
 
   // Pushes a capsule (raised by the step offset) out of walls and furniture; returns horizontal correction.
@@ -114,7 +127,7 @@ export class Walker {
       _box.expandByPoint(_seg.start); _box.expandByPoint(_seg.end);
       _box.min.addScalar(-r); _box.max.addScalar(r);
       let moved = false;
-      this.bvh.shapecast({
+      for (const bvh of this.surfaces) bvh.shapecast({
         intersectsBounds: (box) => box.intersectsBox(_box),
         intersectsTriangle: (tri) => {
           const d = tri.closestPointToSegment(_seg, _tri, _cap);
@@ -140,6 +153,7 @@ export class Walker {
 
   update(dt, input) {
     const s = this.s;
+    this.yaw += clamp(input.turn || 0, -1, 1) * s.turnSpeed * dt;
     // Crouch (cannot stand up under a low ceiling).
     const wantCrouch = !!input.crouch;
     if (!wantCrouch && this.crouching) { if (this.ceilingClear(this.position, s.height) > s.height - .05) this.crouching = false; }

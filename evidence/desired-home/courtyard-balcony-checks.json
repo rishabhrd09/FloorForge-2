@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "name": "Upper gallery bypasses courtyard and connects rear rooms",
+      "pass": true
+    },
+    {
+      "name": "L-shaped balcony is walkable from right terrace across the front",
+      "pass": true
+    },
+    {
+      "name": "Clear canopy and both room windows are present",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

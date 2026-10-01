@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "name": "B and C are independently operable sliding doors",
+      "pass": true
+    },
+    {
+      "name": "D has no opening interaction",
+      "pass": true
+    },
+    {
+      "name": "Closed B blocks passage",
+      "pass": true
+    },
+    {
+      "name": "Closed C blocks passage",
+      "pass": true
+    },
+    {
+      "name": "B opens",
+      "pass": true
+    },
+    {
+      "name": "C remains closed",
+      "pass": true
+    },
+    {
+      "name": "B alone clears its doorway",
+      "pass": true
+    },
+    {
+      "name": "C still blocks its doorway",
+      "pass": true
+    },
+    {
+      "name": "C opens independently",
+      "pass": true
+    },
+    {
+      "name": "C alone clears its doorway",
+      "pass": true
+    },
+    {
+      "name": "Both open handles remain targetable",
+      "pass": true
+    },
+    {
+      "name": "New solid wall A blocks passage",
+      "pass": true
+    },
+    {
+      "name": "Fixed pane D blocks passage",
+      "pass": true
+    },
+    {
+      "name": "g-care-veranda/panel-b closes",
+      "pass": true
+    },
+    {
+      "name": "g-care-veranda/panel-c closes",
+      "pass": true
+    },
+    {
+      "name": "Reclosed B blocks passage",
+      "pass": true
+    },
+    {
+      "name": "Reclosed C blocks passage",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

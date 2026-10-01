@@ -1,0 +1,571 @@
+{
+  "nodes": "003b9eedc173fcac9c41f959db88b5d6eb95744a67dcede1c31e2f8a60275a9a",
+  "materials": {
+    "appliance": {
+      "color": "#c8cacb",
+      "kind": "brushed",
+      "metallic": 0.9,
+      "params": [
+        0.3
+      ],
+      "roughness": 0.3
+    },
+    "art": {
+      "alt": "#3f4d57",
+      "color": "#b09a80",
+      "kind": "art",
+      "roughness": 0.95
+    },
+    "art-2": {
+      "alt": "#7a5a44",
+      "color": "#c9b8a0",
+      "kind": "art",
+      "roughness": 0.95,
+      "seed": 31
+    },
+    "asphalt": {
+      "alt": "#8b8a85",
+      "color": "#4a4d4c",
+      "kind": "asphalt",
+      "roughness": 0.97,
+      "texture": "asphalt"
+    },
+    "basalt": {
+      "color": "#4d4c49",
+      "kind": "stone",
+      "roughness": 0.8,
+      "seed": 4,
+      "texture": "stone"
+    },
+    "blackglass": {
+      "color": "#0f1011",
+      "metallic": 0.2,
+      "roughness": 0.06
+    },
+    "brass": {
+      "color": "#b69c68",
+      "kind": "brushed",
+      "metallic": 0.65,
+      "params": [
+        0.3
+      ],
+      "roughness": 0.28
+    },
+    "breeze": {
+      "color": "#ece8de",
+      "kind": "concrete",
+      "roughness": 0.86,
+      "seed": 14,
+      "texture": "concrete",
+      "tile_m": 1.0
+    },
+    "cabinet": {
+      "color": "#e7e2d8",
+      "kind": "metal",
+      "params": [
+        0.42
+      ],
+      "roughness": 0.45
+    },
+    "car-alloy": {
+      "color": "#b9c0c4",
+      "metallic": 0.9,
+      "roughness": 0.22
+    },
+    "car-black": {
+      "color": "#111618",
+      "metallic": 0.2,
+      "roughness": 0.26
+    },
+    "car-brake": {
+      "color": "#60666a",
+      "metallic": 0.75,
+      "roughness": 0.5
+    },
+    "car-headlight": {
+      "color": "#dde6eb",
+      "metallic": 0.55,
+      "roughness": 0.1
+    },
+    "car-pearl": {
+      "clearcoat": 1,
+      "clearcoat_roughness": 0.075,
+      "color": "#8b916b",
+      "metallic": 0.65,
+      "roughness": 0.24
+    },
+    "car-plate": {
+      "color": "#e1e6df",
+      "roughness": 0.35
+    },
+    "car-rubber": {
+      "color": "#212426",
+      "roughness": 0.88
+    },
+    "car-seat": {
+      "color": "#383e3c",
+      "roughness": 0.87
+    },
+    "car-tail": {
+      "clearcoat": 1,
+      "color": "#981a20",
+      "roughness": 0.18
+    },
+    "car-tint": {
+      "alpha": 0.48,
+      "color": "#40535a",
+      "metallic": 0.15,
+      "roughness": 0.12
+    },
+    "ceiling": {
+      "color": "#f5f3ef",
+      "kind": "render",
+      "roughness": 0.92,
+      "seed": 2,
+      "texture": "plaster"
+    },
+    "ceramic": {
+      "color": "#eeebe1",
+      "roughness": 0.25
+    },
+    "cladding": {
+      "alt": "#6f6b64",
+      "color": "#a39d92",
+      "kind": "stoneclad",
+      "roughness": 0.9,
+      "texture": "stone"
+    },
+    "cobble": {
+      "alt": "#6b7176",
+      "color": "#8e9194",
+      "kind": "cobble",
+      "roughness": 0.6,
+      "texture": "paver"
+    },
+    "counter": {
+      "alt": "#9d9b95",
+      "clearcoat": 0.35,
+      "color": "#f0eee9",
+      "kind": "marble",
+      "roughness": 0.15,
+      "texture": "stone"
+    },
+    "deck": {
+      "alt": "#5d412b",
+      "color": "#7a5a3e",
+      "kind": "deck",
+      "roughness": 0.7,
+      "texture": "wood"
+    },
+    "doorframe": {
+      "color": "#efede8",
+      "kind": "metal",
+      "params": [
+        0.5
+      ],
+      "roughness": 0.5
+    },
+    "encaustic": {
+      "alt": "#4a4c50",
+      "color": "#dddbd5",
+      "kind": "encaustic",
+      "roughness": 0.55,
+      "texture": "tile"
+    },
+    "fabric": {
+      "color": "#d3c7b3",
+      "kind": "fabric",
+      "roughness": 0.99,
+      "texture": "fabric"
+    },
+    "fabric-dark": {
+      "color": "#5d6b57",
+      "kind": "fabric",
+      "roughness": 0.94,
+      "seed": 3,
+      "texture": "fabric"
+    },
+    "facade-limestone": {
+      "alt": "#a89e8c",
+      "color": "#c4baa8",
+      "kind": "stone",
+      "roughness": 0.88,
+      "texture": "stone",
+      "tile_m": 1.6
+    },
+    "flagstone": {
+      "alt": "#6f7072",
+      "color": "#c9c5bb",
+      "kind": "paver",
+      "params": [
+        4,
+        2,
+        0.006,
+        0.28
+      ],
+      "roughness": 0.68,
+      "texture": "paver",
+      "tile_m": 2.4
+    },
+    "floor": {
+      "alt": "#b8b2a8",
+      "clearcoat": 0.2,
+      "clearcoat_roughness": 0.12,
+      "color": "#e6e2da",
+      "kind": "tile",
+      "params": [
+        2,
+        0.005,
+        0.32,
+        0.85
+      ],
+      "roughness": 0.3,
+      "texture": "tile"
+    },
+    "frame": {
+      "color": "#1d2022",
+      "kind": "metal",
+      "metallic": 0.3,
+      "params": [
+        0.36
+      ],
+      "roughness": 0.32
+    },
+    "frosted": {
+      "alpha": 0.82,
+      "color": "#e8edeb",
+      "roughness": 0.5,
+      "roughness_override": 0.38
+    },
+    "garden-limestone": {
+      "alt": "#b4a98f",
+      "color": "#cec5ae",
+      "kind": "paver",
+      "params": [
+        3,
+        2,
+        0.003,
+        0.08
+      ],
+      "roughness": 0.87,
+      "texture": "paver",
+      "tile_m": 1.8
+    },
+    "garden-stone": {
+      "alt": "#b0a790",
+      "color": "#c7c0ac",
+      "kind": "paver",
+      "params": [
+        3,
+        2,
+        0.003,
+        0.08
+      ],
+      "roughness": 0.85,
+      "texture": "paver",
+      "tile_m": 1.8
+    },
+    "glass": {
+      "alpha": 0.26,
+      "color": "#aec8cc",
+      "metallic": 0.1,
+      "roughness": 0.12
+    },
+    "globe": {
+      "color": "#ffd9a3",
+      "emission": 1.1,
+      "roughness": 0.3
+    },
+    "grass": {
+      "alt": "#a19c5e",
+      "color": "#5d7a3a",
+      "kind": "grass",
+      "roughness": 1.0,
+      "texture": "grass"
+    },
+    "gravel": {
+      "alt": "#6e6c67",
+      "color": "#a09e98",
+      "kind": "gravel",
+      "roughness": 0.85,
+      "texture": "stone"
+    },
+    "insect-mesh": {
+      "alpha": 0.09,
+      "color": "#f5f3ed",
+      "kind": "insect-mesh",
+      "roughness": 0.9,
+      "spacing": 0.008,
+      "wire": 0.00035
+    },
+    "lamp": {
+      "color": "#ffde9b",
+      "emission": 1.0,
+      "roughness": 0.5
+    },
+    "lawn": {
+      "alt": "#a7a25c",
+      "color": "#557a31",
+      "kind": "grass",
+      "roughness": 1.0,
+      "seed": 7,
+      "texture": "grass"
+    },
+    "leaf": {
+      "color": "#3f6b35",
+      "roughness": 0.9
+    },
+    "leaf-light": {
+      "color": "#86a257",
+      "roughness": 0.9
+    },
+    "linen": {
+      "color": "#f1ede4",
+      "kind": "fabric",
+      "params": [
+        180
+      ],
+      "roughness": 0.98,
+      "seed": 5,
+      "texture": "fabric"
+    },
+    "mirror": {
+      "color": "#e6ecee",
+      "metallic": 1.0,
+      "roughness": 0.02
+    },
+    "oak": {
+      "color": "#b48f67",
+      "kind": "wood",
+      "roughness": 0.45,
+      "seed": 17,
+      "texture": "wood"
+    },
+    "paver": {
+      "alt": "#9c998e",
+      "color": "#8e9194",
+      "kind": "paver",
+      "roughness": 0.75,
+      "texture": "paver"
+    },
+    "paverlarge": {
+      "alt": "#a8a49a",
+      "color": "#d2cfc6",
+      "kind": "concrete",
+      "roughness": 0.72,
+      "seed": 12,
+      "texture": "concrete",
+      "tile_m": 1.2
+    },
+    "pebble": {
+      "alt": "#a19d94",
+      "color": "#ebe8e1",
+      "kind": "pebbles",
+      "roughness": 0.5,
+      "texture": "stone"
+    },
+    "pebbleblack": {
+      "alt": "#7a766d",
+      "color": "#3b3a37",
+      "kind": "pebbles",
+      "roughness": 0.42,
+      "seed": 5,
+      "texture": "stone"
+    },
+    "planter": {
+      "color": "#f1f0ec",
+      "kind": "concrete",
+      "roughness": 0.7,
+      "seed": 11,
+      "texture": "concrete"
+    },
+    "porch-limestone": {
+      "alt": "#b8b2a8",
+      "clearcoat": 0,
+      "clearcoat_roughness": 0.12,
+      "color": "#e6e2da",
+      "kind": "tile",
+      "params": [
+        2,
+        0.005,
+        0.32,
+        0.85
+      ],
+      "roughness": 0.72,
+      "texture": "tile"
+    },
+    "railglass": {
+      "alpha": 0.34,
+      "color": "#b3cec6",
+      "metallic": 0.1,
+      "roughness": 0.05
+    },
+    "roof": {
+      "color": "#ecebe6",
+      "kind": "render",
+      "roughness": 0.77,
+      "texture": "concrete"
+    },
+    "rug": {
+      "alt": "#9c8a70",
+      "color": "#c9bda8",
+      "kind": "rug",
+      "roughness": 0.98,
+      "texture": "fabric"
+    },
+    "screen-wire-white": {
+      "color": "#f5f3ed",
+      "roughness": 0.9
+    },
+    "skirting": {
+      "color": "#ecebe6",
+      "kind": "metal",
+      "params": [
+        0.5
+      ],
+      "roughness": 0.5
+    },
+    "slab": {
+      "color": "#e6e4de",
+      "kind": "render",
+      "roughness": 0.9,
+      "seed": 8,
+      "texture": "plaster"
+    },
+    "sling": {
+      "color": "#d8cfbd",
+      "kind": "fabric",
+      "params": [
+        90
+      ],
+      "roughness": 0.95,
+      "seed": 21,
+      "texture": "fabric"
+    },
+    "soil": {
+      "alt": "#2f261d",
+      "color": "#43372b",
+      "kind": "soil",
+      "roughness": 1.0,
+      "texture": "stone"
+    },
+    "solar": {
+      "color": "#1f2c3f",
+      "kind": "tile",
+      "metallic": 0.25,
+      "params": [
+        6,
+        0.03,
+        0,
+        0.95
+      ],
+      "roughness": 0.14,
+      "texture": "tile",
+      "tile_m": 1.0
+    },
+    "stairtread": {
+      "color": "#a98262",
+      "kind": "wood",
+      "roughness": 0.4,
+      "seed": 19,
+      "texture": "wood"
+    },
+    "steel": {
+      "color": "#232526",
+      "kind": "metal",
+      "metallic": 0.6,
+      "params": [
+        0.45
+      ],
+      "roughness": 0.45
+    },
+    "step": {
+      "color": "#a9a59d",
+      "kind": "stone",
+      "roughness": 0.7,
+      "seed": 6,
+      "texture": "stone"
+    },
+    "steppingstone": {
+      "color": "#62625f",
+      "kind": "concrete",
+      "roughness": 0.8,
+      "seed": 9,
+      "texture": "concrete",
+      "tile_m": 0.9
+    },
+    "stone": {
+      "color": "#8a8883",
+      "kind": "stone",
+      "roughness": 0.78,
+      "texture": "stone"
+    },
+    "tilewall": {
+      "alt": "#c9c5bd",
+      "color": "#ebe8e2",
+      "kind": "tile",
+      "params": [
+        4,
+        0.008,
+        0.15,
+        0.7
+      ],
+      "roughness": 0.3,
+      "texture": "tile"
+    },
+    "timber": {
+      "color": "#7a5234",
+      "kind": "wood",
+      "roughness": 0.46,
+      "texture": "wood"
+    },
+    "wall": {
+      "color": "#f1efea",
+      "kind": "render",
+      "roughness": 0.88,
+      "texture": "plaster"
+    },
+    "walnut": {
+      "color": "#5b3e2b",
+      "kind": "wood",
+      "roughness": 0.45,
+      "seed": 13,
+      "texture": "wood"
+    },
+    "water": {
+      "alpha": 0.84,
+      "color": "#35545a",
+      "metallic": 0.2,
+      "roughness": 0.03
+    },
+    "waterfall": {
+      "alpha": 0.36,
+      "color": "#e4f1f2",
+      "metallic": 0.05,
+      "roughness": 0.04
+    },
+    "wetfloor": {
+      "color": "#b9b7b1",
+      "kind": "tile",
+      "params": [
+        4,
+        0.01,
+        0,
+        0.35
+      ],
+      "roughness": 0.56,
+      "texture": "tile"
+    },
+    "woodfloor": {
+      "alt": "#8a6a4c",
+      "color": "#b89572",
+      "kind": "woodfloor",
+      "roughness": 0.4,
+      "texture": "wood"
+    }
+  },
+  "furniture": "9272c4818ff4afcedd6991950639854e04233ccf084df9cf4c8e52abc67d9fbd",
+  "colliders": "65139f04751db15ba7ef35a00e1fd25ca0476295e064ce45460cafd66836784a",
+  "vegetation": "2607c45f2c1982cfb8c9eddaca4e50a168ab6e7a268f5ace2b3b22f61183e77c",
+  "doors": "6db4a2648aad6ce1318dd26a3169cd54372abd5f6b6efbca81612d2a0f194013"
+}

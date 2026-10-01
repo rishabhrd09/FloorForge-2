@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "name": "All doors and gates begin closed",
+      "pass": true
+    },
+    {
+      "name": "Pedestrian gate opens",
+      "pass": true
+    },
+    {
+      "name": "Pedestrian gate allows arrival",
+      "pass": true
+    },
+    {
+      "name": "Opaque entry blocks passage when closed",
+      "pass": true
+    },
+    {
+      "name": "Wooden entry opens",
+      "pass": true
+    },
+    {
+      "name": "Wooden entry provides outside access",
+      "pass": true
+    },
+    {
+      "name": "Open puja has no door",
+      "pass": true
+    },
+    {
+      "name": "Puja is accessible directly from entry side",
+      "pass": true
+    },
+    {
+      "name": "Puja is accessible directly from hall side",
+      "pass": true
+    },
+    {
+      "name": "Open corner has no remaining wall post",
+      "pass": true
+    },
+    {
+      "name": "Serving counter blocks walking through its hatch",
+      "pass": true
+    },
+    {
+      "name": "Kitchen entry, relocated serving counter and stair-side bedroom route stay clear",
+      "pass": true
+    },
+    {
+      "name": "Sofa approach and central lounge passage remain clear",
+      "pass": true
+    },
+    {
+      "name": "Bedroom door opens",
+      "pass": true
+    },
+    {
+      "name": "Shifted bedroom is accessible",
+      "pass": true
+    },
+    {
+      "name": "Caregiver door still opens inward",
+      "pass": true
+    },
+    {
+      "name": "Caregiver route remains clear",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "floorforge.project/0.4",
+  "brief": {
+    "title": "The Palm Terrace Villa",
+    "width_mm": 13716,
+    "depth_mm": 19812,
+    "storeys": 2,
+    "bedrooms": 4,
+    "exterior_theme": "tropical_verandah",
+    "interior_theme": "warm_contemporary",
+    "roof_access": true,
+    "variant": 1
+  }
+}

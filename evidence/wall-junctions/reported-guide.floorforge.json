@@ -1,0 +1,105 @@
+{
+  "brief": {
+    "width_mm": 12192,
+    "depth_mm": 18288,
+    "front_mm": 5500,
+    "rear_mm": 1200,
+    "left_mm": 500,
+    "right_mm": 3000,
+    "road_bearing_deg": 90,
+    "bedrooms": 3,
+    "storeys": 3,
+    "parking": true,
+    "roof_access": false
+  },
+  "grid": {
+    "mode": "spatial_hint",
+    "rows": 4,
+    "cols": 4,
+    "floorIds": [
+      "g",
+      "f",
+      "s"
+    ],
+    "floors": [
+      [
+        [
+          "outer-lobby",
+          "outer-lobby",
+          "outer-lobby",
+          "outer-lobby"
+        ],
+        [
+          "kitchen",
+          "dining",
+          "living",
+          "outer-lobby"
+        ],
+        [
+          "stair-landing",
+          "bedroom-2",
+          "veranda",
+          "outer-lobby"
+        ],
+        [
+          "master-bedroom",
+          "bedroom-2",
+          "courtyard",
+          "bedroom-1"
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ]
+  }
+}

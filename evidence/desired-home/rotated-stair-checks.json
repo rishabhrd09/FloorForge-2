@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "name": "Caregiver door swings into caregiver room",
+      "pass": true
+    },
+    {
+      "name": "Roof landing door leads to terrace",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

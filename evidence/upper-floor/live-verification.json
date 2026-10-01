@@ -1,0 +1,7 @@
+{
+  "checks": [
+    "Home screen button loads matching sample",
+    "Passive cell overview does not show automatic planner errors",
+    "Upper-floor help reachable on phone"
+  ]
+}

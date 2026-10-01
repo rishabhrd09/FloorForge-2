@@ -1,0 +1,93 @@
+{
+  "checks": [
+    {
+      "name": "All doors and gates begin closed",
+      "pass": true
+    },
+    {
+      "name": "Two hinged timber leaves and one sliding mesh panel",
+      "pass": true
+    },
+    {
+      "name": "Closed timber and mesh block walking",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/timber-left opens",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/timber-right opens",
+      "pass": true
+    },
+    {
+      "name": "Mesh stays closed when timber opens",
+      "pass": true
+    },
+    {
+      "name": "Closed mesh still blocks passage",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/mesh-right opens",
+      "pass": true
+    },
+    {
+      "name": "Stacked mesh clears the right-hand passage",
+      "pass": true
+    },
+    {
+      "name": "Open leaves remain individually targetable",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/timber-left closes",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/timber-right closes",
+      "pass": true
+    },
+    {
+      "name": "g-living-veranda/mesh-right closes",
+      "pass": true
+    },
+    {
+      "name": "Reclosed layers block passage",
+      "pass": true
+    },
+    {
+      "name": "Veranda route reaches outside parking approach",
+      "pass": true
+    },
+    {
+      "name": "Drawing room door opens",
+      "pass": true
+    },
+    {
+      "name": "Drawing room remains accessible",
+      "pass": true
+    },
+    {
+      "name": "ICU veranda slider opens",
+      "pass": true
+    },
+    {
+      "name": "ICU remains accessible",
+      "pass": true
+    },
+    {
+      "name": "Upper terrace bypass remains walkable",
+      "pass": true
+    },
+    {
+      "name": "Guard prevents entering daylight opening",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

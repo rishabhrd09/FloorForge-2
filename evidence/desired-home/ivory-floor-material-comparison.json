@@ -1,0 +1,95 @@
+{
+  "changed": [
+    {
+      "id": "g-bath/floor",
+      "before": "wetfloor",
+      "after": "ivory-vitrified-matte"
+    },
+    {
+      "id": "g-bedroom/floor",
+      "before": "woodfloor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-care/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-caregiver/floor",
+      "before": "woodfloor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-caregiver-bath/floor",
+      "before": "wetfloor",
+      "after": "ivory-vitrified-matte"
+    },
+    {
+      "id": "g-dining/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-drawing/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-kitchen/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-kitchen-store/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-living/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "g-puja/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "u-bath/floor",
+      "before": "wetfloor",
+      "after": "ivory-vitrified-matte"
+    },
+    {
+      "id": "u-bed-north/floor",
+      "before": "woodfloor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "u-bed-south/floor",
+      "before": "woodfloor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "u-lobby/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "u-lounge/floor",
+      "before": "floor",
+      "after": "ivory-vitrified"
+    },
+    {
+      "id": "u-office/floor",
+      "before": "woodfloor",
+      "after": "ivory-vitrified"
+    }
+  ],
+  "other_fields": [
+    "input_audit",
+    "planHash"
+  ],
+  "all_node_geometry_unchanged": true,
+  "all_existing_materials_unchanged": true
+}
