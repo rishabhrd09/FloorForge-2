@@ -50,7 +50,7 @@ def test_large_overlap_stays_blocked_and_dimensions_are_not_optimized_away():
 
 
 def test_aligned_existing_stairs_link_automatically_without_relocation():
-    p=json.loads((Path(__file__).parents[1]/'examples/custom/g2-terrace.floorforge.json').read_text())
+    p=json.loads((Path(__file__).parents[1]/'examples/custom/g2-terrace.floorforge.json').read_text(encoding='utf-8'))
     p['brief']['roof_access']=True;p['customPlan']['stairs']=[]
     before={r['id']:r['polygon'] for f in p['customPlan']['floors'] for r in f['rooms'] if r['kind']=='stair'}
     result=prepare_plan(p)

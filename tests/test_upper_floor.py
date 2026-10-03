@@ -9,7 +9,7 @@ from floorforge.review import validate
 from floorforge.model import DesignError
 ROOT=Path(__file__).resolve().parents[1]
 def sample():
-    return json.loads((ROOT/'examples/custom/your-sketch-g1.floorforge.json').read_text())
+    return json.loads((ROOT/'examples/custom/your-sketch-g1.floorforge.json').read_text(encoding='utf-8'))
 def test_upper_starter_keeps_lower_floor_and_requires_explicit_application():
     p=sample();p['customPlan']['floors'][1].update(rooms=[],openings=[],walls=[])
     p['customPlan']['stairs'][0]['roomIds']=p['customPlan']['stairs'][0]['roomIds'][:1]
@@ -47,11 +47,11 @@ def test_worked_example_has_matching_geometry_hashes_and_roof():
     assert len(p['editorState']['guideFloors'])==3
     assert all(len(row)==4 for board in p['editorState']['guideFloors'] for row in board)
     for name in ['building','scene','report','manifest']:
-        data=json.loads((ROOT/f'examples/your-sketch/{name}.json').read_text())
+        data=json.loads((ROOT/f'examples/your-sketch/{name}.json').read_text(encoding='utf-8'))
         assert data['planHash']==b['planHash']
 
 def test_original_and_fitted_sample_keep_bedroom_and_guest_dimensions():
-    original=json.loads((ROOT/'examples/custom/your-sketch-original.floorforge.json').read_text())
+    original=json.loads((ROOT/'examples/custom/your-sketch-original.floorforge.json').read_text(encoding='utf-8'))
     rooms={r['id']:r for r in sample()['customPlan']['floors'][0]['rooms']}
     for r in original['customPlan']['floors'][0]['rooms']:
         if r['kind'] in ('bedroom','drawing-room'):

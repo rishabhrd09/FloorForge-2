@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def historic_care_chair_items(scene,key):
     # Only the two visitor chairs moved in the later approved seating change.
-    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_care_chair_move.json').read_text())
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_care_chair_move.json').read_text(encoding='utf-8'))
     replacements={n['id']:n for n in prior.get(key,[])}
     return [replacements.get(n.get('id'),n) for n in scene[key]]
 
@@ -24,7 +24,7 @@ def historic_veranda_items(scene,key):
     # only when comparing historical appearance snapshots. New tests validate the
     # actual open-sky geometry and every retained ground-floor object separately.
     from collections import Counter
-    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))
     def canonical(n):
         if key=='nodes':n={k:v for k,v in n.items() if k!='id' and not(k=='owner' and isinstance(v,str) and v.startswith('object-'))}
         return json.dumps(n,sort_keys=True)
@@ -40,7 +40,7 @@ def historic_veranda_items(scene,key):
 
 def historic_caregiver_nodes(scene):
     # Restore only the later approved glass-to-timber rear entrance for old baselines.
-    before=json.loads((ROOT/'tests/fixtures/desired_home_before_caregiver_timber_door.json').read_text())
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_caregiver_timber_door.json').read_text(encoding='utf-8'))
     key='g-caregiver-garden-door'
     moving=set(scene['door_motion'][key]['ids'])
     return [n for n in historic_veranda_items(scene,'nodes') if n.get('owner')!=key and n['id'] not in moving]+before['nodes']
@@ -48,13 +48,13 @@ def historic_caregiver_nodes(scene):
 def historic_nodes(scene):
     # Restore only the explicitly approved decorative removals when comparing
     # older preservation baselines. A separate check requires them absent now.
-    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text(encoding='utf-8'))
     return historic_caregiver_nodes(scene)+removed['removed_nodes']
 
 
 def historic_items(scene,key):
     items=historic_care_chair_items(scene,key)
-    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text(encoding='utf-8'))
     for entry in removed['removed_'+key]:items.insert(entry['index'],entry['item'])
     return items
 
@@ -112,7 +112,7 @@ def test_front_vehicle_court_is_clear_of_boundary_reaching_house():
 
 
 def test_saved_model_contains_care_furniture_and_matching_editable_rooms():
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text());p=json.loads((root/'project.floorforge.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'));p=json.loads((root/'project.floorforge.json').read_text(encoding='utf-8'))
     assert fuse(p)['planHash']==b['planHash']==s['planHash']
     assert {f['kind'] for f in s['furniture'] if f['room_id']=='g-care'}=={'reclining-bed','care-chair-right','care-chair-right-2','care-chair-right-3','equipment-table','care-cupboard','large-tv'}
     clear=Polygon(next(r for r in b['spaces'] if r['id']=='g-care')['clear']);furn=[f for f in s['furniture'] if f['room_id']=='g-care']
@@ -124,7 +124,7 @@ def test_saved_model_contains_care_furniture_and_matching_editable_rooms():
 
 
 def test_sample_furnishes_the_requested_dining_and_office():
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert Polygon(next(f['footprint'] for f in scene['furniture'] if f['kind']=='dining-set' and f['room_id']=='g-living')).area>3.0
     assert any(f['kind']=='kitchen-fridge' for f in scene['furniture'])
     assert any(f['kind']=='desk' and f['room_id']=='u-office' for f in scene['furniture'])
@@ -162,7 +162,7 @@ def test_atrium_is_a_guarded_slab_and_ceiling_hole_with_an_overlooking_lobby():
     guards=[g for g in b['guards'] if g['owner']=='u-living-void']
     assert len(guards)>=3 and all(g['height']==1100 for g in guards)
     assert rooms['u-lounge']['walkable'] and len(rooms['u-lounge']['polygon'])==12
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     sofa=Polygon(next(f['footprint'] for f in scene['furniture'] if f['id']=='g-living/sofa'))
     # Seating now backs onto the drawing-room divider instead of filling the atrium.
     assert sofa.bounds==(9.804,3.25,10.784,5.6)
@@ -183,7 +183,7 @@ def test_an_actual_door_still_cannot_enter_a_stair_flight():
 def test_care_suite_moves_forward_and_left_with_tv_and_clear_routes():
     from shapely.affinity import scale
     root=ROOT/'examples/gallery/my-desired-home'
-    b=json.loads((root/'building.json').read_text());scene=json.loads((root/'scene.json').read_text())
+    b=json.loads((root/'building.json').read_text(encoding='utf-8'));scene=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     rooms={r['id']:r for r in b['spaces']}
     care=scale(Polygon(rooms['g-care']['clear']),xfact=.001,yfact=.001,origin=(0,0))
     items={f['kind']:Polygon(f['footprint']) for f in scene['furniture'] if f['room_id']=='g-care'}
@@ -234,7 +234,7 @@ def test_caregiver_extension_is_connected_and_stays_inside_the_declared_site():
 
 def test_dining_entrance_and_tiled_court_are_real_geometry():
     from shapely.ops import unary_union
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     o=next(o for o in b['openings'] if o['id']=='g-dining-east')
     assert o['kind']=='door' and o['sill']==0 and set(o['connects'])=={'g-dining','outside'}
     steps=[q for q in b['entrance_steps'] if q['openingId']==o['id']]
@@ -264,7 +264,7 @@ def test_dining_entrance_and_tiled_court_are_real_geometry():
 
 
 def test_relocated_bathroom_is_private_and_leaves_stairs_open():
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     rooms={r['id']:r for r in b['spaces']};wc=rooms['g-bath']
     assert 'underStair' not in wc and wc['kind']=='bathroom'
     assert Polygon(wc['clear']).bounds==(3850,11800,5800,14176)
@@ -278,7 +278,7 @@ def test_relocated_bathroom_is_private_and_leaves_stairs_open():
 
 def test_aligned_serving_hatch_is_shared_by_editor_scene_and_exports():
     from floorforge.intent import fuse
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text());p=json.loads((root/'project.floorforge.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'));p=json.loads((root/'project.floorforge.json').read_text(encoding='utf-8'))
     counter=b['built_in_counters'][0]
     assert counter['height']==950 and Polygon(counter['polygon']).bounds==(5949,3300,7374,3750)
     assert set(counter['roomIds'])=={'g-kitchen','g-living'}
@@ -286,7 +286,7 @@ def test_aligned_serving_hatch_is_shared_by_editor_scene_and_exports():
     assert any(f['kind']=='serving-counter' and f['room_id']=='g-kitchen' for f in s['furniture'])
     assert any(n['id']==counter['id']+'/top' for n in s['nodes'])
     assert fuse(p)['planHash']==b['planHash']==s['planHash']
-    assert 'serving-counter' in (root/'model.ifc').read_text()
+    assert 'serving-counter' in (root/'model.ifc').read_text(encoding='utf-8')
     assert not next(o for o in b['openings'] if o['id']=='g-dining-living').get('servingCounter')
     rear=next(w for w in b['walls'] if set(w['rooms'])=={'g-kitchen','g-living'})
     hatch=next(o for o in b['openings'] if o['id']=='g-kitchen-serving')
@@ -327,7 +327,7 @@ def test_boundary_extensions_preserve_caregiver_size_and_light_court():
 
 def test_service_wing_and_clear_veranda_have_matching_physical_geometry():
     from floorforge.plan_geometry import geometry
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     rooms={r['id']:r for r in b['spaces']};graph=validate(b)['graph']
     assert {'g-wash','g-kitchen-store'}<=set(graph['g-kitchen'])
     assert not rooms['g-wash']['roofed'] and rooms['g-wash']['drain']
@@ -347,7 +347,7 @@ def test_recliner_can_translate_and_turn_onto_the_clear_veranda():
     from shapely.affinity import rotate,translate,scale
     from shapely.ops import unary_union
     from floorforge.scene import opening_polygon
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     rooms={r['id']:r for r in b['spaces']};items=[f for f in s['furniture'] if f['room_id']=='g-care'];bed=Polygon(next(f['footprint'] for f in items if f['kind']=='reclining-bed'))
     walls={w['id']:w for w in b['walls']};o=next(o for o in b['openings'] if o['id']=='g-care-veranda');w=walls[o['wall_id']]
     portal=scale(Polygon(opening_polygon(w,o,20)),xfact=.001,yfact=.001,origin=(0,0))
@@ -429,13 +429,13 @@ def test_recliner_orientation_garden_and_three_drawing_doors():
     assert ops['g-drawing-parking-window']['width']==3000
     assert ops['g-drawing-veranda-window']['kind']=='window'
     # Garden is real visible planting, clear of the front court.
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert any(n['id']=='g-care-court/garden-bed' for n in scene['nodes'])
     assert r['g-bedroom']['clear']==[[150,7650],[5600,7650],[5600,11650],[3700,11650],[3700,13276],[150,13276]]
 
 
 def test_courtyard_and_balcony_preserve_unaffected_authored_spaces():
-    old=json.loads((ROOT/'tests/fixtures/desired_home_before_courtyard.json').read_text())
+    old=json.loads((ROOT/'tests/fixtures/desired_home_before_courtyard.json').read_text(encoding='utf-8'))
     p=project();assert p['brief']=={**old['brief'],'pooja':True}
     allowed={'g-kitchen','g-dining','g-living','g-bedroom','g-care','g-care-court','u-office','u-lobby','u-terrace-front','u-lounge','u-living-void','u-bed-south','u-bath','g-caregiver','g-caregiver-bath','g-veranda','g-court-ledge','g-stair','u-stair','u-terrace-north'}
     changed_openings={'g-living-veranda','g-dining-living','g-dining-east','g-dining-window','g-kitchen-dining','g-living-stair','g-bedroom-garden-window','g-bedroom-door','g-care-living','g-care-veranda','u-bed-south-door','u-bath-door','u-office-south','g-care-caregiver','g-caregiver-toilet','g-caregiver-veranda-window','g-care-garden-window','g-court-door','g-caregiver-garden-door','g-care-side-garden-window','g-bedroom-court','u-bedroom-court','g-stair-window','u-stair-window'}
@@ -473,7 +473,7 @@ def test_skylit_lightwell_has_no_hall_door_and_remains_uncovered_by_opaque_slabs
     assert 'g-care-side-garden-window' not in ops
     o=ops['g-bedroom-door'];w=next(w for w in b['walls'] if w['id']==o['wall_id'])
     assert w['a'][1]==w['b'][1]==7575 and set(o['connects'])=={'g-bedroom','g-living'}
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     canopy=next(n for n in scene['nodes'] if n['id']=='g-care-court/glass-canopy')
     assert canopy['material']=='glass'
     assert any(n['id']=='g-care-court/stone-path' for n in scene['nodes'])
@@ -489,7 +489,7 @@ def test_front_balcony_wraps_right_terrace_and_retains_window_views():
     for oid in ('u-office-east','u-lobby-east-window'):
         op=next(o for o in b['openings'] if o['id']==oid)
         assert 'u-terrace-front' in op['connects'] and op['kind']=='window'
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert any(n['id']=='u-terrace-front/stone-deck' for n in scene['nodes'])
     # The outdoor bench hugs the outer edge; the continuous walking strip remains clear.
     for item in scene['furniture']:
@@ -497,7 +497,7 @@ def test_front_balcony_wraps_right_terrace_and_retains_window_views():
 
 
 def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
-    old=json.loads((ROOT/'tests/fixtures/desired_home_before_rear_caregiver.json').read_text())
+    old=json.loads((ROOT/'tests/fixtures/desired_home_before_rear_caregiver.json').read_text(encoding='utf-8'))
     p=project();changed={'g-kitchen','g-dining','g-bedroom','g-living','g-care','g-caregiver','g-caregiver-bath','g-care-court','g-veranda','g-court-ledge','g-stair','u-stair','u-terrace-north'}
     changed.update(r['id'] for r in old['customPlan']['floors'][1]['rooms'] if r['id'] not in ('u-living-void','u-stair','u-garden-daylight'))
     for before,after in zip(old['customPlan']['floors'],p['customPlan']['floors']):
@@ -515,7 +515,7 @@ def test_rear_suite_preserves_other_rooms_and_has_independent_garden_exit():
     assert ops['g-caregiver-garden-door']['hinge']=='end'
     assert Polygon(r['g-care']['clear']).equals(box(8500,8550,15288,12700))
     assert Polygon(r['g-caregiver']['clear']).bounds[::2]==Polygon(r['g-caregiver-bath']['clear']).bounds[::2]
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert sum(Polygon(l['polygon']).area for l in scene['lawns'])>12
     # Both TV-side openings retain their horizontal positions and garden sightlines.
     for oid,target_y in [('g-care-lawn-window',8695),('g-care-lawn-window-left',12555)]:
@@ -542,7 +542,7 @@ def test_parked_car_and_front_upper_window_keep_rooms_and_access_clear():
     assert footprint.bounds[0]-15240>=750
     assert footprint.bounds[3]<5800
     assert footprint.bounds[1]>0  # safely beyond the inward gate swing
-    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert any(n['id']=='parked-car-body' for n in s['nodes'])
     o=next(o for o in b['openings'] if o['id']=='u-lobby-east-window')
     wall=next(w for w in b['walls'] if w['id']==o['wall_id'])
@@ -604,7 +604,7 @@ def test_puja_dining_and_rear_bedroom_recess_match_approved_changes():
     assert plate(b,1).covers(gap)  # Covered recess retained beneath the new private balcony slab.
     assert set(ops['g-bedroom-rear-window']['connects'])=={'g-bedroom','g-bedroom-airgap'}
     assert not any(o['kind']!='window' and 'g-bedroom-airgap' in o['connects'] for o in b['openings'])
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     mandir=Polygon(next(f['footprint'] for f in scene['furniture'] if f['kind']=='mandir' and f['room_id']=='g-puja'))
     assert mandir.bounds[1]<.20 and mandir.bounds[3]<.65
     assert abs(mandir.centroid.x-8.424)<.03  # Centred on the east wall.
@@ -618,7 +618,7 @@ def test_puja_dining_and_rear_bedroom_recess_match_approved_changes():
 def test_closed_canonical_doors_span_their_openings_and_preserve_inward_swing():
     import math
     import numpy as np
-    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text());s=json.loads((root/'scene.json').read_text())
+    root=ROOT/'examples/gallery/my-desired-home';b=json.loads((root/'building.json').read_text(encoding='utf-8'));s=json.loads((root/'scene.json').read_text(encoding='utf-8'))
     walls={w['id']:w for w in b['walls']};nodes={n['id']:n for n in s['nodes']}
     assert b['planning']['doorsClosed']
     for o in b['openings']:
@@ -638,8 +638,8 @@ def test_closed_canonical_doors_span_their_openings_and_preserve_inward_swing():
 
 def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
     from floorforge.plan_geometry import geometry
-    b=json.loads((ROOT/'examples/gallery/my-desired-home/building.json').read_text())
-    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    b=json.loads((ROOT/'examples/gallery/my-desired-home/building.json').read_text(encoding='utf-8'))
+    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     spaces={r['id']:r for r in b['spaces']}
     hole=Polygon(spaces['u-garden-daylight']['clear'])
     assert hole.equals(box(15438,5800,18138,8400))
@@ -683,7 +683,7 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
 def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     import hashlib
     from floorforge.plan_geometry import geometry
-    old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text())
+    old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text(encoding='utf-8'))
     p=project()
     assert p['brief']==old['brief']
     approved={'g-care-veranda','g-care-lawn-window','g-caregiver-garden-door'}
@@ -696,13 +696,13 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
         assert [strip_layout(x) for x in before[key] if x.get('floor')==0 and x['id'] not in approved]==[strip_layout(x) for x in after[key] if x.get('floor')==0 and x['id'] not in approved]
     sky=box(15438,5800,18138,8400)
     assert geometry(before['roofs'][0]['ceiling']).union(box(15288,7400,16938,8400)).difference(sky).equals(geometry(after['roofs'][0]['ceiling']))
-    baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text())
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text(encoding='utf-8'))
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     # Roof finishes at the first-floor deck level legitimately follow the revised upper plate.
     # Lock the original ground/site outside the two newly approved ICU openings.
     # Skirting is compared geometrically because boolean cuts reorder mesh vertices.
-    corner=json.loads((ROOT/'tests/fixtures/desired_home_before_icu_corner_appearance.json').read_text())
+    corner=json.loads((ROOT/'tests/fixtures/desired_home_before_icu_corner_appearance.json').read_text(encoding='utf-8'))
     affected=set(corner['affected'])
     nodes=[]
     for n in historic_nodes(scene):
@@ -710,11 +710,11 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
         if n.get('owner') in affected or n['role']=='skirting' or kitchen_casework_node(n):continue
         nodes.append({k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
     # Baseline is from before the approved kitchen swap; compare all other contents.
-    kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
+    kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
     assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
     assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
     assert digest([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
-    assert digest([x for x in historic_veranda_items(scene,'colliders') if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['ground_colliders']
+    assert digest([x for x in historic_veranda_items(scene,'colliders') if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['ground_colliders']
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
@@ -759,7 +759,7 @@ def test_icu_corner_keeps_fixed_pane_and_two_independent_wall_stacking_doors():
     assert door['stackingSliding'] and door['slidingPanels']==2
     assert (fixed['width'],fixed['height'],fixed['sill'],fixed['fixed'])==(1000,2400,0,True)
     assert ops['g-care-lawn-window-left']['sill']==300
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     assert 'g-care-lawn-window' not in scene['door_motion']
     panes=[n for n in scene['nodes'] if n.get('owner') in (door['id'],fixed['id']) and n['role']=='glass']
     assert len(panes)==3 and all(n['scale'][1]==.024 for n in panes)
@@ -781,7 +781,7 @@ def test_icu_corner_keeps_fixed_pane_and_two_independent_wall_stacking_doors():
 
 def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
     import hashlib
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     def allowed(n):
         owner=n.get('owner','')
         if owner.startswith(('exterior-porch-01','exterior-pedestrian','site-entry-path','front-tiled-court','front-bed-1-lantern')) or owner=='site-driveway':return True
@@ -789,8 +789,8 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
     nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not allowed(n) and not kitchen_casework_node(n)]
     digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
-    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
-    assert digest==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['entrance_unaffected_ground_nodes']
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
+    assert digest==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['entrance_unaffected_ground_nodes']
 
 
 def test_front_gates_clear_porch_through_their_entire_motion():
@@ -798,7 +798,7 @@ def test_front_gates_clear_porch_through_their_entire_motion():
     from shapely.geometry import MultiPoint
     from shapely.affinity import rotate,translate
     from floorforge.scene import transformation
-    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    s=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     nodes={n['id']:n for n in s['nodes']}
     assert 'exterior-porch-01-column' not in nodes
     assert not any(n['owner']=='exterior-porch-01' and n['role']=='outdoor-furniture' for n in nodes.values())
@@ -826,7 +826,7 @@ def test_front_gates_clear_porch_through_their_entire_motion():
 
 
 def test_modular_kitchen_has_connected_l_and_opposite_uncovered_fridge():
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     items={f['kind']:Polygon(f['footprint']) for f in scene['furniture'] if f['room_id']=='g-kitchen'}
     worktop,fridge,upper=(items[k] for k in ('kitchen-run','kitchen-fridge','kitchen-upper-storage'))
     assert 'kitchen-prep-run' not in items
@@ -845,18 +845,18 @@ def test_modular_kitchen_has_connected_l_and_opposite_uncovered_fridge():
 
 def test_kitchen_change_preserves_every_other_rendered_area():
     import hashlib
-    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text())
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
+    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not kitchen_casework_node(n)]
     nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
-    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text())['kitchen_unaffected_ground_nodes']
+    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['kitchen_unaffected_ground_nodes']
 
 
 def test_simple_ceiling_removes_decor_and_kitchen_sink_is_clear_of_carcasses():
     import numpy as np
     from floorforge.scene import transformation
-    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text())
-    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text())
+    scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
+    removed=json.loads((ROOT/'tests/fixtures/desired_home_removed_ceiling_decor.json').read_text(encoding='utf-8'))
     def canon(n):return json.dumps({k:v for k,v in n.items() if k!='id' and not(k=='owner' and v.startswith('object-'))},sort_keys=True)
     current={canon(n) for n in scene['nodes']}
     assert all(canon(n) not in current for n in removed['removed_nodes'])

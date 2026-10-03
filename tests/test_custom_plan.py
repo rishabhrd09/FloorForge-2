@@ -79,10 +79,10 @@ def test_every_export_has_same_plan_hash_and_three_different_floors(project,tmp_
     assert sum(n['role']=='floor' for n in scene['nodes'])==3
     assert {r['floor'] for r in scene['rooms']}=={0,1,2}
     assert next(r for r in scene['rooms'] if r['id']=='custom-F1-bedroom')['polygon']==[[3.85,4.4],[7.85,4.4],[7.85,8.4],[3.85,8.4]]
-    assert h in (out/'model.ifc').read_text()
-    assert 'IFCSTAIR(' in (out/'model.ifc').read_text()
-    assert h in (out/'floorplans.dxf').read_text()
-    assert all(h in p.read_text() for p in (out/'sheets').glob('*.svg'))
+    assert h in (out/'model.ifc').read_text(encoding='utf-8')
+    assert 'IFCSTAIR(' in (out/'model.ifc').read_text(encoding='utf-8')
+    assert h in (out/'floorplans.dxf').read_text(encoding='utf-8')
+    assert all(h in p.read_text(encoding='utf-8') for p in (out/'sheets').glob('*.svg'))
     import struct
     glb=(out/'model.glb').read_bytes();length=struct.unpack_from('<I',glb,12)[0]
     assert json.loads(glb[20:20+length])['scenes'][0]['extras']['planHash']==h

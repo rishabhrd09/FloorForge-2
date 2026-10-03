@@ -20,7 +20,7 @@ ROOT=Path(__file__).resolve().parents[1]
 @pytest.fixture(scope='module')
 def model():
     base=ROOT/'examples/gallery/my-desired-home'
-    return json.loads((base/'building.json').read_text()),json.loads((base/'scene.json').read_text())
+    return json.loads((base/'building.json').read_text(encoding='utf-8')),json.loads((base/'scene.json').read_text(encoding='utf-8'))
 
 
 def vertices(scene,node):
@@ -90,7 +90,7 @@ def test_balcony_columns_reach_ground_without_blocking_paved_route(model):
         assert np.allclose(v[:,:2].mean(axis=0),np.array(q)/1000)
         assert any(c['id']==n['id'] and c['floor']==0 for c in s['colliders'])
     # Ground furnishings and plants stay fixed except the later approved visitor-chair move.
-    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text())
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))
     for key in ('furniture','vegetation'):
         assert [n for n in historic_care_chair_items(s,key) if n.get('floor') in(-1,0)]==prior['ground_'+key]
     old=geometry(prior['ground_roof']['ceiling']);new=geometry(b['roofs'][0]['ceiling'])

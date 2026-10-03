@@ -33,10 +33,10 @@ def test_import_single_file_generates_matching_3d_and_exports(tmp_path):
     assert sum(o['kind']=='entry' for o in building['openings']) == 1
     result = run(project,tmp_path,use_cache=False); output = Path(result['path'])
     for name in ('scene.json','building.json','report.json','manifest.json'):
-        assert json.loads((output/name).read_text())['planHash'] == intent['planHash']
+        assert json.loads((output/name).read_text(encoding='utf-8'))['planHash'] == intent['planHash']
     for name in ('model.glb','model.ifc','drawings.pdf','floorplans.dxf','preview.html'):
         assert (output/name).stat().st_size > 100
-    assert fuse(json.loads((output/'project.floorforge.json').read_text()))['planHash'] == intent['planHash']
+    assert fuse(json.loads((output/'project.floorforge.json').read_text(encoding='utf-8')))['planHash'] == intent['planHash']
 
 
 @pytest.mark.parametrize('unit,factor',[(4,1),(6,1000),(1,25.4),(2,304.8)])
@@ -73,7 +73,7 @@ def test_rejects_ambiguous_drawings(case):
     with pytest.raises(DesignError):import_dxf(drawing(change))
 
 
-@pytest.mark.parametrize('text,name',[('not DXF','x.dxf'),('anything','x.pdf'),('AutoCAD Binary DXF\x00','x.dxf'),('x'*(MAX_BYTES+1),'x.dxf')])
+@pytest.mark.parametrize('text,name',[('not DXF','x.dxf'),('anything','x.pdf'),('AutoCAD Binary DXF\x00','x.dxf'),('x'*(MAX_BYTES+1),'x.dxf')],ids=['malformed','wrong-extension','binary','oversized'])
 def test_bad_file_has_actionable_error(text,name):
     with pytest.raises(DesignError) as error:import_dxf(text,name)
     assert error.value.code=='DXF_IMPORT'

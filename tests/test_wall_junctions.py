@@ -99,11 +99,11 @@ def test_opening_cannot_straddle_two_distinct_outdoor_spaces():
 def test_junction_reaches_drawings_scene_and_exports(tmp_path):
     from floorforge.pipeline import run
     p=adjoining_outdoors();result=run(p,tmp_path,use_cache=False);folder=Path(result['path']);h=fuse(p)['planHash']
-    b=json.loads((folder/'building.json').read_text());scene=json.loads((folder/'scene.json').read_text())
+    b=json.loads((folder/'building.json').read_text(encoding='utf-8'));scene=json.loads((folder/'scene.json').read_text(encoding='utf-8'))
     assert scene['planHash']==b['planHash']==h
     assert {s['id']:s['clear'] for s in b['spaces']}=={r['id']:r['polygon'] for r in p['customPlan']['floors'][0]['rooms']}
     for name in ['veranda-door','courtyard-window']:
         assert any(n.get('owner')==name for n in scene['nodes'])
-    assert h in (folder/'model.ifc').read_text()
-    assert h in (folder/'floorplans.dxf').read_text()
-    assert all(h in f.read_text() for f in (folder/'sheets').glob('*.svg'))
+    assert h in (folder/'model.ifc').read_text(encoding='utf-8')
+    assert h in (folder/'floorplans.dxf').read_text(encoding='utf-8')
+    assert all(h in f.read_text(encoding='utf-8') for f in (folder/'sheets').glob('*.svg'))
