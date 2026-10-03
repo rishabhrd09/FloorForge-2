@@ -1,0 +1,18 @@
+{
+  "zip": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/pdf/my-desired-home-engineer-handover.zip",
+  "files": [
+    "my-desired-home-engineer-handover.pdf",
+    "my-desired-home-floorplans.dxf",
+    "my-desired-home-ground-floor.png",
+    "my-desired-home-first-floor.png",
+    "my-desired-home-roof-plan.png",
+    "README-handover.txt",
+    "handover-manifest.json",
+    "digital-model/model.glb",
+    "digital-model/project.floorforge.json",
+    "digital-model/preview.html"
+  ],
+  "zip_bytes": 6343687,
+  "pdf_bytes": 4428927,
+  "pdf_sha256": "193a0575540dbd1d093ebdc0901ce2355e02d66d70e78f0223a59984effe5d7e"
+}

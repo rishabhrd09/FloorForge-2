@@ -1,0 +1,61 @@
+MY HOUSE VARIATION REQUIREMENTS
+
+1. TARGET PLOTS
+Frontage (along the road) x depth (toward the rear), with units:
+- [e.g. 55 ft frontage x 55 ft depth]
+- [optional additional size]
+Number of alternatives per plot size: [e.g. 2]
+Keep the original 60 x 55 ft plot as an additional comparison? [yes/no]
+
+2. ORIENTATION AND SITE
+Road/front direction: [keep east / specify another direction]
+Front setback: [confirmed size / preserve baseline 2438 mm as an assumption / unknown]
+South/left setback: [confirmed size / preserve baseline assumption / unknown]
+North/right setback: [confirmed size / preserve baseline assumption / unknown]
+West/rear setback: [confirmed size / preserve baseline assumption / unknown]
+Other survey constraints, neighbouring openings or parking access restrictions: [details]
+
+3. OCCUPIED FLOORS AND ROOM PROGRAMME
+Occupied floors: [keep G+1 / specify]
+Roof access: [keep / remove / change]
+Total bedrooms: [keep 4 including caregiver bedroom / specify counting convention]
+Required bathrooms and attached bathrooms: [details]
+Home care room: [keep / revise / remove]
+Caregiver bedroom, toilet and independent garden exit: [keep / revise / remove]
+Drawing room, kitchen/pantry/wash, puja, studio, veranda and lawn: [list what is required]
+Any added or explicitly removed spaces: [details]
+
+4. EXACT MOVES OR SWAPS
+Use the PDF reference codes when helpful; they map to stable JSON IDs in baseline-room-index.json.
+- [e.g. Move G04 kitchen closer to G02 drawing, while retaining pantry and wash access.]
+- [e.g. Swap two named rooms on the same floor. State whether their sizes/functions follow the rooms.]
+- [other requested changes]
+
+5. LOCKS AND MINIMUM SIZES
+Rooms/areas that must not move: [room references]
+Rooms that must not become smaller: [references and clear minimum width x depth, with units]
+May the linked staircase move? [no / yes, together on all floors and roof]
+Must the double-height living opening remain? [yes/no]
+Must the sky gaps/lightwell remain? [yes/no; specify changes]
+Must the garden/veranda relationship remain? [details]
+Required car size/count and pedestrian route: [details]
+Furniture/equipment clearance needs supplied by me: [details]
+
+6. PREFERENCES, IN PRIORITY ORDER
+1. [e.g. Preserve care-room garden access.]
+2. [e.g. Improve privacy between guest drawing and family living.]
+3. [e.g. Increase kitchen size without reducing bedrooms.]
+Exterior/material style: [preserve baseline / specify changes]
+Vastu preferences, if any: [explicit preference; do not imply statutory compliance]
+
+7. FLEXIBLE ITEMS
+Rooms allowed to resize: [list]
+Features allowed to change or be removed: [list]
+Requirements to relax first if the plot cannot fit everything: [ranked list]
+Requirements that cannot be relaxed: [list]
+
+8. DELIVERABLES
+[Complete editable .floorforge.json for each option; vector 2D PDF/SVG; PNG copies;
+matching 3D floor cutaways and exterior/roof; comparison and validation report.]
+
+Do not treat the examples in square brackets as instructions; replace them with my actual requirements.

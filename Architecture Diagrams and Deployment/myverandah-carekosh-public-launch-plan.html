@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyVerandah by Carekosh — Public Deployment Plan</title>
+<style>
+:root{--ink:#193c37;--muted:#59726c;--paper:#f5f7ef;--line:#d6dfd4;--mint:#e6eee0;--amber:#fff3d6;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1120px;margin:auto;padding:36px 28px 80px}h1,h2,h3{line-height:1.2}h1{font:600 clamp(36px,5vw,62px)/1.1 Georgia,serif;margin:16px 0}h2{font-size:28px;margin:0 0 18px}h3{font-size:20px;margin:22px 0 10px}p{margin:10px 0 16px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:700}.lead{font-size:20px;max-width:860px}.url{display:inline-block;background:var(--ink);color:white;padding:14px 20px;border-radius:10px;font-size:clamp(18px,3vw,27px);overflow-wrap:anywhere}.status{font-size:13px;color:var(--muted)}nav{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0 32px}nav a{padding:7px 12px;background:white;border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--ink)}section{margin:22px 0;padding:28px;background:white;border:1px solid var(--line);border-radius:16px;scroll-margin-top:18px}.note{background:var(--amber);border-left:4px solid #b88920;padding:16px 20px;border-radius:7px}.good{background:var(--mint);border-left-color:#3c7257}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:10px}.card h3{margin:0 0 8px}.card p{margin:0}table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:12px;vertical-align:top}th{background:var(--paper)}code{font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}pre{background:#142c29;color:#edf4ec;border-radius:10px;padding:18px;overflow:auto;white-space:pre;line-height:1.55;font-size:13px}pre code{font-size:13px;overflow-wrap:normal}li{margin:9px 0}ol,ul{padding-left:24px}a{color:#236954}.step{display:inline-block;font-weight:700;color:#507763;font-size:13px;letter-spacing:.09em;text-transform:uppercase}.diagram{width:100%;height:auto;display:block}.diagram text{font-family:system-ui,-apple-system,sans-serif;fill:var(--ink)}.small{font-size:14px;color:var(--muted)}details{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}summary{font-weight:650;cursor:pointer}.pill{display:inline-block;background:var(--mint);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;margin-right:6px}.checks{list-style:none;padding:0}.checks li{display:flex;gap:12px;align-items:flex-start}.checks input{margin-top:8px;accent-color:#37765e}.toolbar{display:flex;gap:12px;margin:18px 0}.toolbar button{font:inherit;background:white;border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}footer{font-size:13px;color:var(--muted);padding-top:18px;border-top:1px solid var(--line)}@media(max-width:720px){main{padding:22px 14px 50px}section{padding:20px}.grid{grid-template-columns:1fr}table{display:block;overflow:auto}.lead{font-size:18px}}@media print{@page{size:A4;margin:14mm}body{background:white;font-size:10pt}main{padding:0;max-width:none}nav,.toolbar{display:none}section{border:0;padding:0;margin:24px 0;border-radius:0}h1{font-size:30pt}h2{font-size:18pt}h3{font-size:13pt}pre{white-space:pre-wrap;background:#f1f4ee;color:#193c37;border:1px solid #ccd6cc;font-size:8pt}pre code{font-size:8pt}.card,.note,tr,pre,.diagram{break-inside:avoid}a{color:inherit}.url{background:#e6eee0;color:#193c37;font-size:18pt}.grid{gap:9px}.small{font-size:9pt}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Carekosh · launch plan · 2 October 2026</div>
+<h1>MyVerandah<br>by Carekosh</h1>
+<p class="lead">A public website where anyone can design a home, explore it in 3D and download their own drawings. Use your existing <strong>carekosh.com</strong> domain.</p>
+<div class="url">https://myverandah.carekosh.com</div>
+<p class="status">Recommended final address. This document is a deployment plan; no server, DNS record or live deployment has been created by this task.</p>
+<div class="toolbar"><button type="button" onclick="window.print()">Print / Save as PDF</button><button type="button" id="reset">Reset checklist</button></div>
+</header>
+<nav aria-label="Contents"><a href="#decision">The decision</a><a href="#architecture">Architecture</a><a href="#readiness">Required app changes</a><a href="#steps">Exact deployment steps</a><a href="#launch">Launch checks</a><a href="#operations">Updates and costs</a></nav>
+
+<section id="decision">
+<h2>The recommended first launch</h2>
+<p><strong>GitHub + Cloudflare + one Linux cloud server.</strong> The same server hosts the website, the Python API, a background generator and private project storage. You do not need to buy another domain or rent separate frontend and backend servers.</p>
+<div class="grid">
+<div class="card"><h3>GitHub</h3><p>Stores the source and reviewed releases. The server installs a selected release from it.</p></div>
+<div class="card"><h3>Cloudflare</h3><p>Provides your domain routing, browser HTTPS and a tunnel to the cloud server.</p></div>
+<div class="card"><h3>Cloud server</h3><p>Stays running when your laptop is off. Python creates the floor plans, models and exports here.</p></div>
+</div>
+<p><strong>Provider recommendation:</strong> a DigitalOcean Basic, Regular, bundled Droplet with Ubuntu 24.04 LTS, x86-64, 2 vCPUs, 4 GiB RAM and 80 GiB disk. Start with Bangalore or Singapore if that configuration is available. This is an initial sizing proposal for the core generator; benchmark before promising capacity.</p>
+<p><strong>Name:</strong> <code>myverandah.carekosh.com</code> is short enough to share and matches the app's home-design theme. Alternatives are <code>designyourhome.carekosh.com</code> and <code>homeatelier.carekosh.com</code>. Subdomains are DNS entries under the domain you own, so these do not require separate domain registrations.</p>
+<div class="note"><strong>The current app is not yet ready for anonymous public generation.</strong> Its server is designed for localhost, uses a server-wide session token, and shares job state and the latest generated build. A tunnel or domain does not add visitor isolation. Complete the application work below before opening generation to everyone.</div>
+<p class="small">The current implementation is in <code>floorforge/server.py</code>: <code>State</code>, <code>Handler.trusted()</code>, <code>/api/session</code>, <code>/api/jobs/...</code> and <code>/builds/...</code>. This plan follows your choice of public access; a permanent invite-only Cloudflare Access gate would not meet that requirement.</p>
+</section>
+
+<section id="architecture">
+<h2>How requests and designs travel</h2>
+<svg class="diagram" viewBox="0 0 1000 570" role="img" aria-labelledby="archTitle archDesc">
+<title id="archTitle">Proposed public MyVerandah architecture</title><desc id="archDesc">Visitors connect by HTTPS through Cloudflare and its tunnel to Nginx and the Python public web application on one cloud server. The app assigns visitor sessions and submits owned jobs to a generator process. Project ownership is stored in SQLite and exports on private disk. GitHub supplies reviewed code releases.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#53796b"/></marker></defs>
+<rect x="15" y="30" width="180" height="90" rx="12" fill="#e6eee0" stroke="#aabdad"/><text x="105" y="65" text-anchor="middle" font-size="18" font-weight="700">Remote visitor</text><text x="105" y="93" text-anchor="middle" font-size="14">Phone / computer browser</text>
+<path d="M195 75H262" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/><text x="230" y="57" text-anchor="middle" font-size="12">HTTPS</text>
+<rect x="275" y="30" width="250" height="90" rx="12" fill="#e6eee0" stroke="#aabdad"/><text x="400" y="62" text-anchor="middle" font-size="18" font-weight="700">Cloudflare</text><text x="400" y="88" text-anchor="middle" font-size="13">myverandah.carekosh.com</text><text x="400" y="107" text-anchor="middle" font-size="12">DNS · HTTPS · edge protection</text>
+<path d="M525 75H650V173" fill="none" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/><text x="640" y="57" text-anchor="middle" font-size="12">Tunnel traffic</text>
+<rect x="25" y="150" width="950" height="395" rx="18" fill="#f5f7ef" stroke="#bdcabb" stroke-width="2"/><text x="48" y="178" font-size="15" font-weight="700">ONE CLOUD SERVER · Ubuntu · persistent private disk</text>
+<rect x="760" y="200" width="190" height="78" rx="10" fill="white" stroke="#aabdad"/><text x="855" y="232" text-anchor="middle" font-size="16" font-weight="700">cloudflared</text><text x="855" y="256" text-anchor="middle" font-size="12">Outbound connection to Cloudflare</text>
+<path d="M650 173V195H855V200" fill="none" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="515" y="200" width="195" height="78" rx="10" fill="white" stroke="#aabdad"/><text x="612" y="232" text-anchor="middle" font-size="16" font-weight="700">Nginx proxy</text><text x="612" y="256" text-anchor="middle" font-size="12">127.0.0.1:8080 only</text><path d="M760 240H720" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="55" y="200" width="410" height="94" rx="10" fill="#e6eee0" stroke="#aabdad"/><text x="260" y="230" text-anchor="middle" font-size="18" font-weight="700">Public Python web app · Uvicorn</text><text x="260" y="255" text-anchor="middle" font-size="13">Website + API · 127.0.0.1:8000</text><text x="260" y="278" text-anchor="middle" font-size="13">Visitor sessions · ownership checks · CSRF · quotas</text><path d="M515 240H475" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="55" y="355" width="280" height="82" rx="10" fill="white" stroke="#aabdad"/><text x="195" y="386" text-anchor="middle" font-size="16" font-weight="700">SQLite database</text><text x="195" y="411" text-anchor="middle" font-size="12">Sessions · owned projects · job queue</text><path d="M195 294V345" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="390" y="355" width="255" height="82" rx="10" fill="white" stroke="#aabdad"/><text x="517" y="386" text-anchor="middle" font-size="16" font-weight="700">Python generator worker</text><text x="517" y="411" text-anchor="middle" font-size="12">Reuse the FloorForge geometry engine</text><path d="M335 396H380" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="695" y="355" width="255" height="82" rx="10" fill="white" stroke="#aabdad"/><text x="822" y="386" text-anchor="middle" font-size="16" font-weight="700">Private export files</text><text x="822" y="411" text-anchor="middle" font-size="12">PDF · DXF · GLB · IFC · project JSON</text><path d="M645 396H685" stroke="#53796b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="52" y="479" font-size="14">Results return through the app after an ownership check → 3D viewer / download in the browser</text><text x="52" y="505" font-size="13">Disk + database backup outside the server · one generator process initially · scale after measurements</text>
+<rect x="760" y="30" width="190" height="85" rx="12" fill="white" stroke="#aabdad"/><text x="855" y="64" text-anchor="middle" font-size="17" font-weight="700">GitHub release</text><text x="855" y="91" text-anchor="middle" font-size="12">Reviewed, pinned commit</text><path d="M950 75H985V170" fill="none" stroke="#53796b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+</svg>
+<p><strong>Visitor flow:</strong> open the URL → receive a private guest session automatically → enter plot size and rooms → submit a design → see queue/progress → open the matching 2D and 3D results → download the files. Guests need no Python installation, GitHub account or access to your computer.</p>
+<p><strong>First release:</strong> anonymous guest sessions with downloadable projects. Keep generated guest files for a clearly disclosed period, initially 24 hours. Offer a project JSON download so visitors can reopen their work. Permanent cloud saves and cross-device access can be added with user accounts later.</p>
+</section>
+
+<section id="readiness">
+<h2>Step 1 — implement public mode before exposing the API</h2>
+<p>This is development work in this repository. Hosting configuration alone cannot complete it. Keep the existing offline mode available and add a separate production web entry point that reuses the geometry and export pipeline.</p>
+<table><thead><tr><th>Required change</th><th>What the public release must do</th><th>Proof before launch</th></tr></thead><tbody>
+<tr><td>Production web service</td><td>Add a FastAPI/Uvicorn entry point, public hostname allowlist and exact HTTPS origin checks. Bind the service to loopback behind Nginx. Preserve incoming Origin; do not turn off origin checks to make a tunnel work.</td><td>Expected hostname works; unexpected Host or cross-site writes fail.</td></tr>
+<tr><td>Visitor sessions</td><td>Issue unpredictable guest cookies with Secure, HttpOnly and SameSite settings, expiry and a session-bound CSRF token. Replace the shared server token for public requests.</td><td>Two browsers receive separate sessions. Another visitor's CSRF token cannot authorize a write.</td></tr>
+<tr><td>Project and file ownership</td><td>Associate every project, job and generated build with its session or account. Check ownership for job polling, every export, scene JSON and preview. Each visitor's latest build belongs only to them.</td><td>Visitor B cannot read visitor A's job or file even when B knows the exact identifier.</td></tr>
+<tr><td>Bounded background jobs</td><td>Store jobs in a durable queue and run heavy computation in a separate process with a deadline and resource bounds. Use one worker initially. Return a job ID promptly and poll for progress.</td><td>Generating a home does not freeze the website; interrupted jobs get an explicit status after a restart.</td></tr>
+<tr><td>Abuse and cost limits</td><td>Use session quotas plus trusted visitor-IP limits, a bounded global queue, project complexity and upload bounds. Suggested beta defaults: one pending job per guest, three generations/hour per guest, ten queued jobs globally. Adjust after measuring real workloads.</td><td>Repeated requests return a clear limit/queue message without unbounded memory, disk or CPU use.</td></tr>
+<tr><td>Private storage and expiry</td><td>Keep database and generated files outside the web root. Add deletion/expiry and storage limits. Stream downloads only after authorization. Global build hashes are cache identifiers, not permissions.</td><td>Expiry removes private files as well as metadata; backups and disk usage are monitored.</td></tr>
+<tr><td>AI endpoints</td><td>Disable public AI configuration, shared provider credentials and server-local Ollama access for the initial release. Public AI requires its own per-user permissions, quotas and credential handling.</td><td>Guests cannot configure a server-wide model/key or trigger paid model calls.</td></tr>
+</tbody></table>
+<p><strong>Proposed implementation contract:</strong> <code>floorforge/public_app.py</code> exposes the ASGI <code>app</code>; <code>floorforge/public_worker.py</code> runs the job worker; <code>requirements-public.lock.txt</code> pins the production dependencies. Configuration reads <code>FLOORFORGE_PUBLIC_URL</code>, <code>FLOORFORGE_DATA_DIR</code> and <code>FLOORFORGE_AI_ENABLED</code>. Add a non-sensitive <code>/healthz</code> endpoint. These files, settings and endpoints are <strong>proposed and do not exist in the inspected release</strong>. The commands below that depend on them are for the completed public release.</p>
+<p>The existing committed <code>web/viewer.js</code> supports the main 3D viewer. If shipping the newer MyVerandah start page or optional studio, include all required assets in the reviewed release and build any ignored bundles. Some local app changes are currently uncommitted; a clean GitHub clone will not contain those changes.</p>
+<p class="small">FastAPI is a proposed production wrapper, not an existing dependency. See its <a href="https://fastapi.tiangolo.com/deployment/manually/">official deployment documentation</a>. SQLite plus local private disk is adequate as an initial single-server design with backups and appropriate transaction handling; move to shared database/object storage before multiple independent app servers.</p>
+</section>
+
+<section id="steps">
+<h2>Steps 2–8 — deploy the reviewed public release</h2>
+<div class="note good"><strong>Account work and code work have different owners.</strong> You provide Cloudflare domain access, a cloud-provider account and billing, and an SSH key. The application developer implements Step 1, publishes the reviewed release and completes the server configuration. Never paste API keys, tunnel tokens or SSH private keys into this document or a public repository.</div>
+
+<h3><span class="step">Step 2</span><br>Check the domain and prepare a release</h3>
+<ol>
+<li>Open Cloudflare → select <strong>carekosh.com</strong>. Confirm the zone is <strong>Active</strong> and that Cloudflare manages its authoritative DNS. If bought elsewhere, follow the <a href="https://developers.cloudflare.com/fundamentals/manage-domains/add-site/">domain onboarding guide</a>. Preserve existing DNS records for any website and email.</li>
+<li>Use the public name <strong>MyVerandah by Carekosh</strong> and the hostname <code>myverandah.carekosh.com</code>. Do not modify the root-domain website.</li>
+<li>Finish Step 1, review and publish its changes to GitHub. Record the exact full commit SHA of the release in <code>rishabhrd09/FloorForge-2</code>. Backend changes need the core checks plus meaningful session, ownership, restart and quota tests; a documentation-only skip-CI approach does not validate these runtime changes.</li>
+</ol>
+
+<h3><span class="step">Step 3</span><br>Create the cloud server</h3>
+<ol>
+<li>In DigitalOcean, choose <strong>Create → Droplets</strong>. Select a nearby available region, <strong>Ubuntu 24.04 LTS x86-64</strong>, and <strong>Bundled → Basic → Regular → 2 vCPUs / 4 GiB / 80 GiB</strong>. Name it <code>myverandah-prod</code>.</li>
+<li>Attach your SSH public key and enable monitoring. Select a backup option after reviewing its extra charge. Create the server and record its IP address.</li>
+<li>Attach a cloud firewall: allow inbound SSH TCP 22 only from your administrator IP, and no public inbound 80, 443, 8000 or 8080. Allow outbound traffic; the tunnel needs to reach Cloudflare, including port 7844. Keep provider-console recovery available if your administrator IP changes.</li>
+</ol>
+<p class="small">This step creates a paid resource. Provider details: <a href="https://docs.digitalocean.com/products/droplets/how-to/create/">Create a Droplet</a>. Two vCPUs/4 GiB is a trial starting size, not a guarantee for arbitrary concurrent users or local AI models.</p>
+
+<h3><span class="step">Step 4</span><br>Install the release and Python dependencies</h3>
+<p>Run in your Mac terminal, replacing <code>YOUR_SERVER_IP</code>:</p>
+<pre><code>ssh root@YOUR_SERVER_IP</code></pre>
+<p>Then run on the fresh Ubuntu server:</p>
+<pre><code>apt-get update
+apt-get install -y git curl ca-certificates python3.12 python3.12-venv nginx nano
+adduser --system --group --home /var/lib/floorforge floorforge
+install -d -o floorforge -g floorforge -m 0750 /opt/floorforge
+install -d -o floorforge -g floorforge -m 0700 /var/lib/floorforge
+sudo -u floorforge git clone https://github.com/rishabhrd09/FloorForge-2.git /opt/floorforge/app
+cd /opt/floorforge/app
+sudo -u floorforge git checkout --detach REVIEWED_PUBLIC_RELEASE_SHA
+sudo -u floorforge env FLOORFORGE_PYTHON=/usr/bin/python3.12 bash setup.sh
+sudo -u floorforge .venv/bin/python -m floorforge doctor</code></pre>
+<p>Replace <code>REVIEWED_PUBLIC_RELEASE_SHA</code> before running checkout. If GitHub access is private, use a read-only deploy key instead of putting a token in the clone URL. Keep the complete repository together: Python relies on adjacent <code>web/</code> and <code>examples/</code> resources.</p>
+<p>For the future public release, install its pinned extra dependencies:</p>
+<pre><code>sudo -u floorforge .venv/bin/python -m pip install -r requirements-public.lock.txt</code></pre>
+<p class="small">The last command requires the new lock file from Step 1. The existing core viewer bundle is committed and needs no Node at runtime. The optional <code>web/dist/three-studio.js</code> and newer hero assets may require a release build; verify every served asset rather than assuming ignored files are included.</p>
+
+<h3><span class="step">Step 5</span><br>Run the public web service and generator continuously</h3>
+<p>The following is the <strong>target configuration after Step 1</strong>. It is not a way to turn the existing loopback studio into a public application by itself.</p>
+<p>Create <code>/etc/floorforge/public.env</code>, owned by root, readable by the <code>floorforge</code> group, with mode <code>0640</code>:</p>
+<pre><code>install -d -o root -g floorforge -m 0750 /etc/floorforge
+nano /etc/floorforge/public.env</code></pre>
+<p>Paste these proposed settings, save with Ctrl+O, press Enter, then exit with Ctrl+X:</p>
+<pre><code>FLOORFORGE_PUBLIC_URL=https://myverandah.carekosh.com
+FLOORFORGE_DATA_DIR=/var/lib/floorforge
+FLOORFORGE_AI_ENABLED=false</code></pre>
+<pre><code>chown root:floorforge /etc/floorforge/public.env
+chmod 0640 /etc/floorforge/public.env
+nano /etc/systemd/system/floorforge-public.service</code></pre>
+<p>Paste the web-service definition below. Save it, then run <code>nano /etc/systemd/system/floorforge-worker.service</code> and paste the worker definition.</p>
+<details open><summary>Proposed /etc/systemd/system/floorforge-public.service</summary>
+<pre><code>[Unit]
+Description=MyVerandah public web application
+After=network.target
+
+[Service]
+Type=simple
+User=floorforge
+Group=floorforge
+WorkingDirectory=/opt/floorforge/app
+EnvironmentFile=/etc/floorforge/public.env
+ExecStart=/opt/floorforge/app/.venv/bin/python -m uvicorn floorforge.public_app:app --host 127.0.0.1 --port 8000 --workers 1 --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/floorforge
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+</details>
+<details><summary>Proposed /etc/systemd/system/floorforge-worker.service</summary>
+<pre><code>[Unit]
+Description=MyVerandah bounded generation worker
+After=network.target
+
+[Service]
+Type=simple
+User=floorforge
+Group=floorforge
+WorkingDirectory=/opt/floorforge/app
+EnvironmentFile=/etc/floorforge/public.env
+ExecStart=/opt/floorforge/app/.venv/bin/python -m floorforge.public_worker
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/floorforge
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+</details>
+<p>Step 1 must implement these module names and environment variables, the worker's job deadlines and cleanup, and restart recovery. Then run:</p>
+<pre><code>systemctl daemon-reload
+systemctl enable --now floorforge-public floorforge-worker
+systemctl status floorforge-public floorforge-worker --no-pager
+curl -i -H 'Host: myverandah.carekosh.com' http://127.0.0.1:8000/healthz</code></pre>
+
+<h3><span class="step">Step 6</span><br>Configure the local web proxy</h3>
+<p>Create <code>/etc/nginx/sites-available/myverandah</code> with the configuration below. This is for the new public application, which accepts the configured public Host and checks the real incoming HTTPS Origin. The existing local server would reject it.</p>
+<pre><code>nano /etc/nginx/sites-available/myverandah</code></pre>
+<details><summary>Nginx configuration for the proposed public release</summary>
+<pre><code>limit_req_zone $binary_remote_addr zone=ff_generate:10m rate=3r/m;
+
+server {
+    listen 127.0.0.1:8080 default_server;
+    server_name _;
+    return 421;
+}
+
+server {
+    listen 127.0.0.1:8080;
+    server_name myverandah.carekosh.com;
+    client_max_body_size 2m;
+
+    # Only local cloudflared may supply Cloudflare's verified visitor IP.
+    set_real_ip_from 127.0.0.1;
+    real_ip_header CF-Connecting-IP;
+
+    # Preserve Host, Origin, cookies and CSRF headers for app validation.
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_read_timeout 60s;
+
+    location = /api/generate {
+        limit_req zone=ff_generate burst=2 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8000;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}</code></pre>
+</details>
+<p>Enable it on this fresh dedicated server and validate:</p>
+<pre><code>ln -s /etc/nginx/sites-available/myverandah /etc/nginx/sites-enabled/myverandah
+rm -f /etc/nginx/sites-enabled/default
+nginx -t
+systemctl enable --now nginx
+systemctl reload nginx
+curl -i -H 'Host: myverandah.carekosh.com' http://127.0.0.1:8080/healthz
+ss -ltn</code></pre>
+<p>Confirm ports 8000 and 8080 listen only on <code>127.0.0.1</code>. The Nginx IP limit supplements app-level guest quotas; it does not replace them. Keep generated files behind the app's authorization routes. Do not add a direct public <code>alias</code> for the data directory.</p>
+<p class="small">Proxy syntax reference: <a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html">Nginx proxy module</a>. HTTPS ends at Cloudflare; the short HTTP connection here stays on the same machine behind the tunnel.</p>
+
+<h3><span class="step">Step 7</span><br>Connect Cloudflare Tunnel and the subdomain</h3>
+<p>Install Cloudflare's connector on the server using its <a href="https://pkg.cloudflare.com/index.html">official package repository</a>:</p>
+<pre><code>mkdir -p --mode=0755 /usr/share/keyrings
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
+printf '%s\n' 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main' &gt; /etc/apt/sources.list.d/cloudflared.list
+apt-get update
+apt-get install -y cloudflared</code></pre>
+<ol>
+<li>In Cloudflare, go to <strong>Networking → Tunnels → Create Tunnel</strong>. Name it <code>myverandah-prod</code>. Dashboard layouts can vary; some accounts show tunnels under Zero Trust.</li>
+<li>Select Linux/Debian and copy the connector service-install command shown in your dashboard. Run it on this server. It has the form <code>sudo cloudflared service install &lt;TUNNEL_TOKEN&gt;</code>. Treat the token as a secret and avoid sharing or committing it.</li>
+<li>Wait until the connector is healthy. Under <strong>Routes → Add route → Published application</strong>, set <strong>Subdomain: myverandah</strong>, <strong>Domain: carekosh.com</strong>, <strong>Path: blank</strong>, and <strong>Service URL: http://127.0.0.1:8080</strong>.</li>
+<li>Under additional HTTP application settings, set <strong>HTTP Host Header: myverandah.carekosh.com</strong>. Do not replace the browser's Origin with a localhost value.</li>
+<li>While staging, protect the whole hostname with a temporary owner/tester-only Cloudflare Access application <em>before</em> saving the route. Enable connector Access JWT validation. After the public release passes the launch checks, remove that temporary restriction and connector Access requirement together. The final public site uses app guest sessions.</li>
+<li>For a normal full Cloudflare DNS setup, saving the route creates the tunnel DNS entry. Check DNS has a proxied <code>myverandah</code> CNAME pointing to <code>&lt;TUNNEL_ID&gt;.cfargotunnel.com</code>. Resolve any existing record for that same name; keep unrelated website and email records. Do not add a conflicting A record to the server IP.</li>
+</ol>
+<p class="small">Current instructions: <a href="https://developers.cloudflare.com/tunnel/get-started/">Tunnel setup</a>, <a href="https://developers.cloudflare.com/tunnel/reference/origin-parameters/">HTTP Host / Access settings</a>, and <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/self-hosted-public-app/">temporary Access protection</a>. If OTP is needed for the testers, add it explicitly under <a href="https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/one-time-pin/">identity providers</a> and allow only those tester emails.</p>
+
+<h3><span class="step">Step 8</span><br>Verify HTTPS, private responses and operations</h3>
+<ul>
+<li>Visit <code>https://myverandah.carekosh.com</code>. Verify a valid browser certificate and no mixed-content warnings. Scope any HTTPS redirect to this hostname to avoid changing other Carekosh sites.</li>
+<li>Keep <code>/api/*</code> and private generated files out of shared CDN caching. The app must send <code>Cache-Control: private, no-store</code> for sessions, jobs and private downloads. Remove any hostname-level Cache Everything rule that overrides this. Public sample assets may be cached separately.</li>
+<li>Enable monitoring for app/worker/tunnel availability, CPU/RAM, queue size and disk usage. Implement automatic guest-file expiry and verified off-server backup of persistent projects and the database.</li>
+</ul>
+</section>
+
+<section id="launch">
+<h2>The public launch checklist</h2>
+<p>Complete these checks while the temporary staging gate is present. After removing it, repeat the anonymous browser, HTTPS and privacy checks from mobile data. A page loading successfully is only the first check.</p>
+<ul class="checks">
+<li><input type="checkbox" id="check1"><label for="check1">Website, samples, CSS/JS and 3D models load with no missing assets on the selected release.</label></li>
+<li><input type="checkbox" id="check2"><label for="check2">A new visitor receives a guest session without needing an invitation or software installation after launch.</label></li>
+<li><input type="checkbox" id="check3"><label for="check3">Browser A creates one home and browser B creates a different home. Their progress, latest project and results remain separate.</label></li>
+<li><input type="checkbox" id="check4"><label for="check4">B is denied A's known job ID, PDF, scene/model, project JSON and preview URL. Test every build-file route, not just the main download button.</label></li>
+<li><input type="checkbox" id="check5"><label for="check5">Matching PDF, DXF, GLB, IFC and project exports download and open. Exported dimensions match the submitted project.</label></li>
+<li><input type="checkbox" id="check6"><label for="check6">Invalid inputs and quota/queue limits produce clear messages. Heavy planning endpoints are also bounded.</label></li>
+<li><input type="checkbox" id="check7"><label for="check7">Wrong origins, forged forwarded headers and missing/foreign CSRF tokens cannot authorize writes.</label></li>
+<li><input type="checkbox" id="check8"><label for="check8">Restarting the services preserves owned projects and produces a defined outcome for queued/interrupted jobs.</label></li>
+<li><input type="checkbox" id="check9"><label for="check9">Guest-file expiry runs, a backup restore is verified, and public AI endpoints remain disabled.</label></li>
+<li><input type="checkbox" id="check10"><label for="check10">The app works from a phone on mobile data while your Mac is shut down. It presents preliminary designs for engineer review with the existing drawing status visible.</label></li>
+</ul>
+<p class="small">Checkboxes are a local reading aid. They do not run tests or prove deployment. Offline downloads and print copies remain usable without this document's JavaScript.</p>
+</section>
+
+<section id="operations">
+<h2>Costs, updates and future growth</h2>
+<table><thead><tr><th>Item</th><th>First-launch recommendation</th></tr></thead><tbody>
+<tr><td>Carekosh domain / subdomain</td><td>Use your existing registration. No separate registration for <code>myverandah</code>; your existing domain renewal continues.</td></tr>
+<tr><td>Python hosting</td><td>DigitalOcean currently lists the Basic Regular 2-vCPU / 4-GiB / 80-GiB bundled plan at <strong>US$24/month</strong>, before taxes, backup fees or other paid extras. Verify the selected checkout price. <a href="https://www.digitalocean.com/pricing/droplets">Official pricing</a>.</td></tr>
+<tr><td>Cloudflare</td><td>Use existing DNS and Tunnel. A paid Access subscription is not necessary for the final unrestricted public route. Advanced WAF, bot/rate-limit features and optional services depend on the selected plan; review them before enabling paid features. <a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/">Published application documentation</a>.</td></tr>
+<tr><td>AI / photoreal rendering</td><td>Outside this initial hosting estimate. Core geometry and the browser 3D viewer need neither hosted model calls nor a GPU. Local large models and Blender rendering need separate sizing and workload limits.</td></tr>
+<tr><td>Vercel</td><td>Not required for this first single-server deployment. If added later, route the Python API through the same public origin where practical, and retain the same ownership and queue requirements.</td></tr>
+</tbody></table>
+<p><strong>Release updates:</strong> publish a reviewed GitHub commit → stop accepting new jobs and let running jobs finish → make a consistent database/files backup → install the pinned next release and dependencies → restart services → verify health, generation and downloads. Keep the previous release and use a migration-compatible rollback procedure. Do not deploy unreviewed working-tree changes or store visitors' projects in GitHub.</p>
+<p><strong>Scale after measuring:</strong> the first server runs one generator at a time and queues work. Track generation duration, RAM, queue waits and export disk use. When demand grows, add process workers with measured limits; move the queue/database to shared services and private exports to object storage before distributing work across servers. Cloudflare does not supply the Python computation in this architecture.</p>
+<div class="note good"><strong>What works when complete:</strong> anyone with a browser can open <code>myverandah.carekosh.com</code>, design their own home, inspect its 2D/3D result and download it. Your laptop can be off. The new public runtime and visitor isolation must be implemented and verified before that launch.</div>
+</section>
+<footer>Prepared for the inspected FloorForge repository and your confirmed carekosh.com domain. Public-mode modules and service definitions above describe proposed implementation, not existing features or a verified deployment. Account settings, provider availability and prices were checked against official documentation on 2 October 2026.</footer>
+</main>
+<script>
+const checkboxes=[...document.querySelectorAll('.checks input')];
+for(const input of checkboxes){try{input.checked=localStorage.getItem('carekosh-deploy-'+input.id)==='1'}catch{}input.addEventListener('change',()=>{try{localStorage.setItem('carekosh-deploy-'+input.id,input.checked?'1':'0')}catch{}})}
+document.getElementById('reset').addEventListener('click',()=>{for(const input of checkboxes){input.checked=false;try{localStorage.removeItem('carekosh-deploy-'+input.id)}catch{}}});
+window.addEventListener('beforeprint',()=>document.querySelectorAll('details').forEach(d=>{d.dataset.wasOpen=d.open?'1':'0';d.open=true}));
+window.addEventListener('afterprint',()=>document.querySelectorAll('details').forEach(d=>{d.open=d.dataset.wasOpen==='1'}));
+</script>
+</body>
+</html>
