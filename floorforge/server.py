@@ -3,7 +3,7 @@ from __future__ import annotations
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlsplit,unquote
-import concurrent.futures,errno,http.client,hashlib,json,mimetypes,re,secrets,threading,time,webbrowser
+import concurrent.futures,errno,http.client,hashlib,json,mimetypes,re,secrets,socket,threading,time,webbrowser
 from . import __version__
 from .model import *
 from .pipeline import run,ROOT,runtime_versions,kernel_hash
@@ -15,6 +15,18 @@ from .spaces import SPACE_REGISTRY, guide_labels, GUIDE_AUTOMATIC_KINDS
 # The open-space tables behind intent.derive_setbacks, for the studio's live plot summary (JSON has no infinity).
 SETBACK_TABLES={'depth':[[None if math.isinf(l) else l,f,r] for l,f,r in SETBACKS_BY_DEPTH],
                 'width':[[None if math.isinf(l) else l,sd] for l,sd in SETBACKS_BY_WIDTH]}
+
+class StudioHTTPServer(ThreadingHTTPServer):
+    # Windows SO_REUSEADDR can bind a second server to an occupied port.
+    # Exclusive ownership makes repeated launches detect the existing studio.
+    allow_reuse_address = not hasattr(socket, 'SO_EXCLUSIVEADDRUSE')
+    allow_reuse_port = False
+
+    def server_bind(self):
+        if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
 
 def launch_identity(out):
     return sha({'workspace':str(ROOT.resolve()),'output':str(Path(out).resolve())})
@@ -201,13 +213,13 @@ def make_server(out,port=0):
             except (DesignError,ValueError,TypeError) as e:self.send(e.record() if isinstance(e,DesignError) else {'code':'REQUEST_ERROR','message':str(e)},400)
             except Exception:self.send({'code':'INTERNAL_ERROR','message':'Request failed. No credentials or request bodies are logged.'},500)
         def log_message(self,*args):pass
-    server=ThreadingHTTPServer(('127.0.0.1',port),Handler);server.daemon_threads=True;server.state=state
+    server=StudioHTTPServer(('127.0.0.1',port),Handler);server.daemon_threads=True;server.state=state
     return server
 
 def serve(out,port=0,open_browser=True):
     try:server=make_server(out,port)
     except OSError as error:
-        if error.errno!=errno.EADDRINUSE:raise
+        if error.errno!=errno.EADDRINUSE and getattr(error,'winerror',None) not in (10048,10013):raise
         if port and existing_studio(port,out):
             url=f'http://127.0.0.1:{port}/'
             print(f'FloorForge is already running at {url}\nUsing the existing server and its current settings. No second server was started.')

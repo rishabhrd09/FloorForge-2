@@ -8,6 +8,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.11', '3.13']
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -17,7 +18,7 @@ jobs:
       - run: python scripts/smoke.py
       - name: Check portable geometry baselines
         run: python -m pytest -q tests/test_custom_plan.py::test_legacy_presets_keep_aesthetic_geometry tests/test_upper_refinement.py::test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
-      - run: python -m pytest -q --junitxml=evidence/ci-pytest.xml
+      - run: python -m pytest -v --junitxml=evidence/ci-pytest.xml
       - run: python -m floorforge generate --out smoke-output
       - uses: actions/upload-artifact@v4
         if: always()

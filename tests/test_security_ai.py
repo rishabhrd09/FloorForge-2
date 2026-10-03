@@ -81,7 +81,24 @@ def test_health_and_static_ui(http_server):
     assert request(http_server,'/viewer.js')[0]==200
     assert request(http_server,'/api/ai/status')[0]==200
 
+def test_studio_port_cannot_be_bound_twice(http_server,tmp_path):
+    try:
+        duplicate=make_server(tmp_path,http_server.server_port)
+    except OSError:
+        return
+    duplicate.server_close();duplicate.state.pool.shutdown(wait=True)
+    pytest.fail('A second studio must not bind to an occupied port')
+
+@pytest.mark.parametrize('winerror',[10048,10013])
+def test_windows_occupied_port_errors_reuse_existing_studio(tmp_path,monkeypatch,winerror):
+    error=OSError('Windows port conflict');error.winerror=winerror
+    def occupied(*args):raise error
+    monkeypatch.setattr('floorforge.server.make_server',occupied)
+    monkeypatch.setattr('floorforge.server.existing_studio',lambda port,out:True)
+    assert serve(tmp_path,8895,False)==0
+
 def test_second_launch_reuses_studio_without_replacing_session(http_server,capsys,monkeypatch):
+    monkeypatch.setattr('floorforge.server.StudioHTTPServer.serve_forever',lambda *_:pytest.fail('must not start a second server'))
     opened=[];monkeypatch.setattr('floorforge.server.webbrowser.open',opened.append)
     token=http_server.state.token
     assert serve(http_server.state.out,http_server.server_port)==0
@@ -91,12 +108,14 @@ def test_second_launch_reuses_studio_without_replacing_session(http_server,capsy
     assert not http_server.state.jobs
 
 def test_second_launch_does_not_ignore_different_output_directory(http_server,tmp_path,monkeypatch):
+    monkeypatch.setattr('floorforge.server.StudioHTTPServer.serve_forever',lambda *_:pytest.fail('must not start a second server'))
     monkeypatch.setattr('floorforge.server.webbrowser.open',lambda *_:pytest.fail('must not open another project'))
     with pytest.raises(DesignError) as error:serve(tmp_path/'different-project',http_server.server_port)
     assert error.value.code=='PORT_IN_USE'
     assert '--port 0' in str(error.value)
 
-def test_occupied_non_floorforge_port_reports_a_clear_error(tmp_path):
+def test_occupied_non_floorforge_port_reports_a_clear_error(tmp_path,monkeypatch):
+    monkeypatch.setattr('floorforge.server.StudioHTTPServer.serve_forever',lambda *_:pytest.fail('must not start a second server'))
     from http.server import HTTPServer,BaseHTTPRequestHandler
     class OtherApp(BaseHTTPRequestHandler):
         def do_GET(self):self.send_response(200);self.end_headers();self.wfile.write(b'{"defaults":{},"version":"1"}')
