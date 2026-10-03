@@ -2,6 +2,10 @@
 
 The studio now offers **Automatic**, **Quick Guide**, and **Custom Plan**. Existing automatic presets keep their original scene geometry, materials, lighting, furniture recipes, planting and cameras. The recorded hashes and reference-image inventory are in `evidence/custom-plan/aesthetic-baseline.json`. The comparison is of generated scene data; it is not a new real-GPU pixel certification.
 
+## Import a 2D drawing
+
+Use **Import 2D floor plan → 3D** to upload a layered ASCII DXF ground-floor plan and generate it directly. The first version accepts rectangular clear-room outlines and explicit door/window spans. See [the exact file contract and example](IMPORT_2D_PLAN.md). Images and PDFs remain manual references.
+
 ## Quick Guide
 
 Ground, First and Second each have exactly four rows of four cells. Row zero is the road/front. Labels and colours come from `floorforge/spaces.py`, also returned by `/api/session`. New guides store stable `floorIds` next to `floors`. Repeated service labels on different floors remain separate requests. Numbered bedrooms have one floor assignment. The bounded planner can rearrange bedroom assignments; requests outside its available arrangements produce floor- and cell-specific conflicts instead of an unrelated plan.

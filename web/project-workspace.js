@@ -14,7 +14,7 @@ class FloorForgeProjectWorkspace {
  save(){const snapshot=this.options.snapshot();this.saved[this.active]={...snapshot,title:snapshot.project.brief.title||this.options.title(),savedAt:new Date().toISOString()};localStorage.setItem('floorforge-saved-projects',JSON.stringify(this.saved));localStorage.setItem('floorforge-workspace-id',this.active);this.render();return this.active;}
  adopted(slug){const base='working:'+slug;this.active=this.saved[base]?base+':'+crypto.randomUUID():base;this.save();}
  async switch(id){if(this.busy)return;this.busy=true;this.$('workspace-project').disabled=true;const previous=this.active;
-  try{this.save();if(id.startsWith('sample:')){await this.options.use(this.samples.find(s=>s.id===id.slice(7)));}else{const item=this.saved[id];if(!item)throw Error('This saved project is unavailable.');await this.options.restore(item);this.active=id;localStorage.setItem('floorforge-workspace-id',id);this.render();}}
-  catch(e){this.active=previous;this.render();this.options.error(e);}finally{this.busy=false;this.$('workspace-project').disabled=false;}
+  try{this.save();if(id.startsWith('sample:')){await this.options.use(this.samples.find(s=>s.id===id.slice(7)));}else{const item=this.saved[id];if(!item)throw Error('This saved project is unavailable.');await this.options.restore(item);this.active=id;localStorage.setItem('floorforge-workspace-id',id);this.render();}return true;}
+  catch(e){this.active=previous;this.render();this.options.error(e);return false;}finally{this.busy=false;this.$('workspace-project').disabled=false;}
  }
 }

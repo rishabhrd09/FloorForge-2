@@ -1,0 +1,9 @@
+{
+  "name": "floorforge-homepage-hero",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"build": "node build.mjs"},
+  "dependencies": {"three": "0.186.1", "gsap": "3.13.0"},
+  "devDependencies": {"esbuild": "0.25.10"}
+}

@@ -40,7 +40,11 @@ The full extracted folder must stay together for the PDF/DXF/GLB/IFC links besid
 
 ## Start simply, refine later
 
+The studio opens with six choices: **Design a new home**, **Walk through sample homes**, **Adapt a sample home**, **Bring a drawing or sketch**, **Open a saved project**, and **Continue your workspace**. New projects first ask for the input source, starting plot dimensions and optional local AI. AI is off by default; nothing is sent to a model from this setup screen. Use **← Start** or the FloorForge logo to return without losing your draft. Starting a new project keeps the previous project in this browser’s saved projects; use **Save project** for a portable file.
+
 Choose **Design rooms → Arrange rooms** to place and size rooms. **Smart fit rooms** proposes room sizes, wall spacing, stairs, doors and windows. Choose **Yes** to use the fit or **No** to keep your sketch; one Undo restores the original. **Fit & preview 3D** also generates after approval. **Fine-tune** reveals detailed drafting tools when needed. See [the short user guide](docs/QUICK_START.md).
+
+**Explore layouts** adds connected alternatives for crowded ground-floor sketches without AI. Optional **local Ollama** assistance interprets text and PNG/JPEG references, asks clarification questions, and offers checked room proposals for review. Existing samples and exact generation use their original path. See [setup, supported inputs and limits](docs/SMART_PLANNING.md).
 
 ## Generate your own home
 
@@ -99,7 +103,7 @@ New projects use only the fixed 4 × 4 semantic placement guide described above.
 - Four explicit exterior architecture families, with Modern Tropical as the default for new projects. Each has real porch, balcony, opening, facade-screen, landscape and planting geometry. There are also five independent interior palette choices, with Bright Natural as the default. The exterior upgrade contract and evidence are in `docs/exterior-upgrade/`.
 - SVG drawings and an A3 PDF drawing/review set at 1:100 where the plot allows: plans with three dimension chains per side (openings, walls, overall), typed door and window tags (D, SD, O, W, V), coordination grid bubbles, finished floor levels, a north point and the section marker; a door, window and room schedule sheet (A-601); layered DXF floor plans with true DIMENSION entities; GLB; an IFC4 STEP exporter with a deliberately limited acceptance claim.
 - A professional review: NBC-style room minimums, corridor width and circulation share, daylight (openings a tenth of the floor), bath ventilation, pooja beside or below wet rooms, baths over the kitchen, door-swing clashes and attached-bath shortfall, reported as recorded warnings with plain-language unresolved requests. Preliminary room/area/opening schedules, an editable cost scenario, timeline, solar study, Vastu readings (preferred / acceptable / avoid), services notes and review limitations.
-- Session-memory local/cloud AI proposal adapters, which are off by default. Real provider/model inference was not run here.
+- Session-memory local/cloud AI proposal adapters, which are off by default. See the smart-planning guide for the separate optional Ollama room workflow.
 - Path-traced stills with Blender Cycles: the viewer exports a presentation GLB (the **Blender GLB** button, or `scripts/export_presentation.mjs`) and `scripts/render_cycles.py` renders it under a physical sky, the site's sun and every fixture light. It needs Blender 4.2+ or the `bpy` wheel, not the core. Samples are in `evidence/cycles-*.jpg`.
 - Optional Three.js/path-tracing/GSAP source, optional model download/start scripts, and native packaging recipes. These optional paths are not falsely marked built or accepted.
 
@@ -196,3 +200,7 @@ Enable **Stairs to roof terrace** and regenerate to extend the actual linked cor
 Open **Sample projects · explore in 3D** in the left sidebar for five completed homes with rendered thumbnails: the saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
 
 Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.
+
+## Import a 2D floor plan
+
+The studio accepts a single layered ASCII DXF ground-floor drawing and generates an editable 3D model and exports. Use **Import 2D floor plan → 3D**, or `python -m floorforge generate --plan2d examples/import/ground-floor.dxf --out /tmp/floorforge-import`. See [supported formats, drawing requirements and limits](docs/IMPORT_2D_PLAN.md). Photos, scans, arbitrary PDFs and DWG files are not automatically traced.

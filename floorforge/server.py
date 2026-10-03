@@ -87,6 +87,8 @@ def make_server(out,port=0):
             if not self.trusted():self.send({'error':'Local origin required'},403);return
             path=unquote(urlsplit(self.path).path)
             if path=='/api/session':self.send({'token':state.token,'version':__version__,'launch_identity':launch_identity(state.out),'backend_build_id':kernel_hash(),'spaceRegistry':SPACE_REGISTRY,'guideLabels':guide_labels(),'guideAutomaticKinds':sorted(GUIDE_AUTOMATIC_KINDS),'defaults':DEFAULTS,'setbacks':SETBACK_TABLES,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status()});return
+            if path=='/api/plan/import-template':
+                self.send((ROOT/'examples/import/ground-floor.dxf').read_bytes(),content='application/dxf');return
             if path=='/api/samples':
                 from .sample_projects import catalogue
                 self.send({'samples':catalogue()});return
@@ -123,7 +125,7 @@ def make_server(out,port=0):
                 base=(state.out/'builds'/match[1]).resolve();file=(base/match[2]).resolve()
                 if not file.is_relative_to(base):self.send({'error':'Invalid path'},404);return
             else:
-                permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
+                permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/start-page.js':'start-page.js','/hero.js':'hero.js','/assets/myverandah-hero.png':'assets/myverandah-hero.png','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/plan-assistance.js':'plan-assistance.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
                 if path not in permitted:self.send({'error':'Not found'},404);return
                 file=ROOT/'web'/permitted[path]
             try:data=file.read_bytes()
@@ -138,6 +140,9 @@ def make_server(out,port=0):
                 body=json.loads(self.rfile.read(length));path=urlsplit(self.path).path
                 if not isinstance(body,dict):raise DesignError('SCHEMA','Request must be an object.')
                 if path=='/api/intent':self.send(fuse(body))
+                elif path=='/api/plan/import-dxf':
+                    from .plan_import import import_dxf
+                    self.send(import_dxf(body.get('text'),body.get('filename','floor-plan.dxf')))
                 elif path=='/api/placements/validate':
                     from .layout import generate_layout
                     from .exterior import apply_exterior_preferences
@@ -161,6 +166,15 @@ def make_server(out,port=0):
                 elif path=='/api/plan/smart-fit':
                     from .smart_fit import smart_fit
                     self.send(smart_fit(body.get('project',body),floor=body.get('fitFloor')))
+                elif path=='/api/plan/alternatives':
+                    from .plan_search import alternatives
+                    self.send(alternatives(body.get('project',{}),body.get('floor',0),body.get('lockedIds',[])))
+                elif path=='/api/local-plan/models':
+                    from .local_planner import models
+                    self.send(models())
+                elif path=='/api/local-plan/propose':
+                    from .local_planner import propose
+                    self.send(propose(body.get('project',{}),body.get('instruction',''),model=body.get('model','qwen3.5:9b'),floor=body.get('floor',0),locked_ids=body.get('lockedIds',[]),images=body.get('images',[]),dimensions_confirmed=body.get('dimensionsConfirmed',False),confirm=body.get('confirm',False)))
                 elif path=='/api/plan/upper-constraints':
                     from .upper_floor import constraints
                     self.send(constraints(body.get('project',{}),body.get('floor')))

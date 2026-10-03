@@ -1,0 +1,258 @@
+{
+  "brief": {
+    "storeys": 1,
+    "bedrooms": 1,
+    "width_mm": 10990,
+    "depth_mm": 12740,
+    "left_mm": 500,
+    "right_mm": 500,
+    "front_mm": 1000,
+    "rear_mm": 1000,
+    "roof_access": true
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "floors": [
+      {
+        "id": "floor-0",
+        "rooms": [
+          {
+            "id": "bed1",
+            "kind": "bedroom",
+            "name": "bed1",
+            "polygon": [
+              [
+                1500,
+                7800
+              ],
+              [
+                5050,
+                7800
+              ],
+              [
+                5050,
+                10440
+              ],
+              [
+                1500,
+                10440
+              ]
+            ]
+          },
+          {
+            "id": "court",
+            "kind": "courtyard",
+            "name": "court",
+            "polygon": [
+              [
+                5200,
+                7800
+              ],
+              [
+                7600,
+                7800
+              ],
+              [
+                7600,
+                10740
+              ],
+              [
+                5200,
+                10740
+              ]
+            ]
+          },
+          {
+            "id": "kitchen",
+            "kind": "kitchen",
+            "name": "kitchen",
+            "polygon": [
+              [
+                7750,
+                7800
+              ],
+              [
+                9550,
+                7800
+              ],
+              [
+                9550,
+                10440
+              ],
+              [
+                7750,
+                10440
+              ]
+            ]
+          },
+          {
+            "id": "veranda",
+            "kind": "veranda",
+            "name": "veranda",
+            "polygon": [
+              [
+                150,
+                5100
+              ],
+              [
+                2050,
+                5100
+              ],
+              [
+                2050,
+                7500
+              ],
+              [
+                150,
+                7500
+              ]
+            ]
+          },
+          {
+            "id": "living",
+            "kind": "living",
+            "name": "living",
+            "polygon": [
+              [
+                2200,
+                5100
+              ],
+              [
+                7050,
+                5100
+              ],
+              [
+                7050,
+                7580
+              ],
+              [
+                2200,
+                7580
+              ]
+            ]
+          },
+          {
+            "id": "dining",
+            "kind": "dining",
+            "name": "dining",
+            "polygon": [
+              [
+                7200,
+                5100
+              ],
+              [
+                8650,
+                5100
+              ],
+              [
+                8650,
+                7580
+              ],
+              [
+                7200,
+                7580
+              ]
+            ]
+          },
+          {
+            "id": "stair",
+            "kind": "stair",
+            "name": "stair",
+            "polygon": [
+              [
+                8800,
+                5100
+              ],
+              [
+                9840,
+                5100
+              ],
+              [
+                9840,
+                7580
+              ],
+              [
+                8800,
+                7580
+              ]
+            ]
+          },
+          {
+            "id": "drawing",
+            "kind": "drawing-room",
+            "name": "drawing",
+            "polygon": [
+              [
+                2200,
+                1950
+              ],
+              [
+                4700,
+                1950
+              ],
+              [
+                4700,
+                4950
+              ],
+              [
+                2200,
+                4950
+              ]
+            ]
+          },
+          {
+            "id": "lobby",
+            "kind": "inner-lobby",
+            "name": "lobby",
+            "polygon": [
+              [
+                4850,
+                1950
+              ],
+              [
+                6350,
+                1950
+              ],
+              [
+                6350,
+                4950
+              ],
+              [
+                4850,
+                4950
+              ]
+            ]
+          },
+          {
+            "id": "bed2",
+            "kind": "bedroom",
+            "name": "bed2",
+            "polygon": [
+              [
+                6500,
+                1950
+              ],
+              [
+                9700,
+                1950
+              ],
+              [
+                9700,
+                4980
+              ],
+              [
+                6500,
+                4980
+              ]
+            ]
+          }
+        ],
+        "walls": [],
+        "openings": []
+      }
+    ],
+    "stairs": []
+  }
+}
