@@ -1,0 +1,3 @@
+# Published exports have byte-level manifests; never rewrite their line endings.
+examples/** -text
+output/** -text

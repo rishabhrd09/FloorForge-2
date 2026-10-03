@@ -1,0 +1,495 @@
+{
+  "title": "My Desired Home / owner-to-engineer handover",
+  "revision": "A / 2026-10-02",
+  "planHash": "09ecfedf654909f0af083d00a93aa4fa547db15a05390dd912a41f0636f7ca72",
+  "source": "examples/gallery/my-desired-home",
+  "source_geometry_changed": false,
+  "paper_mm": [
+    420,
+    297
+  ],
+  "construction_ready": false,
+  "primary_dimensions": "mm",
+  "room_refs": [
+    {
+      "id": "g-dining",
+      "code": "G01",
+      "short": "ENTRY HALL",
+      "floor": 0,
+      "dx": 3300.0,
+      "dy": 2200.0,
+      "irregular": true,
+      "area_m2": 9.69
+    },
+    {
+      "id": "g-drawing",
+      "code": "G02",
+      "short": "DRAWING ROOM",
+      "floor": 0,
+      "dx": 4116.0,
+      "dy": 5500.0,
+      "irregular": false,
+      "area_m2": 22.638
+    },
+    {
+      "id": "g-living",
+      "code": "G03",
+      "short": "LIVING / DINING",
+      "floor": 0,
+      "dx": 5074.0,
+      "dy": 4100.0,
+      "irregular": true,
+      "area_m2": 27.5692
+    },
+    {
+      "id": "g-kitchen",
+      "code": "G04",
+      "short": "KITCHEN",
+      "floor": 0,
+      "dx": 4200.0,
+      "dy": 3300.0,
+      "irregular": false,
+      "area_m2": 13.86
+    },
+    {
+      "id": "g-kitchen-store",
+      "code": "G05",
+      "short": "PANTRY",
+      "floor": 0,
+      "dx": 1350.0,
+      "dy": 1850.0,
+      "irregular": false,
+      "area_m2": 2.4975
+    },
+    {
+      "id": "g-wash",
+      "code": "G06",
+      "short": "WASH AREA",
+      "floor": 0,
+      "dx": 1350.0,
+      "dy": 1300.0,
+      "irregular": false,
+      "area_m2": 1.755
+    },
+    {
+      "id": "g-puja",
+      "code": "G07",
+      "short": "PUJA",
+      "floor": 0,
+      "dx": 1800.0,
+      "dy": 1650.0,
+      "irregular": false,
+      "area_m2": 2.97
+    },
+    {
+      "id": "g-stair",
+      "code": "G08",
+      "short": "STAIRCASE",
+      "floor": 0,
+      "dx": 4324.0,
+      "dy": 3900.0,
+      "irregular": false,
+      "area_m2": 16.8636
+    },
+    {
+      "id": "g-bedroom",
+      "code": "G09",
+      "short": "MASTER BEDROOM",
+      "floor": 0,
+      "dx": 5450.0,
+      "dy": 4000.0,
+      "irregular": true,
+      "area_m2": 27.5723
+    },
+    {
+      "id": "g-bath",
+      "code": "G10",
+      "short": "ATTACHED BATH",
+      "floor": 0,
+      "dx": 1950.0,
+      "dy": 2376.0,
+      "irregular": false,
+      "area_m2": 4.6332
+    },
+    {
+      "id": "g-care",
+      "code": "G11",
+      "short": "HOME CARE ROOM",
+      "floor": 0,
+      "dx": 6788.0,
+      "dy": 4150.0,
+      "irregular": false,
+      "area_m2": 28.1702
+    },
+    {
+      "id": "g-caregiver",
+      "code": "G12",
+      "short": "CAREGIVER ROOM",
+      "floor": 0,
+      "dx": 2400.0,
+      "dy": 3126.0,
+      "irregular": false,
+      "area_m2": 7.5024
+    },
+    {
+      "id": "g-caregiver-bath",
+      "code": "G13",
+      "short": "CAREGIVER WC",
+      "floor": 0,
+      "dx": 2400.0,
+      "dy": 1300.0,
+      "irregular": false,
+      "area_m2": 3.12
+    },
+    {
+      "id": "g-veranda",
+      "code": "G14",
+      "short": "VERANDA",
+      "floor": 0,
+      "dx": 6688.0,
+      "dy": 2600.0,
+      "irregular": false,
+      "area_m2": 17.3888
+    },
+    {
+      "id": "g-care-lawn",
+      "code": "G15",
+      "short": "LAWN / GARDEN PATH",
+      "floor": 0,
+      "dx": 2700.0,
+      "dy": 5776.0,
+      "irregular": true,
+      "area_m2": 24.794988
+    },
+    {
+      "id": "g-care-court",
+      "code": "G16",
+      "short": "LIGHTWELL",
+      "floor": 0,
+      "dx": 1850.0,
+      "dy": 900.0,
+      "irregular": false,
+      "area_m2": 1.665
+    },
+    {
+      "id": "g-court-ledge",
+      "code": "G17",
+      "short": "COVERED LIGHTWELL EDGE",
+      "floor": 0,
+      "dx": 750.0,
+      "dy": 900.0,
+      "irregular": false,
+      "area_m2": 0.675
+    },
+    {
+      "id": "g-bedroom-airgap",
+      "code": "G18",
+      "short": "REAR VENTILATION RECESS",
+      "floor": 0,
+      "dx": 3700.0,
+      "dy": 900.0,
+      "irregular": false,
+      "area_m2": 3.33
+    },
+    {
+      "id": "u-lobby",
+      "code": "F01",
+      "short": "ARRIVAL LOBBY",
+      "floor": 1,
+      "dx": 2500.0,
+      "dy": 2200.0,
+      "irregular": false,
+      "area_m2": 5.5
+    },
+    {
+      "id": "u-office",
+      "code": "F02",
+      "short": "STUDIO / OFFICE",
+      "floor": 1,
+      "dx": 3550.0,
+      "dy": 2200.0,
+      "irregular": false,
+      "area_m2": 7.81
+    },
+    {
+      "id": "u-stair",
+      "code": "F03",
+      "short": "STAIRCASE",
+      "floor": 1,
+      "dx": 4324.0,
+      "dy": 4800.0,
+      "irregular": false,
+      "area_m2": 20.7552
+    },
+    {
+      "id": "u-lounge",
+      "code": "F04",
+      "short": "OVERLOOKING LOBBY",
+      "floor": 1,
+      "dx": 1726.0,
+      "dy": 4100.0,
+      "irregular": true,
+      "area_m2": 15.5031
+    },
+    {
+      "id": "u-bed-south",
+      "code": "F05",
+      "short": "BEDROOM 2",
+      "floor": 1,
+      "dx": 5450.0,
+      "dy": 3000.0,
+      "irregular": false,
+      "area_m2": 16.35
+    },
+    {
+      "id": "u-bedroom-balcony",
+      "code": "F06",
+      "short": "REAR BALCONY",
+      "floor": 1,
+      "dx": 5950.0,
+      "dy": 2526.0,
+      "irregular": true,
+      "area_m2": 15.5897
+    },
+    {
+      "id": "u-bath",
+      "code": "F07",
+      "short": "SHARED BATH",
+      "floor": 1,
+      "dx": 1200.0,
+      "dy": 2802.0,
+      "irregular": false,
+      "area_m2": 3.3624
+    },
+    {
+      "id": "u-bed-north",
+      "code": "F08",
+      "short": "MASTER SUITE",
+      "floor": 1,
+      "dx": 6188.0,
+      "dy": 3952.0,
+      "irregular": false,
+      "area_m2": 24.454976
+    },
+    {
+      "id": "u-terrace-north",
+      "code": "F09",
+      "short": "GARDEN BALCONY",
+      "floor": 1,
+      "dx": 2700.0,
+      "dy": 5776.0,
+      "irregular": false,
+      "area_m2": 15.5952
+    },
+    {
+      "id": "u-terrace-front",
+      "code": "F10",
+      "short": "FRONT / NORTH TERRACE",
+      "floor": 1,
+      "dx": 4116.0,
+      "dy": 5800.0,
+      "irregular": true,
+      "area_m2": 37.9128
+    },
+    {
+      "id": "u-studio-terrace",
+      "code": "F11",
+      "short": "TERRACE RETURN",
+      "floor": 1,
+      "dx": 1300.0,
+      "dy": 1650.0,
+      "irregular": false,
+      "area_m2": 2.145
+    },
+    {
+      "id": "u-veranda-terrace",
+      "code": "F12",
+      "short": "VERANDA ROOF TERRACE",
+      "floor": 1,
+      "dx": 3988.0,
+      "dy": 2600.0,
+      "irregular": false,
+      "area_m2": 10.3688
+    },
+    {
+      "id": "u-living-void",
+      "code": "F13",
+      "short": "OPEN BELOW",
+      "floor": 1,
+      "dx": 4324.0,
+      "dy": 1750.0,
+      "irregular": true,
+      "area_m2": 10.7009
+    },
+    {
+      "id": "u-garden-daylight",
+      "code": "F14",
+      "short": "OPEN TO SKY",
+      "floor": 1,
+      "dx": 2700.0,
+      "dy": 2600.0,
+      "irregular": false,
+      "area_m2": 7.02
+    },
+    {
+      "id": "south-stair-core-1-roof-landing",
+      "code": "R01",
+      "short": "ROOF LANDING",
+      "floor": 2,
+      "dx": 1162.0,
+      "dy": 2400.0,
+      "irregular": false,
+      "area_m2": 2.7888
+    },
+    {
+      "id": "roof-terrace",
+      "code": "R02",
+      "short": "ROOF TERRACE",
+      "floor": 2,
+      "dx": 7838.0,
+      "dy": 4252.0,
+      "irregular": true,
+      "area_m2": 106.049
+    }
+  ],
+  "sheet_index": [
+    {
+      "sheet": "A-001",
+      "title": "Site arrangement and design brief",
+      "page": 1,
+      "scale": 125
+    },
+    {
+      "sheet": "A-101",
+      "title": "Ground floor - dimensioned architectural plan",
+      "page": 2,
+      "scale": 100
+    },
+    {
+      "sheet": "A-102",
+      "title": "First floor - dimensioned architectural plan",
+      "page": 3,
+      "scale": 100
+    },
+    {
+      "sheet": "A-104",
+      "title": "Roof terrace - stair access and guarded edges",
+      "page": 4,
+      "scale": 100
+    },
+    {
+      "sheet": "A-301",
+      "title": "Section A-A through the south stair flight",
+      "page": 5,
+      "scale": 100
+    },
+    {
+      "sheet": "P-101",
+      "title": "Ground floor - furnished 3D cutaway",
+      "page": 6,
+      "scale": "3D REFERENCE / NTS"
+    },
+    {
+      "sheet": "P-102",
+      "title": "First floor - furnished 3D cutaway",
+      "page": 7,
+      "scale": "3D REFERENCE / NTS"
+    },
+    {
+      "sheet": "P-103",
+      "title": "Exterior and accessible roof - 3D study",
+      "page": 8,
+      "scale": "3D REFERENCE / NTS"
+    },
+    {
+      "sheet": "A-601",
+      "title": "Room schedule - clear dimensions and actual areas",
+      "page": 9,
+      "scale": "SCHEDULE / NTS"
+    },
+    {
+      "sheet": "A-602",
+      "title": "Opening schedule - doors, windows and vents",
+      "page": 10,
+      "scale": "SCHEDULE / NTS"
+    },
+    {
+      "sheet": "A-901",
+      "title": "Civil engineer handover - design checks and decisions",
+      "page": 11,
+      "scale": "REVIEW BRIEF / NTS"
+    }
+  ],
+  "opening_types": 41,
+  "opening_instances": 50,
+  "cad_export": {
+    "status": "ezdxf_reimport_pass",
+    "entities": 960,
+    "units": "mm",
+    "dimension_entities": 26,
+    "dimension_chains": 26,
+    "layers": [
+      "A-WALL",
+      "A-WIND",
+      "A-DOOR",
+      "A-FLOR",
+      "A-FURN",
+      "A-ANNO",
+      "A-DIMS",
+      "A-STAIR",
+      "A-SITE",
+      "A-TAGS",
+      "A-GRID",
+      "A-LEVL",
+      "A-SECT",
+      "A-EXT",
+      "A-GATE",
+      "A-LAND",
+      "S-GRID",
+      "HANDOVER-ROOM",
+      "HANDOVER-VOID"
+    ],
+    "autocad_gui": "NOT TESTED",
+    "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG."
+  },
+  "section_plane": {
+    "axis": "y",
+    "coordinate_mm": 4150.0
+  },
+  "review_warnings": [
+    {
+      "code": "TIMBER_SCREEN_DAYLIGHT",
+      "glazing_to_floor_pct": 0.0,
+      "id": "g-living",
+      "message": "Living and dining hall: the timber door blocks daylight when closed; mesh transmits light only with timber leaves open. Permanent glazing screening is not satisfied.",
+      "required_pct": 10.0
+    },
+    {
+      "code": "MECHANICAL_EXHAUST_DESIGN",
+      "id": "g-bath",
+      "message": "Master attached bathroom: mechanical exhaust selected; duct route and capacity require design."
+    },
+    {
+      "code": "MECHANICAL_EXHAUST_DESIGN",
+      "id": "g-caregiver-bath",
+      "message": "Caregiver attached toilet: mechanical exhaust selected; duct route and capacity require design."
+    },
+    {
+      "code": "MECHANICAL_EXHAUST_DESIGN",
+      "id": "u-bath",
+      "message": "Shared upper bathroom: mechanical exhaust selected; duct route and capacity require design."
+    }
+  ],
+  "verification": {
+    "pdf_pages": 11,
+    "paper": "A3 landscape 420 x 297 mm",
+    "plan_png_pixels": [
+      4961,
+      3508
+    ],
+    "plan_png_dpi": 300,
+    "rendered_pages_visually_reviewed": 11,
+    "model_and_3d_capture_reference_match": true,
+    "dxf_reimport": "passed / ezdxf audit; AutoCAD GUI not tested"
+  }
+}

@@ -1,0 +1,5 @@
+GSAP 3.13.0
+Copyright 2025 GreenSock / Webflow. All rights reserved.
+Distributed under the GSAP Standard License, not MIT.
+https://gsap.com/community/standard-license/
+Upstream notices are retained in web/hero.js.

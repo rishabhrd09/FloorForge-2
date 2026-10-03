@@ -6,7 +6,7 @@ from floorforge.intent import fuse
 
 @pytest.mark.parametrize('sample',catalogue(),ids=lambda s:s['id'])
 def test_every_sample_is_complete_and_its_starter_matches_the_3d(sample):
-    slug=sample['id'];read=lambda n:json.loads(sample_file(slug,n).read_text())
+    slug=sample['id'];read=lambda n:json.loads(sample_file(slug,n).read_text(encoding='utf-8'))
     building=read('building.json');project=read('project.floorforge.json');project['brief']=building['brief']
     assert fuse(project)['planHash']==sample['planHash']
     def browser_numbers(value):
@@ -41,6 +41,6 @@ def test_gallery_is_a_mix_of_scales_and_designs():
 
 
 def test_saved_favourite_contains_only_the_published_design():
-    p=json.loads(sample_file('saved-verandah','project.floorforge.json').read_text())
+    p=json.loads(sample_file('saved-verandah','project.floorforge.json').read_text(encoding='utf-8'))
     assert set(p)=={'schema','brief'}
     assert not any(k in p for k in ('attachments','editorState','sources','text'))

@@ -116,11 +116,11 @@ def test_roof_export_pack_has_one_revision_and_roof_sheet(tmp_path):
     b = read_json(path / 'building.json'); h = b['planHash']
     assert all(read_json(path / (name + '.json'))['planHash'] == h for name in ['scene', 'report', 'manifest'])
     sheets = list((path / 'sheets').glob('*A-104*'))
-    assert sheets and 'Roof terrace' in sheets[0].read_text()
-    ifc = (path / 'model.ifc').read_text()
+    assert sheets and 'Roof terrace' in sheets[0].read_text(encoding='utf-8')
+    ifc = (path / 'model.ifc').read_text(encoding='utf-8')
     assert 'Roof terrace' in ifc and b['rooftop']['cores'][0]['doorId'] in ifc
     assert "'Roof terrace'" in ifc and h in ifc
-    assert 'ROOF TERRACE' in (path / 'floorplans.dxf').read_text()
+    assert 'ROOF TERRACE' in (path / 'floorplans.dxf').read_text(encoding='utf-8')
     report = read_json(path / 'report.json')
     assert report['areas']['roof_terrace_m2'] > 0
     assert report['areas']['gross_floor_m2'] == round(sum(plate(b, f).area for f in range(b['storeys'])) / 1e6, 3)

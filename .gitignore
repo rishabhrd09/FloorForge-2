@@ -17,3 +17,6 @@ models/
 *.pem
 *.key
 evidence/rejected-exterior-MBtz0N/
+
+# Intermediate handover captures and PDF raster previews (final packages live in output/).
+/tmp/

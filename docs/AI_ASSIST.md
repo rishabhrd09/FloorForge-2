@@ -1,12 +1,17 @@
 # AI Assist: optional and session-controlled
 
-## What is real in this source
+The room editor also has a separate **Explore layouts** workflow: deterministic
+alternatives plus optional Ollama text/image interpretation. See
+[Smart planning](SMART_PLANNING.md) for supported operations, setup and limits.
+The brief-only adapter described below is unchanged.
+
+## What is real in the brief-only adapter
 
 The app is complete as a bounded preliminary generator with AI off. The UI offers three plain choices: engines only; add a local model; or use a cloud model with a user-owned key. Provider configuration stays in the Python process, not in a project, environment file, log or browser localStorage. A one-click clear switches AI off. References expire after 30 minutes. Python cannot guarantee that an old immutable key string is securely zeroed from physical memory; no such promise is made.
 
 The user reviews the destination and a cost estimate before a request. Unknown prices stay unknown; they are not displayed as free. Estimates use a character heuristic rather than billing-token truth. Cloud key creation/revocation must be performed on the provider's site; use a scoped project key and spending limit where available. Revoke the key there after a session. There is no OS-keychain integration in this release.
 
-Only the fused structured brief and instruction are sent to the selected provider. Reference images are not sent. The app does not silently route to another vendor, follow redirects with a key, run returned code or let a model directly mutate a scene. AI output must be a small JSON patch, rationale and critique; permitted fields are allowlisted. The patch is regenerated and screened before being offered for user approval. Soil and cost-rate guesses are prohibited.
+Only the fused structured brief and instruction are sent to the selected provider. Reference images are not sent by this brief-only adapter. The app does not silently route to another vendor, follow redirects with a key, run returned code or let a model directly mutate a scene. AI output must be a small JSON patch, rationale and critique; permitted fields are allowlisted. The patch is regenerated and screened before being offered for user approval. Soil and cost-rate guesses are prohibited.
 
 **The available gate is geometric, not statutory or structural.** No response earns construction approval. Model critique remains unverified commentary. There is no measured evidence that each higher tier improves designs; this requirement remains an evaluation gate, not a marketing promise.
 
@@ -31,7 +36,7 @@ Choose Anthropic or an OpenAI-compatible endpoint; paste a session key, the mode
 
 Official model documentation retrieved during this work listed `claude-sonnet-5`, `claude-opus-5` and `claude-fable-5`. It did not establish the requested `Fable 5.1` identifier. The app's default is Sonnet 5; the model field is editable. Availability, API behaviour and billing require an actual account test. No cloud key was supplied and no paid request was made during implementation.
 
-OpenAI-compatible support means the chat-completions contract, **not universal compatibility with every vendor/model/Responses-only API**. Vision, streaming live critique, free-form sketch interpretation and automatic concept ranking are not implemented.
+OpenAI-compatible support means the chat-completions contract, **not universal compatibility with every vendor/model/Responses-only API**. This brief-only adapter does not implement vision, streaming live critique or sketch interpretation. The separate local room-planning workflow supports bounded sketch interpretation and deterministic alternatives.
 
 ## Sources checked 2026-09-06
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlsplit,unquote
-import concurrent.futures,errno,http.client,hashlib,json,mimetypes,re,secrets,threading,time,webbrowser
+import concurrent.futures,errno,http.client,hashlib,json,mimetypes,re,secrets,socket,threading,time,webbrowser
 from . import __version__
 from .model import *
 from .pipeline import run,ROOT,runtime_versions,kernel_hash
@@ -15,6 +15,18 @@ from .spaces import SPACE_REGISTRY, guide_labels, GUIDE_AUTOMATIC_KINDS
 # The open-space tables behind intent.derive_setbacks, for the studio's live plot summary (JSON has no infinity).
 SETBACK_TABLES={'depth':[[None if math.isinf(l) else l,f,r] for l,f,r in SETBACKS_BY_DEPTH],
                 'width':[[None if math.isinf(l) else l,sd] for l,sd in SETBACKS_BY_WIDTH]}
+
+class StudioHTTPServer(ThreadingHTTPServer):
+    # Windows SO_REUSEADDR can bind a second server to an occupied port.
+    # Exclusive ownership makes repeated launches detect the existing studio.
+    allow_reuse_address = not hasattr(socket, 'SO_EXCLUSIVEADDRUSE')
+    allow_reuse_port = False
+
+    def server_bind(self):
+        if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
 
 def launch_identity(out):
     return sha({'workspace':str(ROOT.resolve()),'output':str(Path(out).resolve())})
@@ -87,6 +99,8 @@ def make_server(out,port=0):
             if not self.trusted():self.send({'error':'Local origin required'},403);return
             path=unquote(urlsplit(self.path).path)
             if path=='/api/session':self.send({'token':state.token,'version':__version__,'launch_identity':launch_identity(state.out),'backend_build_id':kernel_hash(),'spaceRegistry':SPACE_REGISTRY,'guideLabels':guide_labels(),'guideAutomaticKinds':sorted(GUIDE_AUTOMATIC_KINDS),'defaults':DEFAULTS,'setbacks':SETBACK_TABLES,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status()});return
+            if path=='/api/plan/import-template':
+                self.send((ROOT/'examples/import/ground-floor.dxf').read_bytes(),content='application/dxf');return
             if path=='/api/samples':
                 from .sample_projects import catalogue
                 self.send({'samples':catalogue()});return
@@ -123,7 +137,7 @@ def make_server(out,port=0):
                 base=(state.out/'builds'/match[1]).resolve();file=(base/match[2]).resolve()
                 if not file.is_relative_to(base):self.send({'error':'Invalid path'},404);return
             else:
-                permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
+                permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/start-page.js':'start-page.js','/hero.js':'hero.js','/assets/myverandah-hero.png':'assets/myverandah-hero.png','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/plan-assistance.js':'plan-assistance.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
                 if path not in permitted:self.send({'error':'Not found'},404);return
                 file=ROOT/'web'/permitted[path]
             try:data=file.read_bytes()
@@ -138,6 +152,9 @@ def make_server(out,port=0):
                 body=json.loads(self.rfile.read(length));path=urlsplit(self.path).path
                 if not isinstance(body,dict):raise DesignError('SCHEMA','Request must be an object.')
                 if path=='/api/intent':self.send(fuse(body))
+                elif path=='/api/plan/import-dxf':
+                    from .plan_import import import_dxf
+                    self.send(import_dxf(body.get('text'),body.get('filename','floor-plan.dxf')))
                 elif path=='/api/placements/validate':
                     from .layout import generate_layout
                     from .exterior import apply_exterior_preferences
@@ -161,6 +178,15 @@ def make_server(out,port=0):
                 elif path=='/api/plan/smart-fit':
                     from .smart_fit import smart_fit
                     self.send(smart_fit(body.get('project',body),floor=body.get('fitFloor')))
+                elif path=='/api/plan/alternatives':
+                    from .plan_search import alternatives
+                    self.send(alternatives(body.get('project',{}),body.get('floor',0),body.get('lockedIds',[])))
+                elif path=='/api/local-plan/models':
+                    from .local_planner import models
+                    self.send(models())
+                elif path=='/api/local-plan/propose':
+                    from .local_planner import propose
+                    self.send(propose(body.get('project',{}),body.get('instruction',''),model=body.get('model','qwen3.5:9b'),floor=body.get('floor',0),locked_ids=body.get('lockedIds',[]),images=body.get('images',[]),dimensions_confirmed=body.get('dimensionsConfirmed',False),confirm=body.get('confirm',False)))
                 elif path=='/api/plan/upper-constraints':
                     from .upper_floor import constraints
                     self.send(constraints(body.get('project',{}),body.get('floor')))
@@ -187,13 +213,13 @@ def make_server(out,port=0):
             except (DesignError,ValueError,TypeError) as e:self.send(e.record() if isinstance(e,DesignError) else {'code':'REQUEST_ERROR','message':str(e)},400)
             except Exception:self.send({'code':'INTERNAL_ERROR','message':'Request failed. No credentials or request bodies are logged.'},500)
         def log_message(self,*args):pass
-    server=ThreadingHTTPServer(('127.0.0.1',port),Handler);server.daemon_threads=True;server.state=state
+    server=StudioHTTPServer(('127.0.0.1',port),Handler);server.daemon_threads=True;server.state=state
     return server
 
 def serve(out,port=0,open_browser=True):
     try:server=make_server(out,port)
     except OSError as error:
-        if error.errno!=errno.EADDRINUSE:raise
+        if error.errno!=errno.EADDRINUSE and getattr(error,'winerror',None) not in (10048,10013):raise
         if port and existing_studio(port,out):
             url=f'http://127.0.0.1:{port}/'
             print(f'FloorForge is already running at {url}\nUsing the existing server and its current settings. No second server was started.')

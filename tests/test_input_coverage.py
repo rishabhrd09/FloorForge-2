@@ -24,7 +24,7 @@ def test_combined_inputs_report_overrides_without_losing_them():
 
 
 def test_custom_plan_does_not_claim_description_placement_or_programme_switches_changed_geometry():
-    p = json.loads((ROOT / 'examples/custom/g2-terrace.floorforge.json').read_text())
+    p = json.loads((ROOT / 'examples/custom/g2-terrace.floorforge.json').read_text(encoding='utf-8'))
     p['text'] = 'Kitchen at rear right.'; p['sources'] = [{'id': 'manual', 'kind': 'form', 'values': {'pooja': True, 'open_kitchen': True}}]
     i = fuse(p); audit = i['input_audit']
     assert next(e for e in audit['entries'] if e['source'] == 'custom-plan')['status'] == 'applied'
