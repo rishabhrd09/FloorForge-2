@@ -142,7 +142,7 @@ def make_server(out,port=0):
                 file=ROOT/'web'/permitted[path]
             try:data=file.read_bytes()
             except OSError:self.send({'error':'Not found'},404);return
-            content={'.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.glb':'model/gltf-binary','.ifc':'application/x-step'}.get(file.suffix,mimetypes.guess_type(file.name)[0] or 'application/octet-stream');self.send(data,content=content,frameable=path.startswith('/samples/') and path.endswith('/preview.html'))
+            content={'.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.glb':'model/gltf-binary','.ifc':'application/x-step'}.get(file.suffix,mimetypes.guess_type(file.name)[0] or 'application/octet-stream');self.send(data,content=content,frameable=path.startswith('/samples/') and path.endswith(('preview.html','electrical.html')))
         def do_POST(self):
             if not self.trusted(write=True):self.send({'error':'Session token and local origin required'},403);return
             try:

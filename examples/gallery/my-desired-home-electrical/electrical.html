@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inside the Wires · My Desired Home</title>
+  <meta name="description" content="Educational simulation of a possible Indian residential electrical installation in the My Desired Home sample: supply, meter, distribution boards, concealed routes and room switchboards.">
+  <style>
+    :root{
+      --ink:#17302a;--muted:#5b6c64;--line:#d8ded5;--paper:#fbfbf7;--panel:#ffffff;--bg:#eef0ea;--green:#23493a;--sand:#e9e1cf;
+      --amber:#f0a63a;--amber-ink:#8a5a10;--cyan:#3ec7d8;--cyan-ink:#0f6f7c;--danger:#b4271f;
+      --r:#b5302a;--y:#d7a81c;--b:#2a55a6;--n:#1e1f21;--pe:#3e9440;--pe2:#d8c529;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+    *{box-sizing:border-box}
+    body{margin:0;min-width:320px;background:var(--bg)}
+    button,select,input{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    :focus-visible{outline:3px solid #cb9a55;outline-offset:2px}
+    .top{height:64px;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 22px}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-family:Georgia,serif;font-size:22px;font-weight:700}
+    .brand-mark{height:34px;width:34px;display:grid;place-items:center;border:1px solid #426654;border-radius:10px;font:700 17px ui-sans-serif;color:#416b53}
+    .top-note{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#628071;font-weight:700}
+    .top-links{display:flex;gap:8px}
+    .top-link{border:1px solid var(--line);padding:8px 12px;border-radius:10px;text-decoration:none;font-size:12.5px;font-weight:700;background:#fff;white-space:nowrap}
+    .intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;padding:16px 24px 12px;background:var(--paper);border-bottom:1px solid var(--line)}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#8b6d4b;margin:0 0 5px}
+    h1{font-family:Georgia,serif;font-size:clamp(26px,2.6vw,38px);letter-spacing:-.03em;line-height:1.05;margin:0 0 6px}
+    .intro p.lead{margin:0;color:var(--muted);max-width:860px;line-height:1.5;font-size:13.5px}
+    .scope{border:1px solid #dbc79f;background:#fff8e6;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.4;max-width:300px;color:#6e5426}
+    .scope strong{color:#4f3a13}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:0;min-height:calc(100vh - 150px)}
+    .stage{min-width:0;padding:12px 14px 16px 18px;display:flex;flex-direction:column;gap:10px}
+    .toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+    .seg{display:inline-flex;border:1px solid #cfd9cf;border-radius:10px;overflow:hidden;background:#fff}
+    .seg button{border:0;background:transparent;padding:8px 11px;font-size:12px;font-weight:700;color:#2f4c3e;min-height:34px}
+    .seg button+button{border-left:1px solid #e1e7df}
+    .seg button[aria-pressed="true"]{background:var(--green);color:#fff}
+    .tool{background:#fff;border:1px solid #cfd9cf;border-radius:10px;padding:8px 11px;color:#2f4c3e;font-weight:700;font-size:12px;min-height:34px}
+    .tool[aria-pressed="true"]{background:#e6efe8;border-color:#9fbea8}
+    .spacer{flex:1}
+    .viewport{position:relative;display:grid;grid-template-columns:1fr;gap:10px;height:min(68vh,760px);min-height:460px}
+    .viewport.split{grid-template-columns:1.25fr 1fr}
+    .viewport.plan-only .view3d{display:none}
+    .viewport:not(.split):not(.plan-only) .view2d{display:none}
+    .view3d,.view2d{position:relative;border-radius:16px;overflow:hidden;min-width:0;min-height:0}
+    .view3d{background:linear-gradient(145deg,#d8e5eb,#adbfc6);box-shadow:0 18px 44px #1b392319}
+    .view3d canvas{width:100%;height:100%;display:block;outline:none}
+    .view2d{background:#f7f8f3;border:1px solid var(--line);display:flex;flex-direction:column}
+    .plan-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:12.5px;font-weight:800}
+    .plan-body{flex:1;min-height:0;position:relative}
+    .plan-body svg{position:absolute;inset:0;width:100%;height:100%}
+    .chip{position:absolute;left:12px;top:12px;z-index:3;border-radius:9px;background:#f7f9f2ee;padding:7px 10px;font-size:11.5px;font-weight:800;color:#284738;pointer-events:none;max-width:70%}
+    .status{position:absolute;left:12px;bottom:12px;z-index:3;max-width:min(78%,640px);background:#132c27d9;color:#fff;padding:8px 11px;border-radius:9px;font-size:12px;line-height:1.4;pointer-events:none}
+    .legend3d{position:absolute;right:12px;bottom:12px;z-index:3;background:#fbfcf8ee;border:1px solid #dfe5dc;border-radius:10px;padding:8px 10px;font-size:10.5px;color:#3b5146;display:grid;grid-template-columns:auto auto;gap:3px 12px;pointer-events:none}
+    .legend3d b{display:inline-block;width:16px;height:4px;border-radius:3px;vertical-align:middle;margin-right:5px}
+    .legend3d .pe{background:repeating-linear-gradient(90deg,var(--pe) 0 4px,var(--pe2) 4px 7px)}
+    .legend3d .ov-sel{background:var(--amber)}.legend3d .ov-tr{background:var(--cyan)}
+    .view3d.inspecting .ffhud .ff-interact,.view3d.inspecting .ffhud .ff-cross{display:none!important}
+    .leader-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
+    .leader-layer .leader{fill:none;stroke-width:1;vector-effect:non-scaling-stroke}
+    .leader-layer .leader.selected{stroke:var(--amber)}.leader-layer .leader.trace{stroke:var(--cyan)}
+    .leader-layer .anchor.selected{fill:var(--amber);stroke:#fff;stroke-width:1}.leader-layer .anchor.trace{fill:var(--cyan);stroke:#fff;stroke-width:1}
+    .label-layer{position:absolute;inset:0;pointer-events:none;z-index:5}
+    .scene-label{position:absolute;left:0;top:0;z-index:2;max-width:280px;background:#fffdf8f2;border:1px solid var(--amber);border-left:4px solid var(--amber);border-radius:8px;padding:7px 9px;font-size:11.5px;line-height:1.35;color:#2b2a24;box-shadow:0 6px 20px #1a1a1a26}
+    .scene-label strong{display:block;font-size:12px;margin-bottom:4px}
+    .scene-label dl{display:grid;grid-template-columns:auto 1fr;gap:1px 8px;margin:0}
+    .scene-label dt{color:#7a6a4a;font-weight:700}.scene-label dd{margin:0}
+    .scene-callout{position:absolute;left:0;top:0;z-index:1;display:flex;align-items:center;gap:6px;max-width:230px;background:#f5fdfeef;border:1px solid #9fdde6;border-radius:7px;padding:3px 8px 3px 3px;font-size:11px;line-height:1.25;color:#123d43;pointer-events:auto;cursor:pointer;text-align:left}
+    .scene-callout .num{flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:var(--cyan-ink);color:#fff;font-weight:800;font-size:10.5px;display:grid;place-items:center}
+    .stepbar{display:none;position:absolute;left:12px;right:12px;bottom:12px;z-index:6;align-items:center;gap:10px;background:#103a40f2;color:#e9fbfd;border-radius:12px;padding:8px 10px;box-shadow:0 8px 24px #0004}
+    .view3d.tracing .status,.view3d.tracing .legend3d{display:none}
+    .stepbar.active{display:flex}
+    .stepbar button{background:#1d5a62;border:1px solid #2f7a84;color:#fff;border-radius:8px;padding:7px 11px;font-weight:800;font-size:12px}
+    .stepbar .txt{flex:1;min-width:0;font-size:12.5px;line-height:1.35}
+    .stepbar .txt b{color:#8fe9f3}
+    .panel{background:var(--panel);border-left:1px solid var(--line);overflow:auto;max-height:calc(100vh - 64px);position:sticky;top:0}
+    .panel section{padding:15px 18px;border-bottom:1px solid var(--line)}
+    .h2{font-family:Georgia,serif;font-size:19px;margin:0 0 6px}
+    .sub{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+    .kicker{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:#6c7d73;margin:12px 0 6px}
+    .circuits{display:flex;flex-direction:column;gap:5px;max-height:300px;overflow:auto;padding-right:4px}
+    .cbtn{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border:1px solid var(--line);background:#fafbf7;border-radius:9px;padding:7px 9px;text-align:left;font-size:11.5px;color:#22392f}
+    .cbtn[aria-pressed="true"]{border-color:var(--cyan-ink);background:#ecfafc;box-shadow:inset 3px 0 0 var(--cyan)}
+    .cbtn .id{font-weight:800;font-variant-numeric:tabular-nums}
+    .cbtn .what{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .ph{display:inline-block;min-width:20px;text-align:center;font-size:10px;font-weight:800;border-radius:5px;padding:2px 4px;color:#fff}
+    .ph.R{background:var(--r)}.ph.Y{background:var(--y);color:#2b2205}.ph.B{background:var(--b)}
+    .dot{width:8px;height:8px;border-radius:50%;background:#c9cfc8;display:inline-block}
+    .dot.on{background:#43a35d;box-shadow:0 0 0 3px #43a35d22}
+    .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .primary{background:var(--green);color:#fff;border:1px solid var(--green);border-radius:9px;padding:8px 12px;font-weight:800;font-size:12px}
+    .inspect h3{font-family:Georgia,serif;font-size:17px;margin:0 0 4px}
+    .inspect .type{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#8b6d4b;margin-bottom:6px}
+    .facts{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12px;margin:8px 0}
+    .facts dt{color:#6c7d73;font-weight:700}.facts dd{margin:0}
+    .inspect p{font-size:12.5px;line-height:1.5;color:#3d5047;margin:6px 0}
+    .refs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+    .ref{font-size:10.5px;border:1px solid #d9e3d9;background:#f6f9f4;border-radius:6px;padding:2px 6px;text-decoration:none;color:#2c5843}
+    .ref.assume{border-color:#e7d3a5;background:#fff8e8;color:#7a5a20}
+    .ctrls .row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #eef1ec;font-size:12px}
+    .ctrls .row:last-child{border-bottom:0}
+    .ctrls .row small{display:block;color:var(--muted);font-size:11px}
+    .tog{min-width:56px;padding:5px 8px;border-radius:7px;border:1px solid #b7ceb7;background:#e5f0e7;color:#245837;font-size:11px;font-weight:800}
+    .tog[aria-pressed="false"]{background:#f2f3ee;color:#657267;border-color:#d5ddd3}
+    .tog.trip{background:#fbe4dc;color:#a03a1d;border-color:#e9b8a6}
+    .supply-svg svg{width:100%;height:auto;display:block;background:#f8faf5;border:1px solid var(--line);border-radius:10px}
+    .supply-text p{font-size:12px;line-height:1.5;color:#3d5047;margin:8px 0 0}
+    .steps{font-size:12px;margin:0;padding-left:22px;line-height:1.45}
+    .steps li{margin:3px 0;cursor:pointer}
+    .steps li.current{font-weight:800;color:var(--cyan-ink)}
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:5px 10px;font-size:11.5px;color:#3c5146}
+    .legend b{display:inline-block;width:22px;height:5px;border-radius:3px;vertical-align:middle;margin-right:6px}
+    .src li{font-size:11.5px;line-height:1.45;margin:4px 0}
+    details summary{cursor:pointer;font-weight:800;font-size:12.5px;padding:3px 0}
+    details[open] summary{margin-bottom:6px}
+    .assume-list li,.nm li{font-size:11.5px;line-height:1.45;margin:5px 0;color:#41554b}
+    .foot{padding:16px 24px 26px;color:#536b5d;background:#e5ebe2;border-top:1px solid #d4ded2;font-size:12px;line-height:1.55}
+    .foot strong{color:#183d30}
+    /* 2D plan */
+    .plan-drawing .plan-room{fill:#eef2ea;stroke:#c8d3c6;stroke-width:.012;cursor:pointer}
+    .plan-drawing .plan-room.served{fill:#e3f3f5}
+    .plan-drawing .plan-void{fill:#fff;stroke:#c9d2c8;stroke-width:.015;stroke-dasharray:.08 .06}
+    .plan-drawing .plan-wall{fill:#59645f}
+    .plan-drawing .plan-window{stroke:#7fb0d6;stroke-width:.07}
+    .plan-drawing .plan-door-gap{stroke:#f7f8f3;stroke-width:.17}
+    .plan-drawing .plan-door{stroke:#7b6c56;stroke-width:.025}
+    .plan-drawing .plan-swing{fill:none;stroke:#b3a68e;stroke-width:.012;stroke-dasharray:.05 .04}
+    .plan-drawing .plan-conduit{fill:none;stroke:#b9c4bd;stroke-width:calc(var(--k) * .12);stroke-linejoin:round;cursor:pointer}
+    .plan-drawing .plan-conduit.service,.plan-drawing .plan-conduit.submain{stroke:#9aa8a0;stroke-width:.03}
+    .plan-drawing .plan-conduit.earthing{stroke:#87b98b;stroke-dasharray:.06 .05}
+    .plan-drawing .plan-conduit.traced{stroke:var(--cyan);stroke-width:calc(var(--k) * .3)}
+    .plan-drawing .plan-conduit.step{stroke:#0f8a9a;stroke-width:calc(var(--k) * .45)}
+    .plan-drawing .plan-conduit.selected{stroke:var(--amber);stroke-width:calc(var(--k) * .45)}
+    .plan-drawing .plan-drop{fill:var(--cyan)}
+    .plan-drawing .plan-enc rect{fill:#fff;stroke:#3f5248;stroke-width:.02;cursor:pointer}
+    .plan-drawing .plan-enc.main-db rect,.plan-drawing .plan-enc.sub-db rect{fill:#f4e7d2;stroke:#6b4f1f;stroke-width:.03}
+    .plan-drawing .plan-enc.meter rect{fill:#fff2c8;stroke:#7a5a10;stroke-width:.03}
+    .plan-drawing .plan-db-diag{stroke:#6b4f1f;stroke-width:.02}
+    .plan-drawing .plan-enc.traced rect{stroke:var(--cyan-ink);stroke-width:.04}
+    .plan-drawing .plan-enc.selected rect{stroke:var(--amber);stroke-width:.06}
+    .plan-drawing .plan-point{cursor:pointer}
+    .plan-drawing .plan-point circle,.plan-drawing .plan-point rect,.plan-drawing .plan-point path{fill:#fff;stroke:#3d4f45;stroke-width:.02}
+    .plan-drawing .plan-point.on circle,.plan-drawing .plan-point.on rect{fill:#ffe39e}
+    .plan-drawing .plan-point.fan .hub{fill:#3d4f45}
+    .plan-drawing .plan-point.traced circle,.plan-drawing .plan-point.traced rect,.plan-drawing .plan-point.traced path{stroke:var(--cyan-ink);stroke-width:.035}
+    .plan-drawing .plan-point.selected circle,.plan-drawing .plan-point.selected rect,.plan-drawing .plan-point.selected path{stroke:var(--amber);stroke-width:.05}
+    .plan-drawing .plan-earth rect{fill:#e8e4da;stroke:#55623f;stroke-width:.02}.plan-drawing .plan-earth path{stroke:#3e9440;stroke-width:.02;fill:none}
+    .plan-drawing .plan-earth.selected rect{stroke:var(--amber);stroke-width:.05}
+    .plan-drawing .plan-label{font-weight:600;font-family:system-ui,sans-serif;fill:#2f4a3c;text-anchor:middle;pointer-events:none;paint-order:stroke;stroke:#f7f8f3;stroke-width:calc(var(--k) * .25px)}
+    .plan-drawing .plan-sym{font:700 .1px system-ui;fill:#3d4f45;text-anchor:middle}
+    .plan-drawing .plan-front{font-weight:700;font-family:system-ui,sans-serif;fill:#7a8b80;text-anchor:middle}
+    .plan-drawing .plan-scale path{stroke:#3d4f45;fill:none}.plan-drawing .plan-scale text{font-weight:600;font-family:system-ui,sans-serif;fill:#3d4f45;text-anchor:middle}
+    .plan-body{cursor:grab}.plan-body:active{cursor:grabbing}
+    :root{--plan-wall-hatch:#ccc}
+    .plan-key{display:flex;flex-wrap:wrap;gap:8px 14px;padding:7px 12px;border-top:1px solid var(--line);font-size:10.5px;color:#4b5f54}
+    .plan-key span{display:inline-flex;align-items:center;gap:5px}
+    .plan-key svg{width:18px;height:12px}
+    @media (max-width:1100px){.workspace{grid-template-columns:1fr}.panel{position:static;max-height:none;border-left:0;border-top:1px solid var(--line)}.viewport.split{grid-template-columns:1fr;grid-template-rows:1fr 1fr;height:auto}.viewport.split .view3d,.viewport.split .view2d{min-height:360px}}
+    @media (max-width:640px){.top{padding:0 14px}.top-note{display:none}.intro{display:block;padding:14px 16px}.scope{margin-top:10px;max-width:none}.stage{padding:10px 12px}.viewport{height:58vh;min-height:380px}.legend3d{display:none}.top-links .top-link:nth-child(2){display:none}}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/"><span class="brand-mark">⌂</span><span>myverandah</span></a>
+    <div class="top-note">My Desired Home · separate electrical edition</div>
+    <div class="top-links"><a class="top-link" href="preview.html">Architectural view ↗</a><a class="top-link" href="ELECTRICAL_GUIDE.md">Guide &amp; sources ↗</a></div>
+  </header>
+  <div class="intro">
+    <div>
+      <p class="eyebrow">Interactive house anatomy · India</p>
+      <h1>Inside the wires</h1>
+      <p class="lead">Follow the supply from the sealed meter into the main distribution board, through protective devices and concealed conduits in the walls and slabs, to the switchboards, lights, fans, sockets and water heaters of this house. Open a board to see its terminals; click any wire to see what it does.</p>
+    </div>
+    <div class="scope"><strong>Educational simulation.</strong> Electrical positions, circuits and routes are proposals on a copy of the architecture — not an installation design, approved drawing or as-built record. Real installation design and live electrical work require qualified, licensed professionals.</div>
+  </div>
+  <main class="workspace">
+    <div class="stage">
+      <div class="toolbar" role="toolbar" aria-label="View controls">
+        <div class="seg" aria-label="Camera"><button data-mode="solid" aria-pressed="false">Exterior</button><button data-mode="dollhouse" aria-pressed="true">Cutaway</button><button data-mode="walk" aria-pressed="false">Walk inside</button></div>
+        <div class="seg" aria-label="Floor"><button data-floor="0" aria-pressed="true">Ground</button><button data-floor="1" aria-pressed="false">First</button></div>
+        <span class="spacer"></span>
+        <div class="seg" aria-label="Panels"><button data-layout="3d" aria-pressed="true">3D</button><button data-layout="split" aria-pressed="false">3D + plan</button><button data-layout="plan" aria-pressed="false">Wiring plan</button></div>
+        <button class="tool" id="labels-toggle" aria-pressed="true">Labels</button>
+      </div>
+      <div id="viewport" class="viewport">
+        <div class="view3d">
+          <canvas id="home-canvas" tabindex="0" aria-label="3D electrical tour of My Desired Home"></canvas>
+          <div id="view-chip" class="chip">Loading the house…</div>
+          <div id="view-status" class="status">Preparing the architectural scene…</div>
+          <div id="stepbar" class="stepbar" role="region" aria-label="Route walkthrough">
+            <button id="step-prev" aria-label="Previous step">◀</button>
+            <div class="txt" id="step-text"></div>
+            <button id="step-next" aria-label="Next step">▶</button>
+            <button id="step-exit">Exit route</button>
+          </div>
+          <div class="legend3d" aria-hidden="true">
+            <span><b style="background:var(--r)"></b>Live / phase (red)</span><span><b style="background:var(--n)"></b>Neutral (black)</span>
+            <span><b class="pe"></b>Protective earth</span><span><b style="background:var(--y)"></b><b style="background:var(--b);margin-left:-3px"></b>Y / B phase</span>
+            <span><b class="ov-tr"></b>Traced route (overlay)</span><span><b class="ov-sel"></b>Selection (overlay)</span>
+          </div>
+        </div>
+        <div class="view2d">
+          <div class="plan-head"><span id="plan-title">Ground-floor wiring plan</span><span id="plan-circuit" class="sub" style="margin:0"></span><span class="sub" style="margin:0">Scroll to zoom · drag to pan · double-click to refit</span></div>
+          <div class="plan-body" id="plan-body"></div>
+          <div class="plan-key">
+            <span><svg viewBox="-.15 -.15 .3 .3"><circle r=".11" fill="#fff" stroke="#3d4f45" stroke-width=".02"/><path d="M-.078 -.078L.078 .078M-.078 .078L.078 -.078" stroke="#3d4f45" stroke-width=".02"/></svg>Light point</span>
+            <span><svg viewBox="-.16 -.16 .32 .32"><circle r=".13" fill="#fff" stroke="#3d4f45" stroke-width=".02"/><path d="M0 0V-.12M0 0L.104 .06M0 0L-.104 .06" stroke="#3d4f45" stroke-width=".02"/></svg>Ceiling fan</span>
+            <span><svg viewBox="-.15 -.2 .3 .25"><path d="M-.1 0A.1 .1 0 0 1 .1 0Z" fill="#fff" stroke="#3d4f45" stroke-width=".02"/></svg>6 A / 16 A socket</span>
+            <span><svg viewBox="0 0 24 12"><rect x="2" y="2" width="20" height="8" fill="#f4e7d2" stroke="#6b4f1f"/><path d="M2 10L22 2" stroke="#6b4f1f"/></svg>Distribution board</span>
+            <span><svg viewBox="0 0 24 12"><path d="M1 6H23" stroke="#3ec7d8" stroke-width="3"/></svg>Selected circuit</span>
+            <span><svg viewBox="0 0 24 12"><path d="M1 6H23" stroke="#b9c4bd" stroke-width="2"/></svg>Other conduits</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="panel" aria-label="Electrical inspection">
+      <section>
+        <h2 class="h2">Circuits</h2>
+        <p class="sub">Pick a circuit to reveal its concealed route on the ceilings and walls, then follow it step by step from the meter.</p>
+        <div id="circuits" class="circuits"></div>
+        <div class="actions"><button class="primary" id="trace-start">Follow route from meter ▸</button><button class="tool" id="trace-clear">Clear</button></div>
+      </section>
+      <section>
+        <h2 class="h2">Supply &amp; protection</h2>
+        <div id="supply-diagram" class="supply-svg"></div>
+        <div id="supply-text" class="supply-text"></div>
+      </section>
+      <section class="inspect" aria-live="polite">
+        <div class="type" id="insp-type">Nothing selected</div>
+        <h3 id="insp-title">Click a board, wire, terminal or fitting</h3>
+        <dl class="facts" id="insp-facts"></dl>
+        <div id="insp-text"><p>In <b>Walk inside</b>, click a switchboard to open it. Each wire, terminal and device inside can be clicked; a label appears beside it.</p></div>
+        <div class="refs" id="insp-refs"></div>
+        <div class="actions" id="insp-actions"></div>
+      </section>
+      <section class="ctrls" id="controls-section">
+        <h2 class="h2" id="ctrl-title">Main distribution board</h2>
+        <p class="sub" id="ctrl-sub">Operate switches and protective devices in the simulation.</p>
+        <div id="controls"></div>
+      </section>
+      <section id="steps-section" hidden>
+        <h2 class="h2">Route steps</h2>
+        <ol id="steps" class="steps"></ol>
+      </section>
+      <section>
+        <h2 class="h2">Legend</h2>
+        <div class="legend">
+          <span><b style="background:var(--r)"></b>Live, switched, regulated: red</span>
+          <span><b style="background:var(--n)"></b>Neutral: black</span>
+          <span><b style="background:repeating-linear-gradient(90deg,var(--pe) 0 5px,var(--pe2) 5px 9px)"></b>Protective earth</span>
+          <span><b style="background:linear-gradient(90deg,var(--r) 33%,var(--y) 33% 66%,var(--b) 66%)"></b>Service / busbar: R Y B</span>
+          <span><b style="background:var(--cyan)"></b>Traced route (overlay)</span>
+          <span><b style="background:var(--amber)"></b>Selected item (overlay)</span>
+        </div>
+        <p class="sub" style="margin:8px 0 0">Insulation colours follow CPWD 3.5.5. Overlays are engineering markings, not installed objects.</p>
+      </section>
+      <section>
+        <h2 class="h2">Sources &amp; assumptions</h2>
+        <details><summary>What is assumed</summary><ul class="assume-list" id="assumptions"></ul></details>
+        <details><summary>Not modelled</summary><ul class="nm" id="not-modelled"></ul></details>
+        <details><summary>Placement notes</summary><ul class="nm" id="placement-notes"></ul></details>
+        <details><summary>Technical sources</summary><ul class="src" id="sources"></ul></details>
+      </section>
+    </aside>
+  </main>
+  <footer class="foot"><strong>Electrical design boundary.</strong> This edition is an educational planning simulation on a copy of the architectural sample. The project has no sanctioned load, DISCOM connection details, earthing-system record, survey or load schedule. Device ratings, cable sizes, discrimination, voltage drop and earth-resistance values are not designed here. A licensed electrical designer, the DISCOM and the electrical inspector must determine the actual supply, protection, routes and tests before any work. Opening a real energised board or meter is dangerous and is not part of this simulation.</footer>
+  <script src="viewer.js"></script><script src="electrical-data.js"></script><script src="electrical-tour.js"></script>
+</body>
+</html>

@@ -14,6 +14,23 @@
     "hasSpecifications": true
   },
   {
+    "id": "my-desired-home-electrical",
+    "title": "My Desired Home \u00b7 Inside the Wires",
+    "description": "A separate copy of the veranda house with an interactive, India-focused electrical tour. Explore the meter, boards, protected circuits and concealed route traces.",
+    "style": "Electrical simulation",
+    "directory": "gallery/my-desired-home-electrical",
+    "bedrooms": 4,
+    "storeys": 2,
+    "widthFt": 60,
+    "depthFt": 55,
+    "roofAccess": true,
+    "planHash": "09ecfedf654909f0af083d00a93aa4fa547db15a05390dd912a41f0636f7ca72",
+    "hasSpecifications": true,
+    "sourceSample": "my-desired-home",
+    "featurePage": "electrical.html",
+    "hasElectricalTour": true
+  },
+  {
     "id": "saved-verandah",
     "title": "Your saved Verandah House",
     "description": "The design you saved, with broad balconies, bright interiors and an accessible roof terrace.",

@@ -34,7 +34,11 @@ def test_sample_route_rejects_unknown_projects_and_traversal():
 def test_gallery_is_a_mix_of_scales_and_designs():
     samples=catalogue()
     assert len(samples)>=5
-    assert len({s['planHash'] for s in samples})==len(samples)
+    originals=[s for s in samples if not s.get('sourceSample')]
+    assert len({s['planHash'] for s in originals})==len(originals)
+    by_id={s['id']:s for s in originals}
+    assert all(s['sourceSample'] in by_id and s['planHash']==by_id[s['sourceSample']]['planHash']
+               for s in samples if s.get('sourceSample'))
     assert {1,2} <= {s['storeys'] for s in samples}
     assert {1,2,3,4} <= {s['bedrooms'] for s in samples}
     assert all('directory' not in s for s in samples)
