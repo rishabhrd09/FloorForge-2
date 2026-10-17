@@ -203,8 +203,9 @@ export class Director {
       // A room is held like an interior photograph: the camera settles a little lower and levels off, and a lens
       // shift instead of a tilt keeps the floor in frame, so the walls' verticals stay vertical.
       const hold = c.stop > 0 && !this.reduced ? smooth(0, .22, t) * (1 - smooth(.8, 1, t)) : c.stop > 0 ? 1 : 0;
+      // Positive shifts show more floor; negative ones, for a stop looking up (a court's tree), more sky.
       const tilt = Math.atan2(pos.y - look.y, Math.hypot(look.x - pos.x, look.z - pos.z));
-      out.shift = hold * clamp(Math.tan(Math.max(0, tilt)) / Math.tan(s.fov * DEG / 2), 0, .4);
+      out.shift = hold * clamp(Math.tan(tilt) / Math.tan(s.fov * DEG / 2), -.45, .4);
       pos.y -= .25 * hold;
       look.y = lerp(look.y, pos.y, hold);
       this.lookFrom(pos, look, s.fov);
@@ -232,7 +233,7 @@ export class Director {
     this.applyReveals(p, out);
     this.applyDoors(p);
     // The lens shift (a vertical view offset, in half-heights of the frame).
-    if ((out.shift || 0) > 1e-4) {
+    if (Math.abs(out.shift || 0) > 1e-4) {
       cam.view = cam.view || { enabled: true, fullWidth: 1, fullHeight: 1, offsetX: 0, offsetY: 0, width: 1, height: 1 };
       cam.view.enabled = true; cam.view.offsetY = out.shift / 2;
     } else if (cam.view) cam.view.enabled = false;

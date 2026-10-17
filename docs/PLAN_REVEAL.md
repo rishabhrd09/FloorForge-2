@@ -18,8 +18,8 @@ The room ruler on the right jumps to any room. With `prefers-reduced-motion` the
 
 ## The two samples
 
-- **The Aangan House** (`examples/gallery/aangan-house/`) is a single-storey, east-facing house on a 55 × 80 ft plot. Every room opens onto a central aangan with a frangipani in a seat-height planter and a tulsi vrindavan. It is drawn in the stencil theme.
-- **The Long House** (`examples/gallery/long-house/`) is a G+1, north-facing house on a 30 × 60 ft plot. It is laid on one line: living room, a light court open to the sky through both floors, dining, kitchen and a rear garden. Upstairs are a gallery over the court, two bedrooms and a garden balcony. It is drawn in the serif theme.
+- **The Aangan House** (`examples/gallery/aangan-house/`) is a single-storey, east-facing house on a 55 × 80 ft plot. Every room opens onto a central aangan with a mango tree in a seat-height planter and a tulsi vrindavan. It is drawn in the stencil theme.
+- **The Long House** (`examples/gallery/long-house/`) is a G+1, north-facing house on a 30 × 60 ft plot. It is laid on one line: living room, a light court open to the sky through both floors with an ashoka rising through it, dining, kitchen and a rear garden. Upstairs are a gallery over the court, two bedrooms and a garden balcony. It is drawn in the serif theme.
 
 Both are authored custom plans (`floorforge.custom-plan/1`). `scripts/build_plan_reveal_samples.py` holds their exact rooms, openings, stair, walk order and page copy. It runs the normal FloorForge pipeline and publishes the walkthrough beside the usual exports:
 
@@ -45,7 +45,7 @@ This writes `reveal.html`, `reveal-data.js`, `plan-reveal.js` and `reveal-manife
 - `--grade` picks the light: `golden` (default), `day`, `dusk` or `overcast`.
 - From Python, `plan_reveal.publish(folder, order=[...], copy={...})` also takes page copy (eyebrow, headline lines, lede, end title and text, `theme: 'stencil' | 'serif'`). An order entry may be `{'room': 'u-gallery', 'focus': 'l-court'}` to stand in one room and look into another.
 
-To add another curated sample, copy one of the two project functions in `scripts/build_plan_reveal_samples.py` and add it to `SAMPLES` with its title, copy and order. The script validates the plan and refuses one with review errors. The custom-plan option `centerTree: true` on an open courtyard gives the aangan finish used by both samples (see [CUSTOM_PLAN.md](CUSTOM_PLAN.md)).
+To add another curated sample, copy one of the two project functions in `scripts/build_plan_reveal_samples.py` and add it to `SAMPLES` with its title, copy and order. The script validates the plan and refuses one with review errors. The custom-plan option `centerTree` on an open courtyard gives the aangan finish used by both samples, with a frangipani, a mango or an ashoka (see [CUSTOM_PLAN.md](CUSTOM_PLAN.md)).
 
 ## How the page is made
 
