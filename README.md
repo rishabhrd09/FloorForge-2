@@ -197,9 +197,16 @@ Enable **Stairs to roof terrace** and regenerate to extend the actual linked cor
 
 ## Sample project gallery
 
-Open **Sample projects · explore in 3D** in the left sidebar for five completed homes with rendered thumbnails: the saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
+Choose **Walk through sample homes** on the start page, or **Sample projects · explore in 3D** in the studio’s left sidebar, to browse every completed home listed in `examples/gallery/catalog.json`, each with a rendered thumbnail:
 
-Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.
+- **My Desired Home**, a personal 60 × 55 ft project, with its preserved original 50 × 50 ft version and **Inside the Wires**, a separate copy with an interactive electrical wiring tour.
+- **The Bungalow**, the heritage government bungalow described below.
+- **The Aangan House** and **The Long House**, which open as Plan Reveal walkthroughs (see [Walk in from the plan](#walk-in-from-the-plan)).
+- The saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa.
+
+Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Open project & all views** loads an editable copy, and **Back to my previous project** restores the preceding project.
+
+Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`. `scripts/check_sample_gallery.mjs` checks the gallery in a browser and writes its screenshots and results to `evidence/sample-gallery/`.
 
 **The Bungalow** is a large, nostalgic G+1 government bungalow on a 100 × 130 ft plot, recreated from the owner’s photographs: a red comb frieze on every parapet, a grilled entrance verandah beside a corrugated carport, 3.6 m ceilings with fans, distemper-painted rooms with teak, cane and steel furniture, and a big garden of hex-paver paths, pots, hedged lawns, rose fences and neem, mango and Ashoka trees. It uses the opt-in `heritage-bungalow` facade style of the custom plan format (`wallPaint`, `floorFinish` and opening `grille` fields); every other plan and sample is unchanged. Rebuild it with `.venv/bin/python scripts/build_bungalow.py` and read its `DESIGN_GUIDE.md`. Browser captures of its exterior and rooms are in `evidence/bungalow/`.
 

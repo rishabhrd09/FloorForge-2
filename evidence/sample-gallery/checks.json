@@ -1,7 +1,7 @@
 {
   "checks": [
     {
-      "name": "Five ready-made samples are visible",
+      "name": "All 11 catalogue samples are visible",
       "pass": true
     },
     {
@@ -17,7 +17,7 @@
       "pass": true
     },
     {
-      "name": "Use this sample loads matching editable project and generated model",
+      "name": "Opening the sample loads matching editable project and generated model",
       "pass": true
     },
     {
