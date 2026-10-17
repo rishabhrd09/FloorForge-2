@@ -163,11 +163,11 @@ def main():
         raise RuntimeError(json.dumps(review['errors'], indent=2))
     dest = ROOT / 'examples/gallery' / SLUG
     dest.mkdir(parents=True, exist_ok=True)
-    (ROOT / 'examples/gallery/briefs' / f'{SLUG}.json').write_text(json.dumps(p, indent=2) + '\n')
+    (ROOT / 'examples/gallery/briefs' / f'{SLUG}.json').write_text(json.dumps(p, indent=2) + '\n', encoding='utf-8')
     with tempfile.TemporaryDirectory(prefix='ff-bungalow-') as tmp:
         result = run(p, Path(tmp), use_cache=False)
         shutil.copytree(result['path'], dest, dirs_exist_ok=True)
-    b = json.loads((dest / 'building.json').read_text())
+    b = json.loads((dest / 'building.json').read_text(encoding='utf-8'))
     v = b['brief']
     rooms = []
     for r in b['spaces']:
@@ -181,7 +181,7 @@ def main():
                 plotFt=[100, 130], setbacksFt=dict(front=45, rear=20, west=25, east=10), buildableFt=[65, 65],
                 wallThicknessMm=230, floorHeightM=v['floor_height_mm'] / 1000, plinthMm=v['plinth_mm'], rooms=rooms,
                 landscape=sorted({f['kind'] for f in b['exterior']['landscape']['features']}))
-    (dest / 'specifications.json').write_text(json.dumps(spec, indent=2) + '\n')
+    (dest / 'specifications.json').write_text(json.dumps(spec, indent=2) + '\n', encoding='utf-8')
     lines = [f'# {TITLE}', '', spec['orientation'], '', DESCRIPTION, '',
              '## Measurements', '',
              'Plot: 100 × 130 ft (30.480 × 39.624 m). Setbacks: front 45 ft, rear 20 ft, west 25 ft, east 10 ft. '
@@ -220,23 +220,23 @@ def main():
               '', 'Preliminary visual and planning proposal: not structural, regulatory, horticultural or MEP advice. '
               'The sun study uses an illustrative central-India location until a real site is entered.',
               '', 'Plan hash: ' + b['planHash']]
-    (dest / 'DESIGN_GUIDE.md').write_text('\n'.join(lines) + '\n')
-    manifest = json.loads((dest / 'manifest.json').read_text())
+    (dest / 'DESIGN_GUIDE.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    manifest = json.loads((dest / 'manifest.json').read_text(encoding='utf-8'))
     for name in ('specifications.json', 'DESIGN_GUIDE.md'):
         manifest['files'][name] = hashlib.sha256((dest / name).read_bytes()).hexdigest()
-    (dest / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+    (dest / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     files = {name: (dest / name).read_bytes() for name in manifest['files']}
     files['manifest.json'] = (dest / 'manifest.json').read_bytes()
     (dest / 'FloorForge-export.zip').write_bytes(deterministic_zip(files))
 
     catalog = ROOT / 'examples/gallery/catalog.json'
-    items = [s for s in json.loads(catalog.read_text()) if s['id'] != SLUG]
+    items = [s for s in json.loads(catalog.read_text(encoding='utf-8')) if s['id'] != SLUG]
     # Right after the owner's own projects at the head of the gallery.
     at = next((i for i, s in enumerate(items) if not s['id'].startswith('my-desired-home')), len(items))
     items.insert(at, dict(id=SLUG, title=TITLE, description=DESCRIPTION, style='Heritage Bungalow', directory=f'gallery/{SLUG}',
                           bedrooms=v['bedrooms'], storeys=b['storeys'], widthFt=100, depthFt=130, roofAccess=bool(b.get('rooftop')),
                           planHash=b['planHash'], hasSpecifications=True))
-    catalog.write_text(json.dumps(items, indent=2) + '\n')
+    catalog.write_text(json.dumps(items, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'path': str(dest), 'planHash': b['planHash'], 'review': review.get('status')}))
 
 
