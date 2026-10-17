@@ -173,7 +173,9 @@ def test_published_sample_is_catalogued():
     assert guide.startswith('# ' + TITLE) and entry['planHash'] in guide
 
 
-@pytest.mark.skipif(shutil.which('node') is None, reason='Node.js unavailable')
+# plant-builders.js imports three, so this needs the viewer's npm packages as well as Node (CI installs neither package).
+@pytest.mark.skipif(shutil.which('node') is None or not (ROOT / 'web/viewer/node_modules/three').is_dir(),
+                    reason='Node.js or the viewer packages (npm ci in web/viewer) unavailable')
 def test_viewer_grows_every_heritage_species():
     module = (ROOT / 'web/viewer/src/plant-builders.js').as_uri()
     script = """
