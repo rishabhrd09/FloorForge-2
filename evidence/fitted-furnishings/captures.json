@@ -1,0 +1,29 @@
+{
+  "subject": "Fitted furnishings and two-sided broad leaves in the Plan Reveal samples",
+  "renderer": "Chromium (Playwright) with software WebGL 2 (ANGLE SwiftShader), walk mode at a fixed pose after indoor exposure and the room's light probe settle",
+  "before": "The pages as committed before this change (334190c): examples/gallery/aangan-house and long-house preview.html and reveal.html",
+  "after": "The same pages republished by scripts/build_plan_reveal_samples.py with furnishingStyle \"fitted\" and the rebuilt viewer",
+  "shots": "scripts/capture_furnishing_closeups.mjs derives the close-ups from each page's scene: every bed from beyond its foot corners, along a long edge and at its head; every potted monstera from eye height and from below; every default kitchen run square on and from either end",
+  "sheets": {
+    "beds.jpg": {
+      "grade": "day",
+      "shows": "Before: the spread's edge cuts through the mattress's rounded shoulders (jagged, torn-looking edges and pale slits of mattress) and its corners stand stiffly past the foot. After: one closed quilt, 20 mm inside the mattress edge, with rounded corners.",
+      "rows": ["aangan-house a-bed2-bed-a", "aangan-house a-bed2-bed-edge-a", "aangan-house a-study-bed-b", "long-house u-bed2-bed-a", "long-house u-master-bed-b"]
+    },
+    "kitchen.jpg": {
+      "grade": "day",
+      "shows": "Before: a vessel bowl standing on the worktop, plain wall units running over the hob with no hood or handles. After: a stainless sink let into the worktop, a chimney hood over the hob with its duct to the ceiling, and wall cupboards beside the hood, each door with a bar handle.",
+      "rows": ["long-house l-kitchen-kitchen", "long-house l-kitchen-kitchen-a", "long-house l-kitchen-kitchen-b"]
+    },
+    "house-plants.jpg": {
+      "grade": "day (rows 1-2), golden (rows 3-4)",
+      "shows": "Before: monstera undersides and tips curling away from the eye take a pale, sky-coloured or cream sheen. After: both faces read the same green.",
+      "rows": ["aangan-house plant-016-a-study-low", "aangan-house plant-015-a-master-low", "long-house plant-016-u-master-eye", "long-house plant-016-u-master-low"]
+    },
+    "walkthrough.jpg": {
+      "grade": "golden (the walkthrough's light)",
+      "shows": "Plan Reveal stills at the dwell of the kitchen and bedroom stops (window.__planReveal.still at 0.6 of each dwell), before and after.",
+      "rows": ["long-house l-kitchen", "long-house u-bed2", "aangan-house a-master"]
+    }
+  }
+}
