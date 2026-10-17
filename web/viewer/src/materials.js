@@ -80,7 +80,7 @@ export class MaterialLibrary {
     const d = this.descriptor(name);
     const color = new THREE.Color(d.color || '#cccccc');
     const alpha = d.alpha ?? 1;
-    if (d.kind === 'insect-mesh') {
+    if (d.kind === 'insect-mesh' || d.kind === 'shade-net') {
       const m = new THREE.MeshStandardMaterial({color, roughness: .9, metalness: 0,
         transparent: true, depthWrite: false});
       // Integrate the wire pattern over each pixel footprint instead of aliasing

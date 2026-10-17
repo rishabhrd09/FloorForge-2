@@ -20,6 +20,7 @@ from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPE
 from .frontage import gate_openings
 from .plan_geometry import plate, roof, geometry, floor_outline
 from .spaces import OUTDOOR, NON_WALKABLE
+from .heritage_bungalow import is_heritage
 
 __all__ = ['make_scene', 'glb_bytes', 'transformation', 'extrude', 'rounded_box', 'opening_polygon']
 
@@ -91,6 +92,11 @@ def make_scene(building, report):
         'tread': 'stairtread' if upgraded_interior else 'stone', 'door': 'oak' if upgraded_interior else 'timber',
         'doorframe': 'doorframe' if upgraded_interior else 'frame',
     }
+    heritage = is_heritage(b)
+    if heritage:
+        # Heritage Bungalow (opt-in facade style): its own palette and builders; other scenes are unchanged.
+        from .heritage_scene import heritage_materials, HeritageScene
+        heritage_materials(materials, M)
 
     xmin, ymin, xmax, ymax = plot.bounds
     hosts = {w['id']: w for w in rb_model['walls']}
@@ -135,7 +141,11 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- site
     rect((xmin - 9, ymin - 9, g - .13, xmax + 9, ymax + 7, g - .04), 'grass', role='terrain')
-    if modern:
+    if heritage:
+        hs = HeritageScene(k, b, materials, M, H, g, plot, fp, metres, hosts, rb_model.get('guards', []))
+        hs.site()
+        gates.extend(hs.gates)
+    elif modern:
         rect((xmin - 9, ymin - 1.6, g - .04, xmax + 9, ymin - .02, g + .1), 'paver', role='site')
         rect((xmin - 9, ymin - 1.76, g - .04, xmax + 9, ymin - 1.6, g + .13), 'step', role='site')
         rect((xmin - 9, ymin - 8.6, g - .1, xmax + 9, ymin - 1.76, g - .02), 'asphalt', role='site')
@@ -148,7 +158,7 @@ def make_scene(building, report):
             rect((x, ymin - 3.4, g + .003, x + 1.7, ymin - 3.34, g + .01), 'linen', role='site')
 
     gate_half = 1.1 if not v['parking'] else 1.7
-    if boundary and (modern or boundary.get('gates')):
+    if boundary and (modern or boundary.get('gates')) and not heritage:
         # A real frontage (floorforge/frontage.py): a pedestrian gate on the path to the door, shown open, a
         # separate sliding vehicle gate (closed) over the parking pad, and a stone-clad letterbox pier with the
         # house number and a gate light beside the pedestrian gate; wall runs between piers elsewhere.
@@ -336,7 +346,7 @@ def make_scene(building, report):
                     gates.append({'id':'exterior-pedestrian-gate','label':'Pedestrian gate','floor':-1,'kind':'gate',
                                   'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
                                   'parts':[{'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[hx,hy,zb],'angle':-math.pi/2 if hinge_right else math.pi/2}]})
-    else:
+    elif not heritage:
         for xa, ya, xb, yb in [(xmin, ymin, xmin + .15, ymax), (xmax - .15, ymin, xmax, ymax), (xmin, ymax - .15, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, .65), 'wall', role='site'); rect((xa - .02, ya - .02, .65, xb + .02, yb + .02, .69), 'stone', role='site')
         for xa, xb in [(xmin, ex - gate_half), (ex + gate_half, xmax)]:
@@ -363,10 +373,13 @@ def make_scene(building, report):
                 k.plant(x, ymin + 1.8, g, 'tree_standard', height=2.6)
 
     # ---------------------------------------------------------------- plinth, entry steps
-    poly_mesh(fp, -plinth, -.15, 'basalt' if modern else 'stone', role='plinth')
+    if heritage:
+        hs.plinth()
+    else:
+        poly_mesh(fp, -plinth, -.15, 'basalt' if modern else 'stone', role='plinth')
     if modern:
         poly_mesh(fp.buffer(.015, join_style=2).difference(fp), g, 0, 'basalt', role='plinth', name='plinth-band')
-    if not (modern and porch_asm):
+    if not (modern and porch_asm) and not heritage:
         steps = max(1, math.ceil(plinth / .15))
         for i in range(steps):
             y0 = -.3 * (steps - i); y1 = y0 + .3
@@ -389,10 +402,12 @@ def make_scene(building, report):
             mat = 'woodfloor' if s['kind'] in ('bedroom', 'study') else 'wetfloor' if s['kind'] in ('bathroom', 'powder-room', 'utility','drying-room') else 'deck' if (s['kind'] == 'terrace' and modern) else 'floor'
             if ivory_floor and s['kind'] not in OUTDOOR:
                 mat = 'ivory-vitrified-matte' if s['kind'] in ('bathroom','powder-room','utility','drying-room') else 'ivory-vitrified'
+            if heritage:
+                mat = hs.floor_material(s)
             poly_mesh(p, level + .002, level + .009, mat, f, 'finish', s['id'] + '/floor', s['id'])
         # Ceiling coves with a concealed warm glow line.
         for s in [s for s in b['spaces'] if s['floor'] == f and s['kind'] in ('living', 'drawing-room', 'family', 'bedroom', 'dining')]:
-            if s.get('ceilingStyle')=='plain-downlights':continue
+            if s.get('ceilingStyle')=='plain-downlights' or heritage:continue
             p = Polygon(np.array(s['clear']) / 1000)
             if custom:p=p.intersection(metres(geometry(b['roofs'][f]['ceiling'])))
             inner = p.buffer(-.16)
@@ -511,7 +526,9 @@ def make_scene(building, report):
         k.light((sx, sy, top_z - .9), 14, kind='pendant')
         return box(sx - h - .15, sy - h - .15, sx + h + .15, sy + h + .15)
 
-    if custom:
+    if heritage:
+        hs.roof_parapets()
+    elif custom:
         # Per-floor roof edges use the selected palette, without bridging an authored terrace or void.
         for f in range(storeys):
             field=metres(roof(b,f));edge=field.difference(field.buffer(-.15,join_style=2)).difference(tower_fp);z=(f+1)*H
@@ -651,8 +668,15 @@ def make_scene(building, report):
             q = p + uv * x + nv * depth
             node(cube, mat, (q[0], q[1], z), (sx, sy, sz), (0, 0, ang), o['floor'], role, owner=o['id'])
         if o['kind'] == 'cased':
+            if heritage:
+                hs.arch(o, w, p, uv, nv)
             continue
         room_kinds = [space_kind.get(room, 'secondary') for room in w['rooms']]
+        if heritage and o['kind'] == 'window':
+            hs.window(o, w, part, p, uv, nv, room_kinds, next((space_kind.get(r) for r in w['rooms'] if space_kind.get(r) in OUTDOOR), None))
+            if not o.get('grille'):
+                hs.curtains(o, p, uv, nv, room_kinds)
+            continue
         if o['kind'] == 'window' and o.get('fixed'):
             # Single fixed light: floor-level glazing matches adjacent door heads,
             # without a spurious operable sash, centre mullion or raised sill.
@@ -768,8 +792,16 @@ def make_scene(building, report):
             door_motion[o['id']]={'layers':layers,'clearWidth':ow-.14}
             continue
         frame_mat = 'frame' if (o['kind'] in ('entry', 'glazed') or not upgraded_interior) else M['doorframe']
+        if heritage and (o.get('grille') or o['kind'] == 'glazed'):
+            frame_mat = 'hb-grille' if o.get('grille') else 'hb-steel-window'
         part(.025, 0, z0 + zh / 2, .05, .10, zh, frame_mat); part(ow - .025, 0, z0 + zh / 2, .05, .10, zh, frame_mat)
         part(ow / 2, 0, z0 + zh - .025, ow - .1, .10, .05, frame_mat)
+        if heritage and o.get('grille'):
+            hs.grille_door(o, w, p, uv, nv, base, zh, ow, space_poly.get(o.get('swing')))
+            continue
+        if heritage and o['kind'] == 'glazed':
+            hs.french_door(o, w, p, uv, nv, base, zh, ow, space_poly, space_kind, door_motion)
+            continue
         if o['kind'] == 'glazed' and o.get('sliding'):
             # Authored two- or three-track glazing; matching motion uses the same panel count.
             panel_count=o.get('slidingPanels',3)
@@ -857,7 +889,9 @@ def make_scene(building, report):
             leaf_mat = 'walnut' if (upgraded_interior and (o['kind'] == 'entry' or (w['external'] and 'hall' in room_kinds and b.get('planning',{}).get('facadeStyle')=='warm-layered'))) else M['door']
             rb((leafcenter[0], leafcenter[1], base + zh / 2), (.042, ow - .1, zh - .05), leaf_mat, o['floor'], 'door', .008, ang, owner=o['id'])
             knob = hinge + nv * (ow - .18)
-            if upgraded_interior:
+            if heritage:
+                hs.door_panels(leafcenter, nv, uv, base, zh, ow, M['doorframe'], o['floor'], o['id'])
+            elif upgraded_interior:
                 if o['kind'] == 'entry':
                     for side in (-1, 1):
                         q = knob + uv * .05 * side
@@ -1935,7 +1969,7 @@ def make_scene(building, report):
                     lx,ly=P(prep,0,.32);k.light((lx,ly,z+1.43),12,kind='undercabinet')
                     furnishing('kitchen-upper-storage',room,lpoly(prep,-prep_width/2,prep_width/2,.015,.386))
         # An island parallel to the run with a 1.05 m aisle, in a kitchen big enough to walk round it.
-        if clear.area > 11:
+        if clear.area > 11 and not heritage:
             for iw in (1.6, 1.3):
                 isl = lpoly(sp, -iw / 2, iw / 2, .66 + 1.05, .66 + 1.05 + .75)
                 ring = isl.buffer(.9, join_style=2)
@@ -2046,17 +2080,29 @@ def make_scene(building, report):
         furnishing('serving-counter',room,counter_top);k.editable('serving-counter',room,counter_top,mark)
 
     room_lawns=[]
+    if heritage:
+        from types import SimpleNamespace
+        from .heritage_interior import HeritageInterior
+        hi = HeritageInterior(hs, SimpleNamespace(
+            room_context=room_context, spots=spots, P=P, lbox=lbox, lpoly=lpoly, lrot=lrot, lrb=lrb, hits=hits,
+            far_from_doors=far_from_doors, open_keepouts=open_keepouts, wall_behind=wall_behind, wall_union=wall_union,
+            opening_polys=opening_polys, furnishing=furnishing, kitchen_set=kitchen_set))
     for room in b['spaces']:
         f = room['floor']; z = f * H; p = Polygon(np.array(room['clear']) / 1000)
         kind = room['kind']
         if kind not in ({'stair'} | OUTDOOR | NON_WALKABLE):
             lining(room, f, z + .009, z + .09, 'skirting', 'skirting')
-            downlights(room, f, z + room['ceilingHeight']/1000 - .007 if 'ceilingHeight' in room else z + H - .157)
+            if heritage:
+                hi.dress(room)
+            else:
+                downlights(room, f, z + room['ceilingHeight']/1000 - .007 if 'ceilingHeight' in room else z + H - .157)
             if room.get('underStair'):
                 poly_mesh(p,z+2.10,z+2.14,'ceiling',f,'ceiling',room['id']+'/ceiling',room['id'])
             if room.get('mechanicalVentilation'):
                 cp=p.representative_point();ch=room.get('ceilingHeight',H*1000-150)/1000
                 rect((cp.x-.12,cp.y-.12,z+ch-.02,cp.x+.12,cp.y+.12,z+ch-.01),'frame',f,'fixture',room['id']+'/exhaust-grille',room['id'])
+        if heritage and hi.furnish(room):
+            continue
         if custom and kind == 'drying-yard' and room.get('drain'):
             x0,y0,x1,y1=p.bounds;xx=(x0+x1)/2;yy=y0+.28;mark=k.edit_mark()
             rb((xx,yy,z+.40),(.64,.48,.78),M['casework'],f,r=.02)
@@ -2163,7 +2209,7 @@ def make_scene(building, report):
         p = metres(stair_footprint(st))
         colliders.append({'id': st['id'] + '/stair-walk-not-supported', 'floor': st['floor'], 'polygon': list(p.exterior.coords), 'kind': 'stair'})
     # Guarding follows the actual open terrace perimeter; it is a visual scheme, not a certified balustrade.
-    if upgraded_interior:
+    if upgraded_interior and not heritage:
         # A foyer inside the main door, marked by a slatted timber ceiling as in the reference house: oak slats on
         # a walnut ground, with two downlights beneath them.
         ea = np.array(ew['a'], float) / 1000; eb = np.array(ew['b'], float) / 1000
@@ -2196,6 +2242,9 @@ def make_scene(building, report):
         for guard in rb_model.get('guards',[]):
             edge=LineString(np.array(guard['points'])/1000);f=guard['floor'];z=f*H;own=guard['owner']
             space=next((s for s in b['spaces'] if s['id']==own),{})
+            if heritage:
+                hs.guard(guard, space, colliders)
+                continue
             styled_holes=[Polygon(np.array(s['clear'])/1000).boundary.buffer(.002)
                           for s in b['spaces'] if s['floor']==f and s.get('openToSky')
                           and s.get('guardStyle')=='white-timber']
@@ -2322,7 +2371,7 @@ def make_scene(building, report):
         open_puja_entry(k,b)
 
     # ---------------------------------------------------------------- legacy facade recipes
-    if not modern:
+    if not modern and not heritage:
         canopy_depth = 2.05 if facade_style == 'tropical' else 1.55 if facade_style in ('warm', 'terracotta') else 2.45 if theme_id == 'warm_modern_minimal' else 1.05
         cw = 2.7 if facade_style != 'minimal' else 3.25; cz = 2.78
         rect((ex - cw / 2, -canopy_depth, cz, ex + cw / 2, .16, cz + .18), 'roof', 0, 'canopy', 'entry-canopy')
@@ -2700,7 +2749,10 @@ def make_scene(building, report):
             for j, xx in enumerate(np.arange(x0 + .15, x1, .42)):
                 rect((xx, y0, z, min(x1, xx + .09), y1, z + .12), 'timber', 0, 'pergola', aid + f'-slat-{j}', aid)
 
-    if rooftop:
+    if heritage:
+        hs.assemblies()
+        hs.headhouses()
+    elif rooftop:
         for core in rooftop['cores']:
             x0,y0,x1,y1=[q/1000 for q in core['bounds']];zt=top;z1=top+core['height']/1000;aid=core['id']
             # Keep the established rendered wall, stone and floating-lid vocabulary; the inside remains hollow.
@@ -2719,7 +2771,9 @@ def make_scene(building, report):
 
     # ---------------------------------------------------------------- landscape features
     lawns = list(room_lawns)
-    for feature in features:
+    if heritage:
+        lawns.extend(hs.landscape_features())
+    for feature in (features if not heritage else []):
         fk = feature['kind']
         if 'polygon' in feature:
             poly = Polygon(np.array(feature['polygon'], dtype=float) / 1000)
@@ -2892,19 +2946,21 @@ def make_scene(building, report):
                         for ddy in (-.2, .2):
                             beam((cxx + ddx, cyy + ddy, zb), (cxx + ddx, cyy + ddy, zb + .42), .012, 'frame', -1, 'outdoor-furniture')
             k.plant(x + 1.15, y - .2, zb, 'shrub_round', height=.5, pot=(.22, .5, 'planter'))
-    if boundary and theme_id != 'current' and not modern:
+    if boundary and theme_id != 'current' and not modern and not heritage:
         # A flush timber threshold marks the gateway between the pillars; nothing spans the opening at body
         # height, so a visitor can walk in from the street.
         rect((ex - gate_half + .03, ymin - .02, g - .02, ex + gate_half - .03, ymin + .2, g + .05), 'timber', -1, 'gate', 'exterior-gate-threshold', 'exterior-gate')
 
     # ---------------------------------------------------------------- bands, drainage, bollards
-    if not modern:
+    if heritage:
+        hs.downpipes()
+    if not modern and not heritage:
         for f in range(storeys):
             rect((0, -.045, (f + 1) * H - .20, W, .015, (f + 1) * H - .12), 'roof', f, 'band')
-    for xx in (.10, W - .10):
+    for xx in ((.10, W - .10) if not heritage else ()):
         beam((xx, D + .08, .10), (xx, D + .08, top + .35), .034, 'frame' if modern else 'roof', -1, 'pipe')
         beam((xx, D + .08, .10), (xx, D + .36, -.22), .034, 'frame' if modern else 'roof', -1, 'pipe')
-    if not modern:
+    if not modern and not heritage:
         for xx in (ex - 1.3, ex + 1.3):
             for yy in np.arange(ymin + .9, -.9, 1.6):
                 rect((xx - .055, yy - .055, -.43, xx + .055, yy + .055, .07), 'frame', role='fixture')
@@ -2951,6 +3007,9 @@ def make_scene(building, report):
     if car:
         from .vehicle import parked_car
         parked_car(k, materials, car['x']/1000, car['y']/1000, g+.04)
+        if heritage:
+            # The white saloon of the reference photographs.
+            materials['car-pearl'] = {'color': '#e8e8e3', 'roughness': .2, 'metallic': .3, 'clearcoat': 1, 'clearcoat_roughness': .07}
 
     if b.get('planning',{}).get('facadeStyle')=='warm-layered':
         from .upper_floor_finishes import upper_floor_finishes
@@ -2974,6 +3033,8 @@ def make_scene(building, report):
                         'interior': {'position': [ex, .65, 1.6], 'target': [W * .72, 4.0, 1.35], 'fov': 66}},
             'quality': 'Authored procedural geometry with physically based surface recipes and procedural planting; not a verified photographic render.',
             'banner': b['banner']}
+    if heritage:
+        hs.finish_scene(scene)
     from .placement_edits import apply_furniture_edits
     return apply_furniture_edits(scene, b)
 

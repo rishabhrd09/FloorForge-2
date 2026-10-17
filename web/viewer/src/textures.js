@@ -398,6 +398,59 @@ void surface(vec2 p, out vec3 c, out float h, out float r){
   h = fis * .6 - cracks * uP.x * .9 - rings * .6;
   r = .88;
 }`,
+  hexpaver: /* glsl */`
+// Hexagonal concrete pavers (pointy-top, flats 1 unit apart). uP.x columns per texture, uP.y row pairs,
+// uP.z joint width (fraction of a paver), uP.w share of pavers in the second tone (0: a gentle blend).
+void surface(vec2 p, out vec3 c, out float h, out float r){
+  vec2 s = vec2(1., 1.7320508);
+  vec2 q = vec2(p.x * uP.x, p.y * uP.y * 1.7320508);
+  vec2 a = mod(q, s) - s * .5, b = mod(q - s * .5, s) - s * .5;
+  bool first = dot(a, a) < dot(b, b);
+  vec2 gv = first ? a : b;
+  // Each paver is indexed on its own lattice, wrapped by the texture period, so tones tile seamlessly.
+  vec2 cell = first ? mod(floor(q / s), uP.xy) : mod(floor((q - s * .5) / s), uP.xy) + vec2(0., 50.);
+  vec2 ap = abs(gv);
+  float edge = .5 - max(dot(ap, normalize(s)), ap.x);
+  float joint = uP.z;
+  float m = sstep(joint * .2, joint, edge);
+  float t = hash12(cell + 3.);
+  vec3 tone = uP.w > 0. ? mix(uBase, uAlt, step(1. - uP.w, t)) : mix(uBase, uAlt, t * .6);
+  float surf = fbm(p * 30., vec2(30.), 4); float grain = vnoise(p * 260., vec2(260.));
+  float wear = fbm(p * 7., vec2(7.), 3);
+  vec3 face = tone * (.88 + .1 * hash12(cell + 9.) + .12 * (surf - .5) + .05 * (grain - .5)) * (1. - .12 * smoothstep(.55, .85, wear));
+  c = mix(uBase * .42 * vec3(.95, .93, .9), face, m);
+  h = m * (.7 + .2 * smoothstep(0., .12, edge) + .08 * surf);
+  r = mix(.97, .74 + .14 * surf, m);
+}`,
+  corrugated: /* glsl */`
+// Corrugated sheet roofing: uP.x corrugations per texture across v, uP.z streaks of rust and dust down the flutes.
+void surface(vec2 p, out vec3 c, out float h, out float r){
+  float w = p.y * uP.x;
+  float wave = sin(w * 6.2831853) * .5 + .5;
+  float streak = fbm(vec2(p.x * 2., floor(w) + p.y * 3.), vec2(2., uP.x * 3.), 4);
+  float dirt = smoothstep(.45, .85, fbm(vec2(p.x * 6., w * .5), vec2(6., uP.x * .5), 4)) * uP.z;
+  float valley = 1. - wave;
+  vec3 metal = uBase * (.82 + .26 * wave + .08 * (streak - .5));
+  c = mix(metal, uAlt, clamp(dirt * (.5 + .5 * valley) + .25 * valley * uP.z, 0., 1.));
+  h = wave;
+  r = .55 + .25 * dirt + .1 * valley;
+}`,
+  chick: /* glsl */`
+// Bamboo chick screen: fine split-bamboo slats along u, tied every so often with cords. uP.x slats, uP.y tie lines.
+void surface(vec2 p, out vec3 c, out float h, out float r){
+  float sl = p.y * uP.x;
+  float f = fract(sl);
+  float id = floor(sl);
+  float slat = smoothstep(.0, .18, f) * smoothstep(1., .82, f);
+  float node = smoothstep(.93, 1., sin((p.x * 7. + hash12(vec2(id, 1.)) * 3.) * 6.2831853) * .5 + .5);
+  float tie = smoothstep(.012, .0, abs(fract(p.x * uP.y) - .5) - .005);
+  float grain = vnoise(vec2(p.x * 300., sl), vec2(300., uP.x));
+  vec3 cane = uBase * (.82 + .2 * hash12(vec2(id, 7.)) + .1 * (grain - .5)) * (1. - .15 * node);
+  c = mix(uAlt * .55, cane, slat);
+  c = mix(c, uAlt * .8, tie * .9);
+  h = slat * .8 + tie * .5;
+  r = .62 + .2 * (1. - slat);
+}`,
   art: /* glsl */`
 // Abstract painted canvas for wall art (soft washes, a few confident strokes).
 void surface(vec2 p, out vec3 c, out float h, out float r){
@@ -463,6 +516,9 @@ export const KIND_DEFAULTS = {
   leather: { tile: [.5, .5], p: [0, 0, 0, 0], normal: 1.2, hi: false },
   art: { tile: [1.0, 1.0], p: [0, 0, 0, 0], normal: .3, hi: false },
   bark: { tile: [.6, 1.2], p: [.8, 0, 0, 0], normal: 4.0, hi: false },
+  hexpaver: { tile: [1.0, .866], p: [4, 2, .06, 0], normal: 3.0, hi: true },
+  corrugated: { tile: [.76, .76], p: [10, 0, .35, 0], normal: 4.0, hi: true },
+  chick: { tile: [.9, .9], p: [90, 4, 0, 0], normal: 2.0, hi: true },
 };
 
 export class TextureSynth {

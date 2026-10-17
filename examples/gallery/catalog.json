@@ -31,6 +31,20 @@
     "hasElectricalTour": true
   },
   {
+    "id": "bungalow",
+    "title": "The Bungalow",
+    "description": "A large 100 \u00d7 130 ft G+1 government bungalow recreated from the owner's photographs: red comb-frieze parapets, a grilled entrance verandah beside a corrugated carport, a grand drawing hall and dining hall in teak and cane, four bedrooms, ceiling fans and 3.6 m ceilings, a big clipped lawn, rose-covered fences, neem, mango and Ashoka trees.",
+    "style": "Heritage Bungalow",
+    "directory": "gallery/bungalow",
+    "bedrooms": 4,
+    "storeys": 2,
+    "widthFt": 100,
+    "depthFt": 130,
+    "roofAccess": true,
+    "planHash": "d9db05808e3a79daaa00f64d6479f047ca8064e2614619f3e0cd3ead59299591",
+    "hasSpecifications": true
+  },
+  {
     "id": "saved-verandah",
     "title": "Your saved Verandah House",
     "description": "The design you saved, with broad balconies, bright interiors and an accessible roof terrace.",

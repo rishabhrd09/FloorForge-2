@@ -40,9 +40,19 @@ export function buildContext(viewer, data) {
   const rnd = mulberry32(Math.round(W * 1000 + D * 7));
   const buckets = { render: { pos: [], nor: [], uv: [] }, render2: { pos: [], nor: [], uv: [] }, glass: { pos: [], nor: [], uv: [] }, frame: { pos: [], nor: [], uv: [] }, roof: { pos: [], nor: [], uv: [] }, wall: { pos: [], nor: [], uv: [] }, plinth: { pos: [], nor: [], uv: [] }, door: { pos: [], nor: [], uv: [] } };
   const trees = [];
+  // A government colony (heritage bungalow scenes): deep front gardens, parapets with a red coping, big shade trees.
+  const colony = data.context?.style === 'colony' && data.materials?.['hb-stripe'];
+  if (colony) buckets.stripe = { pos: [], nor: [], uv: [] };
+  const colonyTree = () => { const r = rnd(); return r < .45 ? 'neem' : r < .7 ? 'mango' : r < .85 ? 'ashoka' : 'tree_shade'; };
   const subjectFloors = data.storeys || 1;
   const house = (x0, y0, x1, y1, facingRoad) => {
     if (x1 - x0 < 4 || y1 - y0 < 4) return;
+    if (colony) {
+      // Colony bungalows stand in their gardens: at most 17 x 15 m, centred on the plot width.
+      const cx = (x0 + x1) / 2, w = Math.min(x1 - x0, 17);
+      x0 = cx - w / 2; x1 = cx + w / 2;
+      if (facingRoad > 0) y1 = Math.min(y1, y0 + 15); else y0 = Math.max(y0, y1 - 15);
+    }
     const floors = rnd() < .7 ? subjectFloors : subjectFloors === 1 ? 2 : 1;
     const tone = rnd() < .6 ? 'render' : 'render2';
     // Massing: a full ground-floor volume and, on some houses, an upper floor set back from the street.
@@ -54,9 +64,17 @@ export function buildContext(viewer, data) {
       if (f === 0 && setback) { const ov = .25; boxGeo(x0 - ov, y0 - ov, g + 3.2, x1 + ov, y1 + ov, g + 3.2 + .22, buckets.roof); }
     }
     const h = floors * 3.2;
-    // Floating roof slab over the top volume.
+    // Floating roof slab over the top volume (a parapet with a red coping in a colony).
     const ov = .3 + rnd() * .3;
-    boxGeo(x0 - ov, fy0 - ov, g + h, x1 + ov, fy1 + ov, g + h + .28, buckets.roof);
+    if (colony) {
+      // A flat roof inside a rendered parapet ring with a red coping.
+      boxGeo(x0, fy0, g + h, x1, fy1, g + h + .12, buckets.roof);
+      const t = .2;
+      for (const [a0, b0, a1, b1] of [[x0, fy0, x1, fy0 + t], [x0, fy1 - t, x1, fy1], [x0, fy0, x0 + t, fy1], [x1 - t, fy0, x1, fy1]]) {
+        boxGeo(a0, b0, g + h, a1, b1, g + h + .72, buckets[tone]);
+        boxGeo(a0 - .04, b0 - .04, g + h + .72, a1 + .04, b1 + .04, g + h + .82, buckets.stripe);
+      }
+    } else boxGeo(x0 - ov, fy0 - ov, g + h, x1 + ov, fy1 + ov, g + h + .28, buckets.roof);
     // A stone plinth grounds the ground-floor volume.
     boxGeo(x0 - .03, y0 - .03, g, x1 + .03, y1 + .03, g + .42, buckets.plinth);
     // Framed glazing on the road-facing side of every floor, with a centre mullion on wide panes. The middle bay of
@@ -66,7 +84,7 @@ export function buildContext(viewer, data) {
       const face = facingRoad > 0 ? (f === 0 ? y0 : fy0) - .02 : (f === 0 ? y1 : fy1) + .02;
       const balcony = f > 0 && rnd() < .5;
       for (let i = 0; i < n; i++) {
-        const cx = x0 + (i + .5) * (x1 - x0) / n, ww = Math.min(2.4, (x1 - x0) / n - .8);
+        const cx = x0 + (i + .5) * (x1 - x0) / n, ww = Math.min(colony ? 1.5 : 2.4, (x1 - x0) / n - .8);
         const entry = f === 0 && i === mid, full = entry || (balcony && i === mid);
         const zb = g + f * 3.2 + (full ? .45 : f === 0 && rnd() < .5 ? .45 : .8), zt = g + f * 3.2 + 2.65;
         const fa = Math.min(face, face + .04 * facingRoad), fb = Math.max(face, face + .04 * facingRoad);
@@ -96,7 +114,7 @@ export function buildContext(viewer, data) {
         }
       }
     }
-    if (rnd() < .8) trees.push({ species: rnd() < .5 ? 'tree_shade' : rnd() < .5 ? 'palm' : 'tree_standard', x: x0 + (x1 - x0) * (rnd() < .5 ? .15 : .85), y: facingRoad > 0 ? y0 - 1.8 : y1 + 1.8, s: .8 + rnd() * .4 });
+    if (rnd() < .8) trees.push({ species: colony ? colonyTree() : rnd() < .5 ? 'tree_shade' : rnd() < .5 ? 'palm' : 'tree_standard', x: x0 + (x1 - x0) * (rnd() < .5 ? .15 : .85), y: facingRoad > 0 ? y0 - 1.8 : y1 + 1.8, s: colony ? .55 + rnd() * .3 : .8 + rnd() * .4 });
     // Front-garden shrubs soften the plinth line.
     const sy = facingRoad > 0 ? y0 - .9 : y1 + .9;
     for (let sx = x0 + .6; sx < x1 - .4; sx += 1.1 + rnd() * 1.4) if (rnd() < .7) trees.push({ species: rnd() < .7 ? 'shrub_round' : 'shrub_flowering', x: sx, y: sy, s: .6 + rnd() * .35 });
@@ -107,7 +125,7 @@ export function buildContext(viewer, data) {
     for (let k = 0; k < 3; k++) {
       const pw = Math.max(9, W * (.8 + rnd() * .5));
       const px0 = side < 0 ? edge - pw : edge, px1 = side < 0 ? edge : edge + pw;
-      const setF = 3.5 + rnd() * 2.5;
+      const setF = colony ? 9 + rnd() * 4 : 3.5 + rnd() * 2.5;
       const nearGap = k === 0 ? 3.8 + rnd() * 1.8 : 1.2 + rnd();
       const farGap = 1.2 + rnd();
       const hx0 = side < 0 ? px0 + farGap : px0 + nearGap, hx1 = side < 0 ? px1 - nearGap : px1 - farGap;
@@ -116,7 +134,8 @@ export function buildContext(viewer, data) {
         const tx = side < 0 ? px1 - nearGap * .5 : px0 + nearGap * .5;
         for (let ty = ymin + 3; ty < ymax - 2; ty += 4.5 + rnd() * 2) trees.push({ species: rnd() < .6 ? 'tree_standard' : 'tree_shade', x: tx, y: ty, s: .7 + rnd() * .35 });
       }
-      boxGeo(px0, ymin, g, px1, ymin + .15, g + 1.4, buckets.wall);
+      boxGeo(px0, ymin, g, px1, ymin + .15, g + (colony ? 1.0 : 1.4), buckets.wall);
+      if (colony) boxGeo(px0 - .02, ymin - .02, g + 1.0, px1 + .02, ymin + .17, g + 1.07, buckets.stripe);
       edge = side < 0 ? px0 : px1;
     }
   }
@@ -150,7 +169,7 @@ export function buildContext(viewer, data) {
   // Keep the street in front of the plot clear so hero and front cameras are never blocked.
   for (let sx = xmin - W * 2; sx < xmax + W * 2; sx += 9 + rnd() * 3) {
     if (sx > clearX0 && sx < clearX1) continue;
-    trees.push({ species: 'tree_shade', x: sx, y: ymin - 1.2, s: .75 + rnd() * .3 });
+    trees.push({ species: colony ? colonyTree() : 'tree_shade', x: sx, y: ymin - 1.2, s: colony ? .6 + rnd() * .3 : .75 + rnd() * .3 });
   }
   for (let sx = xmin - W * 2 + 4; sx < xmax + W * 2; sx += 18) {
     // A lamp post in the foreground of a hero view (even on a very wide screen) would split the picture.
@@ -163,7 +182,7 @@ export function buildContext(viewer, data) {
   const cx = (xmin + xmax) / 2, cy = (ymin + ymax) / 2;
   for (let i = 0; i < 90; i++) {
     const a = rnd() * Math.PI * 2, r = 70 + rnd() * 110;
-    trees.push({ species: rnd() < .8 ? 'tree_shade' : 'palm', x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, s: 1 + rnd() * .8, far: true });
+    trees.push({ species: colony ? (rnd() < .5 ? 'neem' : 'tree_shade') : rnd() < .8 ? 'tree_shade' : 'palm', x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, s: colony ? .8 + rnd() * .5 : 1 + rnd() * .8, far: true });
   }
   // Nothing grows within reach of either street-side hero camera (the design camera or its sunward mirror).
   const planted = trees.filter((t) => t.far || spots.every(([hx, hy]) => Math.hypot(t.x - hx, t.y - hy) > 7.5));
@@ -175,6 +194,7 @@ export function buildContext(viewer, data) {
     // Reflective glazing: reads as glass (sky and ground reflections), not as black holes.
     glass: new THREE.MeshPhysicalMaterial({ color: '#8a9aa3', roughness: .04, metalness: .85, envMapIntensity: 2.2 }),
     frame: mats.get('frame'), roof: mats.get('roof'), wall: mats.get('wall'), plinth: mats.get('stone'), door: mats.get('walnut'),
+    ...(colony ? { stripe: mats.get('hb-stripe'), plinth: mats.get('hb-plinth') } : {}),
   };
   matFor.render2.name = 'context-render'; matFor.glass.name = 'context-glass';
   const created = [];

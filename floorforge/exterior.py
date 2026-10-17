@@ -14,6 +14,7 @@ from typing import Any
 from shapely.geometry import Point, Polygon, box
 
 from .frontage import plan_frontage
+from .heritage_bungalow import is_heritage
 
 from .model import DesignError, sha
 
@@ -1002,8 +1003,13 @@ def apply_exterior_preferences(building: dict[str, Any]) -> dict[str, Any]:
     preferences = preferences_from_brief(building["brief"])
     anchors = derive_facade_anchors(building)
     protected_before = protected_interior_fingerprint(building)
-    candidates = generate_exterior_candidates(building, preferences)
-    if building.get('planning',{}).get('custom'):
+    if is_heritage(building):
+        # The opt-in Heritage Bungalow facade style composes its own site and fittings around the exact plan.
+        from .heritage_bungalow import heritage_candidate
+        candidates = [heritage_candidate(building, preferences, _rectangle_assembly)]
+    else:
+        candidates = generate_exterior_candidates(building, preferences)
+    if building.get('planning',{}).get('custom') and not is_heritage(building):
         # Exact authored openings and floor topology outrank facade refinements.
         for candidate in candidates:
             candidate['opening_changes']=[]

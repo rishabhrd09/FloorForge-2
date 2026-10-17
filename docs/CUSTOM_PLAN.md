@@ -169,3 +169,15 @@ A cased opening with `servingCounter: "full"` has a 950 mm-high counter across i
 Authored living seating can use `sofaPosition` (seat centre in mm) with `sofaOrientation` (0/90/180/270 degrees from +x). `seatingExtension` may name a directly connected hall across a cased opening at least 2400 mm wide; seating can span that open zoning edge while retaining walls and door clearances. The generated editable group records its combined placement area.
 
 `diningCounterGap` sets the authored dining envelope clearance from the serving counter in millimetres (600–1500; default 900). A 1500 mm dining table uses four chairs.
+
+## Heritage bungalow finishes
+
+`facadeStyle: "heritage-bungalow"` builds the period exterior used by **The Bungalow** sample: lime render with a red comb frieze on parapets, terrace guards and the stair headhouse, steel windows behind brick-bond grilles with sloping sheet sunshades, plinth steps at every outside door, a corrugated carport over a `parkedCar`, a sheet canopy along a free side lane, a bamboo chick pergola on the front terrace, a roof tank and desert coolers, and a garden of hex-paver paths, pots, hedged lawns, flower beds, rose fences and shade trees inside a rendered compound wall with a green shade net. Only plans with this style use it.
+
+Three fields are accepted only in such plans:
+
+- Room `wallPaint` paints an enclosed room in a distemper colour: `sky-blue`, `mint-green`, `cream`, `pista`, `peach`, `lilac`, `ivory`, `powder-pink` or `lemon`, with a moulded cornice and teak door architraves.
+- Room `floorFinish` lays `ivory-vitrified`, `white-marble` (with a dark inlay band in large halls), `ceramic-white`, `red-oxide`, `kota-stone` or `mosaic` on any walkable space.
+- Opening `grille: true` turns a plain window into an open brick-bond grille bay with a fly screen, or a door or entry into an open steel grille door. Fixed, sliding and timber-screen openings cannot take it.
+
+The furniture, fans and lights are period pieces placed by the same wall, door and window checks as other samples; bathrooms, kitchens, stores, dressing rooms and the puja room keep the shared recipes in teak and granite. The landscape and assemblies are a preliminary visual proposal, not structural, horticultural or drainage design.

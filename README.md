@@ -201,6 +201,8 @@ Open **Sample projects · explore in 3D** in the left sidebar for five completed
 
 Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.
 
+**The Bungalow** is a large, nostalgic G+1 government bungalow on a 100 × 130 ft plot, recreated from the owner’s photographs: a red comb frieze on every parapet, a grilled entrance verandah beside a corrugated carport, 3.6 m ceilings with fans, distemper-painted rooms with teak, cane and steel furniture, and a big garden of hex-paver paths, pots, hedged lawns, rose fences and neem, mango and Ashoka trees. It uses the opt-in `heritage-bungalow` facade style of the custom plan format (`wallPaint`, `floorFinish` and opening `grille` fields); every other plan and sample is unchanged. Rebuild it with `.venv/bin/python scripts/build_bungalow.py` and read its `DESIGN_GUIDE.md`.
+
 ## Import a 2D floor plan
 
 The studio accepts a single layered ASCII DXF ground-floor drawing and generates an editable 3D model and exports. Use **Import 2D floor plan → 3D**, or `python -m floorforge generate --plan2d examples/import/ground-floor.dxf --out /tmp/floorforge-import`. See [supported formats, drawing requirements and limits](docs/IMPORT_2D_PLAN.md). Photos, scans, arbitrary PDFs and DWG files are not automatically traced.
