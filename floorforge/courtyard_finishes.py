@@ -44,6 +44,40 @@ def skylit_garden(k, materials, room, height):
         k.rect((xx-.025,yy-.025,z+height-.15,xx+.025,yy+.025,cover_z),'frame',f,'canopy',owner+f'/vent-bracket-{i}',owner)
 
 
+def specimen_court(k, materials, room, height):
+    """An aangan: sandstone paving with a darker border, a frangipani in a raised round planter whose wide cap is a
+    seat, a tulsi vrindavan at the far end, an uplight on the tree and a floor drain."""
+    p=Polygon(np.array(room['clear'])/1000);x0,y0,x1,y1=p.bounds
+    f=room['floor'];z=f*height;owner=room['id']
+    materials['aangan-stone']={'color':'#d2c3a4','alt':'#bba987','roughness':.86,'texture':'paver','kind':'paver','params':[2,1,.003,.07],'tile_m':1.2}
+    materials['aangan-border']={'color':'#8f7a5e','alt':'#7c6a51','roughness':.9,'texture':'paver','kind':'paver','params':[4,1,.003,.06],'tile_m':.9}
+    materials['kota-stone']={'color':'#8f9284','alt':'#7d8173','roughness':.82,'texture':'stone','kind':'stone','tile_m':1.1}
+    k.poly_mesh(p,z+.008,z+.016,'aangan-border',f,'finish',owner+'/border',owner)
+    k.poly_mesh(p.buffer(-.30,join_style=2),z+.016,z+.022,'aangan-stone',f,'finish',owner+'/paving',owner)
+    # The tree sits a little toward the far end, leaving the near half free for gathering.
+    w,d=x1-x0,y1-y0
+    cx,cy=(x0+x1)/2,(y0+y1)/2+(d*.08 if d>w else 0)
+    r=float(np.clip(min(w,d)*.27,.65,1.2))
+    ring=Point(cx,cy).buffer(r,64).difference(Point(cx,cy).buffer(r-.16,64))
+    k.poly_mesh(ring,z+.022,z+.40,'kota-stone',f,'planter',owner+'/planter-wall',owner)
+    cap=Point(cx,cy).buffer(r+.07,64).difference(Point(cx,cy).buffer(r-.24,64))
+    k.poly_mesh(cap,z+.40,z+.46,'aangan-stone',f,'planter',owner+'/planter-seat',owner)
+    k.poly_mesh(Point(cx,cy).buffer(r-.16,48),z+.022,z+.33,'soil',f,'landscape',owner+'/planter-soil',owner)
+    k.poly_mesh(Point(cx,cy).buffer(r-.17,48).difference(Point(cx,cy).buffer(.22,32)),z+.33,z+.35,'gravel',f,'landscape',owner+'/planter-gravel',owner)
+    k.plant(cx,cy,z+.33,'frangipani',height=float(np.clip(min(w,d)*1.15,3.2,4.6)),f=f)
+    for a in np.linspace(0,2*np.pi,6,endpoint=False)+.4:
+        k.plant(cx+np.cos(a)*(r-.42),cy+np.sin(a)*(r-.42),z+.35,'grass_ornamental',height=.38,f=f)
+    k.light((cx+r*.55,cy-r*.35,z+.42),16,kind='uplight')
+    # Tulsi vrindavan: a stepped pedestal with its holy basil, on the axis at the far end.
+    tx,ty=((x0+x1)/2,y1-.85) if d>w else (x1-.85,(y0+y1)/2)
+    if p.buffer(-.35).covers(Point(tx,ty).buffer(.35)):
+        k.rect((tx-.34,ty-.34,z+.022,tx+.34,ty+.34,z+.16),'aangan-border',f,'planter',owner+'/vrindavan-base',owner)
+        k.rect((tx-.25,ty-.25,z+.16,tx+.25,ty+.25,z+.82),'kota-stone',f,'planter',owner+'/vrindavan',owner)
+        k.rect((tx-.29,ty-.29,z+.82,tx+.29,ty+.29,z+.88),'aangan-stone',f,'planter',owner+'/vrindavan-cap',owner)
+        k.plant(tx,ty,z+.88,'shrub_flowering',height=.42,f=f)
+    k.rect((x1-.36,y0+.22,z+.022,x1-.22,y0+.36,z+.028),'steel',f,'drain',owner+'/drain',owner)
+
+
 def layered_facade(k, materials, building, height):
     """Finish-only bands and slim stone piers, cut around every existing opening."""
     materials['facade-limestone']={'color':'#c4baa8','alt':'#a89e8c','roughness':.88,'texture':'stone','kind':'stone','tile_m':1.6}

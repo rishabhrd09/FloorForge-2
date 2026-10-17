@@ -1,0 +1,19 @@
+{
+  "schema": "floorforge.plan-reveal-manifest/1",
+  "planHash": "1b3c1296282e59c79894790b8135cf7ed7d2d7cef309a41b5b379ed8eefe7090",
+  "stops": [
+    "arrival",
+    "l-living",
+    "l-court",
+    "l-dining",
+    "l-kitchen",
+    "u-master",
+    "u-bed2",
+    "u-balcony"
+  ],
+  "files": {
+    "reveal.html": "a056d2a88766898725cca323f8415551157285c2fc14760fd4ed2fa42de2c0a5",
+    "reveal-data.js": "a7cd34fff9221d77f36d8c3d91557d500ec4d8412e1a49a31baa1faea4babc2b",
+    "plan-reveal.js": "b43e5ee6fb49257cf3c678bfd6c96cfa6fb3c6c6ab8b6d23370265d15574a2a7"
+  }
+}

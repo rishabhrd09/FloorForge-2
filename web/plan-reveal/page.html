@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{TITLE}} · Plan Reveal</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<style>
+{{FONTS}}
+:root{--paper:#efebe2;--paper-2:#e6e1d5;--ink:#1e1e1b;--ink-2:#55544c;--ink-3:#8b897d;--rule:#c9c4b6;--accent:#d9622b;--card:#f6f3ecf0;
+  --mono:'Reveal Mono','IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;--display:'Reveal Stencil','Arial Narrow',Impact,sans-serif;--serif:'Reveal Serif',Georgia,'Times New Roman',serif;--gutter:clamp(16px,2.4vw,34px);--chip:#efebe2d9;--glow:0 0 3px #efebe2,0 0 9px #efebe2}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 13px/1.5 var(--mono);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+canvas#stage{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;background:var(--paper)}
+#scroll{position:relative;z-index:1;pointer-events:none}
+.ui{position:fixed;z-index:3;pointer-events:none}
+.ui a,.ui button,.ui [data-interactive]{pointer-events:auto}
+.frame{position:fixed;inset:var(--gutter);border:1px solid var(--ink);z-index:2;pointer-events:none;transition:opacity .5s}
+.frame::after{content:"";position:absolute;inset:5px;border:.5px solid var(--rule)}
+.bar{top:calc(var(--gutter) + 14px);left:calc(var(--gutter) + 18px);right:calc(var(--gutter) + 18px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:500 12px/1 var(--mono);letter-spacing:.32em;text-transform:uppercase;color:var(--ink);text-decoration:none;background:var(--chip);padding:6px 9px;margin:-6px -9px}
+.bar .crumb{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:var(--glow)}
+.pill{font:500 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:99px;padding:9px 14px;text-decoration:none;cursor:pointer;white-space:nowrap;background:var(--chip)}
+.pill:hover,.pill:focus-visible{background:var(--ink);color:var(--paper);outline:none}
+.intro{left:calc(var(--gutter) + 44px);top:50%;transform:translateY(-50%);max-width:min(470px,38vw);transition:opacity .35s,transform .35s}
+.eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-2);margin:0 0 18px}
+h1{margin:0;font:800 clamp(44px,5.4vw,86px)/.9 var(--display);letter-spacing:.005em;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--accent)}
+.theme-serif h1{font:400 clamp(52px,6.6vw,104px)/.92 var(--serif);text-transform:none;letter-spacing:-.025em}
+.theme-serif h1 em{font-style:italic;color:var(--ink)}
+.lede{margin:26px 0 0;max-width:340px;color:var(--ink-2);font-size:12px;line-height:1.75}
+.cue{margin-top:34px;display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.28em;color:var(--ink-2)}
+.cue i{display:block;width:1px;height:34px;background:var(--ink);transform-origin:top;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0)}45%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.lens{top:calc(var(--gutter) + 50px);right:calc(var(--gutter) + 18px);border:1px solid var(--ink);padding:7px 11px;font:500 10px/1 var(--mono);letter-spacing:.12em;background:#efebe2d0;display:flex;gap:18px;white-space:nowrap}
+.lens b{font-weight:500}
+.titleblock{right:calc(var(--gutter) + 18px);bottom:calc(var(--gutter) + 16px);width:min(280px,40vw);border:1px solid var(--ink);background:#efebe2e6;display:grid;grid-template-columns:1fr 1fr;font-size:9px;letter-spacing:.12em;text-transform:uppercase;transition:opacity .4s}
+.titleblock>div{padding:7px 10px;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.titleblock>div:nth-child(-n+2){border-top:none}.titleblock>div:nth-child(odd){border-left:none}
+.titleblock small{display:block;color:var(--ink-3);font-size:8px;letter-spacing:.16em;margin-bottom:3px}
+.titleblock .project{grid-column:1/3;font:400 22px/1.1 var(--serif);text-transform:none;letter-spacing:0;padding:10px}
+.theme-stencil .titleblock .project{font:800 20px/1 var(--display);text-transform:uppercase}
+.scalebar{display:flex;align-items:flex-end;gap:0;margin-top:4px}
+.scalebar span{display:block;height:5px;border:1px solid var(--ink);border-right:none;flex:1}.scalebar span:nth-child(odd){background:var(--ink)}.scalebar span:last-child{border-right:1px solid var(--ink)}
+.chapters{left:calc(var(--gutter) + 18px);bottom:calc(var(--gutter) + 16px);display:flex;gap:14px;font-size:9px;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase;background:var(--chip);padding:6px 10px;margin:-6px -10px}
+.chapters span.on{color:var(--ink)}.chapters span.on::before{content:"";display:inline-block;width:14px;height:1px;background:var(--accent);vertical-align:middle;margin-right:7px}
+.ruler{right:calc(var(--gutter) + 22px);top:50%;transform:translateY(-50%);height:min(54vh,460px);width:30px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;transition:opacity .4s}
+.ruler::before{content:"";position:absolute;right:0;top:0;bottom:0;width:1px;background:var(--ink-3)}
+.ruler button{all:unset;cursor:pointer;position:relative;display:block;width:12px;height:1px;background:var(--ink-2);pointer-events:auto}
+.ruler button::after{content:attr(data-n);position:absolute;right:20px;top:-6px;font:500 8px/1 var(--mono);letter-spacing:.1em;color:var(--ink-2);opacity:0;transition:opacity .2s;white-space:nowrap;text-shadow:var(--glow)}
+.ruler button:hover::after,.ruler button:focus-visible::after,.ruler button.on::after{opacity:1}
+.ruler button.on{width:22px;height:2px;background:var(--accent)}
+.ruler .head{position:absolute;right:-4px;width:9px;height:1px;background:var(--accent);transition:top .12s linear}
+.card{left:calc(var(--gutter) + 44px);top:calc(var(--gutter) + 70px);max-width:min(560px,70vw);opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;color:var(--ink);isolation:isolate}
+.card::before{content:"";position:absolute;inset:-18px -24px -16px -24px;z-index:-1;background:#efebe2f2;border:1px solid var(--ink)}
+.card .n{font-size:10px;letter-spacing:.24em;color:var(--accent);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.card .n::after{content:"";height:1px;width:120px;background:var(--ink)}
+.card h2{margin:10px 0 8px;font:800 clamp(34px,4vw,60px)/.92 var(--display);text-transform:uppercase}
+.theme-serif .card h2{font:400 clamp(38px,4.6vw,68px)/.95 var(--serif);text-transform:none}
+.card .facts{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.card .open{all:unset;display:inline-block;margin-top:10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--accent);pointer-events:auto}
+.card .note{margin-top:12px;font-size:11px;line-height:1.7;color:var(--ink-2);max-width:420px}
+.card.dark{color:#f6f3ec}.card.dark .facts,.card.dark .note{color:#ece7dbcc}.card.dark .open{color:#fff}.card.dark .n::after{background:#f6f3ec}
+.card.dark h2{text-shadow:0 1px 24px #0006}
+.count{right:calc(var(--gutter) + 18px);bottom:calc(var(--gutter) + 16px);font-size:10px;letter-spacing:.2em;opacity:0;transition:opacity .3s;background:var(--chip);padding:5px 9px;margin:-5px -9px}
+.hint{left:50%;bottom:calc(var(--gutter) + 46px);transform:translateX(-50%);font-size:9px;letter-spacing:.26em;text-transform:uppercase;opacity:0;transition:opacity .3s;display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--chip);padding:7px 12px 9px}
+.hint::after{content:"";width:120px;height:1px;background:currentColor;opacity:.6}
+.light{color:#f6f3ec}.light .chapters span,.light.chapters span{color:#f6f3ecaa}
+.end{left:calc(var(--gutter) + 44px);top:50%;transform:translateY(-50%);opacity:0;transition:opacity .4s;max-width:min(470px,38vw)}
+.end h3{margin:0 0 12px;font:800 clamp(30px,3.4vw,46px)/.95 var(--display);text-transform:uppercase}
+.theme-serif .end h3{font:400 clamp(34px,3.8vw,52px)/1 var(--serif);text-transform:none}
+.end p{margin:0 0 22px;max-width:360px;color:var(--ink-2);font-size:12px;line-height:1.75}
+.end .links{display:flex;flex-wrap:wrap;gap:10px}
+.file{position:fixed;z-index:6;right:0;top:0;bottom:0;width:min(440px,100vw);margin:0;max-height:none;height:100vh;border:none;border-left:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:34px 30px;overflow:auto;font-size:11px}
+.file::backdrop{background:#1e1e1b38}
+.file h4{margin:4px 0 18px;font:800 34px/.95 var(--display);text-transform:uppercase}
+.theme-serif .file h4{font:400 38px/1 var(--serif);text-transform:none}
+.file table{width:100%;border-collapse:collapse;margin:0 0 18px}
+.file th,.file td{text-align:left;padding:7px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-weight:400}
+.file th{color:var(--ink-3);font-size:9px;letter-spacing:.16em;text-transform:uppercase;width:38%}
+.file .close{position:absolute;right:22px;top:22px}
+.file .small{color:var(--ink-3);font-size:10px;line-height:1.6}
+.loader{position:fixed;inset:0;z-index:8;background:var(--paper);display:grid;place-items:center;transition:opacity .6s}
+.loader div{text-align:center;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-2)}
+.loader i{display:block;width:180px;height:1px;background:var(--rule);margin:16px auto 0;position:relative;overflow:hidden}
+.loader i::after{content:"";position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(var(--p,0));transition:transform .3s}
+.loader.done{opacity:0;pointer-events:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.fail{position:fixed;inset:0;z-index:9;display:none;place-items:center;background:var(--paper);padding:30px;text-align:center}
+.fail.on{display:grid}
+@media (max-width:760px),(orientation:portrait){
+  .intro{left:calc(var(--gutter) + 18px);right:calc(var(--gutter) + 18px);top:calc(var(--gutter) + 66px);transform:none;max-width:none}
+  h1{font-size:clamp(38px,11vw,60px)}.theme-serif h1{font-size:clamp(44px,12vw,70px)}
+  .lede{max-width:none;margin-top:14px}.cue{margin-top:16px}
+  .lens{top:auto;bottom:calc(var(--gutter) + 46px);right:calc(var(--gutter) + 12px);gap:10px;font-size:9px}
+  .titleblock,.chapters{display:none}
+  .ruler{right:calc(var(--gutter) + 8px);height:38vh}
+  .card{left:calc(var(--gutter) + 16px);right:calc(var(--gutter) + 30px);top:auto;bottom:calc(var(--gutter) + 80px);max-width:none}
+  .card .note{display:none}
+  .bar .crumb{display:none}
+  .end{left:calc(var(--gutter) + 18px);right:calc(var(--gutter) + 18px);top:calc(var(--gutter) + 66px);transform:none;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.cue i{animation:none}}
+</style>
+</head>
+<body class="theme-{{THEME}}">
+<canvas id="stage" tabindex="-1" aria-label="The house's drawing. Scroll to raise the walls and walk through the rooms."></canvas>
+<div class="frame" id="frame" aria-hidden="true"></div>
+<header class="ui bar"><a class="brand" href="preview.html" title="Open the free 3D walkthrough">myVerandah</a><span class="crumb" id="crumb"></span><a class="pill" id="cta" href="drawings.pdf">Drawing set ↗</a></header>
+<section class="ui intro" id="intro">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 id="headline"></h1>
+  <p class="lede" id="lede"></p>
+  <div class="cue"><i></i><span>SCROLL</span></div>
+</section>
+<aside class="ui lens" id="lens" aria-hidden="true"><span>LENS <b id="lens-fov">2.0°</b></span><span>HEIGHT <b id="lens-h">—</b></span><span>CUT <b id="lens-cut">+1.20 M</b></span></aside>
+<aside class="ui titleblock" id="titleblock" aria-hidden="true"></aside>
+<nav class="ui chapters" id="chapters" aria-hidden="true"></nav>
+<nav class="ui ruler" id="ruler" aria-label="Rooms"></nav>
+<section class="ui card" id="card" aria-live="polite"></section>
+<div class="ui count" id="count" aria-hidden="true"></div>
+<div class="ui hint" id="hint" aria-hidden="true">Scroll to the next room</div>
+<section class="ui end" id="end"></section>
+<dialog class="file" id="file" aria-labelledby="file-title"></dialog>
+<div class="loader" id="loader"><div>Drawing the plan<i></i></div></div>
+<div class="fail" id="fail"><p>This walkthrough needs WebGL 2. The <a href="drawings.pdf">drawing set</a> and the <a href="preview.html">3D preview</a> remain available.</p></div>
+<main id="scroll"></main>
+<section class="sr" id="sr-rooms" aria-label="Rooms in this house"></section>
+<noscript><p style="position:fixed;inset:40px;z-index:9;background:var(--paper)">This page draws the house with JavaScript. Open <a href="drawings.pdf">drawings.pdf</a> for the drawing set.</p></noscript>
+<script src="reveal-data.js"></script>
+<script src="plan-reveal.js"></script>
+</body>
+</html>

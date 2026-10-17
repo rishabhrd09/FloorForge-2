@@ -5,6 +5,10 @@ from . import __version__
 from .model import read_json,DesignError
 
 def main():
+    if sys.argv[1:2]==['reveal']:
+        # Publish any export as a scroll-driven Plan Reveal walkthrough (see floorforge/plan_reveal.py).
+        from .plan_reveal import main as reveal
+        return reveal(sys.argv[2:])
     p=argparse.ArgumentParser(description='FloorForge offline preliminary design studio')
     p.add_argument('command',choices=['generate','serve','doctor','verify'],nargs='?',default='serve')
     inputs=p.add_mutually_exclusive_group();inputs.add_argument('--project',type=Path);inputs.add_argument('--plan2d',type=Path,help='Import a layered ASCII DXF ground-floor plan and generate 3D');p.add_argument('--out',type=Path,default=Path.home()/'.floorforge');p.add_argument('--target',default='exports');p.add_argument('--port',type=int,default=0);p.add_argument('--no-browser',action='store_true');p.add_argument('--no-cache',action='store_true')

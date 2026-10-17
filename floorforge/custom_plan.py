@@ -63,7 +63,7 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns'},'walls':{'id','a','b','height','finishStyle'},
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','centerTree','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns'},'walls':{'id','a','b','height','finishStyle'},
                          'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
@@ -116,6 +116,7 @@ def normalize(plan,storeys):
                         if bed[2]<=bed[0] or bed[3]<=bed[1] or not Polygon(o['polygon']).covers(box(*bed)):fail('GARDEN_BED','Planting must fit inside the veranda.',o['id'],f)
                     if 'glassCover' in o and (type(o['glassCover']) is not bool or o['kind']!='courtyard'):fail('GLASS_COVER','A clear canopy applies to a courtyard.',o['id'],f)
                     if 'garden' in o and (type(o['garden']) is not bool or o['kind']!='courtyard'):fail('GARDEN','Garden planting applies to a courtyard.',o['id'],f)
+                    if 'centerTree' in o and (type(o['centerTree']) is not bool or o['kind']!='courtyard' or o.get('glassCover')):fail('CENTER_TREE','A specimen tree applies to an open courtyard.',o['id'],f)
                     if 'clearAccess' in o and (type(o['clearAccess']) is not bool or o['kind'] not in ('veranda','terrace','balcony')):fail('CLEAR_ACCESS','Clear access applies to outdoor decks.',o['id'],f)
                     if 'drain' in o and type(o['drain']) is not bool:fail('SPACE_DRAIN','Drain must be true or false.',o['id'],f)
                     if 'openToBelow' in o and (type(o['openToBelow']) is not bool or o['kind']!='void'):
@@ -293,6 +294,7 @@ def compile_plan(intent):
                            **({'gardenBed':r['gardenBed']} if r.get('gardenBed') else {}),
                            **({'openToSky':True} if r.get('openToSky') else {}),
                            **({'glassCover':True} if r.get('glassCover') else {}),
+                           **({'centerTree':True} if r.get('centerTree') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
                            **({key:r[key] for key in ('guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns') if key in r}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
