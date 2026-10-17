@@ -183,7 +183,7 @@ No `.dmg`, `.exe` or `.msi` binary is disguised inside this ZIP. `packaging/` co
 
 ## Documentation
 
-See `docs/ARCHITECTURE.md`, `docs/REQUIREMENT_MATRIX.md`, `docs/AI_ASSIST.md`, `docs/RENDERING.md`, `docs/OPERATIONS.md`, `docs/ACCEPTANCE_PLAN.md`, `docs/RESEARCH_AND_DECISIONS.md` and `licenses/LEDGER.json`.
+See `docs/ARCHITECTURE.md`, `docs/REQUIREMENT_MATRIX.md`, `docs/AI_ASSIST.md`, `docs/RENDERING.md`, `docs/PLAN_REVEAL.md`, `docs/OPERATIONS.md`, `docs/ACCEPTANCE_PLAN.md`, `docs/RESEARCH_AND_DECISIONS.md` and `licenses/LEDGER.json`.
 
 **Use this to develop and review a design with a competent local professional—not to instruct construction.**
 
@@ -200,6 +200,12 @@ Enable **Stairs to roof terrace** and regenerate to extend the actual linked cor
 Open **Sample projects · explore in 3D** in the left sidebar for five completed homes with rendered thumbnails: the saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
 
 Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.
+
+**The Bungalow** is a large, nostalgic G+1 government bungalow on a 100 × 130 ft plot, recreated from the owner’s photographs: a red comb frieze on every parapet, a grilled entrance verandah beside a corrugated carport, 3.6 m ceilings with fans, distemper-painted rooms with teak, cane and steel furniture, and a big garden of hex-paver paths, pots, hedged lawns, rose fences and neem, mango and Ashoka trees. It uses the opt-in `heritage-bungalow` facade style of the custom plan format (`wallPaint`, `floorFinish` and opening `grille` fields); every other plan and sample is unchanged. Rebuild it with `.venv/bin/python scripts/build_bungalow.py` and read its `DESIGN_GUIDE.md`. Browser captures of its exterior and rooms are in `evidence/bungalow/`.
+
+### Walk in from the plan
+
+**The Aangan House** (one storey around a tree-planted aangan) and **The Long House** (G+1 on one line with a light court) open as their own floor-plan drawing. As you scroll, the drawing lifts into 3D, the camera comes down to the gate and walks room by room. Each room stays a line drawing until you step in, then sweeps into colour from the doorway. The walk ends on a rendered colour plan. Publish the same page for any export with `.venv/bin/python -m floorforge reveal --export path/to/export`, and build more curated samples from custom plans with `scripts/build_plan_reveal_samples.py`. See [Plan Reveal](docs/PLAN_REVEAL.md).
 
 ## Import a 2D floor plan
 

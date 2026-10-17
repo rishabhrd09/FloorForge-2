@@ -1,3 +1,6 @@
 # Published exports have byte-level manifests; never rewrite their line endings.
 examples/** -text
 output/** -text
+# Bundles that published samples copy byte-for-byte (their tests compare digests); keep them LF on every checkout.
+web/viewer.js -text
+web/plan-reveal.js -text

@@ -1,0 +1,43 @@
+{
+  "schema": "floorforge.electrical-edition-manifest.v1",
+  "sourceSample": "my-desired-home",
+  "architecture": {
+    "DESIGN_GUIDE.md": "8cf9ed9d71a5bcc4620680c2250a7d7f199446cddd7d662593b4e624924ae0d6",
+    "FloorForge-export.zip": "8160c9517f4db98dce60ef459f02dde986ab9d3a8c80f8aac304a42069ff059b",
+    "REVIEW_BEFORE_USE.txt": "3362f303e0aea679abe888974a05de01b132081782b3b0f50093f40f4d192ca2",
+    "building.json": "9f8634ed20070470c802a94dcca2da1a2c22ad453bb49582f161be310558e633",
+    "drawings.pdf": "a898ae52e56567757b408afbc254e93bf1adc0f55d6fad3c6d838afee3f0978a",
+    "export-checks.json": "a935c9718d0c2b5936273df96d73151aeeb92d5e2e0c18cc934ce51f20e86ab5",
+    "floorplans.dxf": "bc6877eb0f67072f38381f00d7d9450a10521054f9c6754aad51fd6a7d7ba2a6",
+    "intent.json": "e41a2181a54177c863d3402bcf0a545ccd38d9efc9780e449afb2587ba1e244e",
+    "manifest.json": "7fbfda3fdf4bae2b9ae9a314a15e916b1bc48da025cf89ecc1110a5a839f2e02",
+    "model.glb": "46d6a62b18912796720ee8d0858e0aab576de7bc6925db28200f2ebae8c69794",
+    "model.ifc": "36c22af68bab067570544264855758c50463e856607912f8cc6dc13290bda52b",
+    "preview.html": "cbc4c9435a67cc20ed4501c9dfe8cefdf285d6e85b80d1c254ef88ed16fb4c3d",
+    "project.floorforge.json": "7c6d65987d9ea0f1bd263208ea7e45d722252f0ec1ef3c407189db124bf465af",
+    "report.json": "d25aee900e350aa14dc559fe40d068ebe80b5b8ab403dcef50c4906862010a7c",
+    "review.json": "b58bdc4e6c2f5442b45893eda7694cc26a758424b17f12fee1d57d996a2ad58c",
+    "scene.json": "592ffc6885b59e04c23bc9ceed68af3f5346e5e7868affeaaba2db0ad1f7030c",
+    "sheets/A-001.svg": "6683811800de449c253d8b4145562ab6b7bc95494d8041466fdab987a09c91b7",
+    "sheets/A-101.svg": "3b9f44e7e117acc3dede0adc223d7a811b141e76a0aefd6789e0fc2b2092996e",
+    "sheets/A-102.svg": "35e6dce7855ab28f10b2b7fd17c8ede2b1e72e3fecda062e8d0f83e1699b961c",
+    "sheets/A-104.svg": "34007de55dd3a7751673fed99b92392c7621887b59d3cc626731c6c66faa71f7",
+    "sheets/A-201.svg": "7f840f14d2f252117caa7415289c726306a6cc42a52cc1f5fabc36ffe15b99e2",
+    "sheets/A-202.svg": "c3aa586398f67ec04e6b6e01b2c72494ce5a3d1f5ab43cf2b213198e2b2b8b7d",
+    "sheets/A-203.svg": "38293549d07b44229ce7a3b27252d6f9cf922fa47de9708b81233dc01071a326",
+    "sheets/A-204.svg": "537b3a230c0004b3fb8a57d252ecb67930970d3f2430dd4cac7052dd8a55ab33",
+    "sheets/A-301.svg": "f50fb8d6e6ea25599f37b5852c8067b80a4c1bb44eb2196af2d0911ab3e15954",
+    "sheets/A-601.svg": "4ee56244dc795e314e09f09a4f2a089d942d0bf33887b944570cdbf40b8e85d6",
+    "sheets/S-001.svg": "b0c45d42ef671d210ee5151f163fc60f8f5f18ee4f2cae339d02294c28317ba6",
+    "sheets.json": "4445923a5f517816aebf82ece1835da4d5f67011524f60fd8b9797f0964ab2ce",
+    "specifications.json": "b2c0ab4de05478d3c1c908d5ad7d21090c2720563d43b7c04a0c7fa8a3b69e08"
+  },
+  "files": {
+    "electrical.html": "3a6c694309ef15515b13d450236738b7a8656d580210c9b159ff5959215f3f38",
+    "electrical-tour.js": "4f0fc24c0989bc840a855897a8bf089cb94f6ea591c19fdc18c95b93a986f694",
+    "electrical-data.js": "7cd667a1c8f46ca2d1504b2a5e158a272769df29259230196c878b3a33dc5dfc",
+    "electrical-model.json": "df4d5c2c19f6b1d5be7c9f2a3bf8c59c9c4c482abf7a063bb367eede4c1f072d",
+    "ELECTRICAL_GUIDE.md": "48a2dee0bf1a5629c29e7870d4ac6332749f33c62387e183581ee771541bbe2e",
+    "viewer.js": "4f3db0b72cb124fa5135917759bfa635b24510a8a53e07c11d325e6264e8c9c2"
+  }
+}

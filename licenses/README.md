@@ -1,6 +1,6 @@
 # License record
 
-The project source is MIT. Dependencies are installed separately. `LEDGER.json` records actual installed versions and copied text notices. No font files, protected reference images, model weights, Blender, or native runtime binaries are included. The Cycles stills in `evidence/` were rendered with the PyPI `bpy` 4.5.14 LTS wheel (GPL), installed separately and not shipped.
+The project source is MIT. Dependencies are installed separately. `LEDGER.json` records actual installed versions and copied text notices. No font files (other than the OFL faces embedded in Plan Reveal pages, below), protected reference images, model weights, Blender, or native runtime binaries are included. The Cycles stills in `evidence/` were rendered with the PyPI `bpy` 4.5.14 LTS wheel (GPL), installed separately and not shipped.
 
 **This is not a completed legal/redistribution audit.** GEOS, numerical libraries, codec libraries, optional GSAP and packaging runtimes need platform-specific review before distributing native installers. Do not remove upstream notices from a future binary build.
 
@@ -11,3 +11,7 @@ The project source is MIT. Dependencies are installed separately. `LEDGER.json` 
 ## Homepage animation
 
 `web/hero.js` bundles Three.js 0.186.1 (MIT) and GSAP 3.13.0 (GSAP Standard License) for the decorative homepage only. Notices are in `licenses/hero-js/` and preserved in the bundle. Pinned dependencies and the lockfile are in `web/hero/`; rebuild with `npm ci && npm run build` there. No external CDN or model download is required at runtime.
+
+## Plan Reveal walkthrough pages
+
+`web/plan-reveal.js` bundles the same viewer source and packages as `web/viewer.js` (Three.js 0.186.1 MIT, three-mesh-bvh 0.9.5 MIT, postprocessing 6.39.5 Zlib, n8ao 2.0.1) with the Plan Reveal source in `web/plan-reveal/src` (MIT); upstream `@license` comments are preserved at the end of the bundle and the texts are in `licenses/viewer-js/`. Each published `reveal.html` embeds three typefaces under the SIL Open Font License 1.1 — IBM Plex Mono, Big Shoulders Stencil Display and Instrument Serif (latin subsets, `web/plan-reveal/fonts`) — whose notice is `licenses/plan-reveal-fonts/OFL.txt`. No textures, HDRIs or models are downloaded: materials and planting are synthesised at runtime as in the viewer.

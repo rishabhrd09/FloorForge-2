@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "aangan-house: card offers the walkthrough",
+      "pass": true
+    },
+    {
+      "name": "aangan-house: card shows a rendered thumbnail",
+      "pass": true
+    },
+    {
+      "name": "long-house: card offers the walkthrough",
+      "pass": true
+    },
+    {
+      "name": "long-house: card shows a rendered thumbnail",
+      "pass": true
+    },
+    {
+      "name": "The walkthrough opens in the sample preview",
+      "pass": true
+    },
+    {
+      "name": "The preview keeps the walkthrough scrollable (its own layout, not the 3D preview overrides)",
+      "pass": true
+    },
+    {
+      "name": "It opens on the sheet",
+      "pass": true
+    },
+    {
+      "name": "Scrolling the preview lifts the drawing into 3D",
+      "pass": true
+    },
+    {
+      "name": "Opening the project loads the matching editable custom plan",
+      "pass": true
+    },
+    {
+      "name": "No browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

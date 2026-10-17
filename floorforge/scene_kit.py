@@ -21,6 +21,9 @@ SPECIES_HEIGHT = {
     'frangipani': 3.4, 'shrub_round': .93, 'shrub_flowering': .95, 'conifer_column': 2.3, 'topiary_spiral': 1.9,
     'strelitzia': 2.2, 'cordyline': .8, 'palm': 6.5, 'grass_ornamental': .7, 'tree_standard': 3.4, 'tree_shade': 7.0,
     'monstera': 1.0, 'fiddle_leaf': 1.8, 'hedge': 1.2,
+    # Indian garden species of the heritage bungalow sample.
+    'neem': 9.5, 'mango': 7.5, 'ashoka': 9.3, 'araucaria': 8.2, 'areca': 2.5, 'rose_bush': .9, 'flower_clump': .44,
+    'amaryllis': .72, 'croton': .85, 'climber': 2.0, 'bougainvillea': 1.4, 'tulsi': .55, 'vegetable': .5,
 }
 # Ground-level roles whose footprints are not lawn.
 GROUND_ROLES = {'site', 'court', 'step', 'porch', 'verandah', 'side-courtyard', 'landscape', 'plinth', 'planter', 'patio',
@@ -306,9 +309,9 @@ class Kit:
             item['options'] = options
         self.vegetation.append(item)
         h = nominal * s
-        canopy = {'frangipani': .45, 'tree_standard': .3, 'tree_shade': .4, 'palm': .3}.get(species, .5)
+        canopy = {'frangipani': .45, 'tree_standard': .3, 'tree_shade': .4, 'palm': .3, 'neem': .55, 'mango': .6, 'ashoka': .14, 'araucaria': .26}.get(species, .5)
         r = max(.12, h * canopy * .5)
-        if species in ('frangipani', 'tree_standard', 'tree_shade', 'palm', 'fiddle_leaf'):
+        if species in ('frangipani', 'tree_standard', 'tree_shade', 'palm', 'fiddle_leaf', 'neem', 'mango', 'ashoka', 'araucaria'):
             self.node(self.cyl, 'timber', (x, y, top + h * .3), (max(.02, h * .018), max(.02, h * .018), h * .6), floor=f, role='plant-proxy')
             self.node(self.sphere, 'leaf', (x, y, top + h * .72), (r, r, h * .3), floor=f, role='plant-proxy')
         else:

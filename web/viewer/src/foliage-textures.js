@@ -215,15 +215,198 @@ function frondAtlas(size) {
   return cv;
 }
 
+// ---------------- Indian garden atlases (4x4), painted on first use by the heritage species only ----------------
+function cellAt(ctx, size, c, fn) {
+  const cell = size / 4, ox = (c % 4) * cell, oy = Math.floor(c / 4) * cell;
+  ctx.save(); ctx.beginPath(); ctx.rect(ox, oy, cell, cell); ctx.clip(); ctx.translate(ox, oy);
+  fn(cell); ctx.restore();
+}
+
+function pinnate(ctx, rnd, x, y, angle, len, pairs, leaflet, colour) {
+  // A compound leaf: a rachis with paired leaflets and a terminal one (neem, rose, marigold).
+  ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+  ctx.strokeStyle = hsl(colour.hue + 10, colour.sat - 15, colour.light + 6); ctx.lineWidth = Math.max(1.2, len * .012);
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(len * .04, len * .5, 0, len); ctx.stroke();
+  for (let i = 0; i < pairs; i++) {
+    const t = .12 + .82 * i / pairs;
+    for (const s of [-1, 1]) {
+      drawLeaf(ctx, rnd, { x: 0, y: len * t, angle: s * (1.15 - .25 * t) + (rnd() - .5) * .15, len: leaflet * (1 - .25 * t), width: leaflet * .3,
+        hue: colour.hue + (rnd() - .5) * 10, sat: colour.sat, light: colour.light + (rnd() - .5) * 10, vein: false, pointy: .85, gloss: .18 });
+    }
+  }
+  drawLeaf(ctx, rnd, { x: 0, y: len * .96, angle: 0, len: leaflet * .8, width: leaflet * .28, hue: colour.hue, sat: colour.sat, light: colour.light, vein: false, pointy: .85, gloss: .18 });
+  ctx.restore();
+}
+
+function gardenLeafAtlas(size) {
+  const cv = canvas(size); const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, size, size);
+  const rnd = mulberry32(4242);
+  const leafAt = (cell, o) => drawLeaf(ctx, rnd, { vein: true, pointy: .6, gloss: .2, ...o, x: o.x * cell, y: o.y * cell, len: o.len * cell, width: o.width * cell });
+  // 0 neem: sprays of pinnate leaves with sickle-shaped leaflets.
+  cellAt(ctx, size, 0, (cell) => {
+    for (let i = 0; i < 9; i++) {
+      const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * cell * .22;
+      pinnate(ctx, rnd, cell / 2 + Math.cos(a) * r, cell / 2 + Math.sin(a) * r - cell * .18, a * .4 - .2 + (rnd() - .5) * 1.2, cell * (.34 + rnd() * .1), 8, cell * .07, { hue: 90 + rnd() * 10, sat: 50, light: 30 + rnd() * 10 });
+    }
+  });
+  // 1 mango: long glossy lanceolate leaves, one coppery new flush.
+  cellAt(ctx, size, 1, (cell) => {
+    // Mango: whorls of long glossy leaves at the twig ends, many to a card.
+    for (let w = 0; w < 7; w++) {
+      const cx = .2 + rnd() * .6, cy = .15 + rnd() * .55;
+      for (let i = 0; i < 9; i++) {
+        const a = rnd() * Math.PI * 2;
+        leafAt(cell, { x: cx, y: cy, angle: a, len: .2 + rnd() * .09, width: .035, hue: 108 + rnd() * 14, sat: 46, light: 17 + rnd() * 11, pointy: .9, vein: false, gloss: .08 });
+      }
+    }
+  });
+  // 2 ashoka: long, narrow, wavy leaves hanging from a twig.
+  cellAt(ctx, size, 2, (cell) => {
+    for (let i = 0; i < 9; i++) {
+      ctx.save(); ctx.translate(cell * (.12 + i * .095), cell * .02); ctx.rotate((rnd() - .5) * .25);
+      const len = cell * (.7 + rnd() * .25), w = cell * .055;
+      ctx.beginPath(); ctx.moveTo(0, 0);
+      for (let k = 0; k <= 12; k++) { const t = k / 12; ctx.lineTo(Math.sin(t * Math.PI) * w + Math.sin(t * 19) * w * .25, len * t); }
+      for (let k = 12; k >= 0; k--) { const t = k / 12; ctx.lineTo(-Math.sin(t * Math.PI) * w + Math.sin(t * 19 + 1) * w * .25, len * t); }
+      ctx.fillStyle = hsl(96 + rnd() * 14, 52, 27 + rnd() * 12); ctx.fill();
+      ctx.strokeStyle = hsl(100, 30, 34, .5); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, len * .95); ctx.stroke();
+      ctx.restore();
+    }
+  });
+  // 3 araucaria: a horizontal frond of overlapping scale-needles with side sprigs.
+  cellAt(ctx, size, 3, (cell) => {
+    const sprig = (x0, y0, x1, y1, w) => { for (let k = 0; k < 36; k++) { const t = k / 36, x = x0 + (x1 - x0) * t, y = y0 + (y1 - y0) * t, r = w * (1 - t * .6);
+      ctx.fillStyle = hsl(125 + rnd() * 10, 38, 20 + rnd() * 12); ctx.beginPath(); ctx.ellipse(x, y, r, r * .55, Math.atan2(y1 - y0, x1 - x0), 0, Math.PI * 2); ctx.fill(); } };
+    sprig(cell * .02, cell * .5, cell * .98, cell * .5, cell * .07);
+    for (let i = 0; i < 6; i++) { const x = cell * (.12 + i * .14); sprig(x, cell * .5, x + cell * .12, cell * (.2 + rnd() * .08), cell * .04); sprig(x, cell * .5, x + cell * .12, cell * (.8 - rnd() * .08), cell * .04); }
+  });
+  // 4 areca: a feathery yellow-green frond.
+  cellAt(ctx, size, 4, (cell) => pinnate(ctx, rnd, cell * .5, cell * .02, 0, cell * .95, 18, cell * .3, { hue: 74, sat: 55, light: 38 }));
+  // 5, 6 croton: broad glossy leaves splashed with yellow veins (green) or flushed red and orange.
+  for (const [c, hue, sat, light, vein] of [[5, 104, 55, 24, 52], [6, 12, 70, 33, 48]]) {
+    cellAt(ctx, size, c, (cell) => {
+      for (let i = 0; i < 3; i++) {
+        const x = cell * (.25 + i * .25), a = (i - 1) * .3, len = cell * .9, w = cell * .19;
+        drawLeaf(ctx, rnd, { x, y: cell * .03, angle: a, len, width: w, hue: hue + (rnd() - .5) * 12, sat, light, vein: false, pointy: .5, gloss: .3 });
+        ctx.save(); ctx.translate(x, cell * .03); ctx.rotate(a);
+        ctx.strokeStyle = hsl(vein, 85, 55, .9); ctx.lineWidth = cell * .02;
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, len * .95); ctx.stroke();
+        ctx.lineWidth = cell * .009;
+        for (let k = 1; k < 7; k++) { const t = k / 7, ww = w * Math.sin(t * Math.PI) * .8; for (const sgn of [-1, 1]) { ctx.beginPath(); ctx.moveTo(0, len * t); ctx.lineTo(sgn * ww, len * (t + .08)); ctx.stroke(); } }
+        for (let k = 0; k < 14; k++) { ctx.fillStyle = hsl(vein - 10 + rnd() * 20, 90, 50 + rnd() * 15, .85); ctx.beginPath(); ctx.arc((rnd() - .5) * w, len * (.1 + rnd() * .8), cell * (.008 + rnd() * .014), 0, Math.PI * 2); ctx.fill(); }
+        ctx.restore();
+      }
+    });
+  }
+  // 7 poinsettia: scarlet bracts.
+  cellAt(ctx, size, 7, (cell) => { for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; leafAt(cell, { x: .5 + Math.cos(a) * .06, y: .5 + Math.sin(a) * .06, angle: a - Math.PI / 2, len: .42, width: .12, hue: 356, sat: 82, light: 40 + rnd() * 8, pointy: .9 }); }
+    ctx.fillStyle = hsl(52, 90, 55); for (let k = 0; k < 7; k++) { ctx.beginPath(); ctx.arc(cell * (.5 + (rnd() - .5) * .08), cell * (.5 + (rnd() - .5) * .08), cell * .015, 0, Math.PI * 2); ctx.fill(); } });
+  // 8 tulsi: small ovate leaves, green flushed with purple.
+  cellAt(ctx, size, 8, (cell) => { for (let i = 0; i < 46; i++) { const r = Math.sqrt(rnd()) * cell * .4, th = rnd() * Math.PI * 2; const purple = rnd() < .35;
+    drawLeaf(ctx, rnd, { x: cell / 2 + Math.cos(th) * r, y: cell / 2 + Math.sin(th) * r, angle: th - Math.PI / 2, len: cell * .14, width: cell * .07, hue: purple ? 300 : 98, sat: purple ? 22 : 42, light: purple ? 24 : 28 + rnd() * 8, vein: false, pointy: .4, gloss: .15 }); } });
+  // 9 rose: compound leaves, dark green with a reddish new-growth edge.
+  cellAt(ctx, size, 9, (cell) => { for (let i = 0; i < 4; i++) pinnate(ctx, rnd, cell * (.2 + i * .2), cell * .05, -.5 + i * .33, cell * .6, 2, cell * .22, { hue: i === 3 ? 10 : 112, sat: i === 3 ? 40 : 42, light: i === 3 ? 28 : 22 }); });
+  // 10 leafy greens: broad crinkled leaves with pale ribs.
+  cellAt(ctx, size, 10, (cell) => { for (let i = 0; i < 3; i++) leafAt(cell, { x: .3 + i * .2, y: .03, angle: (i - 1) * .3, len: .9, width: .26, hue: 102, sat: 55, light: 30 + i * 3, pointy: .2 }); });
+  // 11 tomato / brinjal foliage: lobed leaflets.
+  cellAt(ctx, size, 11, (cell) => { for (let i = 0; i < 4; i++) pinnate(ctx, rnd, cell * (.2 + i * .2), cell * .05, -.45 + i * .3, cell * .7, 3, cell * .2, { hue: 96, sat: 40, light: 28 }); });
+  // 12 strap leaf (amaryllis, spider lily).
+  cellAt(ctx, size, 12, (cell) => leafAt(cell, { x: .5, y: 0, angle: 0, len: .99, width: .22, hue: 110, sat: 42, light: 30, pointy: .3, vein: false }));
+  // 13 heart-shaped creeper leaves.
+  cellAt(ctx, size, 13, (cell) => { for (let i = 0; i < 14; i++) { const x = cell * (.15 + rnd() * .7), y = cell * (.1 + rnd() * .6), len = cell * (.22 + rnd() * .1);
+    ctx.save(); ctx.translate(x, y); ctx.rotate((rnd() - .5) * 1.2); ctx.beginPath(); ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(len * .7, -len * .25, len * .65, len * .6, 0, len); ctx.bezierCurveTo(-len * .65, len * .6, -len * .7, -len * .25, 0, 0);
+    ctx.fillStyle = hsl(96 + rnd() * 14, 50, 25 + rnd() * 12); ctx.fill(); ctx.restore(); } });
+  // 14 bougainvillea leaves: small soft ovals.
+  cellAt(ctx, size, 14, (cell) => { for (let i = 0; i < 26; i++) { const r = Math.sqrt(rnd()) * cell * .38, th = rnd() * Math.PI * 2;
+    drawLeaf(ctx, rnd, { x: cell / 2 + Math.cos(th) * r, y: cell / 2 + Math.sin(th) * r, angle: th - Math.PI / 2, len: cell * .2, width: cell * .11, hue: 104, sat: 46, light: 25 + rnd() * 8, vein: true, pointy: .45, gloss: .15 }); } });
+  // 15 feathery marigold foliage.
+  cellAt(ctx, size, 15, (cell) => { for (let i = 0; i < 6; i++) pinnate(ctx, rnd, cell * (.15 + i * .14), cell * .05, -.6 + i * .24, cell * .7, 11, cell * .07, { hue: 100, sat: 45, light: 27 }); });
+  return cv;
+}
+
+function gardenFlowerAtlas(size) {
+  const cv = canvas(size); const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, size, size);
+  const rnd = mulberry32(5151);
+  const petals = (x, y, r, n, fill, rot, w = .3, centre = null, cr = .2) => {
+    for (let i = 0; i < n; i++) {
+      const a = rot + i * Math.PI * 2 / n;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+      ctx.beginPath(); ctx.ellipse(r * .55, 0, r * .55, r * w, 0, 0, Math.PI * 2); ctx.fillStyle = fill(i); ctx.fill(); ctx.restore();
+    }
+    if (centre) { ctx.beginPath(); ctx.arc(x, y, r * cr, 0, Math.PI * 2); ctx.fillStyle = centre; ctx.fill(); }
+  };
+  const pom = (cell, hue) => {
+    // Marigold: a dense ball of ruffled petals, darker toward the heart.
+    const cx = cell / 2, cy = cell / 2;
+    for (let ring = 6; ring >= 0; ring--) {
+      const R = cell * .44 * (ring + 1) / 7;
+      const n = 10 + ring * 6;
+      for (let i = 0; i < n; i++) {
+        const a = i / n * Math.PI * 2 + rnd() * .3;
+        ctx.save(); ctx.translate(cx + Math.cos(a) * R * .75, cy + Math.sin(a) * R * .75); ctx.rotate(a);
+        ctx.beginPath(); ctx.ellipse(0, 0, cell * .05, cell * .035, 0, 0, Math.PI * 2);
+        ctx.fillStyle = hsl(hue + (rnd() - .5) * 8, 95, 44 + ring * 2.5 + rnd() * 6); ctx.fill(); ctx.restore();
+      }
+    }
+  };
+  const rose = (cell, hue, sat, light) => {
+    const cx = cell / 2, cy = cell / 2;
+    for (let ring = 5; ring >= 0; ring--) {
+      const R = cell * .44 * (ring + 1) / 6, n = 5 + ring;
+      for (let i = 0; i < n; i++) {
+        const a = i / n * Math.PI * 2 + ring * .7;
+        ctx.save(); ctx.translate(cx + Math.cos(a) * R * .35, cy + Math.sin(a) * R * .35); ctx.rotate(a + Math.PI / 2);
+        ctx.beginPath(); ctx.arc(0, 0, R * .55, Math.PI * .05, Math.PI * .95); ctx.closePath();
+        ctx.fillStyle = hsl(hue, sat, light - (5 - ring) * 2.2 + rnd() * 4); ctx.fill();
+        ctx.strokeStyle = hsl(hue, sat, light - 14, .6); ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+      }
+    }
+  };
+  cellAt(ctx, size, 0, (cell) => pom(cell, 30));
+  cellAt(ctx, size, 1, (cell) => pom(cell, 46));
+  cellAt(ctx, size, 2, (cell) => rose(cell, 352, 76, 42));
+  cellAt(ctx, size, 3, (cell) => rose(cell, 340, 62, 70));
+  cellAt(ctx, size, 4, (cell) => rose(cell, 45, 32, 90));
+  cellAt(ctx, size, 5, (cell) => petals(cell / 2, cell / 2, cell * .44, 5, () => hsl(325, 62, 72), .3, .42, hsl(335, 70, 45), .18));
+  cellAt(ctx, size, 6, (cell) => { for (let i = 0; i < 16; i++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * cell * .3; petals(cell / 2 + Math.cos(a) * r, cell / 2 + Math.sin(a) * r, cell * .12, 5, () => hsl(358 + rnd() * 6, 82, 44 + rnd() * 8), rnd() * 6, .38, hsl(10, 60, 30), .15); } });
+  cellAt(ctx, size, 7, (cell) => { petals(cell / 2, cell / 2, cell * .46, 26, () => hsl(22 + rnd() * 6, 92, 52 + rnd() * 6), 0, .12); petals(cell / 2, cell / 2, cell * .25, 18, () => hsl(30, 90, 45), .1, .12, hsl(20, 60, 18), .5); });
+  cellAt(ctx, size, 8, (cell) => {
+    petals(cell / 2, cell / 2, cell * .47, 6, () => hsl(358, 80, 42), 0, .3);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; ctx.strokeStyle = hsl(0, 30, 92, .8); ctx.lineWidth = cell * .025; ctx.beginPath(); ctx.moveTo(cell / 2, cell / 2); ctx.lineTo(cell / 2 + Math.cos(a) * cell * .3, cell / 2 + Math.sin(a) * cell * .3); ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(cell / 2, cell / 2, cell * .09, 0, Math.PI * 2); ctx.fillStyle = hsl(80, 40, 75); ctx.fill();
+  });
+  const bracts = (cell, hue, sat, light) => { for (let i = 0; i < 9; i++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * cell * .26;
+    petals(cell / 2 + Math.cos(a) * r, cell / 2 + Math.sin(a) * r, cell * .2, 3, () => hsl(hue + (rnd() - .5) * 10, sat, light + (rnd() - .5) * 10), rnd() * 6, .42, hsl(55, 50, 85), .12); } };
+  cellAt(ctx, size, 9, (cell) => bracts(cell, 60, 18, 90));
+  cellAt(ctx, size, 10, (cell) => bracts(cell, 318, 72, 50));
+  cellAt(ctx, size, 11, (cell) => petals(cell / 2, cell / 2, cell * .44, 5, () => hsl(280, 52, 52), .2, .45, hsl(290, 40, 85), .14));
+  cellAt(ctx, size, 12, (cell) => { for (let i = 0; i < 14; i++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * cell * .34; petals(cell / 2 + Math.cos(a) * r, cell / 2 + Math.sin(a) * r, cell * .11, 6, () => hsl(50, 25, 96), rnd() * 6, .2, hsl(55, 60, 75), .15); } });
+  cellAt(ctx, size, 13, (cell) => { for (let i = 0; i < 3; i++) { const x = cell * (.25 + i * .25), y = cell * (.35 + rnd() * .15);
+    ctx.strokeStyle = hsl(80, 30, 30); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, y); ctx.stroke();
+    const g = ctx.createRadialGradient(x - cell * .03, y + cell * .12, cell * .02, x, y + cell * .16, cell * .16); g.addColorStop(0, hsl(62, 70, 62)); g.addColorStop(1, hsl(88, 55, 33));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y + cell * .17, cell * .085, cell * .15, (rnd() - .5) * .3, 0, Math.PI * 2); ctx.fill(); } });
+  cellAt(ctx, size, 14, (cell) => { ctx.strokeStyle = hsl(290, 25, 30); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cell / 2, 0); ctx.lineTo(cell / 2, cell); ctx.stroke();
+    for (let i = 0; i < 9; i++) { const y = cell * (.08 + i * .1); petals(cell / 2, y, cell * (.16 - i * .008), 6, () => hsl(290 + rnd() * 10, 30, 40 + rnd() * 10), rnd(), .35); } });
+  cellAt(ctx, size, 15, (cell) => petals(cell / 2, cell / 2, cell * .46, 18, () => hsl(50, 15, 97), 0, .14, hsl(46, 90, 52), .26));
+  return cv;
+}
+
 export class FoliageTextures {
   constructor(renderer, quality = 'high') {
     const size = quality === 'performance' ? 512 : 1024;
     const an = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    this.size = size; this.an = an;
     this.cluster = toTexture(clusterAtlas(size, { hue: 104, sat: 38, light: 28, seed: 1, conifer: true, count: 80 }), an);
     this.clusterLight = toTexture(clusterAtlas(size, { hue: 86, sat: 42, light: 34, seed: 2, conifer: true, count: 70, leafLen: .19 }), an);
     this.leaves = toTexture(leafAtlas(size), an);
     this.flowers = toTexture(flowerAtlas(size), an);
     this.fronds = toTexture(frondAtlas(size), an);
   }
-  dispose() { for (const t of [this.cluster, this.clusterLight, this.leaves, this.flowers, this.fronds]) t.dispose(); }
+  // Indian garden atlases are painted only when a scene plants one of the heritage species.
+  get gardenLeaves() { return this._gardenLeaves ||= toTexture(gardenLeafAtlas(this.size), this.an); }
+  get gardenFlowers() { return this._gardenFlowers ||= toTexture(gardenFlowerAtlas(this.size), this.an); }
+  dispose() { for (const t of [this.cluster, this.clusterLight, this.leaves, this.flowers, this.fronds, this._gardenLeaves, this._gardenFlowers]) t?.dispose(); }
 }
