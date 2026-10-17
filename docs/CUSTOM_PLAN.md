@@ -152,6 +152,8 @@ Previously suggested openings may be regenerated for changed walls. Explicitly a
 
 Courtyard rooms may set `glassCover: true` for a clear canopy with high-level vent gaps, stone paving, planted edges and a drain. The compiler continues to reject opaque upper slabs over that courtyard. This is a visual concept; glazing support, fall and drainage need detailing. `facadeStyle: "warm-layered"` adds finish-only stone accents and balcony slab/soffit details. Both options survive editable project export.
 
+An open courtyard may instead set `centerTree: true` (not together with `glassCover`) for an aangan: sandstone paving with a darker border, a frangipani in a raised round kota-stone planter whose cap is a seat, ornamental grasses, an uplight on the tree, a floor drain, and a tulsi vrindavan on the axis at the far end where the court is large enough. It is used by the Aangan House and Long House walkthrough samples ([Plan Reveal](PLAN_REVEAL.md)).
+
 Care-room `reclinerPosition: [x, y]` optionally places the recliner in millimetres; its footprint must remain inside the room. `tvOffset` shifts the TV along the facing wall relative to the recliner, in millimetres. Veranda `finishStyle: "garden-lawn"` provides a planted lawn with a clear rear circulation path; `clearAccess: true` avoids automatic terrace furniture.
 
 Outdoor lightwells and their covered veranda edges can set `serviceOnly: true`. These retain their floor, drainage and daylight geometry but are excluded from occupied circulation; doors into them are rejected. The flag is not allowed on occupied room types.

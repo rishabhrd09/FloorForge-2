@@ -45,6 +45,36 @@
     "hasSpecifications": true
   },
   {
+    "id": "aangan-house",
+    "title": "The Aangan House",
+    "description": "A single-storey courtyard home on a 55 \u00d7 80 ft plot: every room opens to an aangan with a frangipani. Opens as its own drawing; scroll to walk in.",
+    "style": "Plan Reveal \u00b7 courtyard",
+    "directory": "gallery/aangan-house",
+    "bedrooms": 3,
+    "storeys": 1,
+    "widthFt": 55,
+    "depthFt": 80,
+    "roofAccess": false,
+    "planHash": "0f5405300f82f42831841f4e66d21f7f86ebc6fd45cff7fcb2bad6948da426f5",
+    "featurePage": "reveal.html",
+    "hasPlanReveal": true
+  },
+  {
+    "id": "long-house",
+    "title": "The Long House",
+    "description": "A G+1 home on a 30 \u00d7 60 ft plot laid on one line: living, a light court open to the sky, dining, kitchen and garden. Opens as its own drawing; scroll to walk in.",
+    "style": "Plan Reveal \u00b7 one line",
+    "directory": "gallery/long-house",
+    "bedrooms": 2,
+    "storeys": 2,
+    "widthFt": 30,
+    "depthFt": 60,
+    "roofAccess": false,
+    "planHash": "bd85017dec21f5f902009168f9206ae1e6308d7b69d4510e9e94d41735d76fa4",
+    "featurePage": "reveal.html",
+    "hasPlanReveal": true
+  },
+  {
     "id": "saved-verandah",
     "title": "Your saved Verandah House",
     "description": "The design you saved, with broad balconies, bright interiors and an accessible roof terrace.",

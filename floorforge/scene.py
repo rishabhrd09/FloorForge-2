@@ -2117,6 +2117,10 @@ def make_scene(building, report):
             from .courtyard_finishes import sheltered_lawn
             room_lawns.extend(sheltered_lawn(k,materials,room,H))
             continue
+        if custom and kind == 'courtyard' and room.get('centerTree'):
+            from .courtyard_finishes import specimen_court
+            specimen_court(k,materials,room,H)
+            continue
         if custom and kind == 'courtyard' and room.get('glassCover'):
             from .courtyard_finishes import skylit_garden
             skylit_garden(k,materials,room,H)

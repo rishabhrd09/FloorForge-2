@@ -1,0 +1,20 @@
+{
+  "schema": "floorforge.plan-reveal-manifest/1",
+  "planHash": "0f5405300f82f42831841f4e66d21f7f86ebc6fd45cff7fcb2bad6948da426f5",
+  "stops": [
+    "arrival",
+    "a-foyer",
+    "a-living",
+    "a-court",
+    "a-dining",
+    "a-kitchen",
+    "a-family",
+    "a-master",
+    "a-bed2"
+  ],
+  "files": {
+    "reveal.html": "93aeea223528e6dedc2c29ae3267ca445c040189a49e649941ef418a1da6ec3c",
+    "reveal-data.js": "555820d8be3b4195a485767efdf2f2b7b1e5fee6b9650af9a65d0f03287c0c5a",
+    "plan-reveal.js": "a0e1a01186b738f629faae102ad9f412cd27d27555e328522fd3e91bbd264f46"
+  }
+}
