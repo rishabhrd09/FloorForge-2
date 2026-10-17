@@ -12,6 +12,7 @@ from shapely import get_parts
 from .model import DesignError, sha
 from .spaces import SPACE_REGISTRY, OPEN_SKY, OUTDOOR, NON_WALKABLE
 from .plan_geometry import regions, geometry
+from .heritage_bungalow import HERITAGE, WALL_PAINTS, FLOOR_FINISHES
 
 SCHEMA='floorforge.custom-plan/1'
 ID=re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,79}')
@@ -35,7 +36,8 @@ def normalize(plan,storeys):
     if 'sceneSeed' in result and (not isinstance(result['sceneSeed'],str) or not re.fullmatch(r'[0-9a-f]{64}',result['sceneSeed'])):fail('SCENE_SEED','Use a 64-character hexadecimal scene seed.')
     if 'doorsClosed' in result and type(result['doorsClosed']) is not bool:fail('DOOR_STATE','doorsClosed must be true or false.')
     if result.get('frontCourt','planted') not in ('planted','tiled'):fail('SITE_STYLE','Choose planted or tiled front court.')
-    if result.get('facadeStyle','plain') not in ('plain','warm-layered'):fail('FACADE_STYLE','Choose plain or warm-layered facade finishes.')
+    if result.get('facadeStyle','plain') not in ('plain','warm-layered',HERITAGE):fail('FACADE_STYLE','Choose plain, warm-layered or heritage-bungalow facade finishes.')
+    heritage=result.get('facadeStyle')==HERITAGE
     if result.get('entranceStyle','standard') not in ('standard','wall-supported'):fail('ENTRANCE_STYLE','Choose standard or wall-supported entrance.')
     def ident(obj):
         key=obj.get('id')
@@ -63,8 +65,8 @@ def normalize(plan,storeys):
             for o in items:
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
-                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','centerTree','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns'},'walls':{'id','a','b','height','finishStyle'},
-                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide'}}[key]
+                allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','centerTree','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns','wallPaint','floorFinish'},'walls':{'id','a','b','height','finishStyle'},
+                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide','grille'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
@@ -85,6 +87,8 @@ def normalize(plan,storeys):
                     if 'prepStorageWall' in o and (o['kind']!='kitchen' or o['prepStorageWall'] not in SIDES):fail('PREP_WALL','Choose a kitchen backing wall for prep storage.',o['id'],f)
                     if 'kitchenLayout' in o and (o['kind']!='kitchen' or o['kitchenLayout']!='l-shaped-return'):fail('KITCHEN_LAYOUT','Choose an L-shaped return for a kitchen.',o['id'],f)
                     if 'ceilingStyle' in o and o['ceilingStyle']!='plain-downlights':fail('CEILING_STYLE','Choose plain-downlights for a simple ceiling.',o['id'],f)
+                    if 'wallPaint' in o and (not heritage or o['wallPaint'] not in WALL_PAINTS or not SPACE_REGISTRY[o['kind']]['enclosed']):fail('WALL_PAINT','Distemper colours apply to enclosed rooms of a heritage-bungalow plan: '+', '.join(WALL_PAINTS)+'.',o['id'],f)
+                    if 'floorFinish' in o and (not heritage or o['floorFinish'] not in FLOOR_FINISHES or not SPACE_REGISTRY[o['kind']]['floor']):fail('FLOOR_FINISH','Heritage floor finishes apply to walkable spaces of a heritage-bungalow plan: '+', '.join(FLOOR_FINISHES)+'.',o['id'],f)
                     if 'altarWall' in o and (o['kind']!='pooja' or o['altarWall'] not in SIDES):fail('ALTAR_WALL','Choose a front/right/rear/left backing wall for the mandir.',o['id'],f)
                     if 'diningPosition' in o:
                         if o['kind'] not in ('living','family'):fail('DINING_POSITION','A dining position applies to a shared living or family room.',o['id'],f)
@@ -139,6 +143,7 @@ def normalize(plan,storeys):
                     if o.get('kind') not in ('door','entry','window','cased','glazed'):fail('OPENING_KIND','Unsupported opening type.',o['id'],f)
                     o.setdefault('sill',850 if o['kind']=='window' else 0);o.setdefault('height',1450 if o['kind']=='window' else 2100);o.setdefault('hinge','start')
                     if 'openSide' in o and (type(o['openSide']) is not bool or o['kind']!='cased'):fail('OPEN_SIDE','An open side must be a full-height cased connection.',o['id'],f)
+                    if 'grille' in o and (type(o['grille']) is not bool or not heritage or o['kind'] not in ('window','door','entry') or any(o.get(k) for k in ('fixed','timberScreen','sliding'))):fail('GRILLE','Open steel grilles apply to plain windows and doors of a heritage-bungalow plan.',o['id'],f)
                     if 'screenSliding' in o and (type(o['screenSliding']) is not bool or not o.get('timberScreen')):fail('SCREEN_SLIDING','A sliding screen requires the timber and screen assembly.',o['id'],f)
                     if 'timberScreen' in o and (type(o['timberScreen']) is not bool or o['kind']!='door' or o.get('sliding') or o['width']<1800):fail('TIMBER_SCREEN','Paired timber and screen leaves require a hinged door at least 1.8 m wide.',o['id'],f)
                     if 'fixed' in o and (type(o['fixed']) is not bool or o['kind']!='window'):fail('FIXED_WINDOW','Fixed glazing requires a window.',o['id'],f)
@@ -296,7 +301,7 @@ def compile_plan(intent):
                            **({'glassCover':True} if r.get('glassCover') else {}),
                            **({'centerTree':True} if r.get('centerTree') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
-                           **({key:r[key] for key in ('guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns') if key in r}),
+                           **({key:r[key] for key in ('guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns','wallPaint','floorFinish') if key in r}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
                            **({'reclinerPosition':r['reclinerPosition']} if r.get('reclinerPosition') else {}),
                            **({'prepStorageWall':r['prepStorageWall']} if r.get('prepStorageWall') else {}),
@@ -419,7 +424,7 @@ def compile_plan(intent):
                     fail('OPENING_OVERLAP','Two openings overlap.',o['id'],f,ids=[o['id'],old['id']])
             openings.append({'id':o['id'],'wall_id':host['id'],'floor':f,'kind':o['kind'],'offset':offset,
                              'width':width,'sill':o['sill'],'height':o['height'],'connects':connects,
-                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'screenSliding':True} if o.get('screenSliding') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'stackingSliding':True} if o.get('stackingSliding') else {}),**({'fixed':True} if o.get('fixed') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {})})
+                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'screenSliding':True} if o.get('screenSliding') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'stackingSliding':True} if o.get('stackingSliding') else {}),**({'fixed':True} if o.get('fixed') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {}),**({'grille':True} if o.get('grille') else {})})
     linked=set()
     for st in plan['stairs']:
         ids=st['roomIds']

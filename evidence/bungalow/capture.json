@@ -1,0 +1,224 @@
+{
+  "method": "Headless Chromium through Playwright, software WebGL (SwiftShader), 1600x1000, default quality. The committed examples/gallery/bungalow/preview.html renders its own scene.json with web/viewer.js. Exterior shots place the orbit camera at the listed eye and target (plan metres, z up); interior shots teleport the walk camera to the listed standing position (z is the floor level), yaw and pitch. Screenshots are stored as JPEG (quality 86). Composition evidence only: not real-GPU colour, frame-rate or native-browser acceptance.",
+  "page": "examples/gallery/bungalow/preview.html",
+  "planHash": "f96b512d0b011944528e540ebe6c68c2222a38ce443f21775dc88a6d07abdb12",
+  "resolution": [
+    1600,
+    1000
+  ],
+  "shots": [
+    {
+      "file": "evidence/bungalow/hero-day.jpg",
+      "grade": "day",
+      "seconds": 71.947,
+      "view": "hero"
+    },
+    {
+      "file": "evidence/bungalow/hero-golden.jpg",
+      "grade": "golden",
+      "seconds": 13.916,
+      "view": "hero"
+    },
+    {
+      "file": "evidence/bungalow/hero-dusk.jpg",
+      "grade": "dusk",
+      "seconds": 21.766,
+      "view": "hero"
+    },
+    {
+      "file": "evidence/bungalow/street-gate.jpg",
+      "grade": "day",
+      "seconds": 12.813,
+      "camera": {
+        "eye_m": [
+          0.5,
+          -19,
+          1.75
+        ],
+        "target_m": [
+          3.5,
+          -8,
+          2.4
+        ],
+        "fov_deg": 60
+      }
+    },
+    {
+      "file": "evidence/bungalow/carport-drive.jpg",
+      "grade": "day",
+      "seconds": 14.432,
+      "camera": {
+        "eye_m": [
+          -4.5,
+          -6.5,
+          1.7
+        ],
+        "target_m": [
+          -2.5,
+          2.5,
+          2.6
+        ],
+        "fov_deg": 62
+      }
+    },
+    {
+      "file": "evidence/bungalow/rear-garden.jpg",
+      "grade": "golden",
+      "seconds": 74.228,
+      "camera": {
+        "eye_m": [
+          8.0,
+          22.6,
+          1.65
+        ],
+        "target_m": [
+          9.4,
+          17.4,
+          2.5
+        ],
+        "fov_deg": 66
+      }
+    },
+    {
+      "file": "evidence/bungalow/aerial.jpg",
+      "grade": "day",
+      "seconds": 12.759,
+      "view": "aerial"
+    },
+    {
+      "file": "evidence/bungalow/drawing-hall.jpg",
+      "grade": "day",
+      "seconds": 124.928,
+      "walk": {
+        "position_m": [
+          6.1,
+          2.4,
+          0
+        ],
+        "yaw_rad": -1.1,
+        "pitch_rad": -0.05,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/dining-hall.jpg",
+      "grade": "day",
+      "seconds": 90.685,
+      "walk": {
+        "position_m": [
+          6.0,
+          10.4,
+          0
+        ],
+        "yaw_rad": -0.75,
+        "pitch_rad": -0.05,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/master-bedroom.jpg",
+      "grade": "day",
+      "seconds": 99.007,
+      "walk": {
+        "position_m": [
+          13.5,
+          8.3,
+          0
+        ],
+        "yaw_rad": -0.7,
+        "pitch_rad": -0.05,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/family-lounge.jpg",
+      "grade": "day",
+      "seconds": 94.701,
+      "walk": {
+        "position_m": [
+          12.2,
+          14.6,
+          3.6
+        ],
+        "yaw_rad": 2.35,
+        "pitch_rad": -0.08,
+        "floor": 1
+      }
+    },
+    {
+      "file": "evidence/bungalow/rear-verandah.jpg",
+      "grade": "day",
+      "seconds": 98.777,
+      "walk": {
+        "position_m": [
+          5.8,
+          17.6,
+          0
+        ],
+        "yaw_rad": -1.9,
+        "pitch_rad": -0.06,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/entrance-verandah.jpg",
+      "grade": "day",
+      "seconds": 76.41,
+      "walk": {
+        "position_m": [
+          4.0,
+          3.3,
+          0
+        ],
+        "yaw_rad": 2.55,
+        "pitch_rad": -0.04,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/entrance-verandah-golden.jpg",
+      "grade": "golden",
+      "seconds": 83.606,
+      "walk": {
+        "position_m": [
+          3.6,
+          3.6,
+          0
+        ],
+        "yaw_rad": 2.2,
+        "pitch_rad": -0.04,
+        "floor": 0
+      }
+    },
+    {
+      "file": "evidence/bungalow/front-terrace.jpg",
+      "grade": "day",
+      "seconds": 112.76,
+      "walk": {
+        "position_m": [
+          10.5,
+          6.2,
+          3.6
+        ],
+        "yaw_rad": 2.4,
+        "pitch_rad": -0.12,
+        "floor": 1
+      }
+    },
+    {
+      "file": "evidence/bungalow/kitchen.jpg",
+      "grade": "day",
+      "seconds": 92.909,
+      "walk": {
+        "position_m": [
+          4.6,
+          12.2,
+          0
+        ],
+        "yaw_rad": 2.4,
+        "pitch_rad": -0.1,
+        "floor": 0
+      }
+    }
+  ]
+}

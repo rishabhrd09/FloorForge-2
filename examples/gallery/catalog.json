@@ -31,6 +31,20 @@
     "hasElectricalTour": true
   },
   {
+    "id": "bungalow",
+    "title": "The Bungalow",
+    "description": "A large 100 \u00d7 130 ft G+1 government bungalow recreated from the owner's photographs: red comb-frieze parapets, a grilled entrance verandah beside a corrugated carport, a grand drawing hall and dining hall in teak and cane, four bedrooms, ceiling fans and 3.6 m ceilings, a big clipped lawn, rose-covered fences, neem, mango and Ashoka trees.",
+    "style": "Heritage Bungalow",
+    "directory": "gallery/bungalow",
+    "bedrooms": 4,
+    "storeys": 2,
+    "widthFt": 100,
+    "depthFt": 130,
+    "roofAccess": true,
+    "planHash": "f96b512d0b011944528e540ebe6c68c2222a38ce443f21775dc88a6d07abdb12",
+    "hasSpecifications": true
+  },
+  {
     "id": "aangan-house",
     "title": "The Aangan House",
     "description": "A single-storey courtyard home on a 55 \u00d7 80 ft plot: every room opens to an aangan with a frangipani. Opens as its own drawing; scroll to walk in.",

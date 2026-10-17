@@ -1,0 +1,311 @@
+{
+  "title": "The Bungalow",
+  "planHash": "f96b512d0b011944528e540ebe6c68c2222a38ce443f21775dc88a6d07abdb12",
+  "style": "Heritage Bungalow",
+  "orientation": "South road/front \u00b7 west carport and side garden \u00b7 east service lane \u00b7 north rear garden",
+  "plotFt": [
+    100,
+    130
+  ],
+  "setbacksFt": {
+    "front": 45,
+    "rear": 20,
+    "west": 25,
+    "east": 10
+  },
+  "buildableFt": [
+    65,
+    65
+  ],
+  "wallThicknessMm": 230,
+  "floorHeightM": 3.6,
+  "plinthMm": 600,
+  "rooms": [
+    {
+      "id": "g-dining",
+      "name": "Dining hall",
+      "floor": 0,
+      "kind": "dining",
+      "widthM": 7.4,
+      "depthM": 5.3,
+      "areaM2": 39.22,
+      "wallPaint": "pista",
+      "floorFinish": "white-marble"
+    },
+    {
+      "id": "g-drawing",
+      "name": "Drawing hall",
+      "floor": 0,
+      "kind": "living",
+      "widthM": 7.4,
+      "depthM": 6.7,
+      "areaM2": 49.58,
+      "wallPaint": "sky-blue",
+      "floorFinish": "white-marble"
+    },
+    {
+      "id": "g-gbath",
+      "name": "Guest bath",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 3.172,
+      "depthM": 1.832,
+      "areaM2": 5.811104
+    },
+    {
+      "id": "g-gstore",
+      "name": "Garden store",
+      "floor": 0,
+      "kind": "store",
+      "widthM": 3.29,
+      "depthM": 1.832,
+      "areaM2": 6.02728,
+      "floorFinish": "red-oxide"
+    },
+    {
+      "id": "g-guest",
+      "name": "Guest bedroom",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 6.692,
+      "depthM": 4.2,
+      "areaM2": 28.1064,
+      "wallPaint": "sky-blue",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "g-kitchen",
+      "name": "Kitchen",
+      "floor": 0,
+      "kind": "kitchen",
+      "widthM": 4.8,
+      "depthM": 5.4,
+      "areaM2": 25.92,
+      "wallPaint": "cream",
+      "floorFinish": "kota-stone"
+    },
+    {
+      "id": "g-master",
+      "name": "Master bedroom",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 6.692,
+      "depthM": 5.4,
+      "areaM2": 36.1368,
+      "wallPaint": "peach",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "g-mbath",
+      "name": "Master bath",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 3.172,
+      "depthM": 2.8,
+      "areaM2": 8.8816
+    },
+    {
+      "id": "g-mdress",
+      "name": "Master dressing",
+      "floor": 0,
+      "kind": "dress",
+      "widthM": 3.29,
+      "depthM": 2.8,
+      "areaM2": 9.212,
+      "wallPaint": "peach"
+    },
+    {
+      "id": "g-office",
+      "name": "Office",
+      "floor": 0,
+      "kind": "study",
+      "widthM": 6.692,
+      "depthM": 4.2,
+      "areaM2": 28.1064,
+      "wallPaint": "cream",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "g-pantry",
+      "name": "Pantry and store",
+      "floor": 0,
+      "kind": "store",
+      "widthM": 4.8,
+      "depthM": 2.3,
+      "areaM2": 11.04,
+      "wallPaint": "cream",
+      "floorFinish": "kota-stone"
+    },
+    {
+      "id": "g-powder",
+      "name": "Guest toilet",
+      "floor": 0,
+      "kind": "powder-room",
+      "widthM": 2.4,
+      "depthM": 2.27,
+      "areaM2": 5.448,
+      "wallPaint": "ivory"
+    },
+    {
+      "id": "g-puja",
+      "name": "Puja room",
+      "floor": 0,
+      "kind": "pooja",
+      "widthM": 2.17,
+      "depthM": 2.27,
+      "areaM2": 4.9259,
+      "wallPaint": "lemon",
+      "floorFinish": "white-marble"
+    },
+    {
+      "id": "g-rear-verandah",
+      "name": "Rear verandah",
+      "floor": 0,
+      "kind": "veranda",
+      "widthM": 7.4,
+      "depthM": 3.0,
+      "areaM2": 22.2,
+      "floorFinish": "red-oxide"
+    },
+    {
+      "id": "g-stair",
+      "name": "Stair hall",
+      "floor": 0,
+      "kind": "stair",
+      "widthM": 7.4,
+      "depthM": 2.4,
+      "areaM2": 17.76,
+      "wallPaint": "cream",
+      "floorFinish": "mosaic"
+    },
+    {
+      "id": "g-verandah",
+      "name": "Grilled entrance verandah",
+      "floor": 0,
+      "kind": "foyer",
+      "widthM": 4.8,
+      "depthM": 4.2,
+      "areaM2": 20.16,
+      "wallPaint": "mint-green",
+      "floorFinish": "ceramic-white"
+    },
+    {
+      "id": "g-wash",
+      "name": "Open wash yard",
+      "floor": 0,
+      "kind": "drying-yard",
+      "widthM": 5.26,
+      "depthM": 3.0,
+      "areaM2": 15.78,
+      "floorFinish": "kota-stone"
+    },
+    {
+      "id": "f-bath3",
+      "name": "Bath 3",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 3.172,
+      "depthM": 2.8,
+      "areaM2": 8.8816
+    },
+    {
+      "id": "f-bath4",
+      "name": "Bath 4",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 4.8,
+      "depthM": 2.3,
+      "areaM2": 11.04
+    },
+    {
+      "id": "f-bed3",
+      "name": "Bedroom 3",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 6.692,
+      "depthM": 5.4,
+      "areaM2": 36.1368,
+      "wallPaint": "mint-green",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "f-bed4",
+      "name": "Bedroom 4",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 4.8,
+      "depthM": 5.4,
+      "areaM2": 25.92,
+      "wallPaint": "lilac",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "f-dress3",
+      "name": "Dressing 3",
+      "floor": 1,
+      "kind": "dress",
+      "widthM": 3.29,
+      "depthM": 2.8,
+      "areaM2": 9.212,
+      "wallPaint": "mint-green"
+    },
+    {
+      "id": "f-front-terrace",
+      "name": "Front terrace \u00b7 chick pergola",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 19.812,
+      "depthM": 6.93,
+      "areaM2": 119.41716,
+      "floorFinish": "red-oxide"
+    },
+    {
+      "id": "f-lounge",
+      "name": "Upper family lounge",
+      "floor": 1,
+      "kind": "family",
+      "widthM": 7.4,
+      "depthM": 5.3,
+      "areaM2": 39.22,
+      "wallPaint": "powder-pink",
+      "floorFinish": "ivory-vitrified"
+    },
+    {
+      "id": "f-rear-terrace",
+      "name": "Rear terrace",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 7.4,
+      "depthM": 3.0,
+      "areaM2": 22.2,
+      "floorFinish": "red-oxide"
+    },
+    {
+      "id": "f-stair",
+      "name": "Upper stair hall",
+      "floor": 1,
+      "kind": "stair",
+      "widthM": 7.4,
+      "depthM": 2.4,
+      "areaM2": 17.76,
+      "wallPaint": "cream",
+      "floorFinish": "mosaic"
+    }
+  ],
+  "landscape": [
+    "entry_steps",
+    "flower_bed",
+    "garden_seat",
+    "hedge",
+    "hex_paving",
+    "hose_reel",
+    "jhoola",
+    "kitchen_garden",
+    "lawn",
+    "plant",
+    "pot",
+    "rose_fence",
+    "tree",
+    "tulsi"
+  ]
+}

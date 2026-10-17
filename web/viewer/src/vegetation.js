@@ -83,13 +83,27 @@ export class Vegetation {
     }
   }
 
+  leafMaterial(map, opts = {}) {
+    const m = new THREE.MeshStandardMaterial({ map, alphaTest: .42, side: THREE.DoubleSide, roughness: opts.roughness ?? .62, metalness: 0, color: opts.color || '#ffffff', envMapIntensity: .7 });
+    patchFoliage(m, this.uniforms, { translucency: opts.translucency ?? .45 });
+    return m;
+  }
+
+  // Atlases used only by some species are painted and wrapped in a material on first use.
+  lazyMaterial(name) {
+    if (!this.materials[name]) {
+      const make = { gardenLeaves: () => this.leafMaterial(this.tex.gardenLeaves, { roughness: .5, translucency: .5 }),
+        gardenFlowers: () => this.leafMaterial(this.tex.gardenFlowers, { roughness: .7, translucency: .6 }) }[name];
+      if (!make) return null;
+      this.materials[name] = make();
+      this.materials[name].name = 'plant-foliage-' + name;
+    }
+    return this.materials[name];
+  }
+
   makeMaterials(viewer) {
     const u = this.uniforms;
-    const leaf = (map, opts = {}) => {
-      const m = new THREE.MeshStandardMaterial({ map, alphaTest: .42, side: THREE.DoubleSide, roughness: opts.roughness ?? .62, metalness: 0, color: opts.color || '#ffffff', envMapIntensity: .7 });
-      patchFoliage(m, u, { translucency: opts.translucency ?? .45 });
-      return m;
-    };
+    const leaf = (map, opts = {}) => this.leafMaterial(map, opts);
     const bark = viewer.synth.make('bark', { base: '#5e5a4f', alt: '#7d8470', params: [.8, 0, 0, 0] });
     const smoothBark = viewer.synth.make('bark', { base: '#6f7064', alt: '#7f8a72', params: [.12, 0, 0, 0], seed: 3 });
     const palmBark = viewer.synth.make('bark', { base: '#8f8676', alt: '#8c8a78', params: [.25, 14, 0, 0] });
@@ -116,8 +130,8 @@ export class Vegetation {
   partMaterial(part, spec) {
     if (part === 'wood') return spec.bark === 'palm' ? this.materials.palmBark : spec.bark === 'smooth' ? this.materials.smoothBark : spec.woodColor ? this.materials.greenStem : this.materials.bark;
     if (part === 'mass') return this.materials.mass;
-    if (part === 'flowers') return this.materials.flowers;
-    return this.materials[spec.leafAtlas] || this.materials.cluster;
+    if (part === 'flowers') return spec.flowerAtlas ? this.lazyMaterial(spec.flowerAtlas) : this.materials.flowers;
+    return this.materials[spec.leafAtlas] || this.lazyMaterial(spec.leafAtlas) || this.materials.cluster;
   }
 
   matrixFor(item) {
@@ -152,7 +166,7 @@ export class Vegetation {
   }
 
   addHedge(item) {
-    const spec = buildSpecies('hedge', (item.seed ?? hashString(item.id || 'hedge')) >>> 0, { size: item.size || [2, .5, 1] });
+    const spec = buildSpecies('hedge', (item.seed ?? hashString(item.id || 'hedge')) >>> 0, { size: item.size || [2, .5, 1], ...(item.options || {}) });
     const m = this.matrixFor({ ...item, scale: 1, rotation: item.rotation ?? 0 });
     for (const [part, geo] of Object.entries(spec.parts)) {
       if (!geo) continue;
