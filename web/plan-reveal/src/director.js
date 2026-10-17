@@ -98,6 +98,13 @@ export class Director {
     return c;
   }
 
+  // The stop the visitor is at or last passed, for the overlay's room ruler.
+  stopAt(p) {
+    let stop = 0;
+    for (const c of this.chapters) if (c.kind === 'dwell' && c.start <= p) stop = c.stop;
+    return stop;
+  }
+
   startOf(kind, stop) { return this.chapters.find((c) => c.kind === kind && (stop === undefined || c.stop === stop))?.start ?? 0; }
 
   // ---------------------------------------------------------------- camera helpers
@@ -193,6 +200,13 @@ export class Director {
       const drift = this.reduced ? 0 : easeIO(t) - .5;
       const pos = S.clone().addScaledVector(fwd, .22 * (drift + .5)).addScaledVector(side, .05 * drift);
       const look = L.clone().addScaledVector(side, .35 * drift);
+      // A room is held like an interior photograph: the camera settles a little lower and levels off, and a lens
+      // shift instead of a tilt keeps the floor in frame, so the walls' verticals stay vertical.
+      const hold = c.stop > 0 && !this.reduced ? smooth(0, .22, t) * (1 - smooth(.8, 1, t)) : c.stop > 0 ? 1 : 0;
+      const tilt = Math.atan2(pos.y - look.y, Math.hypot(look.x - pos.x, look.z - pos.z));
+      out.shift = hold * clamp(Math.tan(Math.max(0, tilt)) / Math.tan(s.fov * DEG / 2), 0, .4);
+      pos.y -= .25 * hold;
+      look.y = lerp(look.y, pos.y, hold);
       this.lookFrom(pos, look, s.fov);
       this.setClip(.05, 1500);
       out.stop = c.stop; out.card = smooth(.06, .28, t) * (1 - smooth(.86, 1, t));
@@ -217,6 +231,11 @@ export class Director {
       : c.kind === 'outro' ? smooth(.75, 1, t) : ['colour', 'wipe', 'end'].includes(c.kind) ? 1 : out.sheetInk > .5 ? 1 : 0;
     this.applyReveals(p, out);
     this.applyDoors(p);
+    // The lens shift (a vertical view offset, in half-heights of the frame).
+    if ((out.shift || 0) > 1e-4) {
+      cam.view = cam.view || { enabled: true, fullWidth: 1, fullHeight: 1, offsetX: 0, offsetY: 0, width: 1, height: 1 };
+      cam.view.enabled = true; cam.view.offsetY = out.shift / 2;
+    } else if (cam.view) cam.view.enabled = false;
     cam.updateProjectionMatrix();
     cam.updateMatrixWorld();
     return out;
@@ -396,7 +415,8 @@ export class Director {
       out.cut = 1.2;
       out.planLight = 1;
       if (c.kind === 'colour') { out.all = 1; }
-      else if (c.kind === 'wipe') { out.wipe = clamp(easeIO(t) * 1.04); out.all = 1; out.sheetInk = smooth(.3, .9, t); out.sheet = 1; }
+      // The paper rolls from where the drawing starts (the title side is paper already) to the far border.
+      else if (c.kind === 'wipe') { out.wipe = lerp(.42, 1.02, easeIO(t)); out.all = 1; out.sheetInk = smooth(.3, .9, t); out.sheet = 1; }
       else { out.all = 1; out.wipe = 1.02; out.sheetInk = 1; out.sheet = 1; }
       out.sky = 0;
     }

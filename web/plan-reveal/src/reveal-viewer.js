@@ -42,9 +42,12 @@ export class RevealViewer extends FloorForgeViewer {
   applyGrade() {
     super.applyGrade();
     const inside = this.indoor || 0, u = this.gradeEffect.uniforms;
-    u.get('exposure').value *= 1 - .2 * inside;
-    u.get('contrast').value += .07 * inside;
-    if (this.bloom) this.bloom.intensity = (GRADES[this.gradeName].bloom ?? .3) * (1 - .45 * inside);
+    u.get('exposure').value *= 1 - .28 * inside;
+    u.get('contrast').value += .08 * inside;
+    if (this.bloom) {
+      this.bloom.intensity = (GRADES[this.gradeName].bloom ?? .3) * (1 - .6 * inside);
+      this.bloom.luminanceMaterial.threshold = (.95 + .25 * inside) / u.get('exposure').value;   // only lamps glow
+    }
   }
 
   // The page has no orbit or walk input; the director places the camera.
@@ -136,6 +139,7 @@ export class RevealViewer extends FloorForgeViewer {
     const r = this.renderer, cam = this.drawCamera, main = this.camera;
     cam.position.copy(main.position); cam.quaternion.copy(main.quaternion);
     cam.fov = main.fov; cam.aspect = main.aspect; cam.near = main.near; cam.far = main.far; cam.zoom = main.zoom;
+    cam.view = main.view?.enabled ? { ...main.view } : null;   // the same lens shift
     cam.updateProjectionMatrix(); cam.updateMatrixWorld();
     const background = this.scene.background, fog = this.scene.fog;
     this.scene.background = null; this.scene.fog = null;

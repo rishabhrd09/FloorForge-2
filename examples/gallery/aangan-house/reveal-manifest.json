@@ -1,6 +1,6 @@
 {
   "schema": "floorforge.plan-reveal-manifest/1",
-  "planHash": "7e53d94d5f0232cd329c9243f45f8f4a5238028dcdf746317bc04a81a4fd0dc3",
+  "planHash": "0f5405300f82f42831841f4e66d21f7f86ebc6fd45cff7fcb2bad6948da426f5",
   "stops": [
     "arrival",
     "a-foyer",
@@ -13,8 +13,8 @@
     "a-bed2"
   ],
   "files": {
-    "reveal.html": "88e1f26cc8009c3ac0761263b13b7ea70cdc942d6b37a40108a01e4f451e1bc7",
-    "reveal-data.js": "22f4a74580d3376329f3d2140da429a7a3903d835ca89f4e389687f0d450eccf",
-    "plan-reveal.js": "b43e5ee6fb49257cf3c678bfd6c96cfa6fb3c6c6ab8b6d23370265d15574a2a7"
+    "reveal.html": "93aeea223528e6dedc2c29ae3267ca445c040189a49e649941ef418a1da6ec3c",
+    "reveal-data.js": "555820d8be3b4195a485767efdf2f2b7b1e5fee6b9650af9a65d0f03287c0c5a",
+    "plan-reveal.js": "a0e1a01186b738f629faae102ad9f412cd27d27555e328522fd3e91bbd264f46"
   }
 }

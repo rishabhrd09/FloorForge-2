@@ -102,6 +102,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     // Distant geometry draws lighter, as a pen would; the plot's far edges fade out around the house.
     edge *= mix(1., .45, smoothstep(30., 140., -z0) * (1. - uSheet));
     edge *= 1. - .85 * smoothstep(uFocus.z, uFocus.z * 1.9, distance(world.xz, uFocus.xy));
+    edge *= keep;   // beyond the plot, the closing sheet is clean paper
   } else {
     float near = texture2D(tDepth, uv + dx).x + texture2D(tDepth, uv - dx).x + texture2D(tDepth, uv + dy).x + texture2D(tDepth, uv - dy).x;
     edge = near < 3.9999 ? .7 : 0.;
@@ -126,7 +127,8 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   col = mix(col, uAccent, band * .9 * (sky ? 0. : 1.));
   // On the closing colour plan the cut walls keep their poché, as on a rendered plan.
   col = mix(col, uInk * 1.35, ink * uPoche * rev);
-  if (uWipe > 0.) col = mix(col, col * .82, smoothstep(.02, 0., abs(uv.x - uWipe)) * .6);
+  // The wipe's edge is the same accent line as a sweep's, within the sheet border.
+  if (uWipe > 0. && uWipe < 1.) col = mix(col, uAccent, smoothstep(.0035, 0., abs(uv.x - uWipe)) * .85 * step(uFrame.y, uv.y) * step(uv.y, uFrame.w));
   outputColor = vec4(col, inputColor.a);
 }`;
 

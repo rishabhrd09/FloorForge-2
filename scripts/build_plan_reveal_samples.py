@@ -49,7 +49,7 @@ def aangan():
         room('a-living', 'living', 'Living room', A0, 230, A1 - A0, 6060),
         room('a-foyer', 'foyer', 'Entrance hall', B0, 230, V1 - B0, 4200),
         room('a-study', 'bedroom', 'Guest room', C0, 230, C1 - C0, 4200, bedType='double', wardrobeWall='rear'),
-        room('a-dining', 'dining', 'Dining', A0, 6520, A1 - A0, 3600),
+        room('a-dining', 'dining', 'Dining room', A0, 6520, A1 - A0, 3600),
         room('a-kitchen', 'kitchen', 'Kitchen', A0, 10350, A1 - A0, 3300, kitchenLayout='l-shaped-return', prepStorageWall='left'),
         room('a-utility', 'utility', 'Utility', A0, 13880, A1 - A0, 1500),
         room('a-yard', 'drying-yard', 'Drying yard', 0, 15610, A1, 4202, drain=True),
@@ -130,7 +130,7 @@ def long_house():
         room('l-court', 'courtyard', 'Light court', M0, 4460, C1 - M0, 2600, centerTree=True, drain=True),
         room('l-passage', 'hall', 'Garden passage', P0, 4460, M1 - P0, 2600),
         room('l-stair', 'stair', 'Staircase', S0, 4460, S1 - S0, 4100),
-        room('l-dining', 'dining', 'Dining', M0, 7290, M1 - M0, 2800),
+        room('l-dining', 'dining', 'Dining room', M0, 7290, M1 - M0, 2800),
         room('l-powder', 'powder-room', 'Powder room', S0, 8790, S1 - S0, 1300),
         room('l-kitchen', 'kitchen', 'Kitchen', M0, 10320, M1 - M0, 2400),
         room('l-utility', 'utility', 'Utility', S0, 10320, S1 - S0, 2400),
@@ -218,7 +218,7 @@ SAMPLES = [
         'copy': {'eyebrow': 'The Long House · ground floor plan · A-101', 'headline': ['A house', 'on one', 'line.'], 'theme': 'serif',
                  'lede': 'Eighteen metres from the street to the garden, on a 30 × 60 ft plot. This drawing is the building. Scroll and walk into it.',
                  'cta': 'Drawing set', 'endTitle': 'Light, all the way through.', 'endText': 'The drawing and the house are one model. Change the plan in the studio and this walk is rebuilt from it, room by room.'},
-        'order': ['l-living', 'l-court', 'l-dining', 'l-kitchen', 'u-master', 'u-bed2', 'u-balcony'], 'grade': 'golden'}),
+        'order': ['l-living', 'l-court', 'l-dining', 'l-kitchen', 'u-master', 'u-bed2'], 'grade': 'golden'}),
 ]
 
 

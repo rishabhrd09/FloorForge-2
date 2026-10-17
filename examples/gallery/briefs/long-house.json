@@ -134,7 +134,7 @@
           {
             "id": "l-dining",
             "kind": "dining",
-            "name": "Dining",
+            "name": "Dining room",
             "polygon": [
               [
                 230,
@@ -1079,7 +1079,7 @@
             {
               "id": "l-dining",
               "kind": "dining",
-              "name": "Dining",
+              "name": "Dining room",
               "polygon": [
                 [
                   230,

@@ -134,16 +134,16 @@ export class Hud {
     const stop = s.stop != null ? director.stops[s.stop] : null;
     this.card(stop, stop ? s.card : 0, s.dark);
     const count = $('count');
-    const current = s.stop ?? this.lastStop ?? 0;
-    if (s.stop != null) this.lastStop = s.stop;
+    const current = s.stop ?? director.stopAt(s.p);
     count.textContent = `${pad(current)} / ${pad(this.rooms.length)} rooms`;
     count.style.opacity = ['walk', 'dwell', 'rise', 'floorplan', 'drop'].includes(s.chapter) && current > 0 ? '1' : '0';
     count.classList.toggle('light', Boolean(s.dark));
-    $('hint').style.opacity = s.chapter === 'dwell' && s.card > .9 ? '.85' : '0';
+    // The scroll cue only until the visitor has the idea: the arrival and the first room.
+    $('hint').style.opacity = s.chapter === 'dwell' && s.card > .9 && s.stop <= 1 ? '.85' : '0';
     $('hint').classList.toggle('light', Boolean(s.dark));
     $('end').style.opacity = s.chapter === 'end' ? '1' : '0';
     $('end').style.pointerEvents = s.chapter === 'end' ? 'auto' : 'none';
-    const ruler = !['sheet', 'wipe', 'end'].includes(s.chapter);
+    const ruler = ['descend', 'dwell', 'walk', 'rise', 'floorplan', 'drop'].includes(s.chapter);
     $('ruler').style.opacity = ruler ? '1' : '0';
     $('ruler').style.visibility = ruler ? 'visible' : 'hidden';
     const buttons = $('ruler').querySelectorAll('button');

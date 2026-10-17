@@ -409,6 +409,9 @@ def standpoint(room, door, floor, features=(), focus_at=None):
         ang, dist = ray_distances(s, segs)
         step = 2 * np.pi / len(ang)
         detour = float(np.hypot(*(s - door['center'])))
+        # A photographer keeps a step clear of furniture and door leaves; standing against them crops them hard.
+        clear = min((g.distance(Point(*s)) for g in near_geom), default=9.)
+        cramped = 1.2 * max(0., .7 - clear) / .7
         for k in range(0, len(ang), 6):
             yaw = ang[k]
             rel = (ang - yaw + np.pi) % (2 * np.pi) - np.pi
@@ -416,7 +419,7 @@ def standpoint(room, door, floor, features=(), focus_at=None):
             seen = float(np.sum(dist[wedge] ** 2) * step / 2) / area
             ahead = float(dist[k])
             crowded = float(np.mean(dist[wedge] < .9))   # a wall or tall unit within arm's reach across the frame
-            score = min(seen, 1.25) + .12 * min(ahead, 6) - (.9 if ahead < 1.5 else 0) - .05 * detour - 1.8 * crowded
+            score = min(seen, 1.25) + .12 * min(ahead, 6) - (.9 if ahead < 1.5 else 0) - .05 * detour - 1.8 * crowded - cramped
             arc = [s + 1.3 * np.array([math.cos(yaw + a), math.sin(yaw + a)]) for a in np.linspace(-half * .7, half * .7, 7)]
             wedge = Polygon([s] + arc)
             for fp_, geom in zip(near, near_geom):
