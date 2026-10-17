@@ -3,6 +3,7 @@ import json
 import math
 import shutil
 import subprocess
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -14,6 +15,7 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.review import reports, validate
 from floorforge.scene import make_scene
+from floorforge.scene_kit import ART_PRINTS
 from floorforge.pipeline import preview_html
 from floorforge.drawings import make_sheets, svg_sheet
 from conftest import CASES
@@ -442,6 +444,64 @@ def test_interior_upgrades_keep_furniture_inside_rooms(modern):
         assert rooms[item['room_id']].buffer(.015).covers(Polygon(item['footprint'])), item['id']
     roles = {n['role'] for n in scene['nodes']}
     assert {'skirting', 'downlight', 'ceiling'} <= roles
+
+
+def _bedspreads(scene):
+    """Each bedspread's vertices in its mattress's frame (x across, y towards the foot, z up from the mattress's centre),
+    with its boundary vertices and the mattress's half size."""
+    out = []
+    for m in scene['nodes']:
+        half = np.ptp(np.asarray(scene['assets'][m['asset']]['vertices']), axis=0) / 2
+        if m['material'] != 'linen' or m['role'] != 'furniture' or abs(half[1] - 1.04) > 1e-3 or abs(half[2] - .125) > 1e-3:
+            continue
+        a = m['rotation'][2]
+        def local(v, c=np.asarray(m['position']), turn=np.array([[math.cos(a), math.sin(a)], [-math.sin(a), math.cos(a)]])):
+            v = np.asarray(v) - c
+            return np.column_stack([v[:, :2] @ turn.T, v[:, 2]])
+        spreads = []
+        for n in scene['nodes']:
+            asset = scene['assets'][n['asset']]
+            if n['material'] == 'fabric' and n['role'] == 'furniture' and not asset['closed']:
+                p = local(asset['vertices'])
+                if (np.abs(p[:, :2]) < half[:2] + .1).all() and (np.abs(p[:, 2]) < .3).all():
+                    faces = np.asarray(asset['faces'])
+                    edges, uses = np.unique(np.sort(np.concatenate([faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]]), axis=1), axis=0, return_counts=True)
+                    spreads.append((p, np.unique(edges[uses == 1])))
+        assert len(spreads) == 1, m['id']
+        out.append((*spreads[0], half))
+    return out
+
+
+def test_bedspreads_drape_just_clear_of_the_mattress_to_a_level_hem(modern):
+    # Over both sides, the foot and the corners alike, the spread keeps a few centimetres off the mattress and falls to
+    # one level hem well below its top: no flap past the foot, no dog-ear at a corner, no gap to see under it. The
+    # published My Desired Home adds a single bed and more orientations.
+    sample = json.loads((ROOT / 'examples/gallery/my-desired-home/scene.json').read_text('utf8'))
+    beds = _bedspreads(modern[2]) + _bedspreads(sample)
+    assert len(beds) >= 7 and min(half[0] for _, _, half in beds) < .6
+    for p, rim, half in beds:
+        r = .075                                    # the mattress's edge radius (scene.py bed_set)
+        q = np.abs(p) - (half - r)
+        gap = np.linalg.norm(np.maximum(q, 0), axis=1) + np.minimum(q.max(axis=1), 0) - r
+        assert .005 < gap.min() and gap.max() < .06
+        hem = p[rim][p[rim, 1] > p[:, 1].min() + 1e-4]       # all of the edge but the one turned back below the pillows
+        assert np.ptp(hem[:, 2]) < 1e-4 and hem[:, 2].max() < half[2] - .09
+        assert hem[:, 1].max() > half[1] and hem[:, 0].min() < -half[0] and hem[:, 0].max() > half[0]
+
+
+def test_rooms_hang_a_print_of_their_own(modern):
+    # Every framed print comes from the set, one per room, and no print repeats in a house until all of them hang.
+    building, _, scene = modern
+    rooms = [(s['id'], s['floor'], Polygon([[x / 1000, y / 1000] for x, y in s['clear']])) for s in building['spaces']]
+    hung = {}
+    for n in scene['nodes']:
+        if n['role'] == 'art' and n['material'] != 'frame':
+            assert n['material'] in ART_PRINTS and scene['materials'][n['material']]['kind'] == 'art'
+            room = min((r for r in rooms if r[1] == n['floor']), key=lambda r: r[2].distance(Point(n['position'][:2])))
+            assert room[2].contains(Point(n['position'][:2]))
+            assert hung.setdefault(room[0], n['material']) == n['material'], room[0]
+    counts = Counter(hung.values())
+    assert len(hung) >= 4 and max(counts.values()) - min(counts[p] for p in ART_PRINTS) <= 1
 
 
 @pytest.mark.parametrize('theme', EXTERIOR_THEME_IDS)

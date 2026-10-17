@@ -916,11 +916,11 @@
     "floor_plates": "dd35c1c9c72c292d11bca4dd235bd0679ed09ab444dc943d8599181576ed9049",
     "roofs": "b1e085e16ec6526afc477c99daa3ec2d46a693d7f3a0166dfab865ac81a3c948"
   },
-  "ground_nodes": "a8cf89ee75b1d45e067b4591b55e4cd74177dfce055549af9a41c5269a586e6f",
+  "ground_nodes": "af0aea62a80c24104804c40732dd596ad5dcf3eff102ca823523c179a05a09af",
   "ground_furniture": "0bedaf704287e3ec0b6ba6644a2cffc0abb3d9b559c14063448b1289ff210020",
   "ground_colliders": "a360eaa806e6fb1ee2399c275f216301c7314d87b1b4bffef53dac36bcb455d8",
   "ground_vegetation": "2607c45f2c1982cfb8c9eddaca4e50a168ab6e7a268f5ace2b3b22f61183e77c",
-  "ground_lights": "c1b7a2862abf236b436b9313788ef586fb7ee13c4507fd321f615e9a930bccbc",
+  "ground_lights": "7e95990fe5a7dbf62f88509220c6b24e23ace79bdd4526f8f57eec29d6ebcbbf",
   "materials": {
     "appliance": {
       "color": "#c8cacb",
@@ -2074,6 +2074,6 @@
       ]
     }
   ],
-  "kitchen_unaffected_ground_nodes": "486d85afc0af9cb54912ca2c7a57d5ffc3321ff2067c88dd9e8c656e10f0317c",
-  "entrance_unaffected_ground_nodes": "5adad750aef035884196204038f0446c6c1141797cfde1a6d1a5adaaad0f3a7e"
+  "kitchen_unaffected_ground_nodes": "53a37d2d13c79193c3e500b1a7c9dd800fa453341a40fcd661708a663bddbcd9",
+  "entrance_unaffected_ground_nodes": "036d81c9020b991f10f67d086ef8cabea7bd6224b1cc97f96dc195d0090425f5"
 }

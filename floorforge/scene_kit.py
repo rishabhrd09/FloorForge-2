@@ -175,7 +175,20 @@ def material_library(style: dict, interior: dict, modern: bool) -> dict:
         'lamp': {'color': '#ffde9b', 'roughness': .5, 'emission': 1.},
         'art': {'color': '#b09a80', 'alt': '#3f4d57', 'roughness': .95, 'kind': 'art'},
         'art-2': {'color': '#c9b8a0', 'alt': '#7a5a44', 'roughness': .95, 'kind': 'art', 'seed': 31},
+        # Framed prints chosen per room (ART_PRINTS). params[0] picks the composition (web/viewer/src/textures.js):
+        # washes, colour fields, ridges under a low sun, nested arches; 'canvas' fits each print to its frame.
+        'art-3': {'color': '#a9b39b', 'alt': '#2e3833', 'roughness': .95, 'kind': 'art', 'seed': 7, 'params': [0, 0, 0, 0], 'canvas': True},
+        'art-4': {'color': '#d9c4a5', 'alt': '#b5552f', 'roughness': .95, 'kind': 'art', 'seed': 13, 'params': [1, 0, 0, 0], 'canvas': True},
+        'art-5': {'color': '#e2a979', 'alt': '#34475a', 'roughness': .95, 'kind': 'art', 'seed': 19, 'params': [2, 0, 0, 0], 'canvas': True},
+        'art-6': {'color': '#ece2cf', 'alt': '#b8743a', 'roughness': .95, 'kind': 'art', 'seed': 23, 'params': [3, 0, 0, 0], 'canvas': True},
+        'art-7': {'color': '#c6b6a4', 'alt': '#2c3e5c', 'roughness': .95, 'kind': 'art', 'seed': 41, 'params': [0, 0, 0, 0], 'canvas': True},
+        'art-8': {'color': '#e6d8bd', 'alt': '#3b4c6b', 'roughness': .95, 'kind': 'art', 'seed': 29, 'params': [1, 0, 0, 0], 'canvas': True},
+        'art-9': {'color': '#cfd8d3', 'alt': '#4c5f4a', 'roughness': .95, 'kind': 'art', 'seed': 37, 'params': [2, 0, 0, 0], 'canvas': True},
     }
+
+
+# The framed prints wall art chooses among, one per room (scene.py wall_art).
+ART_PRINTS = ('art-3', 'art-4', 'art-5', 'art-6', 'art-7', 'art-8', 'art-9')
 
 
 class Kit:

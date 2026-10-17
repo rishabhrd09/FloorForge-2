@@ -7,10 +7,28 @@ function canvas(size) {
   const c = document.createElement('canvas'); c.width = size; c.height = size; return c;
 }
 
-function toTexture(cv, anisotropy) {
-  const t = new THREE.CanvasTexture(cv);
+// Atlases are uploaded as pixel data rather than as canvases: a canvas keeps no colour under transparent pixels, so
+// filtering and mipmaps would pull every leaf edge toward black (and toward the noisy colour of faint antialiased
+// pixels). In each cell the (nearly) transparent pixels take that cell's mean leaf colour, with their alpha kept, so a
+// filtered edge stays its own leaf's colour and never borrows a neighbouring cell's.
+export function toTexture(cv, anisotropy, cells = 2) {
+  const size = cv.width, step = size / cells;
+  const data = cv.getContext('2d').getImageData(0, 0, size, size).data;
+  for (let y0 = 0; y0 < size; y0 += step) for (let x0 = 0; x0 < size; x0 += step) {
+    const mean = [0, 0, 0];
+    let n = 0;
+    for (let y = y0; y < y0 + step; y++) for (let i = (y * size + x0) * 4, end = i + step * 4; i < end; i += 4) {
+      if (data[i + 3] > 127) { mean[0] += data[i]; mean[1] += data[i + 1]; mean[2] += data[i + 2]; n++; }
+    }
+    if (!n) continue;
+    for (let y = y0; y < y0 + step; y++) for (let i = (y * size + x0) * 4, end = i + step * 4; i < end; i += 4) {
+      if (data[i + 3] < 32) { data[i] = mean[0] / n; data[i + 1] = mean[1] / n; data[i + 2] = mean[2] / n; }
+    }
+  }
+  const t = new THREE.DataTexture(data, size, size, THREE.RGBAFormat, THREE.UnsignedByteType);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = anisotropy;
+  t.magFilter = THREE.LinearFilter;
   t.minFilter = THREE.LinearMipmapLinearFilter;
   t.generateMipmaps = true;
   // Atlas convention: canvas row 0 is v = 0 and every cell is painted base-at-top, tip downward.
@@ -41,6 +59,9 @@ function drawLeaf(ctx, rnd, { x, y, angle, len, width, hue, sat, light, vein = t
   g.addColorStop(1, hsl(hue - 3, sat, light - 9));
   ctx.fillStyle = g;
   ctx.fill();
+  // Sheen and veins stay inside the blade: strokes past its outline would show as pale whiskers around the leaf.
+  ctx.save();
+  ctx.clip();
   // Soft specular sheen on one half.
   ctx.globalAlpha = gloss;
   ctx.fillStyle = hsl(hue + 10, 30, light + 30);
@@ -59,6 +80,7 @@ function drawLeaf(ctx, rnd, { x, y, angle, len, width, hue, sat, light, vein = t
       ctx.beginPath(); ctx.moveTo(0, len * t); ctx.quadraticCurveTo(-w * .5, len * (t + .03), -w, len * (t + .1)); ctx.stroke();
     }
   }
+  ctx.restore();
   ctx.restore();
 }
 
@@ -142,12 +164,15 @@ function leafAtlas(size) {
       ctx.beginPath(); ctx.moveTo(0, len * .06); ctx.lineTo(0, len * .95); ctx.stroke();
     } else {
       drawLeaf(ctx, rnd, { x: 0, y: 0, angle: 0, len, width, hue: p.hue, sat: p.sat, light: p.light, pointy: p.pointy, gloss: .22 });
-      if (c === 1) { // variegated strap edge (cordyline)
-        ctx.strokeStyle = hsl(345, 60, 45, .8); ctx.lineWidth = 5; leafPath(ctx, len, width, p.pointy); ctx.stroke();
+      if (c === 1) { // variegated strap edge (cordyline), inside the outline only
+        ctx.save(); leafPath(ctx, len, width, p.pointy); ctx.clip();
+        ctx.strokeStyle = hsl(345, 60, 45, .8); ctx.lineWidth = 10; ctx.stroke(); ctx.restore();
       }
       if (c === 2) { // parallel veins + a few natural splits in the paddle blade
+        ctx.save(); leafPath(ctx, len, width, p.pointy); ctx.clip();
         ctx.strokeStyle = hsl(100, 25, 42, .35); ctx.lineWidth = 2;
         for (let i = 1; i < 18; i++) { const t = i / 18; ctx.beginPath(); ctx.moveTo(0, len * t); ctx.lineTo(width * .95 * Math.sin(t * Math.PI), len * (t + .06)); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, len * t); ctx.lineTo(-width * .95 * Math.sin(t * Math.PI), len * (t + .06)); ctx.stroke(); }
+        ctx.restore();
         ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 3;
         for (let i = 0; i < 3; i++) { const t = .3 + i * .2; ctx.beginPath(); ctx.moveTo(width * .15, len * t); ctx.lineTo(width, len * (t + .07)); ctx.stroke(); }
         ctx.globalCompositeOperation = 'source-over';
@@ -406,7 +431,7 @@ export class FoliageTextures {
     this.fronds = toTexture(frondAtlas(size), an);
   }
   // Indian garden atlases are painted only when a scene plants one of the heritage species.
-  get gardenLeaves() { return this._gardenLeaves ||= toTexture(gardenLeafAtlas(this.size), this.an); }
-  get gardenFlowers() { return this._gardenFlowers ||= toTexture(gardenFlowerAtlas(this.size), this.an); }
+  get gardenLeaves() { return this._gardenLeaves ||= toTexture(gardenLeafAtlas(this.size), this.an, 4); }
+  get gardenFlowers() { return this._gardenFlowers ||= toTexture(gardenFlowerAtlas(this.size), this.an, 4); }
   dispose() { for (const t of [this.cluster, this.clusterLight, this.leaves, this.flowers, this.fronds, this._gardenLeaves, this._gardenFlowers]) t?.dispose(); }
 }

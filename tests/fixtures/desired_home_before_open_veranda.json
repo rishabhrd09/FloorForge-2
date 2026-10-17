@@ -556,7 +556,7 @@
   ],
   "added_nodes": [
     {
-      "asset": "ebd435618a2e1e8e69cd",
+      "asset": "84a5a703d4b4780b59b4",
       "floor": -1,
       "id": "object-00141",
       "material": "basalt",
@@ -579,7 +579,7 @@
       ]
     },
     {
-      "asset": "dbdf8153ec63a0e10a47",
+      "asset": "b276582f7d813fec0594",
       "floor": -1,
       "id": "plinth-band",
       "material": "basalt",
@@ -602,7 +602,7 @@
       ]
     },
     {
-      "asset": "f9330bd29e0bfdd558de",
+      "asset": "a775a8b269342ad2bf07",
       "floor": 0,
       "id": "F0-ceiling",
       "material": "ceiling",
@@ -625,7 +625,7 @@
       ]
     },
     {
-      "asset": "d356e3bf651a84ca05f0",
+      "asset": "233d123391eda29c7fdc",
       "floor": 0,
       "id": "roof-floor-0",
       "material": "roof",
@@ -648,7 +648,7 @@
       ]
     },
     {
-      "asset": "1454c3f9f2d707754be9",
+      "asset": "62fb5bff7684bfacc0f9",
       "floor": 0,
       "id": "custom-roof-edge-0",
       "material": "roof",
@@ -3601,7 +3601,7 @@
       "fixture_visible": true,
       "kind": "porch",
       "position": [
-        12.774,
+        12.774000000000001,
         0.4,
         2.9499999999999997
       ],

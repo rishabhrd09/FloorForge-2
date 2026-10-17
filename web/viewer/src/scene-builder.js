@@ -83,6 +83,14 @@ export function buildBuckets(data, materials) {
     // Box-projected UVs: world-aligned for unrotated architecture (continuous across pieces), object-local otherwise.
     const P = rotated ? L : W;
     const flip = Math.sign(sx * sy * sz) < 0;
+    // A 'canvas' material (a wall-art print) shows its whole picture once on each piece instead: u runs 0..1 across it,
+    // left to right for someone facing it, and v 0..1 up it.
+    let fit = null;
+    if (matDef.canvas) {
+      const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+      for (let i = 0; i < nv * 3; i++) { lo[i % 3] = Math.min(lo[i % 3], W[i]); hi[i % 3] = Math.max(hi[i % 3], W[i]); }
+      fit = { lo, hi, size: hi.map((v, i) => Math.max(v - lo[i], 1e-6)) };
+    }
     for (const f of asset.faces) {
       const a = f[0], c1 = flip ? f[2] : f[1], c2 = flip ? f[1] : f[2];
       const ids = [a, c1, c2];
@@ -104,11 +112,16 @@ export function buildBuckets(data, materials) {
       if (az >= ax && az >= ay) { ua = 0; va = 1; if (grain && ext[1] > ext[0] * 1.05) { ua = 1; va = 0; } }
       else if (ax >= ay) { ua = 1; va = 2; if (grain && ext[2] > ext[1] * 1.5) { ua = 2; va = 1; } }
       else { ua = 0; va = 2; if (grain && ext[2] > ext[0] * 1.5) { ua = 2; va = 0; } }
+      // Facing a vertical face, its right hand runs along (-n.y, n.x); other faces read in plan.
+      const upright = Math.abs(fn[2]) < .5, rx = upright ? -fn[1] : 1, ry = upright ? fn[0] : 0;
+      const start = fit && (rx < 0 ? fit.hi[0] : fit.lo[0]) * rx + (ry < 0 ? fit.hi[1] : fit.lo[1]) * ry;
       for (const i of ids) {
         b.pos.push(W[i * 3], W[i * 3 + 2], -W[i * 3 + 1]);
         if (N) b.nor.push(N[i * 3], N[i * 3 + 2], -N[i * 3 + 1]);
         else b.nor.push(fn[0], fn[2], -fn[1]);
-        b.uv.push(P[i * 3 + ua] / tile[0], P[i * 3 + va] / tile[1]);
+        if (fit) b.uv.push((W[i * 3] * rx + W[i * 3 + 1] * ry - start) / (Math.abs(rx) * fit.size[0] + Math.abs(ry) * fit.size[1]),
+          upright ? (W[i * 3 + 2] - fit.lo[2]) / fit.size[2] : (W[i * 3 + 1] - fit.lo[1]) / fit.size[1]);
+        else b.uv.push(P[i * 3 + ua] / tile[0], P[i * 3 + va] / tile[1]);
       }
     }
   }

@@ -1,6 +1,6 @@
 # Per-floor guides and exact plans
 
-The studio now offers **Automatic**, **Quick Guide**, and **Custom Plan**. Existing automatic presets keep their original scene geometry, materials, lighting, furniture recipes, planting and cameras. The recorded hashes and reference-image inventory are in `evidence/custom-plan/aesthetic-baseline.json`. The comparison is of generated scene data; it is not a new real-GPU pixel certification.
+The studio now offers **Automatic**, **Quick Guide**, and **Custom Plan**. Existing automatic presets keep their original scene geometry, materials, lighting, furniture recipes, planting and cameras. The recorded hashes and reference-image inventory are in `evidence/custom-plan/aesthetic-baseline.json`. The comparison is of generated scene data; it is not a new real-GPU pixel certification. The one deliberate change since is to shared soft furnishings (2026-10-17): the draped bedspread and a framed print chosen per room. `tests/fixtures/legacy_visual_geometry.json.gz` was re-recorded after checking that nothing else in the three presets moved.
 
 ## Import a 2D drawing
 

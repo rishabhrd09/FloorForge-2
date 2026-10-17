@@ -1,5 +1,35 @@
 # Executed verification — 0.3.0-alpha
 
+## 2026-10-17 — bedspreads, house-plant leaves and wall prints
+
+Three shared soft-furnishing assets used in every sample's interiors were corrected, and the samples were regenerated.
+
+- **Bedspread** (`bed_set` in `floorforge/scene.py`). The old 22 × 24 grid dropped only its side columns. Its foot row ran 8.5 cm past the mattress, 4.5 cm above the top: a flap with a dark dog-ear at each corner and a pale slit beneath. The spread is now the mattress's rounded top offset by 3 cm, with a ripple. It is turned back below the pillows and draped over both sides, the foot and both foot corners to one level hem 10 cm below the mattress top. Normals come from the cloth surface, and quads split along each corner's fold, so the gathered corners shade smoothly. On every bed of the default preset and the published My Desired Home (single and double beds, four orientations), the spread stays 9–51 mm clear of the mattress. The old spread ranged from 4 to 133 mm.
+- **House-plant leaves** (`web/viewer/src/vegetation.js`, `foliage-textures.js`). Leaf blades are shaded on whichever face is seen, so undersides are green. Atlases are uploaded as pixel data with each cell's mean leaf colour under its transparent pixels, so filtered and mipmapped edges keep the leaf's own colour. Veins and sheen are painted inside the outline. The broad glossy leaves (monstera, fiddle-leaf fig, strelitzia, frangipani, cordyline) now reflect at 40% specular strength with a rougher finish. The cream tips that remained after the normal fix were a bedside lamp's full-strength highlight.
+- **Wall prints** (`wall_art`, `ART_PRINTS` in `floorforge/scene_kit.py`, `web/viewer/src/textures.js`, `scene-builder.js`). There are seven prints in four compositions (soft washes, colour fields, ridges under a low sun, nested arches), each with its own palette. A room hangs the print its id hashes to, moving along the list while that print already hangs elsewhere in the house. No print repeats until all seven are used, and each print fills its frame once. The Bungalow's heritage interior keeps its own two paintings (`'art'`, `'art-2'`).
+
+**Regenerated with their own scripts.**
+- `examples/demo` (`scripts/regenerate_examples.py --only demo`), and Saved Verandah, Garden Pavilion, Quiet Studio and Palm Terrace (`build_sample_gallery.py`).
+- Aangan House and Long House (`build_plan_reveal_samples.py`), The Bungalow, My Desired Home, and its electrical edition.
+- `web/viewer.js` and `web/plan-reveal.js` were rebuilt. The electrical edition's `viewer.js` and both Plan Reveal folders' `plan-reveal.js` match them by SHA-256. Every regenerated `preview.html` embeds the new viewer. Rebuilding the previous sources reproduces the previous bundles byte for byte.
+
+**Not regenerated.** `examples/compact`, `examples/small` and `examples/your-sketch` were built by an older generator, and regenerating them would bring unrelated schema changes. `my-desired-home-50ft` is the preserved original and stays byte-identical. These four keep the previous furnishings and viewer.
+
+**What else changed.** The same scripts were also run on the unchanged code in a scratch worktree on this machine.
+- Every regenerated scene equals that build exactly once prints are mapped back to `'art'` and bedspreads to the old meshes. Bed editable anchor hashes also differ, because they hash the bed's nodes.
+- Outside the scene and viewer carriers, the only differing files are the IFC bed meshes, one more glTF geometry per print material in `export-checks.json`, and ezdxf's CLASS record order in the DXF.
+- Compared with the committed copies, Saved Verandah and Palm Terrace also move one study's bookcase, books, plant and print. They were last built on 2026-09-30, before `e64360b` made those placements platform-independent.
+- The other differences from the committed copies (ring start vertices, last-digit rounding, mesh cache keys) come from this container (glibc 2.39) rounding differently from the machine recorded in `evidence/runtime.json` (glibc 2.41).
+
+**Baselines updated deliberately.**
+- `tests/fixtures/legacy_visual_geometry.json.gz` was checked before it was re-recorded. The three automatic presets were mapped back (prints to `'art'`, bedspreads to the recorded meshes, the seven print materials removed) and passed the repository's tolerant visual snapshot comparison, so nothing else in them moved.
+- In the My Desired Home fixtures, four ground-floor node digests change because they hash the bedspreads and prints: the modular-kitchen ground nodes, and the upper-refinement ground, entrance-unaffected and kitchen-unaffected nodes.
+- Five asset keys and one ground light (a 1e-15 difference) in `desired_home_before_open_veranda.json`, and the ground-light digest, change only with this machine's rounding. The unchanged code, regenerated here, fails three of these tests against the committed fixtures.
+
+**Tests.** The full Python suite passed **551 tests**: the previous 549, plus a check that every bedspread stays clear of its mattress and falls to a level hem, and a per-room print check. Both new tests fail on the previous code. `node --test web/viewer/src/*.test.js` passed **23 tests**, including a new check of the atlas colour fill.
+
+**Renders.** Chromium/SwiftShader captures before and after, with no browser errors, are in `evidence/soft-furnishings/`. They cover the Long House and Aangan House beds, house plants and prints, and both Plan Reveal pages at their room stops.
+
 ## 2026-09-29 — courtyard/veranda wall junction and guide review
 
 - The full Python suite passed: **286 tests**, including the existing automatic-preset aesthetic hashes and 11 new wall-junction regressions. The viewer unit suite passed **13 tests**.

@@ -7,8 +7,11 @@ import { hashString, mulberry32 } from './util.js';
 
 const VARIANTS = 3;
 
-// Shared foliage shader patch: wind sway, no back-face normal flip (bent card normals), soft translucency.
-export function patchFoliage(material, uniforms, { translucency = .45, instancedWind = true } = {}) {
+// Shared foliage shader patch: wind sway, two-sided shading and soft translucency. Canopy cards keep their bent normal on
+// both faces (no back-face flip), so a crown shades as one volume. Leaf blades (`blades`) turn the normal toward the eye:
+// a blade seen from below is shaded as its own green underside, not as the back of its top face, whose normal would
+// point away from the camera and catch a grazing, near-white reflection of the room.
+export function patchFoliage(material, uniforms, { translucency = .45, instancedWind = true, blades = false } = {}) {
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
@@ -34,7 +37,8 @@ uniform float ffWind;`)
       .replace('#include <common>', `#include <common>
 uniform vec3 ffSunDir;
 uniform vec3 ffSunColor;`)
-      .replace('#include <normal_fragment_begin>', THREE.ShaderChunk.normal_fragment_begin.replace('normal *= faceDirection;', ''))
+      .replace('#include <normal_fragment_begin>', THREE.ShaderChunk.normal_fragment_begin.replace('normal *= faceDirection;',
+        blades ? 'normal = dot(normal, vViewPosition) < 0.0 ? -normal : normal;' : ''))
       .replace('#include <opaque_fragment>', `{
   vec3 sunV = normalize((viewMatrix * vec4(ffSunDir, 0.0)).xyz);
   float back = pow(max(dot(normalize(-vViewPosition), sunV), 0.0), 3.0);
@@ -42,7 +46,7 @@ uniform vec3 ffSunColor;`)
 }
 #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey = () => 'ff-foliage-' + translucency;
+  material.customProgramCacheKey = () => 'ff-foliage-' + translucency + (blades ? '-blades' : '');
 }
 
 export class Vegetation {
@@ -83,9 +87,12 @@ export class Vegetation {
     }
   }
 
+  // `specular` scales a leaf's specular reflectance (a physical material): a waxy blade reflects less than polished
+  // glass, and at full strength a lamp beside the plant or a grazing view of a pale room turns a dark leaf white.
   leafMaterial(map, opts = {}) {
-    const m = new THREE.MeshStandardMaterial({ map, alphaTest: .42, side: THREE.DoubleSide, roughness: opts.roughness ?? .62, metalness: 0, color: opts.color || '#ffffff', envMapIntensity: .7 });
-    patchFoliage(m, this.uniforms, { translucency: opts.translucency ?? .45 });
+    const params = { map, alphaTest: .42, side: THREE.DoubleSide, roughness: opts.roughness ?? .62, metalness: 0, color: opts.color || '#ffffff', envMapIntensity: .7 };
+    const m = opts.specular === undefined ? new THREE.MeshStandardMaterial(params) : new THREE.MeshPhysicalMaterial({ ...params, specularIntensity: opts.specular });
+    patchFoliage(m, this.uniforms, { translucency: opts.translucency ?? .45, blades: opts.blades });
     return m;
   }
 
@@ -112,12 +119,13 @@ export class Vegetation {
     const mass = new THREE.MeshStandardMaterial({ color: '#233518', roughness: .95 });
     patchFoliage(mass, u, { translucency: .05 });
     const solid = new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .7 });
-    patchFoliage(solid, u, { translucency: .35 });
+    patchFoliage(solid, u, { translucency: .35, blades: true });
+    // Every species on the leaves, fronds and solid atlases is built from blades (plant-builders.js blade()).
     const set = {
       cluster: leaf(this.tex.cluster, { color: '#e6f0dc' }),
       clusterLight: leaf(this.tex.clusterLight, { color: '#f4f7ea' }),
-      leaves: leaf(this.tex.leaves, { roughness: .45, translucency: .5 }),
-      fronds: leaf(this.tex.fronds, { translucency: .55 }),
+      leaves: leaf(this.tex.leaves, { roughness: .55, specular: .4, translucency: .5, blades: true }),
+      fronds: leaf(this.tex.fronds, { translucency: .55, blades: true }),
       flowers: leaf(this.tex.flowers, { roughness: .7, translucency: .6 }),
       solid,
       bark: barkMat(bark), smoothBark: barkMat(smoothBark), palmBark: barkMat(palmBark), greenStem: barkMat(greenStem), mass,

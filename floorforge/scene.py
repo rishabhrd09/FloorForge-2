@@ -16,7 +16,7 @@ from shapely.affinity import scale as pscale
 from shapely.prepared import prep
 from .model import sha, STYLES, enu_to_local
 from .exterior import apply_exterior_preferences, get_exterior_theme, get_interior_theme
-from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT
+from .scene_kit import Kit, extrude, rounded_box, frustum, material_library, SPECIES_HEIGHT, ART_PRINTS
 from .frontage import gate_openings
 from .plan_geometry import plate, roof, geometry, floor_outline
 from .spaces import OUTDOOR, NON_WALKABLE
@@ -1459,8 +1459,12 @@ def make_scene(building, report):
         x, y = P(sp, u, v)
         rb((x, y, zc), size, mat, f, role, r, lrot(sp) + extra, owner=owner)
 
+    hung = {}  # room id -> print
+
     def wall_art(ctx, width=.9, height=.7, zc=1.55):
-        """A framed print on the widest solid wall stretch not already used, above any furniture."""
+        """A framed print on the widest solid wall stretch not already used, above any furniture. The print is one of
+        ART_PRINTS: a room starts from the one its id hashes to and moves along the list while that already hangs in
+        another room, so no picture repeats until all of them are up, and each room keeps its own between builds."""
         f = ctx['floor']; z = f * H
         serving_hosts=[hosts[o['wall_id']] for o in b['openings'] if o.get('servingCounter')=='full' and ctx['room']['id'] in o['connects']]
         art_ctx={**ctx,'doors':[],'placed':[]} if serving_hosts else ctx
@@ -1472,7 +1476,12 @@ def make_scene(building, report):
         preferred=[s for s in cands if any(LineString(np.array([w['a'],w['b']])/1000).distance(Point(*s['c']))<.1 for w in serving_hosts)]
         sp = max(preferred or cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L']))
         lbox(sp, -width / 2, width / 2, .004, .035, z + zc - height / 2, z + zc + height / 2, 'frame', f, 'art')
-        lbox(sp, -width / 2 + .04, width / 2 - .04, .035, .042, z + zc - height / 2 + .04, z + zc + height / 2 - .04, 'art', f, 'art')
+        rid = ctx['room']['id']
+        if rid not in hung:
+            start = int(sha(rid)[:8], 16)
+            hung[rid] = min((ART_PRINTS[(start + k) % len(ART_PRINTS)] for k in range(len(ART_PRINTS))),
+                            key=lambda art: sum(art == other for other in hung.values()))
+        lbox(sp, -width / 2 + .04, width / 2 - .04, .035, .042, z + zc - height / 2 + .04, z + zc + height / 2 - .04, hung[rid], f, 'art')
 
     def wardrobe(ctx, lengths=(2.4, 2.1, 1.8, 1.5, 1.2, .9), name='wardrobe', prefer_door=True):
         room, f = ctx['room'], ctx['floor']; z = f * H
@@ -1560,21 +1569,45 @@ def make_scene(building, report):
                 lbox(sp, uu, uu + .06, .003, .028, z + .1, z + 2.55, M['casework'], f, 'wall-panel')
         for pu in ((0,) if bw<1.2 else (-bw / 4, bw / 4)):
             lrb(sp, pu, v0 + .38, z + .58, (bw-.2 if bw<1.2 else bw / 2 - .12, .42, .17), 'linen', f, r=.07, extra=.035)
-        vv, ff = [], []
-        nx, ny = 22, 24
-        for j in range(ny):
-            for i in range(nx):
-                uu = -bw / 2 - .055 + (bw + .11) * i / (nx - 1); wv = v0 + .68 + (bl - .58) * j / (ny - 1)
-                zz = z + .54 + .014 * math.cos(i * .9 + j * .25) + .007 * math.sin(i * 1.8)
-                if i in (0, nx - 1):
-                    zz -= .13
-                x, y = P(sp, uu, wv)
-                vv.append((x, y, zz))
-        for j in range(ny - 1):
+        # The bedspread is the mattress's rounded top offset by a 3 cm gap: turned back below the pillows and draped
+        # over both sides, the foot and the corners to a level hem, so it stays just clear of the mattress all round.
+        # Cloth lengths (across a, along b) past the flat top's edge are wrapped over the rounding and then fall straight
+        # down; at a corner the larger of the two overhangs is wrapped, radially about the rounding's corner.
+        R = .075 + .03                                       # mattress edge radius + gap
+        U, V1, Z1 = bw / 2 - .055, v0 + bl - .06, z + .44    # rounding centres: half-width, foot line, height
+        arc = math.pi / 2 * R
+        hang = [R * math.radians(d) for d in (20, 45, 70)] + [arc, arc + .13 - R]
+        na, nb = max(8, round(2 * U / .1)), max(8, round((V1 - v0 - .68) / .08))
+        across = [-U - s for s in hang[::-1]] + [-U + 2 * U * i / na for i in range(na + 1)] + [U + s for s in hang]
+        along = [v0 + .68 + (V1 - v0 - .68) * j / nb for j in range(nb + 1)] + [V1 + s for s in hang]
+
+        def cloth(uu, wv):
+            """The spread at cloth lengths (uu, wv), in the bed's frame (along the wall, into the room, height)."""
+            du, dv = max(0., abs(uu) - U), max(0., wv - V1)
+            s = max(du, dv); el = math.hypot(du, dv) or 1.
+            t = min(s, arc) / R
+            r = R + .014 * math.cos(9.9 * (uu + U) + 3.9 * (wv - v0)) + .007 * math.sin(19.8 * (uu + U))  # ripple along the normal
+            return (max(-U, min(U, uu)) + math.copysign(du, uu) / el * r * math.sin(t), min(wv, V1) + dv / el * r * math.sin(t),
+                    Z1 + r * math.cos(t) - max(0., s - arc))
+        vv, nn, ff = [], [], []
+        for wv in along:
+            for uu in across:
+                cu, cv, zz = cloth(uu, wv)
+                vv.append((*P(sp, cu, cv), zz))
+                # Normals come from the cloth itself, not from its triangles, which are uneven where a corner gathers it.
+                du_ = np.subtract(cloth(uu + 1e-4, wv), cloth(uu - 1e-4, wv)); dv_ = np.subtract(cloth(uu, wv + 1e-4), cloth(uu, wv - 1e-4))
+                n_ = np.cross(du_, dv_); n_ /= np.linalg.norm(n_)
+                nn.append((*(sp['t'] * n_[0] + sp['n'] * n_[1]), n_[2]))
+        nx = len(across)
+        for j in range(len(along) - 1):
             for i in range(nx - 1):
+                # Quads split along a corner's fold (mirrored on the left side): split across it, a triangle would lie
+                # flat across the falling cloth.
                 q = j * nx + i
-                ff += [[q, q + 1, q + nx + 1], [q, q + nx + 1, q + nx]]
-        node(asset(trimesh.Trimesh(vertices=vv, faces=ff, process=False), smooth=True), 'fabric', floor=f, role='furniture')
+                ff += [[q, q + 1, q + nx + 1], [q, q + nx + 1, q + nx]] if across[i] >= 0 else [[q, q + 1, q + nx], [q + 1, q + nx + 1, q + nx]]
+        spread = trimesh.Trimesh(vertices=vv, faces=ff, process=False)
+        spread.vertex_normals = nn
+        node(asset(spread, smooth=True), 'fabric', floor=f, role='furniture')
         if tables:
             for su in (-1, 1):
                 tu = su * (bw / 2 + .30)

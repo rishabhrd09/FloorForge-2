@@ -15,9 +15,9 @@
   },
   {
     "name": "demo",
-    "build_id": "185d84bedfd0c373dcc6bed6",
+    "build_id": "d843e37dae9305b539304f53",
     "project": "examples/briefs/demo.json",
     "outputs": "examples/demo",
-    "seconds": 3.462
+    "seconds": 12.364
   }
 ]

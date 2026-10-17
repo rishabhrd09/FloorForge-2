@@ -452,15 +452,40 @@ void surface(vec2 p, out vec3 c, out float h, out float r){
   r = .62 + .2 * (1. - slat);
 }`,
   art: /* glsl */`
-// Abstract painted canvas for wall art (soft washes, a few confident strokes).
+// Painted canvas for wall art. uP.x picks the composition: 0 soft washes with a few confident strokes, 1 two colour
+// fields on a paper ground, 2 ridges fading into haze under a low sun, 3 nested arches beside a small sun. Prints on
+// 'canvas' materials fill their frame once (scene-builder.js), so round motifs are drawn for a 1.4 : 1 frame.
 void surface(vec2 p, out vec3 c, out float h, out float r){
   float a = fbm(p * 2. + uSeed, vec2(2.), 5);
-  float b = fbm(p * 3. + 9.1, vec2(3.), 5);
-  vec3 wash = mix(uBase, uAlt, smoothstep(.35, .75, a));
-  wash = mix(wash, vec3(.85, .82, .76), smoothstep(.55, .8, b) * .6);
-  float stroke = sstep(.02, 0., abs(sin(p.x * 6.28 + a * 4.) * .3 + .5 - p.y) - .01) * .5;
-  c = mix(wash, uAlt * .4, stroke);
   float canvas = vnoise(p * 700., vec2(700.));
+  vec3 paper = mix(uBase, vec3(.86, .83, .76), .45);
+  if (uP.x < .5) {
+    float b = fbm(p * 3. + 9.1, vec2(3.), 5);
+    vec3 wash = mix(uBase, uAlt, smoothstep(.35, .75, a));
+    wash = mix(wash, vec3(.85, .82, .76), smoothstep(.55, .8, b) * .6);
+    float stroke = sstep(.02, 0., abs(sin(p.x * 6.28 + a * 4.) * .3 + .5 - p.y) - .01) * .5;
+    c = mix(wash, uAlt * .4, stroke);
+  } else if (uP.x < 1.5) {
+    float y = p.y + (fbm(vec2(p.x * 3., p.y * 2.) + uSeed, vec2(3., 2.), 4) - .5) * .06;
+    float brush = vnoise(vec2(p.x * 24., p.y * 140.), vec2(24., 140.));
+    c = mix(paper, uAlt * (.9 + .15 * brush), sstep(.07, .11, y) * sstep(.47, .43, y) * .94);
+    c = mix(c, mix(uAlt, uBase, .55) * (.92 + .12 * brush), sstep(.52, .56, y) * sstep(.93, .89, y) * .9);
+  } else if (uP.x < 2.5) {
+    vec3 sky = mix(uBase, mix(uBase, vec3(1.), .5), sstep(.35, 1., p.y));
+    c = mix(sky, mix(uBase, vec3(1., .96, .88), .7), sstep(.092, .085, length(vec2((p.x - .5) * 1.4, p.y - .64))));
+    for (int k = 0; k < 3; k++) {
+      float fk = float(k);
+      float ridge = .5 - .13 * fk + .11 * (fbm(vec2(p.x * 3., 2. + fk * 3.) + uSeed, vec2(3., 16.), 5) - .5);
+      c = mix(c, mix(sky, uAlt, .45 + .27 * fk), sstep(ridge + .004, ridge - .004, p.y));
+    }
+  } else {
+    c = paper;
+    float d = length(vec2((p.x - .5) * 1.4, p.y - .08)) / .1, f = fract(d);
+    float ring = sstep(.075, .085, p.y) * sstep(0., .06, f) * sstep(1., .94, f) * step(d, 4.);
+    vec3 tone = d < 1. ? uAlt : d < 2. ? mix(uAlt, uBase, .55) : d < 3. ? uAlt * .55 : mix(uAlt * .8, vec3(.9, .85, .75), .35);
+    c = mix(c, tone, ring);
+    c = mix(c, uAlt * .9, sstep(.062, .055, length(vec2((p.x - .78) * 1.4, p.y - .74))));
+  }
   c *= .95 + .08 * canvas;
   h = canvas * .5 + a * .2;
   r = .85;

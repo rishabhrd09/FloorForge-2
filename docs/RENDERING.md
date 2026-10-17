@@ -9,9 +9,10 @@
 - tile, timber flooring and decking;
 - stamped cobble, pavers, pebbles, gravel, grass and soil;
 - encaustic tile, fabric and rugs;
-- brushed metal, stone cladding and bark.
+- brushed metal, stone cladding and bark;
+- wall art: seven framed prints (soft washes, colour fields, ridges under a low sun, nested arches) in their own palettes.
 
-UVs are box-projected, and a world-space macro variation breaks up tiling. The package ships no bitmap texture assets.
+UVs are box-projected, and a world-space macro variation breaks up tiling. Prints are the exception: each fills its frame once. A room hangs the print its id selects, moving on to another print when that one already hangs elsewhere in the house, so no print repeats until all seven are used. The package ships no bitmap texture assets.
 
 **Light outdoors.**
 - An analytic Preetham sky is rendered into the background and prefiltered into image-based light. It is used for daylight, golden hour and overcast.
@@ -36,7 +37,8 @@ UVs are box-projected, and a world-space macro variation breaks up tiling. The p
 
 **Planting.** Plants are grown procedurally from each scene `vegetation` item:
 - species: frangipani, columnar conifer, spiral topiary, strelitzia, cordyline, palm, ornamental grass, shade and standard trees, monstera, fiddle-leaf fig, and round and flowering shrubs;
-- painted alpha leaf atlases, wind sway and leaf translucency;
+- painted alpha leaf atlases, wind sway and leaf translucency. Under each cell's transparent pixels the atlas keeps that cell's own leaf colour, so filtered edges never darken or borrow a neighbour's colour. Veins and sheen are painted inside the leaf outline;
+- leaf blades (house plants, palms, strelitzia, grasses) are shaded on whichever face is seen, so undersides read green. The broad glossy leaves (monstera, fiddle-leaf fig, strelitzia, frangipani, cordyline) reflect less than a polished surface, so a bedside lamp or a pale room does not turn a dark leaf white. Canopy cards keep one bent normal on both faces, so a crown shades as one volume;
 - hedges, and instanced lawn grass that fades with distance.
 
 GLB and drawings keep simple coordination proxies (`role: plant-proxy`) for the same plants.
