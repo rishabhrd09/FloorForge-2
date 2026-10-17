@@ -225,7 +225,7 @@
                 11860
               ]
             ],
-            "centerTree": true,
+            "centerTree": "mango",
             "drain": true
           },
           {
@@ -829,7 +829,7 @@
     ],
     "stairs": []
   },
-  "notes": "East-facing 55 \u00d7 80 ft courtyard home on one level. The entrance hall looks straight across the aangan to its frangipani; living and dining open to it on the south, a covered veranda on the north leads to the bedrooms, and the family lounge opens to both the aangan and the rear garden. Every room has daylight and cross-ventilation from two sides. Preliminary concept: structure, services and approvals remain with a qualified professional.",
+  "notes": "East-facing 55 \u00d7 80 ft courtyard home on one level. The entrance hall looks straight across the aangan to its mango tree; living and dining open to it on the south, a covered veranda on the north leads to the bedrooms, and the family lounge opens to both the aangan and the rear garden. Every room has daylight and cross-ventilation from two sides. Preliminary concept: structure, services and approvals remain with a qualified professional.",
   "editorState": {
     "mode": "custom",
     "guideFloors": [
@@ -1115,7 +1115,7 @@
                   11860
                 ]
               ],
-              "centerTree": true,
+              "centerTree": "mango",
               "drain": true
             },
             {

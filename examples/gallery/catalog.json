@@ -47,7 +47,7 @@
   {
     "id": "aangan-house",
     "title": "The Aangan House",
-    "description": "A single-storey courtyard home on a 55 \u00d7 80 ft plot: every room opens to an aangan with a frangipani. Opens as its own drawing; scroll to walk in.",
+    "description": "A single-storey courtyard home on a 55 \u00d7 80 ft plot: every room opens to an aangan with a mango tree. Opens as its own drawing; scroll to walk in.",
     "style": "Plan Reveal \u00b7 courtyard",
     "directory": "gallery/aangan-house",
     "bedrooms": 3,
@@ -55,7 +55,7 @@
     "widthFt": 55,
     "depthFt": 80,
     "roofAccess": false,
-    "planHash": "0f5405300f82f42831841f4e66d21f7f86ebc6fd45cff7fcb2bad6948da426f5",
+    "planHash": "7ef311bdc641a6376974af47f45cb904ac027656a7a558479868eed74cab8068",
     "featurePage": "reveal.html",
     "hasPlanReveal": true
   },
@@ -70,7 +70,7 @@
     "widthFt": 30,
     "depthFt": 60,
     "roofAccess": false,
-    "planHash": "bd85017dec21f5f902009168f9206ae1e6308d7b69d4510e9e94d41735d76fa4",
+    "planHash": "f9a02111761095258dd15f29a6c11814abf8269100ac637a8ce645f55feb52e4",
     "featurePage": "reveal.html",
     "hasPlanReveal": true
   },

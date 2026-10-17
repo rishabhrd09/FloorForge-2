@@ -2119,7 +2119,7 @@ def make_scene(building, report):
             continue
         if custom and kind == 'courtyard' and room.get('centerTree'):
             from .courtyard_finishes import specimen_court
-            specimen_court(k,materials,room,H)
+            specimen_court(k,materials,room,H,storeys=b['storeys'])
             continue
         if custom and kind == 'courtyard' and room.get('glassCover'):
             from .courtyard_finishes import skylit_garden
