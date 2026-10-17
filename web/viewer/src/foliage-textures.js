@@ -7,8 +7,56 @@ function canvas(size) {
   const c = document.createElement('canvas'); c.width = size; c.height = size; return c;
 }
 
-function toTexture(cv, anisotropy) {
-  const t = new THREE.CanvasTexture(cv);
+// Alpha-tested cards are filtered and mipmapped in straight colour, so the clear texels around a painted leaf
+// must carry the leaf's own colour: a canvas stores them black, which darkens or lightens edges and tips once
+// filtered. Push-pull fill (power-of-two size): average the solid texels down a pyramid, then give every clear
+// texel the mean colour of the finest level that has any. Alpha is left as painted.
+export function bleedColour(px, size) {
+  const levels = [];
+  let n = size, w = new Float32Array(n * n), c = new Float32Array(n * n * 3);
+  for (let i = 0; i < n * n; i++) {
+    if (px[i * 4 + 3] < 128) continue;
+    w[i] = 1; c[i * 3] = px[i * 4]; c[i * 3 + 1] = px[i * 4 + 1]; c[i * 3 + 2] = px[i * 4 + 2];
+  }
+  levels.push({ n, w, c });
+  while (n > 1) {
+    const m = n >> 1, w2 = new Float32Array(m * m), c2 = new Float32Array(m * m * 3);
+    for (let y = 0; y < m; y++) for (let x = 0; x < m; x++) {
+      const o = y * m + x;
+      for (const s of [2 * y * n + 2 * x, 2 * y * n + 2 * x + 1, (2 * y + 1) * n + 2 * x, (2 * y + 1) * n + 2 * x + 1]) {
+        w2[o] += w[s]; c2[o * 3] += c[s * 3]; c2[o * 3 + 1] += c[s * 3 + 1]; c2[o * 3 + 2] += c[s * 3 + 2];
+      }
+    }
+    levels.push({ n: m, w: w2, c: c2 });
+    n = m; w = w2; c = c2;
+  }
+  for (let k = levels.length - 1; k >= 0; k--) {
+    const { n, w, c } = levels[k], up = levels[k + 1];
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const o = y * n + x;
+      if (w[o] > 0) { for (let j = 0; j < 3; j++) c[o * 3 + j] /= w[o]; continue; }
+      if (!up) continue;
+      const q = ((y >> 1) * up.n + (x >> 1)) * 3;
+      c[o * 3] = up.c[q]; c[o * 3 + 1] = up.c[q + 1]; c[o * 3 + 2] = up.c[q + 2];
+    }
+  }
+  const c0 = levels[0].c;
+  for (let i = 0; i < size * size; i++) {
+    if (px[i * 4 + 3] >= 128) continue;
+    px[i * 4] = Math.round(c0[i * 3]); px[i * 4 + 1] = Math.round(c0[i * 3 + 1]); px[i * 4 + 2] = Math.round(c0[i * 3 + 2]);
+  }
+  return px;
+}
+
+function toTexture(cv, anisotropy, bleed = false) {
+  let t;
+  if (bleed) {
+    // Straight-colour pixels with the leaf colour bled outwards; a canvas upload would drop it again.
+    const image = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height);
+    bleedColour(image.data, cv.width);
+    t = new THREE.DataTexture(new Uint8Array(image.data.buffer), cv.width, cv.height, THREE.RGBAFormat);
+    t.magFilter = THREE.LinearFilter;
+  } else t = new THREE.CanvasTexture(cv);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = anisotropy;
   t.minFilter = THREE.LinearMipmapLinearFilter;
@@ -401,7 +449,7 @@ export class FoliageTextures {
     this.size = size; this.an = an;
     this.cluster = toTexture(clusterAtlas(size, { hue: 104, sat: 38, light: 28, seed: 1, conifer: true, count: 80 }), an);
     this.clusterLight = toTexture(clusterAtlas(size, { hue: 86, sat: 42, light: 34, seed: 2, conifer: true, count: 70, leafLen: .19 }), an);
-    this.leaves = toTexture(leafAtlas(size), an);
+    this.leaves = toTexture(leafAtlas(size), an, true);
     this.flowers = toTexture(flowerAtlas(size), an);
     this.fronds = toTexture(frondAtlas(size), an);
   }

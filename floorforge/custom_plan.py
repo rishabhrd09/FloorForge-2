@@ -27,7 +27,7 @@ def fail(code,message,ident=None,floor=None,**extra):
 
 
 def normalize(plan,storeys):
-    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor','sceneSeed'}:
+    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor','sceneSeed','furnishingStyle'}:
         fail('PLAN_SCHEMA','Custom plan accepts schema, units, wallThickness, floors and stairs.')
     if plan.get('schema')!=SCHEMA or plan.get('units')!='mm':
         fail('PLAN_VERSION','Use floorforge.custom-plan/1 in millimetres.')
@@ -39,6 +39,7 @@ def normalize(plan,storeys):
     if result.get('facadeStyle','plain') not in ('plain','warm-layered',HERITAGE):fail('FACADE_STYLE','Choose plain, warm-layered or heritage-bungalow facade finishes.')
     heritage=result.get('facadeStyle')==HERITAGE
     if result.get('entranceStyle','standard') not in ('standard','wall-supported'):fail('ENTRANCE_STYLE','Choose standard or wall-supported entrance.')
+    if result.get('furnishingStyle','standard') not in ('standard','fitted'):fail('FURNISHING_STYLE','Choose standard or fitted furnishings.')
     def ident(obj):
         key=obj.get('id')
         if not isinstance(key,str) or not ID.fullmatch(key) or key in seen:fail('PLAN_ID','Every floor, room, wall, opening and stair needs a unique stable ID.',key)
@@ -537,6 +538,7 @@ def compile_plan(intent):
     if 'parkedCar' in plan:b['planning']['parkedCar']=plan['parkedCar']
     if 'facadeStyle' in plan:b['planning']['facadeStyle']=plan['facadeStyle']
     if 'entranceStyle' in plan:b['planning']['entranceStyle']=plan['entranceStyle']
+    if 'furnishingStyle' in plan:b['planning']['furnishingStyle']=plan['furnishingStyle']
     for space in spaces:
         if space.get('underStair'):
             host=next(q for q in spaces if q['id']==space['underStair'])

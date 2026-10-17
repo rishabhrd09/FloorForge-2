@@ -103,7 +103,7 @@ def aangan():
         window('a-study-north', 'a-study', 'right', 1100, 1800, 1500, 750),
     ]
     plan = dict(schema='floorforge.custom-plan/1', units='mm', wallThickness=t, frontCourt='planted', facadeStyle='warm-layered',
-                entranceStyle='wall-supported', interiorFloor='ivory-vitrified', doorsClosed=False,
+                entranceStyle='wall-supported', interiorFloor='ivory-vitrified', doorsClosed=False, furnishingStyle='fitted',
                 sceneSeed='5a1e0c2d9f8b4e7a6c3d2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2918',
                 floors=[dict(id='floor-0', rooms=g, walls=[], openings=o)], stairs=[])
     brief = dict(title='The Aangan House', width_mm=16764, depth_mm=24384, road_bearing_deg=90, front_mm=3048, rear_mm=1524,
@@ -186,7 +186,7 @@ def long_house():
         window('u-stair-west', 'u-stair', 'right', 1800, 1200, 1500, 900),
     ]
     plan = dict(schema='floorforge.custom-plan/1', units='mm', wallThickness=t, frontCourt='tiled', facadeStyle='warm-layered',
-                entranceStyle='wall-supported', interiorFloor='ivory-vitrified', doorsClosed=False,
+                entranceStyle='wall-supported', interiorFloor='ivory-vitrified', doorsClosed=False, furnishingStyle='fitted',
                 sceneSeed='0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0',
                 # The light court is closed on its outer (east) side on both floors; above it is only sky.
                 floors=[dict(id='floor-0', rooms=g, walls=[dict(id='l-court-east-wall', a=[115, 4345], b=[115, 7175])], openings=go),

@@ -56,6 +56,12 @@ def test_page_is_offline_and_files_match_their_manifest(sample):
     assert scene == json.loads((folder / 'scene.json').read_text(encoding='utf-8'))
 
 
+def test_walkthrough_samples_are_built_with_fitted_furnishings(sample):
+    record, folder, scene, data = sample
+    building = json.loads((folder / 'building.json').read_text(encoding='utf-8'))
+    assert building['planning']['furnishingStyle'] == 'fitted'
+
+
 def test_sheet_is_the_drawing_set_plan(sample):
     record, folder, scene, data = sample
     b = json.loads((folder / 'building.json').read_text(encoding='utf-8'))

@@ -154,6 +154,13 @@ Courtyard rooms may set `glassCover: true` for a clear canopy with high-level ve
 
 An open courtyard may instead set `centerTree: true` (not together with `glassCover`) for an aangan: sandstone paving with a darker border, a frangipani in a raised round kota-stone planter whose cap is a seat, ornamental grasses, an uplight on the tree, a floor drain, and a tulsi vrindavan on the axis at the far end where the court is large enough. It is used by the Aangan House and Long House walkthrough samples ([Plan Reveal](PLAN_REVEAL.md)).
 
+A plan may set `furnishingStyle: "fitted"` (default `"standard"`) for fitted furnishings:
+
+- Each bed's spread is one closed quilt with rounded corners, lying on the mattress 20 mm inside its edges. Its underside follows the mattress's rounded shoulders a few millimetres clear of them, so no edge can cut into the mattress.
+- A kitchen without a `kitchenLayout` gets a stainless sink let into the worktop (rim, bowl and drain) instead of a bowl standing on it. The hob takes the end of the run that has solid wall behind it, under a chimney hood whose duct rises to the ceiling. Wall cupboards stop either side of the hood, and every cupboard door has a bar handle.
+
+The L-shaped `kitchenLayout` keeps its own fittings. Plans without the option keep the standard recipes, so existing projects, published samples and the legacy geometry baselines are unchanged. Both walkthrough samples use it. `tests/test_fitted_furnishings.py` checks the geometry. `scripts/capture_furnishing_closeups.mjs` renders close-ups of every bed, potted monstera and default kitchen run in a published `preview.html`. Before and after stills are in `evidence/fitted-furnishings/`.
+
 Care-room `reclinerPosition: [x, y]` optionally places the recliner in millimetres; its footprint must remain inside the room. `tvOffset` shifts the TV along the facing wall relative to the recliner, in millimetres. Veranda `finishStyle: "garden-lawn"` provides a planted lawn with a clear rear circulation path; `clearAccess: true` avoids automatic terrace furniture.
 
 Outdoor lightwells and their covered veranda edges can set `serviceOnly: true`. These retain their floor, drainage and daylight geometry but are excluded from occupied circulation; doors into them are rejected. The flag is not allowed on occupied room types.

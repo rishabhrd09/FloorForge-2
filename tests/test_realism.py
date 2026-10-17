@@ -527,6 +527,68 @@ console.log(JSON.stringify(out));
         assert abs(slack[0] - slack[1]) < .03, case
 
 
+@pytest.mark.skipif(shutil.which('node') is None or not (ROOT / 'web/viewer/node_modules/three').is_dir(),
+                    reason='Node.js or the viewer packages (npm ci in web/viewer) unavailable')
+def test_broad_leaves_are_two_sided_and_their_atlas_edges_stay_green():
+    # House plants and the other broad single leaves: blades wound the way of their normals, a two-sided material
+    # that lights each face by its own normal with a soft grazing sheen and lets shadowed direct light through, and a
+    # leaf atlas whose clear texels carry the leaf colour into filtering. Canopy cards keep one bent normal on both
+    # faces and their view-dependent glow.
+    src = ROOT / 'web/viewer/src'
+    script = """
+import * as THREE from 'three';
+import { buildSpecies } from '%s';
+import { Vegetation } from '%s';
+import { bleedColour } from '%s';
+const out = { facing: {}, materials: {} };
+const v = (i, a) => new THREE.Vector3(a[i * 3], a[i * 3 + 1], a[i * 3 + 2]);
+for (const name of ['monstera', 'fiddle_leaf', 'strelitzia', 'cordyline', 'frangipani']) {
+  let bad = 0, total = 0;
+  for (let seed = 1; seed < 6; seed++) {
+    const g = buildSpecies(name, seed * 7919).parts.leaves, p = g.attributes.position.array, n = g.attributes.normal.array, idx = g.index.array;
+    for (let t = 0; t < idx.length; t += 3, total++) {
+      const [a, b, c] = idx.slice(t, t + 3);
+      if (v(b, p).sub(v(a, p)).cross(v(c, p).sub(v(a, p))).dot(v(a, n).add(v(b, n)).add(v(c, n))) < 0) bad++;
+    }
+  }
+  out.facing[name] = [bad, total];
+}
+const veg = Object.create(Vegetation.prototype), tex = new THREE.Texture();
+veg.uniforms = {};
+veg.tex = { cluster: tex, clusterLight: tex, leaves: tex, flowers: tex, fronds: tex };
+const set = veg.makeMaterials({ synth: { make: () => ({}) } });
+for (const key of ['leaves', 'cluster', 'fronds']) {
+  const shader = { uniforms: {}, vertexShader: THREE.ShaderLib.standard.vertexShader, fragmentShader: THREE.ShaderLib.standard.fragmentShader };
+  set[key].onBeforeCompile(shader);
+  const f = shader.fragmentShader;
+  out.materials[key] = { side: set[key].side, roughness: set[key].roughness, key: set[key].customProgramCacheKey(), flips: f.includes('#include <normal_fragment_begin>'),
+    sheen: f.includes('material.specularF90 ='), transmits: f.includes('#define RE_Direct RE_Direct_Leaf'), glows: f.includes('ffSunColor * back') };
+}
+const size = 64, px = new Uint8ClampedArray(size * size * 4);
+for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+  const a = Math.max(0, Math.min(1, 12 - Math.hypot(x - 30, y - 34)));
+  if (a > 0) px.set([40, 110, 50, Math.round(a * 255)], (y * size + x) * 4);
+}
+const alpha = px.filter((_, i) => i %% 4 === 3).join();
+bleedColour(px, size);
+let worst = 0;
+for (let i = 0; i < size * size; i++) worst = Math.max(worst, Math.abs(px[i * 4] - 40), Math.abs(px[i * 4 + 1] - 110), Math.abs(px[i * 4 + 2] - 50));
+out.atlas = { worst, alphaKept: alpha === px.filter((_, i) => i %% 4 === 3).join() };
+console.log(JSON.stringify(out));
+""" % tuple((src / name).as_uri() for name in ('plant-builders.js', 'vegetation.js', 'foliage-textures.js'))
+    res = subprocess.run(['node', '--input-type=module', '-e', script], capture_output=True, text=True, timeout=120, cwd=ROOT / 'web/viewer')
+    assert res.returncode == 0, res.stderr
+    out = json.loads(res.stdout)
+    assert all(bad == 0 and total > 0 for bad, total in out['facing'].values()), out['facing']
+    leaves, cluster, fronds = (out['materials'][k] for k in ('leaves', 'cluster', 'fronds'))
+    assert leaves['side'] == 2 and leaves['flips'] and leaves['sheen'] and leaves['transmits'] and not leaves['glows']
+    assert leaves['roughness'] >= .7  # glossier leaves mirror a bright window as a cream sheen when seen edge-on
+    assert leaves['key'] != cluster['key']
+    for card in (cluster, fronds):
+        assert card['glows'] and not (card['flips'] or card['sheen'] or card['transmits'])
+    assert out['atlas'] == {'worst': 0, 'alphaKept': True}
+
+
 def test_bundled_viewer_is_present_and_attributed():
     bundle = (ROOT / 'web/viewer.js').read_text('utf8')
     assert len(bundle) > 400_000

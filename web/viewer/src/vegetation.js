@@ -8,7 +8,11 @@ import { hashString, mulberry32 } from './util.js';
 const VARIANTS = 3;
 
 // Shared foliage shader patch: wind sway, no back-face normal flip (bent card normals), soft translucency.
-export function patchFoliage(material, uniforms, { translucency = .45, instancedWind = true } = {}) {
+// twoSided is for broad single leaves instead: each face keeps three's flipped normal, so the underside is lit as
+// an underside rather than as a grazing view of the top (a pale, sky-coloured sheen), and grazing reflectance is
+// held down so tips curling away from the eye stay green. Their translucency is direct light reaching the other
+// face, shadowed like any direct light, so a house plant does not glow toward a sun its room's walls block.
+export function patchFoliage(material, uniforms, { translucency = .45, instancedWind = true, twoSided = false } = {}) {
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
@@ -30,19 +34,29 @@ uniform float ffWind;`)
   transformed.z += (cos(ph * .83) * .035 + cos(ffTime * 4.7 + position.z * 3.9) * .01) * s;
   transformed.y += sin(ffTime * 6.1 + position.x * 5.0 + position.z * 4.0) * .006 * s;
 }`);
-    shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>
+    const frag = shader.fragmentShader.replace('#include <common>', `#include <common>
 uniform vec3 ffSunDir;
-uniform vec3 ffSunColor;`)
-      .replace('#include <normal_fragment_begin>', THREE.ShaderChunk.normal_fragment_begin.replace('normal *= faceDirection;', ''))
-      .replace('#include <opaque_fragment>', `{
+uniform vec3 ffSunColor;`);
+    shader.fragmentShader = twoSided
+      ? frag
+        .replace('#include <lights_physical_pars_fragment>', `#include <lights_physical_pars_fragment>
+void RE_Direct_Leaf( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+  RE_Direct_Physical( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+  reflectedLight.directDiffuse += saturate( dot( - geometryNormal, directLight.direction ) ) * directLight.color * BRDF_Lambert( material.diffuseContribution ) * ${translucency.toFixed(3)};
+}
+#undef RE_Direct
+#define RE_Direct RE_Direct_Leaf`)
+        .replace('#include <lights_physical_fragment>', '#include <lights_physical_fragment>\nmaterial.specularF90 = .3;')
+      : frag
+        .replace('#include <normal_fragment_begin>', THREE.ShaderChunk.normal_fragment_begin.replace('normal *= faceDirection;', ''))
+        .replace('#include <opaque_fragment>', `{
   vec3 sunV = normalize((viewMatrix * vec4(ffSunDir, 0.0)).xyz);
   float back = pow(max(dot(normalize(-vViewPosition), sunV), 0.0), 3.0);
   outgoingLight += diffuseColor.rgb * ffSunColor * back * ${translucency.toFixed(3)};
 }
 #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey = () => 'ff-foliage-' + translucency;
+  material.customProgramCacheKey = () => 'ff-foliage-' + translucency + (twoSided ? '-two-sided' : '');
 }
 
 export class Vegetation {
@@ -85,7 +99,7 @@ export class Vegetation {
 
   leafMaterial(map, opts = {}) {
     const m = new THREE.MeshStandardMaterial({ map, alphaTest: .42, side: THREE.DoubleSide, roughness: opts.roughness ?? .62, metalness: 0, color: opts.color || '#ffffff', envMapIntensity: .7 });
-    patchFoliage(m, this.uniforms, { translucency: opts.translucency ?? .45 });
+    patchFoliage(m, this.uniforms, { translucency: opts.translucency ?? .45, twoSided: opts.twoSided });
     return m;
   }
 
@@ -116,7 +130,9 @@ export class Vegetation {
     const set = {
       cluster: leaf(this.tex.cluster, { color: '#e6f0dc' }),
       clusterLight: leaf(this.tex.clusterLight, { color: '#f4f7ea' }),
-      leaves: leaf(this.tex.leaves, { roughness: .45, translucency: .5 }),
+      // Broad single leaves (monstera, fiddle-leaf fig, strelitzia, cordyline, frangipani), all grown as blades.
+      // Matte enough that a leaf turned edge-on does not mirror a bright window as a cream sheen.
+      leaves: leaf(this.tex.leaves, { roughness: .75, translucency: .5, twoSided: true }),
       fronds: leaf(this.tex.fronds, { translucency: .55 }),
       flowers: leaf(this.tex.flowers, { roughness: .7, translucency: .6 }),
       solid,

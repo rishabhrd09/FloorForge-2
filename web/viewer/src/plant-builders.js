@@ -116,9 +116,14 @@ export function blade(b, base, dir, side, len, width, cell, { segs = 4, bend = .
       b.vert(r, up.clone().addScaledVector(sd, .35).normalize(), cu + s, cv + s * t, sw),
     ]);
   }
+  // Wind each quad to agree with its normals (turned upward above), so a two-sided leaf material lights the upper
+  // face as the upper face and the underside as the underside.
+  const at = (i, arr) => V(arr[i * 3], arr[i * 3 + 1], arr[i * 3 + 2]);
   for (let i = 0; i < segs; i++) for (let k = 0; k < 2; k++) {
     const a = rows[i][k], c = rows[i][k + 1], d = rows[i + 1][k], e = rows[i + 1][k + 1];
-    b.tri(a, c, e); b.tri(a, e, d);
+    const face = at(c, b.pos).sub(at(a, b.pos)).cross(at(e, b.pos).sub(at(a, b.pos)));
+    if (face.dot(at(a, b.nor).add(at(c, b.nor)).add(at(e, b.nor)).add(at(d, b.nor))) >= 0) { b.tri(a, c, e); b.tri(a, e, d); }
+    else { b.tri(a, e, c); b.tri(a, d, e); }
   }
 }
 

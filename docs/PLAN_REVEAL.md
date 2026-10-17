@@ -21,7 +21,7 @@ The room ruler on the right jumps to any room. With `prefers-reduced-motion` the
 - **The Aangan House** (`examples/gallery/aangan-house/`) is a single-storey, east-facing house on a 55 × 80 ft plot. Every room opens onto a central aangan with a frangipani in a seat-height planter and a tulsi vrindavan. It is drawn in the stencil theme.
 - **The Long House** (`examples/gallery/long-house/`) is a G+1, north-facing house on a 30 × 60 ft plot. It is laid on one line: living room, a light court open to the sky through both floors, dining, kitchen and a rear garden. Upstairs are a gallery over the court, two bedrooms and a garden balcony. It is drawn in the serif theme.
 
-Both are authored custom plans (`floorforge.custom-plan/1`). `scripts/build_plan_reveal_samples.py` holds their exact rooms, openings, stair, walk order and page copy. It runs the normal FloorForge pipeline and publishes the walkthrough beside the usual exports:
+Both are authored custom plans (`floorforge.custom-plan/1`) with fitted furnishings (`furnishingStyle: "fitted"`: quilts inside the mattress edges, and in the Long House kitchen an inset sink, a chimney hood and handled wall cupboards; see [CUSTOM_PLAN.md](CUSTOM_PLAN.md)). `scripts/build_plan_reveal_samples.py` holds their exact rooms, openings, stair, walk order and page copy. It runs the normal FloorForge pipeline and publishes the walkthrough beside the usual exports:
 
 ```bash
 .venv/bin/python scripts/build_plan_reveal_samples.py                 # both samples, refreshes catalog.json

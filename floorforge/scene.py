@@ -35,6 +35,76 @@ def _parts(geom):
     return [p for p in get_parts(geom) if p.geom_type == 'Polygon' and p.area > 1e-6] if not geom.is_empty else []
 
 
+def fitted_bedspread(place, mattress, head, inset=.02, thickness=.03, gap=.004):
+    """A quilt on a rounded-box mattress: one closed mesh, inset from the mattress outline, with outward normals.
+
+    place(u, v) maps the bed frame (u across, v from the headboard toward the foot) to world x, y.
+    mattress is (half width, centre v, half length, top z, edge radius). The underside follows the
+    mattress's rounded shoulders a few millimetres clear of them, so no edge can cut into the mattress,
+    and the top rolls over to a rim it shares with the underside.
+    """
+    hu, vc, hv, top, R = mattress
+    rf, hs, vb = R - inset, hu - inset, vc + hv - inset
+    cu, cv0, cv1 = hs - rf, head + rf, vb - rf
+    mu, mv0, mv1 = hu - R, vc - hv + R, vc + hv - R
+
+    def stops(lo, hi, step):
+        # Close rows where the edge rolls over and the corners turn, even rows between.
+        rim = [r for r in (0, .004, .011, .021, .034) if r < rf] + [rf]
+        inner = np.linspace(lo + rf, hi - rf, max(2, math.ceil((hi - lo - 2 * rf) / step) + 1))
+        return [lo + r for r in rim] + list(inner[1:-1]) + [hi - r for r in reversed(rim)]
+
+    def ease(a, b, t):
+        s = min(1., max(0., (t - a) / (b - a)))
+        return s * s * (3 - 2 * s)
+
+    us, vs = stops(-hs, hs, .12), stops(head, vb, .13)
+    ni, nj = len(us), len(vs)
+    tops, unders = [], []
+    for j, gv in enumerate(vs):
+        for i, gu in enumerate(us):
+            u, v = gu, gv
+            du, dv = abs(u) - cu, cv0 - v if v < cv0 else v - cv1 if v > cv1 else 0.
+            if du > 1e-9 and dv > 1e-9:
+                # Round the plan corners: a square-to-disc map of each corner cell.
+                a, c = du / rf, dv / rf
+                du, dv = rf * a * math.sqrt(1 - c * c / 2), rf * c * math.sqrt(1 - a * a / 2)
+                u, v = math.copysign(cu + du, gu), cv0 - dv if gv < cv0 else cv1 + dv
+            # e: how far in from the quilt's edge (zero on the rim); d: how far past the mattress's flat top.
+            ex, ey = max(0., abs(u) - cu), max(0., cv0 - v, v - cv1)
+            if i in (0, ni - 1) or j in (0, nj - 1):
+                e = 0.
+            else:
+                e = rf - math.hypot(ex, ey) if ex or ey else rf + min(cu - abs(u), v - cv0, cv1 - v)
+            d = min(R, math.hypot(max(0., abs(u) - mu), max(0., mv0 - v, v - mv1)))
+            under = top - R + math.sqrt(R * R - d * d) + gap
+            roll = math.sqrt(max(0., 1 - (1 - min(e, thickness) / thickness) ** 2))
+            # A soft ripple across the top that dies away before the rim.
+            ripple = .004 * (.6 * math.cos(u * 5.3 + v * 1.7) + .4 * math.sin(v * 4.1 - u * 2.2)) * ease(.04, .16, e)
+            x, y = place(u, v)
+            tops.append((x, y, under + thickness * roll + ripple))
+            unders.append((x, y, under))
+    top_ids = np.arange(ni * nj).reshape(nj, ni)
+    under_ids = top_ids.copy()
+    vertices = list(tops)
+    for j in range(1, nj - 1):
+        for i in range(1, ni - 1):
+            under_ids[j, i] = len(vertices)
+            vertices.append(unders[j * ni + i])
+    o, pu, pv = (np.array(place(*q)) for q in ((0, 0), (1, 0), (0, 1)))
+    mirrored = (pu - o)[0] * (pv - o)[1] - (pu - o)[1] * (pv - o)[0] < 0
+    faces = []
+    for j in range(nj - 1):
+        for i in range(ni - 1):
+            # Diagonals mirror about the centre, so each corner cell is split through its inner vertex.
+            across = (i < (ni - 1) / 2) != (j < (nj - 1) / 2)
+            for ids, up in ((top_ids, True), (under_ids, False)):
+                a, b, c, d = ids[j, i], ids[j, i + 1], ids[j + 1, i + 1], ids[j + 1, i]
+                tris = [[a, b, d], [b, c, d]] if across else [[a, b, c], [a, c, d]]
+                faces += tris if up != mirrored else [[p, r, q] for p, q, r in tris]
+    return trimesh.Trimesh(vertices=np.array(vertices), faces=np.array(faces), process=False)
+
+
 # Window pod shell and lining per exterior theme, and the eyebrow canopy over legacy living-room windows.
 WINDOW_POD = {'modern_tropical': ('frame', 'timber'), 'warm_modern_minimal': ('frame', 'timber'), 'tropical_verandah': ('timber', None),
               'earth_terracotta': ('stone', 'timber'), 'current': ('frame', None)}
@@ -83,6 +153,9 @@ def make_scene(building, report):
     cube, cyl, asset = k.cube, k.cyl, k.asset
     gates = []; door_motion = {}
     doors_closed = b.get('planning',{}).get('doorsClosed',False)
+    # Opt-in fitted furnishings: a quilt inside the mattress edges, and a kitchen run with an inset sink,
+    # a chimney hood over the hob and handled wall cupboards. Other plans keep their published recipes.
+    fitted = b.get('planning',{}).get('furnishingStyle') == 'fitted'
     lights, colliders, furniture, furnishing = k.lights, k.colliders, k.furniture, k.furnishing
     upgraded_interior = modern or interior_id != 'current'
     M = {  # interior material roles (legacy palette keeps its original assignments)
@@ -1560,21 +1633,26 @@ def make_scene(building, report):
                 lbox(sp, uu, uu + .06, .003, .028, z + .1, z + 2.55, M['casework'], f, 'wall-panel')
         for pu in ((0,) if bw<1.2 else (-bw / 4, bw / 4)):
             lrb(sp, pu, v0 + .38, z + .58, (bw-.2 if bw<1.2 else bw / 2 - .12, .42, .17), 'linen', f, r=.07, extra=.035)
-        vv, ff = [], []
-        nx, ny = 22, 24
-        for j in range(ny):
-            for i in range(nx):
-                uu = -bw / 2 - .055 + (bw + .11) * i / (nx - 1); wv = v0 + .68 + (bl - .58) * j / (ny - 1)
-                zz = z + .54 + .014 * math.cos(i * .9 + j * .25) + .007 * math.sin(i * 1.8)
-                if i in (0, nx - 1):
-                    zz -= .13
-                x, y = P(sp, uu, wv)
-                vv.append((x, y, zz))
-        for j in range(ny - 1):
-            for i in range(nx - 1):
-                q = j * nx + i
-                ff += [[q, q + 1, q + nx + 1], [q, q + nx + 1, q + nx]]
-        node(asset(trimesh.Trimesh(vertices=vv, faces=ff, process=False), smooth=True), 'fabric', floor=f, role='furniture')
+        if fitted:
+            # The mattress above is Kit.rb's rounded box: half sizes, centre and edge radius as built there.
+            spread = fitted_bedspread(lambda uu, wv: P(sp, uu, wv), (bw / 2 + .02, v0 + bl / 2, bl / 2 + .015, z + .515, min(.075, .25 * .35)), v0 + .68)
+            node(asset(spread, smooth=True), 'fabric', floor=f, role='furniture')
+        else:
+            vv, ff = [], []
+            nx, ny = 22, 24
+            for j in range(ny):
+                for i in range(nx):
+                    uu = -bw / 2 - .055 + (bw + .11) * i / (nx - 1); wv = v0 + .68 + (bl - .58) * j / (ny - 1)
+                    zz = z + .54 + .014 * math.cos(i * .9 + j * .25) + .007 * math.sin(i * 1.8)
+                    if i in (0, nx - 1):
+                        zz -= .13
+                    x, y = P(sp, uu, wv)
+                    vv.append((x, y, zz))
+            for j in range(ny - 1):
+                for i in range(nx - 1):
+                    q = j * nx + i
+                    ff += [[q, q + 1, q + nx + 1], [q, q + nx + 1, q + nx]]
+            node(asset(trimesh.Trimesh(vertices=vv, faces=ff, process=False), smooth=True), 'fabric', floor=f, role='furniture')
         if tables:
             for su in (-1, 1):
                 tu = su * (bw / 2 + .30)
@@ -1848,7 +1926,8 @@ def make_scene(building, report):
     def kitchen_set(ctx):
         """The longest solid wall takes the counter (a window above the worktop is welcome); sink under the window,
         hob clear of it, tall fridge at the end, wall cabinets and a lit backsplash where the wall is blank, and an
-        island in a large kitchen."""
+        island in a large kitchen. Fitted furnishings let the sink into the worktop, hang a chimney hood over the hob
+        and give the wall cupboards handles."""
         if ctx['room'].get('kitchenLayout')=='l-shaped-return':
             from .modular_kitchen import l_shaped_kitchen
             l_shaped_kitchen(k,ctx,H,M)
@@ -1868,19 +1947,6 @@ def make_scene(building, report):
         base_run = run - .78 if fridge else run
         u0 = -run / 2
         nseg = max(2, int(base_run / .6))
-        for j in range(nseg):
-            a0 = u0 + j * base_run / nseg; ww = base_run / nseg
-            lbox(sp, a0, a0 + ww - .02, 0, .6, z + .10, z + .83, M['casework'], f)
-            for zz in (.30, .59):
-                lbox(sp, a0 + .02, a0 + ww - .035, .6, .622, z + zz, z + zz + .20, M['fronts'], f)
-                h0, h1 = P(sp, a0 + .14, .64), P(sp, a0 + ww - .14, .64)
-                beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
-        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f)
-        if fridge:
-            f0 = u0 + base_run + .02
-            lbox(sp, f0, f0 + .72, 0, .65, z + .02, z + 1.95, 'appliance', f)
-            h0 = P(sp, f0 + .06, .68)
-            beam((h0[0], h0[1], z + 1.0), (h0[0], h0[1], z + 1.6), .01, 'frame', f, 'detail')
         su = u0 + base_run * .7
         for q, o in ctx['windows']:
             if o['sill'] / 1000 >= .9:
@@ -1888,13 +1954,54 @@ def make_scene(building, report):
                 cu = float(np.dot(wc, sp['t']))
                 if u0 + .45 <= cu <= u0 + base_run - .45 and float(np.dot(wc, sp['n'])) < 1.0:
                     su = cu
-        basin = trimesh.creation.revolve(np.array([[.07, 0], [.20, .04], [.25, .11], [.25, .14], [.23, .15], [.22, .12], [.18, .06], [.07, .025]]), sections=32)
-        bx_, by_ = P(sp, su, .32)
-        node(asset(basin, smooth=True), 'appliance' if upgraded_interior else 'frame', (bx_, by_, z + .865), floor=f, role='detail')
-        t0, t1 = P(sp, su, .1), P(sp, su, .28)
-        beam((t0[0], t0[1], z + .88), (t0[0], t0[1], z + 1.17), .012, 'brass', f, 'detail')
-        beam((t0[0], t0[1], z + 1.17), (t1[0], t1[1], z + 1.17), .012, 'brass', f, 'detail')
         hu = u0 + .5 if su - (u0 + .5) >= .9 else u0 + base_run - .5
+        if fitted:
+            # The hob takes the end of the run clear of the sink with solid wall behind it for the chimney,
+            # and the sink is a bowl let into the worktop.
+            ends = [e for e in (u0 + .5, u0 + base_run - .5) if abs(e - su) >= .9] or [hu]
+            hu = max(ends, key=lambda e: (wall_behind(f, *P(sp, e, 0), sp['n'][0], sp['n'][1], .46, .9, H - .16), e == hu))
+            # On a short run the sink slides only as far as it must to clear the hob, toward the run's open end.
+            su = min(max(su, hu + .62), u0 + base_run - .32) if hu <= u0 + base_run / 2 else max(min(su, hu - .62), u0 + .32)
+            sink = lpoly(sp, su - .27, su + .27, .15, .54)
+        for j in range(nseg):
+            a0 = u0 + j * base_run / nseg; ww = base_run / nseg
+            if fitted and lpoly(sp, a0, a0 + ww - .02, 0, .6).intersects(sink):
+                lbox(sp, a0, a0 + ww - .02, 0, .6, z + .10, z + .65, M['casework'], f)
+                poly_mesh(lpoly(sp, a0, a0 + ww - .02, 0, .6).difference(sink.buffer(.012, join_style=2)), z + .65, z + .83, M['casework'], f, 'furniture')
+            else:
+                lbox(sp, a0, a0 + ww - .02, 0, .6, z + .10, z + .83, M['casework'], f)
+            for zz in (.30, .59):
+                lbox(sp, a0 + .02, a0 + ww - .035, .6, .622, z + zz, z + zz + .20, M['fronts'], f)
+                h0, h1 = P(sp, a0 + .14, .64), P(sp, a0 + ww - .14, .64)
+                beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
+        if fitted:
+            poly_mesh(lpoly(sp, u0 - .03, u0 + base_run + .03, 0, .66).difference(sink), z + .83, z + .87, M['counter'], f, 'furniture')
+        else:
+            lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f)
+        if fridge:
+            f0 = u0 + base_run + .02
+            lbox(sp, f0, f0 + .72, 0, .65, z + .02, z + 1.95, 'appliance', f)
+            h0 = P(sp, f0 + .06, .68)
+            beam((h0[0], h0[1], z + 1.0), (h0[0], h0[1], z + 1.6), .01, 'frame', f, 'detail')
+        if fitted:
+            # A steel rim lies on the worktop round the cut-out; the bowl, its walls and the drain sit below it.
+            poly_mesh(sink.buffer(.015, join_style=2).difference(sink), z + .866, z + .875, 'appliance', f, 'detail')
+            sx0, sy0, sx1, sy1 = sink.bounds
+            rect((sx0, sy0, z + .665, sx1, sy1, z + .677), 'appliance', f, 'detail')
+            for side in (box(sx0, sy0, sx0 + .011, sy1), box(sx1 - .011, sy0, sx1, sy1), box(sx0 + .011, sy0, sx1 - .011, sy0 + .011), box(sx0 + .011, sy1 - .011, sx1 - .011, sy1)):
+                poly_mesh(side, z + .675, z + .866, 'appliance', f, 'detail')
+            dx_, dy_ = P(sp, su, .345)
+            cylinder((dx_, dy_, z + .68), .025, .005, 'frame', f, 'detail')
+            t0, t1 = P(sp, su, .085), P(sp, su, .3)
+            beam((t0[0], t0[1], z + .875), (t0[0], t0[1], z + 1.15), .012, 'brass', f, 'detail')
+            beam((t0[0], t0[1], z + 1.15), (t1[0], t1[1], z + 1.15), .012, 'brass', f, 'detail')
+        else:
+            basin = trimesh.creation.revolve(np.array([[.07, 0], [.20, .04], [.25, .11], [.25, .14], [.23, .15], [.22, .12], [.18, .06], [.07, .025]]), sections=32)
+            bx_, by_ = P(sp, su, .32)
+            node(asset(basin, smooth=True), 'appliance' if upgraded_interior else 'frame', (bx_, by_, z + .865), floor=f, role='detail')
+            t0, t1 = P(sp, su, .1), P(sp, su, .28)
+            beam((t0[0], t0[1], z + .88), (t0[0], t0[1], z + 1.17), .012, 'brass', f, 'detail')
+            beam((t0[0], t0[1], z + 1.17), (t1[0], t1[1], z + 1.17), .012, 'brass', f, 'detail')
         if upgraded_interior:
             lbox(sp, hu - .3, hu + .3, .08, .56, z + .87, z + .877, 'blackglass', f, 'detail')
         for du in (-.15, .14):
@@ -1904,14 +2011,39 @@ def make_scene(building, report):
         wx, wy = P(sp, u0 + base_run / 2, 0)
         if upgraded_interior and wall_behind(f, wx, wy, sp['n'][0], sp['n'][1], base_run / 2 - .05, .9, 2.3):
             lbox(sp, u0, u0 + base_run, .002, .014, z + .87, z + 1.5, 'tilewall', f, 'wall-tile')
-            for j in range(nseg):
-                a0 = u0 + j * base_run / nseg; ww = base_run / nseg
-                lbox(sp, a0, a0 + ww - .015, .015, .37, z + 1.52, z + 2.28, M['fronts'], f)
-            lbox(sp, u0, u0 + base_run, .015, .34, z + 1.505, z + 1.515, 'lamp', f, 'fixture')
-            lx, ly = P(sp, u0 + base_run / 2, .3)
+            if fitted:
+                # Cupboards stop either side of the hood; each door has a bar handle at its free bottom corner.
+                lbox(sp, hu - .45, hu + .45, .002, .014, z + 1.5, z + 1.58, 'tilewall', f, 'wall-tile')
+                stretches = [(a, e) for a, e in ((u0, hu - .465), (hu + .465, u0 + base_run)) if e - a >= .28]
+                for a, e in stretches:
+                    doors = max(1, round((e - a) / .55)); dw = (e - a) / doors
+                    for j in range(doors):
+                        a0 = a + j * dw; a1 = a0 + dw
+                        lbox(sp, a0, a1 - .004, .015, .35, z + 1.52, z + 2.28, M['casework'], f)
+                        lbox(sp, a0 + .004, a1 - .008, .35, .368, z + 1.53, z + 2.27, M['fronts'], f)
+                        hx, hy = P(sp, a1 - .06 if j % 2 == 0 else a0 + .06, .386)
+                        beam((hx, hy, z + 1.56), (hx, hy, z + 1.76), .007, 'frame', f, 'detail')
+                    lbox(sp, a, e, .015, .34, z + 1.505, z + 1.515, 'lamp', f, 'fixture')
+                lit = max(stretches, key=lambda s: s[1] - s[0], default=(u0, u0 + base_run))
+                lx, ly = P(sp, (lit[0] + lit[1]) / 2, .3)
+            else:
+                for j in range(nseg):
+                    a0 = u0 + j * base_run / nseg; ww = base_run / nseg
+                    lbox(sp, a0, a0 + ww - .015, .015, .37, z + 1.52, z + 2.28, M['fronts'], f)
+                lbox(sp, u0, u0 + base_run, .015, .34, z + 1.505, z + 1.515, 'lamp', f, 'fixture')
+                lx, ly = P(sp, u0 + base_run / 2, .3)
             k.light((lx, ly, z + 1.4), 12, kind='undercabinet')
-        else:
+        elif not fitted:
             lbox(sp, hu - .38, hu + .38, .08, .5, z + 1.6, z + 1.7, 'appliance' if upgraded_interior else 'frame', f, 'detail')
+        if fitted:
+            # A chimney hood over the hob: a slim steel canopy with a baffle filter, controls and two lamps,
+            # and its duct up to the ceiling.
+            lbox(sp, hu - .45, hu + .45, .015, .5, z + 1.58, z + 1.645, 'appliance', f, 'detail')
+            lbox(sp, hu - .42, hu + .42, .04, .47, z + 1.574, z + 1.58, 'frame', f, 'detail')
+            lbox(sp, hu - .15, hu + .15, .015, .3, z + 1.645, z + H - .157, 'appliance', f, 'detail')
+            lbox(sp, hu - .1, hu + .1, .5, .503, z + 1.595, z + 1.63, 'blackglass', f, 'detail')
+            for du in (-.24, .24):
+                lbox(sp, hu + du - .025, hu + du + .025, .38, .43, z + 1.571, z + 1.574, 'lamp', f, 'fixture')
         foot = lpoly(sp, u0 - .03, u0 + run + .03, .005, .66)
         ctx['placed'].append(foot)
         furnishing('kitchen-run', room, foot)

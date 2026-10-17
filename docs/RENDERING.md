@@ -37,6 +37,7 @@ UVs are box-projected, and a world-space macro variation breaks up tiling. The p
 **Planting.** Plants are grown procedurally from each scene `vegetation` item:
 - species: frangipani, columnar conifer, spiral topiary, strelitzia, cordyline, palm, ornamental grass, shade and standard trees, monstera, fiddle-leaf fig, and round and flowering shrubs;
 - painted alpha leaf atlases, wind sway and leaf translucency;
+- broad single leaves (monstera, fiddle-leaf fig, strelitzia, cordyline, frangipani) lit on each face by that face's own normal, matte enough and with a soft enough grazing sheen not to mirror a bright window, so both faces read the same green; light reaching a leaf's other face passes through it only where that light is not shadowed, so house plants do not glow toward a sun their room's walls block; their atlas carries the leaf colour into its clear texels, so filtered edges and tips stay green;
 - hedges, and instanced lawn grass that fades with distance.
 
 GLB and drawings keep simple coordination proxies (`role: plant-proxy`) for the same plants.
