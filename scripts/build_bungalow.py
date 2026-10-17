@@ -141,7 +141,7 @@ def project():
                  left_mm=7620, right_mm=3048, storeys=2, bedrooms=4, attached_baths=4, parking=True, pooja=True,
                  eldercare=False, open_kitchen=False, roof_access=True, vastu='flexible', floor_height_mm=3600,
                  plinth_mm=600, budget_lakh=220, finish='premium', soil='black-cotton',
-                 latitude=23.2599, longitude=77.4126, timezone_hours=5.5, solar_date='2026-02-14', solar_hour=16.0,
+                 latitude=23.2599, longitude=77.4126, timezone_hours=5.5, solar_date='2026-02-14', solar_hour=16,
                  exterior_theme='tropical_verandah', interior_theme='warm_contemporary')
     return dict(schema='floorforge.project/0.4', brief=brief, customPlan=plan)
 
