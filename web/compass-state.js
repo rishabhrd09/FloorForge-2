@@ -19,12 +19,26 @@ const CompassState = (() => {
  function splitAssign(draft,floorId,row,col,half,roomId,options={}){const next=clone(draft),floor=next.floors.find(f=>f.id===floorId),whole=key(row,col);if(!floor.splits.includes(whole)){const donor=owner(next,floorId,whole);floor.splits.push(whole);if(donor)donor.regions=donor.regions.filter(x=>x!==whole).concat(key(row,col,'L'),key(row,col,'R'));}return assign(next,floorId,key(row,col,half),roomId,options);}
  function whole(draft,floorId,row,col,roomId){const next=clone(draft),floor=next.floors.find(f=>f.id===floorId);for(const r of next.rooms)if(r.floorId===floorId)r.regions=r.regions.filter(ref=>ref!==key(row,col,'L')&&ref!==key(row,col,'R'));floor.splits=floor.splits.filter(ref=>ref!==key(row,col));if(roomId){const r=next.rooms.find(r=>r.id===roomId&&r.floorId===floorId);if(!r)throw Error('Choose the whole-cell owner.');r.regions.push(key(row,col));}return validate(next);}
  function moveRoom(draft,roomId,floorId){const next=clone(draft),room=next.rooms.find(r=>r.id===roomId);if(!room||!next.floors.some(f=>f.id===floorId))throw Error('Choose an existing room and floor.');if(room.floorId===floorId)return next;room.floorId=floorId;room.regions=[];next.connections=next.connections.filter(c=>c.from!==roomId&&c.to!==roomId);next.stairLinks=next.stairLinks.filter(s=>!s.roomIds.includes(roomId));if(next.site.entryRoomId===roomId)delete next.site.entryRoomId;return validate(next);}
+ // Presentation only: place a label inside an owned rectangle, including half cells.
+ function labelRect(regions,rows){
+  const owned=micro(regions);let best=null;
+  for(let left=0;left<8;left++)for(let right=left;right<8;right++){
+   let start=0;
+   for(let row=0;row<=rows;row++){
+    if(row<rows&&Array.from({length:right-left+1},(_,i)=>owned.has(`${row}:${left+i}`)).every(Boolean))continue;
+    const width=right-left+1,height=row-start,area=width*height;
+    if(height&&(!best||area>best.area||area===best.area&&width>best.width))best={left,bottom:start,width,height,area};
+    start=row+1;
+   }
+  }
+  return best;
+ }
  class History {
   constructor(draft){this.value=clone(draft);this.past=[];this.future=[];}
   commit(next){validate(next);if(JSON.stringify(next)===JSON.stringify(this.value))return false;this.past.push(clone(this.value));if(this.past.length>100)this.past.shift();this.value=clone(next);this.future=[];return true;}
   undo(){if(!this.past.length)return false;this.future.push(this.value);this.value=this.past.pop();return true;}
   redo(){if(!this.future.length)return false;this.past.push(this.value);this.value=this.future.pop();return true;}
  }
- return {clone,key,micro,connected,validate,create,owner,assign,splitAssign,whole,moveRoom,History};
+ return {clone,key,micro,connected,validate,create,owner,assign,splitAssign,whole,moveRoom,labelRect,History};
 })();
 if(typeof module!=='undefined')module.exports=CompassState;

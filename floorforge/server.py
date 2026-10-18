@@ -145,7 +145,7 @@ def make_server(out,port=0):
                 if not file.is_relative_to(base):self.send({'error':'Invalid path'},404);return
             else:
                 permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/start-page.js':'start-page.js','/hero.js':'hero.js','/assets/myverandah-hero.png':'assets/myverandah-hero.png','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/plan-assistance.js':'plan-assistance.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
-                for name in ('compass-state.js','compass-editor.js','compass.css','survey-questions.js'):
+                for name in ('compass-state.js','compass-editor.js','compass.css','survey-questions.js','home-design.js','home-design.css'):
                     permitted['/'+name]=name
                 if path not in permitted:self.send({'error':'Not found'},404);return
                 file=ROOT/'web'/permitted[path]

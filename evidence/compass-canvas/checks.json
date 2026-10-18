@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-18",
+  "scope": "Compass map presentation and viewport only. The custom-design page keeps its balanced split.",
+  "tests": {
+    "compass_pytest": "46 passed in 4.11s",
+    "node": "15 passed",
+    "syntax": "node --check web/compass-editor.js passed",
+    "diff": "git diff --check passed"
+  },
+  "browser_checks": [
+    "Rooms starts collapsed; all 16, 24 and 32 cells fit inside the map viewport.",
+    "Desktop Rooms palette slides in a narrow column; Hide returns the full width to the canvas.",
+    "The hidden drawer has aria-hidden and inert; Escape hides it and returns focus to the Rooms button.",
+    "Selected room is retained with the drawer hidden, with a placement indicator and Next room action.",
+    "Room placement works with the drawer open or closed; Undo and Redo retain original ownership checks.",
+    "Room creation, room detail dimensions, cell refinement and arrow-key navigation remain reachable.",
+    "Zoom enlarges cells; Fit plot restores the complete map without changing plot proportions.",
+    "Retained 32-cell project reopens with split ownership and its reviewed geometry still accepted.",
+    "Road remains below the plot and labels frontage and facing direction."
+  ],
+  "preservation": {
+    "sample_and_renderer_diff_against_1bb941b": [],
+    "geometry_adapter_and_compiler_changes_for_this_follow_up": [],
+    "original_planning_documents": "Both SHA-256 hashes still match their recorded safety copies."
+  },
+  "limitations": [
+    "Desktop browser validation; no physical mobile-device acceptance session.",
+    "Changes remain local and uncommitted."
+  ],
+  "screenshots": [
+    "map-only.png",
+    "rooms-open.png",
+    "retained-32-cell-map.png"
+  ]
+}

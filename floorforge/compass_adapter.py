@@ -24,7 +24,7 @@ def compile_compass(value, values, scope=None, hints=()):
     included = {f['id'] for f in floors}
     rooms = [r for r in compass['rooms'] if r['floorId'] in included]
     by_id = {r['id']: r for r in rooms}
-    v = {**values, 'storeys': scope, 'bedrooms': sum(r['kind'] == 'bedroom' for r in rooms),
+    v = {**values, 'storeys': scope, 'bedrooms': sum(r['kind'] == 'bedroom' and bool(r['regions']) for r in rooms),
          'roof_access': values['roof_access'] and scope == count}
     W = v['width_mm'] - v['left_mm'] - v['right_mm']
     D = v['depth_mm'] - v['front_mm'] - v['rear_mm']
@@ -112,6 +112,12 @@ def compile_compass(value, values, scope=None, hints=()):
         if ((center.x / W - hint['x']) ** 2 + (center.y / D - hint['y']) ** 2) ** .5 > .40:
             issue('TEXT_CONFLICT', f'The description asks for {hint.get("phrase", hint["label"])} but the authored map places {room["name"]} elsewhere.', room, label=hint['label'], actions=['keep-map', 'edit-requirement', 'move-room'])
     for requirement in compass['requirements']:
+        if requirement.get('roomId') and requirement['roomId'] not in by_id:
+            effects.append({'source': requirement['id'], 'status': 'off', 'message': 'Room requirement retained on an excluded floor; it is not part of this generated scope.'})
+            continue
+        if requirement['kind'] == 'access-width' and requirement['roomId'] not in polygons:
+            effects.append({'source': requirement['id'], 'status': 'unapplied', 'message': f'Clear-route request for {by_id[requirement["roomId"]]["name"]} was not checked because this optional room is unplaced.'})
+            continue
         if requirement['kind'] == 'access-width' and requirement['roomId'] in polygons:
             p = polygons[requirement['roomId']]
             width = requirement['value']
@@ -119,6 +125,11 @@ def compile_compass(value, values, scope=None, hints=()):
             if core.is_empty or core.geom_type != 'Polygon':
                 issue('ACCESS_WIDTH', f'This route does not keep the requested {width / 1000:g} m clear width.', by_id[requirement['roomId']])
         effects.append({'source': requirement['id'], 'status': 'note only' if requirement['kind'] == 'note' else 'applied', 'message': str(requirement['value'])})
+    for relation in compass['connections']:
+        if relation['from'] not in by_id or relation['to'] not in by_id:
+            effects.append({'source': relation['id'], 'status': 'off', 'message': 'Room relationship retained on an excluded floor.'})
+        elif relation['from'] not in polygons or relation['to'] not in polygons:
+            effects.append({'source': relation['id'], 'status': 'unapplied', 'message': 'Room relationship was not applied because an optional room is unplaced. Place both rooms to use this connection.'})
     changes.append({'message': 'Union each room’s regions before reserving walls. Keep assigned positions and room IDs; leave unassigned space empty.'})
     if scope < count:
         changes.append({'message': f'Generate {scope} of {count} occupied floors. Retain all upper drafts and omit roof access over unfinished floors.'})
@@ -241,6 +252,14 @@ def compile_compass(value, values, scope=None, hints=()):
             final_building = compile_plan({**intent, 'customPlan': plan})
             result['review'] = validate_custom(final_building)
             result['valid'] = True
+            for relation in compass['connections']:
+                if relation['from'] in polygons and relation['to'] in polygons:
+                    effects.append({'source': relation['id'], 'status': 'applied', 'message': f'{by_id[relation["from"]]["name"]} → {by_id[relation["to"]]["name"]}: {relation["kind"]} relationship checked on the authored walls.'})
+            if site.get('entryRoomId'):
+                effects.append({'source': 'entry-destination', 'status': 'applied', 'message': f'Main entrance opens into {by_id[site["entryRoomId"]]["name"]}.'})
+            for stair in compass['stairLinks']:
+                applied = any(s['id'] == stair['id'] for s in plan['stairs'])
+                effects.append({'source': stair['id'], 'status': 'applied' if applied else 'off', 'message': 'Linked stair core compiled into the included floors.' if applied else 'Stair link retained; no flight is included in this floor scope.'})
         changes.append({'message': f'Review {sum(len(f["openings"]) for f in plan["floors"])} proposed doors and windows on the actual room walls. No rooms were moved or resized.'})
     except DesignError as exc:
         detail = exc.details if isinstance(exc.details, dict) else {}

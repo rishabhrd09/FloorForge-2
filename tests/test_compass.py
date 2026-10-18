@@ -87,6 +87,36 @@ def test_unplaced_and_small_rooms_return_repairable_issues(project, compass):
     assert any(i['code'] == 'UNPLACED' and i['roomId'] == 'bed-one' for i in result['issues'])
 
 
+def test_optional_unplaced_bedroom_is_not_counted_as_a_generated_room(project, compass):
+    from floorforge.layout import generate_layout
+    compass['rooms'][2].update(required=False, regions=[])
+    intent = fuse(accepted(project, compass))
+    building = generate_layout(intent)
+    assert intent['compassFullValues']['bedrooms'] == 2  # The complete checklist stays saved.
+    assert intent['values']['bedrooms'] == building['brief']['bedrooms'] == 1
+    assert sum(s['kind'] == 'bedroom' for s in building['spaces']) == 1
+
+
+def test_unplaced_optional_room_requests_are_not_reported_as_applied(project, compass):
+    compass['rooms'][2].update(required=False, regions=[])
+    compass['requirements'] = [{'id': 'bed-route', 'kind': 'access-width', 'roomId': 'bed-one', 'value': 900}]
+    compass['connections'] = [{'id': 'bed-door', 'from': 'living', 'to': 'bed-one', 'kind': 'door', 'width': 900}]
+    intent = fuse(accepted(project, compass))
+    entries = {e['source']: e for e in intent['input_audit']['entries']}
+    assert entries['bed-route']['status'] == entries['bed-door']['status'] == 'unapplied'
+    assert intent['input_audit']['attention_count'] >= 2
+
+
+def test_excluded_floor_requirements_stay_saved_and_are_reported_off():
+    source = json.loads((Path(__file__).parent/'fixtures/compass-three-floors.json').read_text())
+    p, c = source['project'], source['compass']
+    c['requirements'] = [{'id': 'upper-route', 'kind': 'access-width', 'roomId': 'f1-hall', 'value': 900}]
+    result = proposal(p, c, 1)
+    assert result['valid'], result['issues']
+    assert next(e for e in result['effects'] if e['source'] == 'upper-route')['status'] == 'off'
+    assert c['requirements'][0]['roomId'] == 'f1-hall'
+
+
 def test_size_locks_never_trigger_automatic_movement(project, compass):
     original = copy.deepcopy(compass)
     compass['rooms'][0]['target'] = {'width': 4000, 'depth': 4000, 'locked': True}
@@ -219,6 +249,43 @@ def test_geometry_scene_drawings_and_exports_share_identity(project, compass, tm
         assert json.loads((directory/name).read_text())['planHash'] == plan_hash
     assert (directory/'drawings.pdf').exists() and (directory/'floorplans.dxf').exists()
     assert (directory/'model.glb').exists() and (directory/'model.ifc').exists()
+
+
+def test_mixed_form_map_and_text_inputs_reach_the_shared_geometry(project, compass):
+    from floorforge.layout import generate_layout
+    from floorforge.review import reports, validate
+    from floorforge.scene import make_scene
+    from floorforge.drawings import make_sheets
+    fields = {'title': 'Mixed-input wiring check', 'width_mm': 15000, 'depth_mm': 19000,
+              'front_mm': 3200, 'rear_mm': 1300, 'left_mm': 1100, 'right_mm': 1200,
+              'road_bearing_deg': 135, 'floor_height_mm': 3300, 'plinth_mm': 500,
+              'budget_lakh': 78}
+    project['sources'] = [{'id': 'studio-field-edits', 'kind': 'form', 'values': fields}]
+    project['text'] = 'Kitchen at front right. A soundproof music studio.'
+    compass['site'] = {'entryRoomId': 'living', 'context': 'middle'}
+    compass['connections'] = [{'id': 'open-kitchen', 'from': 'living', 'to': 'kitchen', 'kind': 'open', 'width': 1800}]
+    compass['requirements'] = [{'id': 'living-route', 'kind': 'access-width', 'roomId': 'living', 'value': 900},
+                               {'id': 'garden-note', 'kind': 'note', 'value': 'Keep a garden swing for later.'}]
+    intent = fuse(accepted(project, compass))
+    b = generate_layout(intent)
+    report = reports(b, validate(b))
+    scene = make_scene(b, report)
+    sheets = make_sheets(b, scene, report)
+    for key, value in fields.items():
+        assert b['brief'][key] == intent['values'][key] == value
+        assert intent['provenance'][key]['selected'] == ['studio-field-edits']
+    assert scene['floor_height'] == 3.3
+    assert {r['id'] for r in b['spaces']} == {r['id'] for r in compass['rooms']}
+    opening = next(o for o in b['openings'] if o['id'] == 'open-kitchen')
+    assert opening['kind'] == 'cased' and opening['width'] == 1800
+    assert set(next(o for o in b['openings'] if o['kind'] == 'entry')['connects']) == {'living', 'outside'}
+    assert scene['opening_model']['walls'] == b['walls']
+    assert scene['opening_model']['openings'] == b['openings']
+    assert {o['planHash'] for o in [intent, b, report, scene, *sheets]} == {intent['planHash']}
+    effects = {e['source']: e for e in intent['input_audit']['entries']}
+    assert effects['open-kitchen']['status'] == effects['living-route']['status'] == effects['entry-destination']['status'] == 'applied'
+    assert effects['plot-context']['status'] == effects['garden-note']['status'] == 'note only'
+    assert any(e['status'] == 'unapplied' and 'soundproof' in e.get('message', '') for e in effects.values())
 
 
 def test_frontend_transactions_and_random_sequences():
