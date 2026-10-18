@@ -3,10 +3,12 @@ import {mkdtempSync,mkdirSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const root=resolve(import.meta.dirname,'..'),url='http://127.0.0.1:8901',out='/tmp/floorforge-start-page';mkdirSync(out,{recursive:true});
-const server=spawn(resolve(root,'.venv/bin/python'),['-m','floorforge','serve','--no-browser','--port','8901','--out',mkdtempSync('/tmp/ff-start-')],{cwd:root,env:{...process.env,FLOORFORGE_COMPASS:'1'},stdio:['ignore','ignore','pipe']});server.stderr.on('data',d=>process.stderr.write(d));
+const serverEnv={...process.env};delete serverEnv.FLOORFORGE_COMPASS;
+const server=spawn(resolve(root,'.venv/bin/python'),['-m','floorforge','serve','--no-browser','--port','8901','--out',mkdtempSync('/tmp/ff-start-')],{cwd:root,env:serverEnv,stdio:['ignore','ignore','pipe']});server.stderr.on('data',d=>process.stderr.write(d));
 let browser;const checks=[],errors=[];function check(name,ok){checks.push({name,pass:!!ok});console.log(ok?'PASS':'FAIL',name);if(!ok)throw Error(name);}
 try{
  for(let i=0;i<150;i++){try{if((await fetch(url+'/api/session')).ok)break;}catch{}await new Promise(r=>setTimeout(r,200));}
+ check('Compass is enabled without an environment flag',(await (await fetch(url+'/api/session')).json()).compass.enabled);
  browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});
  const page=await browser.newPage({viewport:{width:1440,height:1100}});page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.waitForFunction(()=>!document.querySelector('[data-start="new"]').disabled,null,{timeout:180000});

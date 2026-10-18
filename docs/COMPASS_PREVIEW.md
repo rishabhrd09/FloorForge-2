@@ -1,14 +1,14 @@
 # Compass custom-home preview
 
-Compass is an opt-in development workflow for designing a new custom home. It adds a separate versioned input and a reviewed adapter into Custom Plan. The existing Automatic, fixed 16-cell Quick Guide, room board, exact editor, saved projects, sample gallery and renderer remain available.
+Compass is enabled by default for designing a new custom home. It adds a separate versioned input and a reviewed adapter into Custom Plan. The existing Automatic, fixed 16-cell Quick Guide, room board, exact editor, saved projects, sample gallery and renderer remain available.
 
 ## Run locally
 
 ```sh
-FLOORFORGE_COMPASS=1 .venv/bin/python -m floorforge serve --out /private/tmp/floorforge-compass-preview --port 8766 --no-browser
+bash start.sh --out /private/tmp/floorforge-compass-preview --port 8766
 ```
 
-Open `http://127.0.0.1:8766/`. Choose **Design a new home** for the full-page input choices and plot questions, or continue your workspace and choose **Open Compass map**. Without the environment flag the new entry point is hidden and generation from Compass is disabled. New-format draft readers remain available for recovery and downloading the saved project.
+Open `http://127.0.0.1:8766/`. Choose **Design a new home** for the full-page input choices and plot questions, or continue your workspace and choose **Open Compass map**. No environment flag is required. Stop and restart any server launched before this default changed, then reload the page. A server can explicitly opt out with `FLOORFORGE_COMPASS=0`; saved-draft readers remain available for recovery and downloading the saved project.
 
 ## Working flow
 
@@ -33,9 +33,9 @@ Home preferences remain accessible. Programme switches such as pooja, attached b
 - All writes retain the existing JSON size limit, local host/origin rules and session-token checks. `/api/session` describes enabled, advisory and unavailable capabilities.
 - Legacy hash calculation has no added null Compass key. Inactive Compass data does not change legacy hashes. UI state and notes do not determine the active Compass build identity; archived floor geometry is omitted from partial scopes.
 
-## Guarded rollout and remaining work
+## Availability and remaining work
 
-This is a working preview of the core placement-to-generation slice, not completion of every item in the larger implementation plan. Keep the flag off for a general release until the remaining acceptance work is complete.
+This is a working preview of the core placement-to-generation slice, not completion of every item in the larger implementation plan. It is available in the normal local launch; the remaining work below is unchanged.
 
 Custom gate positions, additional road geometry, setback-band site zones, external stair/lift design and automatic lock-aware fitting are unavailable. Composite room presets, automatic conditional programme expansion, geometric migration from legacy inputs, the full reference survey question bank, and first-time-user usability sessions remain future slices. Current room cards, explicit relationships and the exact editor are the supported ways to express these custom-home requirements.
 

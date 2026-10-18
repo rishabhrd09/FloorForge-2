@@ -1,11 +1,11 @@
-"""Guarded entry points. Saved Compass drafts remain readable when rollout is off."""
+"""Compass entry points, enabled by default with an explicit server opt-out."""
 import os
 from .model import DesignError
 from .compass_input import fields, remap, ADAPTER, SCHEMA
 
 
 def capabilities():
-    return {'enabled': os.environ.get('FLOORFORGE_COMPASS', '').lower() in ('1', 'true', 'yes'),
+    return {'enabled': os.environ.get('FLOORFORGE_COMPASS', '1').strip().lower() in ('1', 'true', 'yes'),
             'schema': SCHEMA, 'adapterVersion': ADAPTER, 'densities': [16, 24, 32],
             'operational': ['room-regions', 'half-cells', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
             'advisory': ['plot-context', 'notes'],
@@ -14,7 +14,7 @@ def capabilities():
 
 def require_enabled():
     if not capabilities()['enabled']:
-        raise DesignError('COMPASS_DISABLED', 'Compass is a guarded development feature. Retain or download the saved draft; enable FLOORFORGE_COMPASS=1 to edit and generate it.')
+        raise DesignError('COMPASS_DISABLED', 'Compass is disabled on this server. Remove the FLOORFORGE_COMPASS override or set it to 1, then restart to edit and generate. Saved drafts remain available.')
 
 
 def dispatch(path, body):

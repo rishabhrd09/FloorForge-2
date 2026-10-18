@@ -227,12 +227,17 @@ def test_compass_flag_and_disabled_generation_preserve_drafts(monkeypatch, tmp_p
     from floorforge.compass_api import capabilities, dispatch
     from floorforge.server import State
     monkeypatch.delenv('FLOORFORGE_COMPASS', raising=False)
+    assert capabilities()['enabled']
+    assert dispatch('/api/compass/remap', {'compass': compass, 'rows': 8})['valid']
+    monkeypatch.setenv('FLOORFORGE_COMPASS', '0')
     assert not capabilities()['enabled']
-    with pytest.raises(DesignError, match='guarded development'):
+    with pytest.raises(DesignError, match='disabled on this server'):
         dispatch('/api/compass/remap', {'compass': compass, 'rows': 8})
-    monkeypatch.setenv('FLOORFORGE_COMPASS', '1')
     state = State(tmp_path)
     try:
+        with pytest.raises(DesignError, match='disabled on this server'):
+            state.submit({'editorState': {'mode': 'compass', 'compassDraft': compass}})
+        monkeypatch.setenv('FLOORFORGE_COMPASS', '1')
         with pytest.raises(DesignError, match='accept'):
             state.submit({'editorState': {'mode': 'compass'}})
     finally:
@@ -320,7 +325,7 @@ def test_http_api_keeps_origin_token_and_flag_protections(monkeypatch, tmp_path,
     import urllib.request
     import urllib.error
     from floorforge.server import make_server
-    monkeypatch.setenv('FLOORFORGE_COMPASS', '1')
+    monkeypatch.delenv('FLOORFORGE_COMPASS', raising=False)
     server = make_server(tmp_path)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -339,6 +344,13 @@ def test_http_api_keeps_origin_token_and_flag_protections(monkeypatch, tmp_path,
         with pytest.raises(urllib.error.HTTPError) as exc:
             urllib.request.urlopen(request)
         assert exc.value.code == 403
+        monkeypatch.setenv('FLOORFORGE_COMPASS', '0')
+        assert not json.load(urllib.request.urlopen(base+'/api/session'))['compass']['enabled']
+        request.remove_header('Origin')
+        with pytest.raises(urllib.error.HTTPError) as exc:
+            urllib.request.urlopen(request)
+        assert exc.value.code == 400
+        assert json.load(exc.value)['code'] == 'COMPASS_DISABLED'
     finally:
         server.shutdown()
         server.server_close()

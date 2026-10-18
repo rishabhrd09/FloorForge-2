@@ -135,7 +135,7 @@ Builds are immutable. Editing an exported drawing does not update the source pro
 
 ## Developer commands
 
-The opt-in [Compass custom-home preview](docs/COMPASS_PREVIEW.md) adds reviewed room placement on 16/24/32-cell maps. Enable it with `FLOORFORGE_COMPASS=1`; existing samples and rendering keep their original paths. Its preview scope and remaining rollout work are documented in that guide.
+The [Compass custom-home preview](docs/COMPASS_PREVIEW.md) is enabled by default and adds reviewed room placement on 16/24/32-cell maps. Launch normally with `bash start.sh`; existing samples and rendering keep their original paths. Its preview scope and remaining work are documented in that guide. Servers can explicitly disable Compass with `FLOORFORGE_COMPASS=0`.
 
 ```bash
 # Optional developer checks. Normal use only needs setup.sh and start.sh.

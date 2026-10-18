@@ -1,4 +1,4 @@
-/* Opt-in custom-home workspace. It never loads a scene or edits a published sample. */
+/* Custom-home workspace. It never loads a scene or edits a published sample. */
 'use strict';
 class FloorForgeCompassEditor {
  constructor(options){

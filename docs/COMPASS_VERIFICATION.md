@@ -1,6 +1,6 @@
 # Compass verification — 18 October 2026
 
-This review covers the opt-in Compass preview on `development`, based on `ea198aba408f0c9c276bfadbdae83a2099a76d43`. The core input → reviewed Custom Plan → shared 2D/3D/export flow works. This is **not acceptance of every feature in the larger planning specification**. Keep the default-off rollout until the remaining work below is complete.
+This review originally covered the opt-in Compass preview on `development`, based on `ea198aba408f0c9c276bfadbdae83a2099a76d43`. Compass is now enabled by default for normal local launches at the user's request; `FLOORFORGE_COMPASS=0` explicitly disables it. The core input → reviewed Custom Plan → shared 2D/3D/export flow works. This is **not acceptance of every feature in the larger planning specification**. The historical results and remaining work below still apply.
 
 ## Results and preservation
 
