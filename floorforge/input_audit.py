@@ -7,6 +7,11 @@ CUSTOM_PROGRAMME = {'attached_baths', 'pooja', 'open_kitchen', 'variant', 'elder
 
 def audit_inputs(payload, intent):
     entries = []
+    if intent.get('compassIdentity'):
+        entries.append({'source':'compass','status':'applied','message':f'Accepted room allocations compiled through Custom Plan. Scope: {intent["compassIdentity"]["scope"]} occupied floor(s).'})
+        entries.extend(intent.get('compassEffects',[]))
+    elif (payload.get('editorState') or {}).get('compassDraft'):
+        entries.append({'source':'saved-compass-draft','status':'off','message':'Compass draft is retained; it does not alter the selected geometry input.'})
     custom = intent.get('customPlan') is not None
     for source in intent['sources']:
         if source['kind'] in ('defaults', 'derived'):

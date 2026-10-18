@@ -63,6 +63,11 @@ class State:
             return ident
         except (OSError,ValueError,KeyError,TypeError,AttributeError):return None
     def submit(self,payload):
+        if payload.get('compass') is not None or (isinstance(payload.get('editorState'),dict) and payload['editorState'].get('mode')=='compass'):
+            from .compass_api import require_enabled
+            require_enabled()
+            if payload.get('compass') is None:
+                raise DesignError('COMPASS_ACCEPTANCE','Review and accept the Compass geometry proposal before generating.')
         fuse(payload) # Fail invalid input before queueing expensive geometry.
         with self.lock:
             if any(j['status'] in ('queued','running') for j in self.jobs.values()):raise DesignError('BUSY','A design is already generating. Wait for it to finish.')
@@ -98,7 +103,9 @@ def make_server(out,port=0):
         def do_GET(self):
             if not self.trusted():self.send({'error':'Local origin required'},403);return
             path=unquote(urlsplit(self.path).path)
-            if path=='/api/session':self.send({'token':state.token,'version':__version__,'launch_identity':launch_identity(state.out),'backend_build_id':kernel_hash(),'spaceRegistry':SPACE_REGISTRY,'guideLabels':guide_labels(),'guideAutomaticKinds':sorted(GUIDE_AUTOMATIC_KINDS),'defaults':DEFAULTS,'setbacks':SETBACK_TABLES,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status()});return
+            if path=='/api/session':
+                from .compass_api import capabilities
+                self.send({'token':state.token,'version':__version__,'launch_identity':launch_identity(state.out),'backend_build_id':kernel_hash(),'spaceRegistry':SPACE_REGISTRY,'guideLabels':guide_labels(),'guideAutomaticKinds':sorted(GUIDE_AUTOMATIC_KINDS),'defaults':DEFAULTS,'setbacks':SETBACK_TABLES,'styles':STYLES,'themes':list_available_themes(),'latest':state.latest,'runtime':runtime_versions(),'ai':state.ai.status(),'compass':capabilities()});return
             if path=='/api/plan/import-template':
                 self.send((ROOT/'examples/import/ground-floor.dxf').read_bytes(),content='application/dxf');return
             if path=='/api/samples':
@@ -138,6 +145,8 @@ def make_server(out,port=0):
                 if not file.is_relative_to(base):self.send({'error':'Invalid path'},404);return
             else:
                 permitted={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/start-page.js':'start-page.js','/hero.js':'hero.js','/assets/myverandah-hero.png':'assets/myverandah-hero.png','/sample-gallery.js':'sample-gallery.js','/project-workspace.js':'project-workspace.js','/room-board.js':'room-board.js','/plan-editor.js':'plan-editor.js','/plan-assistance.js':'plan-assistance.js','/layout-editor.js':'layout-editor.js','/viewer.js':'viewer.js','/style.css':'style.css','/three.html':'three.html','/three-studio.js':'dist/three-studio.js'}
+                for name in ('compass-state.js','compass-editor.js','compass.css','survey-questions.js'):
+                    permitted['/'+name]=name
                 if path not in permitted:self.send({'error':'Not found'},404);return
                 file=ROOT/'web'/permitted[path]
             try:data=file.read_bytes()
@@ -152,6 +161,9 @@ def make_server(out,port=0):
                 body=json.loads(self.rfile.read(length));path=urlsplit(self.path).path
                 if not isinstance(body,dict):raise DesignError('SCHEMA','Request must be an object.')
                 if path=='/api/intent':self.send(fuse(body))
+                elif path.startswith('/api/compass/'):
+                    from .compass_api import dispatch
+                    self.send(dispatch(path,body))
                 elif path=='/api/plan/import-dxf':
                     from .plan_import import import_dxf
                     self.send(import_dxf(body.get('text'),body.get('filename','floor-plan.dxf')))

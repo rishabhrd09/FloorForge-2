@@ -313,6 +313,9 @@ def generate_layout(intent):
     if intent.get('customPlan') is not None:
         from .custom_plan import compile_plan
         b = compile_plan(intent)
+        if intent.get('compassIdentity'):
+            b['planning']['compass'] = intent['compassIdentity']
+            b['planning']['generationScope'] = f'{v["storeys"]} occupied floor(s)'
         b['input_audit'] = intent.get('input_audit')
         b['furnitureLayout'] = intent.get('furnitureLayout', [])
         return add_roof_access(b)
