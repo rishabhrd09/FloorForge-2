@@ -11,6 +11,7 @@ from .compass_input import normalize, cell, source_hash, ADAPTER
 
 def compile_compass(value, values, scope=None, hints=()):
     from .custom_plan import compile_plan, side_at, normalize as normalize_plan, validate_custom
+    from .review import LIT_KINDS
 
     compass = normalize(value)
     count = values['storeys']
@@ -51,6 +52,9 @@ def compile_compass(value, values, scope=None, hints=()):
     for floor in floors:
         target = {'id': floor['id'], 'rooms': [], 'walls': [], 'openings': []}
         for room in (r for r in rooms if r['floorId'] == floor['id']):
+            if room['kind'] == 'lift-shaft':
+                issue('ROOM_UNAVAILABLE', 'Lift design is unavailable in Compass. Keep it as a note for further design.', room)
+                continue
             if not room['regions']:
                 if room.get('required', True):
                     issue('UNPLACED', f'Place {room["name"]}, or explicitly make it optional.', room)
@@ -215,7 +219,7 @@ def compile_compass(value, values, scope=None, hints=()):
 
         outdoor={key for key,spec in SPACE_REGISTRY.items() if not spec['enclosed']}
         for room in rooms:
-            if room['id'] not in polygons or room['kind'] not in ('living','drawing-room','family','bedroom','study','care-room','kitchen','bathroom','utility','drying-room','powder-room'):continue
+            if room['id'] not in polygons or room['kind'] not in LIT_KINDS | {'bathroom','utility','drying-room','powder-room'}:continue
             wet=SPACE_REGISTRY[room['kind']]['wet']
             height,sill=(900,1200) if wet else (1500,750)
             need=max(.6,polygons[room['id']].area/1e6*.10)

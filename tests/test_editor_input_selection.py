@@ -19,3 +19,24 @@ def test_saved_input_schema_is_checked_even_when_not_applied(field,value):
     editor={'mode':'automatic','guideFloors':[[['']*4 for _ in range(4)] for _ in range(3)]}
     editor[field]=value
     with pytest.raises(DesignError):fuse({'editorState':editor})
+
+
+@pytest.mark.parametrize('inputs', [['text'], ['plot', 'compass', 'survey', 'sketch', 'dxf', 'text']])
+def test_single_or_multiple_input_choices_survive_reopen_without_replacing_geometry(inputs):
+    import json
+    from pathlib import Path
+    p=json.loads((Path(__file__).resolve().parents[1]/'examples/custom/g2-terrace.floorforge.json').read_text())
+    original=fuse(p)
+    p['editorState']={'mode':'custom','homeInputs':inputs,'guideFloors':[[['']*4 for _ in range(4)] for _ in range(3)]}
+    reopened=json.loads(json.dumps(p))
+    actual=fuse(reopened)
+    assert reopened['editorState']['homeInputs']==inputs
+    assert actual['planHash']==original['planHash']
+    assert actual['customPlan']==original['customPlan']
+
+
+@pytest.mark.parametrize('inputs', [[], ['text','text'], ['unknown'], 'text', [None], [{}]])
+def test_invalid_saved_input_choices_are_rejected(inputs):
+    editor={'mode':'automatic','homeInputs':inputs,'guideFloors':[[['']*4 for _ in range(4)] for _ in range(3)]}
+    with pytest.raises(DesignError,match='input methods'):
+        fuse({'editorState':editor})

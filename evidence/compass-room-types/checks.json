@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-18",
+  "branch": "development",
+  "base_commit": "2a83cb0e877a1acb107983c3fe525fa2417e86a1",
+  "state": "Validation snapshot prepared before committing to development.",
+  "catalogue": {
+    "types": 28,
+    "supported": 27,
+    "unavailable": "lift-shaft",
+    "upper_floors_only": "void"
+  },
+  "tests": {
+    "full_python": "634 passed in 251.90s (0:04:11)",
+    "focused_compass": "77 passed",
+    "javascript": 24,
+    "randomized_edit_transactions": 500
+  },
+  "browser_checks": [
+    "28 typed catalogue entries in seven groups",
+    "Search and add Bathroom",
+    "Typed room placement, check, explicit acceptance and generation",
+    "Matching furnished 3D and scaled 2D views",
+    "Save and reload retains all six room identities and types",
+    "Add Study, Undo, Redo and Undo restores the original checklist and clears removed selections",
+    "An older accepted map reopened as a retained draft, required a fresh review, and regenerated under compass/2 without moving any room.",
+    "Single written-input intake opens the correct workspace tools",
+    "All six selected input methods survive reload and saved-project switching",
+    "Explicit Guided brief and Compass buttons switch the actual backend input mode while retaining the room map",
+    "Companion DXF action opens the existing importer without changing the active layout",
+    "Written budget resolves to 75 lakh; unsupported soundproofing stays visible as unapplied",
+    "Combined inputs generate successfully without changing any of the six room polygons"
+  ],
+  "live_build": {
+    "id": "8eb27a0d334b04a86e190462",
+    "planHash": "4183fdc8bdae5ce620553b5b2dbda18861dac5e1cd3589f3e261e4303108da39",
+    "room_types_preserved": true,
+    "rooms": [
+      {
+        "id": "compass-room-1",
+        "kind": "living",
+        "name": "Living",
+        "furniture": [
+          "sofa",
+          "coffee-table",
+          "media-console"
+        ]
+      },
+      {
+        "id": "compass-room-2",
+        "kind": "kitchen",
+        "name": "Kitchen",
+        "furniture": [
+          "kitchen-run",
+          "island"
+        ]
+      },
+      {
+        "id": "compass-room-3",
+        "kind": "bedroom",
+        "name": "Master bedroom",
+        "furniture": [
+          "bed",
+          "wardrobe"
+        ]
+      },
+      {
+        "id": "compass-room-3851faef-653f-496a-86bf-83bf9de9dd54",
+        "kind": "bathroom",
+        "name": "Bathroom",
+        "furniture": [
+          "wc",
+          "vanity"
+        ]
+      },
+      {
+        "id": "compass-room-4",
+        "kind": "bedroom",
+        "name": "Bedroom 2",
+        "furniture": [
+          "bed",
+          "wardrobe"
+        ]
+      },
+      {
+        "id": "compass-room-5",
+        "kind": "bedroom",
+        "name": "Bedroom 3",
+        "furniture": [
+          "bed",
+          "wardrobe"
+        ]
+      }
+    ],
+    "shared_identity_files": [
+      "building.json",
+      "scene.json",
+      "report.json",
+      "review.json",
+      "manifest.json",
+      "sheets.json",
+      "drawings.pdf",
+      "floorplans.dxf",
+      "model.glb",
+      "model.ifc"
+    ],
+    "exports": {
+      "drawings.pdf": 43397,
+      "floorplans.dxf": 143906,
+      "model.glb": 922784,
+      "model.ifc": 442853,
+      "FloorForge-export.zip": 1415797
+    },
+    "adapterVersion": "compass/2",
+    "room_records_unchanged_after_rule_upgrade": true
+  },
+  "preservation": {
+    "sample_and_viewer_files_checked": 445,
+    "changed_files": [],
+    "legacy_plans_checked": 4,
+    "changed_plan_hashes": [],
+    "planning_documents": {
+      "docs/COMPASS_REFACTOR_PLAN.md": "a08adccc73fa0bc1ba36e32828c209248f47901cc849bcd8bbf9b62c1882e123",
+      "docs/COMPASS_REFACTOR_IMPLEMENTATION_PROMPT.md": "7d5c58cccb3179667868b8f3103d238848fee1be8df495d5f8065e16f584ebb9"
+    }
+  },
+  "main_server": {
+    "port": 8765,
+    "compass_enabled": true,
+    "dining_check_valid": true,
+    "adapterVersion": "compass/2"
+  },
+  "adapterVersion": "compass/2",
+  "combined_inputs": {
+    "build_id": "161018c1aaaba63cf481a8d0",
+    "planHash": "16d6dca57155e66c07aa0904cbd1e18112d6f11fa81c2b00748563f8aff1a0fe",
+    "selected": [
+      "plot",
+      "compass",
+      "survey",
+      "sketch",
+      "dxf",
+      "text"
+    ],
+    "choices_survive_reload_and_saved_project_switch": true,
+    "active_layout": "compass",
+    "single_written_input_checked": true,
+    "layout_switches_retain_map": true,
+    "direct_dxf_import_opens": true,
+    "written_budget_applied": 75,
+    "unsupported_prose_reported": true,
+    "rooms_unchanged_from_previous_typed_build": true,
+    "room_polygons_valid_and_nonoverlapping": true,
+    "building_scene_drawings_exports_share_identity": true
+  }
+}

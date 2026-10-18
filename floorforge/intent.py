@@ -520,8 +520,14 @@ def fuse(payload: dict, *, compass_draft=False) -> dict:
     placement_hints=list(placement.values());_check_spatial_programme(grid_hints,out)
     editor=payload.get('editorState')
     if editor is not None:
-        if not isinstance(editor,dict) or set(editor)-{'mode','guideFloors','guideEdited','customPlan','savedRoomEdits','savedFurnitureLayout','usePlacements','roomBoard','useRoomBoard','compassDraft','compassScope','compassAcceptance'} or editor.get('mode') not in ('automatic','guide','custom','compass'):
+        if not isinstance(editor,dict) or set(editor)-{'mode','homeInputs','guideFloors','guideEdited','customPlan','savedRoomEdits','savedFurnitureLayout','usePlacements','roomBoard','useRoomBoard','compassDraft','compassScope','compassAcceptance'} or editor.get('mode') not in ('automatic','guide','custom','compass'):
             raise DesignError('EDITOR_STATE','Invalid saved editor state.')
+        if 'homeInputs' in editor:
+            inputs=editor['homeInputs']
+            if (not isinstance(inputs,list) or not 1<=len(inputs)<=6
+                    or any(not isinstance(x,str) or x not in {'plot','compass','survey','sketch','dxf','text'} for x in inputs)
+                    or len(set(inputs))!=len(inputs)):
+                raise DesignError('EDITOR_STATE','Choose one or more distinct home input methods.')
         if editor.get('compassDraft') is not None:
             from .compass_input import normalize as normalize_compass
             normalize_compass(editor['compassDraft'])

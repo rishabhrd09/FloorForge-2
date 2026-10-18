@@ -9,7 +9,7 @@ from .model import DesignError, sha
 from .spaces import SPACE_REGISTRY
 
 SCHEMA = 'floorforge.compass-input/1'
-ADAPTER = 'compass/1'
+ADAPTER = 'compass/2'
 ID = re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,79}')
 
 

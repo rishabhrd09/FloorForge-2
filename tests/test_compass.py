@@ -10,6 +10,7 @@ from floorforge.model import DesignError, sha
 from floorforge.intent import fuse
 from floorforge.compass_input import normalize, connected, remap, source_hash
 from floorforge.compass_adapter import proposal
+from floorforge.spaces import SPACE_REGISTRY
 
 
 @pytest.fixture
@@ -140,6 +141,10 @@ def test_remapping_previews_all_floors_and_refuses_collisions(compass):
 
 def test_acceptance_is_bound_to_site_scope_and_map(project, compass):
     p = accepted(project, compass)
+    old_rules = copy.deepcopy(p)
+    old_rules['compassAcceptance']['adapterVersion'] = 'compass/1'
+    with pytest.raises(DesignError, match='older map'):
+        fuse(old_rules)
     with pytest.raises(DesignError, match='older map'):
         fuse({**p, 'compassAcceptance': {'sourceHash': '0' * 64, 'adapterVersion': 'compass/1'}})
     p['brief']['road_bearing_deg'] = 90
@@ -291,6 +296,83 @@ def test_mixed_form_map_and_text_inputs_reach_the_shared_geometry(project, compa
     assert effects['open-kitchen']['status'] == effects['living-route']['status'] == effects['entry-destination']['status'] == 'applied'
     assert effects['plot-context']['status'] == effects['garden-note']['status'] == 'note only'
     assert any(e['status'] == 'unapplied' and 'soundproof' in e.get('message', '') for e in effects.values())
+
+
+@pytest.mark.parametrize('kind', [k for k in SPACE_REGISTRY if k not in ('stair', 'void', 'lift-shaft')])
+def test_selected_room_type_reaches_geometry_furniture_and_2d_plan(project, compass, kind):
+    from shapely.geometry import Polygon
+    from floorforge.layout import generate_layout
+    from floorforge.review import validate, reports
+    from floorforge.scene import make_scene
+    from floorforge.drawings import plan_elements
+    from floorforge.plan_geometry import plate, roof
+    room = compass['rooms'][-1]
+    room.update(kind=kind, name='Chosen space')  # The name must not decide its function.
+    project['brief']['bedrooms'] = 2 if kind == 'bedroom' else 1
+    payload = accepted(project, compass)
+    intent = fuse(json.loads(json.dumps(payload)))
+    assert intent['planHash'] == fuse(payload)['planHash']
+    b = generate_layout(intent)
+    scene = make_scene(b, reports(b, validate(b)))
+    space = next(s for s in b['spaces'] if s['id'] == room['id'])
+    assert space['kind'] == next(s for s in scene['rooms'] if s['id'] == room['id'])['kind'] == kind
+    spec = SPACE_REGISTRY[kind]
+    assert (space['enclosed'], space['roofed'], space['wet'], space['walkable']) == (spec['enclosed'], spec['roofed'], spec['wet'], spec['floor'])
+    polygon = Polygon(space['clear'])
+    assert plate(b, 0).intersection(polygon).area == pytest.approx(polygon.area)
+    assert roof(b, 0).intersection(polygon).area == pytest.approx(polygon.area if spec['roofed'] else 0)
+    items = [f for f in scene['furniture'] if f['room_id'] == room['id']]
+    expected = {'drawing-room':'sofa', 'living':'sofa', 'family':'sofa', 'dining':'dining-set',
+                'bedroom':'bed', 'care-room':'reclining-bed', 'kitchen':'kitchen-run',
+                'bathroom':'wc', 'powder-room':'wc', 'study':'desk', 'utility':'laundry',
+                'drying-room':'laundry', 'pooja':'mandir', 'store':'shelves-0', 'dress':'wardrobe'}
+    if kind in expected:
+        assert expected[kind] in {f['kind'] for f in items}
+    if kind != 'bedroom':
+        assert 'bed' not in {f['kind'] for f in items}
+    plan, _ = plan_elements(b, scene, 0)
+    assert any(e.get('text') == 'CHOSEN SPACE' for e in plan)
+    for item in items:
+        footprint = Polygon([[x*1000, y*1000] for x, y in item['footprint']])
+        assert any(e.get('layer') == 'A-FURN' and e['type'] == 'poly' and
+                   Polygon(e['points']).symmetric_difference(footprint).area < .01 for e in plan)
+    assert scene['planHash'] == b['planHash'] == intent['planHash']
+
+
+def test_compass_void_and_stairs_create_real_openings_and_flights():
+    from shapely.geometry import Polygon
+    from floorforge.layout import generate_layout
+    from floorforge.review import validate, reports
+    from floorforge.scene import make_scene
+    from floorforge.drawings import plan_elements
+    from floorforge.plan_geometry import plate, geometry, roof
+    source = json.loads((Path(__file__).parent/'fixtures/compass-three-floors.json').read_text())
+    p, c = source['project'], source['compass']
+    hall = next(r for r in c['rooms'] if r['id'] == 'f2-hall')
+    hall['regions'] = [ref for ref in hall['regions'] if ref not in ('0:2', '1:2')]
+    c['rooms'].append({'id':'f2-void', 'kind':'void', 'name':'Double-height opening', 'floorId':'floor-2', 'regions':['1:2']})
+    b = generate_layout(fuse(accepted(p, c)))
+    scene = make_scene(b, reports(b, validate(b)))
+    void = next(s for s in b['spaces'] if s['id'] == 'f2-void')
+    polygon = Polygon(void['clear'])
+    assert not void['walkable']
+    assert plate(b, 2).intersection(polygon).area == 0
+    assert geometry(b['roofs'][1]['ceiling']).intersection(polygon).area == 0
+    assert roof(b, 2).covers(polygon)
+    assert next(r for r in scene['rooms'] if r['id'] == 'f2-void')['kind'] == 'void'
+    assert not any(f['room_id'] == 'f2-void' for f in scene['furniture'])
+    assert len(b['stairs']) == 3 and all(st['riser_count'] > 0 for st in b['stairs'])
+    plan, _ = plan_elements(b, scene, 1)
+    assert any(e.get('layer') == 'A-STAIR' for e in plan)
+    assert any(collider.get('kind') == 'stair' for collider in scene['colliders'])
+
+
+def test_unavailable_lift_is_rejected_by_compass_api_not_only_hidden_in_the_palette(project, compass):
+    compass['rooms'][-1]['kind'] = 'lift-shaft'
+    project['brief']['bedrooms'] = 1
+    result = proposal(project, compass)
+    assert not result['valid']
+    assert any(i['code'] == 'ROOM_UNAVAILABLE' and i['roomId'] == 'bed-two' for i in result['issues'])
 
 
 def test_frontend_transactions_and_random_sequences():

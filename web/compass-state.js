@@ -11,6 +11,34 @@ const CompassState = (() => {
   add('living','Living');add('kitchen','Kitchen');for(let i=0;i<brief.bedrooms;i++)add('bedroom',i===0?'Master bedroom':`Bedroom ${i+1}`,Math.min(floors.length-1,Math.floor(i*floors.length/Math.max(1,brief.bedrooms))),i===0?'master':undefined);
   return {schema:'floorforge.compass-input/1',grid:{rows:4,cols:4,basis:'buildable-envelope',rowOrigin:'front'},floors,rooms,connections:[],stairLinks:[],site:{context:'unknown',gate:'planner',zones:[]},requirements:[]};
  }
+ const roomGuides={
+  'drawing-room':['Living & gathering','Guest seating and sofa furniture.'],living:['Living & gathering','Everyday seating and lounge furniture.'],family:['Living & gathering','Family seating and lounge furniture.'],dining:['Living & gathering','Dining table, chairs and daylight checks.'],
+  bedroom:['Private rooms','Bed and storage; counts towards your bedrooms.'],'care-room':['Private rooms','Care furniture with a larger clear room minimum.'],study:['Private rooms','Desk and workspace furniture.'],pooja:['Private rooms','Prayer space with an altar.'],
+  kitchen:['Kitchen & services','Cooking counters and appliances.'],utility:['Kitchen & services','Laundry and service fittings.'],'drying-room':['Kitchen & services','Enclosed laundry with ventilation and drainage.'],store:['Kitchen & services','Storage shelving.'],dress:['Kitchen & services','Wardrobe and dressing storage.'],
+  bathroom:['Bath & wash','WC, washbasin and shower where space permits.'],'powder-room':['Bath & wash','WC and washbasin without a shower.'],
+  veranda:['Outdoor spaces','Covered outdoor space with open sides.'],balcony:['Outdoor spaces','Open-air deck; upper-floor edges receive guards.'],terrace:['Outdoor spaces','Open-air terrace without a roof above.'],courtyard:['Outdoor spaces','Open-air court that stays clear of upper floors.'],'drying-yard':['Outdoor spaces','Outdoor drying space, open to the sky.'],
+  foyer:['Entrances & routes','Enclosed arrival and circulation space.'],'outer-lobby':['Entrances & routes','Covered, open-sided arrival space.'],'inner-lobby':['Entrances & routes','Enclosed circulation between rooms.'],hall:['Entrances & routes','Clear circulation route between rooms.'],
+  stair:['Stairs & openings','Link matching stair rooms to create real flights.'],'stair-landing':['Stairs & openings','Circulation landing; does not create a stair flight.'],void:['Stairs & openings','Upper-floor opening with no floor slab.'],'lift-shaft':['Stairs & openings','Lift design is unavailable in Compass.']
+ };
+ function catalogue(registry,query=''){const search=query.trim().toLowerCase(),groups=[...new Set(Object.values(roomGuides).map(r=>r[0])),'Other spaces'];return Object.entries(registry).map(([kind,spec])=>({kind,...spec,group:roomGuides[kind]?.[0]||'Other spaces',description:roomGuides[kind]?.[1]||'Uses this space type’s shared design rules.'})).filter(r=>!search||`${r.label} ${r.kind} ${r.group} ${r.description}`.toLowerCase().includes(search)).sort((a,b)=>groups.indexOf(a.group)-groups.indexOf(b.group)||a.label.localeCompare(b.label));}
+ function roomUnavailable(kind,floor){return kind==='lift-shaft'?'Lift design is unavailable in Compass.':kind==='void'&&floor===0?'Place a double-height void on the floor above the room it opens into.':'';}
+ function restoreForAdapter(project,adapterVersion){
+  const active=!!project.compass||project.editorState?.mode==='compass',draft=project.compass||project.editorState?.compassDraft,acceptance=project.compassAcceptance||project.editorState?.compassAcceptance;
+  if(!active||!draft||!acceptance||!adapterVersion||acceptance.adapterVersion===adapterVersion)return {project,reviewRequired:false};
+  const next={...project,editorState:{...project.editorState,mode:'compass',compassDraft:clone(draft),compassScope:project.compassScope||project.editorState?.compassScope||project.brief?.storeys||1}};
+  for(const key of ['compass','compassScope','compassAcceptance'])delete next[key];delete next.editorState.compassAcceptance;
+  return {project:next,reviewRequired:true};
+ }
+ function addRoom(draft,registry,floorId,kind,id,name=''){
+  const floor=draft.floors.findIndex(f=>f.id===floorId),spec=registry[kind];if(floor<0||!spec)throw Error('Choose a room type and an existing floor.');
+  const unavailable=roomUnavailable(kind,floor);if(unavailable)throw Error(unavailable);
+  if(draft.rooms.filter(r=>r.floorId===floorId).length>=120)throw Error('Keep at most 120 rooms on each floor.');
+  if(!id||draft.rooms.some(r=>r.id===id))throw Error('Give the new room its own identity.');
+  const next=clone(draft),taken=new Set(next.rooms.map(r=>r.name));let label=name.trim()||spec.label;
+  if(!name.trim()){let suffix=next.rooms.filter(r=>r.kind===kind).length+1;if(next.rooms.some(r=>r.kind===kind)||taken.has(label))label=`${spec.label} ${suffix++}`;while(taken.has(label))label=`${spec.label} ${suffix++}`;}
+  if(label.length>120)throw Error('Keep room names within 120 characters.');
+  next.rooms.push({id,kind,name:label,floorId,regions:[],required:true});return validate(next);
+ }
  function owner(draft,floorId,ref){return draft.rooms.find(r=>r.floorId===floorId&&r.regions.includes(ref));}
  function assign(draft,floorId,ref,roomId,{replace=false}={}){const next=clone(draft),recipient=roomId?next.rooms.find(r=>r.id===roomId&&r.floorId===floorId):null,donor=owner(next,floorId,ref);if(roomId&&!recipient)throw Error('Choose a room on this floor.');if(donor&&recipient&&donor.id!==roomId&&!replace)return {confirmation:{roomId:donor.id,message:`Replace ${donor.name} here?${donor.regions.length===1?' It will become unplaced and stay in your checklist.':''}`}};
   if(donor?.id===roomId)return {draft:next};
@@ -39,6 +67,6 @@ const CompassState = (() => {
   undo(){if(!this.past.length)return false;this.future.push(this.value);this.value=this.past.pop();return true;}
   redo(){if(!this.future.length)return false;this.past.push(this.value);this.value=this.future.pop();return true;}
  }
- return {clone,key,micro,connected,validate,create,owner,assign,splitAssign,whole,moveRoom,labelRect,History};
+ return {clone,key,micro,connected,validate,create,catalogue,roomUnavailable,restoreForAdapter,addRoom,owner,assign,splitAssign,whole,moveRoom,labelRect,History};
 })();
 if(typeof module!=='undefined')module.exports=CompassState;
