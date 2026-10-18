@@ -28,7 +28,8 @@
     "Explicit Guided brief and Compass buttons switch the actual backend input mode while retaining the room map",
     "Companion DXF action opens the existing importer without changing the active layout",
     "Written budget resolves to 75 lakh; unsupported soundproofing stays visible as unapplied",
-    "Combined inputs generate successfully without changing any of the six room polygons"
+    "Combined inputs generate successfully without changing any of the six room polygons",
+    "Writing-only guidance matches its route; restoring a saved project hides onboarding from the previous project"
   ],
   "live_build": {
     "id": "8eb27a0d334b04a86e190462",
@@ -150,6 +151,7 @@
     "unsupported_prose_reported": true,
     "rooms_unchanged_from_previous_typed_build": true,
     "room_polygons_valid_and_nonoverlapping": true,
-    "building_scene_drawings_exports_share_identity": true
+    "building_scene_drawings_exports_share_identity": true,
+    "stale_project_guidance_hidden": true
   }
 }
