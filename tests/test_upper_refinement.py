@@ -1,5 +1,5 @@
 """First-floor-only changes must preserve the occupied ground floor exactly."""
-from geometry_snapshot import assert_plate_snapshot
+from geometry_snapshot import assert_plate_snapshot, assert_snapshot, assert_unordered_snapshot
 import hashlib
 import json
 from pathlib import Path
@@ -10,7 +10,8 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.model import DesignError
 from scripts.build_desired_home import project
-from test_desired_home import historic_interior_floor, historic_caregiver_nodes, historic_veranda_items, historic_care_chair_items
+from test_desired_home import (historic_interior_floor, historic_caregiver_nodes, historic_veranda_items, historic_care_chair_items,
+                               assert_recorded_nodes, recorded, RINGS)
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -38,12 +39,13 @@ def test_upper_refinement_preserves_ground_model_finishes_lighting_and_collision
             assert digest(actual)==value,key
     nodes=[{k:v for k,v in historic_interior_floor(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))}
            for n in historic_caregiver_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth']
-    assert digest(sorted(nodes,key=lambda n:json.dumps(n,sort_keys=True)))==before['ground_nodes']
+    assert_recorded_nodes(scene,nodes,'desired_home_before_upper_refinement.json','ground_nodes')
     for key in ('furniture','colliders','vegetation'):
-        assert digest([n for n in (historic_veranda_items(scene,key) if key=='colliders' else historic_care_chair_items(scene,key)) if n.get('floor') in (0,-1)])==before['ground_'+key]
-    restored=sorted([n for n in historic_veranda_items(scene,'lights') if n['position'][2]<3.15],key=lambda n:json.dumps(n,sort_keys=True))
+        assert_snapshot([n for n in (historic_veranda_items(scene,key) if key=='colliders' else historic_care_chair_items(scene,key)) if n.get('floor') in (0,-1)],
+                        recorded('desired_home_before_upper_refinement.json','ground_'+key),key,rings=RINGS)
+    restored=[n for n in historic_veranda_items(scene,'lights') if n['position'][2]<3.15]
     prior_lights=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))['ground_lights']
-    assert restored==sorted(prior_lights,key=lambda n:json.dumps(n,sort_keys=True))
+    assert_unordered_snapshot(restored,prior_lights,'lights')
     assert digest(prior_lights)==before['ground_lights']
     assert all(scene['materials'][key]==value for key,value in before['materials'].items())
     # An extra collinear upper-boundary vertex may retriangulate the plinth;

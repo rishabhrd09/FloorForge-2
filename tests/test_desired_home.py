@@ -1,4 +1,6 @@
+import gzip
 import json
+from functools import lru_cache
 from pathlib import Path
 from shapely.geometry import Polygon,box,LineString
 from scripts.build_desired_home import project
@@ -6,10 +8,27 @@ from floorforge.intent import fuse
 from floorforge.layout import generate_layout
 from floorforge.review import validate
 from floorforge.exterior import apply_exterior_preferences
+from geometry_snapshot import assert_nodes_snapshot,assert_snapshot,metadata,node_matcher,record_matcher,unpaired
 
 ROOT=Path(__file__).resolve().parents[1]
+RINGS=('polygon','footprint')  # collider and furniture outlines
 
 
+@lru_cache(maxsize=None)
+def visual_geometry():
+    # The exact subsets behind the appearance digests in the named fixtures, with
+    # their meshes, so a sample rebuilt on another platform is compared tolerantly.
+    return json.loads(gzip.decompress((ROOT/'tests/fixtures/desired_home_visual_geometry.json.gz').read_bytes()))
+
+
+def recorded(fixture,key):
+    return visual_geometry()['subsets'][fixture][key]
+
+
+def assert_recorded_nodes(scene,nodes,fixture,key):
+    # Nodes restored from older fixtures keep their recorded meshes; all others use the scene's.
+    reference=visual_geometry()
+    assert_nodes_snapshot(nodes,recorded(fixture,key),{**reference['assets'],**scene['assets']},reference['assets'],f'{fixture} {key}')
 
 
 def historic_care_chair_items(scene,key):
@@ -23,18 +42,14 @@ def historic_veranda_items(scene,key):
     # Restore the bounded, approved overhead removal and balcony support additions
     # only when comparing historical appearance snapshots. New tests validate the
     # actual open-sky geometry and every retained ground-floor object separately.
-    from collections import Counter
     prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))
-    def canonical(n):
-        if key=='nodes':n={k:v for k,v in n.items() if k!='id' and not(k=='owner' and isinstance(v,str) and v.startswith('object-'))}
-        return json.dumps(n,sort_keys=True)
     added=prior['support_colliders'] if key=='colliders' else prior['added_'+key]
-    counts=Counter(canonical(n) for n in added);items=[]
-    for n in historic_care_chair_items(scene,key):
-        k=canonical(n)
-        if counts[k]:counts[k]-=1
-        else:items.append(n)
-    assert not any(counts.values()), 'Approved veranda additions changed unexpectedly'
+    # Recognise each addition by its metadata and mesh surface: a rebuild on another
+    # platform can retriangulate a mesh, renaming its asset, or round a coordinate.
+    if key=='nodes':match=node_matcher(scene['assets'],visual_geometry()['assets'],lambda n:{k:v for k,v in metadata(n).items() if k!='id'})
+    else:match=record_matcher(rings=RINGS)
+    items,changed=unpaired(historic_care_chair_items(scene,key),added,*match)
+    assert not changed, f'Approved veranda additions changed unexpectedly: {changed[:3]}'
     return items+prior.get('removed_'+key,[])
 
 
@@ -681,7 +696,6 @@ def test_veranda_garden_has_real_daylight_clear_routes_and_supported_guard():
 
 
 def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
-    import hashlib
     from floorforge.plan_geometry import geometry
     old=json.loads((ROOT/'tests/fixtures/desired_home_before_first_floor.json').read_text(encoding='utf-8'))
     p=project()
@@ -698,7 +712,6 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
     assert geometry(before['roofs'][0]['ceiling']).union(box(15288,7400,16938,8400)).difference(sky).equals(geometry(after['roofs'][0]['ceiling']))
     baseline=json.loads((ROOT/'tests/fixtures/desired_home_ground_appearance.json').read_text(encoding='utf-8'))
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
-    def digest(items):return hashlib.sha256(json.dumps(items,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     # Roof finishes at the first-floor deck level legitimately follow the revised upper plate.
     # Lock the original ground/site outside the two newly approved ICU openings.
     # Skirting is compared geometrically because boolean cuts reorder mesh vertices.
@@ -710,16 +723,15 @@ def test_first_floor_redesign_preserves_ground_geometry_and_appearance():
         if n.get('owner') in affected or n['role']=='skirting' or kitchen_casework_node(n):continue
         nodes.append({k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))})
     # Baseline is from before the approved kitchen swap; compare all other contents.
-    kitchen=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
-    assert digest(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)))==kitchen['ground_nodes']
-    assert digest([x for x in scene['vegetation'] if x.get('floor') in (0,-1)])==baseline['vegetation']
-    assert digest([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')])==kitchen['furniture']
-    assert digest([x for x in historic_veranda_items(scene,'colliders') if x.get('floor') in (0,-1)])==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['ground_colliders']
+    assert_recorded_nodes(scene,nodes,'desired_home_before_modular_kitchen.json','ground_nodes')
+    assert_snapshot([x for x in scene['vegetation'] if x.get('floor') in (0,-1)],recorded('desired_home_ground_appearance.json','vegetation'),'vegetation')
+    assert_snapshot([x for x in historic_items(scene,'furniture') if x.get('floor') in (0,-1) and (x['room_id']!='g-kitchen' or x['kind']=='serving-counter')],recorded('desired_home_before_modular_kitchen.json','furniture'),'furniture',rings=RINGS)
+    assert_snapshot([x for x in historic_veranda_items(scene,'colliders') if x.get('floor') in (0,-1)],recorded('desired_home_before_upper_refinement.json','ground_colliders'),'colliders',rings=RINGS)
     def motion(value):
         if isinstance(value,dict):return {k:motion(v) for k,v in value.items() if k!='ids'}
         if isinstance(value,list):return [motion(v) for v in value]
         return value
-    assert digest(motion({k:v for k,v in scene['door_motion'].items() if k.startswith('g-') and k not in approved}))==corner['doors']
+    assert_snapshot(motion({k:v for k,v in scene['door_motion'].items() if k.startswith('g-') and k not in approved}),recorded('desired_home_before_icu_corner_appearance.json','doors'),'door_motion')
     assert all(scene['materials'][k]==v for k,v in baseline['materials'].items())
     from shapely.geometry import shape
     from shapely.ops import unary_union
@@ -780,7 +792,6 @@ def test_icu_corner_keeps_fixed_pane_and_two_independent_wall_stacking_doors():
 
 
 def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
-    import hashlib
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     def allowed(n):
         owner=n.get('owner','')
@@ -788,9 +799,7 @@ def test_entrance_cleanup_preserves_every_node_outside_authorized_frontage():
         x,y,z=n['position']
         return owner.startswith('object-') and ((n['role']=='fixture' and n['floor']==-1 and y<0 and z<0) or (n['role']=='downlight' and n['floor']==0 and 11<x<16 and -1.5<y<0 and 2.7<z<2.9))
     nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not allowed(n) and not kitchen_casework_node(n)]
-    digest=hashlib.sha256(json.dumps(sorted(nodes,key=lambda x:json.dumps(x,sort_keys=True)),sort_keys=True,separators=(',',':')).encode()).hexdigest()
-    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
-    assert digest==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['entrance_unaffected_ground_nodes']
+    assert_recorded_nodes(scene,nodes,'desired_home_before_upper_refinement.json','entrance_unaffected_ground_nodes')
 
 
 def test_front_gates_clear_porch_through_their_entire_motion():
@@ -844,12 +853,23 @@ def test_modular_kitchen_has_connected_l_and_opposite_uncovered_fridge():
 
 
 def test_kitchen_change_preserves_every_other_rendered_area():
-    import hashlib
-    before=json.loads((ROOT/'tests/fixtures/desired_home_before_modular_kitchen.json').read_text(encoding='utf-8'))
     scene=json.loads((ROOT/'examples/gallery/my-desired-home/scene.json').read_text(encoding='utf-8'))
     nodes=[{k:v for k,v in historic_finish(n).items() if k!='id' and not(k=='owner' and v.startswith('object-'))} for n in historic_nodes(scene) if n['floor'] in (0,-1) and n['role']!='plinth' and not kitchen_casework_node(n)]
-    nodes.sort(key=lambda n:json.dumps(n,sort_keys=True))
-    assert hashlib.sha256(json.dumps(nodes,sort_keys=True,separators=(',',':')).encode()).hexdigest()==json.loads((ROOT/'tests/fixtures/desired_home_before_upper_refinement.json').read_text(encoding='utf-8'))['kitchen_unaffected_ground_nodes']
+    assert_recorded_nodes(scene,nodes,'desired_home_before_upper_refinement.json','kitchen_unaffected_ground_nodes')
+
+
+def test_recorded_appearance_subsets_are_the_digested_baselines():
+    import hashlib
+    # Tolerant comparisons are only as good as their baseline: each stored subset
+    # must hash to the digest its fixture recorded before the comparison changed.
+    reference=visual_geometry()
+    for fixture,subsets in reference['subsets'].items():
+        digests=json.loads((ROOT/'tests/fixtures'/fixture).read_text(encoding='utf-8'))
+        for key,value in subsets.items():
+            assert hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()==digests[key],(fixture,key)
+    # Approved additions are recognised by mesh surface, so each needs its recorded mesh.
+    prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))
+    assert all(n['asset'] in reference['assets'] for n in prior['added_nodes'])
 
 
 def test_simple_ceiling_removes_decor_and_kitchen_sink_is_clear_of_carcasses():

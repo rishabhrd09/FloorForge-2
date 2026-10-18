@@ -1,6 +1,7 @@
 """Option A: a true sky gap, separate usable decks and bounded ground changes."""
 import json
-from test_desired_home import historic_care_chair_items
+from geometry_snapshot import assert_snapshot
+from test_desired_home import historic_care_chair_items, RINGS
 from pathlib import Path
 import numpy as np
 import pytest
@@ -92,7 +93,7 @@ def test_balcony_columns_reach_ground_without_blocking_paved_route(model):
     # Ground furnishings and plants stay fixed except the later approved visitor-chair move.
     prior=json.loads((ROOT/'tests/fixtures/desired_home_before_open_veranda.json').read_text(encoding='utf-8'))
     for key in ('furniture','vegetation'):
-        assert [n for n in historic_care_chair_items(s,key) if n.get('floor') in(-1,0)]==prior['ground_'+key]
+        assert_snapshot([n for n in historic_care_chair_items(s,key) if n.get('floor') in(-1,0)],prior['ground_'+key],key,rings=RINGS)
     old=geometry(prior['ground_roof']['ceiling']);new=geometry(b['roofs'][0]['ceiling'])
     assert old.union(box(15288,7400,16938,8400)).difference(box(15438,5800,18138,8400)).equals(new)
     # Existing fixed TV-side window and operable paired care doors are retained.
