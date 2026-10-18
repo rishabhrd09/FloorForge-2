@@ -1,0 +1,92 @@
+{
+  "branch": "development",
+  "base_commit": "01727cb5768cee01f2adb445af98f9eb43f7e11a",
+  "state": "Validation evidence for the Compass room library and canvas improvements",
+  "tests": {
+    "focused_python": "93 passed in 28.48s",
+    "javascript": 32,
+    "randomized_edit_transactions": 500
+  },
+  "browser_checks": [
+    "All 28 types visible by default on an empty map",
+    "Clicking an empty cell opens the full library; no legacy room dropdown",
+    "New Bathroom creation and placement undo together",
+    "New Study in the right half undoes both room and division",
+    "Bedroom choices preserve the requested identity without duplication",
+    "Visible Undo in Bigger map mode",
+    "Complete six-room home checked, accepted and generated through the UI",
+    "Furnished 3D and A101 2D drawing rendered",
+    "The exact G+1 starter case shows four Ground rooms and all 28 catalogue types; First has one starter room and the same complete catalogue",
+    "Changing floors cancels a pending cell target and retains room identity/floor ownership",
+    "Ground void creation is disabled; First-floor void is available",
+    "All 32 cells remain visible at fit",
+    "Room-first selection leaves the programme unchanged until the first cell is painted; one Undo removes both creation and placement",
+    "Save/reopen retains four Ground starter rooms and the full library"
+  ],
+  "grid_comparison": {
+    "plot": "40 by 50 feet, East facing, 16 cells",
+    "viewport": [
+      1280,
+      720
+    ],
+    "before": [
+      236,
+      256
+    ],
+    "after_normal": [
+      342,
+      371
+    ],
+    "after_bigger_map": [
+      446,
+      484
+    ],
+    "aspect_ratio_retained": true
+  },
+  "generation": {
+    "build_id": "73931a73ccf594fbf6af90c0",
+    "planHash": "67400e2db186745150b84b30724ec4edc4e0ddbbb22abd320d66e6df422531e5",
+    "rooms": [
+      {
+        "id": "compass-room-1",
+        "kind": "living",
+        "name": "Living"
+      },
+      {
+        "id": "compass-room-2",
+        "kind": "kitchen",
+        "name": "Kitchen"
+      },
+      {
+        "id": "compass-room-3",
+        "kind": "bedroom",
+        "name": "Master bedroom"
+      },
+      {
+        "id": "compass-room-4",
+        "kind": "bedroom",
+        "name": "Bedroom 2"
+      },
+      {
+        "id": "compass-room-5",
+        "kind": "bedroom",
+        "name": "Bedroom 3"
+      },
+      {
+        "id": "compass-room-ad7f8c34-0494-437f-9bc6-384db1a6c02b",
+        "kind": "bathroom",
+        "name": "Bathroom"
+      }
+    ],
+    "valid_nonoverlapping_polygons": true,
+    "room_types_retained_in_scene": true,
+    "blocking_geometry_errors": [],
+    "matching_identity_in_all_exports": true
+  },
+  "preservation": {
+    "sample_and_viewer_files": 445,
+    "changed_files": [],
+    "legacy_hashes": 4,
+    "changed_hashes": []
+  }
+}

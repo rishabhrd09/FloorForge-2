@@ -1,0 +1,40 @@
+✔ removing a bridge or replacing it never disconnects its donor (0.645084ms)
+✔ replacement is a proposal until explicitly confirmed (0.321875ms)
+✔ division and assignment are one transaction and undo restores whole ownership (0.1705ms)
+✔ whole-cell merge validates both owners (0.102208ms)
+✔ corner contact does not connect either half (0.040917ms)
+✔ assigning the selected owner again preserves the room; erasing is explicit (0.078375ms)
+✔ moving an unplaced room removes cross-floor relationships and entry selection atomically (0.142792ms)
+✔ whole and half ownership cannot overlap or bypass a floor partition (0.122625ms)
+✔ shared input edits save a recoverable pending Compass draft instead of stale accepted geometry (0.11775ms)
+✔ editor revision and selection do not invalidate accepted input (0.08ms)
+✔ active Compass data takes precedence over a retained different inactive draft when reopening (0.077625ms)
+✔ random assignment/removal sequences preserve connectivity, ownership and exact undo (15.652458ms)
+✔ mixed intake selects one geometry route and respects the Compass rollout flag (0.10225ms)
+✔ single and combined input choices are restored independently of the active layout (0.138083ms)
+✔ plot units round only at the canonical millimetre boundary (0.084792ms)
+✔ fit-to-window keeps every map row within the available box without distorting the plot (0.097417ms)
+✔ room labels remain inside authored L-shapes and divided allocations (1.0765ms)
+✔ catalogue searches the shared types and does not confuse the current checklist with available types (4.4475ms)
+✔ adding a typed room preserves ownership, keeps a distinct identity and supports exact undo (0.230417ms)
+✔ unsupported lift design and ground-floor voids cannot be added as ordinary rooms (0.063792ms)
+✔ bedroom numbering follows existing typed rooms even when the first is named Master (0.031917ms)
+✔ undoing a catalogue addition clears a removed selection before more painting (0.149917ms)
+✔ old accepted room rules reopen as a retained draft without moving rooms or changing input sources (0.188834ms)
+✔ current acceptances and inactive legacy input modes retain their authority (0.064208ms)
+✔ choosing a new type for an empty cell creates and places one typed room in one undoable edit (0.153958ms)
+✔ catalogue placement into a half keeps creation, division and replacement atomic (0.100667ms)
+✔ whole-cell assignment checks every half owner and rejects disconnecting the donor (0.143583ms)
+✔ catalogue reuses a requested unplaced room instead of silently duplicating the programme (0.068583ms)
+✔ cancelling a cell replacement does not leave a newly added catalogue room behind (0.895167ms)
+✔ an L-shaped room uses its wider owned area for a readable label (0.112916ms)
+✔ choosing a new room brush leaves the programme unchanged until its first painted cell (0.195209ms)
+✔ Bigger map restores fit so a previously zoomed canvas still shows every row (0.070083ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.014208
