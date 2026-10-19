@@ -128,7 +128,7 @@ def test_size_locks_never_trigger_automatic_movement(project, compass):
 
 def test_remapping_previews_all_floors_and_refuses_collisions(compass):
     original = copy.deepcopy(compass)
-    result = remap(compass, 6)
+    result = remap(compass, 5)
     assert not result['valid']
     assert any(i['code'] == 'REMAP_COLLISION' for i in result['issues'])
     assert compass == original

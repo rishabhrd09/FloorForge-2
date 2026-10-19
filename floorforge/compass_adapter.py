@@ -14,6 +14,7 @@ def compile_compass(value, values, scope=None, hints=()):
     from .review import LIT_KINDS
 
     compass = normalize(value)
+    drawn = compass.get('programme') == 'drawn'
     count = values['storeys']
     if len(compass['floors']) < count:
         raise DesignError('COMPASS_FLOORS', 'Keep a Compass draft for each requested occupied floor.')
@@ -38,8 +39,15 @@ def compile_compass(value, values, scope=None, hints=()):
     if W < 1000 or D < 1000:
         issue('ENVELOPE', 'Plot dimensions and setbacks leave too little buildable area.')
     expected = sum(r['kind'] == 'bedroom' for r in compass['rooms'] if r['floorId'] in {f['id'] for f in compass['floors'][:count]})
-    if expected != values['bedrooms']:
+    if not drawn and expected != values['bedrooms']:
         issue('BEDROOM_PROGRAMME', f'The setup requests {values["bedrooms"]} bedrooms but the active floor checklists contain {expected}. Add or revise room requirements explicitly.')
+    if drawn:
+        omitted = [r['name'] for r in rooms if not r['regions']]
+        if omitted:
+            effects.append({'source': 'unplaced-rooms', 'status': 'unapplied',
+                            'message': 'Not drawn yet: ' + ', '.join(omitted) + '. These rooms remain in your saved draft.'})
+        effects.append({'source': 'drawn-programme', 'status': 'applied',
+                        'message': f'Preview only the placed rooms on {scope} floor(s), including {v["bedrooms"]} bedrooms. Empty cells stay empty; upper drafts remain saved.'})
     site = compass['site']
     if site['gate'] != 'planner' or site.get('zones') or 'secondRoad' in site:
         issue('SITE_UNAVAILABLE', 'Custom gate positions, additional road geometry and setback-band zones need the site compiler extension. Keep planner gate placement and record these requests as notes for now.')
@@ -49,7 +57,7 @@ def compile_compass(value, values, scope=None, hints=()):
     t = plan['wallThickness']
     cols = compass['grid']['cols']
     xs = [round(t / 2 + i * (W - t) / (2 * cols), 3) for i in range(2 * cols + 1)]
-    ys = [round(t / 2 + i * (D - t) / compass['grid']['rows'], 3) for i in range(compass['grid']['rows'] + 1)]
+    ys = [round(t / 2 + i * (D - t) / (2 * compass['grid']['rows']), 3) for i in range(2 * compass['grid']['rows'] + 1)]
     for floor in floors:
         target = {'id': floor['id'], 'rooms': [], 'walls': [], 'openings': []}
         for room in (r for r in rooms if r['floorId'] == floor['id']):
@@ -57,7 +65,7 @@ def compile_compass(value, values, scope=None, hints=()):
                 issue('ROOM_UNAVAILABLE', 'Lift design is unavailable in Compass. Keep it as a note for further design.', room)
                 continue
             if not room['regions']:
-                if room.get('required', True):
+                if room.get('required', True) and not drawn:
                     issue('UNPLACED', f'Place {room["name"]}, or explicitly make it optional.', room)
                 continue
             parts = []
@@ -65,7 +73,9 @@ def compile_compass(value, values, scope=None, hints=()):
                 row, col, half = cell(ref, compass['grid']['rows'], cols)
                 left = 2 * col + (1 if half == 'R' else 0)
                 right = 2 * col + (1 if half == 'L' else 2)
-                parts.append(box(xs[left], ys[row], xs[right], ys[row + 1]))
+                front = 2 * row + (1 if half == 'B' else 0)
+                back = 2 * row + (1 if half == 'F' else 2)
+                parts.append(box(xs[left], ys[front], xs[right], ys[back]))
             allocated = unary_union(parts)
             spec = SPACE_REGISTRY[room['kind']]
             p = allocated.buffer(-t / 2, join_style=2) if spec['enclosed'] else allocated
@@ -98,7 +108,27 @@ def compile_compass(value, values, scope=None, hints=()):
                 changes.append({'roomId': q['id'], 'message': 'Ground-only scope reserves this stair area as a landing; unfinished upper-floor flights and roof access are omitted.'})
             target['rooms'].append(q)
         plan['floors'].append(target)
-    for stair in compass['stairLinks']:
+        if drawn and not target['rooms']:
+            issue('EMPTY_FLOOR', 'Draw at least one room on this floor, or choose fewer floors for the preview.', floor=floors.index(floor))
+    stair_links = list(compass['stairLinks'])
+    if drawn and scope > 1:
+        linked = {rid for s in stair_links for rid in s['roomIds']}
+        for first in (r for r in rooms if r['floorId'] == floors[0]['id'] and r['kind'] == 'stair' and r['id'] in polygons and r['id'] not in linked):
+            matches = [first]
+            for floor in floors[1:]:
+                match = next((r for r in rooms if r['floorId'] == floor['id'] and r['kind'] == 'stair'
+                              and r['id'] in polygons and r['id'] not in linked
+                              and polygons[r['id']].equals(polygons[first['id']])), None)
+                if match is None:
+                    break
+                matches.append(match)
+            if len(matches) == scope:
+                ids = [r['id'] for r in matches]
+                stair_links.append({'id': 'compass-auto-core-' + sha(ids)[:16], 'roomIds': ids,
+                                    'flightWidth': 1000, 'well': 200, 'landing': 1050, 'tread': 250, 'rotation': 0})
+                linked.update(ids)
+                effects.append({'source': 'matching-stairs', 'status': 'applied', 'message': 'Matching stair rooms are linked automatically; their positions are unchanged.'})
+    for stair in stair_links:
         ids = [r for r in stair['roomIds'] if r in polygons]
         if len(ids) > 1 or (ids and v['roof_access']):
             plan['stairs'].append({**stair, 'roomIds': ids})
@@ -262,7 +292,7 @@ def compile_compass(value, values, scope=None, hints=()):
                     effects.append({'source': relation['id'], 'status': 'applied', 'message': f'{by_id[relation["from"]]["name"]} → {by_id[relation["to"]]["name"]}: {relation["kind"]} relationship checked on the authored walls.'})
             if site.get('entryRoomId'):
                 effects.append({'source': 'entry-destination', 'status': 'applied', 'message': f'Main entrance opens into {by_id[site["entryRoomId"]]["name"]}.'})
-            for stair in compass['stairLinks']:
+            for stair in stair_links:
                 applied = any(s['id'] == stair['id'] for s in plan['stairs'])
                 effects.append({'source': stair['id'], 'status': 'applied' if applied else 'off', 'message': 'Linked stair core compiled into the included floors.' if applied else 'Stair link retained; no flight is included in this floor scope.'})
         changes.append({'message': f'Review {sum(len(f["openings"]) for f in plan["floors"])} proposed doors and windows on the actual room walls. No rooms were moved or resized.'})

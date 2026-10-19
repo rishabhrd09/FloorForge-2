@@ -1,0 +1,87 @@
+{
+  "branch": "development",
+  "baseCommit": "8762c4e67fd1d254ad5c28456e732025cbb9269b",
+  "mainUnchanged": "f3b5c9807ebfeacd1c5d3e24aa0177c43ec104d0",
+  "features": [
+    "left/right and road-relative front/back halves",
+    "one orientation per cell",
+    "atomic allocation, replacement, merge and Undo/Redo",
+    "version 1 reads preserve acceptance and geometry hashes; new features opt into version 2",
+    "direct drawn-room generation; unfinished requirements and upper floors retained",
+    "automatic linking of matching authored stair footprints in drawn-room generation",
+    "optional advanced relationships and detailed measurements"
+  ],
+  "tests": {
+    "fullPythonRegression": 721,
+    "focusedSplitAndInputAudit": 40,
+    "javascript": 66,
+    "fullApiBuilds": 16,
+    "grids": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "scopes": [
+      1,
+      2,
+      3
+    ],
+    "legacyGrid": [
+      4,
+      8
+    ],
+    "sharedIdentity": [
+      "2D drawings",
+      "3D scene",
+      "PDF",
+      "DXF",
+      "GLB",
+      "IFC"
+    ],
+    "browser": [
+      "project-file upload with both split axes and three floors",
+      "back-half replacement from Store to Pooja",
+      "Undo/Redo restores exact owners",
+      "downloaded project retains all rooms, halves, floors and mixed inputs",
+      "reload/reopen restores ground and both upper floors",
+      "direct ground-only generation with an unplaced required room",
+      "direct three-floor generation without visiting connection/review pages",
+      "2D drawing and 3D dollhouse displayed"
+    ],
+    "protectedSampleFilesUnchanged": 445,
+    "legacyAutomaticHashesUnchanged": 4,
+    "previousAcceptedCompassHashesUnchanged": 16
+  },
+  "localApp": "http://127.0.0.1:8765/",
+  "notes": [
+    "Empty cells remain empty; no room is silently fitted or moved.",
+    "Room minima, connectivity, access, openings and stair validation remain enforced.",
+    "Unplaced rooms are reported as unapplied in input coverage; they do not block a drawn-room preview.",
+    "Quarter-cell authoring is not exposed.",
+    "Full suite completed before five additional focused front-half cases were added; the 40 focused tests cover those cases and the final input-audit adjustment."
+  ],
+  "verificationStage": "pre-commit local verification",
+  "gitStateAtLocalVerification": {
+    "branch": "development",
+    "baseCommit": "8762c4e67fd1d254ad5c28456e732025cbb9269b",
+    "uncommittedChanges": true,
+    "main": "f3b5c9807ebfeacd1c5d3e24aa0177c43ec104d0"
+  }
+}

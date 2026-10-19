@@ -1,14 +1,15 @@
 """Compass entry points, enabled by default with an explicit server opt-out."""
 import os
 from .model import DesignError
-from .compass_input import fields, remap, ADAPTER, SCHEMA, GRID_OPTIONS
+from .compass_input import fields, remap, ADAPTER, SCHEMA, SPLIT_SCHEMA, GRID_OPTIONS
 
 
 def capabilities():
     return {'enabled': os.environ.get('FLOORFORGE_COMPASS', '1').strip().lower() in ('1', 'true', 'yes'),
             'schema': SCHEMA, 'adapterVersion': ADAPTER, 'densities': [s['cells'] for s in GRID_OPTIONS],
+            'schemas': [SCHEMA, SPLIT_SCHEMA], 'splitDirections': ['left-right', 'front-back'],
             'gridOptions': GRID_OPTIONS, 'legacyGridOptions': [{'cols': 4, 'rows': 8, 'cells': 32}],
-            'operational': ['room-regions', 'half-cells', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
+            'operational': ['room-regions', 'half-cells', 'front-back-halves', 'drawn-room-preview', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
             'advisory': ['plot-context', 'notes'],
             'unavailable': ['gate-position', 'second-road-geometry', 'setback-band-zones', 'external-stairs', 'lift-design', 'automatic-fit']}
 

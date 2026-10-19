@@ -11,6 +11,9 @@ from .model import DesignError, sha
 from .spaces import SPACE_REGISTRY
 
 SCHEMA = 'floorforge.compass-input/1'
+# New partitions/programme choices opt into v2. Reading a v1 draft does not
+# rewrite its serialized content or invalidate its reviewed geometry identity.
+SPLIT_SCHEMA = 'floorforge.compass-input/2'
 ADAPTER = 'compass/2'
 ID = re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,79}')
 GRID_OPTIONS = json.loads(Path(__file__).with_name('compass_grids.json').read_text())
@@ -33,8 +36,8 @@ def number(value, lo, hi, label):
 
 
 def cell(value, rows, cols=4):
-    if not isinstance(value, str) or not re.fullmatch(r'(?:0|[1-9][0-9]?):(?:0|[1-9][0-9]?)(?::[LR])?', value):
-        fail('REGION', 'Use row:column, or row:column:L/R for a divided cell.')
+    if not isinstance(value, str) or not re.fullmatch(r'(?:0|[1-9][0-9]?):(?:0|[1-9][0-9]?)(?::[LRFB])?', value):
+        fail('REGION', 'Use row:column, or row:column:L/R/F/B for a divided cell.')
     parts = value.split(':')
     row, col = map(int, parts[:2])
     if row >= rows or col >= cols:
@@ -43,10 +46,13 @@ def cell(value, rows, cols=4):
 
 
 def microcells(regions, rows, cols=4):
+    """Exact quarter occupancy for adjacency; authors still choose two halves."""
     result = set()
     for ref in regions:
         row, col, half = cell(ref, rows, cols)
-        result.update((row, 2 * col + h) for h in (0, 1) if half is None or half == ('L', 'R')[h])
+        result.update((2 * row + y, 2 * col + x) for y in (0, 1) for x in (0, 1)
+                      if (half not in ('L', 'R') or half == ('L', 'R')[x])
+                      and (half not in ('F', 'B') or half == ('F', 'B')[y]))
     return result
 
 
@@ -65,10 +71,13 @@ def connected(regions, rows, cols=4):
 
 
 def normalize(value):
-    fields(value, ('schema', 'grid', 'floors', 'rooms', 'connections', 'stairLinks', 'site', 'requirements'), 'Compass input')
-    if value.get('schema') != SCHEMA:
+    fields(value, ('schema', 'grid', 'floors', 'rooms', 'connections', 'stairLinks', 'site', 'requirements', 'programme'), 'Compass input')
+    if value.get('schema') not in (SCHEMA, SPLIT_SCHEMA):
         fail('VERSION', 'This Compass version is unsupported. Keep the original project file for recovery.')
     out = copy.deepcopy(value)
+    modern = out['schema'] == SPLIT_SCHEMA
+    if 'programme' in out and (not modern or out['programme'] != 'drawn'):
+        fail('PROGRAMME', 'Drawn-room generation requires Compass version 2.')
     grid = out.get('grid')
     fields(grid, ('rows', 'cols', 'basis', 'rowOrigin'), 'Compass grid')
     if type(grid.get('rows')) is not int or type(grid.get('cols')) is not int or (grid['cols'], grid['rows']) not in GRID_SHAPES:
@@ -89,16 +98,21 @@ def normalize(value):
         fail('FLOORS', 'Keep one to three occupied-floor drafts.')
     splits = {}
     for floor in floors:
-        fields(floor, ('id', 'splits'), 'Compass floor')
+        fields(floor, ('id', 'splits', 'horizontalSplits') if modern else ('id', 'splits'), 'Compass floor')
         ident(floor)
-        refs = floor.setdefault('splits', [])
-        if not isinstance(refs, list) or len(refs) > rows * cols or len(set(map(str, refs))) != len(refs):
-            fail('SPLITS', 'List each divided base cell once.')
-        for ref in refs:
-            if cell(ref, rows, cols)[2] is not None:
-                fail('SPLITS', 'A divided-cell reference names the whole base cell.')
-        floor['splits'] = sorted(refs)
-        splits[floor['id']] = set(refs)
+        floor.setdefault('splits', [])
+        orientations = {}
+        for field, halves in (('splits', 'LR'), ('horizontalSplits', 'FB')):
+            refs = floor.get(field, [])
+            if not isinstance(refs, list) or len(refs) > rows * cols or len(set(map(str, refs))) != len(refs):
+                fail('SPLITS', 'List each divided base cell once.')
+            for ref in refs:
+                if cell(ref, rows, cols)[2] is not None or ref in orientations:
+                    fail('SPLITS', 'Each base cell can have one split direction.')
+                orientations[ref] = halves
+            if field in floor:
+                floor[field] = sorted(refs)
+        splits[floor['id']] = orientations
     rooms = out.get('rooms')
     if not isinstance(rooms, list) or len(rooms) > 360:
         fail('ROOMS', 'Use at most 120 rooms per floor.')
@@ -121,13 +135,14 @@ def normalize(value):
             fail('REGIONS', 'List each room region once.')
         for ref in refs:
             row, col, half = cell(ref, rows, cols)
-            divided = f'{row}:{col}' in splits[room['floorId']]
-            if divided != (half is not None):
+            orientation = splits[room['floorId']].get(f'{row}:{col}')
+            if (orientation is None and half is not None) or (orientation is not None and (half is None or half not in orientation)):
                 fail('PARTITION', 'Use halves only in divided cells; keep whole cells elsewhere.', roomId=room['id'], region=ref)
-            key = (room['floorId'], ref)
-            if key in occupied:
-                fail('OWNERSHIP', 'A region can belong to only one room.', roomId=room['id'], region=ref)
-            occupied.add(key)
+            for y, x in microcells([ref], rows, cols):
+                key = (room['floorId'], y, x)
+                if key in occupied:
+                    fail('OWNERSHIP', 'A region can belong to only one room.', roomId=room['id'], region=ref)
+                occupied.add(key)
         if not connected(refs, rows, cols):
             fail('CONNECTED', f'{room["name"]} must share edges; corner contact does not join a room.', roomId=room['id'], regions=refs)
         room['regions'] = sorted(refs)
@@ -256,35 +271,47 @@ def remap(value, rows, cols=None):
         return [[old for old in range(old_count)
                  if min(Fraction(i + 1, count), Fraction(old + 1, old_count)) >
                     max(Fraction(i, count), Fraction(old, old_count))] for i in range(count)]
-    ys, xs = axis_overlaps(rows, old_rows), axis_overlaps(2 * cols, 2 * old_cols)
+    ys, xs = axis_overlaps(2 * rows, 2 * old_rows), axis_overlaps(2 * cols, 2 * old_cols)
     by_id = {r['id']: r for r in candidate['rooms']}
     for room in candidate['rooms']:
         room['regions'] = []
     for floor in candidate['floors']:
         floor['splits'] = []
+        if 'horizontalSplits' in floor:
+            floor['horizontalSplits'] = []
         owners = {}
         for room in original['rooms']:
             if room['floorId'] == floor['id']:
                 owners.update({(y, x): room['id'] for y, x in microcells(room['regions'], old_rows, old_cols)})
-        for y in range(rows):
-            halves = []
+        pixels = {}
+        for y in range(2 * rows):
             for x in range(2 * cols):
                 overlaps = {owners.get((oy, ox)) for oy in ys[y] for ox in xs[x]}
                 if len(overlaps) > 1:
                     ids = sorted(r for r in overlaps if r is not None)
                     names = ', '.join(by_id[r]['name'] for r in ids) + (' and unassigned space' if None in overlaps else '')
-                    issues.append({'code': 'REMAP_BOUNDARY' if None in overlaps else 'REMAP_COLLISION', 'floorId': floor['id'], 'region': f'{y}:{x // 2}:{("L", "R")[x % 2]}', 'roomIds': ids, 'message': f'{floor["id"]} · row {y+1}, column {x//2+1}, {("left", "right")[x%2]} half: {names} share a proposed region. Keep this grid or revise those assignments first.'})
-                halves.append(next(iter(overlaps)) if len(overlaps) == 1 else None)
+                    issues.append({'code': 'REMAP_BOUNDARY' if None in overlaps else 'REMAP_COLLISION', 'floorId': floor['id'], 'region': f'{y//2}:{x//2}', 'roomIds': ids, 'message': f'{floor["id"]} · row {y//2+1}, column {x//2+1}: {names} share a proposed region. Keep this grid or revise those assignments first.'})
+                pixels[y, x] = next(iter(overlaps)) if len(overlaps) == 1 else None
+        for y in range(rows):
             for x in range(cols):
-                left, right = halves[2 * x:2 * x + 2]
-                if left == right:
-                    if left:
-                        by_id[left]['regions'].append(f'{y}:{x}')
-                else:
+                fl, fr, bl, br = (pixels[2*y+dy, 2*x+dx] for dy, dx in ((0,0),(0,1),(1,0),(1,1)))
+                if fl == fr == bl == br:
+                    if fl:
+                        by_id[fl]['regions'].append(f'{y}:{x}')
+                elif fl == bl and fr == br:
                     floor['splits'].append(f'{y}:{x}')
-                    for half, owner in zip(('L', 'R'), (left, right)):
+                    for half, owner in zip(('L', 'R'), (fl, fr)):
                         if owner:
                             by_id[owner]['regions'].append(f'{y}:{x}:{half}')
+                elif fl == fr and bl == br:
+                    candidate['schema'] = SPLIT_SCHEMA
+                    floor.setdefault('horizontalSplits', []).append(f'{y}:{x}')
+                    for half, owner in zip(('F', 'B'), (fl, bl)):
+                        if owner:
+                            by_id[owner]['regions'].append(f'{y}:{x}:{half}')
+                else:
+                    issues.append({'code': 'REMAP_PARTITION', 'floorId': floor['id'], 'region': f'{y}:{x}',
+                                   'message': f'Row {y+1}, column {x+1} would need quarter cells. Keep this grid or revise its assignments.'})
     for room in candidate['rooms']:
         previous = next(r for r in original['rooms'] if r['id'] == room['id'])
         if previous['regions'] and not room['regions']:

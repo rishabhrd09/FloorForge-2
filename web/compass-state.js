@@ -8,9 +8,27 @@ const CompassState = (() => {
  const configureGrids=shapes=>{for(const {cols,rows} of shapes)gridShapes.add(`${cols}x${rows}`);};
  function validateGrid(grid){if(!grid||!Number.isInteger(grid.rows)||!Number.isInteger(grid.cols)||!gridShapes.has(`${grid.cols}x${grid.rows}`)||grid.basis!=='buildable-envelope'||grid.rowOrigin!=='front')throw Error('Choose a supported Compass grid.');}
  const key = (row,col,half) => `${row}:${col}${half?':'+half:''}`;
- const micro = refs => new Set(refs.flatMap(ref=>{const [r,c,h]=ref.split(':');return (h?[h]:['L','R']).map(s=>`${r}:${2*Number(c)+(s==='R'?1:0)}`);}));
+ const splitHalves=(floor,base)=>floor.horizontalSplits?.includes(base)?['F','B']:floor.splits.includes(base)?['L','R']:[];
+ const micro = refs => new Set(refs.flatMap(ref=>{const [r,c,h]=ref.split(':'),points=[];for(let y=0;y<2;y++)for(let x=0;x<2;x++)if((!['L','R'].includes(h)||h===['L','R'][x])&&(!['F','B'].includes(h)||h===['F','B'][y]))points.push(`${2*Number(r)+y}:${2*Number(c)+x}`);return points;}));
  function connected(refs){const todo=micro(refs);if(!todo.size)return true;const pending=[todo.values().next().value];todo.delete(pending[0]);while(pending.length){const [r,c]=pending.pop().split(':').map(Number);for(const [y,x]of [[r-1,c],[r+1,c],[r,c-1],[r,c+1]]){const k=`${y}:${x}`;if(todo.delete(k))pending.push(k);}}return !todo.size;}
- function validate(draft){validateGrid(draft.grid);const validRef=ref=>typeof ref==='string'&&/^(0|[1-9]\d*):(0|[1-9]\d*)(?::[LR])?$/.test(ref)&&Number(ref.split(':')[0])<draft.grid.rows&&Number(ref.split(':')[1])<draft.grid.cols;const owned=new Set();for(const floor of draft.floors){if(!Array.isArray(floor.splits)||new Set(floor.splits).size!==floor.splits.length||floor.splits.some(ref=>!validRef(ref)||ref.split(':').length!==2))throw Error('A divided cell must be inside this floor’s grid.');}for(const r of draft.rooms){const floor=draft.floors.find(f=>f.id===r.floorId);if(!floor)throw Error('Choose an existing floor.');if(!connected(r.regions))throw Error(`${r.name} would become disconnected. Keep the bridge, choose an adjoining region, or add a separate room.`);for(const ref of r.regions){const [row,col,half]=ref.split(':');if(!validRef(ref)||floor.splits.includes(`${row}:${col}`)!==!!half)throw Error('A room region must match this floor’s whole or divided cells.');}for(const ref of micro(r.regions)){const k=r.floorId+':'+ref;if(owned.has(k))throw Error('A region already belongs to another room.');owned.add(k);}}return draft;}
+ function validate(draft){
+  validateGrid(draft.grid);const modern=draft.schema==='floorforge.compass-input/2';
+  if(!modern&&draft.schema!=='floorforge.compass-input/1')throw Error('Unsupported Compass version.');
+  if('programme' in draft&&(!modern||draft.programme!=='drawn'))throw Error('Drawn-room generation requires Compass version 2.');
+  const validRef=ref=>typeof ref==='string'&&/^(0|[1-9]\d*):(0|[1-9]\d*)(?::[LRFB])?$/.test(ref)&&Number(ref.split(':')[0])<draft.grid.rows&&Number(ref.split(':')[1])<draft.grid.cols;
+  const owned=new Set();
+  for(const floor of draft.floors){
+   const refs=[...(floor.splits||[]),...(floor.horizontalSplits||[])];
+   if(!Array.isArray(floor.splits)||('horizontalSplits' in floor&&(!modern||!Array.isArray(floor.horizontalSplits)))||new Set(refs).size!==refs.length||refs.some(ref=>!validRef(ref)||ref.split(':').length!==2))throw Error('A divided cell must have one direction inside this floor’s grid.');
+  }
+  for(const r of draft.rooms){
+   const floor=draft.floors.find(f=>f.id===r.floorId);if(!floor)throw Error('Choose an existing floor.');
+   for(const ref of r.regions){const [row,col,half]=ref.split(':'),halves=splitHalves(floor,`${row}:${col}`);if(!validRef(ref)||(half?!halves.includes(half):halves.length))throw Error('A room region must match this floor’s whole or divided cells.');}
+   if(!connected(r.regions))throw Error(`${r.name} would become disconnected. Keep the bridge, choose an adjoining region, or add a separate room.`);
+   const pixels=r.regions.flatMap(ref=>[...micro([ref])]);for(const ref of pixels){const k=r.floorId+':'+ref;if(owned.has(k))throw Error('A region already belongs to another room.');owned.add(k);}
+  }return draft;
+ }
+ function drawnDraft(draft){const next=clone(draft);next.schema='floorforge.compass-input/2';next.programme='drawn';return validate(next);}
  function create(brief,registry){const floors=Array.from({length:brief.storeys},(_,i)=>({id:`compass-floor-${i}`,splits:[]})),rooms=[];let seq=0;
   const add=(kind,name,floor=0,role)=>rooms.push({id:`compass-room-${++seq}`,kind,name,floorId:floors[floor].id,regions:[],required:true,...(role?{role}:{})});
   add('living','Living');add('kitchen','Kitchen');for(let i=0;i<brief.bedrooms;i++)add('bedroom',i===0?'Master bedroom':`Bedroom ${i+1}`,Math.min(floors.length-1,Math.floor(i*floors.length/Math.max(1,brief.bedrooms))),i===0?'master':undefined);
@@ -49,14 +67,31 @@ const CompassState = (() => {
   if(donor?.id===roomId)return {draft:next};
   if(donor)donor.regions=donor.regions.filter(x=>x!==ref);if(recipient)recipient.regions.push(ref);validate(next);return {draft:next};
  }
- function splitAssign(draft,floorId,row,col,half,roomId,options={}){const next=clone(draft),floor=next.floors.find(f=>f.id===floorId),whole=key(row,col);if(!floor.splits.includes(whole)){const donor=owner(next,floorId,whole);floor.splits.push(whole);if(donor)donor.regions=donor.regions.filter(x=>x!==whole).concat(key(row,col,'L'),key(row,col,'R'));}return assign(next,floorId,key(row,col,half),roomId,options);}
- function whole(draft,floorId,row,col,roomId){const next=clone(draft),floor=next.floors.find(f=>f.id===floorId);for(const r of next.rooms)if(r.floorId===floorId)r.regions=r.regions.filter(ref=>ref!==key(row,col,'L')&&ref!==key(row,col,'R'));floor.splits=floor.splits.filter(ref=>ref!==key(row,col));if(roomId){const r=next.rooms.find(r=>r.id===roomId&&r.floorId===floorId);if(!r)throw Error('Choose the whole-cell owner.');r.regions.push(key(row,col));}return validate(next);}
+ function splitAssign(draft,floorId,row,col,half,roomId,options={}){
+  if(!['L','R','F','B'].includes(half))throw Error('Choose a left, right, front or back half.');
+  const next=clone(draft),floor=next.floors.find(f=>f.id===floorId),base=key(row,col);if(!floor)throw Error('Choose an existing floor.');
+  const desired=['F','B'].includes(half)?['F','B']:['L','R'],previous=splitHalves(floor,base);
+  if(!previous.includes(half)){
+   const owners=(previous.length?previous:[null]).map(h=>owner(next,floorId,key(row,col,h))?.id||null),uniform=owners.every(id=>id===owners[0]);
+   if(!uniform&&!options.replace)return {confirmation:{message:'Change the split direction? Both existing halves will be cleared, then your chosen half will be assigned. Other room placements must stay connected.'}};
+   for(const r of next.rooms)if(r.floorId===floorId)r.regions=r.regions.filter(ref=>ref!==base&&!['L','R','F','B'].some(h=>ref===key(row,col,h)));
+   floor.splits=floor.splits.filter(ref=>ref!==base);if(floor.horizontalSplits)floor.horizontalSplits=floor.horizontalSplits.filter(ref=>ref!==base);
+   if(desired[0]==='F'){next.schema='floorforge.compass-input/2';(floor.horizontalSplits||=[]).push(base);}else floor.splits.push(base);
+   if(uniform&&owners[0])next.rooms.find(r=>r.id===owners[0]).regions.push(...desired.map(h=>key(row,col,h)));
+  }
+  return assign(next,floorId,key(row,col,half),roomId,options);
+ }
+ function whole(draft,floorId,row,col,roomId){
+  const next=clone(draft),floor=next.floors.find(f=>f.id===floorId);for(const r of next.rooms)if(r.floorId===floorId)r.regions=r.regions.filter(ref=>ref!==key(row,col)&&!['L','R','F','B'].some(h=>ref===key(row,col,h)));
+  floor.splits=floor.splits.filter(ref=>ref!==key(row,col));if(floor.horizontalSplits)floor.horizontalSplits=floor.horizontalSplits.filter(ref=>ref!==key(row,col));
+  if(roomId){const r=next.rooms.find(r=>r.id===roomId&&r.floorId===floorId);if(!r)throw Error('Choose the whole-cell owner.');r.regions.push(key(row,col));}return validate(next);
+ }
  function allocate(draft,floorId,{row,col,half=null},roomId,{replace=false}={}){
   const floor=draft.floors.find(f=>f.id===floorId);
-  if(!floor||!Number.isInteger(row)||row<0||row>=draft.grid.rows||!Number.isInteger(col)||col<0||col>=draft.grid.cols||![null,'L','R'].includes(half))throw Error('Choose an existing cell or half.');
+  if(!floor||!Number.isInteger(row)||row<0||row>=draft.grid.rows||!Number.isInteger(col)||col<0||col>=draft.grid.cols||![null,'L','R','F','B'].includes(half))throw Error('Choose an existing cell or half.');
   if(half)return splitAssign(draft,floorId,row,col,half,roomId,{replace});
-  if(!floor.splits.includes(key(row,col)))return assign(draft,floorId,key(row,col),roomId,{replace});
-  const donors=draft.rooms.filter(r=>r.floorId===floorId&&r.id!==roomId&&['L','R'].some(h=>r.regions.includes(key(row,col,h))));
+  const halves=splitHalves(floor,key(row,col));if(!halves.length)return assign(draft,floorId,key(row,col),roomId,{replace});
+  const donors=draft.rooms.filter(r=>r.floorId===floorId&&r.id!==roomId&&halves.some(h=>r.regions.includes(key(row,col,h))));
   if(donors.length&&!replace)return {confirmation:{message:`Replace ${donors.map(r=>r.name).join(' and ')} in the whole cell? Their remaining regions must stay connected.`}};
   return {draft:whole(draft,floorId,row,col,roomId)};
  }
@@ -69,9 +104,9 @@ const CompassState = (() => {
   const owned=micro(regions);let best=null;
   for(let left=0;left<2*cols;left++)for(let right=left;right<2*cols;right++){
    let start=0;
-   for(let row=0;row<=rows;row++){
-    if(row<rows&&Array.from({length:right-left+1},(_,i)=>owned.has(`${row}:${left+i}`)).every(Boolean))continue;
-    const width=right-left+1,height=row-start,area=width*height,score=Math.min(width/(2*cols)*ratio,height/rows);
+   for(let row=0;row<=2*rows;row++){
+    if(row<2*rows&&Array.from({length:right-left+1},(_,i)=>owned.has(`${row}:${left+i}`)).every(Boolean))continue;
+    const width=right-left+1,height=row-start,area=width*height,score=Math.min(width/(2*cols)*ratio,height/(2*rows));
     if(height&&(!best||score>best.score||score===best.score&&area>best.area))best={left,bottom:start,width,height,area,score};
     start=row+1;
    }
@@ -84,6 +119,6 @@ const CompassState = (() => {
   undo(){if(!this.past.length)return false;this.future.push(this.value);this.value=this.past.pop();return true;}
   redo(){if(!this.future.length)return false;this.past.push(this.value);this.value=this.future.pop();return true;}
  }
- return {clone,key,micro,connected,validate,configureGrids,create,catalogue,roomUnavailable,restoreForAdapter,addRoom,owner,assign,splitAssign,whole,allocate,addAndAllocate,moveRoom,labelRect,History};
+ return {clone,key,splitHalves,drawnDraft,micro,connected,validate,configureGrids,create,catalogue,roomUnavailable,restoreForAdapter,addRoom,owner,assign,splitAssign,whole,allocate,addAndAllocate,moveRoom,labelRect,History};
 })();
 if(typeof module!=='undefined')module.exports=CompassState;

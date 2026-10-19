@@ -1,0 +1,8 @@
+{
+  "build": "21d223d9136b7a96968ae462",
+  "planHash": "ea844f448431da0329c8bf567873225c5d22695fb0b45a979db3790a7634c645",
+  "inputAttention": 1,
+  "floors": 3,
+  "rooms": 18,
+  "missingRoomRetained": true
+}
