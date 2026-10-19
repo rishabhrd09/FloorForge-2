@@ -388,7 +388,7 @@ $('import-plan-file').onchange=async event=>{
 // Additive Compass integration; published samples and viewer code are not rewritten.
 function initCompassWorkspace(){
  if(typeof FloorForgeCompassEditor==='undefined'){$('compass-open').hidden=true;$('compass-mode-option').hidden=true;return;}
- compassEditor=new FloorForgeCompassEditor({registry:session.spaceRegistry,adapterVersion:session.compass?.adapterVersion,project:collect,request:fetchJSON,error:e=>toast(e.message),
+ compassEditor=new FloorForgeCompassEditor({registry:session.spaceRegistry,gridOptions:session.compass?.gridOptions,adapterVersion:session.compass?.adapterVersion,project:collect,request:fetchJSON,error:e=>toast(e.message),
   changed:()=>{if($('plan-mode').value==='compass')markDraftChanged();else{clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{try{localStorage.setItem('floorforge-draft-v1',JSON.stringify(collect()));}catch(e){toast('Autosave unavailable; use Save project.');}},500);}},
   save:()=>projectWorkspace?.save(),activate:()=>{$('plan-mode').value='compass';$('grid-used').checked=false;},
   restore:snapshot=>{const mode=$('plan-mode').value;for(const key of ['width_mm','depth_mm','road_bearing_deg','bedrooms','storeys','roof_access']){const id={width_mm:'width',depth_mm:'depth',road_bearing_deg:'facing',roof_access:'adv-roof_access'}[key]||key;const current=key==='roof_access'?$(id).checked:Number($(id).value)*(key==='width_mm'||key==='depth_mm'?(unit==='ft'?304.8:1000):1);if(Math.abs(Number(current)-Number(snapshot.brief[key]))>.01)compassEditor.options.setFields({[key]:snapshot.brief[key]});}$('plan-mode').value=snapshot.mode;if(mode!==snapshot.mode)markDraftChanged();},

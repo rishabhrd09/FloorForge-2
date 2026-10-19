@@ -1,0 +1,205 @@
+{
+  "status": "passed",
+  "branch": "development",
+  "mergedToMain": false,
+  "gridOptions": [
+    {
+      "cols": 4,
+      "rows": 4,
+      "cells": 16
+    },
+    {
+      "cols": 4,
+      "rows": 5,
+      "cells": 20
+    },
+    {
+      "cols": 4,
+      "rows": 6,
+      "cells": 24
+    },
+    {
+      "cols": 5,
+      "rows": 5,
+      "cells": 25
+    },
+    {
+      "cols": 6,
+      "rows": 7,
+      "cells": 42
+    }
+  ],
+  "legacy32": "Existing 4x8 maps reopen and generate without automatic conversion; offered only for the currently saved legacy draft.",
+  "tests": {
+    "fullPythonSuite": "690 passed in 281.79s",
+    "finalCompassRegression": "133 passed in 60.36s",
+    "javascript": "53 passed",
+    "fullApiGenerationCases": [
+      {
+        "grid": "4x4",
+        "scope": 1,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/4c2f126962b9e6d9dc2a3592",
+        "planHash": "c5442d84194e2fbbb94982ae16a23d7a42a725f06cfaa6edcb4e4af8e4617600",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x4",
+        "scope": 2,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/b18aa89483669aab4e88b7ce",
+        "planHash": "c219168618595fcfdad958f7c76a6a6fc06783d9c41fa7518bf464f2f52120cc",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x4",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/963d6070759867994f63ecd7",
+        "planHash": "08fb5115c51ee4d7e608c5a07ac1c084f1a3de0bd7378bbf88f9b1cffc988fdc",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x5",
+        "scope": 1,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/df1fe2d41055915dba160c10",
+        "planHash": "615ce98f2c2ce9e834db9b9c0b8860322fe166ff024becc610af4fb56688052a",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x5",
+        "scope": 2,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/358e9e6ddb01355c217165eb",
+        "planHash": "ac43e7733f85886c29095df02e9ff61e49951225b900e53f2f8de815de892604",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x5",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/107df0ab69dc2b8b32fbf389",
+        "planHash": "f9c41393678ef0790dd8b6e486e8488e2d9aa7fd17dbc25e18fb61b1039e06ac",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x6",
+        "scope": 1,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/314dcc63142e28dcbf5ca040",
+        "planHash": "25824010dcc00e59f81c3d02ab63f3c810b0f9267a11c78a37172d1a5e754bf0",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x6",
+        "scope": 2,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/f0b32b9b02ec80d2ff76ec7b",
+        "planHash": "9ee5cb2ecf8e73d8b154c529844787be9ce35b3a7504f5aee5990244646e5282",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x6",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/704632c2c5af535a08c334bc",
+        "planHash": "5b51710c1cf80eea52fd2ceffad1b5cc251b1d16b24e4a47a612fa6d006594ca",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "5x5",
+        "scope": 1,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/8a85243c7ffd423ab4f3e1af",
+        "planHash": "7832a65227f7cec346080a7ab28b8ed956bcb5e9e2e2ed7d5decb624692a3558",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "5x5",
+        "scope": 2,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/4f0f78f6dfa5576c1ca8037a",
+        "planHash": "c9f095b960d928833879b3e8c30adb8b7817184f498e48c765da987682ed5c8e",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "5x5",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/f528da6dd577156a6dec29ef",
+        "planHash": "0241bcb9a038940e104e09015fc04bc2ccdf001d87f9db20b442a5d009ee5e9b",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "6x7",
+        "scope": 1,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/473dfd238f33d918b95b3470",
+        "planHash": "45deb035e2d8d8f0a82bec2470bda43e3118d28fe5060e793b9a3b40d66bb9b3",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "6x7",
+        "scope": 2,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/1a14c881de323b4541fd42c8",
+        "planHash": "b83177ae44d09fc5cac00951c57d1d6c8ade40856b51c126ab96e51bcd35fca3",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "6x7",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/9b82ca121aed64f7da4ccbfd",
+        "planHash": "d21cd789ce95dbbb74cc351af0fe7938e6911a5bba75e5c4f8b16b35c424e758",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      },
+      {
+        "grid": "4x8",
+        "scope": 3,
+        "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/a326883ffea3a3c734642f9b",
+        "planHash": "dbec5952ac4f5cd28a01bcd87364625499eb97d8c3031fee739573992cd55dc7",
+        "errors": 0,
+        "shared_2d_3d_exports": true
+      }
+    ]
+  },
+  "browser": {
+    "build": "/private/tmp/floorforge-compass-grids-20261019/studio/builds/6e922856c7ab1ee87d055f45",
+    "planHash": "d21cd789ce95dbbb74cc351af0fe7938e6911a5bba75e5c4f8b16b35c424e758",
+    "rooms": 14,
+    "floors": 3,
+    "splitCells": 3,
+    "download": "/Users/rishabh/Downloads/Compass 6 by 7.floorforge.json",
+    "retained": "exact room identities, types, regions, halves, floors, input choices and acceptance",
+    "errors": 0,
+    "allFiveGridChoicesAndCounts": true,
+    "sixthColumnHalfAssignmentUndoRedo": true,
+    "keyboardLastColumnBounds": true,
+    "unsafeResizeKeepsOriginalAndShowsFloorConflicts": true,
+    "downloadedFileActuallyUploadedAgain": true,
+    "fullPageReloadRetainsThreeFloors": true,
+    "wideViewPreservesAspectRatio": true,
+    "fitAllShowsEveryCell": true,
+    "compactDrawerOverlayAndAutoHide": true,
+    "narrowRoadHasNoHorizontalOverflow": true,
+    "viewportWidthsTested": [
+      710,
+      1280
+    ]
+  },
+  "preservation": {
+    "protectedSampleViewerFiles": 445,
+    "changedFiles": [],
+    "unchangedLegacyPlanHashes": 4,
+    "unchangedPreviouslyAcceptedCompassPlanHash": "61d9626f932003ed099c009d489a3be088f7ad02ade362075aa12c4742636513"
+  },
+  "localApp": "http://127.0.0.1:8765/",
+  "geometry": "Continues through the reviewed Compass adapter and existing shared Custom Plan, canonical building, scene, drawings and export pipeline.",
+  "verificationStage": "Local end-to-end validation before committing and pushing; remote CI is reported separately.",
+  "gitStateAtLocalVerification": {
+    "committed": false,
+    "pushed": false
+  }
+}

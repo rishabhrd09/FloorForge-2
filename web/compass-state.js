@@ -2,10 +2,15 @@
 'use strict';
 const CompassState = (() => {
  const clone = value => JSON.parse(JSON.stringify(value));
+ // New-map choices come from the server's shared grid registry. Legacy shapes
+ // stay readable even if they are no longer offered for a new draft.
+ const gridShapes=new Set(['4x4','4x6','4x8']);
+ const configureGrids=shapes=>{for(const {cols,rows} of shapes)gridShapes.add(`${cols}x${rows}`);};
+ function validateGrid(grid){if(!grid||!Number.isInteger(grid.rows)||!Number.isInteger(grid.cols)||!gridShapes.has(`${grid.cols}x${grid.rows}`)||grid.basis!=='buildable-envelope'||grid.rowOrigin!=='front')throw Error('Choose a supported Compass grid.');}
  const key = (row,col,half) => `${row}:${col}${half?':'+half:''}`;
  const micro = refs => new Set(refs.flatMap(ref=>{const [r,c,h]=ref.split(':');return (h?[h]:['L','R']).map(s=>`${r}:${2*Number(c)+(s==='R'?1:0)}`);}));
  function connected(refs){const todo=micro(refs);if(!todo.size)return true;const pending=[todo.values().next().value];todo.delete(pending[0]);while(pending.length){const [r,c]=pending.pop().split(':').map(Number);for(const [y,x]of [[r-1,c],[r+1,c],[r,c-1],[r,c+1]]){const k=`${y}:${x}`;if(todo.delete(k))pending.push(k);}}return !todo.size;}
- function validate(draft){const owned=new Set();for(const r of draft.rooms){const floor=draft.floors.find(f=>f.id===r.floorId);if(!floor)throw Error('Choose an existing floor.');if(!connected(r.regions))throw Error(`${r.name} would become disconnected. Keep the bridge, choose an adjoining region, or add a separate room.`);for(const ref of r.regions){const [row,col,half]=ref.split(':');if(!/^[0-7]:[0-3](?::[LR])?$/.test(ref)||Number(row)>=draft.grid.rows||floor.splits.includes(`${row}:${col}`)!==!!half)throw Error('A room region must match this floor’s whole or divided cells.');}for(const ref of micro(r.regions)){const k=r.floorId+':'+ref;if(owned.has(k))throw Error('A region already belongs to another room.');owned.add(k);}}return draft;}
+ function validate(draft){validateGrid(draft.grid);const validRef=ref=>typeof ref==='string'&&/^(0|[1-9]\d*):(0|[1-9]\d*)(?::[LR])?$/.test(ref)&&Number(ref.split(':')[0])<draft.grid.rows&&Number(ref.split(':')[1])<draft.grid.cols;const owned=new Set();for(const floor of draft.floors){if(!Array.isArray(floor.splits)||new Set(floor.splits).size!==floor.splits.length||floor.splits.some(ref=>!validRef(ref)||ref.split(':').length!==2))throw Error('A divided cell must be inside this floor’s grid.');}for(const r of draft.rooms){const floor=draft.floors.find(f=>f.id===r.floorId);if(!floor)throw Error('Choose an existing floor.');if(!connected(r.regions))throw Error(`${r.name} would become disconnected. Keep the bridge, choose an adjoining region, or add a separate room.`);for(const ref of r.regions){const [row,col,half]=ref.split(':');if(!validRef(ref)||floor.splits.includes(`${row}:${col}`)!==!!half)throw Error('A room region must match this floor’s whole or divided cells.');}for(const ref of micro(r.regions)){const k=r.floorId+':'+ref;if(owned.has(k))throw Error('A region already belongs to another room.');owned.add(k);}}return draft;}
  function create(brief,registry){const floors=Array.from({length:brief.storeys},(_,i)=>({id:`compass-floor-${i}`,splits:[]})),rooms=[];let seq=0;
   const add=(kind,name,floor=0,role)=>rooms.push({id:`compass-room-${++seq}`,kind,name,floorId:floors[floor].id,regions:[],required:true,...(role?{role}:{})});
   add('living','Living');add('kitchen','Kitchen');for(let i=0;i<brief.bedrooms;i++)add('bedroom',i===0?'Master bedroom':`Bedroom ${i+1}`,Math.min(floors.length-1,Math.floor(i*floors.length/Math.max(1,brief.bedrooms))),i===0?'master':undefined);
@@ -48,7 +53,7 @@ const CompassState = (() => {
  function whole(draft,floorId,row,col,roomId){const next=clone(draft),floor=next.floors.find(f=>f.id===floorId);for(const r of next.rooms)if(r.floorId===floorId)r.regions=r.regions.filter(ref=>ref!==key(row,col,'L')&&ref!==key(row,col,'R'));floor.splits=floor.splits.filter(ref=>ref!==key(row,col));if(roomId){const r=next.rooms.find(r=>r.id===roomId&&r.floorId===floorId);if(!r)throw Error('Choose the whole-cell owner.');r.regions.push(key(row,col));}return validate(next);}
  function allocate(draft,floorId,{row,col,half=null},roomId,{replace=false}={}){
   const floor=draft.floors.find(f=>f.id===floorId);
-  if(!floor||!Number.isInteger(row)||row<0||row>=draft.grid.rows||!Number.isInteger(col)||col<0||col>3||![null,'L','R'].includes(half))throw Error('Choose an existing cell or half.');
+  if(!floor||!Number.isInteger(row)||row<0||row>=draft.grid.rows||!Number.isInteger(col)||col<0||col>=draft.grid.cols||![null,'L','R'].includes(half))throw Error('Choose an existing cell or half.');
   if(half)return splitAssign(draft,floorId,row,col,half,roomId,{replace});
   if(!floor.splits.includes(key(row,col)))return assign(draft,floorId,key(row,col),roomId,{replace});
   const donors=draft.rooms.filter(r=>r.floorId===floorId&&r.id!==roomId&&['L','R'].some(h=>r.regions.includes(key(row,col,h))));
@@ -60,13 +65,13 @@ const CompassState = (() => {
  }
  function moveRoom(draft,roomId,floorId){const next=clone(draft),room=next.rooms.find(r=>r.id===roomId);if(!room||!next.floors.some(f=>f.id===floorId))throw Error('Choose an existing room and floor.');if(room.floorId===floorId)return next;room.floorId=floorId;room.regions=[];next.connections=next.connections.filter(c=>c.from!==roomId&&c.to!==roomId);next.stairLinks=next.stairLinks.filter(s=>!s.roomIds.includes(roomId));if(next.site.entryRoomId===roomId)delete next.site.entryRoomId;return validate(next);}
  // Presentation only: place a label inside an owned rectangle, including half cells.
- function labelRect(regions,rows,ratio=1){
+ function labelRect(regions,rows,ratio=1,cols=4){
   const owned=micro(regions);let best=null;
-  for(let left=0;left<8;left++)for(let right=left;right<8;right++){
+  for(let left=0;left<2*cols;left++)for(let right=left;right<2*cols;right++){
    let start=0;
    for(let row=0;row<=rows;row++){
     if(row<rows&&Array.from({length:right-left+1},(_,i)=>owned.has(`${row}:${left+i}`)).every(Boolean))continue;
-    const width=right-left+1,height=row-start,area=width*height,score=Math.min(width/8*ratio,height/rows);
+    const width=right-left+1,height=row-start,area=width*height,score=Math.min(width/(2*cols)*ratio,height/rows);
     if(height&&(!best||score>best.score||score===best.score&&area>best.area))best={left,bottom:start,width,height,area,score};
     start=row+1;
    }
@@ -79,6 +84,6 @@ const CompassState = (() => {
   undo(){if(!this.past.length)return false;this.future.push(this.value);this.value=this.past.pop();return true;}
   redo(){if(!this.future.length)return false;this.past.push(this.value);this.value=this.future.pop();return true;}
  }
- return {clone,key,micro,connected,validate,create,catalogue,roomUnavailable,restoreForAdapter,addRoom,owner,assign,splitAssign,whole,allocate,addAndAllocate,moveRoom,labelRect,History};
+ return {clone,key,micro,connected,validate,configureGrids,create,catalogue,roomUnavailable,restoreForAdapter,addRoom,owner,assign,splitAssign,whole,allocate,addAndAllocate,moveRoom,labelRect,History};
 })();
 if(typeof module!=='undefined')module.exports=CompassState;

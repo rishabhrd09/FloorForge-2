@@ -9,7 +9,7 @@ const CompassSurvey = {
   {id:'floors',title:'How many occupied floors?',field:'storeys',type:'choice',choices:[['Ground only',1],['Ground + First',2],['Ground + First + Second',3]],consumer:'floor scope and linked stairs',effect:'applied'},
   {id:'bedrooms',title:'How many bedrooms do you need?',field:'bedrooms',type:'count',consumer:'required room identities; zero bedrooms is supported',effect:'applied'},
   {id:'gate',title:'Where should the main gate be?',field:'gate',site:true,type:'choice',choices:[['Let the planner choose','planner'],['Left','left',true],['Center','center',true],['Right','right',true]],consumer:'existing site path chooses the gate; custom positions await the site compiler extension',effect:'applied'},
-  {id:'density',title:'How much grid detail?',field:'rows',type:'choice',density:true,choices:[['Simple · 16 cells',4],['Detailed · 24 cells',6],['Fine · 32 cells',8]],consumer:'region-to-polygon adapter; independent of room count',effect:'applied'}
+  {id:'density',title:'Choose your room grid',field:'grid',type:'choice',density:true,choices:[],consumer:'Across × deep; more cells give finer placement within the same plot',effect:'applied'}
  ],
  followups:[
   {id:'room-programme',title:'Which rooms belong on each floor?',target:'rooms',consumer:'required room instances',effect:'applied'},

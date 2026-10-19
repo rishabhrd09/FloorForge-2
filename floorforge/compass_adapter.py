@@ -47,7 +47,8 @@ def compile_compass(value, values, scope=None, hints=()):
     plan = {'schema': 'floorforge.custom-plan/1', 'units': 'mm', 'wallThickness': 150, 'floors': [], 'stairs': []}
     polygons = {}
     t = plan['wallThickness']
-    xs = [round(t / 2 + i * (W - t) / 8, 3) for i in range(9)]
+    cols = compass['grid']['cols']
+    xs = [round(t / 2 + i * (W - t) / (2 * cols), 3) for i in range(2 * cols + 1)]
     ys = [round(t / 2 + i * (D - t) / compass['grid']['rows'], 3) for i in range(compass['grid']['rows'] + 1)]
     for floor in floors:
         target = {'id': floor['id'], 'rooms': [], 'walls': [], 'openings': []}
@@ -61,7 +62,7 @@ def compile_compass(value, values, scope=None, hints=()):
                 continue
             parts = []
             for ref in room['regions']:
-                row, col, half = cell(ref, compass['grid']['rows'])
+                row, col, half = cell(ref, compass['grid']['rows'], cols)
                 left = 2 * col + (1 if half == 'R' else 0)
                 right = 2 * col + (1 if half == 'L' else 2)
                 parts.append(box(xs[left], ys[row], xs[right], ys[row + 1]))

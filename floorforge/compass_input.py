@@ -2,15 +2,20 @@
 from __future__ import annotations
 
 import copy
+import json
 import math
 import re
 from fractions import Fraction
+from pathlib import Path
 from .model import DesignError, sha
 from .spaces import SPACE_REGISTRY
 
 SCHEMA = 'floorforge.compass-input/1'
 ADAPTER = 'compass/2'
 ID = re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,79}')
+GRID_OPTIONS = json.loads(Path(__file__).with_name('compass_grids.json').read_text())
+# Legacy 32-cell projects retain their exact coordinates and generation identity.
+GRID_SHAPES = {(s['cols'], s['rows']) for s in GRID_OPTIONS} | {(4, 8)}
 
 
 def fail(code, message, **details):
@@ -27,26 +32,26 @@ def number(value, lo, hi, label):
         fail('NUMBER', f'{label} must be a finite number between {lo:g} and {hi:g}.')
 
 
-def cell(value, rows):
-    if not isinstance(value, str) or not re.fullmatch(r'[0-7]:[0-3](?::[LR])?', value):
+def cell(value, rows, cols=4):
+    if not isinstance(value, str) or not re.fullmatch(r'(?:0|[1-9][0-9]?):(?:0|[1-9][0-9]?)(?::[LR])?', value):
         fail('REGION', 'Use row:column, or row:column:L/R for a divided cell.')
     parts = value.split(':')
     row, col = map(int, parts[:2])
-    if row >= rows:
+    if row >= rows or col >= cols:
         fail('REGION', 'Region is outside this grid.', region=value)
     return row, col, parts[2] if len(parts) == 3 else None
 
 
-def microcells(regions, rows):
+def microcells(regions, rows, cols=4):
     result = set()
     for ref in regions:
-        row, col, half = cell(ref, rows)
+        row, col, half = cell(ref, rows, cols)
         result.update((row, 2 * col + h) for h in (0, 1) if half is None or half == ('L', 'R')[h])
     return result
 
 
-def connected(regions, rows):
-    todo = microcells(regions, rows)
+def connected(regions, rows, cols=4):
+    todo = microcells(regions, rows, cols)
     if not todo:
         return True
     pending = [todo.pop()]
@@ -66,11 +71,11 @@ def normalize(value):
     out = copy.deepcopy(value)
     grid = out.get('grid')
     fields(grid, ('rows', 'cols', 'basis', 'rowOrigin'), 'Compass grid')
-    if type(grid.get('rows')) is not int or grid['rows'] not in (4, 6, 8) or type(grid.get('cols')) is not int or grid['cols'] != 4:
-        fail('GRID', 'Choose a 4 × 4, 4 × 6 or 4 × 8 grid.')
+    if type(grid.get('rows')) is not int or type(grid.get('cols')) is not int or (grid['cols'], grid['rows']) not in GRID_SHAPES:
+        fail('GRID', 'Choose 4 × 4, 4 × 5, 4 × 6, 5 × 5 or 6 × 7 (across × deep). Saved 4 × 8 maps remain supported.')
     if grid.get('basis') != 'buildable-envelope' or grid.get('rowOrigin') != 'front':
         fail('BASIS', 'Compass uses the buildable envelope with row zero at the front.')
-    rows = grid['rows']
+    rows, cols = grid['rows'], grid['cols']
     seen = set()
 
     def ident(obj):
@@ -87,10 +92,10 @@ def normalize(value):
         fields(floor, ('id', 'splits'), 'Compass floor')
         ident(floor)
         refs = floor.setdefault('splits', [])
-        if not isinstance(refs, list) or len(refs) > rows * 4 or len(set(map(str, refs))) != len(refs):
+        if not isinstance(refs, list) or len(refs) > rows * cols or len(set(map(str, refs))) != len(refs):
             fail('SPLITS', 'List each divided base cell once.')
         for ref in refs:
-            if cell(ref, rows)[2] is not None:
+            if cell(ref, rows, cols)[2] is not None:
                 fail('SPLITS', 'A divided-cell reference names the whole base cell.')
         floor['splits'] = sorted(refs)
         splits[floor['id']] = set(refs)
@@ -112,10 +117,10 @@ def normalize(value):
             if key in room and type(room[key]) is not bool:
                 fail('BOOLEAN', f'{key} must be true or false.')
         refs = room.setdefault('regions', [])
-        if not isinstance(refs, list) or len(refs) > rows * 8 or len(set(map(str, refs))) != len(refs):
+        if not isinstance(refs, list) or len(refs) > rows * cols * 2 or len(set(map(str, refs))) != len(refs):
             fail('REGIONS', 'List each room region once.')
         for ref in refs:
-            row, col, half = cell(ref, rows)
+            row, col, half = cell(ref, rows, cols)
             divided = f'{row}:{col}' in splits[room['floorId']]
             if divided != (half is not None):
                 fail('PARTITION', 'Use halves only in divided cells; keep whole cells elsewhere.', roomId=room['id'], region=ref)
@@ -123,7 +128,7 @@ def normalize(value):
             if key in occupied:
                 fail('OWNERSHIP', 'A region can belong to only one room.', roomId=room['id'], region=ref)
             occupied.add(key)
-        if not connected(refs, rows):
+        if not connected(refs, rows, cols):
             fail('CONNECTED', f'{room["name"]} must share edges; corner contact does not join a room.', roomId=room['id'], regions=refs)
         room['regions'] = sorted(refs)
         if 'target' in room:
@@ -231,15 +236,27 @@ def source_hash(compass, values, scope):
     return sha({'compass': data, 'values': values, 'scope': scope, 'adapterVersion': ADAPTER})
 
 
-def remap(value, rows):
+def remap(value, rows, cols=None):
     """Preview every floor; never choose a majority owner or discard a room silently."""
     original = normalize(value)
-    if type(rows) is not int or rows not in (4, 6, 8):
-        fail('GRID', 'Choose 16, 24 or 32 cells.')
+    # Older clients send only rows; new clients always send both dimensions.
+    cols = original['grid']['cols'] if cols is None else cols
+    if type(rows) is not int or type(cols) is not int or (cols, rows) not in GRID_SHAPES:
+        fail('GRID', 'Choose a supported grid shape (across × deep).')
     candidate = copy.deepcopy(original)
-    old_rows = original['grid']['rows']
-    candidate['grid']['rows'] = rows
+    old_rows, old_cols = original['grid']['rows'], original['grid']['cols']
+    candidate['grid'].update(rows=rows, cols=cols)
     issues, changes = [], []
+    if (old_cols, old_rows) == (cols, rows):
+        return {'valid': True, 'candidate': candidate, 'issues': [], 'changes': [], 'sourceHash': sha(original),
+                'message': 'The grid is unchanged.'}
+    # Exact rational intervals on BOTH axes, including empty space. A partial
+    # overlap must not silently grow a room across an unassigned boundary.
+    def axis_overlaps(count, old_count):
+        return [[old for old in range(old_count)
+                 if min(Fraction(i + 1, count), Fraction(old + 1, old_count)) >
+                    max(Fraction(i, count), Fraction(old, old_count))] for i in range(count)]
+    ys, xs = axis_overlaps(rows, old_rows), axis_overlaps(2 * cols, 2 * old_cols)
     by_id = {r['id']: r for r in candidate['rooms']}
     for room in candidate['rooms']:
         room['regions'] = []
@@ -248,17 +265,17 @@ def remap(value, rows):
         owners = {}
         for room in original['rooms']:
             if room['floorId'] == floor['id']:
-                owners.update({(y, x): room['id'] for y, x in microcells(room['regions'], old_rows)})
+                owners.update({(y, x): room['id'] for y, x in microcells(room['regions'], old_rows, old_cols)})
         for y in range(rows):
             halves = []
-            for x in range(8):
-                overlaps = {owners[(oy, x)] for oy in range(old_rows)
-                            if (oy, x) in owners and min(Fraction(y + 1, rows), Fraction(oy + 1, old_rows)) > max(Fraction(y, rows), Fraction(oy, old_rows))}
+            for x in range(2 * cols):
+                overlaps = {owners.get((oy, ox)) for oy in ys[y] for ox in xs[x]}
                 if len(overlaps) > 1:
-                    names=', '.join(by_id[r]['name'] for r in sorted(overlaps))
-                    issues.append({'code': 'REMAP_COLLISION', 'floorId': floor['id'], 'region': f'{y}:{x // 2}:{("L", "R")[x % 2]}', 'roomIds': sorted(overlaps), 'message': f'{floor["id"]} · row {y+1}, column {x//2+1}, {("left", "right")[x%2]} half: {names} overlap. Keep the density or revise those assignments first.'})
+                    ids = sorted(r for r in overlaps if r is not None)
+                    names = ', '.join(by_id[r]['name'] for r in ids) + (' and unassigned space' if None in overlaps else '')
+                    issues.append({'code': 'REMAP_BOUNDARY' if None in overlaps else 'REMAP_COLLISION', 'floorId': floor['id'], 'region': f'{y}:{x // 2}:{("L", "R")[x % 2]}', 'roomIds': ids, 'message': f'{floor["id"]} · row {y+1}, column {x//2+1}, {("left", "right")[x%2]} half: {names} share a proposed region. Keep this grid or revise those assignments first.'})
                 halves.append(next(iter(overlaps)) if len(overlaps) == 1 else None)
-            for x in range(4):
+            for x in range(cols):
                 left, right = halves[2 * x:2 * x + 2]
                 if left == right:
                     if left:
@@ -272,9 +289,9 @@ def remap(value, rows):
         previous = next(r for r in original['rooms'] if r['id'] == room['id'])
         if previous['regions'] and not room['regions']:
             issues.append({'code': 'REMAP_LOSS', 'roomId': room['id'], 'message': f'{room["name"]} would lose all its assigned space.'})
-        if not connected(room['regions'], rows):
+        if not connected(room['regions'], rows, cols):
             issues.append({'code': 'REMAP_DISCONNECTED', 'roomId': room['id'], 'message': f'{room["name"]} would become disconnected.'})
-        if previous['regions'] != room['regions'] or old_rows != rows:
+        if previous['regions'] != room['regions'] or (old_cols, old_rows) != (cols, rows):
             changes.append({'roomId': room['id'], 'name': room['name'], 'before': previous['regions'], 'after': room['regions']})
     return {'valid': not issues, 'candidate': candidate, 'issues': issues, 'changes': changes,
             'sourceHash': sha(original), 'message': 'Grid remapping changes allocation spans. Review every affected floor before applying.'}

@@ -1,12 +1,13 @@
 """Compass entry points, enabled by default with an explicit server opt-out."""
 import os
 from .model import DesignError
-from .compass_input import fields, remap, ADAPTER, SCHEMA
+from .compass_input import fields, remap, ADAPTER, SCHEMA, GRID_OPTIONS
 
 
 def capabilities():
     return {'enabled': os.environ.get('FLOORFORGE_COMPASS', '1').strip().lower() in ('1', 'true', 'yes'),
-            'schema': SCHEMA, 'adapterVersion': ADAPTER, 'densities': [16, 24, 32],
+            'schema': SCHEMA, 'adapterVersion': ADAPTER, 'densities': [s['cells'] for s in GRID_OPTIONS],
+            'gridOptions': GRID_OPTIONS, 'legacyGridOptions': [{'cols': 4, 'rows': 8, 'cells': 32}],
             'operational': ['room-regions', 'half-cells', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
             'advisory': ['plot-context', 'notes'],
             'unavailable': ['gate-position', 'second-road-geometry', 'setback-band-zones', 'external-stairs', 'lift-design', 'automatic-fit']}
@@ -24,8 +25,8 @@ def dispatch(path, body):
         from .compass_adapter import proposal
         return proposal(body.get('project', {}), body.get('compass'), body.get('scope'))
     if path == '/api/compass/remap':
-        fields(body, ('compass', 'rows'), 'Compass remapping request')
-        return remap(body.get('compass'), body.get('rows'))
+        fields(body, ('compass', 'rows', 'cols'), 'Compass remapping request')
+        return remap(body.get('compass'), body.get('rows'), body.get('cols'))
     if path == '/api/compass/migrate-preview':
         fields(body, ('project',), 'Compass migration request')
         # Exact polygons and legacy metric cells must never be silently rasterized.

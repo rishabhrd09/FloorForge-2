@@ -28,7 +28,7 @@ def runtime_versions():
     return result
 
 def kernel_hash():
-    files=sorted((ROOT/'floorforge').glob('*.py'))+sorted((ROOT/'web').glob('*.js'))+sorted((ROOT/'web').glob('*.css'))+sorted((ROOT/'web').glob('*.html'))
+    files=sorted((ROOT/'floorforge').glob('*.py'))+[ROOT/'floorforge/compass_grids.json']+sorted((ROOT/'web').glob('*.js'))+sorted((ROOT/'web').glob('*.css'))+sorted((ROOT/'web').glob('*.html'))
     return sha({str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
 
 def preview_html(scene,building,plan_svg):
