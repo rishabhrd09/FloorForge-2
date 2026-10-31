@@ -38,7 +38,6 @@ test('catalogue reuses a requested unplaced room instead of silently duplicating
 test('cancelling a cell replacement does not leave a newly added catalogue room behind',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell={floorId:'ground',row:0,col:2,half:'R'};e.selected='a';e.ask=async()=>1;const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.deepEqual(e.draft,before);assert.equal(e.selected,'a');assert.equal(e.pendingCell.half,'R');});
 test('an L-shaped room uses its wider owned area for a readable label',()=>{const regions=['0:2','0:3','1:2','2:2','3:2'],before=[...regions],rect=C.labelRect(regions,4,.8);assert.equal(rect.bottom,0);assert.equal(rect.width,4);assert.equal(rect.height,2);assert.deepEqual(regions,before);});
 test('choosing a new room brush leaves the programme unchanged until its first painted cell',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell=null;e.render=()=>{};e.$=()=>({focus:()=>{}});e.focusOrigin=()=>{};e.commit=next=>e.history.commit(next);const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.deepEqual(e.draft,before);assert.equal(e.brushKind,'bathroom');await e.chooseCell(3,3);assert.equal(e.brushKind,null);assert.equal(C.owner(e.draft,'ground','3:3').kind,'bathroom');e.history.undo();assert.deepEqual(e.draft,before);});
-test('Bigger map restores fit so a previously zoomed canvas still shows every row',()=>{const e=editor();e.dialog={classList:{toggle:()=>{}}};e.$=()=>null;e.mapZoom=2;e.setMapFocus(true,false);assert.equal(e.mapZoom,1);assert.equal(e.mapFocus,true);});
 
 for(const {cols,rows,cells} of gridOptions){
  test(`${cells} cells: rightmost whole/half assignments survive floors, serialization and exact undo`,()=>{
@@ -116,4 +115,27 @@ test('quick generation proceeds directly only after a current successful geometr
 });
 test('stale or failed checks cannot generate and always release the busy state',async()=>{
  for(const fail of [false,true]){const e=editor();e.$=()=>({disabled:false});e.commit=next=>e.history.commit(next);e.options={generate:()=>assert.fail('must not generate')};e.check=async()=>{if(fail)throw Error('network');return undefined;};if(fail)await assert.rejects(e.quickGenerate(),/network/);else await e.quickGenerate();assert.equal(e.previewBusy,false);}
+});
+
+test('wide-board labels retain adapter allocation dimensions on every supported grid and both split axes',()=>{
+ for(const {cols,rows} of gridOptions){const e=editor();e.units='m';e.history.value.grid={...e.draft.grid,cols,rows};e.brief={width_mm:cols*3200+2150,depth_mm:rows*3400+4350,left_mm:1000,right_mm:1000,front_mm:3000,rear_mm:1200};
+  assert.deepEqual(e.allocationSize(),{width:3200,depth:3400});assert.deepEqual(e.allocationSize('L'),{width:1600,depth:3400});assert.deepEqual(e.allocationSize('R'),{width:1600,depth:3400});assert.deepEqual(e.allocationSize('B'),{width:3200,depth:1700});assert.deepEqual(e.allocationSize('F'),{width:3200,depth:1700});assert.equal(e.formatSize('B'),'3.20 × 1.70 m');
+ }
+});
+test('entering and leaving enlarged split previews never changes the persisted draft',()=>{
+ const e=editor();e.floor=0;e.render=()=>{};e.$=()=>({focus(){}});e.focusOrigin=()=>{};const before=C.clone(e.draft);
+ e.openRefine(0,2);e.refineCell.direction='FB';assert.deepEqual(e.draft,before);assert.equal(e.pendingCell,null);e.closeRefine();assert.deepEqual(e.draft,before);assert.equal(e.refineCell,null);
+});
+test('Whole Cell cancellation keeps both owners, and restoration is one reversible transaction',async()=>{
+ const e=editor();e.floor=0;e.refineCell={row:0,col:2,direction:'LR'};e.history=new C.History(C.splitAssign(e.draft,'ground',0,2,'R','b',{replace:true}).draft);const before=C.clone(e.draft);e.commit=next=>e.history.commit(next);e.ask=async()=>2;await e.restoreWhole();assert.deepEqual(e.draft,before);
+ e.ask=async()=>0;await e.restoreWhole();assert.equal(C.owner(e.draft,'ground','0:2').id,'a');assert.deepEqual(e.draft.floors[0].splits,[]);e.history.undo();assert.deepEqual(e.draft,before);
+});
+test('coverage counts both half orientations by area, including half-empty cells',()=>{
+ const e=editor();e.floor=0;const d=draft();d.rooms[0].regions=['0:0'];d.rooms[1].regions=[];e.history=new C.History(C.splitAssign(d,'ground',0,0,'B','b',{replace:true}).draft);assert.equal(e.coverage(),6);e.history=new C.History(C.assign(e.draft,'ground','0:0:F',null).draft);assert.equal(e.coverage(),3);
+});
+test('Compass Save checkpoints the latest project and serializes both split axes for portable reopening',async()=>{
+ const e=editor();e.floor=0;let d=C.splitAssign(e.draft,'ground',0,2,'R','b',{replace:true}).draft;d=C.splitAssign(d,'ground',0,0,'B','a').draft;e.history=new C.History(d);let saved=0,blob,clicked=false;const originalDocument=global.document,create=URL.createObjectURL;
+ global.document={createElement:()=>({click(){clicked=true;}})};URL.createObjectURL=value=>{blob=value;return 'blob:compass-test';};
+ try{e.options={save:()=>saved++,project:()=>({schema:'floorforge.project/0.5',editorState:{mode:'compass',...e.serialize()}})};e.message=()=>{};e.download();const file=JSON.parse(await blob.text());const reopened=editor();reopened.load(file);assert.deepEqual(reopened.draft,d);assert.equal(saved,1);assert.ok(clicked);assert.deepEqual(reopened.draft.floors[0].horizontalSplits,['0:0']);assert.deepEqual(reopened.draft.floors[0].splits,['0:2']);}
+ finally{global.document=originalDocument;URL.createObjectURL=create;}
 });

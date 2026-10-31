@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-01",
+  "branch": "development",
+  "status": "historical pre-commit local working-tree verification",
+  "tests": {
+    "javascript": {
+      "passed": 70,
+      "command": "node --test tests/compass_state.cjs"
+    },
+    "python": {
+      "passed": 169,
+      "command": ".venv/bin/python -m pytest -q tests/test_compass.py tests/test_compass_grids.py tests/test_compass_splits.py",
+      "note": "168 passed in the sandbox; the one socket-binding test was rerun with local socket permission and passed."
+    }
+  },
+  "browser": {
+    "roomTypesDiscovered": 28,
+    "disabledTypesOnGround": [
+      "void",
+      "lift-shaft"
+    ],
+    "grids": [
+      "4x4",
+      "4x5",
+      "4x6",
+      "5x5",
+      "6x7"
+    ],
+    "verified": [
+      "full-screen room picker and all four pages",
+      "left/right and top/bottom assignment with explicit replacement",
+      "whole-cell owner choice and undo restoration",
+      "save on device, reload and reopen with both split directions",
+      "actual portable project download, parsed and fused to the same accepted three-floor plan",
+      "ground-only and three-floor direct generation",
+      "dimensioned 2D plan and ground/upper 3D dollhouse",
+      "floor switching and below-half ownership",
+      "lossy remap refusal keeps all floors",
+      "metric labels and proportional view"
+    ],
+    "viewportChecks": [
+      "1366x768",
+      "1920x1080",
+      "768x1024",
+      "390x844"
+    ],
+    "limitation": "Project-file upload was not repeated in this run; portable-file serialization/reloading contracts and on-device browser reopen were checked."
+  },
+  "builds": [
+    {
+      "id": "8780c47c8835f49e9ee56a85",
+      "generatedFloors": 1,
+      "retainedDraftFloors": 3,
+      "planHash": "170d4559422fc38a055597ea3be1e4ea602039d19034fc338984f262749f5c5b",
+      "shared2D3DIdentity": true,
+      "geometryErrors": [],
+      "exports": {
+        "dxf": {
+          "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
+          "autocad_gui": "NOT TESTED",
+          "dimension_chains": 17,
+          "dimension_entities": 17,
+          "entities": 231,
+          "layers": [
+            "A-WALL",
+            "A-WIND",
+            "A-DOOR",
+            "A-FLOR",
+            "A-FURN",
+            "A-ANNO",
+            "A-DIMS",
+            "A-STAIR",
+            "A-SITE",
+            "A-TAGS",
+            "A-GRID",
+            "A-LEVL",
+            "A-SECT",
+            "A-EXT",
+            "A-GATE",
+            "A-LAND",
+            "S-GRID"
+          ],
+          "status": "ezdxf_reimport_pass",
+          "units": "mm"
+        },
+        "exterior": {
+          "accessibility_review": "OUTSTANDING",
+          "assemblies": 1,
+          "assembly_count": 1,
+          "geometry_screen": "preliminary_geometry_pass",
+          "landscape_feature_count": 46,
+          "landscape_features": 46,
+          "opening_refinements": 0,
+          "protected_interior": "unchanged",
+          "regulatory_review": "OUTSTANDING",
+          "revision": "002524a2da808ec514a4",
+          "structural_review": "OUTSTANDING",
+          "theme": "modern_tropical",
+          "theme_label": "Modern Tropical"
+        },
+        "glb": {
+          "geometries": 248,
+          "node_count": 973,
+          "separate_viewer": "pending",
+          "status": "trimesh_reimport_pass",
+          "units": "m",
+          "up": "Y"
+        },
+        "ifc": {
+          "bim_viewer": "NOT RUN",
+          "entities": 1003,
+          "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC includes wall/opening/space coordination and movable furniture meshes.",
+          "furnishing_count": 8,
+          "independent_schema_validation": "NOT RUN",
+          "schema": "IFC4",
+          "scope": "Walls, spaces, floor/roof slabs, related apertures, storeys; authored movable furniture meshes when a scene is supplied. No reinforcement or certified MEP.",
+          "status": "STEP_reference_check_pass"
+        }
+      }
+    },
+    {
+      "id": "8b28de1b9737b92447273cb9",
+      "generatedFloors": 3,
+      "retainedDraftFloors": 3,
+      "planHash": "5f6b82ef878eaca1457742f0d10dd0d19da66b3fea3223bc0ee99d4c12931f9e",
+      "shared2D3DIdentity": true,
+      "geometryErrors": [],
+      "exports": {
+        "dxf": {
+          "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
+          "autocad_gui": "NOT TESTED",
+          "dimension_chains": 34,
+          "dimension_entities": 34,
+          "entities": 558,
+          "layers": [
+            "A-WALL",
+            "A-WIND",
+            "A-DOOR",
+            "A-FLOR",
+            "A-FURN",
+            "A-ANNO",
+            "A-DIMS",
+            "A-STAIR",
+            "A-SITE",
+            "A-TAGS",
+            "A-GRID",
+            "A-LEVL",
+            "A-SECT",
+            "A-EXT",
+            "A-GATE",
+            "A-LAND",
+            "S-GRID"
+          ],
+          "status": "ezdxf_reimport_pass",
+          "units": "mm"
+        },
+        "exterior": {
+          "accessibility_review": "OUTSTANDING",
+          "assemblies": 1,
+          "assembly_count": 1,
+          "geometry_screen": "preliminary_geometry_pass",
+          "landscape_feature_count": 46,
+          "landscape_features": 46,
+          "opening_refinements": 0,
+          "protected_interior": "unchanged",
+          "regulatory_review": "OUTSTANDING",
+          "revision": "bea4d2c468445f9ff839",
+          "structural_review": "OUTSTANDING",
+          "theme": "modern_tropical",
+          "theme_label": "Modern Tropical"
+        },
+        "glb": {
+          "geometries": 332,
+          "node_count": 1643,
+          "separate_viewer": "pending",
+          "status": "trimesh_reimport_pass",
+          "units": "m",
+          "up": "Y"
+        },
+        "ifc": {
+          "bim_viewer": "NOT RUN",
+          "entities": 2478,
+          "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC includes wall/opening/space coordination and movable furniture meshes.",
+          "furnishing_count": 13,
+          "independent_schema_validation": "NOT RUN",
+          "schema": "IFC4",
+          "scope": "Walls, spaces, floor/roof slabs, related apertures, storeys; authored movable furniture meshes when a scene is supplied. No reinforcement or certified MEP.",
+          "status": "STEP_reference_check_pass"
+        }
+      }
+    }
+  ],
+  "preservation": {
+    "protectedExistingFiles": 2375,
+    "sampleExampleFiles": 874,
+    "changedProtectedFiles": [],
+    "mainMerged": false,
+    "backendFilesChangedByThisTask": []
+  },
+  "verificationContext": "Local browser and generation evidence was captured with pre-existing unrelated work present. Publish-time isolated checks and GitHub CI validate only the selected Compass change against development."
+}
