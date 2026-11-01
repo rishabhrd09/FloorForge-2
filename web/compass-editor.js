@@ -33,7 +33,17 @@ class FloorForgeCompassEditor {
  async ask(message,choices=['Apply change','Cancel'],preview=''){this.$('c-confirm-text').textContent=message;this.$('c-confirm-preview').innerHTML=preview;const rail=this.$('c-confirm-actions');rail.replaceChildren();return new Promise(resolve=>{let settled=false;const finish=i=>{if(settled)return;settled=true;this.confirmDialog.close();resolve(i);};choices.forEach((text,i)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.onclick=()=>finish(i);rail.append(b);});this.confirmDialog.oncancel=e=>{e.preventDefault();finish(choices.length-1);};this.confirmDialog.showModal();});}
  capture(){return {draft:CompassState.clone(this.draft),scope:this.scope,acceptance:this.acceptance?{...this.acceptance}:null,acceptanceKey:this.acceptanceKey,brief:{...this.brief},mode:this.options.project().editorState.mode};}
  remember(before){this.commands.push(before);if(this.commands.length>100)this.commands.shift();this.redoCommands=[];}
- commit(next){try{const before=this.capture();if(!this.history.commit(next))return;this.remember(before);this.changed();}catch(e){this.message(e.message);}}
+ commit(next){
+  try{
+   const before=this.capture();if(!this.history.commit(next))return;this.remember(before);
+   // A newly drawn upper floor belongs in the next preview; Undo restores scope.
+   for(let i=this.scope;i<Math.min(this.draft.floors.length,this.brief.storeys);i++){
+    const fid=this.draft.floors[i].id;
+    if(this.draft.rooms.some(r=>r.floorId===fid&&r.regions.length&&JSON.stringify(r.regions)!==JSON.stringify(before.draft.rooms.find(old=>old.id===r.id)?.regions||[])))this.scope=i+1;
+   }
+   this.changed();
+  }catch(e){this.message(e.message);}
+ }
  changed(){this.acceptance=null;this.acceptanceKey=null;this.proposal=null;this.version++;this.options.changed();this.render();this.$('c-save-state').textContent='Draw your rooms, then generate. Your other floors stay saved.';this.message('');}
  travel(action){const source=action==='undo'?this.commands:this.redoCommands,target=action==='undo'?this.redoCommands:this.commands;if(!source.length)return;const current=this.capture(),snapshot=source.pop();target.push(current);this.pendingCell=null;this.kindChoice=null;this.brushKind=null;this.history=new CompassState.History(snapshot.draft);this.scope=snapshot.scope;this.acceptance=snapshot.acceptance;this.acceptanceKey=snapshot.acceptanceKey;this.brief=snapshot.brief;this.floor=Math.min(this.floor,this.brief.storeys-1);if(!this.floorRooms().some(r=>r.id===this.selected))this.selected=null;this.options.restore(snapshot);this.version++;this.proposal=null;this.options.project();this.options.changed();this.render();this.message(action==='undo'?'Previous edit and input selection restored.':'Edit and input selection restored.');}
  async saveAndExit(){try{this.options.save();localStorage.setItem('floorforge-draft-v1',JSON.stringify(this.options.project()));this.dialog.close();this.options.exit?.();}catch(e){this.message('Could not save on this device. Use Save project file before leaving. '+e.message);}}
@@ -238,21 +248,36 @@ class FloorForgeCompassEditor {
   return this.draft.floors.map((floor,i)=>`<h4>${['Ground','First','Second'][i]} · ${this.esc(floor.id)}</h4><div class="c-remap-pair"><figure><figcaption>Current · ${this.gridLabel(this.draft.grid)}</figcaption>${draw(this.draft,floor)}<small>FRONT / MAIN ROAD · ${floor.splits.length+(floor.horizontalSplits?.length||0)} divided cells</small></figure><figure><figcaption>Proposed · ${this.gridLabel(result.candidate.grid)}</figcaption>${draw(result.candidate,floor)}<small>FRONT / MAIN ROAD · ${result.candidate.floors[i].splits.length+(result.candidate.floors[i].horizontalSplits?.length||0)} divided cells</small></figure></div>`).join('')+`<ul>${result.changes.map(c=>`<li>${this.esc(c.name)}: ${c.before.length} → ${c.after.length} regions</li>`).join('')}</ul>`;
  }
  linkStairs(){const draft=CompassState.clone(this.draft),floors=draft.floors.slice(0,this.brief.storeys),first=draft.rooms.find(r=>r.floorId===floors[0].id&&r.kind==='stair'&&r.regions.length);if(!first)throw Error('Place a Staircase room on Ground first.');const refs=JSON.stringify([...CompassState.micro(first.regions)].sort()),ids=floors.map(f=>draft.rooms.find(r=>r.floorId===f.id&&r.kind==='stair'&&JSON.stringify([...CompassState.micro(r.regions)].sort())===refs)?.id);if(ids.some(i=>!i))throw Error('Place a matching Staircase room in the same regions on each occupied floor. No rooms will be moved.');draft.stairLinks=[{id:'compass-stair-core',roomIds:ids,flightWidth:1000,well:200,landing:1050,tread:250}];this.commit(draft);}
- async check(){const version=this.version,project=this.baseProject(),snapshot=JSON.stringify(project);this.$('c-check').disabled=true;this.message('Checking allocations, walls, access, stairs and clear sizes…');try{const result=await this.options.request('/api/compass/convert',{project,compass:this.draft,scope:this.scope});if(version!==this.version||JSON.stringify(this.baseProject())!==snapshot){this.message('A newer draft exists. Check it again; the older proposal was discarded.');return;}if(this.acceptance&&this.acceptance.sourceHash!==result.sourceHash){this.acceptance=null;this.options.changed();}this.proposal={...result,version,snapshot:JSON.stringify(this.baseProject())};this.renderProposal();this.message(result.valid?'Your plan is ready. You can generate its 2D and 3D preview.':`Resolve ${result.issues.length} issue(s). Your map is retained.`);return this.proposal;}finally{if(this.$('c-check'))this.$('c-check').disabled=false;}}
+ async check({prepare=false}={}){const version=this.version,project=this.baseProject(),snapshot=JSON.stringify(project);this.$('c-check').disabled=true;this.message('Checking allocations, walls, access, stairs and clear sizes…');try{const result=await this.options.request(prepare?'/api/compass/prepare':'/api/compass/convert',{project,compass:this.draft,scope:this.scope});if(version!==this.version||JSON.stringify(this.baseProject())!==snapshot){this.message('A newer draft exists. Check it again; the older proposal was discarded.');return;}if(this.acceptance&&this.acceptance.sourceHash!==result.sourceHash){this.acceptance=null;this.options.changed();}this.proposal={...result,version,snapshot:JSON.stringify(this.baseProject())};this.renderProposal();this.message(result.valid?'Your plan is ready. You can generate its 2D and 3D preview.':'Your drawing is saved. Choose a suggested adjustment below, or continue editing.');return this.proposal;}finally{if(this.$('c-check'))this.$('c-check').disabled=false;}}
  async quickGenerate(){
   if(this.previewBusy)return;this.previewBusy=true;
   try{
-   this.commit(CompassState.drawnDraft(this.draft));this.$('c-quick-generate').disabled=true;
-   const p=await this.check();if(!p)return;
+   this.commit(CompassState.drawnDraft(this.draft));
+   // Adapting a sample changes derived form fields when Compass becomes active.
+   // Settle those fields before hashing the proposal, rather than after acceptance.
+   this.options.activate?.();this.options.changed?.();this.$('c-quick-generate').disabled=true;
+   let p=await this.check({prepare:true});if(!p)return;
+   if(p.adjustments?.length){
+    const choice=await this.ask(p.valid?'A few adjustments will make your drawing ready. Review them below.':'We found some useful adjustments. Apply them, then finish the highlighted rooms.',[p.valid?'Use adjustments & generate':'Apply adjustments','Keep drawing'],`<ul>${p.adjustments.map(c=>`<li>${this.esc(c.message)}</li>`).join('')}</ul>`);
+    if(choice!==0)return;
+    if(p.version!==this.version||p.snapshot!==JSON.stringify(this.baseProject())){this.message('The drawing changed. Generate again to prepare its latest version.');return;}
+    this.remember(this.capture());this.history.commit(p.candidate);this.scope=p.scope;this.changed();
+    p=await this.check();if(!p)return;
+   }
    if(!p.valid){this.setView('review');return;}
    this.activateProposal(p);this.dialog.close();await this.options.generate();
   }finally{this.previewBusy=false;if(this.$('c-quick-generate'))this.$('c-quick-generate').disabled=false;}
  }
  activateProposal(p){
   if(!p?.valid||p.version!==this.version||p.snapshot!==JSON.stringify(this.baseProject()))throw Error('The map changed. Generate again to check its current layout.');
-  this.remember(this.capture());this.options.activate();this.acceptance={sourceHash:p.sourceHash,adapterVersion:p.adapterVersion};this.acceptanceKey=null;this.bindAcceptance(this.options.project());this.version++;this.options.changed();this.render();
+  this.remember(this.capture());this.options.activate();this.acceptance={sourceHash:p.sourceHash,adapterVersion:p.adapterVersion};this.acceptanceKey=null;this.version++;this.options.changed();this.bindAcceptance(this.options.project());this.render();
  }
  renderProposal(){const p=this.proposal;if(!p)return;this.$('c-accept').disabled=!!this.acceptance||!p.valid;this.$('c-generate').disabled=!this.acceptance;this.$('c-fine-tune').disabled=!this.acceptance;const root=this.$('c-proposal');root.innerHTML=`<h4>${p.valid?'Review proposed geometry':'Layout needs attention'}</h4><ul>${p.issues.map((issue,i)=>`<li><button type="button" data-c-issue="${i}">${this.esc(issue.name||this.draft.rooms.find(r=>r.id===issue.roomId)?.name||'Layout')} · ${this.esc(issue.message)}</button>${issue.code==='TEXT_CONFLICT'?`<button type="button" data-c-keep-map="${this.esc(issue.label)}">Keep my map for this requirement</button>`:''}</li>`).join('')}</ul><div class="c-proposed-plans">${(p.customPlan?.floors||[]).map((floor,i)=>this.planPreview(floor,i)).join('')}</div><details class="c-geometry-details"><summary>Dimensions & design details</summary><div class="c-table-wrap"><table><thead><tr><th>Room</th><th>Allocation span / m</th><th>Clear bounding size / m</th><th>Area / m²</th></tr></thead><tbody>${p.sizes.map(s=>`<tr><td>${this.esc(s.name)}</td><td>${s.allocationSpan.map(x=>(x/1000).toFixed(2)).join(' × ')}</td><td>${s.clearSize.map(x=>(x/1000).toFixed(2)).join(' × ')}</td><td>${s.area_m2}</td></tr>`).join('')}</tbody></table></div><ul>${p.changes.map(c=>`<li>${this.esc(c.message||c.name)}</li>`).join('')}</ul>${p.effects.map(e=>`<p>${this.esc(e.status)} · ${this.esc(e.message)}</p>`).join('')}<p>Proposal ${this.esc(p.sourceHash.slice(0,12))} · ${this.esc(p.adapterVersion)}.</p></details>`;
+  if(!p.valid){
+   const actions=document.createElement('div');actions.className='c-actions c-recovery-actions';
+   for(const [label,action]of [['Fit rooms into unused space',()=>this.quickGenerate()],['Keep drawing',()=>this.setView('map')],['Edit plot basics',async()=>{await this.saveAndExit();this.options.inputs();}]]){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>Promise.resolve(action()).catch(e=>this.options.error(e));actions.append(b);}
+   const help=document.createElement('p');help.textContent='Only unused space can be fitted automatically. Select a room below to change it. Your drawing and unfinished floors stay saved.';root.prepend(help,actions);
+  }
   root.querySelectorAll('[data-c-issue]').forEach(b=>b.onclick=()=>{const issue=p.issues[Number(b.dataset.cIssue)],room=this.draft.rooms.find(r=>r.id===issue.roomId);if(room||Number.isInteger(issue.floor)){this.floor=room?this.draft.floors.findIndex(f=>f.id===room.floorId):issue.floor;this.selected=room?.id||null;this.view='map';this.render();this.$('c-grid').scrollIntoView({block:'center'});}});
   root.querySelectorAll('[data-c-keep-map]').forEach(b=>b.onclick=()=>{const next=CompassState.clone(this.draft),value=b.dataset.cKeepMap;next.requirements.push({id:'compass-keep-'+crypto.randomUUID(),kind:'keep-map',value,source:'homeowner'});this.commit(next);});
  }

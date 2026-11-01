@@ -27,7 +27,8 @@ try{
  check('Cancel setup retains draft',JSON.stringify(original)===JSON.stringify(await page.evaluate(()=>window.__ffApp.collect())));
  await page.click('[data-start="samples"]');await page.waitForSelector('.sample-card');await page.click('.sample-cover >> nth=0');await page.waitForSelector('#sample-preview-dialog[open]');await page.click('#sample-preview-close');
  check('Browsing samples retains draft and returns to start',JSON.stringify(original)===JSON.stringify(await page.evaluate(()=>window.__ffApp.collect()))&&await page.locator('#start-page').isVisible());
- await page.click('[data-start="new"]');await page.fill('#start-name','Courtyard test home');await page.fill('#start-width','36');await page.fill('#start-depth','50');await page.click('#start-launch');await page.waitForSelector('#journey-guide:visible');
+ await page.click('[data-start="new"]');await page.fill('#start-name','Courtyard test home');await page.fill('#start-width','36');await page.fill('#start-depth','50');await page.click('#start-launch');await page.waitForSelector('#compass-dialog[open]');
+ check('Plot basics open Compass directly without required survey steps',await page.locator('#c-grid').isVisible()&&await page.locator('#c-survey').textContent()==='');await page.click('#c-exit');
  const project=await page.evaluate(()=>window.__ffApp.collect());
  check('New no-AI brief uses requested dimensions',project.brief.title==='Courtyard test home'&&project.brief.width_mm===10973&&project.brief.depth_mm===15240);
  check('Previous work saved separately',await page.evaluate(title=>Object.values(JSON.parse(localStorage.getItem('floorforge-saved-projects'))).some(s=>s.project.brief.title===title),original.brief.title));

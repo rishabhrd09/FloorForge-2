@@ -9,7 +9,7 @@ def capabilities():
             'schema': SCHEMA, 'adapterVersion': ADAPTER, 'densities': [s['cells'] for s in GRID_OPTIONS],
             'schemas': [SCHEMA, SPLIT_SCHEMA], 'splitDirections': ['left-right', 'front-back'],
             'gridOptions': GRID_OPTIONS, 'legacyGridOptions': [{'cols': 4, 'rows': 8, 'cells': 32}],
-            'operational': ['room-regions', 'half-cells', 'front-back-halves', 'drawn-room-preview', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
+            'operational': ['room-regions', 'half-cells', 'front-back-halves', 'drawn-room-preview', 'prepare-unused-space', 'connections', 'attached-baths', 'internal-stairs', 'size-targets', 'size-locks', 'scope'],
             'advisory': ['plot-context', 'notes'],
             'unavailable': ['gate-position', 'second-road-geometry', 'setback-band-zones', 'external-stairs', 'lift-design', 'automatic-fit']}
 
@@ -21,8 +21,11 @@ def require_enabled():
 
 def dispatch(path, body):
     require_enabled()
-    if path in ('/api/compass/check', '/api/compass/convert'):
+    if path in ('/api/compass/check', '/api/compass/convert', '/api/compass/prepare'):
         fields(body, ('project', 'compass', 'scope'), 'Compass conversion request')
+        if path == '/api/compass/prepare':
+            from .compass_prepare import prepare
+            return prepare(body.get('project', {}), body.get('compass'), body.get('scope'))
         from .compass_adapter import proposal
         return proposal(body.get('project', {}), body.get('compass'), body.get('scope'))
     if path == '/api/compass/remap':

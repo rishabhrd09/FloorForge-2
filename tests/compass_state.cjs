@@ -61,6 +61,34 @@ test('only a currently saved legacy 32-cell grid is added to new-map choices',()
 test('column-change preview sends both dimensions and cancel preserves the exact draft',async()=>{const e=editor();e.gridOptions=gridOptions;e.render=()=>{};e.remapPreview=()=>'';e.ask=async()=>1;const original=C.clone(e.draft);let request;e.options={request:async(path,body)=>{request={path,body};return {valid:true,candidate:{...C.clone(body.compass),grid:{...body.compass.grid,cols:5,rows:5}}};}};await e.changeDensity('5x5');assert.equal(request.path,'/api/compass/remap');assert.equal(request.body.cols,5);assert.equal(request.body.rows,5);assert.deepEqual(e.draft,original);});
 test('invalid or stale remap responses never replace the live map',async()=>{for(const stale of [false,true]){const e=editor();e.gridOptions=gridOptions;e.render=()=>{};e.message=()=>{};e.ask=async()=>0;const original=C.clone(e.draft);e.options={request:async()=>{if(stale)e.version++;return {valid:stale,issues:[{message:'Boundary conflict'}]};}};await e.changeDensity('6x7');assert.deepEqual(e.draft,original);}});
 test('new grid shapes reject stale acceptances after their first edit',async()=>{const e=editor();e.gridOptions=gridOptions;e.draft.rooms.forEach(r=>r.regions=[]);e.render=()=>{};e.$=()=>({textContent:''});e.message=()=>{};e.floor=0;e.brief={storeys:1};e.options={project:()=>({editorState:{mode:'compass'}}),changed:()=>{}};e.commands=[];e.redoCommands=[];await e.changeDensity('6x7');assert.equal(e.acceptance,null);assert.equal(e.draft.grid.cols,6);assert.equal(e.commands.length,1);});
+test('drawing on an upper floor includes that floor in the next generation and undo restores scope',()=>{
+ const e=editor();e.draft.floors.push({id:'first',splits:[]});e.brief={storeys:2};e.commands=[];e.redoCommands=[];e.options={project:()=>({editorState:{mode:'compass'}}),changed:()=>{},restore:()=>{}};e.changed=()=>{};e.render=()=>{};e.message=()=>{};e.floor=1;
+ const next=C.clone(e.draft);next.rooms.push({id:'upper',floorId:'first',kind:'store',name:'Upper store',regions:['0:0']});e.commit(next);assert.equal(e.scope,2);e.travel('undo');assert.equal(e.scope,1);assert.ok(!e.draft.rooms.some(r=>r.id==='upper'));
+});
+test('prepared changes are optional, checked again, and stale responses cannot generate',async()=>{
+ for(const action of ['cancel','apply','stale']){
+  const e=editor(),events=[];e.scope=1;e.brief={storeys:1};e.commands=[];e.redoCommands=[];e.version=1;e.$=()=>({disabled:false});e.options={project:()=>({editorState:{mode:'compass'}}),generate:async()=>events.push('generate')};e.baseProject=()=>({brief:{storeys:1}});e.commit=next=>e.history.commit(next);e.changed=()=>{e.version++;};e.message=()=>{};e.setView=()=>events.push('review');e.dialog={close:()=>events.push('close')};e.activateProposal=()=>events.push('accept');
+  const candidate=C.drawnDraft(e.draft);candidate.rooms[0].regions.push('1:0','1:1','1:2');const original=C.drawnDraft(e.draft);let checks=0;
+  e.check=async({prepare=false}={})=>{checks++;return {valid:true,version:e.version,snapshot:JSON.stringify(e.baseProject()),scope:1,candidate,adjustments:prepare?[{message:'Enlarge room'}]:[]};};
+  e.ask=async()=>{if(action==='stale')e.version++;return action==='cancel'?1:0;};
+  await e.quickGenerate();assert.equal(e.previewBusy,false);
+  if(action==='apply'){assert.deepEqual(e.draft,candidate);assert.equal(checks,2);assert.deepEqual(events,['accept','close','generate']);assert.deepEqual(e.commands[0].draft,original);}
+  else{assert.deepEqual(e.draft,original);assert.equal(checks,1);assert.deepEqual(events,[]);}
+ }
+});
+test('sample adaptation settles Compass form values before preparing geometry',async()=>{
+ const e=editor();e.scope=1;e.$=()=>({disabled:false});e.commit=next=>e.history.commit(next);let mode='automatic',bedrooms=1,generated=false;
+ e.options={activate:()=>{mode='compass';},changed:()=>{if(mode==='compass')bedrooms=2;},generate:async()=>{generated=true;}};
+ e.check=async()=>{assert.equal(mode,'compass');assert.equal(bedrooms,2);return {valid:true};};e.activateProposal=()=>{};e.dialog={close:()=>{}};
+ await e.quickGenerate();assert.ok(generated);
+});
+test('acceptance is bound after derived form changes and still rejects later user edits',()=>{
+ const e=editor();e.brief={storeys:1};e.commands=[];e.render=()=>{};let project={brief:{bedrooms:1},sources:[],editorState:{mode:'automatic'}};
+ e.options={activate:()=>{project.editorState.mode='compass';},project:()=>e.activeProject({...C.clone(project),editorState:{...project.editorState}}),changed:()=>{project.sources=[{id:'studio-field-edits',kind:'form',values:{bedrooms:1}}];e.options.project();}};
+ const p={valid:true,version:e.version,snapshot:JSON.stringify(e.baseProject()),sourceHash:'new',adapterVersion:'compass/2'};e.activateProposal(p);
+ assert.equal(e.acceptance.sourceHash,'new');assert.equal(e.options.project().compassAcceptance.sourceHash,'new');
+ project.sources[0].values.bedrooms=2;assert.equal(e.options.project().compassAcceptance,undefined);assert.equal(e.acceptance,null);
+});
 test('compact room selection closes the drawer and retains the selected brush without creating a room',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell=null;e.roomsOpen=true;e.compactLibrary=()=>true;e.render=()=>{};e.$=()=>({focus:()=>{}});const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.equal(e.roomsOpen,false);assert.equal(e.brushKind,'bathroom');assert.deepEqual(e.draft,before);});
 test('compact half placement closes the drawer only after the room has been committed',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell={floorId:'ground',row:3,col:3,half:'R'};e.roomsOpen=true;e.compactLibrary=()=>true;e.render=()=>{};e.focusOrigin=()=>{};e.commit=next=>e.history.commit(next);await e.applyRoomChoice(null,'bathroom');assert.equal(e.roomsOpen,false);assert.equal(C.owner(e.draft,'ground','3:3:R').kind,'bathroom');assert.deepEqual(e.draft.floors[0].splits,['3:3']);});
 
