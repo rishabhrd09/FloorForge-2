@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "option": "A",
+      "careSizeFt": [
+        16.0,
+        22.270341
+      ],
+      "careAreaSqFt": 356.325,
+      "originalAreaSqFt": 303.222,
+      "roomOverlap": false,
+      "withinPlot": true,
+      "allOccupiedRoomsConnected": true,
+      "drawingDoors": 1,
+      "drawingEntry": "veranda only",
+      "pujaRemoved": true
+    },
+    {
+      "option": "B",
+      "careSizeFt": [
+        13.615486,
+        22.270341
+      ],
+      "careAreaSqFt": 303.222,
+      "originalAreaSqFt": 303.222,
+      "roomOverlap": false,
+      "withinPlot": true,
+      "allOccupiedRoomsConnected": true,
+      "drawingDoors": 1,
+      "drawingEntry": "veranda only",
+      "pujaRemoved": true
+    },
+    {
+      "option": "C",
+      "careSizeFt": [
+        18.0,
+        22.270341
+      ],
+      "careAreaSqFt": 400.866,
+      "originalAreaSqFt": 303.222,
+      "roomOverlap": false,
+      "withinPlot": true,
+      "allOccupiedRoomsConnected": true,
+      "drawingDoors": 1,
+      "drawingEntry": "veranda only",
+      "pujaRemoved": true
+    },
+    {
+      "option": "D",
+      "careSizeFt": [
+        22.270341,
+        13.615486
+      ],
+      "careAreaSqFt": 303.222,
+      "originalAreaSqFt": 303.222,
+      "roomOverlap": false,
+      "withinPlot": true,
+      "allOccupiedRoomsConnected": true,
+      "drawingDoors": 1,
+      "drawingEntry": "veranda only",
+      "pujaRemoved": true
+    }
+  ],
+  "limits": [
+    "Geometric concept checks only, not building approval, structural design or clinical ICU validation.",
+    "Door lines were checked against both connected room polygons. Usable opening, furniture routes, swing conflicts and stair headroom still require detailed design.",
+    "Original caregiver coordinates cannot remain identical when reducing the plot; its west service zone is adapted into toilets and a separate caregiver room.",
+    "Nominal 6-inch partitions; legal setbacks have not been established."
+  ]
+}

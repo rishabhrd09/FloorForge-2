@@ -6,6 +6,8 @@ The previous M0 response was unexecuted source. This distribution is a new multi
 
 ## See it immediately — no installation
 
+For a Git checkout, install **Git LFS** before cloning, or run `git lfs install` followed by `git lfs pull` in an existing checkout. Tirumala models, renders, reference media and export packages use LFS; their source code and plan data remain ordinary Git files. LFS must finish downloading before opening those samples or checking their export manifests.
+
 Open **`START_HERE.html`**, then **`examples/demo/preview.html`** in a modern desktop browser. The preview contains the actual scene and the realistic walkthrough viewer, with no CDN, server, account or AI dependency. Its drawing is embedded too. WebGL2 is required for 3D; the drawing remains available without it.
 
 ## Walk through your home

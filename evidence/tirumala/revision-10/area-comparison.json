@@ -1,0 +1,487 @@
+{
+  "A": {
+    "planHash": "dae756745908451f9f338a1eea5137c5ddc47712c95fffabb5e48e495b5f4f64",
+    "rooms": {
+      "g-bath": {
+        "beforeSqFt": 35.11,
+        "afterSqFt": 35.11
+      },
+      "g-care": {
+        "beforeSqFt": 192.27,
+        "afterSqFt": 192.27
+      },
+      "g-caregiver": {
+        "beforeSqFt": 51.1,
+        "afterSqFt": 51.1
+      },
+      "g-drawing": {
+        "beforeSqFt": 110.14,
+        "afterSqFt": 110.14
+      },
+      "g-family": {
+        "beforeSqFt": 218.58,
+        "afterSqFt": 186.5
+      },
+      "g-kitchen": {
+        "beforeSqFt": 80.9,
+        "afterSqFt": 121.03
+      },
+      "g-master": {
+        "beforeSqFt": 176.5,
+        "afterSqFt": 176.5
+      },
+      "g-porch": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 33.12
+      },
+      "g-puja": {
+        "beforeSqFt": 12.06,
+        "afterSqFt": 12.06
+      },
+      "g-south-lane": {
+        "beforeSqFt": 41.99,
+        "afterSqFt": 43.77
+      },
+      "g-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "g-veranda": {
+        "beforeSqFt": 102.21,
+        "afterSqFt": 102.21
+      },
+      "g-wc": {
+        "beforeSqFt": 30.08,
+        "afterSqFt": 30.08
+      },
+      "u-bath": {
+        "beforeSqFt": 50.13,
+        "afterSqFt": 35.11
+      },
+      "u-bath-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 35.09
+      },
+      "u-living-void": {
+        "beforeSqFt": 104.91,
+        "afterSqFt": 55.14
+      },
+      "u-lobby": {
+        "beforeSqFt": 190.65,
+        "afterSqFt": 377.36
+      },
+      "u-master": {
+        "beforeSqFt": 140.35,
+        "afterSqFt": 176.5
+      },
+      "u-master-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 207.75
+      },
+      "u-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "u-study": {
+        "beforeSqFt": 88.95,
+        "afterSqFt": 51.1
+      },
+      "u-terrace": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 66.12
+      }
+    },
+    "connectedKitchenFamilySqFt": {
+      "before": 299.48,
+      "after": 307.53
+    }
+  },
+  "B": {
+    "planHash": "16b9ee1fe2f75bf376e63e7fa778b83f90a841620521ba3ffaee94d2aafda206",
+    "rooms": {
+      "g-bath": {
+        "beforeSqFt": 35.11,
+        "afterSqFt": 35.11
+      },
+      "g-care": {
+        "beforeSqFt": 224.74,
+        "afterSqFt": 224.74
+      },
+      "g-caregiver": {
+        "beforeSqFt": 51.1,
+        "afterSqFt": 51.1
+      },
+      "g-drawing": {
+        "beforeSqFt": 110.14,
+        "afterSqFt": 110.14
+      },
+      "g-family": {
+        "beforeSqFt": 218.58,
+        "afterSqFt": 186.5
+      },
+      "g-kitchen": {
+        "beforeSqFt": 80.9,
+        "afterSqFt": 121.03
+      },
+      "g-master": {
+        "beforeSqFt": 176.5,
+        "afterSqFt": 176.5
+      },
+      "g-porch": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 33.12
+      },
+      "g-puja": {
+        "beforeSqFt": 12.06,
+        "afterSqFt": 12.06
+      },
+      "g-south-lane": {
+        "beforeSqFt": 41.99,
+        "afterSqFt": 43.77
+      },
+      "g-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "g-veranda": {
+        "beforeSqFt": 70.23,
+        "afterSqFt": 70.23
+      },
+      "g-wc": {
+        "beforeSqFt": 30.08,
+        "afterSqFt": 30.08
+      },
+      "u-bath": {
+        "beforeSqFt": 50.13,
+        "afterSqFt": 35.11
+      },
+      "u-bath-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 35.09
+      },
+      "u-living-void": {
+        "beforeSqFt": 104.91,
+        "afterSqFt": 55.14
+      },
+      "u-lobby": {
+        "beforeSqFt": 190.65,
+        "afterSqFt": 377.36
+      },
+      "u-master": {
+        "beforeSqFt": 140.35,
+        "afterSqFt": 176.5
+      },
+      "u-master-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 207.75
+      },
+      "u-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "u-study": {
+        "beforeSqFt": 88.95,
+        "afterSqFt": 51.1
+      },
+      "u-terrace": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 66.12
+      }
+    },
+    "connectedKitchenFamilySqFt": {
+      "before": 299.48,
+      "after": 307.53
+    }
+  },
+  "C": {
+    "planHash": "fcf63e7d4efaafbd6a2cf3c6a4998a72d76b7b28bfa7a58704e169cd6e79b884",
+    "rooms": {
+      "g-bath": {
+        "beforeSqFt": 35.11,
+        "afterSqFt": 35.11
+      },
+      "g-care": {
+        "beforeSqFt": 179.75,
+        "afterSqFt": 179.75
+      },
+      "g-caregiver": {
+        "beforeSqFt": 51.1,
+        "afterSqFt": 51.1
+      },
+      "g-drawing": {
+        "beforeSqFt": 110.14,
+        "afterSqFt": 110.14
+      },
+      "g-family": {
+        "beforeSqFt": 218.58,
+        "afterSqFt": 186.5
+      },
+      "g-kitchen": {
+        "beforeSqFt": 80.9,
+        "afterSqFt": 121.03
+      },
+      "g-master": {
+        "beforeSqFt": 176.5,
+        "afterSqFt": 176.5
+      },
+      "g-porch": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 33.12
+      },
+      "g-puja": {
+        "beforeSqFt": 12.06,
+        "afterSqFt": 12.06
+      },
+      "g-south-lane": {
+        "beforeSqFt": 41.99,
+        "afterSqFt": 43.77
+      },
+      "g-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "g-veranda": {
+        "beforeSqFt": 114.23,
+        "afterSqFt": 114.23
+      },
+      "g-wc": {
+        "beforeSqFt": 30.08,
+        "afterSqFt": 30.08
+      },
+      "u-bath": {
+        "beforeSqFt": 50.13,
+        "afterSqFt": 35.11
+      },
+      "u-bath-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 35.09
+      },
+      "u-living-void": {
+        "beforeSqFt": 104.91,
+        "afterSqFt": 55.14
+      },
+      "u-lobby": {
+        "beforeSqFt": 190.65,
+        "afterSqFt": 377.36
+      },
+      "u-master": {
+        "beforeSqFt": 140.35,
+        "afterSqFt": 176.5
+      },
+      "u-master-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 207.75
+      },
+      "u-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "u-study": {
+        "beforeSqFt": 88.95,
+        "afterSqFt": 51.1
+      },
+      "u-terrace": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 66.12
+      }
+    },
+    "connectedKitchenFamilySqFt": {
+      "before": 299.48,
+      "after": 307.53
+    }
+  },
+  "D": {
+    "planHash": "d026f2cbfe470645e739cbb83a9dee5df853ada8fa766ba40adb420474224981",
+    "rooms": {
+      "g-bath": {
+        "beforeSqFt": 35.11,
+        "afterSqFt": 35.11
+      },
+      "g-care": {
+        "beforeSqFt": 179.75,
+        "afterSqFt": 179.75
+      },
+      "g-caregiver": {
+        "beforeSqFt": 51.1,
+        "afterSqFt": 51.1
+      },
+      "g-drawing": {
+        "beforeSqFt": 132.17,
+        "afterSqFt": 132.17
+      },
+      "g-family": {
+        "beforeSqFt": 206.57,
+        "afterSqFt": 174.49
+      },
+      "g-kitchen": {
+        "beforeSqFt": 80.9,
+        "afterSqFt": 121.03
+      },
+      "g-master": {
+        "beforeSqFt": 176.5,
+        "afterSqFt": 176.5
+      },
+      "g-porch": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 33.12
+      },
+      "g-puja": {
+        "beforeSqFt": 12.06,
+        "afterSqFt": 12.06
+      },
+      "g-south-lane": {
+        "beforeSqFt": 41.99,
+        "afterSqFt": 43.77
+      },
+      "g-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "g-veranda": {
+        "beforeSqFt": 90.19,
+        "afterSqFt": 90.19
+      },
+      "g-wc": {
+        "beforeSqFt": 30.08,
+        "afterSqFt": 30.08
+      },
+      "u-bath": {
+        "beforeSqFt": 50.13,
+        "afterSqFt": 35.11
+      },
+      "u-bath-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 35.09
+      },
+      "u-living-void": {
+        "beforeSqFt": 91.38,
+        "afterSqFt": 44.12
+      },
+      "u-lobby": {
+        "beforeSqFt": 185.17,
+        "afterSqFt": 377.36
+      },
+      "u-master": {
+        "beforeSqFt": 140.35,
+        "afterSqFt": 176.5
+      },
+      "u-master-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 207.75
+      },
+      "u-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "u-study": {
+        "beforeSqFt": 113.44,
+        "afterSqFt": 51.1
+      },
+      "u-terrace": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 66.12
+      }
+    },
+    "connectedKitchenFamilySqFt": {
+      "before": 287.47,
+      "after": 295.52
+    }
+  },
+  "E": {
+    "planHash": "c8fb1526d089db39d43bc6e2c4e7b3e20c2aeb4f08ee4cf0f2bb1d13d885620b",
+    "rooms": {
+      "g-bath": {
+        "beforeSqFt": 35.11,
+        "afterSqFt": 35.11
+      },
+      "g-care": {
+        "beforeSqFt": 192.27,
+        "afterSqFt": 192.27
+      },
+      "g-caregiver": {
+        "beforeSqFt": 52.13,
+        "afterSqFt": 52.13
+      },
+      "g-drawing": {
+        "beforeSqFt": 110.14,
+        "afterSqFt": 110.14
+      },
+      "g-family": {
+        "beforeSqFt": 218.58,
+        "afterSqFt": 186.5
+      },
+      "g-kitchen": {
+        "beforeSqFt": 80.9,
+        "afterSqFt": 121.03
+      },
+      "g-master": {
+        "beforeSqFt": 176.5,
+        "afterSqFt": 176.5
+      },
+      "g-porch": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 33.12
+      },
+      "g-puja": {
+        "beforeSqFt": 12.06,
+        "afterSqFt": 12.06
+      },
+      "g-south-lane": {
+        "beforeSqFt": 41.99,
+        "afterSqFt": 43.77
+      },
+      "g-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "g-veranda": {
+        "beforeSqFt": 116.72,
+        "afterSqFt": 116.72
+      },
+      "g-wc": {
+        "beforeSqFt": 32.59,
+        "afterSqFt": 32.59
+      },
+      "u-bath": {
+        "beforeSqFt": 50.13,
+        "afterSqFt": 35.11
+      },
+      "u-bath-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 35.09
+      },
+      "u-living-void": {
+        "beforeSqFt": 104.91,
+        "afterSqFt": 55.14
+      },
+      "u-lobby": {
+        "beforeSqFt": 190.65,
+        "afterSqFt": 373.84
+      },
+      "u-master": {
+        "beforeSqFt": 140.35,
+        "afterSqFt": 176.5
+      },
+      "u-master-2": {
+        "beforeSqFt": null,
+        "afterSqFt": 207.75
+      },
+      "u-stair": {
+        "beforeSqFt": 90.01,
+        "afterSqFt": 71.77
+      },
+      "u-study": {
+        "beforeSqFt": 88.95,
+        "afterSqFt": 51.1
+      },
+      "u-terrace": {
+        "beforeSqFt": 33.12,
+        "afterSqFt": 66.12
+      }
+    },
+    "connectedKitchenFamilySqFt": {
+      "before": 299.48,
+      "after": 307.53
+    }
+  }
+}

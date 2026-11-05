@@ -1,0 +1,121 @@
+[
+  {
+    "camera": "exterior_northeast",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      21.287254333496094,
+      -12.060136795043945,
+      7.762197017669678
+    ],
+    "target": [
+      7.0872543334960945,
+      4.439863204956055,
+      4.5621970176696784
+    ],
+    "fov": 48,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.027,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+    "sceneSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+    "glbSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+    "imageSha256": "99a74a3e931b2350b1bbf85bf0b438024a5a139e0d45d9381b68098c3c10fe4e",
+    "sourceCameraTarget": [
+      6.3,
+      6.7,
+      3.1
+    ],
+    "fitExterior": true,
+    "lookDirection": [
+      -0.6453678799674408,
+      0.7498992971452657,
+      -0.14543501520393032
+    ]
+  },
+  {
+    "camera": "upper_gallery",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_gallery-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      6.949999809265137,
+      7.400000095367432,
+      5.138000011444092
+    ],
+    "target": [
+      3.6,
+      6.1,
+      1.6
+    ],
+    "fov": 68,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 3.296,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+    "sceneSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+    "glbSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+    "imageSha256": "e8ab1bd219e7864609dd1eaa7060cc3ddbfdd1dfd52d1edaec3509004a6b77c3",
+    "sourceCameraTarget": [
+      3.6,
+      6.1,
+      1.6
+    ],
+    "fitExterior": false
+  },
+  {
+    "camera": "interior_veranda_living",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/interior_veranda_living-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      8.300000190734863,
+      7.099999904632568,
+      1.6299999952316284
+    ],
+    "target": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fov": 64,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 4.618,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+    "sceneSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+    "glbSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+    "imageSha256": "b7e444292fa51bea2630d5e628a1684fd1b6db62537e233d2946217dbc1fa9ca",
+    "sourceCameraTarget": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fitExterior": false
+  }
+]

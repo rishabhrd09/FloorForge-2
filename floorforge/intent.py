@@ -391,7 +391,9 @@ def validate_values(values: dict, custom=False) -> dict:
     ints={'width_mm':(5000,50000),'depth_mm':(6500,60000),'bedrooms':(1,8),'storeys':(1,3),
           'front_mm':(0,15000),'rear_mm':(0,10000),'left_mm':(0,10000),'right_mm':(0,10000),
           'plinth_mm':(0,900),'floor_height_mm':(2950,3600),'variant':(0,2),'seed':(0,2147483647)}
-    if custom:ints['bedrooms']=(0,360)
+    if custom:
+        ints['bedrooms']=(0,360)
+        ints['floor_height_mm']=(2950,3700)
     for k,(lo,hi) in ints.items():
         if type(d[k]) is not int or not lo<=d[k]<=hi:
             raise DesignError('FIELD_RANGE',f'{k} must be an integer between {lo} and {hi}.')

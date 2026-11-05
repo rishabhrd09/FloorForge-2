@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "options": [
+    {
+      "option": "square",
+      "kitchenSqFt": 157.75,
+      "pujaSqFt": 16.0,
+      "entrySide": "WEST",
+      "altarWall": "EAST",
+      "facing": "EAST",
+      "status": "PASS"
+    },
+    {
+      "option": "compact",
+      "kitchenSqFt": 162.25,
+      "pujaSqFt": 12.0,
+      "entrySide": "WEST",
+      "altarWall": "EAST",
+      "facing": "EAST",
+      "status": "PASS"
+    },
+    {
+      "option": "deep",
+      "kitchenSqFt": 158.0,
+      "pujaSqFt": 15.75,
+      "entrySide": "WEST",
+      "altarWall": "EAST",
+      "facing": "EAST",
+      "status": "PASS"
+    }
+  ],
+  "verified": [
+    "Both floors: valid room polygons, plot containment, non-overlap, furniture containment, opening alignment and timber door sweeps",
+    "Every puja entrance is on its west wall; every altar and seated direction face east",
+    "Court, parking, other main ground rooms and first floor preserved"
+  ],
+  "limits": [
+    "Concept floor-plan checks only; not construction or 3D walk-through approval."
+  ]
+}

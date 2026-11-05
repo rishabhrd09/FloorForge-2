@@ -174,7 +174,11 @@ class FloorForgeViewer {
     const center = s2t([(x0 + x1) / 2, (y0 + y1) / 2, 0]);
     const radius = Math.hypot(x1 - x0, y1 - y0) * .5 + 4;
     this.center = center; this.radius = radius;
-    this.env.setSite(data.solar?.vector_local || [.4, -.5, .75], center, radius);
+    // The reference garden/court need the same sun shadows as the house. This
+    // presentation bound does not affect house scale, orbit framing or walking.
+    const lightSite = data.presentation?.shadowContext;
+    this.env.setSite(data.solar?.vector_local || [.4, -.5, .75],
+      lightSite ? s2t(lightSite.center) : center, lightSite?.radiusM || radius);
     this.addGround();
     // Procedural planting, lawns and indoor plants (seeded, deterministic).
     this.vegetation = new Vegetation(this, data, { density: this.q.veg });
@@ -185,7 +189,10 @@ class FloorForgeViewer {
     this.footprint = data.footprint;
     this.topZ = data.storeys * data.floor_height;
     // Walking physics on the actual geometry.
-    const merged = this.mergeForCollision(collision);
+    this.groundMesh.updateMatrixWorld(true);
+    const terrainCollision = this.groundMesh.geometry.clone().applyMatrix4(this.groundMesh.matrixWorld).toNonIndexed();
+    const merged = this.mergeForCollision([...collision, terrainCollision, ...(this.context.userData.walkSurfaces || [])]);
+    terrainCollision.dispose();
     const pad = 7.5;
     this.walker = new Walker(merged, {
       min: new THREE.Vector3(x0 - pad, z0 - 2, -(y1 + pad)),
@@ -198,6 +205,7 @@ class FloorForgeViewer {
     this.rooms = (data.rooms || []).map((r) => ({ ...r }));
     this.rebuildLightPool();
     this.setGrade(this.gradeName);
+    this.siteMode = 'proposed';
     this.floor = 0;
     this.mode = this.mode === 'walk' ? 'solid' : this.mode;
     this.reset();
@@ -342,7 +350,7 @@ class FloorForgeViewer {
     const lights = this.data?.lights || [];
     if (!this.lightPool.length || !lights.length) return;
     const eye = origin || this.camera.position;
-    const level = GRADES[this.gradeName].lamps;
+    const level = this.lampLevel();
     const walk = this.mode === 'walk';
     // Re-rank fittings only once the viewpoint has moved 25 cm (the ranking sorts every fitting and ray-casts).
     const at = walk ? eye : this.controls.target;
@@ -396,11 +404,18 @@ class FloorForgeViewer {
   }
 
   // ---------- grades ----------
+  lampLevel() {
+    const base = GRADES[this.gradeName].lamps;
+    const profile = this.data?.presentation?.interior;
+    if (!profile || !['walk', 'solid'].includes(this.mode) || !['day', 'overcast'].includes(this.gradeName)) return base;
+    return Math.max(base, clamp(profile.dayLampLevel ?? base, 0, 1) * (this.indoor || 0));
+  }
+
   setGrade(name) {
     this.gradeName = GRADES[name] ? name : ({ golden: 'golden', dusk: 'dusk' }[name] || 'day');
     this.clearProbes();
     this.metered = null;
-    this.env.setGrade(this.gradeName);
+    this.env.setGrade(this.gradeName, this.data?.presentation?.lighting?.[this.gradeName]);
     this.applyGrade();
     this.dirty = true;
   }
@@ -422,7 +437,8 @@ class FloorForgeViewer {
     const g = GRADES[this.gradeName];
     const lit = this.gradeName === 'dusk' || this.gradeName === 'night';
     const stats = this.env.probe?.stats;
-    if (!stats) return { exposure: g.exposure * (g.indoor ?? 1.5), balance: [1, 1, 1] };
+    const warmDefault = this.data?.presentation?.interior ? [1.06, 1.0, 0.92] : [1, 1, 1];
+    if (!stats) return { exposure: g.exposure * (g.indoor ?? 1.5), balance: warmDefault };
     const key = lit ? .22 : .68;
     const exposure = clamp(Math.pow(key / stats.luminance, .85) * Math.pow(g.exposure, .15), g.exposure * .06, g.exposure * 4);
     const strength = lit ? .55 : .7, bias = lit ? .12 : .06;
@@ -433,11 +449,18 @@ class FloorForgeViewer {
   }
 
   baseWarmth() {
-    return this.gradeName === 'golden' ? .45 : this.gradeName === 'dusk' ? .05 : this.gradeName === 'night' ? -.15 : .05;
+    const base = this.gradeName === 'golden' ? .45 : this.gradeName === 'dusk' ? .05 : this.gradeName === 'night' ? -.15 : .05;
+    const extW = this.data?.presentation?.exterior?.warmth ?? base;
+    const intW = this.data?.presentation?.interior?.warmth ?? extW;
+    if (this.gradeName === 'day' || this.gradeName === 'overcast') {
+      const inside = this.indoor || 0;
+      return extW + (intW - extW) * inside;
+    }
+    return base;
   }
 
   adapt(dt) {
-    const target = this.mode === 'walk' && this.isIndoors(this.camera.position) ? 1 : 0;
+    const target = (this.mode === 'walk' || this.mode === 'solid') && this.isIndoors(this.camera.position) ? 1 : 0;
     const prev = this.indoor || 0;
     this.indoor = Math.abs(target - prev) < .002 ? target : prev + (target - prev) * (1 - Math.exp(-2.2 * dt));
     // Eye/camera adaptation between rooms.
@@ -457,17 +480,23 @@ class FloorForgeViewer {
     const g = GRADES[this.gradeName];
     const inside = this.indoor || 0;
     const m = this.metered || this.meterRoom();
-    const exposure = g.exposure + (m.exposure - g.exposure) * inside;
+    const profile = this.data?.presentation?.interior;
+    const expScale = 1 + ((profile?.exposureScale ?? 1) - 1) * inside;
+    const exposure = (g.exposure + (m.exposure - g.exposure) * inside) * expScale;
     this.gradeEffect.set('exposure', exposure);
     // Bloom only what the exposed image renders near white, whatever the metered exposure.
     if (this.bloom) this.bloom.luminanceMaterial.threshold = .95 / exposure;
     this.gradeEffect.set('warmth', this.baseWarmth());
     this.gradeEffect.uniforms.get('balance').value.set(...m.balance.map((v) => 1 + (v - 1) * inside));
-    this.gradeEffect.set('contrast', this.gradeName === 'overcast' ? 1.0 : 1.03);
+    const extProfile = this.data?.presentation?.exterior;
+    const baseContrast = this.gradeName === 'overcast' ? 1.0 : (extProfile?.contrast ?? 1.03);
+    const punch = extProfile?.punch ?? g.punch ?? .3;
+    this.gradeEffect.set('contrast', baseContrast + ((profile?.contrast ?? baseContrast) - baseContrast) * inside);
     this.gradeEffect.set('saturation', this.gradeName === 'overcast' ? .96 : 1.0);
-    this.gradeEffect.set('punch', g.punch ?? .3);
+    this.gradeEffect.set('punch', punch + ((profile?.punch ?? punch) - punch) * inside);
+    this.gradeEffect.set('vignette', .22 + ((profile?.vignette ?? .22) - .22) * inside);
     if (this.bloom) this.bloom.intensity = g.bloom;
-    this.materials?.setLampLevel(g.lamps);
+    this.materials?.setLampLevel(this.lampLevel());
     this.updateLights(true);
   }
 
@@ -498,11 +527,12 @@ class FloorForgeViewer {
     return new THREE.Vector3(x, room.floor * this.H + 1.45, -y);
   }
 
-  // Indoors in walk mode, light each room with its own captured probe (cached per room and grade).
+  // Indoors in walk or interior camera mode, light each room with its own captured probe (cached per room and grade).
   updateProbe() {
     let target = null;
-    if (this.mode === 'walk' && this.walker && (this.indoor || 0) >= .5 && !this.clay) {
-      const room = this.roomAt(this.walker.position) || this.probeRoom;
+    if ((this.mode === 'walk' || this.mode === 'solid') && (this.indoor || 0) >= .5 && !this.clay) {
+      const pos = this.mode === 'walk' && this.walker ? this.walker.position : this.camera.position;
+      const room = this.roomAt(pos) || this.probeRoom;
       if (room && room.kind !== 'terrace') {
         this.probeRoom = room;
         const key = room.id + '|' + this.gradeName;
@@ -512,10 +542,11 @@ class FloorForgeViewer {
           // Glowing lamp shades are already represented by their point lights; keep them out of the capture
           // so a pendant hanging near the probe point cannot dominate the room's light.
           // Light the capture with the fittings around the room's middle, not wherever the visitor came from.
-          const lamps = GRADES[this.gradeName].lamps, at = this.probePosition(room);
+          const lamps = this.lampLevel(), at = this.probePosition(room);
           this.materials.setLampLevel(lamps * .04, 0);
           this.updateLights(true, at);
           target = this.env.captureProbe(at);
+          target.statsReady?.then(() => { this._adaptDirty = true; this.dirty = true; });
           this.materials.setLampLevel(lamps);
           this.updateLights(true);
           this.probes.set(key, target);
@@ -536,6 +567,7 @@ class FloorForgeViewer {
   // ---------- visibility / cutaway ----------
   applyVisibility() {
     if (!this.data) return;
+    const existingOnly = this.siteMode === 'existing';
     const cut = this.mode === 'dollhouse' || this.mode === 'plan';
     const H = this.H;
     const f = this.floor;
@@ -543,18 +575,88 @@ class FloorForgeViewer {
     this.materials.clipPlane.constant = cut ? f * H + 1.22 : 1e6;
     for (const mesh of this.meshes) {
       const b = mesh.userData.bucket;
-      let visible = true;
-      if (cut) {
+      let visible = !existingOnly;
+      if (visible && cut) {
         if (b.floor > f) visible = false;
         else if (b.cls === 'overhead' || b.cls === 'opening') visible = false;
         else if (b.floor >= 0 && b.floor < f && !overlooksBelow && !(b.cls === 'clip' && b.roles.includes('wall')) && b.cls !== 'floor') visible = false;
       }
-      if (cut && f === this.data.roof_level && b.floor === f - 1 && b.roles.includes('roof')) visible = true;
+      if (!existingOnly && cut && f === this.data.roof_level && b.floor === f - 1 && b.roles.includes('roof')) visible = true;
       mesh.visible = visible && (!mesh.userData.vehicle || this.carVisible);
     }
     this.vegetation?.setCutaway(cut, f, H);
+    if (this.vegetation?.group) this.vegetation.group.visible = !existingOnly && !this.clay;
+    if (this.context?.userData?.existingPlotGroup) {
+      this.context.userData.existingPlotGroup.visible = existingOnly;
+    }
     if (this.groundMesh) this.groundMesh.visible = true;
     this.dirty = true;
+  }
+
+  setSiteMode(mode = 'proposed') {
+    this.siteMode = mode === 'existing' ? 'existing' : 'proposed';
+    this.applyVisibility();
+    this.onStatus(this.siteMode === 'existing' ? 'Existing site condition · reference comparison mode' : 'Proposed Tirumala home · colony context active');
+  }
+
+  setNamedCamera(name) {
+    const cam = this.data?.cameras?.[name];
+    if (!cam) return false;
+    if (this.mode === 'walk' && !cam.walker) {
+      // An orbit camera has no safe foot position; do not let the next physics frame
+      // silently snap its view back to the previous walking position.
+      this.setMode('solid');
+      this.onModeChange?.('solid');
+    }
+    if (cam.enter_walk) {
+      this.floor = cam.floor || 0;
+      this.onFloorChange?.(this.floor);
+      if (this.mode !== 'walk') {
+        this.setMode('walk');
+        this.onModeChange?.('walk');
+      }
+    }
+    this.zoomAnim = null;
+    this.fitHeld = null;
+    this.sideView = false;
+    this.showContext(true);
+    this.camera.fov = cam.fov || 52;
+    this.camera.updateProjectionMatrix();
+    if (this.mode === 'walk' && this.walker && cam.walker) {
+      // Named cameras store an eye point; walking physics stores the feet.
+      const feet = s2t(cam.walker.position);
+      const eyeHeight = (cam.eye_height_above_ffl_m || this.walker.s.eye) % this.H;
+      feet.y -= eyeHeight;
+      this.walker.teleport(feet, cam.walker.yaw_rad, cam.walker.pitch_rad || 0);
+      if (cam.enter_walk) { this.floor=cam.floor || 0; this.onFloorChange?.(this.floor); }
+      this.camera.position.copy(this.walker.eyePosition(new THREE.Vector3()));
+      this.camera.rotation.set(this.walker.pitch, this.walker.yaw, 0);
+      this.hudUpdate();
+      this.openings?.updateTarget();
+      if (cam.enter_walk) {
+        this.lock();
+        // A room jump should settle exposure at the destination, rather than
+        // spending its first frames with the previous exterior's metering.
+        this.indoor = this.isIndoors(this.camera.position) ? 1 : 0;
+        this.metered = null;
+        this.updateProbe();
+        this.adapt(2);
+      }
+    } else {
+      const eye = s2t(cam.position);
+      const tgt = s2t(cam.target);
+      this.controls.target.copy(tgt);
+      this.camera.position.copy(eye);
+      this.camera.up.set(0, 1, 0);
+      this.camera.lookAt(tgt);
+      this.controls.update();
+      this.indoor = this.isIndoors(this.camera.position) ? 1 : 0;
+      this.metered = null;
+      this.updateProbe();
+      this.adapt(2);
+    }
+    this.dirty = true;
+    return true;
   }
 
   setClay(on = true) {
@@ -632,7 +734,10 @@ class FloorForgeViewer {
     if (this.context && this.context.visible !== on) { this.context.visible = on; this.dirty = true; }
   }
 
-  contextWanted() { return this.mode === 'walk' || (!this.focus && !this.sideView); }
+  contextWanted() {
+    if (this.data?.context?.style === 'tirumala-colony' && ['dollhouse','plan'].includes(this.mode)) return false;
+    return this.mode === 'walk' || (!this.focus && !this.sideView);
+  }
 
   // Focus: the home on its own (street and neighbours set aside), framed to fill the whole view from the current
   // direction; every view, mode and reset keeps that framing until Focus is switched off.
@@ -787,6 +892,9 @@ class FloorForgeViewer {
     if (this.floor === this.data.roof_level) { this.floor = 0; this.onFloorChange?.(0); }
     this.spawn(this.floor > 0 ? 'floor' : 'arrival');
     this.hud.show(true);
+    this.hud.el.querySelector('.ff-tip').textContent = this.data.storeys > 1 || this.data.roof_level != null
+      ? 'Walk up the stairs to change floor' : 'F opens doors · drag to look around';
+    this.hudUpdate();
     this.canvas.focus?.();
     this.onStatus('Walk · drag the view to look · cursor stays free · ↑/↓ forward/back · ←/→ turn · A/D sideways · Shift run · Space jump · C crouch · F open/close · Esc to pause');
   }
@@ -937,6 +1045,10 @@ class FloorForgeViewer {
     } else {
       if (this.zoomAnim) this.stepZoom(now);
       if (this.controls.enabled) this.controls.update(dt);
+      if (this.mode === 'solid') {
+        this.adapt(dt);
+        this.updateProbe();
+      }
       if (this._tour || this.interacting || this.zoomAnim || performance.now() - (this.settle || 0) < 1200) render = true;
     }
     if (!render) return;

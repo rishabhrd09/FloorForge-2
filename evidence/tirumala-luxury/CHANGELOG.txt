@@ -1,0 +1,84 @@
+TIRUMALA 2 / TIRUMALA 3 — G+1 DESIGN REVISION
+30 October 2026
+
+Tirumala 2 retains finalized P12-A (p12-open-porch-v33).
+Tirumala 3 retains finalized P11 (p11-veranda-return-trim-v32).
+
+REQUESTS APPLIED
+- Both remain 40 ft north–south × 50 ft east–west. Every approved ground-room
+  polygon, wall footprint, opening position, kitchen counter, serving worktop,
+  furniture footprint and gate position is preserved. Spaciousness is improved
+  through height, connected views, lighting and finishes, not hidden rescaling.
+- Warm ivory walls, cream 24 × 48 in marble-look floor tiles, limestone accents,
+  teak joinery/soffits and charcoal frames reference My Desired Home.
+- The hall-to-ICU entrance has two independently operable layers: parallel
+  sliding glass and wooden privacy panels. Both clear the original aperture.
+  The separate veranda-side glass opening retains its approved side stack.
+- The veranda has a timber ceiling/entry beam and warm light. The north strip
+  has grass, low planting and stepping pads within its existing two-foot width.
+- The Kota-style lower car porch with red-oxide border remains 6 inches below
+  the house/veranda datum. This level difference remains a provisional design.
+- P12 keeps the drawing room unfurnished, the connected kitchen/living/dining
+  space open, and only the approved ICU recliner plus corner table. No fridge.
+- Added a complete first floor with a master suite above the ground master,
+  office, guest bedroom, master ensuite, shared bathroom, gallery and terrace.
+- The gallery overlooks a real 5.05 m × 2.925 m opening above living/dining;
+  its clear height is 6.991 m (about 23 ft). The lightwell remains open above.
+- The first-floor open terrace has a pergola, lounge, planting and glass guards.
+  Access is directly from the gallery, not a stair to the roof above floor one.
+- Ground stair geometry retains its original 18 risers to +3.150 m. Two new
+  179 mm arrival risers connect to the upper floor at +3.508 m.
+- Added upper-floor room cameras and a double-height living camera. They enter
+  walking mode at actual standing eye height and remain at the correct level.
+
+UPPER FLOOR — ACTUAL POLYGON AREAS
+Upper master:       276.69 sq ft (irregular; same footprint as ground master)
+Master ensuite:      48.00 sq ft / 8 × 6 ft
+Office / study:      92.17 sq ft / approx. 10 ft 1 3/8 in × 9 ft 1 3/8 in
+Guest bedroom:      106.17 sq ft / approx. 10 ft 1 3/8 in × 10 ft 6 in
+Shared bathroom:     37.59 sq ft
+Connected gallery:  140.28 sq ft
+Open terrace, P12:  363.94 sq ft
+Open terrace, P11:  334.39 sq ft
+Dimensioned first-floor SVGs and PNGs are in each sample's renders directory.
+Room dimensions on drawings are bounding spans where rooms are irregular.
+
+VERIFICATION
+- 20 Python geometry/export/upper-floor checks passed.
+- 52 actual scene/collision/door/walking tests passed. Routes include the
+  entrance, every ground room, stairs, upper rooms, both terrace access routes,
+  and the independently reachable wooden ICU handle.
+- 32 browser assertions passed across both samples, including ArrowUp movement,
+  glass/wood interaction with F, all upper cameras and correct standing levels.
+  Zero uncaught browser errors in those checks.
+- The first P11 door test aimed from behind the adjacent wall; the corrected
+  approach was verified in-browser and with a grounded walking capsule. Both
+  original and final evidence files are retained.
+- All 58 baseline-protected files from My Desired Home, Bungalow and Tirumala
+  remain unchanged. Previous Tirumala 2/3 packages are backed up under before/.
+- Final package/source-coordinate/hash checks are recorded separately in
+  delivery-verification.json after rendering and ZIP finalization.
+
+FINISH CHOICES
+A (applied): ivory / limestone / teak.
+B (review only): pearl / greige / walnut.
+C (review only): soft sand / bronze / oak.
+See output/tirumala-luxury-review/finish-options.html or finish-options.png.
+
+USING THE UPDATED SAMPLES
+Reload Studio and reopen Tirumala 2 or Tirumala 3 from the sample/project menu.
+Choose Explore inside for upper gallery, master, office, guest and terrace.
+Use Walk with arrow keys/WASD; aim at a door or its handle and press F.
+The 2D sheet selector includes the first-floor plan; the dimensioned rendered
+plans are also included in each sample's downloadable ZIP.
+
+LIMITS
+These are real-time rendered design models, not path-traced photographs or
+construction documents. Ground room sizes were deliberately retained as
+requested. An architect/engineer still needs to design structural support,
+services, stair compliance and local approvals before construction.
+
+This revision used targeted tests, not a fresh complete repository suite. The
+prior audit records a legacy electrical-tour bundle-equality test conflict:
+that frozen original sample is preserved rather than overwritten to match the
+current shared viewer bundle. See evidence/tirumala-audit/AUDIT.txt.

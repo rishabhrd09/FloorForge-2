@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "check": "Full ground-floor selector works",
+      "pass": true
+    },
+    {
+      "check": "Mobile comparison does not overflow",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

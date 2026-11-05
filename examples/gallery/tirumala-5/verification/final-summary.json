@@ -1,0 +1,17 @@
+{
+  "project": "Tirumala 5",
+  "revision": "G+2",
+  "planHash": "55e64cf8c1e64dc7e480704726ec3a2ded3637a013317353cc65ad1c3530d226",
+  "pythonTestsPassed": 27,
+  "viewerTestsPassed": 90,
+  "fullBrowserChecks": 63,
+  "fullBrowserFailures": 0,
+  "finalAffectedViewChecks": 22,
+  "finalAffectedViewFailures": 0,
+  "continuousWalkPassed": true,
+  "walkSegments": 16,
+  "sceneSha256": "9a9cf80ca2cf04744cff19d89f344576b0931830280be0c75bea672bbc07fe3a",
+  "architecturalModelOnly": true,
+  "structuralDesignCertified": false,
+  "ifcValidation": "STEP references verified; independent schema validation unavailable (IfcOpenShell not installed)"
+}

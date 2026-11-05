@@ -1,0 +1,3029 @@
+{
+  "id": "tirumala-4",
+  "basedOnSample": "tirumala-3",
+  "sourcePlanHash": "22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba",
+  "sourceGeometryHash": "b6484526b3006577c8ea77d195487ec31e7226a90a9804cd2f2d400bc74b78fc",
+  "revision": 36,
+  "exteriorRefinement": {
+    "boundary": "Ivory render, honed limestone lower band and thin coping; existing gate width retained",
+    "contextConfidence": "Photo-informed appearance; existing unmeasured landmark offsets remain provisional",
+    "houseGeometryChanged": false,
+    "planting": "Low mixed leaf planting replaces solid burgundy hedge blocks; edged grass pockets",
+    "revision": "ivory-boundary-natural-planting-2026-10-31"
+  },
+  "facadeRefinement": {
+    "exteriorFinishTriangles": 409,
+    "exteriorOpenings": [
+      "drawing-veranda-only",
+      "living-veranda",
+      "stair-window",
+      "icu-east-window",
+      "icu-north-window",
+      "master-rear",
+      "drawing-north",
+      "caregiver-north",
+      "caregiver-rear",
+      "kitchen-east",
+      "icu-veranda-glass",
+      "lightwell-maintenance",
+      "bath-rear",
+      "master-lightwell",
+      "wc-rear",
+      "u-terrace-door",
+      "u-side-terrace-door",
+      "u-master-rear",
+      "u-master-south",
+      "u-office-rear",
+      "u-office-north",
+      "u-bedroom-north",
+      "u-bedroom-terrace",
+      "u-bath-rear",
+      "u-ensuite-rear",
+      "u-gallery-lightwell",
+      "u-master-lightwell",
+      "u-atrium-east",
+      "u-atrium-south"
+    ],
+    "frameColor": "#1d2022",
+    "houseGeometryChanged": false,
+    "neighbours": "Owner-confirmed vacant adjoining lots shown with grass",
+    "revision": "desired-home-exterior-v1-2026-10-31",
+    "source": "my-desired-home",
+    "wallColor": "#f1efea"
+  },
+  "option": "P13",
+  "sourceOption": "P11",
+  "sourceVersion": "p13-icu-east-extension-2026-10-30",
+  "currentVersion": "p13-icu-east-extension-2026-10-30",
+  "spaciousnessRevision": "tirumala-4-2026-10-31",
+  "optionLabel": "Ivory \u00b7 limestone \u00b7 teak (P13 \u00b7 calibrated colony & interior realism)",
+  "optionTag": "P13 \u00b7 Home ICU 11\u20323\u2033 \u00d7 13\u20324\u215e\u2033 \u00b7 Calibrated colony context \u00b7 Empty porch default \u00b7 G+1",
+  "optionTrade": "40 \u00d7 50 ft east-facing G+1 northeast corner home built on locked Tirumala 3 (P13) geometry (Home ICU 11\u20323\u2033 \u00d7 13\u20324\u215e\u2033, 150.8 sq ft, 5 ft east forecourt, layered wood + sliding glass ICU entrance, 15 ft 7\u215d in \u00d7 7 ft 0\u00bc in north veranda, 23 ft double-height living void, upper master, study, guest room & open terrace). Calibrated Tirumala Colony surroundings from site photos R07\u2013R14 and walk-around video V01\u2013V06, empty private car porch by default (with optional parking check), Existing-vs-Proposed site toggle, and balanced warm-daylight & neutral-overcast ivory\u2013limestone\u2013teak interiors. Refined ivory/limestone boundary, low natural leaf planting without red blocks, edged grass pockets and slimmer streetlights. My Desired Home exterior wall/glazing treatment; owner-confirmed vacant adjoining grass lots.",
+  "title": "Tirumala 4",
+  "planHash": "096ae83c8d2a08b4a39649e25b2643cf7d52eaa2db140a71c59ec5ac015550fd",
+  "groundGeometryHash": "2d1c5a8d5bce705335e54e39e43417063c5f2a5f48009caa964a4f9878c2be6b",
+  "geometryHash": "b6484526b3006577c8ea77d195487ec31e7226a90a9804cd2f2d400bc74b78fc",
+  "defaultCarVisible": false,
+  "siteModes": [
+    "proposed",
+    "existing"
+  ],
+  "disclaimer": "PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION",
+  "orientation": "East road/front (40 ft = 12.192 m, y=0) \u00b7 South left (x=0) \u00b7 North 12 m road/right (50 ft = 15.240 m, x=12.192 m) \u00b7 West rear (y=15.240 m). Overhead 2D plans show West at top and North on right.",
+  "notes": "Tirumala 4 \u2014 Colony Context, Exterior/Interior Material & Lighting Realism on Locked Tirumala 3 (P13) Geometry. 40 ft N-S x 50 ft E-W (12,192 x 15,240 mm) northeast-corner plot in Tirumala Colony with East principal arrival, 12 m North road opposite the colony garden and white/navy-blue-grey house, 9 m East road opposite the basketball court, provisional 6-inch (-152.4 mm) lower car porch (shown empty by default with optional parking-check vehicle), P13 Home ICU (11 ft 3 in x 13 ft 4 7/8 in, 150.8 sq ft) with 5 ft raised East forecourt, full-size recliner bed (head West, feet East), one companion chair, wall-mounted TV and compact 2 ft x 14 in drawer table, hall-side wooden privacy doors concealing independent sliding glass behind them, separate ICU-veranda slide-and-turn glass doors, living-veranda folding wood + retractable mesh doors, and G+1 upper floor (upper master suite, ensuite, office/study, guest bedroom, shared bath, 23 ft double-height living void, gallery and open terrace). Calibrated against owner-supplied site photos R07-R14 and walk-around video V01-V06.",
+  "plotFt": [
+    40,
+    50
+  ],
+  "plotM": [
+    12.192,
+    15.24
+  ],
+  "plotAreaSqFt": 2000,
+  "plotAreaM2": 185.806,
+  "luxuryRevision": "luxury-g1-2026-10-30",
+  "joineryRevision": "ivory-teak-wood-front-glass-behind-v2",
+  "palette": "ivory-teak",
+  "paletteStatus": "user-approved",
+  "icuDoorLayersFromHall": [
+    "wooden privacy door",
+    "independent sliding glass door",
+    "ICU"
+  ],
+  "windowSchedule": [
+    {
+      "id": "stair-window",
+      "floor": 0,
+      "widthMm": 1010.0,
+      "heightMm": 1800,
+      "sillMm": 600,
+      "clearBetweenJambsMm": 1010.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "icu-east-window",
+      "floor": 0,
+      "widthMm": 1000.0,
+      "heightMm": 2400,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1000.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "icu-north-window",
+      "floor": 0,
+      "widthMm": 1800.0,
+      "heightMm": 2400,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1800.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "master-rear",
+      "floor": 0,
+      "widthMm": 2000.0,
+      "heightMm": 2250,
+      "sillMm": 600,
+      "clearBetweenJambsMm": 2000.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "drawing-north",
+      "floor": 0,
+      "widthMm": 1200.0,
+      "heightMm": 2400,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1200.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "caregiver-north",
+      "floor": 0,
+      "widthMm": 1150.0,
+      "heightMm": 2100,
+      "sillMm": 750,
+      "clearBetweenJambsMm": 1150.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "caregiver-rear",
+      "floor": 0,
+      "widthMm": 1500.0,
+      "heightMm": 2100,
+      "sillMm": 750,
+      "clearBetweenJambsMm": 1500.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "kitchen-east",
+      "floor": 0,
+      "widthMm": 1600.0,
+      "heightMm": 1900,
+      "sillMm": 950,
+      "clearBetweenJambsMm": 1600.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "bath-rear",
+      "floor": 0,
+      "widthMm": 1200.0,
+      "heightMm": 850,
+      "sillMm": 1350,
+      "clearBetweenJambsMm": 1200.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "master-lightwell",
+      "floor": 0,
+      "widthMm": 800.0,
+      "heightMm": 1650,
+      "sillMm": 600,
+      "clearBetweenJambsMm": 800.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "wc-rear",
+      "floor": 0,
+      "widthMm": 1000.0,
+      "heightMm": 850,
+      "sillMm": 1350,
+      "clearBetweenJambsMm": 1000.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "u-master-rear",
+      "floor": 1,
+      "widthMm": 2200.0,
+      "heightMm": 2500,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 2200.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-master-south",
+      "floor": 1,
+      "widthMm": 1700.0,
+      "heightMm": 2500,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1700.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-office-rear",
+      "floor": 1,
+      "widthMm": 2250.0,
+      "heightMm": 2500,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 2250.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-office-north",
+      "floor": 1,
+      "widthMm": 1500.0,
+      "heightMm": 2500,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1500.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-bedroom-north",
+      "floor": 1,
+      "widthMm": 1900.0,
+      "heightMm": 2500,
+      "sillMm": 450,
+      "clearBetweenJambsMm": 1900.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-bedroom-terrace",
+      "floor": 1,
+      "widthMm": 2250.0,
+      "heightMm": 2550,
+      "sillMm": 400,
+      "clearBetweenJambsMm": 2250.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-bath-rear",
+      "floor": 1,
+      "widthMm": 1150.0,
+      "heightMm": 1000,
+      "sillMm": 1700,
+      "clearBetweenJambsMm": 1150.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "u-ensuite-rear",
+      "floor": 1,
+      "widthMm": 1250.0,
+      "heightMm": 1000,
+      "sillMm": 1700,
+      "clearBetweenJambsMm": 1250.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "u-gallery-lightwell",
+      "floor": 1,
+      "widthMm": 1200.0,
+      "heightMm": 1800,
+      "sillMm": 900,
+      "clearBetweenJambsMm": 1200.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "u-master-lightwell",
+      "floor": 1,
+      "widthMm": 800.0,
+      "heightMm": 1800,
+      "sillMm": 900,
+      "clearBetweenJambsMm": 800.0,
+      "style": "operable casement"
+    },
+    {
+      "id": "u-atrium-east",
+      "floor": 1,
+      "widthMm": 3900.0,
+      "heightMm": 2900,
+      "sillMm": 150,
+      "clearBetweenJambsMm": 3900.0,
+      "style": "picture-with-sliding-vents"
+    },
+    {
+      "id": "u-atrium-south",
+      "floor": 1,
+      "widthMm": 1850.0,
+      "heightMm": 2900,
+      "sillMm": 150,
+      "clearBetweenJambsMm": 1850.0,
+      "style": "picture-with-sliding-vents"
+    }
+  ],
+  "doorSchedule": [
+    {
+      "id": "drawing-veranda-only",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "living-veranda",
+      "floor": 0,
+      "rawKind": "wood-mesh-fold",
+      "apertureMm": 1800.0,
+      "apertureFtIn": "5\u203210\u215e\u2033",
+      "clearBetweenJambsMm": 1690.0,
+      "clearBetweenJambsFtIn": "5\u20326\u00bd\u2033",
+      "heightMm": 2400
+    },
+    {
+      "id": "icu-glass-living",
+      "floor": 0,
+      "rawKind": "glass",
+      "apertureMm": 1597.6,
+      "apertureFtIn": "5\u20322\u215e\u2033",
+      "clearBetweenJambsMm": 1487.6,
+      "clearBetweenJambsFtIn": "4\u203210\u215d\u2033",
+      "heightMm": 2400
+    },
+    {
+      "id": "store-door",
+      "floor": 0,
+      "rawKind": "sliding-door",
+      "apertureMm": 750.0,
+      "apertureFtIn": "2\u20325\u00bd\u2033",
+      "clearBetweenJambsMm": 640.0,
+      "clearBetweenJambsFtIn": "2\u20321\u00bc\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "icu-veranda-glass",
+      "floor": 0,
+      "rawKind": "glass",
+      "apertureMm": 1000.0,
+      "apertureFtIn": "3\u20323\u215c\u2033",
+      "clearBetweenJambsMm": 890.0,
+      "clearBetweenJambsFtIn": "2\u203211\u2033",
+      "heightMm": 2400
+    },
+    {
+      "id": "master-door",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 800.0,
+      "apertureFtIn": "2\u20327\u00bd\u2033",
+      "clearBetweenJambsMm": 690.0,
+      "clearBetweenJambsFtIn": "2\u20323\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "bath-door",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "caregiver-lobby",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 800.0,
+      "apertureFtIn": "2\u20327\u00bd\u2033",
+      "clearBetweenJambsMm": 690.0,
+      "clearBetweenJambsFtIn": "2\u20323\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "wc-caregiver-only",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 800.0,
+      "apertureFtIn": "2\u20327\u00bd\u2033",
+      "clearBetweenJambsMm": 690.0,
+      "clearBetweenJambsFtIn": "2\u20323\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "lightwell-maintenance",
+      "floor": 0,
+      "rawKind": "door",
+      "apertureMm": 800.0,
+      "apertureFtIn": "2\u20327\u00bd\u2033",
+      "clearBetweenJambsMm": 690.0,
+      "clearBetweenJambsFtIn": "2\u20323\u215b\u2033",
+      "heightMm": 2150
+    },
+    {
+      "id": "u-master-door",
+      "floor": 1,
+      "rawKind": "door",
+      "apertureMm": 800.0,
+      "apertureFtIn": "2\u20327\u00bd\u2033",
+      "clearBetweenJambsMm": 690.0,
+      "clearBetweenJambsFtIn": "2\u20323\u215b\u2033",
+      "heightMm": 2450
+    },
+    {
+      "id": "u-master-bath-door",
+      "floor": 1,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2300
+    },
+    {
+      "id": "u-office-door",
+      "floor": 1,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2450
+    },
+    {
+      "id": "u-bedroom-door",
+      "floor": 1,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2450
+    },
+    {
+      "id": "u-bath-door",
+      "floor": 1,
+      "rawKind": "door",
+      "apertureMm": 900.0,
+      "apertureFtIn": "2\u203211\u215c\u2033",
+      "clearBetweenJambsMm": 790.0,
+      "clearBetweenJambsFtIn": "2\u20327\u215b\u2033",
+      "heightMm": 2300
+    },
+    {
+      "id": "u-terrace-door",
+      "floor": 1,
+      "rawKind": "sliding-door",
+      "apertureMm": 1600.0,
+      "apertureFtIn": "5\u20323\u2033",
+      "clearBetweenJambsMm": 1490.0,
+      "clearBetweenJambsFtIn": "4\u203210\u215d\u2033",
+      "heightMm": 2700
+    },
+    {
+      "id": "u-side-terrace-door",
+      "floor": 1,
+      "rawKind": "sliding-door",
+      "apertureMm": 1400.0,
+      "apertureFtIn": "4\u20327\u215b\u2033",
+      "clearBetweenJambsMm": 1290.0,
+      "clearBetweenJambsFtIn": "4\u20322\u00be\u2033",
+      "heightMm": 2700
+    }
+  ],
+  "clearanceAudit": [
+    {
+      "zone": "Home ICU (g-care) \u2014 Room clear dimensions",
+      "measuredMm": "3429.6 (N-S) x 4085.6 (E-W)",
+      "measuredFtIn": "11 ft 3 in x 13 ft 4 7/8 in (150.8 sq ft)",
+      "status": "locked_p13_geometry",
+      "note": "Includes 2 ft (609.6 mm) east extension aligning ICU east exterior wall with kitchen front (y = 1524 mm), retaining 5 ft East forecourt."
+    },
+    {
+      "zone": "Home ICU \u2014 Bed foot to East wall/window",
+      "measuredMm": 942.8,
+      "measuredFtIn": "3 ft 1 1/8 in",
+      "status": "verified_clear",
+      "note": "Recliner bed east foot at y = 2616.8 mm to ICU east inner wall at y = 1674.0 mm."
+    },
+    {
+      "zone": "Home ICU \u2014 Bed head to West wall",
+      "measuredMm": 942.8,
+      "measuredFtIn": "3 ft 1 1/8 in",
+      "status": "verified_clear",
+      "note": "Recliner bed west head at y = 4816.8 mm to ICU west inner wall at y = 5759.6 mm."
+    },
+    {
+      "zone": "Home ICU \u2014 Bed south side to Hall\u2013ICU door wall",
+      "measuredMm": 987.6,
+      "measuredFtIn": "3 ft 2 7/8 in",
+      "status": "verified_clear",
+      "note": "Recliner bed south edge at x = 6440.0 mm to south inner wall at x = 5452.4 mm (857.6 mm clear past wall-mounted TV)."
+    },
+    {
+      "zone": "Home ICU \u2014 Bed north side to Veranda door wall",
+      "measuredMm": 1342.0,
+      "measuredFtIn": "4 ft 4 7/8 in",
+      "status": "verified_clear",
+      "note": "Recliner bed north edge at x = 7540.0 mm to north inner wall at x = 8882.0 mm; companion chair in NW pocket leaves 520 mm diagonal gap to bed corner and 267.6 mm to veranda door jamb."
+    },
+    {
+      "zone": "Hall\u2013ICU layered entrance (icu-glass-living)",
+      "measuredMm": "2100.0 structural / 1990.0 clear between jambs",
+      "measuredFtIn": "6 ft 10 11/16 in structural / 6 ft 6 3/8 in clear",
+      "status": "verified_clear",
+      "note": "Hall-side 4-panel folding teak privacy door conceals independent 4-panel sliding glass directly behind it within the same opening."
+    },
+    {
+      "zone": "ICU\u2013Veranda slide-and-turn glass door (icu-veranda-door)",
+      "measuredMm": "1828.8 structural / 1718.8 clear between jambs",
+      "measuredFtIn": "6 ft 0 in structural / 5 ft 7 11/16 in clear",
+      "status": "verified_clear",
+      "note": "4-panel slide-and-turn frameless glass assembly opening onto the North veranda."
+    },
+    {
+      "zone": "Living\u2013Veranda folding wood + mesh door (living-veranda)",
+      "measuredMm": "1167.8 structural / 1057.8 clear between jambs",
+      "measuredFtIn": "3 ft 10 in structural / 3 ft 5 5/8 in clear",
+      "status": "verified_clear",
+      "note": "Outward-folding teak leaves + retractable pleated insect mesh; unchanged from Tirumala 3."
+    },
+    {
+      "zone": "Principal East house entrance (main-entry)",
+      "measuredMm": "1371.6 structural / 1261.6 clear between jambs",
+      "measuredFtIn": "4 ft 6 in structural / 4 ft 1 11/16 in clear",
+      "status": "verified_clear",
+      "note": "Double teak entry doors from the 5 ft raised East forecourt (+300 mm)."
+    },
+    {
+      "zone": "Living / Dining / Open Kitchen circulation",
+      "measuredMm": "1230.0 (sofa to coffee table) / 1450.0 (kitchen worktop pass-through)",
+      "measuredFtIn": "4 ft 0 3/8 in / 4 ft 9 1/16 in",
+      "status": "verified_clear",
+      "note": "Unobstructed sightline and step-free level path from East entry through living/dining to veranda and bedrooms."
+    },
+    {
+      "zone": "Master Bedroom doorway (master-door)",
+      "measuredMm": "800.0 leaf in 1000.0 throat (690.0 clear between frame stops)",
+      "measuredFtIn": "2 ft 7 1/2 in leaf in 3 ft 3 3/8 in throat",
+      "status": "locked_source_bottleneck_documented",
+      "note": "Preserved from authoritative P11/P13 geometry; recorded as the narrowest bedroom doorway throat."
+    },
+    {
+      "zone": "Wash gully doorway & Caregiver WC door",
+      "measuredMm": "700.0 structural / 590.0 clear between jambs",
+      "measuredFtIn": "2 ft 3 9/16 in structural / 1 ft 11 1/4 in clear",
+      "status": "locked_source_service_doors_documented",
+      "note": "Secondary service/WC doors preserved from authoritative P11/P13 geometry."
+    }
+  ],
+  "paletteOptions": {
+    "ivory-teak": {
+      "name": "Ivory \u00b7 limestone \u00b7 teak",
+      "wall": "#f1efea",
+      "stone": "#c3b6a1",
+      "floor": "#ede7dc",
+      "wood": "#79543c",
+      "frame": "#282928"
+    },
+    "pearl-walnut": {
+      "name": "Pearl \u00b7 greige \u00b7 walnut",
+      "wall": "#eeece7",
+      "stone": "#afa99f",
+      "floor": "#e7e3dc",
+      "wood": "#624b3d",
+      "frame": "#252a2d"
+    },
+    "sand-bronze": {
+      "name": "Soft sand \u00b7 bronze \u00b7 oak",
+      "wall": "#ede7dc",
+      "stone": "#c5b89e",
+      "floor": "#e8dfcf",
+      "wood": "#9b7957",
+      "frame": "#50443a"
+    }
+  },
+  "upperFloor": {
+    "connectorSteps": [
+      {
+        "bounds": [
+          4550,
+          7800,
+          4850,
+          8900
+        ],
+        "top": 3329
+      },
+      {
+        "bounds": [
+          4850,
+          7800,
+          5150,
+          8900
+        ],
+        "top": 3508
+      }
+    ],
+    "floorPlate": [
+      {
+        "holes": [
+          [
+            [
+              11000.0,
+              8050.0
+            ],
+            [
+              11000.0,
+              8200.0
+            ],
+            [
+              8750.0,
+              8200.0
+            ],
+            [
+              8750.0,
+              8050.0
+            ]
+          ],
+          [
+            [
+              7135.6,
+              11650.0
+            ],
+            [
+              7135.6,
+              11850.0
+            ],
+            [
+              5635.6,
+              11850.0
+            ],
+            [
+              5635.6,
+              11400.0
+            ],
+            [
+              5485.6,
+              11400.0
+            ],
+            [
+              5485.6,
+              10600.0
+            ],
+            [
+              5635.6,
+              10600.0
+            ],
+            [
+              5635.6,
+              10200.0
+            ],
+            [
+              6650.0,
+              10200.0
+            ],
+            [
+              7135.6,
+              10200.0
+            ],
+            [
+              7135.6,
+              10450.0
+            ],
+            [
+              7285.6,
+              10450.0
+            ],
+            [
+              7285.6,
+              11650.0
+            ]
+          ]
+        ],
+        "polygon": [
+          [
+            6300.0,
+            4875.0
+          ],
+          [
+            6300.0,
+            7800.0
+          ],
+          [
+            5150.0,
+            7800.0
+          ],
+          [
+            5150.0,
+            8900.0
+          ],
+          [
+            150.0,
+            8900.0
+          ],
+          [
+            150.0,
+            7300.0
+          ],
+          [
+            0.0,
+            7300.0
+          ],
+          [
+            0.0,
+            8900.0
+          ],
+          [
+            0.0,
+            10100.0
+          ],
+          [
+            150.0,
+            10100.0
+          ],
+          [
+            150.0,
+            11800.0
+          ],
+          [
+            0.0,
+            11800.0
+          ],
+          [
+            0.0,
+            14478.0
+          ],
+          [
+            650.0,
+            14478.0
+          ],
+          [
+            650.0,
+            14328.0
+          ],
+          [
+            2850.0,
+            14328.0
+          ],
+          [
+            2850.0,
+            14478.0
+          ],
+          [
+            3440.7667,
+            14478.0
+          ],
+          [
+            3590.7667,
+            14478.0
+          ],
+          [
+            4100.0,
+            14478.0
+          ],
+          [
+            4100.0,
+            14328.0
+          ],
+          [
+            5350.0,
+            14328.0
+          ],
+          [
+            5350.0,
+            14478.0
+          ],
+          [
+            6029.1667,
+            14478.0
+          ],
+          [
+            6179.1667,
+            14478.0
+          ],
+          [
+            6600.0,
+            14478.0
+          ],
+          [
+            6600.0,
+            14328.0
+          ],
+          [
+            7750.0,
+            14328.0
+          ],
+          [
+            7750.0,
+            14478.0
+          ],
+          [
+            8200.0,
+            14478.0
+          ],
+          [
+            8350.0,
+            14478.0
+          ],
+          [
+            8750.0,
+            14478.0
+          ],
+          [
+            8750.0,
+            14328.0
+          ],
+          [
+            11000.0,
+            14328.0
+          ],
+          [
+            11000.0,
+            14478.0
+          ],
+          [
+            11582.4,
+            14478.0
+          ],
+          [
+            11582.4,
+            13900.0
+          ],
+          [
+            11432.4,
+            13900.0
+          ],
+          [
+            11432.4,
+            12400.0
+          ],
+          [
+            11582.4,
+            12400.0
+          ],
+          [
+            11582.4,
+            11550.0
+          ],
+          [
+            11582.4,
+            11400.0
+          ],
+          [
+            11582.4,
+            11000.0
+          ],
+          [
+            11432.4,
+            11000.0
+          ],
+          [
+            11432.4,
+            9100.0
+          ],
+          [
+            11582.4,
+            9100.0
+          ],
+          [
+            11582.4,
+            8050.0
+          ],
+          [
+            11582.4,
+            6200.0
+          ],
+          [
+            9798.8,
+            6200.0
+          ],
+          [
+            9798.8,
+            5909.6
+          ],
+          [
+            9032.0,
+            5909.6
+          ],
+          [
+            9032.0,
+            5759.6
+          ],
+          [
+            9032.0,
+            5409.6
+          ],
+          [
+            9032.0,
+            3609.6
+          ],
+          [
+            9032.0,
+            2283.6
+          ],
+          [
+            9032.0,
+            1674.0
+          ],
+          [
+            9032.0,
+            1524.0
+          ],
+          [
+            6602.4,
+            1524.0
+          ],
+          [
+            5602.4,
+            1524.0
+          ],
+          [
+            5452.4,
+            1524.0
+          ],
+          [
+            5302.4,
+            1524.0
+          ],
+          [
+            4300.0,
+            1524.0
+          ],
+          [
+            2700.0,
+            1524.0
+          ],
+          [
+            1216.8,
+            1524.0
+          ],
+          [
+            1216.8,
+            1674.0
+          ],
+          [
+            1216.8,
+            2133.6
+          ],
+          [
+            1216.8,
+            2283.6
+          ],
+          [
+            1216.8,
+            3609.6
+          ],
+          [
+            1216.8,
+            3900.0
+          ],
+          [
+            1216.8,
+            4650.0
+          ],
+          [
+            1216.8,
+            4725.0
+          ],
+          [
+            150.0,
+            4725.0
+          ],
+          [
+            150.0,
+            4800.0
+          ],
+          [
+            0.0,
+            4800.0
+          ],
+          [
+            0.0,
+            5450.0
+          ],
+          [
+            150.0,
+            5450.0
+          ],
+          [
+            150.0,
+            4875.0
+          ],
+          [
+            1800.0,
+            4875.0
+          ],
+          [
+            1800.0,
+            4800.0
+          ],
+          [
+            5700.0,
+            4800.0
+          ],
+          [
+            5700.0,
+            4875.0
+          ],
+          [
+            6250.0,
+            4875.0
+          ]
+        ]
+      }
+    ],
+    "levelMm": 3508.0,
+    "lightwell": [
+      [
+        7285.6,
+        10050.0
+      ],
+      [
+        5485.6,
+        10050.0
+      ],
+      [
+        5485.6,
+        12000.0
+      ],
+      [
+        7285.6,
+        12000.0
+      ]
+    ],
+    "lightwellClear": [
+      [
+        7135.6,
+        10200.0
+      ],
+      [
+        7135.6,
+        11850.0
+      ],
+      [
+        5635.6,
+        11850.0
+      ],
+      [
+        5635.6,
+        10200.0
+      ]
+    ],
+    "revision": "luxury-g1-2026-10-30",
+    "roof": [
+      {
+        "holes": [
+          [
+            [
+              7285.6,
+              12000.0
+            ],
+            [
+              5485.6,
+              12000.0
+            ],
+            [
+              5485.6,
+              10050.0
+            ],
+            [
+              7285.6,
+              10050.0
+            ]
+          ]
+        ],
+        "polygon": [
+          [
+            0.0,
+            4800.0
+          ],
+          [
+            0.0,
+            8900.0
+          ],
+          [
+            0.0,
+            14478.0
+          ],
+          [
+            11582.4,
+            14478.0
+          ],
+          [
+            11582.4,
+            8900.0
+          ],
+          [
+            8350.0,
+            8900.0
+          ],
+          [
+            8350.0,
+            4800.0
+          ]
+        ]
+      }
+    ],
+    "rooms": [
+      {
+        "area_m2": 25.705560600659602,
+        "bounds": [
+          150.0,
+          9050.0,
+          7135.6,
+          14328.0
+        ],
+        "id": "u-master",
+        "kind": "bedroom",
+        "name": "Upper master suite",
+        "polygon": [
+          [
+            6500.0,
+            9050.0
+          ],
+          [
+            5485.6,
+            9050.0
+          ],
+          [
+            150.0,
+            9050.0
+          ],
+          [
+            150.0,
+            12349.2
+          ],
+          [
+            150.0,
+            14328.0
+          ],
+          [
+            3440.7667,
+            14328.0
+          ],
+          [
+            3440.7667,
+            12349.2
+          ],
+          [
+            5485.6,
+            12349.2
+          ],
+          [
+            7135.6,
+            12349.2
+          ],
+          [
+            7135.6,
+            12000.0
+          ],
+          [
+            5485.6,
+            12000.0
+          ],
+          [
+            5485.6,
+            10050.0
+          ],
+          [
+            6500.0,
+            10050.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                6500.0,
+                9050.0
+              ],
+              [
+                5485.6,
+                9050.0
+              ],
+              [
+                150.0,
+                9050.0
+              ],
+              [
+                150.0,
+                12349.2
+              ],
+              [
+                150.0,
+                14328.0
+              ],
+              [
+                3440.7667,
+                14328.0
+              ],
+              [
+                3440.7667,
+                12349.2
+              ],
+              [
+                5485.6,
+                12349.2
+              ],
+              [
+                7135.6,
+                12349.2
+              ],
+              [
+                7135.6,
+                12000.0
+              ],
+              [
+                5485.6,
+                12000.0
+              ],
+              [
+                5485.6,
+                10050.0
+              ],
+              [
+                6500.0,
+                10050.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 4.459345919999999,
+        "bounds": [
+          3590.766667,
+          12499.2,
+          6029.166667,
+          14328.0
+        ],
+        "id": "u-master-bath",
+        "kind": "bathroom",
+        "name": "Master ensuite",
+        "polygon": [
+          [
+            6029.1667,
+            12499.2
+          ],
+          [
+            6029.1667,
+            14328.0
+          ],
+          [
+            3590.7667,
+            14328.0
+          ],
+          [
+            3590.7667,
+            12499.2
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                6029.1667,
+                12499.2
+              ],
+              [
+                6029.1667,
+                14328.0
+              ],
+              [
+                3590.7667,
+                14328.0
+              ],
+              [
+                3590.7667,
+                12499.2
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 8.5629072,
+        "bounds": [
+          8350.0,
+          11550.0,
+          11432.4,
+          14328.0
+        ],
+        "id": "u-study",
+        "kind": "study",
+        "name": "Office / study",
+        "polygon": [
+          [
+            11432.4,
+            11550.0
+          ],
+          [
+            11432.4,
+            14328.0
+          ],
+          [
+            8350.0,
+            14328.0
+          ],
+          [
+            8350.0,
+            11550.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                11432.4,
+                11550.0
+              ],
+              [
+                11432.4,
+                14328.0
+              ],
+              [
+                8350.0,
+                14328.0
+              ],
+              [
+                8350.0,
+                11550.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 9.863679999999999,
+        "bounds": [
+          8350.0,
+          8200.0,
+          11432.4,
+          11400.0
+        ],
+        "id": "u-bedroom",
+        "kind": "bedroom",
+        "name": "Guest bedroom",
+        "polygon": [
+          [
+            11432.4,
+            8200.0
+          ],
+          [
+            11432.4,
+            11400.0
+          ],
+          [
+            8350.0,
+            11400.0
+          ],
+          [
+            8350.0,
+            8200.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                11432.4,
+                8200.0
+              ],
+              [
+                11432.4,
+                11400.0
+              ],
+              [
+                8350.0,
+                11400.0
+              ],
+              [
+                8350.0,
+                8200.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 3.4919999994239994,
+        "bounds": [
+          6179.166667,
+          12600.0,
+          8200.0,
+          14328.0
+        ],
+        "id": "u-bath",
+        "kind": "bathroom",
+        "name": "Shared bathroom",
+        "polygon": [
+          [
+            8200.0,
+            12600.0
+          ],
+          [
+            8200.0,
+            14328.0
+          ],
+          [
+            6179.1667,
+            14328.0
+          ],
+          [
+            6179.1667,
+            12600.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                8200.0,
+                12600.0
+              ],
+              [
+                8200.0,
+                14328.0
+              ],
+              [
+                6179.1667,
+                14328.0
+              ],
+              [
+                6179.1667,
+                12600.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 13.03206,
+        "bounds": [
+          5150.0,
+          4800.0,
+          8200.0,
+          12450.0
+        ],
+        "id": "u-gallery",
+        "kind": "hall",
+        "name": "Gallery overlooking living",
+        "polygon": [
+          [
+            5150.0,
+            7800.0
+          ],
+          [
+            5150.0,
+            8900.0
+          ],
+          [
+            5485.6,
+            8900.0
+          ],
+          [
+            6650.0,
+            8900.0
+          ],
+          [
+            6650.0,
+            10050.0
+          ],
+          [
+            7285.6,
+            10050.0
+          ],
+          [
+            7285.6,
+            11850.0
+          ],
+          [
+            7285.6,
+            12000.0
+          ],
+          [
+            7285.6,
+            12450.0
+          ],
+          [
+            8200.0,
+            12450.0
+          ],
+          [
+            8200.0,
+            11550.0
+          ],
+          [
+            8200.0,
+            11400.0
+          ],
+          [
+            8200.0,
+            8900.0
+          ],
+          [
+            8200.0,
+            8050.0
+          ],
+          [
+            8200.0,
+            7800.0
+          ],
+          [
+            8200.0,
+            4800.0
+          ],
+          [
+            6300.0,
+            4800.0
+          ],
+          [
+            6300.0,
+            7800.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                5150.0,
+                7800.0
+              ],
+              [
+                5150.0,
+                8900.0
+              ],
+              [
+                5485.6,
+                8900.0
+              ],
+              [
+                6650.0,
+                8900.0
+              ],
+              [
+                6650.0,
+                10050.0
+              ],
+              [
+                7285.6,
+                10050.0
+              ],
+              [
+                7285.6,
+                11850.0
+              ],
+              [
+                7285.6,
+                12000.0
+              ],
+              [
+                7285.6,
+                12450.0
+              ],
+              [
+                8200.0,
+                12450.0
+              ],
+              [
+                8200.0,
+                11550.0
+              ],
+              [
+                8200.0,
+                11400.0
+              ],
+              [
+                8200.0,
+                8900.0
+              ],
+              [
+                8200.0,
+                8050.0
+              ],
+              [
+                8200.0,
+                7800.0
+              ],
+              [
+                8200.0,
+                4800.0
+              ],
+              [
+                6300.0,
+                4800.0
+              ],
+              [
+                6300.0,
+                7800.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "area_m2": 33.247513919999996,
+        "bounds": [
+          1216.8,
+          1524.0,
+          11582.4,
+          8050.0
+        ],
+        "id": "u-terrace",
+        "kind": "terrace",
+        "name": "Open garden terrace",
+        "polygon": [
+          [
+            1369.2,
+            4800.0
+          ],
+          [
+            6300.0,
+            4800.0
+          ],
+          [
+            8200.0,
+            4800.0
+          ],
+          [
+            8200.0,
+            7800.0
+          ],
+          [
+            8200.0,
+            8050.0
+          ],
+          [
+            11582.4,
+            8050.0
+          ],
+          [
+            11582.4,
+            6200.0
+          ],
+          [
+            9798.8,
+            6200.0
+          ],
+          [
+            9798.8,
+            5909.6
+          ],
+          [
+            9032.0,
+            5909.6
+          ],
+          [
+            9032.0,
+            5759.6
+          ],
+          [
+            9032.0,
+            5409.6
+          ],
+          [
+            9032.0,
+            3609.6
+          ],
+          [
+            9032.0,
+            2283.6
+          ],
+          [
+            9032.0,
+            1674.0
+          ],
+          [
+            9032.0,
+            1524.0
+          ],
+          [
+            6602.4,
+            1524.0
+          ],
+          [
+            5602.4,
+            1524.0
+          ],
+          [
+            5452.4,
+            1524.0
+          ],
+          [
+            5302.4,
+            1524.0
+          ],
+          [
+            4300.0,
+            1524.0
+          ],
+          [
+            2700.0,
+            1524.0
+          ],
+          [
+            1216.8,
+            1524.0
+          ],
+          [
+            1216.8,
+            1674.0
+          ],
+          [
+            1216.8,
+            2133.6
+          ],
+          [
+            1216.8,
+            2283.6
+          ],
+          [
+            1216.8,
+            3609.6
+          ],
+          [
+            1216.8,
+            3900.0
+          ],
+          [
+            1216.8,
+            4650.0
+          ],
+          [
+            1216.8,
+            4800.0
+          ]
+        ],
+        "regions": [
+          {
+            "holes": [],
+            "polygon": [
+              [
+                1369.2,
+                4800.0
+              ],
+              [
+                6300.0,
+                4800.0
+              ],
+              [
+                8200.0,
+                4800.0
+              ],
+              [
+                8200.0,
+                7800.0
+              ],
+              [
+                8200.0,
+                8050.0
+              ],
+              [
+                11582.4,
+                8050.0
+              ],
+              [
+                11582.4,
+                6200.0
+              ],
+              [
+                9798.8,
+                6200.0
+              ],
+              [
+                9798.8,
+                5909.6
+              ],
+              [
+                9032.0,
+                5909.6
+              ],
+              [
+                9032.0,
+                5759.6
+              ],
+              [
+                9032.0,
+                5409.6
+              ],
+              [
+                9032.0,
+                3609.6
+              ],
+              [
+                9032.0,
+                2283.6
+              ],
+              [
+                9032.0,
+                1674.0
+              ],
+              [
+                9032.0,
+                1524.0
+              ],
+              [
+                6602.4,
+                1524.0
+              ],
+              [
+                5602.4,
+                1524.0
+              ],
+              [
+                5452.4,
+                1524.0
+              ],
+              [
+                5302.4,
+                1524.0
+              ],
+              [
+                4300.0,
+                1524.0
+              ],
+              [
+                2700.0,
+                1524.0
+              ],
+              [
+                1216.8,
+                1524.0
+              ],
+              [
+                1216.8,
+                1674.0
+              ],
+              [
+                1216.8,
+                2133.6
+              ],
+              [
+                1216.8,
+                2283.6
+              ],
+              [
+                1216.8,
+                3609.6
+              ],
+              [
+                1216.8,
+                3900.0
+              ],
+              [
+                1216.8,
+                4650.0
+              ],
+              [
+                1216.8,
+                4800.0
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "stairVoid": [
+      {
+        "holes": [],
+        "polygon": [
+          [
+            1250.0,
+            5000.0
+          ],
+          [
+            150.0,
+            5000.0
+          ],
+          [
+            150.0,
+            8900.0
+          ],
+          [
+            1250.0,
+            8900.0
+          ],
+          [
+            5150.0,
+            8900.0
+          ],
+          [
+            5150.0,
+            7800.0
+          ],
+          [
+            1250.0,
+            7800.0
+          ]
+        ]
+      }
+    ],
+    "void": [
+      [
+        6300.0,
+        4875.0
+      ],
+      [
+        6300.0,
+        7800.0
+      ],
+      [
+        1250.0,
+        7800.0
+      ],
+      [
+        1250.0,
+        4875.0
+      ]
+    ],
+    "wallRegions": [
+      {
+        "holes": [],
+        "polygon": [
+          [
+            8350.0,
+            4875.0
+          ],
+          [
+            8350.0,
+            4800.0
+          ],
+          [
+            8350.0,
+            4725.0
+          ],
+          [
+            8100.0,
+            4725.0
+          ],
+          [
+            8100.0,
+            4875.0
+          ],
+          [
+            8200.0,
+            4875.0
+          ],
+          [
+            8200.0,
+            6500.0
+          ],
+          [
+            8350.0,
+            6500.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            11432.4,
+            9100.0
+          ],
+          [
+            11582.4,
+            9100.0
+          ],
+          [
+            11582.4,
+            8050.0
+          ],
+          [
+            11000.0,
+            8050.0
+          ],
+          [
+            11000.0,
+            8200.0
+          ],
+          [
+            11432.4,
+            8200.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            8350.0,
+            8500.0
+          ],
+          [
+            8350.0,
+            8200.0
+          ],
+          [
+            8750.0,
+            8200.0
+          ],
+          [
+            8750.0,
+            8050.0
+          ],
+          [
+            8350.0,
+            8050.0
+          ],
+          [
+            8350.0,
+            7900.0
+          ],
+          [
+            8200.0,
+            7900.0
+          ],
+          [
+            8200.0,
+            8050.0
+          ],
+          [
+            8200.0,
+            8125.0
+          ],
+          [
+            8200.0,
+            8500.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            8350.0,
+            11600.0
+          ],
+          [
+            8350.0,
+            11550.0
+          ],
+          [
+            11432.4,
+            11550.0
+          ],
+          [
+            11432.4,
+            12400.0
+          ],
+          [
+            11582.4,
+            12400.0
+          ],
+          [
+            11582.4,
+            11550.0
+          ],
+          [
+            11582.4,
+            11400.0
+          ],
+          [
+            11582.4,
+            11000.0
+          ],
+          [
+            11432.4,
+            11000.0
+          ],
+          [
+            11432.4,
+            11400.0
+          ],
+          [
+            8350.0,
+            11400.0
+          ],
+          [
+            8350.0,
+            9400.0
+          ],
+          [
+            8200.0,
+            9400.0
+          ],
+          [
+            8200.0,
+            11400.0
+          ],
+          [
+            8200.0,
+            11550.0
+          ],
+          [
+            8200.0,
+            11600.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            11000.0,
+            14478.0
+          ],
+          [
+            11582.4,
+            14478.0
+          ],
+          [
+            11582.4,
+            13900.0
+          ],
+          [
+            11432.4,
+            13900.0
+          ],
+          [
+            11432.4,
+            14328.0
+          ],
+          [
+            11000.0,
+            14328.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            7750.0,
+            14478.0
+          ],
+          [
+            8200.0,
+            14478.0
+          ],
+          [
+            8350.0,
+            14478.0
+          ],
+          [
+            8750.0,
+            14478.0
+          ],
+          [
+            8750.0,
+            14328.0
+          ],
+          [
+            8350.0,
+            14328.0
+          ],
+          [
+            8350.0,
+            12500.0
+          ],
+          [
+            8185.0,
+            12500.0
+          ],
+          [
+            8185.0,
+            12450.0
+          ],
+          [
+            8100.0,
+            12450.0
+          ],
+          [
+            8100.0,
+            12600.0
+          ],
+          [
+            8200.0,
+            12600.0
+          ],
+          [
+            8200.0,
+            14328.0
+          ],
+          [
+            7750.0,
+            14328.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            7285.6,
+            12000.0
+          ],
+          [
+            7285.6,
+            11850.0
+          ],
+          [
+            7285.6,
+            11650.0
+          ],
+          [
+            7135.6,
+            11650.0
+          ],
+          [
+            7135.6,
+            11850.0
+          ],
+          [
+            5635.6,
+            11850.0
+          ],
+          [
+            5635.6,
+            11400.0
+          ],
+          [
+            5485.6,
+            11400.0
+          ],
+          [
+            5485.6,
+            12000.0
+          ],
+          [
+            7135.6,
+            12000.0
+          ],
+          [
+            7135.6,
+            12349.2
+          ],
+          [
+            6179.1667,
+            12349.2
+          ],
+          [
+            5485.6,
+            12349.2
+          ],
+          [
+            3440.7667,
+            12349.2
+          ],
+          [
+            3440.7667,
+            12700.0
+          ],
+          [
+            3590.7667,
+            12700.0
+          ],
+          [
+            3590.7667,
+            12499.2
+          ],
+          [
+            6029.1667,
+            12499.2
+          ],
+          [
+            6029.1667,
+            14328.0
+          ],
+          [
+            5350.0,
+            14328.0
+          ],
+          [
+            5350.0,
+            14478.0
+          ],
+          [
+            6029.1667,
+            14478.0
+          ],
+          [
+            6179.1667,
+            14478.0
+          ],
+          [
+            6600.0,
+            14478.0
+          ],
+          [
+            6600.0,
+            14328.0
+          ],
+          [
+            6179.1667,
+            14328.0
+          ],
+          [
+            6179.1667,
+            12600.0
+          ],
+          [
+            7200.0,
+            12600.0
+          ],
+          [
+            7200.0,
+            12435.0
+          ],
+          [
+            7285.6,
+            12435.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            7135.6,
+            10200.0
+          ],
+          [
+            7135.6,
+            10450.0
+          ],
+          [
+            7285.6,
+            10450.0
+          ],
+          [
+            7285.6,
+            10050.0
+          ],
+          [
+            6650.0,
+            10050.0
+          ],
+          [
+            6650.0,
+            8900.0
+          ],
+          [
+            6450.0,
+            8900.0
+          ],
+          [
+            6450.0,
+            9050.0
+          ],
+          [
+            6500.0,
+            9050.0
+          ],
+          [
+            6500.0,
+            10050.0
+          ],
+          [
+            5485.6,
+            10050.0
+          ],
+          [
+            5485.6,
+            10600.0
+          ],
+          [
+            5635.6,
+            10600.0
+          ],
+          [
+            5635.6,
+            10200.0
+          ],
+          [
+            6650.0,
+            10200.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            2850.0,
+            14328.0
+          ],
+          [
+            2850.0,
+            14478.0
+          ],
+          [
+            3440.7667,
+            14478.0
+          ],
+          [
+            3590.7667,
+            14478.0
+          ],
+          [
+            4100.0,
+            14478.0
+          ],
+          [
+            4100.0,
+            14328.0
+          ],
+          [
+            3590.7667,
+            14328.0
+          ],
+          [
+            3590.7667,
+            13600.0
+          ],
+          [
+            3440.7667,
+            13600.0
+          ],
+          [
+            3440.7667,
+            14328.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            0.0,
+            14478.0
+          ],
+          [
+            650.0,
+            14478.0
+          ],
+          [
+            650.0,
+            14328.0
+          ],
+          [
+            150.0,
+            14328.0
+          ],
+          [
+            150.0,
+            12349.2
+          ],
+          [
+            150.0,
+            11800.0
+          ],
+          [
+            0.0,
+            11800.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            6300.0,
+            4725.0
+          ],
+          [
+            6250.0,
+            4725.0
+          ],
+          [
+            5700.0,
+            4725.0
+          ],
+          [
+            5700.0,
+            4875.0
+          ],
+          [
+            6250.0,
+            4875.0
+          ],
+          [
+            6300.0,
+            4875.0
+          ],
+          [
+            6500.0,
+            4875.0
+          ],
+          [
+            6500.0,
+            4725.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            150.0,
+            4800.0
+          ],
+          [
+            0.0,
+            4800.0
+          ],
+          [
+            0.0,
+            5450.0
+          ],
+          [
+            150.0,
+            5450.0
+          ],
+          [
+            150.0,
+            4875.0
+          ],
+          [
+            1800.0,
+            4875.0
+          ],
+          [
+            1800.0,
+            4725.0
+          ],
+          [
+            150.0,
+            4725.0
+          ]
+        ]
+      },
+      {
+        "holes": [],
+        "polygon": [
+          [
+            0.0,
+            8900.0
+          ],
+          [
+            0.0,
+            10100.0
+          ],
+          [
+            150.0,
+            10100.0
+          ],
+          [
+            150.0,
+            9050.0
+          ],
+          [
+            5485.6,
+            9050.0
+          ],
+          [
+            5650.0,
+            9050.0
+          ],
+          [
+            5650.0,
+            8900.0
+          ],
+          [
+            150.0,
+            8900.0
+          ],
+          [
+            150.0,
+            7300.0
+          ],
+          [
+            0.0,
+            7300.0
+          ]
+        ]
+      }
+    ]
+  },
+  "floorLevelsMm": {
+    "road_ngl_mm": -300,
+    "lower_car_porch_mm": -152.4,
+    "provisional_porch_drop_mm": 152.4,
+    "provisional_porch_drop_in": 6.0,
+    "provisional_porch_drop_status": "PROVISIONAL_ADJUSTABLE_SEPARATE_FROM_HORIZONTAL_DIMENSIONS",
+    "house_veranda_forecourt_passages_mm": 0,
+    "plinth_above_road_mm": 300,
+    "floor_to_floor_mm": 3508,
+    "clear_ceiling_mm": 3315,
+    "double_height_ceiling_mm": 6991,
+    "upper_terrace_mm": 3508
+  },
+  "flooringSpecification": {
+    "dominantInterior": {
+      "material": "ivory-marble-polished",
+      "moduleIn": [
+        24,
+        48
+      ],
+      "moduleMm": [
+        609.6,
+        1219.2
+      ],
+      "finish": "soft-satin / polished warm white-ivory vitrified marble with restrained natural veining",
+      "appliesTo": [
+        "g-living",
+        "g-kitchen",
+        "g-kitchen-store",
+        "g-bedroom",
+        "g-bath",
+        "g-caregiver",
+        "g-caregiver-bath",
+        "g-access-lobby",
+        "g-drawing",
+        "g-care"
+      ]
+    },
+    "dominantExteriorAndWet": {
+      "material": "ivory-marble-exterior-matte",
+      "moduleIn": [
+        24,
+        48
+      ],
+      "moduleMm": [
+        609.6,
+        1219.2
+      ],
+      "finish": "coordinated non-slip exterior matte warm white-ivory vitrified marble",
+      "appliesTo": [
+        "g-veranda",
+        "g-wash-gully",
+        "raised-east-forecourt",
+        "north-open-passage",
+        "side-and-rear-walkways"
+      ]
+    },
+    "lowerCarPorch": {
+      "material": "porch-kota-paver + porch-red-oxide-border",
+      "finish": "traditional bungalow-inspired textured Kota stone / earthy geometric pavers with red-oxide border and inlay bands",
+      "continuousAcrossNotchOrReturn": true,
+      "defaultCarVisible": false,
+      "appliesTo": [
+        "g-porch"
+      ]
+    }
+  },
+  "stairSpec": {
+    "shape": "u-turn",
+    "sequence": "Climb SOUTH -> WEST -> NORTH",
+    "riserCount": 18,
+    "flightWidthMm": 1100,
+    "riserHeightMm": 175,
+    "topLandingMm": 3150,
+    "arrivalConnectorRisers": 2,
+    "arrivalConnectorRiserMm": 179,
+    "upperFloorMm": 3508
+  },
+  "coordinateSystem": {
+    "origin_description": "Southwest plot corner (SW) at Natural Ground Level (NGL \u00b10.000 m); FloorForge local/scene origin (0, 0, 0) is Southeast plot corner (SE) at Ground Floor FFL (+0.300 m)",
+    "axes": {
+      "X_geo": "Increases Eastward (0.000 m at West boundary -> 15.240 m at East frontage; 50 ft)",
+      "Y_geo": "Increases Northward (0.000 m at South boundary -> 12.192 m at North boundary; 40 ft)",
+      "Z_geo": "Increases Upward (0.000 m at road NGL; house +0.300 m; car porch below house by the adjustable porch drop)"
+    },
+    "plot_corners_geo_m": {
+      "SW": [
+        0.0,
+        0.0
+      ],
+      "SE": [
+        15.24,
+        0.0
+      ],
+      "NW": [
+        0.0,
+        12.192
+      ],
+      "NE": [
+        15.24,
+        12.192
+      ]
+    },
+    "plot_corners_scene_m": {
+      "SW": [
+        0.0,
+        15.24
+      ],
+      "SE": [
+        0.0,
+        0.0
+      ],
+      "NW": [
+        12.192,
+        15.24
+      ],
+      "NE": [
+        12.192,
+        0.0
+      ]
+    },
+    "scene_transform": {
+      "road_bearing_deg": 90,
+      "front_direction": "East (+X_geo -> -y_scene)",
+      "rear_direction": "West (-X_geo -> +y_scene)",
+      "left_direction": "South (-Y_geo -> -x_scene)",
+      "right_direction": "North (+Y_geo -> +x_scene)",
+      "formula_geo_to_scene_m": {
+        "x_scene": "Y_geo",
+        "y_scene": "15.240 - X_geo",
+        "z_scene": "Z_geo - 0.300"
+      },
+      "formula_scene_to_geo_m": {
+        "X_geo": "15.240 - y_scene",
+        "Y_geo": "x_scene",
+        "Z_geo": "z_scene + 0.300"
+      },
+      "envelope_se_origin_geo_m": [
+        15.24,
+        0.0,
+        0.3
+      ]
+    }
+  },
+  "careRoomVerification": {
+    "plot_ew_midpoint_x_geo_m": 7.62,
+    "midpoint_scene_y_m": 7.62,
+    "revision": 32,
+    "midpoint_extension_permitted": true,
+    "nw_corner_open": true,
+    "nw_garden_open": true,
+    "care_west_edge_ft": 18.9,
+    "bed_orientation": "Head West, feet East",
+    "option": "P11",
+    "option_label": "Tirumala 4 \u00b7 P13 colony & interior realism",
+    "care_clear_x_geo_min_m": 9.4804,
+    "care_clear_x_geo_max_m": 13.566,
+    "care_outer_x_geo_min_m": 9.3304,
+    "care_outer_x_geo_max_m": 13.716,
+    "strictly_east_of_midpoint": true,
+    "bed_bounds_scene_mm": [
+      7002.4,
+      2654.7999999999997,
+      8102.4,
+      4854.8
+    ]
+  },
+  "referenceCameras": [
+    "ref_n02_northwest_utilities",
+    "ref_n03_north_frontage",
+    "ref_r07_east_northwest",
+    "ref_r08_north_garden",
+    "ref_r09_colony_junction",
+    "ref_r11_ne_corner",
+    "ref_r14_wall_pole_paving",
+    "ref_south_vacant",
+    "ref_v01_east_court_road",
+    "ref_west_vacant"
+  ],
+  "sightlineCameras": [
+    "closeup_flooring_glazing_porch",
+    "cutaway_roof_off",
+    "exterior_east",
+    "exterior_northeast",
+    "interior_drawing",
+    "interior_icu_veranda_garden",
+    "interior_kitchen_living_dining",
+    "interior_master",
+    "interior_veranda_living"
+  ],
+  "rooms": [
+    {
+      "id": "g-bedroom",
+      "name": "Master bedroom",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 6.986,
+      "depthM": 5.278,
+      "widthFtIn": "22\u203211\u2033",
+      "depthFtIn": "17\u20323\u00be\u2033",
+      "areaM2": 25.705561,
+      "areaSqFt": 276.7
+    },
+    {
+      "id": "g-bath",
+      "name": "Master bath",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 2.438,
+      "depthM": 1.829,
+      "widthFtIn": "8\u2032",
+      "depthFtIn": "6\u2032",
+      "areaM2": 4.459346,
+      "areaSqFt": 48.0
+    },
+    {
+      "id": "g-care",
+      "name": "Home ICU",
+      "floor": 0,
+      "kind": "care-room",
+      "widthM": 3.43,
+      "depthM": 4.086,
+      "widthFtIn": "11\u20323\u2033",
+      "depthFtIn": "13\u20324\u215e\u2033",
+      "areaM2": 14.011974,
+      "areaSqFt": 150.8
+    },
+    {
+      "id": "g-drawing",
+      "name": "Drawing room",
+      "floor": 0,
+      "kind": "drawing-room",
+      "widthM": 3.082,
+      "depthM": 3.2,
+      "widthFtIn": "10\u20321\u215c\u2033",
+      "depthFtIn": "10\u20326\u2033",
+      "areaM2": 9.86368,
+      "areaSqFt": 106.2
+    },
+    {
+      "id": "g-caregiver",
+      "name": "Caregiver",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 3.082,
+      "depthM": 2.778,
+      "widthFtIn": "10\u20321\u215c\u2033",
+      "depthFtIn": "9\u20321\u215c\u2033",
+      "areaM2": 8.562907,
+      "areaSqFt": 92.2
+    },
+    {
+      "id": "g-caregiver-bath",
+      "name": "Caregiver WC",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 2.021,
+      "depthM": 1.728,
+      "widthFtIn": "6\u20327\u00bd\u2033",
+      "depthFtIn": "5\u20328\u2033",
+      "areaM2": 3.492,
+      "areaSqFt": 37.6
+    },
+    {
+      "id": "g-care-court",
+      "name": "Lightwell",
+      "floor": 0,
+      "kind": "courtyard",
+      "widthM": 1.5,
+      "depthM": 1.65,
+      "widthFtIn": "4\u203211\u2033",
+      "depthFtIn": "5\u20325\u2033",
+      "areaM2": 2.475,
+      "areaSqFt": 26.6
+    },
+    {
+      "id": "g-kitchen-store",
+      "name": "Store",
+      "floor": 0,
+      "kind": "store",
+      "widthM": 0.9,
+      "depthM": 2.976,
+      "widthFtIn": "2\u203211\u215c\u2033",
+      "depthFtIn": "9\u20329\u215b\u2033",
+      "areaM2": 2.6784,
+      "areaSqFt": 28.8
+    },
+    {
+      "id": "g-access-lobby",
+      "name": "Lobby",
+      "floor": 0,
+      "kind": "hall",
+      "widthM": 0.914,
+      "depthM": 2.85,
+      "widthFtIn": "3\u2032",
+      "depthFtIn": "9\u20324\u00bc\u2033",
+      "areaM2": 2.60604,
+      "areaSqFt": 28.1
+    },
+    {
+      "id": "g-veranda",
+      "name": "Veranda",
+      "floor": 0,
+      "kind": "verandah",
+      "widthM": 4.767,
+      "depthM": 2.14,
+      "widthFtIn": "15\u20327\u215d\u2033",
+      "depthFtIn": "7\u20320\u00bc\u2033",
+      "areaM2": 9.551862,
+      "areaSqFt": 102.8
+    },
+    {
+      "id": "g-wash-gully",
+      "name": "Wash gully",
+      "floor": 0,
+      "kind": "drying-yard",
+      "widthM": 1.067,
+      "depthM": 3.326,
+      "widthFtIn": "3\u20326\u2033",
+      "depthFtIn": "10\u203211\u2033",
+      "areaM2": 3.548177,
+      "areaSqFt": 38.2
+    },
+    {
+      "id": "g-kitchen",
+      "name": "Kitchen",
+      "floor": 0,
+      "kind": "kitchen",
+      "widthM": 2.886,
+      "depthM": 3.126,
+      "widthFtIn": "9\u20325\u215d\u2033",
+      "depthFtIn": "10\u20323\u215b\u2033",
+      "areaM2": 9.020386,
+      "areaSqFt": 97.1
+    },
+    {
+      "id": "g-living",
+      "name": "Living / dining",
+      "floor": 0,
+      "kind": "living",
+      "widthM": 6.95,
+      "depthM": 5.25,
+      "widthFtIn": "22\u20329\u215d\u2033",
+      "depthFtIn": "17\u20322\u00be\u2033",
+      "areaM2": 20.762323,
+      "areaSqFt": 223.5
+    },
+    {
+      "id": "g-stair",
+      "name": "Stairs",
+      "floor": 0,
+      "kind": "stair",
+      "widthM": 3.3,
+      "depthM": 3.9,
+      "widthFtIn": "10\u20329\u215e\u2033",
+      "depthFtIn": "12\u20329\u00bd\u2033",
+      "areaM2": 7.48,
+      "areaSqFt": 80.5
+    },
+    {
+      "id": "u-master",
+      "name": "Upper master suite",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 6.986,
+      "depthM": 5.278,
+      "widthFtIn": "22\u203211\u2033",
+      "depthFtIn": "17\u20323\u00be\u2033",
+      "areaM2": 25.705560600659602,
+      "areaSqFt": 276.7
+    },
+    {
+      "id": "u-master-bath",
+      "name": "Master ensuite",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 2.438,
+      "depthM": 1.829,
+      "widthFtIn": "8\u2032",
+      "depthFtIn": "6\u2032",
+      "areaM2": 4.459345919999999,
+      "areaSqFt": 48.0
+    },
+    {
+      "id": "u-study",
+      "name": "Office / study",
+      "floor": 1,
+      "kind": "study",
+      "widthM": 3.082,
+      "depthM": 2.778,
+      "widthFtIn": "10\u20321\u215c\u2033",
+      "depthFtIn": "9\u20321\u215c\u2033",
+      "areaM2": 8.5629072,
+      "areaSqFt": 92.2
+    },
+    {
+      "id": "u-bedroom",
+      "name": "Guest bedroom",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 3.082,
+      "depthM": 3.2,
+      "widthFtIn": "10\u20321\u215c\u2033",
+      "depthFtIn": "10\u20326\u2033",
+      "areaM2": 9.863679999999999,
+      "areaSqFt": 106.2
+    },
+    {
+      "id": "u-bath",
+      "name": "Shared bathroom",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 2.021,
+      "depthM": 1.728,
+      "widthFtIn": "6\u20327\u00bd\u2033",
+      "depthFtIn": "5\u20328\u2033",
+      "areaM2": 3.4919999994239994,
+      "areaSqFt": 37.6
+    },
+    {
+      "id": "u-gallery",
+      "name": "Gallery overlooking living",
+      "floor": 1,
+      "kind": "hall",
+      "widthM": 3.05,
+      "depthM": 7.65,
+      "widthFtIn": "10\u20320\u215b\u2033",
+      "depthFtIn": "25\u20321\u215b\u2033",
+      "areaM2": 13.03206,
+      "areaSqFt": 140.3
+    },
+    {
+      "id": "u-terrace",
+      "name": "Open garden terrace",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 10.366,
+      "depthM": 6.526,
+      "widthFtIn": "34\u20320\u215b\u2033",
+      "depthFtIn": "21\u20324\u215e\u2033",
+      "areaM2": 33.247513919999996,
+      "areaSqFt": 357.9
+    }
+  ]
+}

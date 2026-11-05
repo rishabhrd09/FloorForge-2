@@ -1,0 +1,24 @@
+TIRUMALA 4 — MY DESIRED HOME EXTERIOR MATCH
+31 October 2026
+
+Requested changes implemented
+- Exterior plaster uses the My Desired Home off-white (#f1efea), with a finer surface texture.
+- Exterior stone accents use the reference's textured stone palette (#a39d92 / #6f6b64).
+- Exterior windows and visible door assemblies use the reference charcoal framing (#1d2022) and timber (#7a5234).
+- Added defined outer window surrounds, a narrow stone feature on an existing blank east-wall bay, and thin horizontal fascia lines.
+- Exterior glass has a light blue-green tint and stronger reflections/opacity. It remains transparent and operable; no opening size changed.
+- Removed the inferred adjoining South/West houses and same-block house placeholders. These areas are shown as vacant grass land.
+- Kept the garden and documented buildings across the roads as colony context.
+- Corrected the site-context plan, exported metadata, assumptions register and photo-reference interpretation to record the owner's vacant-plot correction.
+- Updated gallery renders, thumbnail, standalone preview and project export.
+
+Scope held fixed
+The 40 x 50 ft plot, entire building.json, all room dimensions, opening model, door movements, stairs and approved G+1 layout are unchanged. Interior wall paint is unchanged. The outward finish is a separate surface layer; all reference samples remain untouched.
+
+Validation
+32 Python tests and 88 viewer/material/walking tests passed. Full browser capture checks door layers, facade materials, vacant-lot state, walking levels and render cameras. Exact file, dimension and ZIP checks are in verification.json.
+
+View
+Open index.html in this folder for before/after views and the updated 3D preview.
+Or run bash start.sh from the project root and choose Sample Projects -> Tirumala 4.
+Reload an already-open viewer to pick up the new bundled renderer.

@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import { rotationMatrix } from './util.js';
 
-const OVERHEAD = new Set(['roof', 'ceiling', 'railing', 'canopy', 'pipe', 'accent', 'fin', 'screen', 'band', 'pergola', 'soffit', 'roof-edge',
+const OVERHEAD = new Set(['roof', 'ceiling', 'ceiling-feature', 'railing', 'canopy', 'pipe', 'accent', 'fin', 'screen', 'band', 'pergola', 'soffit', 'roof-edge',
   'fascia', 'carport', 'massing', 'door-portal', 'window-hood', 'shade', 'downlight', 'cove', 'pergola-glass', 'coping', 'parapet']);
 const OPENING = new Set(['window', 'glazing', 'glass', 'curtain', 'door', 'blind']);
 const CLIPPED = new Set(['wall', 'joinery', 'window-surround', 'sill', 'skirting', 'wall-tile', 'cladding', 'wall-panel', 'art', 'mirror']);
@@ -44,8 +44,11 @@ export function buildBuckets(data, materials) {
     const matDef = data.materials[node.material] || {};
     const transparent = (matDef.alpha ?? 1) < 1;
     const cls = visibilityClass(node.role);
-    // Open (non-watertight) surfaces such as duvets, curtains and leaves never block walking.
-    const collide = collides(node.role) && info.closed;
+    // Open decorative surfaces never block walking. Wall-integrated slabs omit
+    // buried vertical skins but retain their exact, load-bearing floor tops.
+    const wallIntegratedSlab = node.collisionEnvelope === 'wall-integrated-slab'
+      && (node.role === 'floor' || node.role === 'slab');
+    const collide = collides(node.role) && (info.closed || wallIntegratedSlab);
     const doubleSided = !info.closed || transparent;
     const key = [node.material, node.floor, cls, collide ? 1 : 0, doubleSided ? 1 : 0].join('|');
     if (!buckets.has(key)) buckets.set(key, { key, material: node.material, floor: node.floor, cls, collide, doubleSided, transparent, pos: [], nor: [], uv: [], roles: new Set() });

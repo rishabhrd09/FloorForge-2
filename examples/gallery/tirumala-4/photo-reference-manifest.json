@@ -1,0 +1,960 @@
+{
+  "schema": "floorforge.tirumala-photo-manifest/1",
+  "project_id": "tirumala-4",
+  "matching_rule": "Matched strictly by photograph label and visual content, not upload order.",
+  "temporary_exclusions": [
+    "Parked white car on the north road verge in N-03 / N-04 excluded from all site and context models.",
+    "Parked cars, covered sedan, white hatchback, scooter, and pedestrians in R09, R10, R12, and R13 excluded from all 3D colony context and renders.",
+    "Private car porch defaults to empty (defaultCarVisible = false) in Tirumala 4; removable \u0160koda Kylaq retained only for optional parking check."
+  ],
+  "photos": [
+    {
+      "id": "N-01",
+      "label": "N-01 \u2014 North Outlook Across 12 m Road to Colony Garden & Opposite House",
+      "original_clipboard_filename": "codex-clipboard-1f4f5f60-a763-429d-826a-43db574bb4f7.png",
+      "original_number_suffix": "26039",
+      "reference_asset_path": "reference-assets/N-01_26039.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-01_26039.png",
+      "camera_position_geo_m": [
+        8.8,
+        12.05,
+        1.62
+      ],
+      "camera_target_geo_m": [
+        9.568,
+        34.029,
+        2.196
+      ],
+      "camera_position_scene_m": [
+        12.05,
+        6.44,
+        1.32
+      ],
+      "camera_target_scene_m": [
+        34.0291,
+        5.6725,
+        1.8959
+      ],
+      "bearing_deg": 2.0,
+      "pitch_deg": 1.5,
+      "fov_deg": 54.0,
+      "confidence": "high_cardinal_direction_estimated_offset",
+      "observed_features": [
+        "12 m concrete road in foreground",
+        "Opposite raised planting kerb, clipped hedge and manicured colony lawn",
+        "Timber/metal garden pergola with shaded seating on left-centre of lawn",
+        "Decorative spherical/ornate pots and slim garden bollard lights",
+        "Coconut/areca palms and broadleaf canopy trees",
+        "Two-storey white/grey house beyond with signature dark blue-grey vertical feature facade"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "N-02",
+      "label": "N-02 \u2014 North Road Looking ~45\u00b0 Right (Southwest) Toward Plot & NW Feeder Cabinets",
+      "original_clipboard_filename": "codex-clipboard-06a77609-6ca8-47a5-8c80-d5bafdec0b37.png",
+      "original_number_suffix": "26040",
+      "reference_asset_path": "reference-assets/N-02_26040.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-02_26040.png",
+      "camera_position_geo_m": [
+        5.4,
+        16.4,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        -1.311,
+        9.689,
+        1.186
+      ],
+      "camera_position_scene_m": [
+        16.4,
+        9.84,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        9.6889,
+        16.5511,
+        0.8856
+      ],
+      "bearing_deg": 225.0,
+      "pitch_deg": -2.5,
+      "fov_deg": 54.0,
+      "confidence": "medium_oblique_southwest_bearing_unmeasured_offsets",
+      "observed_features": [
+        "Pair of light-coloured electrical feeder cabinets of differing sizes (smaller left/east, taller right/west)",
+        "Low brown-grey boundary wall and trimmed green hedge",
+        "Interlocking concrete paver verge along north road edge",
+        "Nearby galvanised streetlight pole and mature roadside trees"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "N-03",
+      "label": "N-03 \u2014 North Road Looking South Toward Plot North Frontage (East Left, West Right)",
+      "original_clipboard_filename": "codex-clipboard-a88c9575-5975-4ca2-9265-ed8c5e46ea20.png",
+      "original_number_suffix": "26041",
+      "reference_asset_path": "reference-assets/N-03_26041.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-03_26041.png",
+      "camera_position_geo_m": [
+        7.8,
+        19.8,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        7.8,
+        8.304,
+        1.299
+      ],
+      "camera_position_scene_m": [
+        19.8,
+        7.44,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        8.3039,
+        7.44,
+        0.999
+      ],
+      "bearing_deg": 180.0,
+      "pitch_deg": -1.5,
+      "fov_deg": 56.0,
+      "confidence": "high_southward_cardinal_orientation",
+      "observed_features": [
+        "North road concrete carriageway in foreground (East on image-left, West on image-right)",
+        "Interlocking paver verge, low boundary wall and continuous hedge along plot north frontage",
+        "Streetlight pole between NE and NW corners and NW feeder cabinets toward right",
+        "Mature trees and colony foliage framing the plot"
+      ],
+      "excluded_temporary_features": [
+        "Parked white hatchback car on the south road verge (excluded as temporary vehicle)"
+      ]
+    },
+    {
+      "id": "N-04",
+      "label": "N-04 \u2014 Provisional Leftward (Southeast) View From North Road Toward Court Enclosure",
+      "original_clipboard_filename": "codex-clipboard-11f33951-2ed5-49d2-ab7d-2e8a4308b6e7.png",
+      "original_number_suffix": "26042",
+      "reference_asset_path": "reference-assets/N-04_26042.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-04_26042.png",
+      "camera_position_geo_m": [
+        13.2,
+        16.2,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        25.92,
+        8.252,
+        1.731
+      ],
+      "camera_position_scene_m": [
+        16.2,
+        2.04,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        8.2515,
+        -10.6802,
+        1.4309
+      ],
+      "bearing_deg": 122.0,
+      "pitch_deg": 0.5,
+      "fov_deg": 54.0,
+      "confidence": "provisional_cross_check_unconfirmed_bearing",
+      "observed_features": [
+        "Cross-check view from north road looking leftward (east/southeast) toward the junction with the 9 m east road",
+        "Paved passage, low boundary wall and corner vegetation",
+        "Tall pale metal mesh basketball-court enclosure and trees beyond"
+      ],
+      "excluded_temporary_features": [
+        "Temporary parked vehicles/scooters near road junction"
+      ]
+    },
+    {
+      "id": "NE-01",
+      "label": "NE-01 \u2014 Provisional Northeast-Corner Close-Up (Wall, Masonry Pillar, Hedge & Footpath)",
+      "original_clipboard_filename": "codex-clipboard-5a930b52-0dc7-499f-b6af-efc7680c8615.png",
+      "original_number_suffix": "26043",
+      "reference_asset_path": "reference-assets/NE-01_26043.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/NE-01_26043.png",
+      "camera_position_geo_m": [
+        16.8,
+        14.3,
+        1.55
+      ],
+      "camera_target_geo_m": [
+        13.127,
+        10.22,
+        1.214
+      ],
+      "camera_position_scene_m": [
+        14.3,
+        -1.56,
+        1.25
+      ],
+      "camera_target_scene_m": [
+        10.2203,
+        2.1134,
+        0.9142
+      ],
+      "bearing_deg": 222.0,
+      "pitch_deg": -3.5,
+      "fov_deg": 50.0,
+      "confidence": "provisional_closeup_pillar_not_survey_corner",
+      "observed_features": [
+        "Close-up of weathered masonry pillar with cream/ochre cap, low boundary wall and dense hedge",
+        "Interlocking paver footpath/verge and corner palm/shrub planting"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "E-01",
+      "label": "E-01 \u2014 Oblique Outlook From Near NE Corner Toward Eastern Basketball-Court Enclosure",
+      "original_clipboard_filename": "codex-clipboard-40fbabb9-5ce5-4efc-be55-7469e08b93be.png",
+      "original_number_suffix": "26044",
+      "reference_asset_path": "reference-assets/E-01_26044.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/E-01_26044.png",
+      "camera_position_geo_m": [
+        15.4,
+        11.4,
+        1.62
+      ],
+      "camera_target_geo_m": [
+        30.221,
+        5.412,
+        2.318
+      ],
+      "camera_position_scene_m": [
+        11.4,
+        -0.16,
+        1.32
+      ],
+      "camera_target_scene_m": [
+        5.412,
+        -14.9808,
+        2.0179
+      ],
+      "bearing_deg": 112.0,
+      "pitch_deg": 2.5,
+      "fov_deg": 54.0,
+      "confidence": "high_oblique_east_southeast_outlook",
+      "observed_features": [
+        "9 m east road and interlocking paver edge",
+        "Raised masonry planting bed and trimmed hedge along court perimeter",
+        "Tall pale metal mesh basketball-court enclosure with repeated tubular posts",
+        "Substantial screening by coconut/areca palms and leafy canopy trees",
+        "Nearby street/garden lighting"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "R07",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R07-east-side-northwest.png",
+      "sourceFile": "1000145296.jpg",
+      "category": "plot_and_north_outlook",
+      "directionStatus": "owner-confirmed",
+      "cameraPositionSceneM": [
+        5.8,
+        -1.6,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        13.5,
+        9.2,
+        2.1
+      ],
+      "lookingDirection": "Standing on the East side of the plot looking Northwest across the plot toward the 12 m North road and colony garden",
+      "confirmedFeatures": [
+        "Northeast corner plot bounded by 9 m East road and 12 m North road",
+        "Low muted mauve-taupe boundary wall with pale grey coping along North and East edges",
+        "White and navy-blue-grey G+1 house across the North colony garden visible through tree canopy"
+      ],
+      "observedFeatures": [
+        "Dry red-brown soil and concrete footing blocks on pre-construction plot (modeled in 'existing' site mode only)",
+        "Pre-construction trees inside plot footprint (modeled in 'existing' site mode; cleared from 'proposed' house footprint)",
+        "Mixed burgundy Acalypha and green Tabernaemontana roadside hedge",
+        "Slim dark-grey tubular streetlight pole at road edge"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r07_east_northwest",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R08",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R08-north-garden-outlook.png",
+      "sourceFile": "1000145302.jpg",
+      "category": "north_colony_garden",
+      "directionStatus": "north-outlook-confirmed; exact camera unmeasured",
+      "cameraPositionSceneM": [
+        18.6,
+        6.7,
+        1.33
+      ],
+      "cameraTargetSceneM": [
+        33.4,
+        6.7,
+        2.6
+      ],
+      "lookingDirection": "Looking North across the 12 m road into the colony garden and opposite white/navy-blue-grey house",
+      "confirmedFeatures": [
+        "12.0 m wide North concrete road between plot north boundary (x = 12.192 m) and colony garden south boundary (x = 24.192 m)",
+        "Colony garden with low raised edge, lawn, pergola, rounded ornaments and mature palms",
+        "Opposite G+1 white and navy-blue-grey residential building north of the garden"
+      ],
+      "observedFeatures": [
+        "Warm cream/white upper facade with dark navy/slate accent bands and recessed balcony",
+        "Dense neem, ashoka, and palm canopy filtering strong sunlight into the park"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r08_north_garden",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R09",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R09-colony-junction.png",
+      "pairedWideFile": "output/tirumala-4-prompt-pack/site-photos/R13-colony-junction-wide.png",
+      "sourceFile": "1000145303.jpg / 1000145305.jpg",
+      "category": "colony_street_junction",
+      "directionStatus": "estimated-from-street-geometry",
+      "cameraPositionSceneM": [
+        18.2,
+        -11.5,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        17.6,
+        16.0,
+        2.8
+      ],
+      "lookingDirection": "Looking along the colony road junction showing grooved concrete carriageways, paver verges, storm-drain covers, streetlight, and 2-3 storey colony homes",
+      "confirmedFeatures": [
+        "Brushed concrete colony carriageways with transverse expansion joints"
+      ],
+      "observedFeatures": [
+        "Precast concrete storm-drain cover slabs with paired circular drainage holes along road edges",
+        "Slim dark-grey angled LED street luminaire on tubular pole",
+        "Contemporary 2-3 storey colony residences with white/warm-grey render, wood/terracotta accents, and roof pergolas",
+        "Clipped ornamental hedges and interlocking paver verges"
+      ],
+      "excludedTransients": [
+        "Parked dark sedan under cover, white hatchback, scooter, and pedestrian in street excluded from 3D scene"
+      ],
+      "matchedSceneCamera": "ref_r09_colony_junction",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R10",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R10-vegetated-frontage-close.png",
+      "pairedWideFile": "output/tirumala-4-prompt-pack/site-photos/R12-vegetated-frontage-wide.png",
+      "sourceFile": "1000145310.jpg / 1000145295.jpg",
+      "category": "plot_frontage_and_background_building",
+      "directionStatus": "estimated; adjoining-house interpretation superseded by owner",
+      "cameraPositionSceneM": [
+        11.5,
+        -8.2,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        2.0,
+        5.5,
+        3.2
+      ],
+      "lookingDirection": "Looking across the road frontage toward the vegetated pre-construction plot; beige building is background context, not an adjoining house",
+      "confirmedFeatures": [
+        "Low perimeter boundary wall with roadside hedge and paver verge"
+      ],
+      "observedFeatures": [
+        "Reddish-burgundy copperleaf (Acalypha) and green white-flowering crape jasmine (Tabernaemontana) hedge",
+        "Beige building visible in the background; owner confirms no house adjoins this plot",
+        "Dense pre-construction plot canopy (retained only in 'existing' site mode; cleared from 'proposed' house footprint)"
+      ],
+      "excludedTransients": [
+        "Parked white hatchback on roadside excluded from 3D scene"
+      ],
+      "matchedSceneCamera": "exterior_northeast",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R11",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R11-NE-corner-owner-labelled.png",
+      "alternateAnnotationFile": "output/tirumala-4-prompt-pack/site-photos/alternate-annotation/R11-wall-return-unconfirmed.png",
+      "sourceFile": "1000145311.jpg",
+      "category": "northeast_plot_corner",
+      "directionStatus": "owner-confirmed-with-duplicate-annotation-note",
+      "cameraPositionSceneM": [
+        16.8,
+        -5.2,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        11.2,
+        2.2,
+        1.2
+      ],
+      "lookingDirection": "Looking Southwest toward the Northeast corner of the plot where the 12 m North road and 9 m East road meet",
+      "confirmedFeatures": [
+        "Northeast corner of the 40 x 50 ft plot at the junction of the 12 m North road and 9 m East road",
+        "Horizontally grooved square corner pier with muted mauve-taupe boundary wall return"
+      ],
+      "observedFeatures": [
+        "Interlocking dusty-rose/grey concrete paver verge between brushed concrete road and boundary wall",
+        "Mixed burgundy and green roadside shrub hedge along both road frontages"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r11_ne_corner",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R14",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R14-wall-pole-and-paving.png",
+      "sourceFile": "1000145307.jpg",
+      "category": "material_close_reference",
+      "directionStatus": "owner-confirmed-material-reference",
+      "cameraPositionSceneM": [
+        14.6,
+        -2.2,
+        1.45
+      ],
+      "cameraTargetSceneM": [
+        11.8,
+        2.6,
+        0.95
+      ],
+      "lookingDirection": "Close view of the colony boundary wall, interlocking paver verge, concrete road edge, shrub hedge, and streetlight pole base",
+      "confirmedFeatures": [
+        "Low plastered masonry wall painted muted mauve-taupe (#8e7e85) with lighter grey coping (#c8c4bc)",
+        "Interlocking concrete paver verge and tubular steel streetlight pole on concrete base plinth"
+      ],
+      "observedFeatures": [
+        "Weathering and leaf litter along kerb joint; burgundy and green shrub foliage above coping"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r14_wall_pole_paving",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "V01-V06",
+      "file": "output/tirumala-4-prompt-pack/video-contact-sheet.jpg",
+      "keyframes": [
+        "output/tirumala-4-prompt-pack/video-frames/V01-court-and-road.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V02-road-turn.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V03-boundary-and-planting.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V04-colony-street.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V05-wall-return.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V06-preconstruction-vegetation.jpg"
+      ],
+      "sourceFile": "output/tirumala-4-prompt-pack/video/tirumala_plot.mp4",
+      "category": "continuous_site_pan_video",
+      "directionStatus": "owner-confirmed-continuous-pan",
+      "cameraPositionSceneM": [
+        8.5,
+        -1.8,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        10.2,
+        -13.5,
+        2.2
+      ],
+      "lookingDirection": "Continuous 23.36 s pan from East basketball court (V01) across 9 m East road & NE corner (V02/V03) to 12 m North road (V04) and plot boundary/interior (V05/V06)",
+      "confirmedFeatures": [
+        "Spatial continuity linking East basketball court, 9 m East road, NE plot corner pier, 12 m North road, and North colony garden"
+      ],
+      "observedFeatures": [
+        "V01 (0.5 s): Basketball hoop with white backboard & red target square, chain-link fence, round-hooded post-top park lamp, and precast storm-drain cover slabs with circular holes",
+        "V02 (3.0 s): 9 m East road turning into 12 m North road around the horizontally grooved NE corner pier",
+        "V03 (6.0 s): Burgundy Acalypha & white-flowering Tabernaemontana hedge and interlocking paver verge",
+        "V04 (8.5 s): 12 m North road perspective with slim LED streetlight pole, colony garden trees on right, and neighbour houses ahead",
+        "V05 (10.0 s): Plot boundary wall and corner pier with pre-construction trees behind",
+        "V06 (20.0 s): Pre-construction plot interior vegetation (camera roll near end of clip not used for compass bearing)"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_v01_east_court_road",
+      "cameraCoordinateStatus": "estimated visual match"
+    }
+  ],
+  "projectId": "tirumala-4",
+  "sourceProjectId": "tirumala-3",
+  "sourcePlanHash": "22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba",
+  "version": "site-reference-review-2026-11-03",
+  "evidencePackPath": "output/tirumala-4-prompt-pack/",
+  "duplicateAnnotationDiscrepancy": {
+    "referenceId": "R11",
+    "sourcePhoto": "1000145311.jpg",
+    "primaryFile": "output/tirumala-4-prompt-pack/site-photos/R11-NE-corner-owner-labelled.png",
+    "alternateFile": "output/tirumala-4-prompt-pack/site-photos/alternate-annotation/R11-wall-return-unconfirmed.png",
+    "resolution": "Both annotations use the identical underlying photograph (1000145311.jpg). The primary annotation ('NE corner of the plot', 'North 12 m road', 'East 9 m road') is owner-confirmed and matches the video pan (V02/V05). The alternate red-text annotation ('Wall turns from here') is preserved in the evidence register as an unconfirmed alternate interpretation and is not used to alter the locked 40 x 50 ft plot boundary."
+  },
+  "videoPanCaution": {
+    "videoFile": "output/tirumala-4-prompt-pack/video/tirumala_plot.mp4",
+    "durationSec": 23.36,
+    "fps": 30,
+    "direction": "Right-to-left pan from East basketball court (V01) across 9 m East road & NE corner (V02/V03) to 12 m North road (V04) and plot boundary/interior (V05/V06)",
+    "rollCaution": "Camera rolls near V06 (20.0 s); compass direction is not inferred from camera roll alone."
+  },
+  "cameraCoordinates": "All scene camera coordinates are illustrative, not surveyed or recovered by photogrammetry.",
+  "references": [
+    {
+      "id": "N-01",
+      "label": "N-01 \u2014 North Outlook Across 12 m Road to Colony Garden & Opposite House",
+      "original_clipboard_filename": "codex-clipboard-1f4f5f60-a763-429d-826a-43db574bb4f7.png",
+      "original_number_suffix": "26039",
+      "reference_asset_path": "reference-assets/N-01_26039.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-01_26039.png",
+      "camera_position_geo_m": [
+        8.8,
+        12.05,
+        1.62
+      ],
+      "camera_target_geo_m": [
+        9.568,
+        34.029,
+        2.196
+      ],
+      "camera_position_scene_m": [
+        12.05,
+        6.44,
+        1.32
+      ],
+      "camera_target_scene_m": [
+        34.0291,
+        5.6725,
+        1.8959
+      ],
+      "bearing_deg": 2.0,
+      "pitch_deg": 1.5,
+      "fov_deg": 54.0,
+      "confidence": "high_cardinal_direction_estimated_offset",
+      "observed_features": [
+        "12 m concrete road in foreground",
+        "Opposite raised planting kerb, clipped hedge and manicured colony lawn",
+        "Timber/metal garden pergola with shaded seating on left-centre of lawn",
+        "Decorative spherical/ornate pots and slim garden bollard lights",
+        "Coconut/areca palms and broadleaf canopy trees",
+        "Two-storey white/grey house beyond with signature dark blue-grey vertical feature facade"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "N-02",
+      "label": "N-02 \u2014 North Road Looking ~45\u00b0 Right (Southwest) Toward Plot & NW Feeder Cabinets",
+      "original_clipboard_filename": "codex-clipboard-06a77609-6ca8-47a5-8c80-d5bafdec0b37.png",
+      "original_number_suffix": "26040",
+      "reference_asset_path": "reference-assets/N-02_26040.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-02_26040.png",
+      "camera_position_geo_m": [
+        5.4,
+        16.4,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        -1.311,
+        9.689,
+        1.186
+      ],
+      "camera_position_scene_m": [
+        16.4,
+        9.84,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        9.6889,
+        16.5511,
+        0.8856
+      ],
+      "bearing_deg": 225.0,
+      "pitch_deg": -2.5,
+      "fov_deg": 54.0,
+      "confidence": "medium_oblique_southwest_bearing_unmeasured_offsets",
+      "observed_features": [
+        "Pair of light-coloured electrical feeder cabinets of differing sizes (smaller left/east, taller right/west)",
+        "Low brown-grey boundary wall and trimmed green hedge",
+        "Interlocking concrete paver verge along north road edge",
+        "Nearby galvanised streetlight pole and mature roadside trees"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "N-03",
+      "label": "N-03 \u2014 North Road Looking South Toward Plot North Frontage (East Left, West Right)",
+      "original_clipboard_filename": "codex-clipboard-a88c9575-5975-4ca2-9265-ed8c5e46ea20.png",
+      "original_number_suffix": "26041",
+      "reference_asset_path": "reference-assets/N-03_26041.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-03_26041.png",
+      "camera_position_geo_m": [
+        7.8,
+        19.8,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        7.8,
+        8.304,
+        1.299
+      ],
+      "camera_position_scene_m": [
+        19.8,
+        7.44,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        8.3039,
+        7.44,
+        0.999
+      ],
+      "bearing_deg": 180.0,
+      "pitch_deg": -1.5,
+      "fov_deg": 56.0,
+      "confidence": "high_southward_cardinal_orientation",
+      "observed_features": [
+        "North road concrete carriageway in foreground (East on image-left, West on image-right)",
+        "Interlocking paver verge, low boundary wall and continuous hedge along plot north frontage",
+        "Streetlight pole between NE and NW corners and NW feeder cabinets toward right",
+        "Mature trees and colony foliage framing the plot"
+      ],
+      "excluded_temporary_features": [
+        "Parked white hatchback car on the south road verge (excluded as temporary vehicle)"
+      ]
+    },
+    {
+      "id": "N-04",
+      "label": "N-04 \u2014 Provisional Leftward (Southeast) View From North Road Toward Court Enclosure",
+      "original_clipboard_filename": "codex-clipboard-11f33951-2ed5-49d2-ab7d-2e8a4308b6e7.png",
+      "original_number_suffix": "26042",
+      "reference_asset_path": "reference-assets/N-04_26042.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/N-04_26042.png",
+      "camera_position_geo_m": [
+        13.2,
+        16.2,
+        1.6
+      ],
+      "camera_target_geo_m": [
+        25.92,
+        8.252,
+        1.731
+      ],
+      "camera_position_scene_m": [
+        16.2,
+        2.04,
+        1.3
+      ],
+      "camera_target_scene_m": [
+        8.2515,
+        -10.6802,
+        1.4309
+      ],
+      "bearing_deg": 122.0,
+      "pitch_deg": 0.5,
+      "fov_deg": 54.0,
+      "confidence": "provisional_cross_check_unconfirmed_bearing",
+      "observed_features": [
+        "Cross-check view from north road looking leftward (east/southeast) toward the junction with the 9 m east road",
+        "Paved passage, low boundary wall and corner vegetation",
+        "Tall pale metal mesh basketball-court enclosure and trees beyond"
+      ],
+      "excluded_temporary_features": [
+        "Temporary parked vehicles/scooters near road junction"
+      ]
+    },
+    {
+      "id": "NE-01",
+      "label": "NE-01 \u2014 Provisional Northeast-Corner Close-Up (Wall, Masonry Pillar, Hedge & Footpath)",
+      "original_clipboard_filename": "codex-clipboard-5a930b52-0dc7-499f-b6af-efc7680c8615.png",
+      "original_number_suffix": "26043",
+      "reference_asset_path": "reference-assets/NE-01_26043.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/NE-01_26043.png",
+      "camera_position_geo_m": [
+        16.8,
+        14.3,
+        1.55
+      ],
+      "camera_target_geo_m": [
+        13.127,
+        10.22,
+        1.214
+      ],
+      "camera_position_scene_m": [
+        14.3,
+        -1.56,
+        1.25
+      ],
+      "camera_target_scene_m": [
+        10.2203,
+        2.1134,
+        0.9142
+      ],
+      "bearing_deg": 222.0,
+      "pitch_deg": -3.5,
+      "fov_deg": 50.0,
+      "confidence": "provisional_closeup_pillar_not_survey_corner",
+      "observed_features": [
+        "Close-up of weathered masonry pillar with cream/ochre cap, low boundary wall and dense hedge",
+        "Interlocking paver footpath/verge and corner palm/shrub planting"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "E-01",
+      "label": "E-01 \u2014 Oblique Outlook From Near NE Corner Toward Eastern Basketball-Court Enclosure",
+      "original_clipboard_filename": "codex-clipboard-40fbabb9-5ce5-4efc-be55-7469e08b93be.png",
+      "original_number_suffix": "26044",
+      "reference_asset_path": "reference-assets/E-01_26044.png",
+      "evidence_asset_path": "evidence/tirumala/reference-assets/E-01_26044.png",
+      "camera_position_geo_m": [
+        15.4,
+        11.4,
+        1.62
+      ],
+      "camera_target_geo_m": [
+        30.221,
+        5.412,
+        2.318
+      ],
+      "camera_position_scene_m": [
+        11.4,
+        -0.16,
+        1.32
+      ],
+      "camera_target_scene_m": [
+        5.412,
+        -14.9808,
+        2.0179
+      ],
+      "bearing_deg": 112.0,
+      "pitch_deg": 2.5,
+      "fov_deg": 54.0,
+      "confidence": "high_oblique_east_southeast_outlook",
+      "observed_features": [
+        "9 m east road and interlocking paver edge",
+        "Raised masonry planting bed and trimmed hedge along court perimeter",
+        "Tall pale metal mesh basketball-court enclosure with repeated tubular posts",
+        "Substantial screening by coconut/areca palms and leafy canopy trees",
+        "Nearby street/garden lighting"
+      ],
+      "excluded_temporary_features": []
+    },
+    {
+      "id": "R07",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R07-east-side-northwest.png",
+      "sourceFile": "1000145296.jpg",
+      "category": "plot_and_north_outlook",
+      "directionStatus": "owner-confirmed",
+      "cameraPositionSceneM": [
+        5.8,
+        -1.6,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        13.5,
+        9.2,
+        2.1
+      ],
+      "lookingDirection": "Standing on the East side of the plot looking Northwest across the plot toward the 12 m North road and colony garden",
+      "confirmedFeatures": [
+        "Northeast corner plot bounded by 9 m East road and 12 m North road",
+        "Low muted mauve-taupe boundary wall with pale grey coping along North and East edges",
+        "White and navy-blue-grey G+1 house across the North colony garden visible through tree canopy"
+      ],
+      "observedFeatures": [
+        "Dry red-brown soil and concrete footing blocks on pre-construction plot (modeled in 'existing' site mode only)",
+        "Pre-construction trees inside plot footprint (modeled in 'existing' site mode; cleared from 'proposed' house footprint)",
+        "Mixed burgundy Acalypha and green Tabernaemontana roadside hedge",
+        "Slim dark-grey tubular streetlight pole at road edge"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r07_east_northwest",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R08",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R08-north-garden-outlook.png",
+      "sourceFile": "1000145302.jpg",
+      "category": "north_colony_garden",
+      "directionStatus": "north-outlook-confirmed; exact camera unmeasured",
+      "cameraPositionSceneM": [
+        18.6,
+        6.7,
+        1.33
+      ],
+      "cameraTargetSceneM": [
+        33.4,
+        6.7,
+        2.6
+      ],
+      "lookingDirection": "Looking North across the 12 m road into the colony garden and opposite white/navy-blue-grey house",
+      "confirmedFeatures": [
+        "12.0 m wide North concrete road between plot north boundary (x = 12.192 m) and colony garden south boundary (x = 24.192 m)",
+        "Colony garden with low raised edge, lawn, pergola, rounded ornaments and mature palms",
+        "Opposite G+1 white and navy-blue-grey residential building north of the garden"
+      ],
+      "observedFeatures": [
+        "Warm cream/white upper facade with dark navy/slate accent bands and recessed balcony",
+        "Dense neem, ashoka, and palm canopy filtering strong sunlight into the park"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r08_north_garden",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R09",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R09-colony-junction.png",
+      "pairedWideFile": "output/tirumala-4-prompt-pack/site-photos/R13-colony-junction-wide.png",
+      "sourceFile": "1000145303.jpg / 1000145305.jpg",
+      "category": "colony_street_junction",
+      "directionStatus": "estimated-from-street-geometry",
+      "cameraPositionSceneM": [
+        18.2,
+        -11.5,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        17.6,
+        16.0,
+        2.8
+      ],
+      "lookingDirection": "Looking along the colony road junction showing grooved concrete carriageways, paver verges, storm-drain covers, streetlight, and 2-3 storey colony homes",
+      "confirmedFeatures": [
+        "Brushed concrete colony carriageways with transverse expansion joints"
+      ],
+      "observedFeatures": [
+        "Precast concrete storm-drain cover slabs with paired circular drainage holes along road edges",
+        "Slim dark-grey angled LED street luminaire on tubular pole",
+        "Contemporary 2-3 storey colony residences with white/warm-grey render, wood/terracotta accents, and roof pergolas",
+        "Clipped ornamental hedges and interlocking paver verges"
+      ],
+      "excludedTransients": [
+        "Parked dark sedan under cover, white hatchback, scooter, and pedestrian in street excluded from 3D scene"
+      ],
+      "matchedSceneCamera": "ref_r09_colony_junction",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R10",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R10-vegetated-frontage-close.png",
+      "pairedWideFile": "output/tirumala-4-prompt-pack/site-photos/R12-vegetated-frontage-wide.png",
+      "sourceFile": "1000145310.jpg / 1000145295.jpg",
+      "category": "plot_frontage_and_background_building",
+      "directionStatus": "estimated; adjoining-house interpretation superseded by owner",
+      "cameraPositionSceneM": [
+        11.5,
+        -8.2,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        2.0,
+        5.5,
+        3.2
+      ],
+      "lookingDirection": "Looking across the road frontage toward the vegetated pre-construction plot; beige building is background context, not an adjoining house",
+      "confirmedFeatures": [
+        "Low perimeter boundary wall with roadside hedge and paver verge"
+      ],
+      "observedFeatures": [
+        "Reddish-burgundy copperleaf (Acalypha) and green white-flowering crape jasmine (Tabernaemontana) hedge",
+        "Beige building visible in the background; owner confirms no house adjoins this plot",
+        "Dense pre-construction plot canopy (retained only in 'existing' site mode; cleared from 'proposed' house footprint)"
+      ],
+      "excludedTransients": [
+        "Parked white hatchback on roadside excluded from 3D scene"
+      ],
+      "matchedSceneCamera": "exterior_northeast",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R11",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R11-NE-corner-owner-labelled.png",
+      "alternateAnnotationFile": "output/tirumala-4-prompt-pack/site-photos/alternate-annotation/R11-wall-return-unconfirmed.png",
+      "sourceFile": "1000145311.jpg",
+      "category": "northeast_plot_corner",
+      "directionStatus": "owner-confirmed-with-duplicate-annotation-note",
+      "cameraPositionSceneM": [
+        16.8,
+        -5.2,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        11.2,
+        2.2,
+        1.2
+      ],
+      "lookingDirection": "Looking Southwest toward the Northeast corner of the plot where the 12 m North road and 9 m East road meet",
+      "confirmedFeatures": [
+        "Northeast corner of the 40 x 50 ft plot at the junction of the 12 m North road and 9 m East road",
+        "Horizontally grooved square corner pier with muted mauve-taupe boundary wall return"
+      ],
+      "observedFeatures": [
+        "Interlocking dusty-rose/grey concrete paver verge between brushed concrete road and boundary wall",
+        "Mixed burgundy and green roadside shrub hedge along both road frontages"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r11_ne_corner",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "R14",
+      "file": "output/tirumala-4-prompt-pack/site-photos/R14-wall-pole-and-paving.png",
+      "sourceFile": "1000145307.jpg",
+      "category": "material_close_reference",
+      "directionStatus": "owner-confirmed-material-reference",
+      "cameraPositionSceneM": [
+        14.6,
+        -2.2,
+        1.45
+      ],
+      "cameraTargetSceneM": [
+        11.8,
+        2.6,
+        0.95
+      ],
+      "lookingDirection": "Close view of the colony boundary wall, interlocking paver verge, concrete road edge, shrub hedge, and streetlight pole base",
+      "confirmedFeatures": [
+        "Low plastered masonry wall painted muted mauve-taupe (#8e7e85) with lighter grey coping (#c8c4bc)",
+        "Interlocking concrete paver verge and tubular steel streetlight pole on concrete base plinth"
+      ],
+      "observedFeatures": [
+        "Weathering and leaf litter along kerb joint; burgundy and green shrub foliage above coping"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_r14_wall_pole_paving",
+      "cameraCoordinateStatus": "estimated visual match"
+    },
+    {
+      "id": "V01-V06",
+      "file": "output/tirumala-4-prompt-pack/video-contact-sheet.jpg",
+      "keyframes": [
+        "output/tirumala-4-prompt-pack/video-frames/V01-court-and-road.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V02-road-turn.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V03-boundary-and-planting.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V04-colony-street.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V05-wall-return.jpg",
+        "output/tirumala-4-prompt-pack/video-frames/V06-preconstruction-vegetation.jpg"
+      ],
+      "sourceFile": "output/tirumala-4-prompt-pack/video/tirumala_plot.mp4",
+      "category": "continuous_site_pan_video",
+      "directionStatus": "owner-confirmed-continuous-pan",
+      "cameraPositionSceneM": [
+        8.5,
+        -1.8,
+        1.65
+      ],
+      "cameraTargetSceneM": [
+        10.2,
+        -13.5,
+        2.2
+      ],
+      "lookingDirection": "Continuous 23.36 s pan from East basketball court (V01) across 9 m East road & NE corner (V02/V03) to 12 m North road (V04) and plot boundary/interior (V05/V06)",
+      "confirmedFeatures": [
+        "Spatial continuity linking East basketball court, 9 m East road, NE plot corner pier, 12 m North road, and North colony garden"
+      ],
+      "observedFeatures": [
+        "V01 (0.5 s): Basketball hoop with white backboard & red target square, chain-link fence, round-hooded post-top park lamp, and precast storm-drain cover slabs with circular holes",
+        "V02 (3.0 s): 9 m East road turning into 12 m North road around the horizontally grooved NE corner pier",
+        "V03 (6.0 s): Burgundy Acalypha & white-flowering Tabernaemontana hedge and interlocking paver verge",
+        "V04 (8.5 s): 12 m North road perspective with slim LED streetlight pole, colony garden trees on right, and neighbour houses ahead",
+        "V05 (10.0 s): Plot boundary wall and corner pier with pre-construction trees behind",
+        "V06 (20.0 s): Pre-construction plot interior vegetation (camera roll near end of clip not used for compass bearing)"
+      ],
+      "excludedTransients": [],
+      "matchedSceneCamera": "ref_v01_east_court_road",
+      "cameraCoordinateStatus": "estimated visual match"
+    }
+  ]
+}

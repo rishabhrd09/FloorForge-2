@@ -1,0 +1,115 @@
+TIRUMALA 2 / TIRUMALA 3 — WALKTHROUGH AND GEOMETRY AUDIT
+30 October 2026
+
+Scope
+Reviewed the supplied implementation transcript, the actual generated models,
+the approved plan data, the shared viewer and the running browser experience.
+Tirumala 2 uses P12-A p12-open-porch-v33. Tirumala 3 uses P11
+p11-veranda-return-trim-v32. Both plots are 40 ft north–south by 50 ft east–west.
+Existing unrelated workspace changes were retained.
+
+Reproduced failure
+Both samples started outside the plot on visible context geometry that had no
+walking collision. After three seconds the player was about 11 metres below
+the scene instead of standing on the road. The earlier sample-load/screenshot
+checks did not detect this.
+
+Changes completed
+1. Ground and entry: added collision for the visible road, verge, kerb, lawn,
+   court and distant ground; moved the arrival point to the pedestrian portion
+   of the existing east gate. The visitor now stays supported and can walk into
+   the plot. House/veranda/forecourt remain raised above the lower car porch.
+2. Floors: filled a missing living-to-lobby floor patch and small obsolete
+   furniture-mask holes. These were causing drops or raised-slab obstructions.
+   Existing floors/walls are subtracted from the repairs to avoid overlapping
+   coplanar surfaces. Room boundaries have not moved.
+3. Doors: supplied explicit motion for complete leaves, frames and handles.
+   ICU glass stacks outside its aperture; the store slider operates; hinges
+   follow the approved swings. The living entrance has four wooden panels and
+   an independently retractable mesh screen. F opens/closes targeted openings.
+   Windows move their sashes and glass together. Initial open poses are also
+   included in static exports, rather than only the interactive viewer.
+4. Stairs: removed the roof obstruction over the upper flight/landing, added
+   a raised glass rooflight and landing edge guards. Rooflight top is
+   5.25–5.30 m above house datum, providing over 2.1 m headroom at the 3.15 m
+   landing. This changes roof elevation locally; it does not move the stair
+   footprint or change its 18 risers. Main room ceiling remains 3.508 m.
+5. Views: interior cameras now update the walking controller as well as the
+   camera, use 1.63 m eye height and remain grounded. Exterior views exit walking
+   cleanly. The P11 ICU camera no longer starts partly inside its wall. Fields
+   of view are 64–68 degrees; actual room scale is not enlarged.
+6. Interface: restored usable canvas height instead of a shallow viewport;
+   Walk in / Explore inside scroll the viewer into view. P11/P12 no longer show
+   unrelated original Tirumala A–E alternatives or upper-floor camera controls.
+   Ground-floor tips and project descriptions now match the supplied model.
+7. Dimensions/specifications: replaced duplicated inaccurate prose with
+   geometry-derived sizes. Corrected ICU polygon area, serving worktop,
+   aperture versus jamb clearance, ceiling height, stair count and source hash.
+   The validation report now checks actual geometry and connectivity instead
+   of returning mostly fixed PASS labels.
+8. Presentation/delivery: regenerated dimensioned 2D drawings, material views,
+   curated 3D previews, specifications, design guides and export packages.
+   Interior cameras use the live viewer's actual lighting/exposure settings.
+
+Preserved design
+Approved room/wall/opening coordinates, kitchen L-counter, stair layout and
+furniture footprints remain fixed. No refrigerator or puja room was added.
+P12 drawing room stays empty; its ICU retains only the north-facing recliner
+(head south, feet north) and corner table. P11 retains its approved furniture.
+Large cream/ivory tile finishes and the lower traditional-style porch remain.
+Both source plan hashes remain unchanged:
+P12: 7985678c092f3d2506feb062a96db0b5de37eb2266a2c0ae246b7319efc16799
+P11: b0d3db66be33590db5172cecd6fd8d5c4a1a0a909a2faec6c3c7ba7bff2eb5f4
+58 original sample files checked against the pre-audit snapshot are unchanged.
+The original electrical-tour viewer remains at its protected baseline hash.
+
+Dimensional findings
+P12 ICU clear bounding span: 10 ft 1 3/4 in by 14 ft 11 in; actual polygon area
+136.2 sq ft after the porch corner cut-out. P11 ICU: 11 ft 3 in by
+11 ft 4 7/8 in; area 128.3 sq ft. Master bath remains 8 ft by 6 ft.
+The 3 ft lobby, 2 ft 11 3/8 in store and existing door apertures remain relatively
+narrow by design. Lighting and correct camera perspective cannot create extra
+physical clearance there. This pass does not silently widen them.
+P12 porch is stepped, not an unobstructed full 10 by 15 ft rectangle; the
+straight entry depth is about 14 ft 3 1/4 in. Parking fit is vehicle-dependent.
+The 6-inch porch drop is a provisional visualization parameter, not a separately
+approved construction level. Full room dimensions are in dimensions.csv and
+each project's DESIGN_GUIDE.md. Bounding spans of irregular rooms must not be
+treated as rectangular room areas.
+
+Verification
+- 55 viewer tests passed, including actual P11/P12 opening collision, entrances,
+  ICU/veranda, kitchen/store, master/bath, caregiver/WC, lightwell, wash gully,
+  stairs and floor level routes. The upper landing is reachable with headroom.
+- 25 geometry/preservation tests passed.
+- 30 server tests passed after permitting the local loopback test server.
+- Live Chromium acceptance passed for both samples: three-second stable spawn,
+  real ArrowUp entrance traversal, F-key ICU door close/reopen, grounded 1.63 m
+  interior cameras, exterior-camera transition and usable canvas height.
+  No browser page errors were recorded.
+- Updated 2D and 3D render capture checks passed; preview images were inspected.
+- git diff --check passed.
+Evidence: viewer-tests.txt, geometry-tests.txt, server-tests.txt,
+browser-results.json, browser-test-log.txt, render-checks.txt,
+preservation-and-dimensions.json, package-integrity.json and before/after PNGs.
+
+Full-suite qualification
+The initial broad run reported 738 passed, 4 failed and 9 errors. Eleven cases
+were prevented by sandbox loopback permissions and passed in the later server
+batch. A temporary original-bundle preservation mismatch was restored to the
+verified original baseline, and the preservation test then passed. One legacy
+test, test_tour_page_loads_its_data_offline, still expects the frozen original
+electrical-tour viewer to be byte-identical to the newer shared viewer. That
+expectation conflicts with preserving the original package. It has not been
+hidden or weakened. The entire historical suite is therefore not claimed green.
+
+Rendering limit
+These are interactive real-time raster/PBR previews, not path-traced photographs.
+The changes improve navigability, readable proportions and presentation; they
+do not certify construction, structural design or wheelchair/gurney access.
+
+How to review
+Reload the application and reopen Tirumala 2 or Tirumala 3 from the sample
+gallery so the refreshed scene and viewer are loaded. Select Walk in; use
+WASD or arrow keys to move and F on a targeted door/window to operate it.
+Explore inside provides grounded kitchen/living and ICU/veranda viewpoints.

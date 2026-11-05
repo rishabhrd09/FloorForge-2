@@ -35,7 +35,7 @@ def plan_frontage(plot_bounds, entry_x: float, *, steps_x: tuple[float, float] |
     pw, pier = PEDESTRIAN_GATE_MM, LETTERBOX_PIER_MM
     p0 = min(max(entry_x - pw / 2, lo), hi - pw)
     vehicle = None
-    if front_mm >= 1100:
+    if front_mm >= 1100 or carport_x:
         if carport_x:
             c0, c1 = carport_x
             vw = min(3600, c1 - c0 + 300)

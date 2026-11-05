@@ -1,0 +1,1576 @@
+{
+  "schema": "floorforge.tirumala-site-context/1",
+  "style": "tirumala-colony",
+  "project_id": "tirumala",
+  "viewer_only_outside_plot": true,
+  "coordinate_system": {
+    "origin_description": "Southwest plot corner (SW) at Natural Ground Level (NGL \u00b10.000 m); FloorForge local/scene origin (0, 0, 0) is Southeast plot corner (SE) at Ground Floor FFL (+0.300 m)",
+    "axes": {
+      "X_geo": "Increases Eastward (0.000 m at West boundary -> 15.240 m at East frontage; 50 ft)",
+      "Y_geo": "Increases Northward (0.000 m at South boundary -> 12.192 m at North boundary; 40 ft)",
+      "Z_geo": "Increases Upward (0.000 m at NGL/car-bay -> +0.300 m at Ground Floor FFL)"
+    },
+    "plot_corners_geo_m": {
+      "SW": [
+        0.0,
+        0.0
+      ],
+      "SE": [
+        15.24,
+        0.0
+      ],
+      "NW": [
+        0.0,
+        12.192
+      ],
+      "NE": [
+        15.24,
+        12.192
+      ]
+    },
+    "plot_corners_scene_m": {
+      "SW": [
+        0.0,
+        15.24
+      ],
+      "SE": [
+        0.0,
+        0.0
+      ],
+      "NW": [
+        12.192,
+        15.24
+      ],
+      "NE": [
+        12.192,
+        0.0
+      ]
+    },
+    "scene_transform": {
+      "road_bearing_deg": 90,
+      "front_direction": "East (+X_geo -> -y_scene)",
+      "rear_direction": "West (-X_geo -> +y_scene)",
+      "left_direction": "South (-Y_geo -> -x_scene)",
+      "right_direction": "North (+Y_geo -> +x_scene)",
+      "formula_geo_to_scene_m": {
+        "x_scene": "Y_geo",
+        "y_scene": "15.240 - X_geo",
+        "z_scene": "Z_geo - 0.300"
+      },
+      "formula_scene_to_geo_m": {
+        "X_geo": "15.240 - y_scene",
+        "Y_geo": "x_scene",
+        "Z_geo": "z_scene + 0.300"
+      },
+      "envelope_se_origin_geo_m": [
+        15.24,
+        0.0,
+        0.3
+      ]
+    }
+  },
+  "care_room_verification": {
+    "plot_ew_midpoint_x_geo_m": 7.62,
+    "midpoint_scene_y_m": 7.62,
+    "revision": 8,
+    "midpoint_extension_permitted": true,
+    "nw_corner_open": true,
+    "nw_garden_open": true,
+    "care_west_edge_ft": 35.5,
+    "bed_orientation": "South-to-North (head South at x=26.25 ft, feet North at x=33.25 ft)",
+    "option": "D",
+    "option_label": "D \u2014 Larger drawing room",
+    "care_clear_x_geo_min_m": 4.418,
+    "care_clear_x_geo_max_m": 8.383,
+    "care_outer_x_geo_min_m": 4.418,
+    "care_outer_x_geo_max_m": 8.383,
+    "strictly_east_of_midpoint": false
+  },
+  "parameters": {
+    "plot_east_frontage_m": {
+      "value": 12.192,
+      "imperial": "40 ft 0 in",
+      "units": "m",
+      "status": "owner_confirmed",
+      "source": "Owner brief",
+      "notes": "East frontage and West rear boundary running North-South."
+    },
+    "plot_north_boundary_m": {
+      "value": 15.24,
+      "imperial": "50 ft 0 in",
+      "units": "m",
+      "status": "owner_confirmed",
+      "source": "Owner brief",
+      "notes": "North road boundary and South side boundary running East-West."
+    },
+    "north_road_width_m": {
+      "value": 12.0,
+      "units": "m",
+      "status": "owner_confirmed_with_working_interpretation",
+      "source": "Owner brief + N-01, N-02, N-03",
+      "notes": "Retained at 12.0 m total ROW north of Y_geo=12.192 m, interpreted as 8.40 m concrete carriageway + 1.80 m south paver verge + 1.80 m north garden verge (not double-counted)."
+    },
+    "north_road_south_verge_m": {
+      "value": 1.8,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-02, N-03, NE-01",
+      "notes": "Interlocking concrete paver verge along the plot's North frontage containing the feeder cabinets and streetlight pole."
+    },
+    "north_road_north_verge_m": {
+      "value": 1.8,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-01",
+      "notes": "Paved edge and raised masonry planting kerb along the opposite North colony garden."
+    },
+    "east_road_width_m": {
+      "value": 9.0,
+      "units": "m",
+      "status": "owner_confirmed_with_working_interpretation",
+      "source": "Owner brief + E-01, N-04",
+      "notes": "Retained at 9.0 m total ROW east of X_geo=15.240 m, interpreted as 6.00 m concrete carriageway + 1.50 m west paver verge + 1.50 m east court-side paved edge (not double-counted)."
+    },
+    "east_road_west_verge_m": {
+      "value": 1.5,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "NE-01, N-04",
+      "notes": "Interlocking paver footpath/verge along the plot's East entrance frontage."
+    },
+    "east_road_east_verge_m": {
+      "value": 1.5,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "E-01, N-04",
+      "notes": "Paved passage and raised masonry planting bed fronting the basketball-court enclosure."
+    },
+    "nw_feeder_cabinet_east_offset_m": {
+      "value": 1.25,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-02",
+      "notes": "Smaller pale-cream feeder cabinet (0.78 x 0.48 x 1.22 m) outside NW plot corner in north verge."
+    },
+    "nw_feeder_cabinet_west_offset_m": {
+      "value": 0.1,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-02",
+      "notes": "Taller pale-cream feeder cabinet (1.05 x 0.55 x 1.62 m) immediately right (west) of the smaller cabinet when viewed from the north road looking SW."
+    },
+    "north_streetlight_pole_x_geo_m": {
+      "value": 4.35,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-02, N-03",
+      "notes": "Galvanised streetlight pole (height 6.2 m) along the north frontage between the NE and NW corners."
+    },
+    "ne_reference_pillar_x_geo_m": {
+      "value": 15.08,
+      "units": "m",
+      "status": "provisional_photo_reference",
+      "source": "NE-01, N-03",
+      "notes": "Visible cream/ochre-capped masonry pillar near the NE corner; treated as an existing boundary wall pier, not a certified survey monument."
+    },
+    "north_garden_depth_m": {
+      "value": 11.8,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-01",
+      "notes": "Depth of the colony lawn, pergola seating and palm garden north of the 12 m road before the opposite house."
+    },
+    "north_opposite_house_distance_m": {
+      "value": 23.8,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "N-01",
+      "notes": "Distance from plot North boundary (Y_geo=12.192 m) to the white/grey house with the dark blue-grey vertical facade."
+    },
+    "east_court_enclosure_height_m": {
+      "value": 5.4,
+      "units": "m",
+      "status": "estimated_from_photo",
+      "source": "E-01, N-04",
+      "notes": "Tall pale metal mesh basketball-court enclosure with repeated tubular posts every 2.50 m behind dense tree/palm screening."
+    }
+  },
+  "roads": {
+    "north_road_12m": {
+      "label": "12.0 m North Colony Road",
+      "total_row_m": 12.0,
+      "carriageway_bounds_scene": [
+        13.992,
+        -20.76,
+        22.392,
+        25.24
+      ],
+      "south_verge_bounds_scene": [
+        12.192,
+        0.0,
+        13.992,
+        21.24
+      ],
+      "north_verge_bounds_scene": [
+        22.392,
+        -20.76,
+        24.192,
+        21.24
+      ]
+    },
+    "east_road_9m": {
+      "label": "9.0 m East Colony Road (Principal Arrival)",
+      "total_row_m": 9.0,
+      "carriageway_bounds_scene": [
+        -10.0,
+        -7.5,
+        34.192,
+        -1.5
+      ],
+      "west_verge_bounds_scene": [
+        -6.0,
+        -1.5,
+        12.192,
+        0.0
+      ],
+      "east_verge_bounds_scene": [
+        -6.0,
+        -9.0,
+        30.192,
+        -7.5
+      ]
+    }
+  },
+  "north_colony_garden": {
+    "source_photo": "N-01",
+    "lawn_bounds_scene": [
+      24.442,
+      -1.56,
+      35.992,
+      14.84
+    ],
+    "kerb_bounds_scene": [
+      24.192,
+      -2.26,
+      36.292,
+      15.74
+    ],
+    "pergola": {
+      "bounds_scene": [
+        26.292,
+        8.84,
+        29.692,
+        12.84
+      ],
+      "height_m": 2.85,
+      "benches_scene": [
+        [
+          26.592,
+          9.24,
+          27.142,
+          12.44
+        ],
+        [
+          28.842,
+          9.24,
+          29.392,
+          12.44
+        ]
+      ]
+    },
+    "decorative_pots_scene": [
+      {
+        "position": [
+          25.142,
+          13.04,
+          -0.3
+        ],
+        "radius_m": 0.34,
+        "height_m": 0.68
+      },
+      {
+        "position": [
+          25.142,
+          9.84,
+          -0.3
+        ],
+        "radius_m": 0.34,
+        "height_m": 0.68
+      },
+      {
+        "position": [
+          25.142,
+          6.64,
+          -0.3
+        ],
+        "radius_m": 0.34,
+        "height_m": 0.68
+      },
+      {
+        "position": [
+          25.142,
+          3.44,
+          -0.3
+        ],
+        "radius_m": 0.34,
+        "height_m": 0.68
+      },
+      {
+        "position": [
+          25.142,
+          0.64,
+          -0.3
+        ],
+        "radius_m": 0.34,
+        "height_m": 0.68
+      }
+    ],
+    "garden_lights_scene": [
+      {
+        "position": [
+          24.742,
+          13.74,
+          -0.3
+        ],
+        "height_m": 0.85
+      },
+      {
+        "position": [
+          24.742,
+          11.04,
+          -0.3
+        ],
+        "height_m": 0.85
+      },
+      {
+        "position": [
+          24.742,
+          8.24,
+          -0.3
+        ],
+        "height_m": 0.85
+      },
+      {
+        "position": [
+          24.742,
+          5.44,
+          -0.3
+        ],
+        "height_m": 0.85
+      },
+      {
+        "position": [
+          24.742,
+          2.64,
+          -0.3
+        ],
+        "height_m": 0.85
+      },
+      {
+        "position": [
+          24.742,
+          -0.16,
+          -0.3
+        ],
+        "height_m": 0.85
+      }
+    ],
+    "trees_scene": [
+      {
+        "position": [
+          25.992,
+          13.64,
+          -0.3
+        ],
+        "species": "palm",
+        "scale": 1.15
+      },
+      {
+        "position": [
+          30.692,
+          10.44,
+          -0.3
+        ],
+        "species": "tree_shade",
+        "scale": 1.05
+      },
+      {
+        "position": [
+          26.392,
+          7.64,
+          -0.3
+        ],
+        "species": "areca",
+        "scale": 1.25
+      },
+      {
+        "position": [
+          27.192,
+          4.44,
+          -0.3
+        ],
+        "species": "palm",
+        "scale": 1.22
+      },
+      {
+        "position": [
+          26.592,
+          1.44,
+          -0.3
+        ],
+        "species": "mango",
+        "scale": 0.92
+      },
+      {
+        "position": [
+          29.992,
+          -0.56,
+          -0.3
+        ],
+        "species": "palm",
+        "scale": 1.1
+      }
+    ],
+    "opposite_house": {
+      "source_photo": "N-01",
+      "main_body_bounds_scene": [
+        35.992,
+        -1.16,
+        44.592,
+        12.64
+      ],
+      "height_m": 7.2,
+      "dark_blue_grey_vertical_facade_bounds_scene": [
+        35.712,
+        3.84,
+        36.092,
+        7.04
+      ],
+      "balcony_bands_scene": [
+        [
+          34.892,
+          7.24,
+          35.992,
+          12.24
+        ],
+        [
+          35.092,
+          -0.76,
+          35.992,
+          3.64
+        ]
+      ]
+    }
+  },
+  "east_basketball_court": {
+    "source_photos": [
+      "E-01",
+      "N-04"
+    ],
+    "raised_bed_bounds_scene": [
+      -2.5,
+      -10.15,
+      15.8,
+      -9.0
+    ],
+    "enclosure_bounds_scene": [
+      -2.2,
+      -24.5,
+      15.5,
+      -10.15
+    ],
+    "fence_height_m": 5.4,
+    "post_spacing_m": 2.5,
+    "posts_scene": [
+      [
+        -2.0,
+        -10.15,
+        -0.3
+      ],
+      [
+        0.5,
+        -10.15,
+        -0.3
+      ],
+      [
+        3.0,
+        -10.15,
+        -0.3
+      ],
+      [
+        5.5,
+        -10.15,
+        -0.3
+      ],
+      [
+        8.0,
+        -10.15,
+        -0.3
+      ],
+      [
+        10.5,
+        -10.15,
+        -0.3
+      ],
+      [
+        13.0,
+        -10.15,
+        -0.3
+      ],
+      [
+        15.5,
+        -10.15,
+        -0.3
+      ],
+      [
+        15.5,
+        -12.65,
+        -0.3
+      ],
+      [
+        15.5,
+        -15.15,
+        -0.3
+      ],
+      [
+        15.5,
+        -17.65,
+        -0.3
+      ],
+      [
+        15.5,
+        -20.15,
+        -0.3
+      ]
+    ],
+    "screening_trees_scene": [
+      {
+        "position": [
+          1.2,
+          -9.6,
+          -0.3
+        ],
+        "species": "palm",
+        "scale": 1.12
+      },
+      {
+        "position": [
+          3.8,
+          -9.7,
+          -0.3
+        ],
+        "species": "neem",
+        "scale": 0.78
+      },
+      {
+        "position": [
+          6.6,
+          -9.55,
+          -0.3
+        ],
+        "species": "areca",
+        "scale": 1.25
+      },
+      {
+        "position": [
+          9.2,
+          -9.7,
+          -0.3
+        ],
+        "species": "tree_shade",
+        "scale": 0.95
+      },
+      {
+        "position": [
+          11.8,
+          -9.6,
+          -0.3
+        ],
+        "species": "palm",
+        "scale": 1.18
+      },
+      {
+        "position": [
+          14.2,
+          -9.8,
+          -0.3
+        ],
+        "species": "ashoka",
+        "scale": 0.92
+      }
+    ],
+    "lights_scene": [
+      {
+        "position": [
+          2.5,
+          -8.75,
+          -0.3
+        ],
+        "height_m": 4.2
+      },
+      {
+        "position": [
+          12.2,
+          -8.75,
+          -0.3
+        ],
+        "height_m": 4.2
+      }
+    ]
+  },
+  "northwest_feeder_cabinets": {
+    "source_photos": [
+      "N-02",
+      "N-03"
+    ],
+    "plinth_bounds_scene": [
+      12.372,
+      13.34,
+      13.112,
+      15.89
+    ],
+    "smaller_east_cabinet": {
+      "id": "feeder-cabinet-east-small",
+      "center_geo_m": [
+        1.25,
+        12.732,
+        0.2
+      ],
+      "bounds_scene": [
+        12.492,
+        13.6,
+        12.972,
+        14.38
+      ],
+      "size_m": [
+        0.78,
+        0.48,
+        1.22
+      ],
+      "color": "#dcd8ce"
+    },
+    "taller_west_cabinet": {
+      "id": "feeder-cabinet-west-tall",
+      "center_geo_m": [
+        0.1,
+        12.742,
+        0.2
+      ],
+      "bounds_scene": [
+        12.467,
+        14.615,
+        13.017,
+        15.665
+      ],
+      "size_m": [
+        1.05,
+        0.55,
+        1.62
+      ],
+      "color": "#d6d2c6"
+    },
+    "low_wall_bounds_scene": [
+      12.112,
+      12.04,
+      12.312,
+      19.74
+    ],
+    "hedge_bounds_scene": [
+      12.312,
+      12.24,
+      12.742,
+      19.24
+    ],
+    "trees_scene": [
+      {
+        "position": [
+          12.992,
+          16.64,
+          -0.3
+        ],
+        "species": "neem",
+        "scale": 0.75
+      },
+      {
+        "position": [
+          13.042,
+          12.64,
+          -0.3
+        ],
+        "species": "tree_shade",
+        "scale": 0.82
+      }
+    ]
+  },
+  "north_frontage_utilities": {
+    "source_photos": [
+      "N-02",
+      "N-03",
+      "NE-01"
+    ],
+    "streetlight_pole": {
+      "id": "north-streetlight-pole-01",
+      "position_geo_m": [
+        4.35,
+        12.742,
+        0.0
+      ],
+      "position_scene": [
+        12.742,
+        10.89,
+        -0.3
+      ],
+      "height_m": 6.2,
+      "arm_length_m": 1.6,
+      "arm_direction": "+x_scene (North over road)"
+    },
+    "ne_reference_pillar": {
+      "id": "ne-reference-masonry-pillar",
+      "position_geo_m": [
+        15.08,
+        12.112,
+        0.0
+      ],
+      "bounds_scene": [
+        11.972,
+        -0.06,
+        12.412,
+        0.38
+      ],
+      "height_m": 1.35,
+      "status": "provisional_photo_reference_not_survey_monument"
+    },
+    "excluded_temporary_objects": [
+      {
+        "id": "excluded-white-car-n03",
+        "source_photos": [
+          "N-03",
+          "N-04"
+        ],
+        "reason": "Parked white hatchback car along the north road frontage is temporary and explicitly excluded from the 3D scene and site plan."
+      }
+    ]
+  },
+  "adjoining_south_and_west": {
+    "status": "unconfirmed_massing_placeholder",
+    "south_neighbour_bounds_scene": [
+      -9.2,
+      1.84,
+      -1.2,
+      13.44
+    ],
+    "west_neighbour_bounds_scene": [
+      1.5,
+      16.64,
+      10.8,
+      24.44
+    ]
+  },
+  "reference_cameras": {
+    "N-01": {
+      "id": "N-01",
+      "label": "N-01 \u2014 North Outlook Across 12 m Road to Colony Garden & Opposite House",
+      "position_geo_m": [
+        8.8,
+        12.05,
+        1.62
+      ],
+      "target_geo_m": [
+        9.568,
+        34.029,
+        2.196
+      ],
+      "bearing_deg": 2.0,
+      "pitch_deg": 1.5,
+      "fov": 54.0,
+      "position": [
+        12.05,
+        6.44,
+        1.32
+      ],
+      "target": [
+        34.0291,
+        5.6725,
+        1.8959
+      ],
+      "walker": {
+        "position": [
+          12.05,
+          6.44,
+          1.32
+        ],
+        "yaw_rad": -1.605703,
+        "yaw_deg": -92.0,
+        "pitch_rad": 0.02618
+      },
+      "source_file": "codex-clipboard-1f4f5f60-a763-429d-826a-43db574bb4f7.png",
+      "original_suffix": "26039",
+      "reference_asset": "reference-assets/N-01_26039.png",
+      "confidence": "high_cardinal_direction_estimated_offset",
+      "comparison_mode": "both",
+      "observed_features": [
+        "12 m concrete road in foreground",
+        "Opposite raised planting kerb, clipped hedge and manicured colony lawn",
+        "Timber/metal garden pergola with shaded seating on left-centre of lawn",
+        "Decorative spherical/ornate pots and slim garden bollard lights",
+        "Coconut/areca palms and broadleaf canopy trees",
+        "Two-storey white/grey house beyond with signature dark blue-grey vertical feature facade"
+      ],
+      "excluded_temporary_features": []
+    },
+    "N-02": {
+      "id": "N-02",
+      "label": "N-02 \u2014 North Road Looking ~45\u00b0 Right (Southwest) Toward Plot & NW Feeder Cabinets",
+      "position_geo_m": [
+        5.4,
+        16.4,
+        1.6
+      ],
+      "target_geo_m": [
+        -1.311,
+        9.689,
+        1.186
+      ],
+      "bearing_deg": 225.0,
+      "pitch_deg": -2.5,
+      "fov": 54.0,
+      "position": [
+        16.4,
+        9.84,
+        1.3
+      ],
+      "target": [
+        9.6889,
+        16.5511,
+        0.8856
+      ],
+      "walker": {
+        "position": [
+          16.4,
+          9.84,
+          1.3
+        ],
+        "yaw_rad": 0.785398,
+        "yaw_deg": 45.0,
+        "pitch_rad": -0.04363
+      },
+      "source_file": "codex-clipboard-06a77609-6ca8-47a5-8c80-d5bafdec0b37.png",
+      "original_suffix": "26040",
+      "reference_asset": "reference-assets/N-02_26040.png",
+      "confidence": "medium_oblique_southwest_bearing_unmeasured_offsets",
+      "comparison_mode": "both",
+      "observed_features": [
+        "Pair of light-coloured electrical feeder cabinets of differing sizes (smaller left/east, taller right/west)",
+        "Low brown-grey boundary wall and trimmed green hedge",
+        "Interlocking concrete paver verge along north road edge",
+        "Nearby galvanised streetlight pole and mature roadside trees"
+      ],
+      "excluded_temporary_features": []
+    },
+    "N-03": {
+      "id": "N-03",
+      "label": "N-03 \u2014 North Road Looking South Toward Plot North Frontage (East Left, West Right)",
+      "position_geo_m": [
+        7.8,
+        19.8,
+        1.6
+      ],
+      "target_geo_m": [
+        7.8,
+        8.304,
+        1.299
+      ],
+      "bearing_deg": 180.0,
+      "pitch_deg": -1.5,
+      "fov": 56.0,
+      "position": [
+        19.8,
+        7.44,
+        1.3
+      ],
+      "target": [
+        8.3039,
+        7.44,
+        0.999
+      ],
+      "walker": {
+        "position": [
+          19.8,
+          7.44,
+          1.3
+        ],
+        "yaw_rad": 1.570796,
+        "yaw_deg": 90.0,
+        "pitch_rad": -0.02618
+      },
+      "source_file": "codex-clipboard-a88c9575-5975-4ca2-9265-ed8c5e46ea20.png",
+      "original_suffix": "26041",
+      "reference_asset": "reference-assets/N-03_26041.png",
+      "confidence": "high_southward_cardinal_orientation",
+      "comparison_mode": "both",
+      "observed_features": [
+        "North road concrete carriageway in foreground (East on image-left, West on image-right)",
+        "Interlocking paver verge, low boundary wall and continuous hedge along plot north frontage",
+        "Streetlight pole between NE and NW corners and NW feeder cabinets toward right",
+        "Mature trees and colony foliage framing the plot"
+      ],
+      "excluded_temporary_features": [
+        "Parked white hatchback car on the south road verge (excluded as temporary vehicle)"
+      ]
+    },
+    "N-04": {
+      "id": "N-04",
+      "label": "N-04 \u2014 Provisional Leftward (Southeast) View From North Road Toward Court Enclosure",
+      "position_geo_m": [
+        13.2,
+        16.2,
+        1.6
+      ],
+      "target_geo_m": [
+        25.92,
+        8.252,
+        1.731
+      ],
+      "bearing_deg": 122.0,
+      "pitch_deg": 0.5,
+      "fov": 54.0,
+      "position": [
+        16.2,
+        2.04,
+        1.3
+      ],
+      "target": [
+        8.2515,
+        -10.6802,
+        1.4309
+      ],
+      "walker": {
+        "position": [
+          16.2,
+          2.04,
+          1.3
+        ],
+        "yaw_rad": 2.583087,
+        "yaw_deg": 148.0,
+        "pitch_rad": 0.00873
+      },
+      "source_file": "codex-clipboard-11f33951-2ed5-49d2-ab7d-2e8a4308b6e7.png",
+      "original_suffix": "26042",
+      "reference_asset": "reference-assets/N-04_26042.png",
+      "confidence": "provisional_cross_check_unconfirmed_bearing",
+      "comparison_mode": "both",
+      "observed_features": [
+        "Cross-check view from north road looking leftward (east/southeast) toward the junction with the 9 m east road",
+        "Paved passage, low boundary wall and corner vegetation",
+        "Tall pale metal mesh basketball-court enclosure and trees beyond"
+      ],
+      "excluded_temporary_features": [
+        "Temporary parked vehicles/scooters near road junction"
+      ]
+    },
+    "NE-01": {
+      "id": "NE-01",
+      "label": "NE-01 \u2014 Provisional Northeast-Corner Close-Up (Wall, Masonry Pillar, Hedge & Footpath)",
+      "position_geo_m": [
+        16.8,
+        14.3,
+        1.55
+      ],
+      "target_geo_m": [
+        13.127,
+        10.22,
+        1.214
+      ],
+      "bearing_deg": 222.0,
+      "pitch_deg": -3.5,
+      "fov": 50.0,
+      "position": [
+        14.3,
+        -1.56,
+        1.25
+      ],
+      "target": [
+        10.2203,
+        2.1134,
+        0.9142
+      ],
+      "walker": {
+        "position": [
+          14.3,
+          -1.56,
+          1.25
+        ],
+        "yaw_rad": 0.837758,
+        "yaw_deg": 48.0,
+        "pitch_rad": -0.06109
+      },
+      "source_file": "codex-clipboard-5a930b52-0dc7-499f-b6af-efc7680c8615.png",
+      "original_suffix": "26043",
+      "reference_asset": "reference-assets/NE-01_26043.png",
+      "confidence": "provisional_closeup_pillar_not_survey_corner",
+      "comparison_mode": "both",
+      "observed_features": [
+        "Close-up of weathered masonry pillar with cream/ochre cap, low boundary wall and dense hedge",
+        "Interlocking paver footpath/verge and corner palm/shrub planting"
+      ],
+      "excluded_temporary_features": []
+    },
+    "E-01": {
+      "id": "E-01",
+      "label": "E-01 \u2014 Oblique Outlook From Near NE Corner Toward Eastern Basketball-Court Enclosure",
+      "position_geo_m": [
+        15.4,
+        11.4,
+        1.62
+      ],
+      "target_geo_m": [
+        30.221,
+        5.412,
+        2.318
+      ],
+      "bearing_deg": 112.0,
+      "pitch_deg": 2.5,
+      "fov": 54.0,
+      "position": [
+        11.4,
+        -0.16,
+        1.32
+      ],
+      "target": [
+        5.412,
+        -14.9808,
+        2.0179
+      ],
+      "walker": {
+        "position": [
+          11.4,
+          -0.16,
+          1.32
+        ],
+        "yaw_rad": 2.75762,
+        "yaw_deg": 158.0,
+        "pitch_rad": 0.04363
+      },
+      "source_file": "codex-clipboard-40fbabb9-5ce5-4efc-be55-7469e08b93be.png",
+      "original_suffix": "26044",
+      "reference_asset": "reference-assets/E-01_26044.png",
+      "confidence": "high_oblique_east_southeast_outlook",
+      "comparison_mode": "both",
+      "observed_features": [
+        "9 m east road and interlocking paver edge",
+        "Raised masonry planting bed and trimmed hedge along court perimeter",
+        "Tall pale metal mesh basketball-court enclosure with repeated tubular posts",
+        "Substantial screening by coconut/areca palms and leafy canopy trees",
+        "Nearby street/garden lighting"
+      ],
+      "excluded_temporary_features": []
+    }
+  },
+  "sightline_cameras": {
+    "care_recliner_north": {
+      "id": "care_recliner_north",
+      "label": "Care Suite \u2014 South-to-North Bed (Pillow End at South) Looking North Across 3 ft Passage & 12 m Road to Garden",
+      "position_geo_m": [
+        7.1,
+        8.38,
+        1.45
+      ],
+      "target_geo_m": [
+        7.938,
+        32.364,
+        1.659
+      ],
+      "bearing_deg": 2.0,
+      "pitch_deg": 0.5,
+      "fov": 56.0,
+      "position": [
+        8.38,
+        8.14,
+        1.15
+      ],
+      "target": [
+        32.3645,
+        7.3024,
+        1.3594
+      ],
+      "walker": {
+        "position": [
+          8.38,
+          8.14,
+          1.15
+        ],
+        "yaw_rad": -1.605703,
+        "yaw_deg": -92.0,
+        "pitch_rad": 0.00873
+      },
+      "role": "care_sightline",
+      "eye_height_above_ffl_m": 1.15
+    },
+    "care_seated_north": {
+      "id": "care_seated_north",
+      "label": "Care Suite \u2014 Visitor Chair Position Looking North Through 12\u201315 ft Full-Height Glazing to Colony Garden",
+      "position_geo_m": [
+        5.7,
+        9.81,
+        1.5
+      ],
+      "target_geo_m": [
+        7.374,
+        33.751,
+        1.709
+      ],
+      "bearing_deg": 4.0,
+      "pitch_deg": 0.5,
+      "fov": 56.0,
+      "position": [
+        9.81,
+        9.54,
+        1.2
+      ],
+      "target": [
+        33.7506,
+        7.8659,
+        1.4094
+      ],
+      "walker": {
+        "position": [
+          9.81,
+          9.54,
+          1.2
+        ],
+        "yaw_rad": -1.640609,
+        "yaw_deg": -94.0,
+        "pitch_rad": 0.00873
+      },
+      "role": "care_sightline",
+      "eye_height_above_ffl_m": 1.2
+    },
+    "care_standing_glazing": {
+      "id": "care_standing_glazing",
+      "label": "Care Suite \u2014 Standing Near Broad North Window Looking Out Over Boundary Greenery & 12 m Road",
+      "position_geo_m": [
+        6.71,
+        10.52,
+        1.93
+      ],
+      "target_geo_m": [
+        7.861,
+        32.487,
+        1.546
+      ],
+      "bearing_deg": 3.0,
+      "pitch_deg": -1.0,
+      "fov": 58.0,
+      "position": [
+        10.52,
+        8.53,
+        1.63
+      ],
+      "target": [
+        32.4865,
+        7.3788,
+        1.246
+      ],
+      "walker": {
+        "position": [
+          10.52,
+          8.53,
+          1.63
+        ],
+        "yaw_rad": -1.623156,
+        "yaw_deg": -93.0,
+        "pitch_rad": -0.01745
+      },
+      "role": "care_sightline",
+      "eye_height_above_ffl_m": 1.63
+    },
+    "care_east_court_glimpse": {
+      "id": "care_east_court_glimpse",
+      "label": "Care Suite \u2014 East Window Looking Across 10.5 \u00d7 19 ft Car Bay & 9 m East Road to Basketball Court",
+      "position_geo_m": [
+        8.4,
+        9.85,
+        1.5
+      ],
+      "target_geo_m": [
+        26.386,
+        9.222,
+        1.814
+      ],
+      "bearing_deg": 92.0,
+      "pitch_deg": 1.0,
+      "fov": 54.0,
+      "position": [
+        9.85,
+        6.84,
+        1.2
+      ],
+      "target": [
+        9.2219,
+        -11.1463,
+        1.5141
+      ],
+      "walker": {
+        "position": [
+          9.85,
+          6.84,
+          1.2
+        ],
+        "yaw_rad": 3.106686,
+        "yaw_deg": 178.0,
+        "pitch_rad": 0.01745
+      },
+      "role": "care_sightline",
+      "eye_height_above_ffl_m": 1.2
+    },
+    "care_interior_overview": {
+      "id": "care_interior_overview",
+      "label": "Care Suite \u2014 Interior Showing 7 \u00d7 3.5 ft South-to-North Bed (Head South, Feet North), Bedside & Veranda Slider",
+      "position_geo_m": [
+        8.35,
+        10.55,
+        1.82
+      ],
+      "target_geo_m": [
+        5.656,
+        7.102,
+        1.36
+      ],
+      "bearing_deg": 218.0,
+      "pitch_deg": -6.0,
+      "fov": 66.0,
+      "position": [
+        10.55,
+        6.89,
+        1.52
+      ],
+      "target": [
+        7.1017,
+        9.5841,
+        1.0601
+      ],
+      "walker": {
+        "position": [
+          10.55,
+          6.89,
+          1.52
+        ],
+        "yaw_rad": 0.907571,
+        "yaw_deg": 52.0,
+        "pitch_rad": -0.10472
+      },
+      "role": "interior_verification",
+      "eye_height_above_ffl_m": 1.52
+    },
+    "double_height_living_void": {
+      "id": "double_height_living_void",
+      "label": "Double-Height Living Hall (~23 ft Clear) \u2014 Guarded Upper Gallery, Rooflight & Care Suite Glazing",
+      "position_geo_m": [
+        8.95,
+        4.75,
+        1.85
+      ],
+      "target_geo_m": [
+        3.757,
+        7.995,
+        2.82
+      ],
+      "bearing_deg": 302.0,
+      "pitch_deg": 9.0,
+      "fov": 68.0,
+      "position": [
+        4.75,
+        6.29,
+        1.55
+      ],
+      "target": [
+        7.995,
+        11.4832,
+        2.5199
+      ],
+      "walker": {
+        "position": [
+          4.75,
+          6.29,
+          1.55
+        ],
+        "yaw_rad": -0.558505,
+        "yaw_deg": -32.0,
+        "pitch_rad": 0.15708
+      },
+      "role": "interior_verification",
+      "eye_height_above_ffl_m": 1.55
+    },
+    "compact_corner_stair": {
+      "id": "compact_corner_stair",
+      "label": "Compact 12 \u00d7 7.5 ft Corner Staircase \u2014 Open North Arrival, Flight 1 South, Tall East Window & South Landing",
+      "position_geo_m": [
+        9.15,
+        4.45,
+        1.82
+      ],
+      "target_geo_m": [
+        9.004,
+        0.269,
+        1.454
+      ],
+      "bearing_deg": 182.0,
+      "pitch_deg": -5.0,
+      "fov": 66.0,
+      "position": [
+        4.45,
+        6.09,
+        1.52
+      ],
+      "target": [
+        0.2685,
+        6.236,
+        1.1539
+      ],
+      "walker": {
+        "position": [
+          4.45,
+          6.09,
+          1.52
+        ],
+        "yaw_rad": 1.53589,
+        "yaw_deg": 88.0,
+        "pitch_rad": -0.08727
+      },
+      "role": "interior_verification",
+      "eye_height_above_ffl_m": 1.52
+    },
+    "north_veranda_l_route": {
+      "id": "north_veranda_l_route",
+      "label": "Covered West Care Veranda & North 3 ft Clear Garden Passage \u2014 Teak-Collared Columns & NW Garden",
+      "position_geo_m": [
+        3.2,
+        10.6,
+        1.75
+      ],
+      "target_geo_m": [
+        4.88,
+        4.33,
+        1.41
+      ],
+      "bearing_deg": 165.0,
+      "pitch_deg": -3.0,
+      "fov": 62.0,
+      "position": [
+        10.6,
+        12.04,
+        1.45
+      ],
+      "target": [
+        4.3301,
+        10.36,
+        1.1098
+      ],
+      "walker": {
+        "position": [
+          10.6,
+          12.04,
+          1.45
+        ],
+        "yaw_rad": 1.832596,
+        "yaw_deg": 105.0,
+        "pitch_rad": -0.05236
+      },
+      "role": "outdoor_living",
+      "eye_height_above_ffl_m": 1.45
+    },
+    "living_dining_kitchen": {
+      "id": "living_dining_kitchen",
+      "label": "Connected Kitchen, Screened East-Wall Puja, 5 \u00d7 3 ft Dining Table & Open Stair Hall",
+      "position_geo_m": [
+        9.9,
+        5.1,
+        1.82
+      ],
+      "target_geo_m": [
+        13.286,
+        1.714,
+        1.485
+      ],
+      "bearing_deg": 135.0,
+      "pitch_deg": -4.0,
+      "fov": 66.0,
+      "position": [
+        5.1,
+        5.34,
+        1.52
+      ],
+      "target": [
+        1.7142,
+        1.9542,
+        1.1852
+      ],
+      "walker": {
+        "position": [
+          5.1,
+          5.34,
+          1.52
+        ],
+        "yaw_rad": 2.356194,
+        "yaw_deg": 135.0,
+        "pitch_rad": -0.06981
+      },
+      "role": "interior_verification",
+      "eye_height_above_ffl_m": 1.52
+    },
+    "caregiver_nw_pocket": {
+      "id": "caregiver_nw_pocket",
+      "label": "Open Northwest Corner Garden \u2014 Lawn, Stepping Stones, Care Veranda & Caregiver Courtyard",
+      "position_geo_m": [
+        0.55,
+        11.4,
+        1.85
+      ],
+      "target_geo_m": [
+        5.88,
+        6.601,
+        1.222
+      ],
+      "bearing_deg": 132.0,
+      "pitch_deg": -5.0,
+      "fov": 62.0,
+      "position": [
+        11.4,
+        14.69,
+        1.55
+      ],
+      "target": [
+        6.6006,
+        9.3597,
+        0.9225
+      ],
+      "walker": {
+        "position": [
+          11.4,
+          14.69,
+          1.55
+        ],
+        "yaw_rad": 2.408554,
+        "yaw_deg": 138.0,
+        "pitch_rad": -0.08727
+      },
+      "role": "exterior_verification",
+      "eye_height_above_ffl_m": 1.55
+    },
+    "first_floor_terrace_outlook": {
+      "id": "first_floor_terrace_outlook",
+      "label": "First-Floor East Terrace \u2014 Elevated Outlook Over Shallow Entry Porch, East Court & 9 m Road",
+      "position_geo_m": [
+        12.4,
+        4.1,
+        5.508
+      ],
+      "target_geo_m": [
+        29.983,
+        7.837,
+        4.566
+      ],
+      "bearing_deg": 78.0,
+      "pitch_deg": -3.0,
+      "fov": 60.0,
+      "position": [
+        4.1,
+        2.84,
+        5.208
+      ],
+      "target": [
+        7.8373,
+        -14.7425,
+        4.266
+      ],
+      "walker": {
+        "position": [
+          4.1,
+          2.84,
+          5.208
+        ],
+        "yaw_rad": -2.932153,
+        "yaw_deg": -168.0,
+        "pitch_rad": -0.05236
+      },
+      "role": "upper_terrace",
+      "eye_height_above_ffl_m": 5.21
+    },
+    "east_entrance_exterior": {
+      "id": "east_entrance_exterior",
+      "label": "East Entrance \u2014 Shallow 10 \u00d7 3 ft Open Porch, Two 150 mm Steps (+300 mm Datum) & Lower Car Bay (\u00b10 mm)",
+      "position_geo_m": [
+        22.8,
+        6.4,
+        1.75
+      ],
+      "target_geo_m": [
+        8.329,
+        6.905,
+        2.509
+      ],
+      "bearing_deg": 272.0,
+      "pitch_deg": 3.0,
+      "fov": 48.0,
+      "position": [
+        6.4,
+        -7.56,
+        1.45
+      ],
+      "target": [
+        6.9053,
+        6.9113,
+        2.2089
+      ],
+      "walker": {
+        "position": [
+          6.4,
+          -7.56,
+          1.45
+        ],
+        "yaw_rad": -0.034907,
+        "yaw_deg": -2.0,
+        "pitch_rad": 0.05236
+      },
+      "role": "exterior_hero"
+    },
+    "ne_corner_two_roads": {
+      "id": "ne_corner_two_roads",
+      "label": "Northeast Corner \u2014 12 m North Road, 9 m East Road, Lower Car Bay, Shallow Porch & Care Suite",
+      "position_geo_m": [
+        23.2,
+        20.4,
+        2.6
+      ],
+      "target_geo_m": [
+        10.65,
+        8.281,
+        1.227
+      ],
+      "bearing_deg": 226.0,
+      "pitch_deg": -4.5,
+      "fov": 48.0,
+      "position": [
+        20.4,
+        -7.96,
+        2.3
+      ],
+      "target": [
+        8.281,
+        4.5896,
+        0.927
+      ],
+      "walker": {
+        "position": [
+          20.4,
+          -7.96,
+          2.3
+        ],
+        "yaw_rad": 0.767945,
+        "yaw_deg": 44.0,
+        "pitch_rad": -0.07854
+      },
+      "role": "exterior_hero"
+    }
+  }
+}

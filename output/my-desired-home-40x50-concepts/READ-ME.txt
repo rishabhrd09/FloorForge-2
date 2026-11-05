@@ -1,0 +1,24 @@
+MY DESIRED HOME — 40 × 50 CONCEPT PACKAGE
+
+Four independent proposals based on the ORIGINAL 55 × 60 My Desired Home.
+Original projects and the sample gallery are unchanged. This is a review package,
+not a registered FloorForge sample or completed 3D model.
+
+A — Balanced care enlargement (recommended starting point).
+B — Exact original care-room dimensions; larger drawing/living areas.
+C — Largest care room; smaller drawing room.
+D — Original care rectangle rotated; north path; no upper living void.
+
+Each option includes ground and first-floor drawings. Original reference plans
+and Tirumala context are included. All drawings are north-up.
+The shared exterior context places garden/12 m road north and court/9 m road east.
+These areas are outside the private 2,000 sq ft plot.
+
+implementation-prompt.txt is the complete reusable prompt.
+concepts.json contains exact concept geometry in feet.
+room-schedule.csv lists rooms, dimensions and areas.
+validation.json records plot, overlap, door and connection checks.
+source-integrity.json verifies source files were unchanged.
+
+Concept only: setbacks, boundary openings, structure, ventilation, stair headroom,
+usable care access and equipment clearances need design review.

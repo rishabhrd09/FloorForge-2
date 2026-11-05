@@ -1,0 +1,125 @@
+{
+  "errors": [],
+  "records": [
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "square",
+      "floor": "ground",
+      "room": "P",
+      "summary": "4 × 4 ft puja · 157.75 sq ft kitchen · Balanced enclosed puja with a square prayer space.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "square",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "compact",
+      "floor": "ground",
+      "room": "P",
+      "summary": "3 × 4 ft puja · 162.25 sq ft kitchen · Most kitchen space of these three enclosed-room options.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "compact",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "deep",
+      "floor": "ground",
+      "room": "P",
+      "summary": "3.5 × 4.5 ft puja · 158 sq ft kitchen · Extra depth between the west doorway and east-wall altar.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "deep",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "square",
+      "floor": "ground",
+      "room": "P",
+      "summary": "4 × 4 ft puja · 157.75 sq ft kitchen · Balanced enclosed puja with a square prayer space.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "square",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "compact",
+      "floor": "ground",
+      "room": "P",
+      "summary": "3 × 4 ft puja · 162.25 sq ft kitchen · Most kitchen space of these three enclosed-room options.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "compact",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "deep",
+      "floor": "ground",
+      "room": "P",
+      "summary": "3.5 × 4.5 ft puja · 158 sq ft kitchen · Extra depth between the west doorway and east-wall altar.",
+      "prayerArrow": true,
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "deep",
+      "floor": "first",
+      "room": "U1",
+      "summary": "Common first floor: two master bedrooms, office, family lounge, open terrace and stair to roof.",
+      "prayerArrow": false,
+      "overflow": []
+    }
+  ]
+}

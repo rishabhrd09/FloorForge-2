@@ -1,0 +1,31 @@
+TIRUMALA 2 / P12 AND TIRUMALA 3 / P13 — 30 OCTOBER 2026
+
+Both samples are updated in the main Sample projects gallery. Plot remains 40 ft north–south x 50 ft east–west. Model and furniture scale are unchanged.
+
+TIRUMALA 2 — P12
+User-selected 1.5 ft south extension, 11 ft 7 3/4 in x 14 ft 11 in maximum, 158.6 sq ft net (notched).
+Compact 2 ft x 14 in closed drawer table; no extra ICU chairs. Full-size recliner retained and re-centred 9 in south.
+Trade-off: about 22.4 sq ft transfers from connected living into the ICU. Kitchen-side open strip is 4 ft 5 3/4 in. Living–veranda folding wood/net entry is 3 ft 5 5/8 in clear between jambs. ICU hall wood/glass layers move with the wall; separate veranda glass remains.
+
+TIRUMALA 3 — P13 (revision of P11)
+ICU extends 2 ft east to align with kitchen front; clear size 11 ft 3 in x 13 ft 4 7/8 in, 150.8 sq ft (previously 128.3 sq ft).
+5 ft east forecourt retained. Kitchen, living, veranda, drawing, master suite, wash gully, stairs and car bay remain unchanged.
+The two extra ICU chairs and tall cupboard are removed; one companion chair, TV, full-size recliner and compact drawer table remain. Bed is re-centred 1 ft east; head west and feet east unchanged.
+All ICU doorways stay in place. The east window and TV follow the extended east wall. Upper enclosed rooms and gallery are unchanged; the open terrace extends over the added ICU roof.
+
+PERCEIVED SPACE THROUGHOUT BOTH HOMES
+Ivory / limestone / teak retained. Quieter floor veining and grout, lighter ceilings/cabinetry, neutral-warm daytime room lighting and gentler interior contrast. Real 1.63 m eye-level cameras; no scaling of the house or furniture.
+Three free-standing decorative pots were removed from the east cross-route; veranda/corner pots and the north garden remain.
+Corrected the P12 door-preview camera that could start on the coffee table and the P13 double-height camera that started too close to the wall. Every interior shortcut is checked for correct floor height and unobstructed standing space.
+Corrected repeated vertices in the straightened P13 forecourt so its actual rendered walking surface remains at the raised house level.
+
+VALIDATION
+13 Python geometry tests passed. 80 viewer/physics checks passed, including actual simulated walking, both independent ICU door layers, lower porch/raised house levels, stairs, upper rooms and terrace. P13 route around both bed ends and across the forecourt to the wash gully passes.
+Current gallery loading, room cameras, specifications, 2D plans and 3D views are checked in the local browser; see browser-checks.json. Package hashes and ZIPs are recorded in delivery-checks.json.
+
+RUN
+cd /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home
+bash start.sh
+Open Sample projects, then select Tirumala 2 or Tirumala 3. If Studio is already open, reload it and reselect the sample.
+
+Original samples and their exports are archived in output/tirumala-spacious-gallery/before/. Source P11/P12 reference JSONs and all other reference gallery projects are preserved.

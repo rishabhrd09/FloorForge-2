@@ -1,0 +1,74 @@
+{
+  "samples": {
+    "tirumala-2": {
+      "planHash": "eb3784fa16fd77fca8b8e2d4631bf9f89e17502469a7028ecb1fd9937c090e85",
+      "ICU": [
+        "11\u20327\u00be\u2033",
+        "14\u203211\u2033"
+      ],
+      "ICUAreaSqFt": 158.63,
+      "otherSpacesPreserved": [
+        "g-bedroom",
+        "g-bath",
+        "g-drawing",
+        "g-caregiver",
+        "g-caregiver-bath",
+        "g-care-court",
+        "g-kitchen-store",
+        "g-access-lobby",
+        "g-veranda",
+        "g-wash-gully",
+        "g-kitchen",
+        "g-stair",
+        "u-master",
+        "u-master-bath",
+        "u-study",
+        "u-bedroom",
+        "u-bath",
+        "u-gallery",
+        "u-terrace"
+      ],
+      "originalSourcePlanPreserved": true,
+      "manifestFilesVerified": 61,
+      "zipVerified": true,
+      "galleryDisplayOption": "P12",
+      "spaciousPresentation": "p12-open-interiors-2026-10-30"
+    },
+    "tirumala-3": {
+      "planHash": "22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba",
+      "ICU": [
+        "11\u20323\u2033",
+        "13\u20324\u215e\u2033"
+      ],
+      "ICUAreaSqFt": 150.82,
+      "otherSpacesPreserved": [
+        "g-bedroom",
+        "g-bath",
+        "g-drawing",
+        "g-caregiver",
+        "g-caregiver-bath",
+        "g-care-court",
+        "g-kitchen-store",
+        "g-access-lobby",
+        "g-veranda",
+        "g-wash-gully",
+        "g-kitchen",
+        "g-living",
+        "g-stair",
+        "u-master",
+        "u-master-bath",
+        "u-study",
+        "u-bedroom",
+        "u-bath",
+        "u-gallery"
+      ],
+      "originalSourcePlanPreserved": true,
+      "manifestFilesVerified": 61,
+      "zipVerified": true,
+      "galleryDisplayOption": "P13",
+      "spaciousPresentation": "p12-open-interiors-2026-10-30"
+    }
+  },
+  "otherReferenceFilesUnchanged": 292,
+  "liveGalleryChecksPassed": 55
+}

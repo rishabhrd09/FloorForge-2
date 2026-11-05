@@ -1,0 +1,61 @@
+{
+  "originalFilesPreserved": 58,
+  "samples": {
+    "tirumala-2": {
+      "planHash": "92267529bdd64c345b4c90ad1f7f6641654a45b4453d05091cd31cb274fd41d1",
+      "groundRoomsUnchanged": [
+        "g-bedroom",
+        "g-bath",
+        "g-care",
+        "g-drawing",
+        "g-caregiver",
+        "g-caregiver-bath",
+        "g-care-court",
+        "g-kitchen-store",
+        "g-access-lobby",
+        "g-veranda",
+        "g-wash-gully"
+      ],
+      "sourceVersion": "p12-open-porch-v33",
+      "manifestFilesVerified": 55,
+      "zipVerified": true,
+      "upperAreasSqFt": {
+        "u-master": 276.69,
+        "u-master-bath": 48.0,
+        "u-study": 92.17,
+        "u-bedroom": 106.17,
+        "u-bath": 37.59,
+        "u-gallery": 140.28,
+        "u-terrace": 363.94
+      }
+    },
+    "tirumala-3": {
+      "planHash": "820b4bc2d572d831c73876eb0aef3e6b5d9ae7b9d61679ab6111af657ef6502b",
+      "groundRoomsUnchanged": [
+        "g-bedroom",
+        "g-bath",
+        "g-care",
+        "g-drawing",
+        "g-caregiver",
+        "g-caregiver-bath",
+        "g-care-court",
+        "g-kitchen-store",
+        "g-access-lobby",
+        "g-veranda",
+        "g-wash-gully"
+      ],
+      "sourceVersion": "p11-veranda-return-trim-v32",
+      "manifestFilesVerified": 55,
+      "zipVerified": true,
+      "upperAreasSqFt": {
+        "u-master": 276.69,
+        "u-master-bath": 48.0,
+        "u-study": 92.17,
+        "u-bedroom": 106.17,
+        "u-bath": 37.59,
+        "u-gallery": 140.28,
+        "u-terrace": 334.39
+      }
+    }
+  }
+}

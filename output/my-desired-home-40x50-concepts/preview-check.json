@@ -1,0 +1,199 @@
+{
+  "errors": [],
+  "checks": [
+    {
+      "width": 784,
+      "option": "A",
+      "floor": "ground",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 16′ E–W × 22′3″ N–S; 356.3 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 784,
+      "option": "A",
+      "floor": "first",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "B3 · Upper master — 16′ E–W × 13′6″ N–S; 216 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 784,
+      "option": "B",
+      "floor": "ground",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 13′7″ E–W × 22′3″ N–S; 303.2 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 784,
+      "option": "B",
+      "floor": "first",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "B3 · Upper master — 13′7″ E–W × 13′6″ N–S; 183.8 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 784,
+      "option": "C",
+      "floor": "ground",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 18′ E–W × 22′3″ N–S; 400.9 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 784,
+      "option": "C",
+      "floor": "first",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "B3 · Upper master — 18′ E–W × 13′6″ N–S; 243 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 784,
+      "option": "D",
+      "floor": "ground",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 22′3″ E–W × 13′7″ N–S; 303.2 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 784,
+      "option": "D",
+      "floor": "first",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "B3 · Upper master — 15′9″ E–W × 13′7″ N–S; 214.7 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 784,
+      "option": "original",
+      "floor": "ground",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "ICU · Home care room — 13′7″ E–W × 22′3″ N–S; 303.2 sq ft. Exact polygon from the saved 55 × 60 source project."
+    },
+    {
+      "width": 784,
+      "option": "original",
+      "floor": "first",
+      "rootWidth": 752,
+      "scrollWidth": 752,
+      "overflow": [],
+      "detail": "B3 · Master suite · terrace access — 13′ E–W × 20′4″ N–S; 263.2 sq ft. Exact polygon from the saved 55 × 60 source project."
+    },
+    {
+      "width": 784,
+      "view": "site",
+      "rootWidth": 752,
+      "scrollWidth": 752
+    },
+    {
+      "width": 360,
+      "option": "A",
+      "floor": "ground",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 16′ E–W × 22′3″ N–S; 356.3 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 360,
+      "option": "A",
+      "floor": "first",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "B3 · Upper master — 16′ E–W × 13′6″ N–S; 216 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 360,
+      "option": "B",
+      "floor": "ground",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 13′7″ E–W × 22′3″ N–S; 303.2 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 360,
+      "option": "B",
+      "floor": "first",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "B3 · Upper master — 13′7″ E–W × 13′6″ N–S; 183.8 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 360,
+      "option": "C",
+      "floor": "ground",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 18′ E–W × 22′3″ N–S; 400.9 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 360,
+      "option": "C",
+      "floor": "first",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "B3 · Upper master — 18′ E–W × 13′6″ N–S; 243 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 360,
+      "option": "D",
+      "floor": "ground",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "ICU · Home care / ICU — 22′3″ E–W × 13′7″ N–S; 303.2 sq ft. Original care room is 6788 × 4150 mm (303.222 sq ft). Both original dimensions are preserved or enlarged. Glass sliding connection to living. Residential care concept; equipment and operating clearances have not been clinically validated."
+    },
+    {
+      "width": 360,
+      "option": "D",
+      "floor": "first",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "B3 · Upper master — 15′9″ E–W × 13′7″ N–S; 214.7 sq ft. North/east bedroom over the care room. The reduced ground plot requires a new structural layout."
+    },
+    {
+      "width": 360,
+      "option": "original",
+      "floor": "ground",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "ICU · Home care room — 13′7″ E–W × 22′3″ N–S; 303.2 sq ft. Exact polygon from the saved 55 × 60 source project."
+    },
+    {
+      "width": 360,
+      "option": "original",
+      "floor": "first",
+      "rootWidth": 328,
+      "scrollWidth": 328,
+      "overflow": [],
+      "detail": "B3 · Master suite · terrace access — 13′ E–W × 20′4″ N–S; 263.2 sq ft. Exact polygon from the saved 55 × 60 source project."
+    },
+    {
+      "width": 360,
+      "view": "site",
+      "rootWidth": 328,
+      "scrollWidth": 328
+    }
+  ],
+  "selectedDrawing": "DR · Drawing — 15′6″ E–W × 13′6″ N–S; 209.3 sq ft. Exactly ONE wooden door, on the east wall from the veranda. All walls to living, caregiver and care room stay solid. No internal family-hall door.",
+  "controlsWorking": true
+}

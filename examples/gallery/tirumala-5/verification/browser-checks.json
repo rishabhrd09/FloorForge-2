@@ -1,0 +1,393 @@
+{
+  "checks": [
+    {
+      "name": "tirumala-5 plan-2d-dimensioned.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-2d-material-overhead.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-first-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-second-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 site-context-plan.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 loads in Studio with 40x50 ft East-facing G+2 layout (storeys=3, 22 spaces), empty car porch default (carVisible=false), and Proposed site mode",
+      "pass": true,
+      "detail": {
+        "buildId": "sample:tirumala-5",
+        "planHash": "55e64cf8c1e64dc7e480704726ec3a2ded3637a013317353cc65ad1c3530d226",
+        "storeys": 3,
+        "roomCount": 22,
+        "widthFt": "40",
+        "depthFt": "50",
+        "facing": "90",
+        "meshCount": 371,
+        "defaultCarVisible": false,
+        "carVisible": false,
+        "carButtonText": "Show car",
+        "siteMode": "proposed",
+        "siteModeButtonText": "Site: Proposed"
+      }
+    },
+    {
+      "name": "tirumala-5: Plan A ICU geometry (201.1 sq ft), tirumala-4 presentation profile, and eye-level shortcuts loaded",
+      "pass": true,
+      "detail": {
+        "display": "Plan A",
+        "projectId": "tirumala-5",
+        "title": "Tirumala 5 · Plan A · GROUND + FIRST + SECOND",
+        "area": 201.06298997320215,
+        "profile": "tirumala-5-plan-a",
+        "reclinerShortcut": true,
+        "verandaOutlookShortcut": true
+      }
+    },
+    {
+      "name": "tirumala-5 specifications dialog displays Tirumala 4 and Home ICU",
+      "pass": true
+    },
+    {
+      "name": "Refined exterior uses leaf planting (no solid red blocks), textured paving/road, edged lawn and limestone boundary",
+      "pass": true,
+      "detail": {
+        "revision": "ivory-boundary-natural-planting-2026-10-31",
+        "redBlocks": false,
+        "pavedTexture": true,
+        "roadTexture": true,
+        "grassPockets": 4,
+        "boundaryMaterial": "t4-boundary-limestone",
+        "sun": 3.15,
+        "vacantLots": 2,
+        "facade": {
+          "exteriorFinishTriangles": 402,
+          "exteriorOpenings": [
+            "drawing-veranda-only",
+            "living-veranda",
+            "icu-east-window",
+            "icu-north-window",
+            "master-rear",
+            "drawing-north",
+            "caregiver-north",
+            "caregiver-rear",
+            "kitchen-east",
+            "icu-veranda-glass",
+            "lightwell-maintenance",
+            "bath-rear",
+            "master-lightwell",
+            "wc-rear",
+            "u-terrace-door",
+            "u-side-terrace-door",
+            "u-master-rear",
+            "u-master-south",
+            "u-office-rear",
+            "u-office-north",
+            "u-bedroom-north",
+            "u-bedroom-terrace",
+            "u-bath-rear",
+            "u-ensuite-rear",
+            "u-gallery-lightwell",
+            "u-master-lightwell",
+            "u-atrium-east",
+            "u-atrium-south",
+            "s2-hall-entry",
+            "s2-hall-garden",
+            "s2-hall-rear",
+            "s2-hall-south"
+          ],
+          "frameColor": "#1d2022",
+          "houseGeometryChanged": false,
+          "neighbours": "Owner-confirmed vacant adjoining lots shown with grass",
+          "revision": "desired-home-exterior-v1-2026-10-31",
+          "source": "my-desired-home",
+          "wallColor": "#f1efea"
+        },
+        "exteriorGlassOpacity": 0.19
+      }
+    },
+    {
+      "name": "Desired Home facade, substantial exterior glass and two vacant adjoining grass lots",
+      "pass": true,
+      "detail": {
+        "exteriorFinishTriangles": 402,
+        "exteriorOpenings": [
+          "drawing-veranda-only",
+          "living-veranda",
+          "icu-east-window",
+          "icu-north-window",
+          "master-rear",
+          "drawing-north",
+          "caregiver-north",
+          "caregiver-rear",
+          "kitchen-east",
+          "icu-veranda-glass",
+          "lightwell-maintenance",
+          "bath-rear",
+          "master-lightwell",
+          "wc-rear",
+          "u-terrace-door",
+          "u-side-terrace-door",
+          "u-master-rear",
+          "u-master-south",
+          "u-office-rear",
+          "u-office-north",
+          "u-bedroom-north",
+          "u-bedroom-terrace",
+          "u-bath-rear",
+          "u-ensuite-rear",
+          "u-gallery-lightwell",
+          "u-master-lightwell",
+          "u-atrium-east",
+          "u-atrium-south",
+          "s2-hall-entry",
+          "s2-hall-garden",
+          "s2-hall-rear",
+          "s2-hall-south"
+        ],
+        "frameColor": "#1d2022",
+        "houseGeometryChanged": false,
+        "neighbours": "Owner-confirmed vacant adjoining lots shown with grass",
+        "revision": "desired-home-exterior-v1-2026-10-31",
+        "source": "my-desired-home",
+        "wallColor": "#f1efea"
+      }
+    },
+    {
+      "name": "Site review has diamond mesh, shadow coverage, eight exterior views and an unobstructed north-road camera",
+      "pass": true,
+      "detail": {
+        "meshFaces": 2,
+        "shadowRadius": 43,
+        "views": 8,
+        "geometryChanged": false,
+        "northCameraX": 18.6,
+        "plotNorth": 12.192
+      }
+    },
+    {
+      "name": "tirumala-5 camera interior_kitchen_living_dining (interior-kitchen-living-dining.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_veranda_living (interior-veranda-living.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera cutaway_roof_off activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 walking level transitions verified (lower porch -0.1524m, ground 0.0m, upper +3.508m) and CPU submission timing",
+      "pass": true,
+      "detail": {
+        "porchFloorY": -0.1524,
+        "livingFloorY": 0,
+        "upperFloorY": 3.508,
+        "cpuSubmissionMsPerFrame": 4.48
+      }
+    },
+    {
+      "name": "Walk through pantry aisle",
+      "pass": true,
+      "detail": {
+        "name": "pantry aisle",
+        "error": 0.04265959526985874,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          2.65,
+          7.982659595269859
+        ]
+      }
+    },
+    {
+      "name": "Walk through forecourt to utility",
+      "pass": true,
+      "detail": {
+        "name": "forecourt to utility",
+        "error": 0.034278450153834794,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          0.7157215498461652,
+          0.56
+        ]
+      }
+    },
+    {
+      "name": "Walk through kitchen to living",
+      "pass": true,
+      "detail": {
+        "name": "kitchen to living",
+        "error": 0.03355649868370136,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          3.7,
+          5.433556498683702
+        ]
+      }
+    },
+    {
+      "name": "Walk through living to ICU",
+      "pass": true,
+      "detail": {
+        "name": "living to ICU",
+        "error": 0.029340399734473444,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          6.35,
+          5.170659600265527
+        ]
+      }
+    },
+    {
+      "name": "Walk through veranda to ICU",
+      "pass": true,
+      "detail": {
+        "name": "veranda to ICU",
+        "error": 0.03355649868370136,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          8,
+          5.366443501316299
+        ]
+      }
+    },
+    {
+      "name": "Continuous walk first terrace → second hall → first terrace",
+      "pass": true,
+      "detail": [
+        {
+          "target": [
+            0.7,
+            5.5
+          ],
+          "position": [
+            0.7,
+            5.451799826518823
+          ],
+          "height": 4.034200191497803,
+          "grounded": true,
+          "error": 0.048200173481177444,
+          "frames": 77
+        },
+        {
+          "target": [
+            0.7,
+            8.35
+          ],
+          "position": [
+            0.7,
+            8.306077813617652
+          ],
+          "height": 5.26200008392334,
+          "grounded": true,
+          "error": 0.043922186382348016,
+          "frames": 158
+        },
+        {
+          "target": [
+            4.8,
+            8.35
+          ],
+          "position": [
+            4.761544935441637,
+            8.349588041338322
+          ],
+          "height": 7.0279998779296875,
+          "grounded": true,
+          "error": 0.038457271095682255,
+          "frames": 221
+        },
+        {
+          "target": [
+            4.8,
+            9.7
+          ],
+          "position": [
+            4.798600673061537,
+            9.650860365117584
+          ],
+          "height": 7.015999794006348,
+          "grounded": true,
+          "error": 0.04915955484194095,
+          "frames": 77
+        },
+        {
+          "target": [
+            4.8,
+            8.35
+          ],
+          "position": [
+            4.799959781045969,
+            8.387388863021219
+          ],
+          "height": 7.0279998779296875,
+          "grounded": true,
+          "error": 0.03738888465284481,
+          "frames": 75
+        },
+        {
+          "target": [
+            0.7,
+            8.35
+          ],
+          "position": [
+            0.7383506780768967,
+            8.350349732272013
+          ],
+          "height": 5.26200008392334,
+          "grounded": true,
+          "error": 0.038352272704754484,
+          "frames": 221
+        },
+        {
+          "target": [
+            0.7,
+            5.5
+          ],
+          "position": [
+            0.7007241988080343,
+            5.553824860005169
+          ],
+          "height": 4.034200191497803,
+          "grounded": true,
+          "error": 0.05382973173339799,
+          "frames": 155
+        },
+        {
+          "target": [
+            0.7,
+            4.15
+          ],
+          "position": [
+            0.7000229727932092,
+            4.194531664307367
+          ],
+          "height": 3.5239999294281006,
+          "grounded": true,
+          "error": 0.04453167023291639,
+          "frames": 80
+        }
+      ]
+    },
+    {
+      "name": "Zero uncaught page errors during Tirumala 5 studio & render verification",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

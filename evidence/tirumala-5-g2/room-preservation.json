@@ -1,0 +1,87 @@
+{
+  "plotUnchanged": true,
+  "roomDifferences": [
+    {
+      "room": "u-terrace",
+      "differenceMm2": 685732.8000000003
+    }
+  ],
+  "unchangedRooms": [
+    {
+      "room": "g-bedroom",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-bath",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-care",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-drawing",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-caregiver",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-caregiver-bath",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-care-court",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-access-lobby",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-veranda",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-wash-gully",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-kitchen",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-living",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "g-stair",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-master",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-master-bath",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-study",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-bedroom",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-bath",
+      "differenceMm2": 0.0
+    },
+    {
+      "room": "u-gallery",
+      "differenceMm2": 0.0
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+TIRUMALA 5 G+2 — REFERENCE REVIEW, 2026-11-05
+
+MEDIA ACTUALLY REVIEWED
+1. Record_2026-08-08-11-52-51_a23b203fd3aafc6dcb84e438dda678b6.mp4
+   720 x 1610, 27.143956 seconds. Contact sheet at 3-second intervals.
+   Repeating exterior reel: ivory horizontal frame/fascia, rectangular aligned
+   porch piers, warm timber canopy soffit, textured stone wall accents and large
+   black-framed openings. It visibly carries an “AI content” label. Therefore it
+   is an aesthetic reference, not proof of a built structure or feasible span.
+2. Record_2026-08-09-03-55-10_a23b203fd3aafc6dcb84e438dda678b6.mp4
+   720 x 1610, 227.230833 seconds. Contact sheet at 12-second intervals; detailed
+   stills at 2, 48 and 186 seconds. This is a screen recording of several reels
+   and social UI, not a surveyed continuous tour of one house. Recurring cues:
+   bright connected living/dining/kitchen, low-contrast large stone floor units,
+   warm pale-wood cabinetry, black sliding frames, floor-length curtains,
+   controlled warm shelf/cove lighting, gray courtyard wall and gravel planting.
+   Some frames look like photographed buildings, but authenticity/measurements
+   cannot be established from the recording. Do not derive dimensions from it.
+3. Fourteen supplied stills inspected in conversation: double-height gallery,
+   stone stair treads with wood handrails, tall windows, opaque white planted
+   balcony edges, sheltered entrance and garden pergola. The user's requirement
+   for opaque external parapets overrides the glass railings in some references.
+
+DESIGN TRANSLATION
+- Retain real 40 x 50 ft scale and room polygons. Spaciousness comes from aligned
+  slab patterns, fewer competing materials, tall glazing and uncluttered routes.
+- Use a physically scaled approximately 1.6 x 3.2 m porcelain slab appearance,
+  fine low-contrast joints, subtle veining, and restrained satin/polished interior
+  reflections. Outdoor walking finishes are matte, not wet mirror surfaces.
+- Use ivory plaster, restrained limestone, teak doors/soffits and charcoal glazing
+  frames. Show frame depth, tracks, jambs and handle hardware. Glass should be
+  transmissive with reflections, not painted gray or opaque blue surfaces.
+- Keep open terrace guards opaque/light, with coping and slight reveal detail.
+  Interior gallery glazing can remain so the double-height space stays connected.
+- Prefer aligned, simple column/fascia expression and modest supported projections.
+  A structural engineer must size reinforcement, members and foundations for G+2;
+  visual alignment is not structural verification.
+- Garden terrace should have manageable planters, paved circulation, drainage
+  and visible parapet enclosure. Avoid implying a heavy deep-soil lawn can be
+  placed on any roof without checking saturated loads and waterproofing.
+
+PRIMARY SOURCES CHECKED
+Laminam — Sizes and Thickness:
+https://www.laminam.com/usa/en/sizes-and-thickness/
+Manufacturer lists 1620 x 3240 mm among its slab formats. These are full firing
+sizes, not automatically final installed/rectified dimensions. It also lists
+different thicknesses/applications; installation suitability remains project
+specific. This supports a large-format rendering module, not a product order.
+
+Schüco — Sliding systems:
+https://www.schueco.com/schueco/architects/products/sliding-systems
+Manufacturer describes large glass units, narrow visible frame widths, different
+sliding/folding configurations and flush integration. This supports the appearance
+of substantial modern glazing while retaining real frames/tracks and operation.
+
+IIT Kanpur / NICEE — Earthquake Tip 25, Why are Load Paths Important in Buildings?
+https://www.iitk.ac.in/nicee/EQTips/EQTip25.pdf
+Primary engineering education source explains transfer through connected slabs,
+beams, columns/walls and foundations, with continuous/direct gravity and lateral
+load paths. The visual model should avoid floating columns and unexplained
+interruptions. It does not establish project-specific structural adequacy.
+
+Institution of Civil Engineers — Structural load paths:
+https://knowledgehub.ice.org.uk/cpd/delivery-exc/structural-load-paths/
+Explains floor-to-beam-to-column-to-foundation load transfer; removing supports
+for an atrium redistributes load. Keep the approved double-height void, but
+acknowledge its supporting structure requires whole-building analysis.
+
+WBDG — Extensive Vegetative Roofs:
+https://stg.wbdg.org/resources/extensive-vegetative-roofs
+Guidance covers drainage, root/waterproofing protection, supporting structure and
+additional wet growing-medium/occupancy loads. An accessible terrace garden is
+not equivalent to a non-accessible extensive vegetative roof. Use this as a
+coordination reference, not as local code compliance or a construction detail.
+
+RENDER PIPELINE REVIEW
+scripts/render_cycles.py is the stronger path: import the viewer presentation
+GLB, preserve generated textures/foliage, use Cycles with Nishita sky, site sun,
+AgX and camera metering. scripts/blender_scene.py reads native scene geometry but
+uses only simple noise materials, missing the richer presentation textures.
+New scoped adapter scripts/render_tirumala_5_cycles.py reuses render_cycles,
+supports named scene cameras, recognizes ICU and T4 facade glass, preserves
+physical UVs, and records its render settings. It never scales or replaces the
+house geometry. Render results still require visual QA for exposure, camera
+occlusion and any GLB export limitations.

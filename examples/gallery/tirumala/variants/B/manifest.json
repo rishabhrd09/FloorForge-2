@@ -1,0 +1,284 @@
+{
+  "banner": "PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION",
+  "build_id": "a952f815f21758238babadbb",
+  "checks": {
+    "dxf": {
+      "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
+      "autocad_gui": "NOT TESTED",
+      "dimension_chains": 35,
+      "dimension_entities": 35,
+      "entities": 816,
+      "layers": [
+        "A-WALL",
+        "A-WIND",
+        "A-DOOR",
+        "A-FLOR",
+        "A-FURN",
+        "A-ANNO",
+        "A-DIMS",
+        "A-STAIR",
+        "A-SITE",
+        "A-TAGS",
+        "A-GRID",
+        "A-LEVL",
+        "A-SECT",
+        "A-EXT",
+        "A-GATE",
+        "A-LAND",
+        "S-GRID"
+      ],
+      "status": "ezdxf_reimport_pass",
+      "units": "mm"
+    },
+    "exterior": {
+      "accessibility_review": "OUTSTANDING",
+      "assemblies": 0,
+      "assembly_count": 0,
+      "geometry_screen": "preliminary_geometry_pass",
+      "landscape_feature_count": 0,
+      "landscape_features": 0,
+      "opening_refinements": 0,
+      "protected_interior": "unchanged",
+      "regulatory_review": "OUTSTANDING",
+      "revision": "84b91126248810bacb89",
+      "structural_review": "OUTSTANDING",
+      "theme": "modern_tropical",
+      "theme_label": "Modern Tropical"
+    },
+    "glb": {
+      "geometries": 512,
+      "node_count": 2970,
+      "separate_viewer": "pending",
+      "status": "trimesh_reimport_pass",
+      "units": "m",
+      "up": "Y"
+    },
+    "ifc": {
+      "bim_viewer": "NOT RUN",
+      "entities": 4012,
+      "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC includes wall/opening/space coordination and movable furniture meshes.",
+      "furnishing_count": 20,
+      "independent_schema_validation": "NOT RUN",
+      "schema": "IFC4",
+      "scope": "Walls, spaces, floor/roof slabs, related apertures, storeys; authored movable furniture meshes when a scene is supplied. No reinforcement or certified MEP.",
+      "status": "STEP_reference_check_pass"
+    }
+  },
+  "draftRevision": 10,
+  "files": {
+    "REVIEW_BEFORE_USE.txt": "3362f303e0aea679abe888974a05de01b132081782b3b0f50093f40f4d192ca2",
+    "building.json": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a",
+    "drawings.pdf": "0d7b627e42d217bb453808a687f15d90dc0415af019f103fb69c106591a5f7f5",
+    "export-checks.json": "c71d03d10864d95b31c27d1129041a087cfe48f6284b636cb8ae9e248a6a1cda",
+    "floorplans.dxf": "9f2737dd5b7a2b510f7eb318cbc0777a3276241213b4148f24fa42b5fe0d22e0",
+    "intent.json": "b01f9b3e5da5c65885fa038b7085a98b9e0bd3142fe1c342b3f0d43dc786ea2f",
+    "model.glb": "e639a8eada7c514287cff747e32d522a42855cce661a9873c8dfe1eb10eb5bc1",
+    "model.ifc": "64d82ea2866ef847bf62322abfae92e07593e8edb675fa9dff0f848312b0e943",
+    "preview.html": "821c063282d6242172bcbffb5c5f5bf0c857e531da1d65126bef5ebb04216c09",
+    "project.floorforge.json": "1d02a0aa411faab7b80ed37eecb8aaada91be4561a606afddde6cb89fcdc73ed",
+    "report.json": "9c1af90b25d68449b67078f4a3ad9f26f9679e0111ea4609767f5819f7e626e2",
+    "review.json": "b57f243333c22a833f3fa6184795d057e9975a2b5d70aa8ee0076efa2fd59fa6",
+    "scene.json": "46068b1d78e7e542a5ef4ea754430b25f84193ee5db767c9caddd3ad6e6cf292",
+    "sheets.json": "125e5683fc80fbc9675ef126355e97987d6b14ac1068fed928ec15e98ce848e3",
+    "sheets/A-001.svg": "d69ef0fa105d5423522117471365dfdc2a8c8ac121787b3ff2c36f64614a75ba",
+    "sheets/A-101.svg": "07b3718c36c1a04a0621f10000bb2229c4b255c8e7e008d47c5e6e4f238571f5",
+    "sheets/A-102.svg": "19624b262f6a2d92b4bc5d2306b30780bd4b8f5791b368c7ba0e12f3f9f45fed",
+    "sheets/A-201.svg": "a519437125095c7a05d71610d4192ad8ee388c7f962187492a9c551e35768c3f",
+    "sheets/A-202.svg": "b7a30b8b2e4d38dbba7a7d05d870a9764cefb6268a139df3eac161559de15b94",
+    "sheets/A-203.svg": "2da5e15918f94c251370715c4b4c15633175fa0ab24a2e070f846354bcabb7e0",
+    "sheets/A-204.svg": "ababb348d2e6c8a1364a0bccb70548e3609d0a6fe22fcb9ec7d2a2e2222231c6",
+    "sheets/A-301.svg": "c14bbcd5b018eca5cfdf2ec4f6a98352734be21f138af7a85daed19d89abd3a3",
+    "sheets/A-302.svg": "a4f4ddd9900681c4784e024d1cb08477cea07d63a46801438863ac03c92998d7",
+    "sheets/A-601.svg": "c16b09fa1abee0b2d72ebc9e5fab0456c7ab643863f0b0400339c4043f10bdf3",
+    "sheets/S-001.svg": "f78ceea8af49342998b8a05c722aadd248dfb37d9800a2ece4012cf0233d1478",
+    "specifications.json": "5fce173045a661060aca55be0728a92810c952771c23c7fb74f2ff07774ed5b6",
+    "DESIGN_GUIDE.md": "8f3a31d00a8c2bc3fb79d7f616510e44623371d3d7ce3dcd637f285cf418453f",
+    "site-context.json": "0944f5187644f754878166d20ede956da80c378c9c2962c108d38af37560a613",
+    "photo-reference-manifest.json": "777b069160640a34dd8bd9f30f955c65c248f02089f446d5e792888267c2a369",
+    "assumptions-register.json": "28b8a67861840372bac50ebe3cee909f8cba8416bcb62ae8ddfe481721cfffaa",
+    "options-manifest.json": "2cc0222d4c764a6f7472712a0497012301ffadbb19fa1f81f81e9cca6a7b28af",
+    "reference-assets/E-01_26044.png": "95ef4d96b5e5904a82858cbd21fe627f506c85eb469c774f82eb529adaa0d43b",
+    "reference-assets/N-01_26039.png": "aac86ea789dd6469109c413039b3d6d33c4c32632f7893d6293ebae7ccaa9544",
+    "reference-assets/N-02_26040.png": "c74872ed7192906966c8f07dbf4af65b2b7a259514862ae2cd2f882f1956c2a8",
+    "reference-assets/N-03_26041.png": "fb1c270db191ea4fdfa4d00edc802eb500b22fd6aff82c55121abd57c1237d6b",
+    "reference-assets/N-04_26042.png": "963ca249627c4654a028df6827d4a9a9bbee68f7e59d24d5ca6d0b4fe6401681",
+    "reference-assets/NE-01_26043.png": "ea195f63e6ba147bf1a7635051bb64166168176049d78b223388ca9327dac557"
+  },
+  "input_sha256": "1d02a0aa411faab7b80ed37eecb8aaada91be4561a606afddde6cb89fcdc73ed",
+  "kernel_sha256": "ed184835aa2bc192374a0a98059295418b496f3238527fb93c1f94c3d4f2e885",
+  "planHash": "16b9ee1fe2f75bf376e63e7fa778b83f90a841620521ba3ffaee94d2aafda206",
+  "runtime": {
+    "Pillow": "12.3.0",
+    "ezdxf": "1.4.4",
+    "numpy": "2.3.5",
+    "python": "3.11.15",
+    "reportlab": "4.4.9",
+    "shapely": "2.1.2",
+    "trimesh": "4.11.1"
+  },
+  "stages": [
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {},
+      "key": "d9d3033fffd3fc3612eefaa2800cf46729a2e5eea61d9f459ec5a002a7b2e0d7",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "b01f9b3e5da5c65885fa038b7085a98b9e0bd3142fe1c342b3f0d43dc786ea2f",
+      "revision": "0.3.0-alpha",
+      "stage": "intent",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "intent": "b01f9b3e5da5c65885fa038b7085a98b9e0bd3142fe1c342b3f0d43dc786ea2f"
+      },
+      "key": "78b510c08438b72182ca03038d37deaa42c0dbac1a7507ebf2ee87df697250bd",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "b01f9b3e5da5c65885fa038b7085a98b9e0bd3142fe1c342b3f0d43dc786ea2f",
+      "revision": "0.3.0-alpha",
+      "stage": "programme",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "programme": "b01f9b3e5da5c65885fa038b7085a98b9e0bd3142fe1c342b3f0d43dc786ea2f"
+      },
+      "key": "57d94f7130ee75455ad151726cdd6ceb5baee1cec5e21fc8c792df05e0e424c5",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde",
+      "revision": "0.3.0-alpha",
+      "stage": "layout",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "layout": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde"
+      },
+      "key": "77d80670c46dfb7acc8f98bf9a7b87e3cee8340159f5e5159b2fd37595d99a21",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "2f6d6d8014d85eeabeebe2f6316e0ec5e14036a3dddbfd66593802b777c20895",
+      "revision": "0.3.0-alpha",
+      "stage": "openings",
+      "status": "generated_from_room_adjacency"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "layout": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde"
+      },
+      "key": "5f12a514a10143768bc248a959530b045048932d27cdb3601c595cddd173abcf",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "d65cb1e4800dc02795c169025133eb3fa0b54a665af4ef8f01f6d22bd5395c6e",
+      "revision": "0.3.0-alpha",
+      "stage": "anchors",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "anchors": "d65cb1e4800dc02795c169025133eb3fa0b54a665af4ef8f01f6d22bd5395c6e",
+        "layout": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde"
+      },
+      "key": "8808a7e8ed3f0afb9776d634bcc8c0af1aadbdad03b84f66c41ee214137e63cb",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a",
+      "revision": "0.3.0-alpha",
+      "stage": "exterior",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "layout": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde"
+      },
+      "key": "ab01c1c6329c27030c60b5b94935c216456956e19280ca11e9b9b59f41a079d7",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "1d592c20d55a962a6b45cb6fcaa798197710ede71af9c4ec6b0b792ffe960ce0",
+      "revision": "0.3.0-alpha",
+      "stage": "structure",
+      "status": "not_designed"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "exterior": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a",
+        "layout": "d555d93062e3ffeb45d843441f6c0a5c95b346de06e6294f2b22ef0fe1d84cde",
+        "openings": "2f6d6d8014d85eeabeebe2f6316e0ec5e14036a3dddbfd66593802b777c20895",
+        "structure": "1d592c20d55a962a6b45cb6fcaa798197710ede71af9c4ec6b0b792ffe960ce0"
+      },
+      "key": "4bbbb1d664e5c44693d084691bb740c31efcf514540b1c5eafb6624296d6faef",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "b57f243333c22a833f3fa6184795d057e9975a2b5d70aa8ee0076efa2fd59fa6",
+      "revision": "0.3.0-alpha",
+      "stage": "validate",
+      "status": "preliminary_geometry_pass"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "exterior": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a",
+        "validate": "b57f243333c22a833f3fa6184795d057e9975a2b5d70aa8ee0076efa2fd59fa6"
+      },
+      "key": "1d139546d1719d27b8df8994b6324133e24363a5ed4eff021b75b0e64fe01ee0",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "9c1af90b25d68449b67078f4a3ad9f26f9679e0111ea4609767f5819f7e626e2",
+      "revision": "0.3.0-alpha",
+      "stage": "documents",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "documents": "9c1af90b25d68449b67078f4a3ad9f26f9679e0111ea4609767f5819f7e626e2",
+        "exterior": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a"
+      },
+      "key": "7039994b680ddf4df70ca49c9e8e0f52899059d81ba9b0b06365c2864ed69e52",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "46068b1d78e7e542a5ef4ea754430b25f84193ee5db767c9caddd3ad6e6cf292",
+      "revision": "0.3.0-alpha",
+      "stage": "scene",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "documents": "9c1af90b25d68449b67078f4a3ad9f26f9679e0111ea4609767f5819f7e626e2",
+        "exterior": "f364720e7c92b1631c5853e9a6e106d9691e225133c7e0cdf7da8b6bc16f0d3a",
+        "scene": "46068b1d78e7e542a5ef4ea754430b25f84193ee5db767c9caddd3ad6e6cf292"
+      },
+      "key": "5906f5110276e58cfaa457b3aa55be0b4078c9a2632a941a8642104df98b0095",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "937d9392f3b8fda2c81a68ac90747e7858a110326d926b68a59afff20f3f194f",
+      "revision": "0.3.0-alpha",
+      "stage": "sheets",
+      "status": "generated"
+    },
+    {
+      "external_api_cost_usd": 0,
+      "input_hashes": {
+        "scene": "46068b1d78e7e542a5ef4ea754430b25f84193ee5db767c9caddd3ad6e6cf292"
+      },
+      "key": "36e93202c83196b295d414ea38a96aff6822ac3466b35e49db2c2a5e4901ca4c",
+      "license": "FloorForge authored code; runtime ledger in licenses/",
+      "local_compute_cost": "not estimated",
+      "output_hash": "b8dc7e880bbcf981d5f3b032eca5bbaa7c4a4432f395437446a5710b16ea4879",
+      "revision": "0.3.0-alpha",
+      "stage": "render",
+      "status": "raster_scene_ready"
+    }
+  ],
+  "version": "0.3.0-alpha"
+}

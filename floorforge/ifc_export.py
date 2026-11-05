@@ -90,23 +90,67 @@ def export_ifc(b, scene=None):
     def solids(p,z,depth):
         return [w.solid(part,z,depth) for part in get_parts(p) if part.geom_type=='Polygon' and part.area>1]
     for f in range(b['storeys']):
-        obj=E('IFCSLAB',text(guid('slab/'+str(f))),'$',text('Floor slab / thickness assumption'),'$','$',placements[f],rep(solids(plate(b,f),-150,150)),text('SL-'+str(f)),'.FLOOR.')
+        slab_depth=next((p.get('thickness',150) for p in b.get('floor_plates',[]) if p['floor']==f),150) if b.get('planning',{}).get('g2Revision') else 150
+        obj=E('IFCSLAB',text(guid('slab/'+str(f))),'$',text('Floor slab / thickness assumption'),'$','$',placements[f],rep(solids(plate(b,f),-slab_depth,slab_depth)),text('SL-'+str(f)),'.FLOOR.')
         contents[f].append(obj);properties(obj,'slab/'+str(f))
         p=roof(b,f)
         if not p.is_empty:
-            obj=E('IFCSLAB',text(guid('roof/'+str(f))),'$',text('Roof / thickness assumption'),'$','$',placements[f],rep(solids(p,H-150,150)),text('ROOF-'+str(f)),'.ROOF.')
+            roof_depth=180 if b.get('planning',{}).get('g2Revision') else 150
+            roof_z=H-150
+            if b.get('planning',{}).get('g2Revision'):
+                record=next((r for r in b['roofs'] if r['floor']==f),{})
+                roof_z=record.get('elevation',(f+1)*H)-f*H-(0 if f==2 else roof_depth)
+            obj=E('IFCSLAB',text(guid('roof/'+str(f))),'$',text('Roof / thickness assumption'),'$','$',placements[f],rep(solids(p,roof_z,roof_depth)),text('ROOF-'+str(f)),'.ROOF.')
             contents[f].append(obj);properties(obj,'roof/'+str(f))
     if b.get('planning',{}).get('custom') or b.get('rooftop'):
         for st in b['stairs']:
             if st['to_floor'] is None:continue
+            g2_ground=b.get('planning',{}).get('g2Revision') and st.get('id')=='g-stair' and scene
+            if (st.get('shape') in ('two-flight-l-stair','two-flight-u-stair') and st.get('id')=='s2-stair') or g2_ground:
+                # G+2 uses the authored C-shaped ground stair and stacked L stair,
+                # not the legacy generic switchback. Include their exact treads,
+                # arrival connectors and structural waist meshes in the IFC.
+                prefixes=('stair-','arrival-connector-','g-south-waist','g-west-waist','g-north-waist') if g2_ground else ('s2-west-','s2-south-','s2-north-','s2-turn-landing')
+                stair_nodes=[n for n in (scene or {}).get('nodes',[]) if n['id'].startswith(prefixes) and n['role']=='stair']
+                if stair_nodes:
+                    import numpy as np
+                    from .scene import transformation
+                    meshes=[]
+                    for node in stair_nodes:
+                        asset=scene['assets'][node['asset']]; matrix=transformation(node)
+                        vv=np.array(asset['vertices'],float)@matrix[:3,:3].T+matrix[:3,3]
+                        vv=vv*1000;vv[:,2]-=st['floor']*H
+                        pts=E('IFCCARTESIANPOINTLIST3D','('+','.join('('+','.join(number(x) for x in v)+')' for v in vv)+')')
+                        faces='('+','.join('('+','.join(str(i+1) for i in face)+')' for face in asset['faces'])+')'
+                        meshes.append(E('IFCTRIANGULATEDFACESET',pts,'$', '.T.' if asset.get('closed') else '.F.',faces,'$'))
+                    shp=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+                else:
+                    parts=[w.solid(box(*step['bounds']),step['top']-st['floor']*H-190,190) for step in st['flights']]
+                    shp=rep(parts)
+                stair_name='Ground three-flight C staircase' if g2_ground else 'Second-floor indoor return staircase' if st.get('shape')=='two-flight-u-stair' else 'Second-floor linked L staircase'
+                stair_note='18 retained 175 mm risers plus two 179 mm arrival risers; same authored geometry as 3D' if g2_ground else '20 equal risers; same authored geometry as 3D'
+                stair_type='.USERDEFINED.' if g2_ground else '.HALF_TURN_STAIR.' if st.get('shape')=='two-flight-u-stair' else '.QUARTER_TURN_STAIR.'
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text(stair_name),text(stair_note),'$',placements[st['floor']],shp,text(st['id']),stair_type)
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
+            if st.get('shape')=='quarter-turn':
+                from .stair_geometry import quarter_parts
+                parts=[]
+                for part in quarter_parts(st):
+                    x0,y0,z0,x1,y1,z1=part['bounds'];parts.append(w.solid(box(x0,y0,x1,y1),z0,z1-z0))
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Linked L staircase'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.QUARTER_TURN_STAIR.')
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
             from .stair_geometry import shape as stair_shape
             stair_box=lambda *args: stair_shape(st,box(*args))
             n=st['riser_count']//2;steps=n-1;x=st['x'];y=st['y'];fw=st['flight_width'];land=st['landing_mm'];t=st['tread_mm'];r=st['riser_mm'];parts=[]
+            start_land=0 if st.get('open_arrival') else land
             for j in range(steps):
-                yy=y+land+j*t;bottom=max(0,j*r-80);parts.append(w.solid(stair_box(x,yy,x+fw,yy+t),bottom,(j+1)*r-bottom))
-                yy=y+land+(steps-1-j)*t;bottom=n*r+j*r-90;parts.append(w.solid(stair_box(x+fw+st['well'],yy,x+st['width'],yy+t),bottom,(n+1+j)*r-bottom))
-            parts.append(w.solid(stair_box(x,y+land+steps*t,x+st['width'],y+2*land+steps*t),n*r-160,160))
-            parts.append(w.solid(stair_box(x,y,x+st['width'],y+land),H-160,160))
+                yy=y+start_land+j*t;bottom=max(0,j*r-80);parts.append(w.solid(stair_box(x,yy,x+fw,yy+t),bottom,(j+1)*r-bottom))
+                yy=y+start_land+(steps-1-j)*t;bottom=n*r+j*r-90;parts.append(w.solid(stair_box(x+fw+st['well'],yy,x+st['width'],yy+t),bottom,(n+1+j)*r-bottom))
+            parts.append(w.solid(stair_box(x,y+start_land+steps*t,x+st['width'],y+start_land+land+steps*t),n*r-160,160))
+            if not st.get('open_arrival'):
+                parts.append(w.solid(stair_box(x,y,x+st['width'],y+land),H-160,160))
             obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Linked U staircase'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.HALF_TURN_STAIR.')
             contents[st['floor']].append(obj);properties(obj,st['id'])
         from shapely.geometry import LineString

@@ -1,0 +1,87 @@
+{
+  "images": [
+    {
+      "src": "cycles-revision/exterior_northeast-day.png",
+      "ok": true
+    },
+    {
+      "src": "plan-2d-dimensioned.png",
+      "ok": true
+    },
+    {
+      "src": "plan-first-floor.png",
+      "ok": true
+    },
+    {
+      "src": "plan-second-floor.png",
+      "ok": true
+    },
+    {
+      "src": "cycles-revision/interior/interior_veranda_living-day.png",
+      "ok": true
+    },
+    {
+      "src": "interior-icu-veranda-garden.png",
+      "ok": true
+    },
+    {
+      "src": "upper-gallery.png",
+      "ok": true
+    },
+    {
+      "src": "upper-guest.png",
+      "ok": true
+    },
+    {
+      "src": "second-stair-arrival.png",
+      "ok": true
+    },
+    {
+      "src": "second-terrace.png",
+      "ok": true
+    },
+    {
+      "src": "upper-terrace.png",
+      "ok": true
+    },
+    {
+      "src": "forecourt-utility.png",
+      "ok": true
+    }
+  ],
+  "links": [
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html#plans",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/interior_veranda_living-day.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-gallery.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-guest.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+    "https://www.laminam.com/usa/en/sizes-and-thickness/",
+    "https://www.schueco.com/schueco/architects/products/sliding-systems",
+    "https://www.iitk.ac.in/nicee/EQTips/EQTip25.pdf",
+    "https://stg.wbdg.org/resources/extensive-vegetative-roofs",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-g2/references/review.txt",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/DESIGN_GUIDE.md",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/specifications.json",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision/runtime-acceptance.json"
+  ],
+  "desktopOverflow": false,
+  "missingFiles": [],
+  "mobileOverflow": false,
+  "errors": []
+}

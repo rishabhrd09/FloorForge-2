@@ -1,0 +1,27 @@
+{
+  "errors": [],
+  "desktop": {
+    "width": 752,
+    "scroll": 752,
+    "svg": true,
+    "selected": "US",
+    "detail": "L stair: first floor to roof · 71.75 sq ft clearRepeat the west-then-north L flight above the ground stair. The first-floor approach wraps around the east end to reach the next flight. Proposed roof arrival: 5 × 4 ft landing, enclosed stair head and a 3.5 ft clear timber exit. Roof terrace is one storey above the care-room terrace.",
+    "overflow": []
+  },
+  "mobileGround": {
+    "width": 328,
+    "scroll": 328,
+    "svg": true,
+    "selected": "EN",
+    "detail": "Open indoor entry · 18 sq ft clear4 × 4.5 ft indoor arrival, flush with the kitchen and puja frontage. Enter from PO through a 3.5 ft net-clear single timber door. Hinge at the front corner; the open leaf rests along the EN front wall so the turn into living stays free. No direct front-court doorway.",
+    "overflow": []
+  },
+  "mobileFirst": {
+    "width": 328,
+    "scroll": 328,
+    "svg": true,
+    "selected": "U1",
+    "detail": "Front master suite · 203.5 sq ft clear203.5 sq ft sleeping/seating space: 17 × 11 ft main rectangle plus the east bay. Over drawing, puja and part of kitchen/entry; separate bath/dress over the remaining kitchen. Timber doors to the family lounge and terrace.",
+    "overflow": []
+  }
+}

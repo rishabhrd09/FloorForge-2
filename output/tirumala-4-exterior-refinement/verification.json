@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-10-31T06:45:08.528652+00:00",
+  "entireBuildingUnchanged": true,
+  "geometryHash": "b6484526b3006577c8ea77d195487ec31e7226a90a9804cd2f2d400bc74b78fc",
+  "protectedSampleFilesUnchanged": 418,
+  "exportManifestFilesVerified": 79,
+  "exportZipEntriesVerified": 80,
+  "browserChecksPassed": 45,
+  "browserErrors": [],
+  "earlierTestResults": {
+    "pythonSampleAndPlanTests": 32,
+    "viewerAndWalkingTests": 87
+  },
+  "lowNorthStripAccents": 5,
+  "reviewImagesExist": true
+}

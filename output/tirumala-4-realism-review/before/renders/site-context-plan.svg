@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1180" width="1600" height="1180" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+<defs>
+<pattern id="paverHatch" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0,4 L8,4 M4,0 L4,8" stroke="#b5948e" stroke-width="0.7" opacity="0.55"/></pattern>
+<pattern id="tileGrid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12,0 L0,0 0,12" fill="none" stroke="#d5cab8" stroke-width="0.7"/></pattern>
+<pattern id="kotaGrid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10,0 L0,0 0,10" fill="none" stroke="#5b6659" stroke-width="0.8"/></pattern>
+</defs>
+<rect width="1600" height="1180" fill="#f6f3ec"/>
+<rect x="28" y="22" width="1544" height="72" rx="8" fill="#213229"/>
+<text x="52" y="53" fill="#f7f4eb" font-size="22" font-weight="700">TIRUMALA 4 — SITE &amp; COLONY CONTEXT PLAN (CALIBRATED TO R07–R14 &amp; V01–V06)</text>
+<text x="52" y="76" fill="#c9d4cc" font-size="12.5">Locked Tirumala 3 (P13) House Geometry · 40 ft N–S × 50 ft E–W (12,192 × 15,240 mm) NE Corner Plot · North Up (+X) · East Right (−Y)</text>
+<rect x="28" y="108" width="1060" height="920" rx="8" fill="#e9e4d8" stroke="#c7bfb0" stroke-width="1.5"/>
+<rect x="429.0" y="771.6" width="221.0" height="198.6" fill="#b4c89d" stroke="#7b9864" stroke-width="1.8" rx="3"/>
+<text x="539.5" y="862.2" fill="#3e5133" font-size="12" font-weight="700" text-anchor="middle">SOUTH ADJOINING VACANT LAND</text>
+<text x="539.5" y="880.2" fill="#536548" font-size="10.5" text-anchor="middle">Owner-confirmed: no adjoining house · Grass representation</text>
+<rect x="236.8" y="583.2" width="181.2" height="176.8" fill="#b4c89d" stroke="#7b9864" stroke-width="1.8" rx="3"/>
+<text x="328.1" y="665.5" fill="#3e5133" font-size="11.5" font-weight="700" text-anchor="middle">WEST ADJOINING VACANT LAND</text>
+<text x="328.1" y="682.5" fill="#536548" font-size="10" text-anchor="middle">Grass · No adjoining house</text>
+<rect x="229.5" y="230.8" width="166.7" height="178.3" fill="#dcd5c9" stroke="#8c7f6c" stroke-width="1.5" rx="3"/>
+<text x="313.6" y="320.6" fill="#4a4033" font-size="11" font-weight="700" text-anchor="middle">COLONY RESIDENCES (R09 / R13 / V04)</text>
+<rect x="215.0" y="409.2" width="797.5" height="174.0" fill="#c8c4ba" stroke="#9e998e" stroke-width="1.2"/>
+<rect x="650.0" y="209.0" width="130.5" height="783.0" fill="#c8c4ba" stroke="#9e998e" stroke-width="1.2"/>
+<rect x="429.0" y="566.4" width="221.0" height="16.8" fill="url(#paverHatch)" stroke="#a88983" stroke-width="0.8"/>
+<rect x="650.0" y="583.2" width="16.7" height="176.8" fill="url(#paverHatch)" stroke="#a88983" stroke-width="0.8"/>
+<text x="539.8" y="492.1" fill="#2f3833" font-size="13" font-weight="700" text-anchor="middle">12.0 m WIDE NORTH COLONY ROAD (39 ft 4 in · Brushed Concrete + Storm-Drain Slabs)</text>
+<text x="539.8" y="509.1" fill="#4c5650" font-size="10.5" text-anchor="middle">Owner-confirmed (R07, R08, R11, V02, V04) · Paver verges &amp; angled LED street luminaires</text>
+<g transform="translate(734.1,713.6) rotate(-90)">
+<text x="0" y="-3" fill="#2f3833" font-size="12" font-weight="700" text-anchor="middle">9.0 m WIDE EAST COLONY ROAD (29 ft 6 in)</text>
+<text x="0" y="11" fill="#4c5650" font-size="9.5" text-anchor="middle">Principal Arrival Road (R11, V01, V02)</text>
+</g>
+<rect x="415.1" y="259.8" width="249.4" height="149.4" fill="#9ec284" stroke="#6e5c64" stroke-width="2.2" rx="4"/>
+<rect x="432.5" y="162.6" width="210.3" height="92.8" fill="#e5ebf0" stroke="#3a4e68" stroke-width="2.0" rx="3"/>
+<text x="539.8" y="330.6" fill="#1f3b1e" font-size="13" font-weight="700" text-anchor="middle">NORTH COLONY GARDEN / PARK (R08 · N-01–N-03)</text>
+<text x="539.8" y="346.6" fill="#2c4f2b" font-size="10.5" text-anchor="middle">Low mauve-taupe wall + grille · Arched gate · Play equipment · Mature Neem &amp; Ashoka canopy</text>
+<text x="539.8" y="213.0" fill="#23364d" font-size="11.5" font-weight="700" text-anchor="middle">OPPOSITE WHITE &amp; NAVY-BLUE-GREY HOUSE (R08 / N-01)</text>
+<rect x="780.5" y="549.8" width="210.3" height="203.0" fill="#6fa074" stroke="#6e5c64" stroke-width="2.2" rx="4"/>
+<rect x="806.6" y="571.5" width="155.2" height="159.5" fill="#538c5b" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="806.6" y="617.9" width="49.3" height="66.7" fill="#b85446" stroke="#ffffff" stroke-width="1.2"/>
+<text x="884.9" y="645.2" fill="#ffffff" font-size="12.5" font-weight="700" text-anchor="middle">EAST BASKETBALL COURT (V01 · E-01–E-03)</text>
+<text x="884.9" y="661.2" fill="#eef5ee" font-size="10" text-anchor="middle">Chain-link fence · Hoop &amp; backboard · Post-top park lamp</text>
+<rect x="429.0" y="583.2" width="221.0" height="176.8" fill="#efe8da" stroke="#8e7e85" stroke-width="3.0"/>
+<rect x="627.9" y="631.2" width="22.1" height="126.6" fill="url(#tileGrid)" stroke="#b8ac99" stroke-width="1.0"/>
+<rect x="560.1" y="585.4" width="89.9" height="43.6" fill="url(#kotaGrid)" stroke="#7d382e" stroke-width="1.8"/>
+<rect x="582.6" y="594.0" width="58.0" height="25.8" fill="none" stroke="#495449" stroke-width="1.3" stroke-dasharray="5,4" rx="4"/>
+<text x="610.1" y="603.0" fill="#2b382c" font-size="9.5" font-weight="700" text-anchor="middle">LOWER CAR PORCH (−6 in)</text>
+<text x="610.1" y="615.0" fill="#3d4b3e" font-size="8.5" text-anchor="middle">Default Empty · Dashed Parking Check</text>
+<rect x="442.2" y="585.4" width="91.1" height="6.7" fill="#8ab872" stroke="#5d8749" stroke-width="1.0"/>
+<rect x="442.2" y="631.2" width="185.7" height="126.6" fill="#faf6ee" stroke="#6e6559" stroke-width="1.4"/>
+<polygon points="518.8,665.8 518.8,680.5 518.8,757.8 470.9,757.8 442.2,757.8 442.2,710.1 470.9,710.1 470.9,680.5 470.9,656.5 476.0,656.5 476.0,680.5 504.3,680.5 504.3,665.8" fill="#f5efe4" stroke="#5c5346" stroke-width="1.1"/>
+<text x="483.5" y="699.9" fill="#3d352b" font-size="8.8" font-weight="600" text-anchor="middle">Master</text>
+<polygon points="468.8,672.6 442.2,672.6 442.2,707.9 468.8,707.9" fill="#e3ebf0" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="625.7,631.2 566.5,631.2 566.5,680.9 625.7,680.9" fill="#dcefe8" stroke="#5c5346" stroke-width="1.4"/>
+<text x="596.1" y="652.1" fill="#174236" font-size="9.5" font-weight="700" text-anchor="middle">HOME ICU (P13)</text>
+<text x="596.1" y="663.1" fill="#174236" font-size="8.0" text-anchor="middle">150.8 sf</text>
+<polygon points="531.1,594.2 484.7,594.2 484.7,638.9 531.1,638.9" fill="#f4ede0" stroke="#5c5346" stroke-width="1.1"/>
+<text x="507.9" y="619.6" fill="#3d352b" font-size="8.8" font-weight="600" text-anchor="middle">Drawing</text>
+<polygon points="482.5,594.2 442.2,594.2 442.2,638.9 482.5,638.9" fill="#f5efe4" stroke="#5c5346" stroke-width="1.1"/>
+<text x="462.4" y="619.6" fill="#3d352b" font-size="8.8" font-weight="600" text-anchor="middle">Caregiver</text>
+<polygon points="467.3,641.1 442.2,641.1 442.2,670.4 467.3,670.4" fill="#e3ebf0" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="502.1,656.5 478.2,656.5 478.2,678.3 502.1,678.3" fill="#d8ebd4" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="625.7,727.1 582.6,727.1 582.6,740.2 625.7,740.2" fill="#ede4d4" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="510.8,641.1 469.5,641.1 469.5,654.4 510.8,654.4" fill="#f2ebdf" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="533.3,623.7 533.3,592.1 533.3,585.4 553.6,585.4 560.1,585.4 560.1,617.9 564.3,617.9 564.3,629.0 564.3,636.7 564.3,651.2 564.3,654.5 561.5,654.5 553.6,654.5 535.5,654.5 533.3,654.5 533.3,641.1 533.3,636.8" fill="#e6efe0" stroke="#5c5346" stroke-width="1.1"/>
+<text x="549.7" y="630.9" fill="#3d352b" font-size="8.8" font-weight="600" text-anchor="middle">Veranda</text>
+<polygon points="627.9,742.4 579.7,742.4 579.7,757.8 627.9,757.8" fill="#e5e0d5" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="625.7,699.1 625.7,702.7 625.7,718.4 625.7,720.9 625.7,722.7 625.7,725.0 593.5,725.0 582.6,725.0 580.4,725.0 580.4,683.1 616.9,683.1 619.1,683.1 625.7,683.1 625.7,685.3 625.7,686.8 625.7,693.3 625.7,696.2 625.7,697.6" fill="#f5efe4" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="580.4,738.0 578.6,738.0 577.5,738.0 577.5,737.9 561.5,737.9 561.5,741.9 560.8,741.9 536.9,741.9 536.9,710.0 521.0,710.0 521.0,682.4 521.0,678.1 518.8,678.1 518.8,666.5 521.0,666.5 521.0,663.6 504.3,663.6 504.3,658.5 504.3,656.5 510.8,656.5 513.0,656.5 513.0,654.4 510.8,654.4 510.8,641.1 513.0,641.1 521.0,641.1 521.0,662.5 528.9,662.5 528.9,659.6 528.9,656.7 528.9,641.1 533.3,641.1 533.3,654.5 533.3,656.7 535.5,656.7 552.1,656.7 553.6,656.7 554.7,656.7 561.5,656.7 564.1,656.7 564.3,656.7 564.3,678.8 564.3,683.1 573.1,683.1 580.4,683.1 580.4,725.0" fill="#f5efe4" stroke="#5c5346" stroke-width="1.1"/>
+<polygon points="577.5,757.8 577.5,737.9 536.9,737.9 536.9,710.0 521.0,710.0 521.0,757.8" fill="#f5efe4" stroke="#5c5346" stroke-width="1.1"/>
+<text x="551.4" y="722.3" fill="#3d352b" font-size="9.5" font-weight="700" text-anchor="middle">Living &amp; Dining</text>
+<text x="608.0" y="723.8" fill="#3d352b" font-size="9.0" font-weight="700" text-anchor="middle">Kitchen</text>
+<rect x="644.0" y="577.2" width="12" height="12" fill="#8e7e85" stroke="#ffffff" stroke-width="1.5"/>
+<text x="662.0" y="597.2" fill="#593b47" font-size="9.5" font-weight="700">NE Grooved Corner Pier (R11)</text>
+<line x1="429.0" y1="782.0" x2="650.0" y2="782.0" stroke="#213229" stroke-width="1.5"/>
+<text x="539.5" y="797.0" fill="#213229" font-size="11.5" font-weight="700" text-anchor="middle">50 ft 0 in E–W Plot Depth (15,240 mm)</text>
+<line x1="401.0" y1="583.2" x2="401.0" y2="760.0" stroke="#213229" stroke-width="1.5"/>
+<g transform="translate(387.0,671.6) rotate(-90)">
+<text x="0" y="0" fill="#213229" font-size="11.5" font-weight="700" text-anchor="middle">40 ft 0 in N–S Plot Width (12,192 mm)</text>
+</g>
+<g class="cam-ref"><polygon points="673.2,693.3 637.2,681.0 654.3,660.3" fill="#1c6b4a" fill-opacity="0.22" stroke="#1c6b4a" stroke-width="1.4"/><circle cx="673.2" cy="693.3" r="5.5" fill="#1c6b4a" stroke="#ffffff" stroke-width="1.5"/><rect x="651.2" y="671.3" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="673.2" y="681.8" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R07</text></g>
+<g class="cam-ref"><polygon points="545.6,562.8 530.1,528.1 556.8,526.5" fill="#1c6b4a" fill-opacity="0.22" stroke="#1c6b4a" stroke-width="1.4"/><circle cx="545.6" cy="562.8" r="5.5" fill="#1c6b4a" stroke="#ffffff" stroke-width="1.5"/><rect x="523.6" y="540.8" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="545.6" y="551.3" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R08/N01</text></g>
+<g class="cam-ref"><polygon points="725.4,496.1 708.8,530.3 690.4,510.8" fill="#1c6b4a" fill-opacity="0.22" stroke="#1c6b4a" stroke-width="1.4"/><circle cx="725.4" cy="496.1" r="5.5" fill="#1c6b4a" stroke="#ffffff" stroke-width="1.5"/><rect x="703.4" y="474.1" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="725.4" y="484.6" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R11/V02</text></g>
+<g class="cam-ref"><polygon points="679.0,548.3 655.6,578.2 641.7,555.4" fill="#1c6b4a" fill-opacity="0.22" stroke="#1c6b4a" stroke-width="1.4"/><circle cx="679.0" cy="548.3" r="5.5" fill="#1c6b4a" stroke="#ffffff" stroke-width="1.5"/><rect x="657.0" y="526.3" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="679.0" y="536.8" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R14/V03</text></g>
+<g class="cam-ref"><polygon points="676.1,620.8 710.9,605.6 712.3,632.3" fill="#1c6b4a" fill-opacity="0.22" stroke="#1c6b4a" stroke-width="1.4"/><circle cx="676.1" cy="620.8" r="5.5" fill="#1c6b4a" stroke="#ffffff" stroke-width="1.5"/><rect x="654.1" y="598.8" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="676.1" y="609.3" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">V01/E01</text></g>
+<g class="cam-ref"><polygon points="831.2,496.1 795.9,510.2 795.4,483.5" fill="#b86b1b" fill-opacity="0.22" stroke="#b86b1b" stroke-width="1.4" stroke-dasharray="4,3"/><circle cx="831.2" cy="496.1" r="5.5" fill="#b86b1b" stroke="#ffffff" stroke-width="1.5"/><rect x="809.2" y="474.1" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="831.2" y="484.6" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R09/R13</text></g>
+<g class="cam-ref"><polygon points="768.9,612.1 745.3,641.8 731.5,618.9" fill="#b86b1b" fill-opacity="0.22" stroke="#b86b1b" stroke-width="1.4" stroke-dasharray="4,3"/><circle cx="768.9" cy="612.1" r="5.5" fill="#b86b1b" stroke="#ffffff" stroke-width="1.5"/><rect x="746.9" y="590.1" width="44" height="15" rx="3" fill="#1f2823" fill-opacity="0.88"/><text x="768.9" y="600.6" fill="#ffffff" font-size="9.5" font-weight="700" text-anchor="middle">R10/R12</text></g>
+<g transform="translate(88, 168)">
+<circle cx="0" cy="0" r="34" fill="#ffffff" stroke="#213229" stroke-width="2"/>
+<polygon points="0,-26 -9,12 0,4 9,12" fill="#213229"/>
+<text x="0" y="-39" fill="#213229" font-size="13" font-weight="800" text-anchor="middle">NORTH (+X)</text>
+<text x="44" y="4" fill="#213229" font-size="10.5" font-weight="700">EAST (−Y)</text>
+</g>
+<rect x="1106" y="108" width="466" height="920" rx="8" fill="#ffffff" stroke="#c7bfb0" stroke-width="1.5"/>
+<text x="1128" y="142" fill="#213229" font-size="16" font-weight="800">EVIDENCE &amp; CONFIDENCE REGISTER</text>
+<line x1="1128" y1="152" x2="1550" y2="152" stroke="#d8d2c5" stroke-width="1.2"/>
+<rect x="1128" y="165" width="12" height="12" rx="3" fill="#1c6b4a"/>
+<text x="1148" y="176" fill="#213229" font-size="12.5" font-weight="700">Owner-Confirmed Geometry &amp; Orientation</text>
+<text x="1142" y="196" fill="#444c46" font-size="11">• Plot: 40 ft N–S × 50 ft E–W (12,192 × 15,240 mm) NE corner</text>
+<text x="1142" y="213" fill="#444c46" font-size="11">• North Road: 12.0 m wide concrete road (+X frontage)</text>
+<text x="1142" y="230" fill="#444c46" font-size="11">• East Road: 9.0 m wide principal approach road (−Y frontage)</text>
+<text x="1142" y="247" fill="#444c46" font-size="11">• North Colony Garden &amp; white/navy-blue-grey house (R08, N-01)</text>
+<text x="1142" y="264" fill="#444c46" font-size="11">• East Basketball Court enclosure across 9 m road (V01, E-01)</text>
+<text x="1142" y="281" fill="#444c46" font-size="11">• P13 Home ICU: 11′3″ × 13′4⅞″ (150.8 sq ft) + 5 ft forecourt</text>
+<text x="1142" y="298" fill="#444c46" font-size="11">• G+1 Upper Floor: Master, Ensuite, Study, Guest, Bath, Terrace</text>
+<text x="1142" y="315" fill="#444c46" font-size="11">• Owner correction: South/West adjoining lots are vacant grass land</text>
+<rect x="1128" y="331" width="12" height="12" rx="3" fill="#2b5b84"/>
+<text x="1148" y="342" fill="#213229" font-size="12.5" font-weight="700">Directly Observed in Photos R07–R14 &amp; Video V01–V06</text>
+<text x="1142" y="362" fill="#444c46" font-size="11">• Horizontally grooved NE corner pier &amp; mauve-taupe wall (R11, V02)</text>
+<text x="1142" y="379" fill="#444c46" font-size="11">• Reddish-burgundy Acalypha + white-flowering green hedge (R10, V03)</text>
+<text x="1142" y="396" fill="#444c46" font-size="11">• Interlocking dusty-rose/grey paver verges (R11, R14, V03)</text>
+<text x="1142" y="413" fill="#444c46" font-size="11">• Precast storm-drain slabs with paired circular holes (V01, R13)</text>
+<text x="1142" y="430" fill="#444c46" font-size="11">• Slim dark-grey angled LED street luminaires + court lamp (R09, V01)</text>
+<text x="1142" y="447" fill="#444c46" font-size="11">• Buildings in photos are not assumed to touch the owner's plot</text>
+<rect x="1128" y="463" width="12" height="12" rx="3" fill="#b86b1b"/>
+<text x="1148" y="474" fill="#213229" font-size="12.5" font-weight="700">Estimated / Provisional &amp; Discrepancy Notes</text>
+<text x="1142" y="494" fill="#444c46" font-size="11">• R09/R13 &amp; R10/R12 camera bearings estimated from street geometry</text>
+<text x="1142" y="511" fill="#444c46" font-size="11">• R11 Duplicate Photo Note: 1000145311.jpg appears twice — primary NE</text>
+<text x="1142" y="528" fill="#444c46" font-size="11">•   corner label is owner-confirmed; 'Wall turns from here' is unconfirmed</text>
+<text x="1142" y="545" fill="#444c46" font-size="11">• V06 Video Note: Hand-held roll at 14.5 s not used for compass bearing</text>
+<text x="1142" y="562" fill="#444c46" font-size="11">• Provisional −6 in (−152.4 mm) lower car-porch drop (default car off)</text>
+<text x="1142" y="579" fill="#444c46" font-size="11">• Pre-construction plot trees isolated in 'Existing plot' mode toggle</text>
+<line x1="1128" y1="608" x2="1550" y2="608" stroke="#d8d2c5" stroke-width="1.2"/>
+<text x="1128" y="632" fill="#213229" font-size="14" font-weight="800">CALIBRATED 3D VIEWPOINT PRESETS</text>
+<text x="1128" y="652" fill="#1c6b4a" font-size="10.5" font-weight="700">R07</text>
+<text x="1205" y="652" fill="#213229" font-size="10" font-family="monospace">ref_r07_east_northwest</text>
+<text x="1140" y="666" fill="#555e58" font-size="10">East side looking NW across plot to North garden</text>
+<text x="1128" y="684" fill="#1c6b4a" font-size="10.5" font-weight="700">R08 / N-01</text>
+<text x="1205" y="684" fill="#213229" font-size="10" font-family="monospace">ref_r08_north_garden</text>
+<text x="1140" y="698" fill="#555e58" font-size="10">Looking North across 12 m road into colony park</text>
+<text x="1128" y="716" fill="#1c6b4a" font-size="10.5" font-weight="700">R09 / R13</text>
+<text x="1205" y="716" fill="#213229" font-size="10" font-family="monospace">ref_r09_colony_junction</text>
+<text x="1140" y="730" fill="#555e58" font-size="10">Colony road junction, storm drains &amp; streetlamp</text>
+<text x="1128" y="748" fill="#1c6b4a" font-size="10.5" font-weight="700">R10 / R12</text>
+<text x="1205" y="748" fill="#213229" font-size="10" font-family="monospace">exterior_northeast</text>
+<text x="1140" y="762" fill="#555e58" font-size="10">NE frontage; adjoining land now owner-confirmed vacant</text>
+<text x="1128" y="780" fill="#1c6b4a" font-size="10.5" font-weight="700">R11 / V02</text>
+<text x="1205" y="780" fill="#213229" font-size="10" font-family="monospace">ref_r11_ne_corner</text>
+<text x="1140" y="794" fill="#555e58" font-size="10">NE grooved corner pier &amp; 12 m / 9 m road turn</text>
+<text x="1128" y="812" fill="#1c6b4a" font-size="10.5" font-weight="700">R14 / V03</text>
+<text x="1205" y="812" fill="#213229" font-size="10" font-family="monospace">ref_r14_wall_pole_paving</text>
+<text x="1140" y="826" fill="#555e58" font-size="10">Close study: mauve-taupe wall, hedge, pavers &amp; pole</text>
+<text x="1128" y="844" fill="#1c6b4a" font-size="10.5" font-weight="700">V01 / E-01</text>
+<text x="1205" y="844" fill="#213229" font-size="10" font-family="monospace">ref_v01_east_court_road</text>
+<text x="1140" y="858" fill="#555e58" font-size="10">Looking East across 9 m road to basketball court</text>
+<rect x="28" y="1042" width="1544" height="112" rx="8" fill="#ece7dc" stroke="#c7bfb0" stroke-width="1.2"/>
+<text x="48" y="1068" fill="#213229" font-size="13" font-weight="700">LOCKED HOUSE GEOMETRY &amp; CLEARANCE SUMMARY (TIRUMALA 4 = TIRUMALA 3 / P13):</text>
+<text x="48" y="1090" fill="#3a433d" font-size="11.5">• Plot: 40′0″ × 50′0″ (12,192 × 15,240 mm) · Plinth: +300 mm · Lower Car Porch: −152.4 mm rel. house (+147.6 mm above road, default empty) · Storey Height: 3,508 mm (clear ceiling 3,315 mm)</text>
+<text x="48" y="1110" fill="#3a433d" font-size="11.5">• Home ICU (P13): 11′3″ × 13′4⅞″ (3,429.6 × 4,085.6 mm = 150.8 sq ft) · Bed clearances: 943 mm East foot, 943 mm West head, 988 mm South hall side, 1,342 mm North veranda side</text>
+<text x="48" y="1130" fill="#3a433d" font-size="11.5">• Key Door Clear Widths (between jambs): Hall–ICU Wood+Glass 1,990 mm (6′6⅜″) · ICU–Veranda 1,719 mm (5′7¾″) · Living–Veranda 1,058 mm (3′5⅝″) · Main East Entry 1,262 mm (4′1¾″)</text>
+</svg>

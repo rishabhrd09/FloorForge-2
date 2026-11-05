@@ -2,14 +2,17 @@
 from __future__ import annotations
 import copy
 import math
-from shapely.geometry import Polygon, box
+from shapely.geometry import Polygon, box, LineString
 from shapely.ops import unary_union
 from .spaces import SPACE_REGISTRY
 from .model import DesignError
 
 OPEN_SKY={'terrace','courtyard','drying-yard','void','balcony'}
 def footprint(fl,t):
-    return unary_union([Polygon(r['polygon']).buffer(t if SPACE_REGISTRY[r['kind']]['enclosed'] else 0,join_style=2) for r in fl['rooms']])
+    rooms=[Polygon(r['polygon']).buffer(t if SPACE_REGISTRY[r['kind']]['enclosed'] else 0,join_style=2) for r in fl['rooms']]
+    # Match the compiler's floor outline, including explicitly authored boundary walls.
+    walls=[LineString([w['a'],w['b']]).buffer(t/2,cap_style=3,join_style=2) for w in fl.get('walls',[])]
+    return unary_union(rooms+walls)
 
 def usable(plan,floor):
     if floor<1 or floor>=len(plan['floors']):return Polygon()
@@ -38,9 +41,10 @@ def constraints(project,floor):
         x,y,x1,y1=Polygon(r['polygon']).bounds
         core=next((s for s in plan['stairs'] if r['id'] in s['roomIds']),{})
         width=2*core.get('flightWidth',1000)+core.get('well',200)
-        depth=2*core.get('landing',1050)+(math.ceil(intent['values']['floor_height_mm']/190/2)-1)*core.get('tread',250)
+        depth=(1 if core.get('openArrival') else 2)*core.get('landing',1050)+(math.ceil(intent['values']['floor_height_mm']/190/2)-1)*core.get('tread',250)
+        if core.get('shape')=='quarter-turn':width=depth=core.get('landing',1050)+(math.ceil(intent['values']['floor_height_mm']/190/2)-1)*core.get('tread',250)
         if core.get('rotation')==90:width,depth=depth,width
-        if x1-x<width or y1-y<depth:issues.append({'id':r['id'],'floor':floor-1,'code':'STAIR_FIT','message':f"The staircase below is {(x1-x)/1000:g} × {(y1-y)/1000:g} m. This stair model needs {width/1000:g} × {depth/1000:g} m. Fit the lower staircase first, then continue it upstairs."})
+        if x1-x+.5<width or y1-y+.5<depth:issues.append({'id':r['id'],'floor':floor-1,'code':'STAIR_FIT','message':f"The staircase below is {(x1-x)/1000:g} × {(y1-y)/1000:g} m. This stair model needs {width/1000:g} × {depth/1000:g} m. Fit the lower staircase first, then continue it upstairs."})
         peers=[q for q in current if Polygon(q['polygon']).intersects(Polygon(r['polygon']))]
         if len(peers)>1:issues.append({'floor':floor,'code':'DUPLICATE_STAIR','ids':[q['id'] for q in peers],'message':'Two stairs overlap the connection from below. Keep one aligned staircase; select the extra stair and Delete, or preview Continue stairs.'})
         elif not any(Polygon(q['polygon']).equals(Polygon(r['polygon'])) for q in peers):

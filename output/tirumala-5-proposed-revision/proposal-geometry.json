@@ -1,0 +1,171 @@
+{
+  "status": "PROPOSAL ONLY; no project/source edits",
+  "coordinates": "millimetres; x increases north/right; y increases west/up",
+  "first_floor_level": 3508,
+  "second_floor_level": 7016,
+  "stair": {
+    "width": 1100,
+    "risers": 20,
+    "rise": 175.4,
+    "tread": 280,
+    "gap_between_flights": 100,
+    "ground_stair": "unchanged",
+    "existing_first_arrival": [
+      5150,
+      7800,
+      6300,
+      8900
+    ],
+    "first_approach_landing": [
+      4050,
+      6600,
+      6300,
+      7800
+    ],
+    "first_flight": {
+      "bounds": [
+        1250,
+        6600,
+        4050,
+        7700
+      ],
+      "start": [
+        4050,
+        7150,
+        3508
+      ],
+      "end": [
+        1250,
+        7150,
+        5262
+      ],
+      "direction": "South"
+    },
+    "intermediate_landing": {
+      "bounds": [
+        150,
+        6600,
+        1250,
+        8900
+      ],
+      "top": 5262
+    },
+    "second_flight": {
+      "bounds": [
+        1250,
+        7800,
+        4050,
+        8900
+      ],
+      "start": [
+        1250,
+        8350,
+        5262
+      ],
+      "end": [
+        4050,
+        8350,
+        7016
+      ],
+      "direction": "North"
+    },
+    "second_arrival": [
+      4050,
+      7800,
+      5400,
+      8900
+    ],
+    "proposed_slab_void": [
+      150,
+      6600,
+      4050,
+      8900
+    ],
+    "headroom_minimum_over_ground_treads_mm": 3157.015873015873,
+    "headroom_method": "Analytic 180mm new return waist underside minus existing ground tread tops; minimum at last north-flight riser leading edge x3205.5556mm.",
+    "level_reduction_void": {
+      "before_mm": [
+        1250,
+        4875,
+        6300,
+        7800
+      ],
+      "after_clear_rect_mm": [
+        1250,
+        4875,
+        6300,
+        6600
+      ],
+      "before_sqft": 158.99641174282348,
+      "after_sqft": 93.76711461756257
+    },
+    "notes": [
+      "First-floor start remains indoors; remove former terrace stair door and canopy, close wall with matching atrium glazing or wall.",
+      "Add approach landing inside former double-height edge. Preserve original first-floor bedroom/study/master/bathroom layout except the separately requested bedroom extension.",
+      "Replace current second-floor L stair void by new U stair opening; reconstruct old shaft slab where no longer needed; leave lightwell unchanged.",
+      "Existing second-floor hall door y8975 x4150..5200 remains directly served by new top landing.",
+      "180mm waist/slab are architectural model assumptions only; structural design remains to be reviewed.",
+      "Minimum3157mm is model-geometry headroom only; final downstand beams, finishes and guards must be coordinated before a construction claim."
+    ]
+  },
+  "bedroom": {
+    "id": "u-bedroom",
+    "old_clear_bounds": [
+      8350,
+      8200,
+      11432.4,
+      11400
+    ],
+    "proposed_clear_bounds": [
+      8350,
+      6350,
+      11432.4,
+      11400
+    ],
+    "outer_east_wall": [
+      8200,
+      6200,
+      11582.4,
+      6350
+    ],
+    "old_area_sqft": 106.17176789909134,
+    "new_area_sqft": 167.55232121575355,
+    "extension_direction": "East/down on plan",
+    "width_mm": 3082.4,
+    "new_depth_mm": 5050,
+    "keep": [
+      "Existing side entry x8275 y8500..9400",
+      "North window may remain; add/relocate east picture window into new wall",
+      "Master, study and baths unchanged"
+    ],
+    "remove_balcony_connector": [
+      8200,
+      4800,
+      9650,
+      5909.6
+    ],
+    "remove_small_bump": [
+      8200,
+      5909.6,
+      9798.8,
+      6200
+    ],
+    "close_gallery_to_side_balcony_door": "u-side-terrace-door",
+    "retain_big_terrace_area_sqft": 318.491536983074,
+    "notes": [
+      "Keep main terrace door u-terrace-door at y4800 x6500..8100.",
+      "Extension is within existing small balcony footprint; remove the old bedroom east window/wall at y8050..8200 and move its exterior opening to the new east wall at y6200..6350.",
+      "Do not extend second-floor hall or move ground room walls; support new wall only after beam/slab bearing is designed."
+    ],
+    "roof_extension": {
+      "level_mm": 7016,
+      "outer_coverage_bounds": [
+        8200,
+        6200,
+        11582.4,
+        11550
+      ],
+      "note": "New first-bedroom enclosure must receive a continuous supported roof/second-level slab. Current roof misses x>8350 for y<8900, so moving the bedroom wall alone is insufficient. Any new roof-garden access above it is separate from the minimum bedroom proposal."
+    }
+  }
+}

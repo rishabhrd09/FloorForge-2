@@ -1,0 +1,76 @@
+Create the coordinated Tirumala plans from the latest three complete alternatives with WEST-SIDE PUJA ENTRY. Show the full ground and first floors for all three options before a choice is made. The first floor is common to the three alternatives. This is a two-storey house with an accessible roof, not a third enclosed residential storey. Coordinate the roof stair/terrace plan too; implement the matching 3D model only after the user selects and approves a layout.
+
+Work in:
+/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home
+
+Read the authoritative proposal geometry before designing:
+/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-revision-11-proposal/west-puja-complete-plans.json
+
+Read build_west_puja_plans.py and west-puja-validation.json in the same folder. These alternatives supersede the old puja side door, shallow niche, and PO-to-EN entrance arrangements. No alternative is selected for implementation yet. Use this corrected geometry over older screenshots or earlier prompts. Inspect the existing My Desired Home and Verandah samples for the white palette, furniture proportions and open interior arrangement. Preserve those reference projects and all unrelated project functionality.
+
+1. Site and orientation
+
+The plot is 40 ft north–south by 50 ft east–west: 40 ft east frontage and 50 ft depth. Main entrance faces east. North has a 12 m road and garden beyond; east has a 9 m road and basketball court/garden beyond. Keep the plot at its true dimensions. In the review plan, east is at the bottom, west at the top, north at the right and south at the left. JSON coordinates are feet: x increases from south to north, y from east to west. Convert units explicitly for the existing engine.
+
+2. Mandatory entrance correction
+
+The arrival sequence for living is FRONT COURT → EN (small indoor entry in the former puja position) → the open kitchen/living/dining hall. PO serves the separate drawing-room entrance only. The puja is enclosed in the corner beside PO; it has no entrance from PO and no door in either side wall.
+
+Use a 3.5 ft NET-CLEAR timber entrance from the front court to EN. Open the puja from its WEST wall: this is the TOP/BACK edge of the puja in the displayed plan, not its left edge. Approach it from the open interior. Two short timber leaves provide 2.5 ft net clear passage. Put the altar against the EAST/front wall. A seated person must face EAST, toward the altar. Show the prayer mat and an east-facing arrow. Model all rough openings, frames, leaves and collision clearances separately.
+
+The front court is now a uniform 4 ft deep across the pedestrian frontage. Align the OUTSIDE faces of the kitchen, puja and EN front walls with the front edge of PO on one straight line. In the JSON this line is y=4.5 ft; the court starts at the inside of the front boundary at y=0.5 ft. No room projects into the court. Allow for actual wall thickness rather than aligning room centre lines incorrectly.
+
+All three options retain a 3.5 × 4.5 ft open EN strip, 11 × 4 ft open-sky PO, and rectangular 11 × 11 ft drawing room. The 4 ft court plus 4 ft PO creates 8 ft of outdoor depth in front of drawing. Keep the two entrance steps aligned with PO and within the court; they occupy its first 2 ft locally. The living route continues along the raised court to EN. Court and porch share one raised level, without an extra step between them. Parking geometry is separate and unchanged.
+
+Compare these puja permutations without mixing their geometry:
+- Square puja: 4 × 4 ft; kitchen 157.75 sq ft.
+- Compact puja: 3 × 4 ft; kitchen 162.25 sq ft.
+- Deeper puja: 3.5 × 4.5 ft; kitchen 158 sq ft.
+Every alternative has a west-side puja door and east-facing seated prayer position. All three have an enclosed puja room, not a cabinet-only niche.
+
+3. Ground floor
+
+Follow the JSON polygons and opening locations, including:
+- Kitchen: use the selected alternative’s exact clear polygon and area. Keep it open to EN, dining and living, with the movement routes shown in the comparison data.
+- Living and dining: 234.25 sq ft of connected clear floor area. Position dining west of the kitchen, with a low platform maintaining visual connection. Avoid walls between kitchen, entry, dining and living.
+- Puja: enclosed east-wall corner room in one of the three sizes above. The west doorway is the only entrance; retain closed side walls. Keep door swings clear of the altar and prayer mat.
+- Drawing: a true 11 × 11 ft rectangle. Keep the drawing/living partition solid; do not add a glass connection between them.
+- Home care: a true 12.5 × 16.5 ft rectangle. Head of bed south, feet north, with large north-facing garden glazing and east-facing glazing toward parking. Retain the wide sliding-glass connection to living, its actual opening clearance, and a timber door to the veranda.
+- Ground master: 14 × 13.5 ft, with attached bath.
+- Caregiver: compact 7.5 × 6 ft west-side room, with attached WC and independent veranda access. Preserve the open northwest garden pocket.
+- Retain the 3 ft clear north garden path, the 3.5 ft south daylight lane near the kitchen, and the shallow rear light strip. Pots must not obstruct walking routes.
+- Parking: 10.5 × 19 ft, using the actual reference-car footprint and realistic opening/parking margins.
+
+Keep TVs on appropriate solid walls. Furniture must remain human-scale. Check door swings, cupboard access, chair pull-out, passages and approach routes; do not make the rooms appear larger by shrinking furniture.
+
+4. Stair and first floor
+
+Use the L-shaped south-edge stair: first climb west, turn north, then arrive in the open hall. Retain 3.5 ft clear flights. Use the same coordinated stair system from the first floor to the roof. Do not revert to the earlier U-turn stair or interrupt the ground dining area.
+
+Use the proposed stair rises, runs and landings as design inputs, checking their consistency with actual storey heights, slab thickness and headroom before 3D implementation.
+
+First floor includes:
+- Front master sleeping/seating area: 203.5 sq ft, with separate bath/dressing and a timber terrace door.
+- Rear master: 18 × 13 ft, with separate ensuite.
+- Office: 8.5 × 6.5 ft, reached from the common hall.
+- A furnished family-lounge bay of 12 × 8.5 ft, connected to the stair approach and rooms. The larger hall polygon includes circulation; do not label that whole area as one rectangular lounge.
+- A 6 × 6 ft double-height opening above part of living, with guarded upper edges and daylight from above. Keep the opening free of floors and furniture.
+- A 241 sq ft open terrace, mostly above care with a small return over the rear of parking. Provide separate timber doors from the common hall and front master. Preserve seating, planting and unobstructed circulation.
+
+5. Roof plan and exterior
+
+Show the continued L-stair, proposed 5 × 4 ft roof arrival landing, enclosed stair head and 3.5 ft clear timber exit. Distinguish this upper roof terrace from the first-floor terrace above care. Show roof-edge protection, the double-height rooflight and drainage intent. Flag unconfirmed structural or service assumptions rather than inventing verified engineering.
+
+Use warm-white walls matching My Desired Home, large aligned windows, restrained dark frames, balanced bedroom volumes, consistent parapets and a recessed stair head. Use a small pergola and edge planting on the care-room terrace. Avoid the bungalow’s pink wall palette and avoid heavy, arbitrary projecting window boxes.
+
+6. Levels, 2D/3D correspondence and verification
+
+Proposed road/parking level is 0 mm; court, PO, veranda and ground interiors are +300 mm, reached by two 150 mm rises. The current first-floor proposal is +3958 mm and roof +7616 mm. Treat these as coordinated design levels, not independently editable decorations.
+
+Use one source of geometry for 2D and subsequent 3D. Match every wall, room, door, window, floor level, stair landing, void and terrace to the same source. Avoid independently redrawing the 3D layout. Apply the WEST puja-entry / EAST prayer-facing rule consistently to any retained Tirumala variants; do not mix room geometry from different alternatives.
+
+Deliver three legible, dimensioned 2D plans with north arrows, clear room areas, door swings, glazing, furniture, floor levels and movement routes. Include a short list of remaining design assumptions. Verify non-overlap, plot containment, opening alignment, door/furniture conflicts, stair continuity and terrace access.
+
+For the later approved 3D stage, preserve true dimensions and realistic eye height, furniture and perspective. Test actual walk-through passage at every entrance and stair; do not disguise blocked openings using camera zoom or clipping. Reuse the labelled site-photo mapping, preserving known roads, gardens, trees, streetlights and feeder-cabinet positions; exclude temporary cars and mark uncertain positions. Do not claim exact surroundings from unmeasured photos.
+
+Keep this work isolated to Tirumala. Do not overwrite the Desired Home, bungalow, Verandah or unrelated samples. Report the changed files and the specific checks that passed. Complete the 2D review package before proceeding to 3D.

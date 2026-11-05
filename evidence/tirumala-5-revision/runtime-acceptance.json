@@ -1,0 +1,6487 @@
+{
+  "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+  "mode": "full gate-to-roof round trip",
+  "started": "2026-11-05T03:38:20.473Z",
+  "checks": [
+    {
+      "name": "Generated files contain the approved junction and internal upper stair revision",
+      "pass": true,
+      "detail": {
+        "main": [
+          7300,
+          6100
+        ],
+        "icu": [
+          5452.4,
+          5834.6
+        ],
+        "internalTerraceDoor": true
+      }
+    },
+    {
+      "name": "Viewer loaded the current generated project",
+      "pass": true,
+      "detail": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a"
+    },
+    {
+      "name": "Initial arrival settles on the real floor with the parked car visible",
+      "pass": true,
+      "detail": [
+        8.522,
+        -1.4,
+        -0.26499998569488525
+      ]
+    },
+    {
+      "name": "Street approach to gate",
+      "pass": true,
+      "detail": {
+        "position": [
+          9.445233949536462,
+          -1.0020543320963502,
+          -0.2649999856948852
+        ],
+        "error": 0.005189943870898763,
+        "supported": true,
+        "reason": "",
+        "frames": 106
+      }
+    },
+    {
+      "name": "Close arrival-sliding-gate using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open arrival-sliding-gate using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Through east gate onto lower porch",
+      "pass": true,
+      "detail": {
+        "position": [
+          9.449987305759176,
+          0.9946336065526961,
+          -0.15240000188350677
+        ],
+        "error": 0.005366408461440179,
+        "supported": true,
+        "reason": "",
+        "frames": 157
+      }
+    },
+    {
+      "name": "Walk beside the parked car",
+      "pass": true,
+      "detail": {
+        "position": [
+          9.449999984716872,
+          5.344721515449705,
+          -0.15240000188350672
+        ],
+        "error": 0.0052784845503167956,
+        "supported": true,
+        "reason": "",
+        "frames": 280
+      }
+    },
+    {
+      "name": "Step onto raised veranda",
+      "pass": true,
+      "detail": {
+        "position": [
+          9.44999999993908,
+          6.644754390103269,
+          5.551115123125783e-17
+        ],
+        "error": 0.005245609896731729,
+        "supported": true,
+        "reason": "",
+        "frames": 121
+      }
+    },
+    {
+      "name": "Drawing room door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          8.953871422667149,
+          7.1460885130709775,
+          5.551115123125783e-17
+        ],
+        "error": 0.005503421069083799,
+        "supported": true,
+        "reason": "",
+        "frames": 91
+      }
+    },
+    {
+      "name": "Open drawing-veranda-only using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Enter retained independent drawing room",
+      "pass": true,
+      "detail": {
+        "position": [
+          8.950013097324483,
+          8.744540554662004,
+          5.551115123125783e-17
+        ],
+        "error": 0.005459461048352115,
+        "supported": true,
+        "reason": "",
+        "frames": 136
+      }
+    },
+    {
+      "name": "Return from drawing room to veranda",
+      "pass": true,
+      "detail": {
+        "position": [
+          8.950000042934839,
+          7.1552665366644,
+          5.551115123125783e-17
+        ],
+        "error": 0.005266536664574812,
+        "supported": true,
+        "reason": "",
+        "frames": 136
+      }
+    },
+    {
+      "name": "Close drawing-veranda-only using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Approach the infilled extra opening",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.8048731803625016,
+          7.498539033584494,
+          0
+        ],
+        "error": 0.0050874659421668725,
+        "supported": true,
+        "reason": "",
+        "frames": 116
+      }
+    },
+    {
+      "name": "New infill blocks the unwanted veranda shortcut",
+      "pass": true,
+      "detail": {
+        "start": [
+          7.8048731803625016,
+          7.498539033584494,
+          0
+        ],
+        "position": [
+          7.804842068353516,
+          7.640500049591065,
+          5.551115123125783e-17
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "Shifted living entrance approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          8.346472106673003,
+          7.004144883014121,
+          0
+        ],
+        "error": 0.005442985075067885,
+        "supported": true,
+        "reason": "",
+        "frames": 97
+      }
+    },
+    {
+      "name": "Close living-veranda-wood using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open living-veranda-wood using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Through shifted living entrance",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.305106282212818,
+          7.000010277660446,
+          0
+        ],
+        "error": 0.005106292555978979,
+        "supported": true,
+        "reason": "",
+        "frames": 160
+      }
+    },
+    {
+      "name": "Inner insect-screen handle approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.796515810300847,
+          6.4538716911801215,
+          5.551115123125783e-17
+        ],
+        "error": 0.005208605423134934,
+        "supported": true,
+        "reason": "",
+        "frames": 93
+      }
+    },
+    {
+      "name": "Close living-veranda-mesh using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open living-veranda-mesh using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Return from screen control to living",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.303484657517804,
+          6.996167149303653,
+          0
+        ],
+        "error": 0.005180114137437256,
+        "supported": true,
+        "reason": "",
+        "frames": 93
+      }
+    },
+    {
+      "name": "Living circulation",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.20278821688555,
+          7.194507026243926,
+          0
+        ],
+        "error": 0.006160106661884024,
+        "supported": true,
+        "reason": "",
+        "frames": 71
+      }
+    },
+    {
+      "name": "Rear turn approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.200025407349342,
+          7.794420090009759,
+          5.551115123125783e-17
+        ],
+        "error": 0.005579967834368424,
+        "supported": true,
+        "reason": "",
+        "frames": 87
+      }
+    },
+    {
+      "name": "Before closed extra opening",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.446743933319205,
+          8.145369322309307,
+          -5.551115123125783e-17
+        ],
+        "error": 0.005660843232670618,
+        "supported": true,
+        "reason": "",
+        "frames": 82
+      }
+    },
+    {
+      "name": "Pass safely behind the new infill",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.9332087249694885,
+          8.54646203899949,
+          0
+        ],
+        "error": 0.005561673257988765,
+        "supported": true,
+        "reason": "",
+        "frames": 88
+      }
+    },
+    {
+      "name": "Rear corridor approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.495814951739723,
+          8.996651196294849,
+          5.551115123125783e-17
+        ],
+        "error": 0.005359954775600622,
+        "supported": true,
+        "reason": "",
+        "frames": 92
+      }
+    },
+    {
+      "name": "Retained lobby entrance",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.739796623507772,
+          9.395094636513596,
+          0.0005000000237486701
+        ],
+        "error": 0.0057517702742563405,
+        "supported": true,
+        "reason": "",
+        "frames": 83
+      }
+    },
+    {
+      "name": "Retained rear lobby",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.742786209801943,
+          10.494884410140283,
+          0
+        ],
+        "error": 0.00511560844693941,
+        "supported": true,
+        "reason": "",
+        "frames": 111
+      }
+    },
+    {
+      "name": "Caregiver door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.7427999538433205,
+          12.044755221708536,
+          0
+        ],
+        "error": 0.005244778291667514,
+        "supported": true,
+        "reason": "",
+        "frames": 134
+      }
+    },
+    {
+      "name": "Open caregiver-lobby using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Enter caregiver room from retained rear lobby",
+      "pass": true,
+      "detail": {
+        "position": [
+          9.344861097239566,
+          12.049983336853959,
+          5.551115123125783e-17
+        ],
+        "error": 0.005138929775900104,
+        "supported": true,
+        "reason": "",
+        "frames": 137
+      }
+    },
+    {
+      "name": "Return to rear lobby",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.748222052422024,
+          12.049999944030704,
+          0
+        ],
+        "error": 0.005422052422313186,
+        "supported": true,
+        "reason": "",
+        "frames": 136
+      }
+    },
+    {
+      "name": "Close caregiver-lobby using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.74281788712275,
+          10.505145913568441,
+          0
+        ],
+        "error": 0.005145944656039961,
+        "supported": true,
+        "reason": "",
+        "frames": 134
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.742800082099785,
+          9.405120116585216,
+          0.0005000000237487812
+        ],
+        "error": 0.0051201165858741635,
+        "supported": true,
+        "reason": "",
+        "frames": 111
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.502953170580743,
+          9.004926584124725,
+          5.551115123125783e-17
+        ],
+        "error": 0.005743905258354873,
+        "supported": true,
+        "reason": "",
+        "frames": 83
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.941674150610887,
+          8.553358022312407,
+          5.551115123125783e-17
+        ],
+        "error": 0.005357223830771907,
+        "supported": true,
+        "reason": "",
+        "frames": 92
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.454298826262941,
+          8.153526665003444,
+          0
+        ],
+        "error": 0.005560330321614363,
+        "supported": true,
+        "reason": "",
+        "frames": 88
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.2033116461935185,
+          7.804604278894302,
+          5.551115123125783e-17
+        ],
+        "error": 0.005671541646462496,
+        "supported": true,
+        "reason": "",
+        "frames": 82
+      }
+    },
+    {
+      "name": "Return along rear lobby route",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.200030124869042,
+          7.205570530329925,
+          0
+        ],
+        "error": 0.005570611785463378,
+        "supported": true,
+        "reason": "",
+        "frames": 87
+      }
+    },
+    {
+      "name": "Shifted ICU wooden-door handle approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.653626575132682,
+          6.6536626696172885,
+          0
+        ],
+        "error": 0.005154337582889784,
+        "supported": true,
+        "reason": "",
+        "frames": 95
+      }
+    },
+    {
+      "name": "Close icu-glass-living-wood using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open icu-glass-living-wood using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Shifted ICU glass-door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.194603278528043,
+          6.650035949933609,
+          0
+        ],
+        "error": 0.005396841209782666,
+        "supported": true,
+        "reason": "",
+        "frames": 86
+      }
+    },
+    {
+      "name": "Close icu-glass-living using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open icu-glass-living using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Enter ICU through shifted wooden and glass connection",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.199980006044626,
+          5.255217589305395,
+          5.551115123125783e-17
+        ],
+        "error": 0.005217627613966043,
+        "supported": true,
+        "reason": "",
+        "frames": 126
+      }
+    },
+    {
+      "name": "ICU veranda-glass approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.944692064940942,
+          5.250015709581166,
+          5.551115123125783e-17
+        ],
+        "error": 0.0053079583063656895,
+        "supported": true,
+        "reason": "",
+        "frames": 144
+      }
+    },
+    {
+      "name": "Close icu-veranda-glass using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open icu-veranda-glass using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "ICU directly to veranda",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.952436545538823,
+          6.645317417391515,
+          5.551115123125783e-17
+        ],
+        "error": 0.005278573107199405,
+        "supported": true,
+        "reason": "",
+        "frames": 141
+      }
+    },
+    {
+      "name": "Veranda back into ICU",
+      "pass": true,
+      "detail": {
+        "position": [
+          7.9514396056868515,
+          5.255124811747298,
+          5.551115123125783e-17
+        ],
+        "error": 0.005323171984715504,
+        "supported": true,
+        "reason": "",
+        "frames": 138
+      }
+    },
+    {
+      "name": "ICU back to living-door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.205337290546641,
+          5.25001550357107,
+          5.551115123125783e-17
+        ],
+        "error": 0.005337313063703324,
+        "supported": true,
+        "reason": "",
+        "frames": 144
+      }
+    },
+    {
+      "name": "Return from ICU to living",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.200019730386072,
+          6.644783410527291,
+          0
+        ],
+        "error": 0.005216626785090112,
+        "supported": true,
+        "reason": "",
+        "frames": 126
+      }
+    },
+    {
+      "name": "Above dining circulation",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.901478999183136,
+          7.645044858286804,
+          0
+        ],
+        "error": 0.005171157315493029,
+        "supported": true,
+        "reason": "",
+        "frames": 108
+      }
+    },
+    {
+      "name": "Clear dining to pantry aisle",
+      "pass": true,
+      "detail": {
+        "position": [
+          3.7051381816925124,
+          7.649988515720556,
+          5.551115123125783e-17
+        ],
+        "error": 0.005138194526673961,
+        "supported": true,
+        "reason": "",
+        "frames": 168
+      }
+    },
+    {
+      "name": "Beside ground stair",
+      "pass": true,
+      "detail": {
+        "position": [
+          1.9052583947830704,
+          7.649999966789077,
+          0
+        ],
+        "error": 0.005258394783175318,
+        "supported": true,
+        "reason": "",
+        "frames": 147
+      }
+    },
+    {
+      "name": "Ground stair start approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          1.9000131793072659,
+          5.605174618768581,
+          0
+        ],
+        "error": 0.00517463555183318,
+        "supported": true,
+        "reason": "",
+        "frames": 160
+      }
+    },
+    {
+      "name": "Ground south flight",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7054617701201812,
+          5.600023346105241,
+          0.3499999940395356
+        ],
+        "error": 0.005461820015922753,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Ground west flight landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7000106033701353,
+          8.344624796306318,
+          1.5750000476837158
+        ],
+        "error": 0.005375214152015177,
+        "supported": true,
+        "reason": "",
+        "frames": 196
+      }
+    },
+    {
+      "name": "First-floor stair arrival",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.694858300752687,
+          8.349994508787042,
+          3.507999897003174
+        ],
+        "error": 0.0051417021795552706,
+        "supported": true,
+        "reason": "",
+        "frames": 314
+      }
+    },
+    {
+      "name": "First interior connector",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.699976803945504,
+          7.155461381958132,
+          3.507999897003174
+        ],
+        "error": 0.0054614312180550325,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Internal upper-stair approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.455296742143363,
+          7.15002294799992,
+          3.507999897003174
+        ],
+        "error": 0.005296791853941388,
+        "supported": true,
+        "reason": "",
+        "frames": 118
+      }
+    },
+    {
+      "name": "Upper south-flight landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7051632111812697,
+          7.150000031341188,
+          5.26200008392334
+        ],
+        "error": 0.005163211181364844,
+        "supported": true,
+        "reason": "",
+        "frames": 249
+      }
+    },
+    {
+      "name": "Upper turn landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7000232936394549,
+          8.344538503711313,
+          5.26200008392334
+        ],
+        "error": 0.005461545962910194,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Second-floor indoor arrival",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.66965949772323,
+          8.349992710841251,
+          7.015999794006348
+        ],
+        "error": 0.005340507251190589,
+        "supported": true,
+        "reason": "",
+        "frames": 260
+      }
+    },
+    {
+      "name": "Close s2-hall-entry using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open s2-hall-entry using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Second-floor hall entry",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.67497888423677,
+          9.694628162926213,
+          7.015999794006348
+        ],
+        "error": 0.00537187857483433,
+        "supported": true,
+        "reason": "",
+        "frames": 123
+      }
+    },
+    {
+      "name": "Second-floor hall garden-door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.6749999682453565,
+          13.244617389335824,
+          7.015999794006348
+        ],
+        "error": 0.00538261066426978,
+        "supported": true,
+        "reason": "",
+        "frames": 238
+      }
+    },
+    {
+      "name": "Close s2-hall-garden using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open s2-hall-garden using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Hall to roof garden terrace",
+      "pass": true,
+      "detail": {
+        "position": [
+          6.0946679343464885,
+          13.249979986848155,
+          7.0279998779296875
+        ],
+        "error": 0.005332103211641767,
+        "supported": true,
+        "reason": "",
+        "frames": 127
+      }
+    },
+    {
+      "name": "Return from garden into hall",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.680226060783125,
+          13.2499999269086,
+          7.015999794006348
+        ],
+        "error": 0.005226060783636723,
+        "supported": true,
+        "reason": "",
+        "frames": 127
+      }
+    },
+    {
+      "name": "Hall back to indoor landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.675005768919932,
+          8.355444977335909,
+          7.015999794006348
+        ],
+        "error": 0.005444980391975574,
+        "supported": true,
+        "reason": "",
+        "frames": 308
+      }
+    },
+    {
+      "name": "Indoor terrace-door operating clearance",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.675000224061914,
+          8.2061117808151,
+          7.015999794006348
+        ],
+        "error": 0.00611178081920746,
+        "supported": true,
+        "reason": "",
+        "frames": 65
+      }
+    },
+    {
+      "name": "Close s2-stair-terrace-proposed using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Open s2-stair-terrace-proposed using F",
+      "pass": true,
+      "detail": {
+        "before": 0,
+        "value": 1,
+        "goal": 1,
+        "wanted": 1,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Indoor terrace-door approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.67500000112117,
+          7.155309116987496,
+          7.015999794006348
+        ],
+        "error": 0.005309116987495817,
+        "supported": true,
+        "reason": "",
+        "frames": 108
+      }
+    },
+    {
+      "name": "Indoor landing directly to terrace",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.9445857496783905,
+          7.150022357596324,
+          7.0279998779296875
+        ],
+        "error": 0.005414296483123549,
+        "supported": true,
+        "reason": "",
+        "frames": 119
+      }
+    },
+    {
+      "name": "Terrace back to indoor landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.680303060865497,
+          7.150000092605831,
+          7.015999794006348
+        ],
+        "error": 0.005303060866305719,
+        "supported": true,
+        "reason": "",
+        "frames": 119
+      }
+    },
+    {
+      "name": "Step clear of terrace door before closing",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.6750259620110155,
+          8.194809196499612,
+          7.015999794006348
+        ],
+        "error": 0.005190868424998372,
+        "supported": true,
+        "reason": "",
+        "frames": 108
+      }
+    },
+    {
+      "name": "Close s2-stair-terrace-proposed using F",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "value": 0,
+        "goal": 0,
+        "wanted": 0,
+        "pass": true,
+        "message": ""
+      }
+    },
+    {
+      "name": "Second-floor stair descent approach",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.675001014739995,
+          8.343896812873165,
+          7.015999794006348
+        ],
+        "error": 0.006103187211191781,
+        "supported": true,
+        "reason": "",
+        "frames": 65
+      }
+    },
+    {
+      "name": "Descend upper north flight",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.705341023037895,
+          8.349991839308831,
+          5.26200008392334
+        ],
+        "error": 0.005341029272359991,
+        "supported": true,
+        "reason": "",
+        "frames": 260
+      }
+    },
+    {
+      "name": "Return across intermediate landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7000240965940691,
+          7.155461340777416,
+          5.26200008392334
+        ],
+        "error": 0.005461393936799258,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Descend upper south flight",
+      "pass": true,
+      "detail": {
+        "position": [
+          4.244728674798484,
+          7.150008055512605,
+          3.507999897003174
+        ],
+        "error": 0.005271331356632842,
+        "supported": true,
+        "reason": "",
+        "frames": 238
+      }
+    },
+    {
+      "name": "Back in first-floor interior",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.69483027433472,
+          7.150000028394582,
+          3.507999897003174
+        ],
+        "error": 0.005169725665358267,
+        "supported": true,
+        "reason": "",
+        "frames": 129
+      }
+    },
+    {
+      "name": "First arrival for ground descent",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.6999766768465365,
+          8.344538503198649,
+          3.507999897003174
+        ],
+        "error": 0.005461546601526989,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Descend to ground stair landing",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7051414547330065,
+          8.349994420714475,
+          1.5750000476837158
+        ],
+        "error": 0.005141457760205976,
+        "supported": true,
+        "reason": "",
+        "frames": 314
+      }
+    },
+    {
+      "name": "Descend ground west flight",
+      "pass": true,
+      "detail": {
+        "position": [
+          0.7000099812501486,
+          5.605375559458638,
+          0.3499999940395355
+        ],
+        "error": 0.005375568725140781,
+        "supported": true,
+        "reason": "",
+        "frames": 196
+      }
+    },
+    {
+      "name": "Ground stair exit",
+      "pass": true,
+      "detail": {
+        "position": [
+          1.8945386943733233,
+          5.600024252538696,
+          0
+        ],
+        "error": 0.0054613594766873205,
+        "supported": true,
+        "reason": "",
+        "frames": 115
+      }
+    },
+    {
+      "name": "Ground side aisle return",
+      "pass": true,
+      "detail": {
+        "position": [
+          1.8999863123578065,
+          7.644825841144117,
+          5.551115123125783e-17
+        ],
+        "error": 0.005174176960393305,
+        "supported": true,
+        "reason": "",
+        "frames": 160
+      }
+    },
+    {
+      "name": "Ground dining aisle return",
+      "pass": true,
+      "detail": {
+        "position": [
+          3.694840669718944,
+          7.649985277396343,
+          5.551115123125783e-17
+        ],
+        "error": 0.005159351287136964,
+        "supported": true,
+        "reason": "",
+        "frames": 147
+      }
+    },
+    {
+      "name": "Ground living return",
+      "pass": true,
+      "detail": {
+        "position": [
+          5.894790678905865,
+          7.649999965464159,
+          5.551115123125783e-17
+        ],
+        "error": 0.005209321094249557,
+        "supported": true,
+        "reason": "",
+        "frames": 168
+      }
+    },
+    {
+      "name": "Ground → first → second hall and terrace → ground completed without teleportation",
+      "pass": true,
+      "detail": {
+        "initialSpawns": 1,
+        "laterTeleports": 0
+      }
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "routes": [
+    {
+      "name": "Street approach to gate",
+      "start": [
+        8.522,
+        -1.4,
+        -0.26499998569488525
+      ],
+      "target": [
+        9.45,
+        -1,
+        -0.3
+      ],
+      "position": [
+        9.445233949536462,
+        -1.0020543320963502,
+        -0.2649999856948852
+      ],
+      "frames": 106,
+      "error": 0.005189943870898763,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -0.2649999856948853,
+      "maximumY": -0.26499998569488514,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          8.523938214255953,
+          -1.39916456282071,
+          -0.26499998569488514,
+          true
+        ],
+        [
+          8.82748931889725,
+          -1.2683235694408397,
+          -0.2649999856948852,
+          true
+        ],
+        [
+          9.194863957810256,
+          -1.109972431978338,
+          -0.2649999856948852,
+          true
+        ],
+        [
+          9.37357271018806,
+          -1.0329427973327323,
+          -0.26499998569488514,
+          true
+        ],
+        [
+          9.431297215476548,
+          -1.008061545053212,
+          -0.2649999856948852,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Through east gate onto lower porch",
+      "start": [
+        9.445264157429769,
+        -1.002041311452684,
+        -0.2649999856948853
+      ],
+      "target": [
+        9.45,
+        1,
+        -0.1524
+      ],
+      "position": [
+        9.449987305759176,
+        0.9946336065526961,
+        -0.15240000188350677
+      ],
+      "frames": 157,
+      "error": 0.005366408461440179,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -0.2649999856948853,
+      "maximumY": -0.15240000188350672,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          9.445269150053255,
+          -0.9999307179683222,
+          -0.26499998569488525,
+          true
+        ],
+        [
+          9.44605106380175,
+          -0.6693826468977554,
+          -0.26499998569488525,
+          true
+        ],
+        [
+          9.447120572901373,
+          -0.21725583552897862,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.448207570692315,
+          0.24226418665122731,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.44922484883727,
+          0.6723107604640656,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.44976073686199,
+          0.8988533340167567,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.449940015360127,
+          0.9746419511858615,
+          -0.15240000188350677,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Walk beside the parked car",
+      "start": [
+        9.449987305759176,
+        0.9946336065526961,
+        -0.15240000188350677
+      ],
+      "target": [
+        9.45,
+        5.35,
+        -0.1524
+      ],
+      "position": [
+        9.449999984716872,
+        5.344721515449705,
+        -0.15240000188350672
+      ],
+      "frames": 280,
+      "error": 0.0052784845503167956,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -0.15240000188350683,
+      "maximumY": -0.15160000324249256,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          9.449987320764876,
+          0.9967479489466808,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.449988347759946,
+          1.3273253532328995,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.44998966161776,
+          1.7794551570806139,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.449990992431,
+          2.2389765699579094,
+          -0.15160000324249268,
+          true
+        ],
+        [
+          9.44999232423745,
+          2.698947467043195,
+          -0.15240000188350666,
+          true
+        ],
+        [
+          9.449993656101235,
+          3.1589456972913172,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.449994987968259,
+          3.618945589670785,
+          -0.15160000324249268,
+          true
+        ],
+        [
+          9.449996319835444,
+          4.078945583124563,
+          -0.15240000188350677,
+          true
+        ],
+        [
+          9.449997651702652,
+          4.538945582724675,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.449998931526432,
+          4.980970834889751,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.449999660567979,
+          5.232767043009228,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.44999991300523,
+          5.319953765255036,
+          -0.15240000188350672,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Step onto raised veranda",
+      "start": [
+        9.449999984716872,
+        5.344721515449705,
+        -0.15240000188350672
+      ],
+      "target": [
+        9.45,
+        6.65,
+        0
+      ],
+      "position": [
+        9.44999999993908,
+        6.644754390103269,
+        5.551115123125783e-17
+      ],
+      "frames": 121,
+      "error": 0.005245609896731729,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -0.15240000188350677,
+      "maximumY": 0.002000000094994958,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          9.449999984752276,
+          5.346835807745325,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.44999998868858,
+          5.677412831799635,
+          -0.15240000188350672,
+          true
+        ],
+        [
+          9.449999993943452,
+          6.1288092376693495,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.449999997857292,
+          6.465565545137442,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.44999999940898,
+          6.599119621208085,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.449999999865689,
+          6.638435575827687,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Drawing room door approach",
+      "start": [
+        9.44999999993908,
+        6.644754390103269,
+        5.551115123125783e-17
+      ],
+      "target": [
+        8.95,
+        7.15,
+        0
+      ],
+      "position": [
+        8.953871422667149,
+        7.1460885130709775,
+        5.551115123125783e-17
+      ],
+      "frames": 91,
+      "error": 0.005503421069083799,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          9.448515388808314,
+          6.646258247187942,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.226984172044881,
+          6.87013211653031,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.044293666119692,
+          7.054726812634106,
+          0,
+          true
+        ],
+        [
+          8.975373238177646,
+          7.124363574406928,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Enter retained independent drawing room",
+      "start": [
+        8.953847760145528,
+        7.146112421022925,
+        0
+      ],
+      "target": [
+        8.95,
+        8.75,
+        0
+      ],
+      "position": [
+        8.950013097324483,
+        8.744540554662004,
+        5.551115123125783e-17
+      ],
+      "frames": 136,
+      "error": 0.005459461048352115,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          8.953842696785461,
+          7.148223014340968,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.953049705037419,
+          7.478771059037468,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.95196504336792,
+          7.930897834309835,
+          0.05499999970197672,
+          true
+        ],
+        [
+          8.950902087508096,
+          8.373976832441874,
+          0.0005000000237486701,
+          true
+        ],
+        [
+          8.95028805511907,
+          8.629928058712792,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.950074110521259,
+          8.719108015901414,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return from drawing room to veranda",
+      "start": [
+        8.950013097324483,
+        8.744540554662004,
+        5.551115123125783e-17
+      ],
+      "target": [
+        8.95,
+        7.15,
+        0
+      ],
+      "position": [
+        8.950000042934839,
+        7.1552665366644,
+        5.551115123125783e-17
+      ],
+      "frames": 136,
+      "error": 0.005266536664574812,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          8.950013070882648,
+          8.742433750853595,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.950010297224027,
+          8.411913562431579,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.950006603473163,
+          7.959787237896714,
+          0.05499999970197683,
+          true
+        ],
+        [
+          8.950003003844351,
+          7.518407846528914,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.950000954020977,
+          7.267012234523722,
+          0,
+          true
+        ],
+        [
+          8.950000244465278,
+          7.179985196467628,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Approach the infilled extra opening",
+      "start": [
+        8.950000042661978,
+        7.155233068551733,
+        0
+      ],
+      "target": [
+        7.8,
+        7.5,
+        0
+      ],
+      "position": [
+        7.8048731803625016,
+        7.498539033584494,
+        0
+      ],
+      "frames": 116,
+      "error": 0.0050874659421668725,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          8.947978342347023,
+          7.155839168886093,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.631352168552676,
+          7.25076284739425,
+          0,
+          true
+        ],
+        [
+          8.205993058681495,
+          7.378284368824303,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.934313076181162,
+          7.459733299638911,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.835445478969954,
+          7.489373540377279,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Shifted living entrance approach",
+      "start": [
+        7.804842068353516,
+        7.640500049591065,
+        5.551115123125783e-17
+      ],
+      "target": [
+        8.35,
+        7,
+        0
+      ],
+      "position": [
+        8.346472106673003,
+        7.004144883014121,
+        0
+      ],
+      "frames": 97,
+      "error": 0.005442985075067885,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.8062100620920845,
+          7.63889280881453,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.019648781500381,
+          7.388126008168738,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.230508552802238,
+          7.140389185248994,
+          1.1102230246251565e-16,
+          true
+        ],
+        [
+          8.316590597571983,
+          7.039252338945751,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.342308400885356,
+          7.009036775085498,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Through shifted living entrance",
+      "start": [
+        8.346494071054222,
+        7.004119077304536,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.3,
+        7,
+        0
+      ],
+      "position": [
+        6.305106282212818,
+        7.000010277660446,
+        0
+      ],
+      "frames": 160,
+      "error": 0.005106292555978979,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 0.05499999970197689,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          8.344383475939996,
+          7.004114829207971,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.013835149610172,
+          7.003449518651593,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.561707989095347,
+          7.002539500512776,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.102187612059831,
+          7.001614601690545,
+          0.05499999970197683,
+          true
+        ],
+        [
+          6.661985420262133,
+          7.00072858551132,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.414450392285097,
+          7.000230359823673,
+          0,
+          true
+        ],
+        [
+          6.329228770111514,
+          7.0000588301550986,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Inner insect-screen handle approach",
+      "start": [
+        6.305106282212818,
+        7.000010277660446,
+        0
+      ],
+      "target": [
+        6.8,
+        6.45,
+        0
+      ],
+      "position": [
+        6.796515810300847,
+        6.4538716911801215,
+        5.551115123125783e-17
+      ],
+      "frames": 93,
+      "error": 0.005208605423134934,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.306514423117344,
+          6.998441310393759,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.520531459706009,
+          6.760568705499748,
+          0,
+          true
+        ],
+        [
+          6.7038239863171025,
+          6.556876461155929,
+          1.1102230246251565e-16,
+          true
+        ],
+        [
+          6.773935081684965,
+          6.47896446324507,
+          1.1102230246251565e-16,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return from screen control to living",
+      "start": [
+        6.796537416192087,
+        6.453847681818765,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.3,
+        7,
+        0
+      ],
+      "position": [
+        6.303484657517804,
+        6.996167149303653,
+        0
+      ],
+      "frames": 93,
+      "error": 0.005180114137437256,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.795117618126987,
+          6.455409348632416,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.580045667514255,
+          6.691971671173411,
+          0,
+          true
+        ],
+        [
+          6.396306573128891,
+          6.894070302750182,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.326088276559407,
+          6.9713049364345165,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Living circulation",
+      "start": [
+        6.303484657517804,
+        6.996167149303653,
+        0
+      ],
+      "target": [
+        6.2,
+        7.2,
+        0
+      ],
+      "position": [
+        6.20278821688555,
+        7.194507026243926,
+        0
+      ],
+      "frames": 71,
+      "error": 0.006160106661884024,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 5.551115123125783e-17,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.303118251881589,
+          6.996886784266817,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.2545189765144595,
+          7.092602094471697,
+          0,
+          true
+        ],
+        [
+          6.218138321355636,
+          7.16426770336775,
+          -5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Rear turn approach",
+      "start": [
+        6.20278821688555,
+        7.194507026243926,
+        0
+      ],
+      "target": [
+        6.2,
+        7.8,
+        0
+      ],
+      "position": [
+        6.200025407349342,
+        7.794420090009759,
+        5.551115123125783e-17
+      ],
+      "frames": 87,
+      "error": 0.005579967834368424,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.202776976531956,
+          7.196620600451957,
+          0,
+          true
+        ],
+        [
+          6.201461101425999,
+          7.480754394942031,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.200485288509883,
+          7.6937605800190445,
+          1.1102230246251565e-16,
+          true
+        ],
+        [
+          6.200128421143715,
+          7.771848392276477,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Before closed extra opening",
+      "start": [
+        6.200025407349342,
+        7.794420090009759,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.45,
+        8.15,
+        0
+      ],
+      "position": [
+        6.446743933319205,
+        8.145369322309307,
+        -5.551115123125783e-17
+      ],
+      "frames": 82,
+      "error": 0.005660843232670618,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.200904717698267,
+          7.795674559029524,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.318271139740522,
+          7.962642347998381,
+          0,
+          true
+        ],
+        [
+          6.406170548949651,
+          8.087663772155834,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.4383873495111725,
+          8.133484383292778,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Pass safely behind the new infill",
+      "start": [
+        6.446743933319205,
+        8.145369322309307,
+        -5.551115123125783e-17
+      ],
+      "target": [
+        6.9375,
+        8.55,
+        0
+      ],
+      "position": [
+        6.9332087249694885,
+        8.54646203899949,
+        0
+      ],
+      "frames": 88,
+      "error": 0.005561673257988765,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.448374400493123,
+          8.14671485234012,
+          0,
+          true
+        ],
+        [
+          6.676388492098481,
+          8.334719511488657,
+          1.1102230246251565e-16,
+          true
+        ],
+        [
+          6.85030682499019,
+          8.47811195743323,
+          0,
+          true
+        ],
+        [
+          6.914340538563705,
+          8.530905884604543,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Rear corridor approach",
+      "start": [
+        6.9332087249694885,
+        8.54646203899949,
+        0
+      ],
+      "target": [
+        7.5,
+        9,
+        0
+      ],
+      "position": [
+        7.495814951739723,
+        8.996651196294849,
+        5.551115123125783e-17
+      ],
+      "frames": 92,
+      "error": 0.005359954775600622,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.93485951506272,
+          8.547783045611048,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.182954437786763,
+          8.746305267662995,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.3914872354182375,
+          8.913169880928713,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.47069679767499,
+          8.97655206946771,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Retained lobby entrance",
+      "start": [
+        7.495814951739723,
+        8.996651196294849,
+        5.551115123125783e-17
+      ],
+      "target": [
+        7.7428,
+        9.4,
+        0
+      ],
+      "position": [
+        7.739796623507772,
+        9.395094636513596,
+        0.0005000000237486701
+      ],
+      "frames": 83,
+      "error": 0.0057517702742563405,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.0005000000237487812,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.496686599724286,
+          8.99807231277754,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.6126635404500425,
+          9.187461373390157,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.699502161766545,
+          9.32928457454818,
+          0.0005000000237487257,
+          true
+        ],
+        [
+          7.731328526411721,
+          9.381264149762611,
+          0.0005000000237487812,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Retained rear lobby",
+      "start": [
+        7.739796623507772,
+        9.395094636513596,
+        0.0005000000237486701
+      ],
+      "target": [
+        7.7428,
+        10.5,
+        0
+      ],
+      "position": [
+        7.742786209801943,
+        10.494884410140283,
+        0
+      ],
+      "frames": 111,
+      "error": 0.00511560844693941,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.0005000000237487812,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.739804237678661,
+          9.397208293905935,
+          0.0005000000237487812,
+          true
+        ],
+        [
+          7.740713811342472,
+          9.727779345843366,
+          0.0005000000237487257,
+          true
+        ],
+        [
+          7.741869223605322,
+          10.15513590890149,
+          0,
+          true
+        ],
+        [
+          7.7425081337794035,
+          10.391815594304955,
+          0,
+          true
+        ],
+        [
+          7.742725927765448,
+          10.472535455268112,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Caregiver door approach",
+      "start": [
+        7.742786209801943,
+        10.494884410140283,
+        0
+      ],
+      "target": [
+        7.7428,
+        12.05,
+        0
+      ],
+      "position": [
+        7.7427999538433205,
+        12.044755221708536,
+        0
+      ],
+      "frames": 134,
+      "error": 0.005244778291667514,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.7427862381953725,
+          10.496998597576855,
+          0,
+          true
+        ],
+        [
+          7.742789231417825,
+          10.827574825766678,
+          0,
+          true
+        ],
+        [
+          7.742793218952387,
+          11.27970455808095,
+          0,
+          true
+        ],
+        [
+          7.7427970295693775,
+          11.712528210456195,
+          0,
+          true
+        ],
+        [
+          7.742799076646899,
+          11.945091348014786,
+          0,
+          true
+        ],
+        [
+          7.742799767233291,
+          12.02355253212698,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Enter caregiver room from retained rear lobby",
+      "start": [
+        7.742799954136861,
+        12.044788574428072,
+        0
+      ],
+      "target": [
+        9.35,
+        12.05,
+        0
+      ],
+      "position": [
+        9.344861097239566,
+        12.049983336853959,
+        5.551115123125783e-17
+      ],
+      "frames": 137,
+      "error": 0.005138929775900104,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.74491054243079,
+          12.044795418117968,
+          0,
+          true
+        ],
+        [
+          8.075457800607952,
+          12.045867233956992,
+          0.05499999970197683,
+          true
+        ],
+        [
+          8.527583500093368,
+          12.04733327387373,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.971261376938019,
+          12.048771921306104,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.228835606153746,
+          12.04960711846779,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.31878403582095,
+          12.049898780694177,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return to rear lobby",
+      "start": [
+        9.344861097239566,
+        12.049983336853959,
+        5.551115123125783e-17
+      ],
+      "target": [
+        7.7428,
+        12.05,
+        0
+      ],
+      "position": [
+        7.748222052422024,
+        12.049999944030704,
+        0
+      ],
+      "frames": 136,
+      "error": 0.005422052422313186,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          9.342754109735262,
+          12.049983370518161,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          9.01223252711673,
+          12.049986883991972,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.560106117809365,
+          12.049991561099462,
+          1.1102230246251565e-16,
+          true
+        ],
+        [
+          8.117351270510257,
+          12.049996133129158,
+          0.054999999701976776,
+          true
+        ],
+        [
+          7.862279739488022,
+          12.04999876655119,
+          0,
+          true
+        ],
+        [
+          7.773516352783134,
+          12.04999968291146,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        7.748187777909084,
+        12.049999944384512,
+        0
+      ],
+      "target": [
+        7.7428,
+        10.5,
+        0
+      ],
+      "position": [
+        7.74281788712275,
+        10.505145913568441,
+        0
+      ],
+      "frames": 134,
+      "error": 0.005145944656039961,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.748180441536607,
+          12.047889357745635,
+          0,
+          true
+        ],
+        [
+          7.747031464817881,
+          11.717342358772513,
+          0,
+          true
+        ],
+        [
+          7.74545988351337,
+          11.265217013828854,
+          0,
+          true
+        ],
+        [
+          7.7439598001896,
+          10.833660791294903,
+          0,
+          true
+        ],
+        [
+          7.743159602300755,
+          10.603453326963772,
+          0,
+          true
+        ],
+        [
+          7.742890471723906,
+          10.526027644469897,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        7.74281788712275,
+        10.505145913568441,
+        0
+      ],
+      "target": [
+        7.7428,
+        9.4,
+        0
+      ],
+      "position": [
+        7.742800082099785,
+        9.405120116585216,
+        0.0005000000237487812
+      ],
+      "frames": 111,
+      "error": 0.0051201165858741635,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.0005000000237488367,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.742817840393905,
+          10.503031698470792,
+          0,
+          true
+        ],
+        [
+          7.742812416217203,
+          10.172455260369365,
+          0,
+          true
+        ],
+        [
+          7.742805540189828,
+          9.74504449474963,
+          0.0005000000237487257,
+          true
+        ],
+        [
+          7.742801737378969,
+          9.508254350604494,
+          0.0005000000237487257,
+          true
+        ],
+        [
+          7.7428004409508615,
+          9.427484889740635,
+          0.0005000000237486701,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        7.742800082099785,
+        9.405120116585216,
+        0.0005000000237487812
+      ],
+      "target": [
+        7.5,
+        9,
+        0
+      ],
+      "position": [
+        7.502953170580743,
+        9.004926584124725,
+        5.551115123125783e-17
+      ],
+      "frames": 83,
+      "error": 0.005743905258354873,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 0.0005000000237488367,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.7419459925338,
+          9.403691448806086,
+          0.0005000000237487257,
+          true
+        ],
+        [
+          7.627948018704259,
+          9.213464185210418,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.542571461362481,
+          9.071022557216045,
+          0,
+          true
+        ],
+        [
+          7.5112793431903535,
+          9.018817074375027,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        7.502953170580743,
+        9.004926584124725,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.9375,
+        8.55,
+        0
+      ],
+      "position": [
+        6.941674150610887,
+        8.553358022312407,
+        5.551115123125783e-17
+      ],
+      "frames": 92,
+      "error": 0.005357223830771907,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.501306867416849,
+          9.003600482233068,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.253767975613592,
+          8.804438821653775,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.045740574608685,
+          8.63707902725313,
+          0,
+          true
+        ],
+        [
+          6.966728623955223,
+          8.57351412227313,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        6.941674150610887,
+        8.553358022312407,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.45,
+        8.15,
+        0
+      ],
+      "position": [
+        6.454298826262941,
+        8.153526665003444,
+        0
+      ],
+      "frames": 88,
+      "error": 0.005560330321614363,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.940039563585335,
+          8.55201709014623,
+          0,
+          true
+        ],
+        [
+          6.711585362887186,
+          8.36459880781015,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.537349606854127,
+          8.221659700527482,
+          0,
+          true
+        ],
+        [
+          6.4732006831254845,
+          8.1690333363477,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        6.454298826262941,
+        8.153526665003444,
+        0
+      ],
+      "target": [
+        6.2,
+        7.8,
+        0
+      ],
+      "position": [
+        6.2033116461935185,
+        7.804604278894302,
+        5.551115123125783e-17
+      ],
+      "frames": 82,
+      "error": 0.005671541646462496,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.45340144525399,
+          8.152280744256824,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.333990557535668,
+          7.986283555219529,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.244580188191105,
+          7.861979677031338,
+          -5.551115123125783e-17,
+          true
+        ],
+        [
+          6.2118112326101755,
+          7.81642129954982,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return along rear lobby route",
+      "start": [
+        6.2033116461935185,
+        7.804604278894302,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.2,
+        7.2,
+        0
+      ],
+      "position": [
+        6.200030124869042,
+        7.205570530329925,
+        0
+      ],
+      "frames": 87,
+      "error": 0.005570611785463378,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.203298040076927,
+          7.802490866959292,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.201733766319202,
+          7.518740683233925,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.200575678691422,
+          7.306067390766494,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.200152309389973,
+          7.228105292038399,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Shifted ICU wooden-door handle approach",
+      "start": [
+        6.200030124869042,
+        7.205570530329925,
+        0
+      ],
+      "target": [
+        5.65,
+        6.65,
+        0
+      ],
+      "position": [
+        5.653626575132682,
+        6.6536626696172885,
+        0
+      ],
+      "frames": 95,
+      "error": 0.005154337582889784,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.198545183416641,
+          7.2040669994059225,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          5.969708935025516,
+          6.972906890674349,
+          0,
+          true
+        ],
+        [
+          5.762066984565988,
+          6.76318590232176,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          5.680732519088994,
+          6.681039007163765,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Shifted ICU glass-door approach",
+      "start": [
+        5.653603915900759,
+        6.653639784459791,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.2,
+        6.65,
+        0
+      ],
+      "position": [
+        6.194603278528043,
+        6.650035949933609,
+        0
+      ],
+      "frames": 86,
+      "error": 0.005396841209782666,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 5.551115123125783e-17,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.6555259546365395,
+          6.6536269809150275,
+          0,
+          true
+        ],
+        [
+          5.912066421183951,
+          6.651918052116635,
+          0,
+          true
+        ],
+        [
+          6.104197397036545,
+          6.650638183244027,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.174617022686091,
+          6.650169087167823,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Enter ICU through shifted wooden and glass connection",
+      "start": [
+        6.194635021953096,
+        6.6500357384767055,
+        0
+      ],
+      "target": [
+        6.2,
+        5.25,
+        0
+      ],
+      "position": [
+        6.199980006044626,
+        5.255217589305395,
+        5.551115123125783e-17
+      ],
+      "frames": 126,
+      "error": 0.005217627613966043,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.05499999970197689,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.194643109772529,
+          6.647925154583633,
+          0,
+          true
+        ],
+        [
+          6.195909773927676,
+          6.317378585641371,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.19764232926732,
+          5.865253828898049,
+          0.054999999701976776,
+          true
+        ],
+        [
+          6.199102995247878,
+          5.484080866608353,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.199741767866798,
+          5.317387827526266,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.199938932586019,
+          5.265936050675728,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "ICU veranda-glass approach",
+      "start": [
+        6.199980006044626,
+        5.255217589305395,
+        5.551115123125783e-17
+      ],
+      "target": [
+        7.95,
+        5.25,
+        0
+      ],
+      "position": [
+        7.944692064940942,
+        5.250015709581166,
+        5.551115123125783e-17
+      ],
+      "frames": 144,
+      "error": 0.0053079583063656895,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.551115123125783e-17,
+      "maximumY": 5.551115123125783e-17,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.202090610063041,
+          5.255207640791551,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.532638254529133,
+          5.254198208405623,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.984764353765491,
+          5.252857251597564,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.443094615858783,
+          5.251500379745356,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.772781685542803,
+          5.250524529811363,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.9014816988005,
+          5.2501436015352505,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "ICU directly to veranda",
+      "start": [
+        7.944725751333192,
+        5.250015609878643,
+        5.551115123125783e-17
+      ],
+      "target": [
+        7.95,
+        6.65,
+        0
+      ],
+      "position": [
+        7.952436545538823,
+        6.645317417391515,
+        5.551115123125783e-17
+      ],
+      "frames": 141,
+      "error": 0.005278573107199405,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.551115123125783e-17,
+      "maximumY": 0.05499999970197689,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.94473370266972,
+          5.252126194290309,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.945978991718107,
+          5.582672844451475,
+          0.0005000000237486701,
+          true
+        ],
+        [
+          8.053161105367096,
+          5.87098936921821,
+          0.05499999970197683,
+          true
+        ],
+        [
+          8.069544558387646,
+          6.246580561358059,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.000711115615387,
+          6.51467710630767,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.965434601223751,
+          6.613945908862493,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Veranda back into ICU",
+      "start": [
+        7.952436545538823,
+        6.645317417391515,
+        5.551115123125783e-17
+      ],
+      "target": [
+        7.95,
+        5.25,
+        0
+      ],
+      "position": [
+        7.9514396056868515,
+        5.255124811747298,
+        5.551115123125783e-17
+      ],
+      "frames": 138,
+      "error": 0.005323171984715504,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.551115123125783e-17,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.952431433734823,
+          6.6432101058718,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.956441399603739,
+          6.320251610628535,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          8.087706356926565,
+          6.059156775730389,
+          0.0005000000237487812,
+          true
+        ],
+        [
+          8.035903154312749,
+          5.636767441923293,
+          0.054999999701976776,
+          true
+        ],
+        [
+          7.98052494658634,
+          5.375860412977533,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.958442691947493,
+          5.2828302081266925,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "ICU back to living-door approach",
+      "start": [
+        7.9514396056868515,
+        5.255124811747298,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.2,
+        5.25,
+        0
+      ],
+      "position": [
+        6.205337290546641,
+        5.25001550357107,
+        5.551115123125783e-17
+      ],
+      "frames": 144,
+      "error": 0.005337313063703324,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          7.949328095916428,
+          5.255115059720459,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.618773526047615,
+          5.2541244506563896,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          7.166646936042784,
+          5.252808369342971,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.708272347432842,
+          5.2514765299603,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.377877187370599,
+          5.2505167178239285,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.24873016318297,
+          5.25014155430035,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return from ICU to living",
+      "start": [
+        6.205337290546641,
+        5.25001550357107,
+        5.551115123125783e-17
+      ],
+      "target": [
+        6.2,
+        6.65,
+        0
+      ],
+      "position": [
+        6.200019730386072,
+        6.644783410527291,
+        0
+      ],
+      "frames": 126,
+      "error": 0.005216626785090112,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.05499999970197683,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.205325517939656,
+          5.252126076798414,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          6.204041987351579,
+          5.582672607124174,
+          0.0005000000237487812,
+          true
+        ],
+        [
+          6.202328008210257,
+          6.034797436187935,
+          0.054999999701976776,
+          true
+        ],
+        [
+          6.2008855129091645,
+          6.415948340061304,
+          0,
+          true
+        ],
+        [
+          6.200254890845711,
+          6.582622131296793,
+          0,
+          true
+        ],
+        [
+          6.200060270290051,
+          6.634066631976611,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Above dining circulation",
+      "start": [
+        6.200019730386072,
+        6.644783410527291,
+        0
+      ],
+      "target": [
+        5.9,
+        7.65,
+        0
+      ],
+      "position": [
+        5.901478999183136,
+        7.645044858286804,
+        0
+      ],
+      "frames": 108,
+      "error": 0.005171157315493029,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 5.551115123125783e-17,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.19941609313996,
+          6.646809507090789,
+          0,
+          true
+        ],
+        [
+          6.1048784527704685,
+          6.963578931987821,
+          0,
+          true
+        ],
+        [
+          5.986899952438064,
+          7.358853714222187,
+          0,
+          true
+        ],
+        [
+          5.926507864265544,
+          7.561189312022828,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          5.906583569674719,
+          7.627942770909986,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Clear dining to pantry aisle",
+      "start": [
+        5.901478999183136,
+        7.645044858286804,
+        0
+      ],
+      "target": [
+        3.7,
+        7.65,
+        0
+      ],
+      "position": [
+        3.7051381816925124,
+        7.649988515720556,
+        5.551115123125783e-17
+      ],
+      "frames": 168,
+      "error": 0.005138194526673961,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.899367371068039,
+          7.645053073362502,
+          0,
+          true
+        ],
+        [
+          5.568811357756758,
+          7.645820518493923,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          5.116683935022114,
+          7.646833344916385,
+          0,
+          true
+        ],
+        [
+          4.6571637462073365,
+          7.647860619201178,
+          0,
+          true
+        ],
+        [
+          4.198746786977018,
+          7.6488852487733,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          3.873351488258074,
+          7.64961254242569,
+          0,
+          true
+        ],
+        [
+          3.747283190966199,
+          7.649894317629631,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Beside ground stair",
+      "start": [
+        3.7051381816925124,
+        7.649988515720556,
+        5.551115123125783e-17
+      ],
+      "target": [
+        1.9,
+        7.65,
+        0
+      ],
+      "position": [
+        1.9052583947830704,
+        7.649999966789077,
+        0
+      ],
+      "frames": 147,
+      "error": 0.005258394783175318,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          3.7030239703207455,
+          7.649988537221294,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          3.3724475604632227,
+          7.649990693290914,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          2.9203178170935953,
+          7.649993554896995,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          2.4608727333186695,
+          7.649996457410474,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          2.1040325522707346,
+          7.649998711319236,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.9572416724904427,
+          7.649999638463736,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.913220707515975,
+          7.649999916499649,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground stair start approach",
+      "start": [
+        1.9052583947830704,
+        7.649999966789077,
+        0
+      ],
+      "target": [
+        1.9,
+        5.6,
+        0
+      ],
+      "position": [
+        1.9000131793072659,
+        5.605174618768581,
+        0
+      ],
+      "frames": 160,
+      "error": 0.00517463555183318,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": -5.551115123125783e-17,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          1.905249299781556,
+          7.647889374366333,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.904376749693076,
+          7.317341457732508,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.9032226990355123,
+          6.865214849929917,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.90205209252104,
+          6.405695032870569,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.9009290766588833,
+          5.964779742223294,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.9002943101137229,
+          5.715554432150839,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.900075269762537,
+          5.629553142125632,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground south flight",
+      "start": [
+        1.9000131793072659,
+        5.605174618768581,
+        0
+      ],
+      "target": [
+        0.7,
+        5.6,
+        0.35
+      ],
+      "position": [
+        0.7054617701201812,
+        5.600023346105241,
+        0.3499999940395356
+      ],
+      "frames": 115,
+      "error": 0.005461820015922753,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.3499999940395357,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          1.8979025902874285,
+          5.605161884683936,
+          0,
+          true
+        ],
+        [
+          1.5673565730256123,
+          5.603714603892822,
+          0.1749999970197677,
+          true
+        ],
+        [
+          1.1233609717991089,
+          5.601811407869988,
+          0.3499999940395356,
+          true
+        ],
+        [
+          0.8400126765059929,
+          5.600598857373534,
+          0.3499999940395357,
+          true
+        ],
+        [
+          0.7369411300915385,
+          5.6001579654397515,
+          0.3499999940395355,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground west flight landing",
+      "start": [
+        0.7054617701201812,
+        5.600023346105241,
+        0.3499999940395356
+      ],
+      "target": [
+        0.7,
+        8.35,
+        1.575
+      ],
+      "position": [
+        0.7000106033701353,
+        8.344624796306318,
+        1.5750000476837158
+      ],
+      "frames": 196,
+      "error": 0.005375214152015177,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0.3499999940395355,
+      "maximumY": 1.5750000476837158,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.705453787190132,
+          5.602133925120955,
+          0.3499999940395355,
+          true
+        ],
+        [
+          0.7047709943025704,
+          5.932682150944754,
+          0.3499999940395356,
+          true
+        ],
+        [
+          0.7038768213593787,
+          6.384809339048814,
+          0.699999988079071,
+          true
+        ],
+        [
+          0.7029701714127072,
+          6.844329752207251,
+          1.0499999523162842,
+          true
+        ],
+        [
+          0.7020627981181256,
+          7.304299747914041,
+          1.399999976158142,
+          true
+        ],
+        [
+          0.7011553846615237,
+          7.764297082771297,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7004285001222369,
+          8.132778993967085,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7001215868018108,
+          8.28836358756666,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7000283790825645,
+          8.335613693387538,
+          1.5750000476837158,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "First-floor stair arrival",
+      "start": [
+        0.7000106033701353,
+        8.344624796306318,
+        1.5750000476837158
+      ],
+      "target": [
+        5.7,
+        8.35,
+        3.508
+      ],
+      "position": [
+        5.694858300752687,
+        8.349994508787042,
+        3.507999897003174
+      ],
+      "frames": 314,
+      "error": 0.0051417021795552706,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 1.5750000476837158,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7021211941462743,
+          8.344630813368404,
+          1.5750000476837158,
+          true
+        ],
+        [
+          1.0326699443352558,
+          8.345013276885743,
+          1.5750000476837158,
+          true
+        ],
+        [
+          1.484797759145072,
+          8.34549811923778,
+          1.9249999523162842,
+          true
+        ],
+        [
+          1.9443188046762148,
+          8.34598901149105,
+          2.2750000953674316,
+          true
+        ],
+        [
+          2.4042894330445477,
+          8.346480258508985,
+          2.625,
+          true
+        ],
+        [
+          2.8642874005744434,
+          8.346971526090115,
+          2.9749999046325684,
+          true
+        ],
+        [
+          3.3242870306005514,
+          8.347462794841462,
+          3.1500000953674316,
+          true
+        ],
+        [
+          3.784286761723166,
+          8.347954063657326,
+          3.1500000953674316,
+          true
+        ],
+        [
+          4.244286498993465,
+          8.34844533247653,
+          3.1500000953674316,
+          true
+        ],
+        [
+          4.704286236637607,
+          8.348936601295861,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.163891355654904,
+          8.349427448671847,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.508555782903879,
+          8.349795542112737,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.646888404759816,
+          8.349943278074853,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.687862891444105,
+          8.349987037855671,
+          3.507999897003174,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "First interior connector",
+      "start": [
+        5.694858300752687,
+        8.349994508787042,
+        3.507999897003174
+      ],
+      "target": [
+        5.7,
+        7.15,
+        3.508
+      ],
+      "position": [
+        5.699976803945504,
+        7.155461381958132,
+        3.507999897003174
+      ],
+      "frames": 115,
+      "error": 0.0054614312180550325,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.694870958127454,
+          8.34788393263158,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.696309078828182,
+          8.017337976288962,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.698200174317109,
+          7.573344510977992,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.699404978732143,
+          7.2900056458303375,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.699843047727735,
+          7.186938983338067,
+          3.507999897003174,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Internal upper-stair approach",
+      "start": [
+        5.699976803945504,
+        7.155461381958132,
+        3.507999897003174
+      ],
+      "target": [
+        4.45,
+        7.15,
+        3.508
+      ],
+      "position": [
+        4.455296742143363,
+        7.15002294799992,
+        3.507999897003174
+      ],
+      "frames": 118,
+      "error": 0.005296791853941388,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.697866240808195,
+          7.155448369619812,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.367320497573289,
+          7.153981028574569,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.9185512936458675,
+          7.152031657073394,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.6097818476747845,
+          7.150692618116722,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.493044052871491,
+          7.150186550137481,
+          3.507999897003174,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Upper south-flight landing",
+      "start": [
+        4.455296742143363,
+        7.15002294799992,
+        3.507999897003174
+      ],
+      "target": [
+        0.7,
+        7.15,
+        5.262
+      ],
+      "position": [
+        0.7051632111812697,
+        7.150000031341188,
+        5.26200008392334
+      ],
+      "frames": 249,
+      "error": 0.005163211181364844,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 5.26200008392334,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.453182444116502,
+          7.150022919073213,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.122605376569419,
+          7.150020785124948,
+          3.6833999156951904,
+          true
+        ],
+        [
+          3.6704755932049866,
+          7.150018031756835,
+          3.858799934387207,
+          true
+        ],
+        [
+          3.2109541815794294,
+          7.150015241782572,
+          4.20959997177124,
+          true
+        ],
+        [
+          2.7509832845764093,
+          7.150012449668452,
+          4.560400009155273,
+          true
+        ],
+        [
+          2.2909850543394374,
+          7.150009657431625,
+          4.735799789428711,
+          true
+        ],
+        [
+          1.8309851619667976,
+          7.150006865188027,
+          5.086599826812744,
+          true
+        ],
+        [
+          1.3709851685195833,
+          7.1500040729440855,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.9676222090544592,
+          7.150001624492377,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7790557715986217,
+          7.150000479876087,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7191203099411597,
+          7.15000011606211,
+          5.26200008392334,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Upper turn landing",
+      "start": [
+        0.7051632111812697,
+        7.150000031341188,
+        5.26200008392334
+      ],
+      "target": [
+        0.7,
+        8.35,
+        5.262
+      ],
+      "position": [
+        0.7000232936394549,
+        8.344538503711313,
+        5.26200008392334
+      ],
+      "frames": 115,
+      "error": 0.005461545962910194,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.26200008392334,
+      "maximumY": 5.26200008392334,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7051505036026718,
+          7.1521106111720565,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.703706388947275,
+          7.482656571410147,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7018073789321441,
+          7.92665064858209,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7005975205255375,
+          8.209992285041935,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7001576119131783,
+          8.31306038463043,
+          5.26200008392334,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Second-floor indoor arrival",
+      "start": [
+        0.7000232936394549,
+        8.344538503711313,
+        5.26200008392334
+      ],
+      "target": [
+        4.675,
+        8.35,
+        7.016
+      ],
+      "position": [
+        4.66965949772323,
+        8.349992710841251,
+        7.015999794006348
+      ],
+      "frames": 260,
+      "error": 0.005340507251190589,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.26200008392334,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.702133874862048,
+          8.344545194496357,
+          5.26200008392334,
+          true
+        ],
+        [
+          1.03268243831884,
+          8.34502642251839,
+          5.26200008392334,
+          true
+        ],
+        [
+          1.4848100855958153,
+          8.345645606653852,
+          5.612800121307373,
+          true
+        ],
+        [
+          1.9443309648935951,
+          8.346272945752638,
+          5.963600158691406,
+          true
+        ],
+        [
+          2.4043014271190235,
+          8.34690076210234,
+          6.138999938964844,
+          true
+        ],
+        [
+          2.86429922851257,
+          8.347528605911146,
+          6.489799976348877,
+          true
+        ],
+        [
+          3.3242986924028317,
+          8.348156451250283,
+          6.84060001373291,
+          true
+        ],
+        [
+          3.784298257389642,
+          8.348784296668788,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.23797606927399,
+          8.34940351363119,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.529514871639376,
+          8.349801429876457,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.63643961800594,
+          8.349947369604706,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Second-floor hall entry",
+      "start": [
+        4.669693354823089,
+        8.349992757052211,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        9.7,
+        7.016
+      ],
+      "position": [
+        4.67497888423677,
+        9.694628162926213,
+        7.015999794006348
+      ],
+      "frames": 123,
+      "error": 0.00537187857483433,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.6697016511604605,
+          8.352103340135937,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67100097210288,
+          8.68264978232322,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.672777979085379,
+          9.134719256946934,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674187611806854,
+          9.49332894733484,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674771403072504,
+          9.641845083372619,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6749470551658145,
+          9.686530867008392,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Second-floor hall garden-door approach",
+      "start": [
+        4.67497888423677,
+        9.694628162926213,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        13.25,
+        7.016
+      ],
+      "position": [
+        4.6749999682453565,
+        13.244617389335824,
+        7.015999794006348
+      ],
+      "frames": 238,
+      "error": 0.00538261066426978,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.674978911487439,
+          9.696742505948814,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674980978928854,
+          10.027319915001883,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6749836545279635,
+          10.479449719133756,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67498636606619,
+          10.93897113202262,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67498907970342,
+          11.398942029102905,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674991793460624,
+          11.858940259345014,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67499450722438,
+          12.318940151718405,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674997203556671,
+          12.775985349322621,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6749990448540375,
+          13.08809677954413,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.674999742418979,
+          13.206338404375263,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Hall to roof garden terrace",
+      "start": [
+        4.674999968446381,
+        13.244651464578947,
+        7.015999794006348
+      ],
+      "target": [
+        6.1,
+        13.25,
+        7.016
+      ],
+      "position": [
+        6.0946679343464885,
+        13.249979986848155,
+        7.0279998779296875
+      ],
+      "frames": 127,
+      "error": 0.005332103211641767,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.0279998779296875,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.677110552969192,
+          13.244659386358476,
+          7.015999794006348,
+          true
+        ],
+        [
+          5.007657220537195,
+          13.245900046372965,
+          7.015999794006348,
+          true
+        ],
+        [
+          5.459782112181746,
+          13.247597033000442,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.851202646617807,
+          13.249066174436658,
+          7.0279998779296875,
+          true
+        ],
+        [
+          6.0275353591468095,
+          13.249728014252774,
+          7.0279998779296875,
+          true
+        ],
+        [
+          6.0826858957116965,
+          13.249935013966303,
+          7.0279998779296875,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return from garden into hall",
+      "start": [
+        6.0946679343464885,
+        13.249979986848155,
+        7.0279998779296875
+      ],
+      "target": [
+        4.675,
+        13.25,
+        7.016
+      ],
+      "position": [
+        4.680226060783125,
+        13.2499999269086,
+        7.015999794006348
+      ],
+      "frames": 127,
+      "error": 0.005226060783636723,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.0279998779296875,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          6.092561056843361,
+          13.249980030570985,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.762040309118559,
+          13.249984778108676,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.30991395060043,
+          13.249991115949673,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.920617177884931,
+          13.249996563822473,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.746361069574195,
+          13.249999001759218,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.692013405845067,
+          13.249999762027072,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Hall back to indoor landing",
+      "start": [
+        4.680226060783125,
+        13.2499999269086,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        8.35,
+        7.016
+      ],
+      "position": [
+        4.675005768919932,
+        8.355444977335909,
+        7.015999794006348
+      ],
+      "frames": 308,
+      "error": 0.005444980391975574,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.680220148734355,
+          13.247889328770832,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.679841151681884,
+          12.917340519861947,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6793601846491,
+          12.465212697581673,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.678873192624467,
+          12.005691647698,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.678385847417625,
+          11.545721015166778,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.677898481755381,
+          11.085723043485523,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.677411114931056,
+          10.625723409308758,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.676923748042916,
+          10.165723674035524,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6764363811515075,
+          9.705723932614605,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6759490142599605,
+          9.245724190819846,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675467829432847,
+          8.79155937150844,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675156236780393,
+          8.497463604710795,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67504150077044,
+          8.389170374555908,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Indoor terrace-door operating clearance",
+      "start": [
+        4.675005768919932,
+        8.355444977335909,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        8.2,
+        7.016
+      ],
+      "position": [
+        4.675000224061914,
+        8.2061117808151,
+        7.015999794006348
+      ],
+      "frames": 65,
+      "error": 0.00611178081920746,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.675005744613562,
+          8.354894385996433,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675003016126762,
+          8.281892051787972,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675001001034062,
+          8.227245140332835,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Indoor terrace-door approach",
+      "start": [
+        4.675000223021014,
+        8.20608345301086,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        7.15,
+        7.016
+      ],
+      "position": [
+        4.67500000112117,
+        7.155309116987496,
+        7.015999794006348
+      ],
+      "frames": 108,
+      "error": 0.005309116987495817,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.675000222575303,
+          8.203972853621464,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675000152770809,
+          7.873423857741005,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675000065217255,
+          7.45882678743787,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675000019962327,
+          7.244528676298217,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675000004971564,
+          7.173542104259469,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Indoor landing directly to terrace",
+      "start": [
+        4.67500000112117,
+        7.155309116987496,
+        7.015999794006348
+      ],
+      "target": [
+        5.95,
+        7.15,
+        7.016
+      ],
+      "position": [
+        5.9445857496783905,
+        7.150022357596324,
+        7.0279998779296875
+      ],
+      "frames": 119,
+      "error": 0.005414296483123549,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.0279998779296875,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.677110582212174,
+          7.155296633385873,
+          7.015999794006348,
+          true
+        ],
+        [
+          5.007656734816733,
+          7.153897579619808,
+          7.015999794006348,
+          true
+        ],
+        [
+          5.457900411453131,
+          7.152033608875792,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.779410252336834,
+          7.150704773123164,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.903549064418685,
+          7.150191873423652,
+          7.0279998779296875,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Terrace back to indoor landing",
+      "start": [
+        5.9445857496783905,
+        7.150022357596324,
+        7.0279998779296875
+      ],
+      "target": [
+        4.675,
+        7.15,
+        7.016
+      ],
+      "position": [
+        4.680303060865497,
+        7.150000092605831,
+        7.015999794006348
+      ],
+      "frames": 119,
+      "error": 0.005303060866305719,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.0279998779296875,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.942478916617625,
+          7.150022304871414,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.611958506215867,
+          7.150016388671836,
+          7.0279998779296875,
+          true
+        ],
+        [
+          5.161967450909219,
+          7.15000851036542,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.843189437086297,
+          7.150002938505881,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.720688366796774,
+          7.150000798096507,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Step clear of terrace door before closing",
+      "start": [
+        4.680303060865497,
+        7.150000092605831,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        8.2,
+        7.016
+      ],
+      "position": [
+        4.6750259620110155,
+        8.194809196499612,
+        7.015999794006348
+      ],
+      "frames": 108,
+      "error": 0.005190868424998372,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.6802886985271765,
+          7.152110665012584,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.67859781142875,
+          7.482655478151385,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.676525651439949,
+          7.895453219194655,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675465359082764,
+          8.10705517953181,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675115573155293,
+          8.176906743850417,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Second-floor stair descent approach",
+      "start": [
+        4.675025797160098,
+        8.19484213246724,
+        7.015999794006348
+      ],
+      "target": [
+        4.675,
+        8.35,
+        7.016
+      ],
+      "position": [
+        4.675001014739995,
+        8.343896812873165,
+        7.015999794006348
+      ],
+      "frames": 65,
+      "error": 0.006103187211191781,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 7.015999794006348,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.675025706414298,
+          8.195387925971048,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.675013594293219,
+          8.26823667597471,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.6750045231566215,
+          8.32279532557393,
+          7.015999794006348,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Descend upper north flight",
+      "start": [
+        4.675001014739995,
+        8.343896812873165,
+        7.015999794006348
+      ],
+      "target": [
+        0.7,
+        8.35,
+        5.262
+      ],
+      "position": [
+        0.705341023037895,
+        8.349991839308831,
+        5.26200008392334
+      ],
+      "frames": 260,
+      "error": 0.005341029272359991,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.26200008392334,
+      "maximumY": 7.015999794006348,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.672890417320517,
+          8.343903168232725,
+          7.015999794006348,
+          true
+        ],
+        [
+          4.342341804981436,
+          8.344432927339104,
+          7.015999794006348,
+          true
+        ],
+        [
+          3.8902142565876363,
+          8.345125456493035,
+          7.015999794006348,
+          true
+        ],
+        [
+          3.4306934851843582,
+          8.345827691312934,
+          6.84060001373291,
+          true
+        ],
+        [
+          2.970723131403455,
+          8.346530501009166,
+          6.489799976348877,
+          true
+        ],
+        [
+          2.5107254384880506,
+          8.347233344379827,
+          6.3144001960754395,
+          true
+        ],
+        [
+          2.0507260830779894,
+          8.34793618968365,
+          5.963600158691406,
+          true
+        ],
+        [
+          1.5907266265715072,
+          8.34863903509378,
+          5.612800121307373,
+          true
+        ],
+        [
+          1.1370464890882723,
+          8.34933222504405,
+          5.437399864196777,
+          true
+        ],
+        [
+          0.8454949796332053,
+          8.349777694350536,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7385634207784572,
+          8.349941077923631,
+          5.26200008392334,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Return across intermediate landing",
+      "start": [
+        0.705341023037895,
+        8.349991839308831,
+        5.26200008392334
+      ],
+      "target": [
+        0.7,
+        7.15,
+        5.262
+      ],
+      "position": [
+        0.7000240965940691,
+        7.155461340777416,
+        5.26200008392334
+      ],
+      "frames": 115,
+      "error": 0.005461393936799258,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 5.26200008392334,
+      "maximumY": 5.26200008392334,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7053279005196366,
+          8.347881266521988,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.703834181411654,
+          8.017335562225758,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7018696934833196,
+          7.573342625088749,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7006181203069326,
+          7.290004870036594,
+          5.26200008392334,
+          true
+        ],
+        [
+          0.7001630453869313,
+          7.186938750684826,
+          5.26200008392334,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Descend upper south flight",
+      "start": [
+        0.7000240965940691,
+        7.155461340777416,
+        5.26200008392334
+      ],
+      "target": [
+        4.25,
+        7.15,
+        3.508
+      ],
+      "position": [
+        4.244728674798484,
+        7.150008055512605,
+        3.507999897003174
+      ],
+      "frames": 238,
+      "error": 0.005271331356632842,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 5.26200008392334,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7021346767536473,
+          7.155454303001068,
+          5.26200008392334,
+          true
+        ],
+        [
+          1.032683157423089,
+          7.1549189263304145,
+          5.26200008392334,
+          true
+        ],
+        [
+          1.4848106975152908,
+          7.154225862792642,
+          5.26200008392334,
+          true
+        ],
+        [
+          1.9443314682371413,
+          7.1535234799043,
+          5.086599826812744,
+          true
+        ],
+        [
+          2.4043018218107575,
+          7.152820552666941,
+          4.735799789428711,
+          true
+        ],
+        [
+          2.8642995145487764,
+          7.152117594311303,
+          4.385000228881836,
+          true
+        ],
+        [
+          3.3242988697833895,
+          7.151414634256363,
+          4.20959997177124,
+          true
+        ],
+        [
+          3.7810145091454124,
+          7.150716692370334,
+          3.858799934387207,
+          true
+        ],
+        [
+          4.090395000176437,
+          7.150243904529344,
+          3.6833999156951904,
+          true
+        ],
+        [
+          4.20706152807547,
+          7.150065617541953,
+          3.6833999156951904,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Back in first-floor interior",
+      "start": [
+        4.244728674798484,
+        7.150008055512605,
+        3.507999897003174
+      ],
+      "target": [
+        5.7,
+        7.15,
+        3.508
+      ],
+      "position": [
+        5.69483027433472,
+        7.150000028394582,
+        3.507999897003174
+      ],
+      "frames": 129,
+      "error": 0.005169725665358267,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          4.246842962992783,
+          7.1500080381924445,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.577419955914384,
+          7.1500061728121755,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.029549734742273,
+          7.150003683967578,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.432369703555691,
+          7.150001470321826,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.6209087250628915,
+          7.1500004344787715,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.68086428648601,
+          7.1500001051121815,
+          3.507999897003174,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "First arrival for ground descent",
+      "start": [
+        5.69483027433472,
+        7.150000028394582,
+        3.507999897003174
+      ],
+      "target": [
+        5.7,
+        8.35,
+        3.508
+      ],
+      "position": [
+        5.6999766768465365,
+        8.344538503198649,
+        3.507999897003174
+      ],
+      "frames": 115,
+      "error": 0.005461546601526989,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 3.507999897003174,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.694842995792261,
+          7.152110608178201,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.696288919469329,
+          7.482656560753209,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.698190332197998,
+          7.926650631240153,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.699401722638471,
+          8.209992276698687,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.699842188426522,
+          8.313060381949601,
+          3.507999897003174,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Descend to ground stair landing",
+      "start": [
+        5.6999766768465365,
+        8.344538503198649,
+        3.507999897003174
+      ],
+      "target": [
+        0.7,
+        8.35,
+        1.575
+      ],
+      "position": [
+        0.7051414547330065,
+        8.349994420714475,
+        1.5750000476837158
+      ],
+      "frames": 314,
+      "error": 0.005141457760205976,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 1.5750000476837158,
+      "maximumY": 3.507999897003174,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          5.697866094911357,
+          8.34454459950351,
+          3.507999897003174,
+          true
+        ],
+        [
+          5.367317417666712,
+          8.344933078399645,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.915189615289099,
+          8.345425711230927,
+          3.507999897003174,
+          true
+        ],
+        [
+          4.455668578505209,
+          8.34592449989887,
+          3.3289999961853027,
+          true
+        ],
+        [
+          3.9956979586596604,
+          8.346423649623368,
+          3.1500000953674316,
+          true
+        ],
+        [
+          3.535699999638868,
+          8.346922820282124,
+          3.1500000953674316,
+          true
+        ],
+        [
+          3.0757003781210295,
+          8.347421992132746,
+          3.1500000953674316,
+          true
+        ],
+        [
+          2.6157006555066333,
+          8.347921164049124,
+          2.799999952316284,
+          true
+        ],
+        [
+          2.1557009267445486,
+          8.348420335968905,
+          2.450000047683716,
+          true
+        ],
+        [
+          1.6957011976086225,
+          8.348919507888832,
+          2.0999999046325684,
+          true
+        ],
+        [
+          1.2360963322686047,
+          8.349418251319529,
+          1.75,
+          true
+        ],
+        [
+          0.8914381101063692,
+          8.349792259597308,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7531096097490745,
+          8.349942367735922,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7121365909887124,
+          8.349986829893496,
+          1.5750000476837158,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Descend ground west flight",
+      "start": [
+        0.7051414547330065,
+        8.349994420714475,
+        1.5750000476837158
+      ],
+      "target": [
+        0.7,
+        5.6,
+        0.35
+      ],
+      "position": [
+        0.7000099812501486,
+        5.605375559458638,
+        0.3499999940395355
+      ],
+      "frames": 196,
+      "error": 0.005375568725140781,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0.3499999940395355,
+      "maximumY": 1.5750000476837158,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7051338948273501,
+          8.347883828935496,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7044908361697101,
+          8.017335436111127,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7036491541450252,
+          7.5652081419258,
+          1.5750000476837158,
+          true
+        ],
+        [
+          0.7027957532276794,
+          7.105687626467051,
+          1.225000023841858,
+          true
+        ],
+        [
+          0.7019416734092615,
+          6.64571752869704,
+          0.8750000000000001,
+          true
+        ],
+        [
+          0.7010875559528107,
+          6.185720091791756,
+          0.5249999761581421,
+          true
+        ],
+        [
+          0.7004033499382031,
+          5.817230393461941,
+          0.3499999940395356,
+          true
+        ],
+        [
+          0.7001144513620458,
+          5.66163957093731,
+          0.3499999940395355,
+          true
+        ],
+        [
+          0.7000267138253612,
+          5.61438714987106,
+          0.3499999940395356,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground stair exit",
+      "start": [
+        0.7000099812501486,
+        5.605375559458638,
+        0.3499999940395355
+      ],
+      "target": [
+        1.9,
+        5.6,
+        0
+      ],
+      "position": [
+        1.8945386943733233,
+        5.600024252538696,
+        0
+      ],
+      "frames": 115,
+      "error": 0.0054613594766873205,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 0.34999999403953563,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          0.7021205525029472,
+          5.605362356483077,
+          0.34999999403953563,
+          true
+        ],
+        [
+          1.0326662050302586,
+          5.603859003172073,
+          0.3499999940395356,
+          true
+        ],
+        [
+          1.4766588918690586,
+          5.601881796695519,
+          0.34999999403953563,
+          true
+        ],
+        [
+          1.7599957722784365,
+          5.6006221212522265,
+          0,
+          true
+        ],
+        [
+          1.8630614446427736,
+          5.600164100671972,
+          0,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground side aisle return",
+      "start": [
+        1.8945386943733233,
+        5.600024252538696,
+        0
+      ],
+      "target": [
+        1.9,
+        7.65,
+        0
+      ],
+      "position": [
+        1.8999863123578065,
+        7.644825841144117,
+        5.551115123125783e-17
+      ],
+      "frames": 160,
+      "error": 0.005174176960393305,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          1.8945481079449715,
+          5.602134827597798,
+          0,
+          true
+        ],
+        [
+          1.8954541205805358,
+          5.932682531604679,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.8966527675886842,
+          6.38480901591561,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.8978686307458477,
+          6.8443287150033605,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.8990350524298405,
+          7.28523910430144,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.8996943306782748,
+          7.534453006593704,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          1.8999218258651092,
+          7.620449042251503,
+          1.1102230246251565e-16,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground dining aisle return",
+      "start": [
+        1.8999863123578065,
+        7.644825841144117,
+        5.551115123125783e-17
+      ],
+      "target": [
+        3.7,
+        7.65,
+        0
+      ],
+      "position": [
+        3.694840669718944,
+        7.649985277396343,
+        5.551115123125783e-17
+      ],
+      "frames": 147,
+      "error": 0.005159351287136964,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          1.902096912637503,
+          7.644835540774267,
+          0,
+          true
+        ],
+        [
+          2.2326446264143343,
+          7.645809584448144,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          2.6847708633343315,
+          7.647102503109393,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          3.1441623511998715,
+          7.6484137608385785,
+          0,
+          true
+        ],
+        [
+          3.498543346600742,
+          7.6494251010559795,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          3.6436054115658125,
+          7.649839068578718,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          3.687001903919698,
+          7.649962908273374,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "Ground living return",
+      "start": [
+        3.694840669718944,
+        7.649985277396343,
+        5.551115123125783e-17
+      ],
+      "target": [
+        5.9,
+        7.65,
+        0
+      ],
+      "position": [
+        5.894790678905865,
+        7.649999965464159,
+        5.551115123125783e-17
+      ],
+      "frames": 168,
+      "error": 0.005209321094249557,
+      "grounded": true,
+      "pass": true,
+      "reason": "",
+      "minimumY": 0,
+      "maximumY": 1.1102230246251565e-16,
+      "maxAirFrames": 0,
+      "trace": [
+        [
+          3.696954893140247,
+          7.649985301829355,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          4.027531394449897,
+          7.6499875787150815,
+          5.551115123125783e-17,
+          true
+        ],
+        [
+          4.479661143379857,
+          7.649990582962117,
+          0,
+          true
+        ],
+        [
+          4.939182552909915,
+          7.649993630031616,
+          0,
+          true
+        ],
+        [
+          5.397765890988211,
+          7.649996670349816,
+          0,
+          true
+        ],
+        [
+          5.725012757246679,
+          7.649998839894362,
+          0,
+          true
+        ],
+        [
+          5.852196521927136,
+          7.649999683079859,
+          5.551115123125783e-17,
+          true
+        ]
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "arrival-sliding-gate",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "arrival-sliding-gate",
+      "desired": 1
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "drawing-veranda-only",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "drawing-veranda-only",
+      "desired": 0
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "living-veranda-wood",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "living-veranda-wood",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "living-veranda-mesh",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "living-veranda-mesh",
+      "desired": 1
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "caregiver-lobby",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "caregiver-lobby",
+      "desired": 0
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "icu-glass-living-wood",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "icu-glass-living-wood",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "icu-glass-living",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "icu-glass-living",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "icu-veranda-glass",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "icu-veranda-glass",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "s2-hall-entry",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "s2-hall-entry",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "s2-hall-garden",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "s2-hall-garden",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "s2-stair-terrace-proposed",
+      "desired": 0
+    },
+    {
+      "before": 0,
+      "value": 1,
+      "goal": 1,
+      "wanted": 1,
+      "pass": true,
+      "message": "",
+      "id": "s2-stair-terrace-proposed",
+      "desired": 1
+    },
+    {
+      "before": 1,
+      "value": 0,
+      "goal": 0,
+      "wanted": 0,
+      "pass": true,
+      "message": "",
+      "id": "s2-stair-terrace-proposed",
+      "desired": 0
+    }
+  ],
+  "errors": [],
+  "initialSpawns": 1,
+  "laterTeleports": 0,
+  "initial": {
+    "position": [
+      8.522,
+      -1.4,
+      -0.26499998569488525
+    ],
+    "supported": true,
+    "carVisible": true,
+    "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+    "settings": {
+      "radius": 0.27,
+      "height": 1.78,
+      "eye": 1.63,
+      "crouchHeight": 1.2,
+      "crouchEye": 1.08,
+      "stepUp": 0.38,
+      "snapDown": 0.42,
+      "walkSpeed": 2.3,
+      "runSpeed": 5,
+      "crouchSpeed": 1.2,
+      "turnSpeed": 1.68,
+      "accel": 14,
+      "airAccel": 3,
+      "gravity": 16.5,
+      "jump": 5.4
+    },
+    "openings": [
+      {
+        "id": "arrival-sliding-gate",
+        "initial": 1
+      },
+      {
+        "id": "drawing-veranda-only",
+        "initial": 0,
+        "clearWidth": 0.7900000000000004
+      },
+      {
+        "id": "living-veranda-wood",
+        "initial": 1,
+        "clearWidth": 1.6900000000000006
+      },
+      {
+        "id": "living-veranda-mesh",
+        "initial": 1,
+        "clearWidth": 1.6900000000000006
+      },
+      {
+        "id": "icu-glass-living",
+        "initial": 1,
+        "clearWidth": 1.4875999999999998
+      },
+      {
+        "id": "icu-glass-living-wood",
+        "initial": 1,
+        "clearWidth": 1.4875999999999998
+      },
+      {
+        "id": "stair-window",
+        "initial": 0
+      },
+      {
+        "id": "icu-east-window",
+        "initial": 0
+      },
+      {
+        "id": "icu-north-window",
+        "initial": 0
+      },
+      {
+        "id": "master-rear",
+        "initial": 0
+      },
+      {
+        "id": "drawing-north",
+        "initial": 0
+      },
+      {
+        "id": "caregiver-north",
+        "initial": 0
+      },
+      {
+        "id": "caregiver-rear",
+        "initial": 0
+      },
+      {
+        "id": "kitchen-east",
+        "initial": 0
+      },
+      {
+        "id": "icu-veranda-glass",
+        "initial": 1,
+        "clearWidth": 0.89
+      },
+      {
+        "id": "master-door",
+        "initial": 0,
+        "clearWidth": 0.6899999999999998
+      },
+      {
+        "id": "bath-door",
+        "initial": 0,
+        "clearWidth": 0.7900000000000004
+      },
+      {
+        "id": "caregiver-lobby",
+        "initial": 0,
+        "clearWidth": 0.6900000000000007
+      },
+      {
+        "id": "wc-caregiver-only",
+        "initial": 0,
+        "clearWidth": 0.6900000000000007
+      },
+      {
+        "id": "lightwell-maintenance",
+        "initial": 0,
+        "clearWidth": 0.6900000000000007
+      },
+      {
+        "id": "bath-rear",
+        "initial": 0
+      },
+      {
+        "id": "master-lightwell",
+        "initial": 0
+      },
+      {
+        "id": "wc-rear",
+        "initial": 0
+      },
+      {
+        "id": "u-master-door",
+        "initial": 1,
+        "clearWidth": 0.6899999999999998
+      },
+      {
+        "id": "u-master-bath-door",
+        "initial": 1,
+        "clearWidth": 0.7900000000000004
+      },
+      {
+        "id": "u-office-door",
+        "initial": 1,
+        "clearWidth": 0.7900000000000004
+      },
+      {
+        "id": "u-bedroom-door",
+        "initial": 1,
+        "clearWidth": 0.7900000000000004
+      },
+      {
+        "id": "u-bath-door",
+        "initial": 1,
+        "clearWidth": 0.7899999999999995
+      },
+      {
+        "id": "u-terrace-door",
+        "initial": 1,
+        "clearWidth": 1.4899999999999995
+      },
+      {
+        "id": "u-master-rear",
+        "initial": 0
+      },
+      {
+        "id": "u-master-south",
+        "initial": 0
+      },
+      {
+        "id": "u-office-rear",
+        "initial": 0
+      },
+      {
+        "id": "u-office-north",
+        "initial": 0
+      },
+      {
+        "id": "u-bedroom-north",
+        "initial": 0
+      },
+      {
+        "id": "u-bedroom-east-proposed",
+        "initial": 0
+      },
+      {
+        "id": "u-bath-rear",
+        "initial": 0
+      },
+      {
+        "id": "u-ensuite-rear",
+        "initial": 0
+      },
+      {
+        "id": "u-gallery-lightwell",
+        "initial": 0
+      },
+      {
+        "id": "u-master-lightwell",
+        "initial": 0
+      },
+      {
+        "id": "u-atrium-east",
+        "initial": 0
+      },
+      {
+        "id": "u-atrium-south",
+        "initial": 0
+      },
+      {
+        "id": "s2-hall-entry",
+        "initial": 1,
+        "clearWidth": 0.9399999999999998
+      },
+      {
+        "id": "s2-hall-garden",
+        "initial": 1,
+        "clearWidth": 1.5899999999999992
+      },
+      {
+        "id": "s2-hall-rear",
+        "initial": 0
+      },
+      {
+        "id": "s2-hall-south",
+        "initial": 0
+      },
+      {
+        "id": "s2-stair-terrace-proposed",
+        "initial": 1,
+        "clearWidth": 0.89
+      },
+      {
+        "id": "s2-stair-south-window-proposed",
+        "initial": 0
+      }
+    ]
+  },
+  "finished": "2026-11-05T03:39:02.265Z",
+  "passed": true
+}

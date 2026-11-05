@@ -1,0 +1,199 @@
+{
+  "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+  "sourceScene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+  "sceneSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+  "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+  "glbSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+  "glbBytes": 220890080,
+  "geometry": "Fresh export from actual final viewer; no geometry scaling",
+  "openingPoses": [
+    {
+      "id": "arrival-sliding-gate",
+      "openness": 1
+    },
+    {
+      "id": "drawing-veranda-only",
+      "openness": 0
+    },
+    {
+      "id": "living-veranda-wood",
+      "openness": 1
+    },
+    {
+      "id": "living-veranda-mesh",
+      "openness": 1
+    },
+    {
+      "id": "icu-glass-living",
+      "openness": 1
+    },
+    {
+      "id": "icu-glass-living-wood",
+      "openness": 1
+    },
+    {
+      "id": "stair-window",
+      "openness": 0
+    },
+    {
+      "id": "icu-east-window",
+      "openness": 0
+    },
+    {
+      "id": "icu-north-window",
+      "openness": 0
+    },
+    {
+      "id": "master-rear",
+      "openness": 0
+    },
+    {
+      "id": "drawing-north",
+      "openness": 0
+    },
+    {
+      "id": "caregiver-north",
+      "openness": 0
+    },
+    {
+      "id": "caregiver-rear",
+      "openness": 0
+    },
+    {
+      "id": "kitchen-east",
+      "openness": 0
+    },
+    {
+      "id": "icu-veranda-glass",
+      "openness": 1
+    },
+    {
+      "id": "master-door",
+      "openness": 0
+    },
+    {
+      "id": "bath-door",
+      "openness": 0
+    },
+    {
+      "id": "caregiver-lobby",
+      "openness": 0
+    },
+    {
+      "id": "wc-caregiver-only",
+      "openness": 0
+    },
+    {
+      "id": "lightwell-maintenance",
+      "openness": 0
+    },
+    {
+      "id": "bath-rear",
+      "openness": 0
+    },
+    {
+      "id": "master-lightwell",
+      "openness": 0
+    },
+    {
+      "id": "wc-rear",
+      "openness": 0
+    },
+    {
+      "id": "u-master-door",
+      "openness": 1
+    },
+    {
+      "id": "u-master-bath-door",
+      "openness": 1
+    },
+    {
+      "id": "u-office-door",
+      "openness": 1
+    },
+    {
+      "id": "u-bedroom-door",
+      "openness": 1
+    },
+    {
+      "id": "u-bath-door",
+      "openness": 1
+    },
+    {
+      "id": "u-terrace-door",
+      "openness": 1
+    },
+    {
+      "id": "u-master-rear",
+      "openness": 0
+    },
+    {
+      "id": "u-master-south",
+      "openness": 0
+    },
+    {
+      "id": "u-office-rear",
+      "openness": 0
+    },
+    {
+      "id": "u-office-north",
+      "openness": 0
+    },
+    {
+      "id": "u-bedroom-north",
+      "openness": 0
+    },
+    {
+      "id": "u-bedroom-east-proposed",
+      "openness": 0
+    },
+    {
+      "id": "u-bath-rear",
+      "openness": 0
+    },
+    {
+      "id": "u-ensuite-rear",
+      "openness": 0
+    },
+    {
+      "id": "u-gallery-lightwell",
+      "openness": 0
+    },
+    {
+      "id": "u-master-lightwell",
+      "openness": 0
+    },
+    {
+      "id": "u-atrium-east",
+      "openness": 0
+    },
+    {
+      "id": "u-atrium-south",
+      "openness": 0
+    },
+    {
+      "id": "s2-hall-entry",
+      "openness": 1
+    },
+    {
+      "id": "s2-hall-garden",
+      "openness": 1
+    },
+    {
+      "id": "s2-hall-rear",
+      "openness": 0
+    },
+    {
+      "id": "s2-hall-south",
+      "openness": 0
+    },
+    {
+      "id": "s2-stair-terrace-proposed",
+      "openness": 1
+    },
+    {
+      "id": "s2-stair-south-window-proposed",
+      "openness": 0
+    }
+  ]
+}

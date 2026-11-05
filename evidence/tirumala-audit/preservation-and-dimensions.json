@@ -1,0 +1,26 @@
+{
+  "originalFilesChecked": 58,
+  "originalFilesChanged": [],
+  "projects": [
+    {
+      "project": "tirumala-2",
+      "planHash": "7985678c092f3d2506feb062a96db0b5de37eb2266a2c0ae246b7319efc16799",
+      "sourceVersion": "p12-open-porch-v33",
+      "sourceGeometryHash": "a653f9099d5d8efa51710b1b838986e6bf1527edd36e56a41409ceec64c55cb0",
+      "plotMm": [
+        12192,
+        15240
+      ]
+    },
+    {
+      "project": "tirumala-3",
+      "planHash": "b0d3db66be33590db5172cecd6fd8d5c4a1a0a909a2faec6c3c7ba7bff2eb5f4",
+      "sourceVersion": "p11-veranda-return-trim-v32",
+      "sourceGeometryHash": "e2ff102816e3ba81d5017518422dd902fa689589f662ee8144afdedad738f6d5",
+      "plotMm": [
+        12192,
+        15240
+      ]
+    }
+  ]
+}

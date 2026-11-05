@@ -1,0 +1,589 @@
+{
+  "checks": [
+    {
+      "check": "compact-only: room selector enters walking mode",
+      "pass": true
+    },
+    {
+      "check": "compact-only: icu safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          9.5,
+          7.4,
+          1.63
+        ],
+        "feet": [
+          9.5,
+          0,
+          -7.4
+        ],
+        "eye": [
+          9.5,
+          1.63,
+          -7.4
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: living safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          5.95,
+          4.2,
+          1.63
+        ],
+        "feet": [
+          5.95,
+          5.551115123125783e-17,
+          -4.2
+        ],
+        "eye": [
+          5.95,
+          1.63,
+          -4.2
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: veranda safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.05,
+          2.25,
+          1.63
+        ],
+        "feet": [
+          6.05,
+          0,
+          -2.25
+        ],
+        "eye": [
+          6.05,
+          1.63,
+          -2.25
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: master safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          4.7,
+          9.7,
+          1.63
+        ],
+        "feet": [
+          4.7,
+          0,
+          -9.7
+        ],
+        "eye": [
+          4.7,
+          1.63,
+          -9.7
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: drawing safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          10.9,
+          8.6,
+          1.63
+        ],
+        "feet": [
+          10.9,
+          5.551115123125783e-17,
+          -8.6
+        ],
+        "eye": [
+          10.9,
+          1.63,
+          -8.6
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: gallery safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.95,
+          7.4,
+          5.138
+        ],
+        "feet": [
+          6.95,
+          3.507999897003174,
+          -7.4
+        ],
+        "eye": [
+          6.95,
+          5.137999897003174,
+          -7.4
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 68,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: upperMaster safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          4.95,
+          9.8,
+          5.138
+        ],
+        "feet": [
+          4.95,
+          3.507999897003174,
+          -9.8
+        ],
+        "eye": [
+          4.95,
+          5.137999897003174,
+          -9.8
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 66,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: office safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          8.9,
+          11.95,
+          5.138
+        ],
+        "feet": [
+          8.9,
+          3.507999897003174,
+          -11.95
+        ],
+        "eye": [
+          8.9,
+          5.137999897003174,
+          -11.95
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "compact-only: terrace safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.9,
+          3.9,
+          5.138
+        ],
+        "feet": [
+          6.9,
+          3.5239999294281006,
+          -3.9
+        ],
+        "eye": [
+          6.9,
+          5.1539999294281005,
+          -3.9
+        ],
+        "onGround": true,
+        "indoors": 0,
+        "lamps": 0.06,
+        "fov": 68,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 0.98,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: room selector enters walking mode",
+      "pass": true
+    },
+    {
+      "check": "south-extension: icu safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          9.5,
+          7.4,
+          1.63
+        ],
+        "feet": [
+          9.5,
+          5.551115123125783e-17,
+          -7.4
+        ],
+        "eye": [
+          9.5,
+          1.63,
+          -7.4
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: living safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          5.95,
+          4.2,
+          1.63
+        ],
+        "feet": [
+          5.95,
+          5.551115123125783e-17,
+          -4.2
+        ],
+        "eye": [
+          5.95,
+          1.63,
+          -4.2
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: veranda safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.05,
+          2.25,
+          1.63
+        ],
+        "feet": [
+          6.05,
+          0,
+          -2.25
+        ],
+        "eye": [
+          6.05,
+          1.63,
+          -2.25
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: master safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          4.7,
+          9.7,
+          1.63
+        ],
+        "feet": [
+          4.7,
+          0,
+          -9.7
+        ],
+        "eye": [
+          4.7,
+          1.63,
+          -9.7
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: drawing safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          10.9,
+          8.6,
+          1.63
+        ],
+        "feet": [
+          10.9,
+          5.551115123125783e-17,
+          -8.6
+        ],
+        "eye": [
+          10.9,
+          1.63,
+          -8.6
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: gallery safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.95,
+          7.4,
+          5.138
+        ],
+        "feet": [
+          6.95,
+          3.507999897003174,
+          -7.4
+        ],
+        "eye": [
+          6.95,
+          5.137999897003174,
+          -7.4
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 68,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: upperMaster safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          4.95,
+          9.8,
+          5.138
+        ],
+        "feet": [
+          4.95,
+          3.507999897003174,
+          -9.8
+        ],
+        "eye": [
+          4.95,
+          5.137999897003174,
+          -9.8
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 66,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: office safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          8.9,
+          11.95,
+          5.138
+        ],
+        "feet": [
+          8.9,
+          3.507999897003174,
+          -11.95
+        ],
+        "eye": [
+          8.9,
+          5.137999897003174,
+          -11.95
+        ],
+        "onGround": true,
+        "indoors": 1,
+        "lamps": 0.24,
+        "fov": 64,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 1.8619999999999999,
+        "movement": 0
+      }
+    },
+    {
+      "check": "south-extension: terrace safe true-scale eye-level view",
+      "pass": true,
+      "detail": {
+        "expected": [
+          6.9,
+          3.9,
+          5.138
+        ],
+        "feet": [
+          6.9,
+          3.5239999294281006,
+          -3.9
+        ],
+        "eye": [
+          6.9,
+          5.1539999294281005,
+          -3.9
+        ],
+        "onGround": true,
+        "indoors": 0,
+        "lamps": 0.06,
+        "fov": 68,
+        "rootScale": [
+          1,
+          1,
+          1
+        ],
+        "exposure": 0.98,
+        "movement": 0
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,9 @@
+P12 design trials — spaciousness update, 30 October 2026
+
+Applies the user clarification: improve perceived space throughout the fixed 40 x 50 ft house.
+
+Changed: subtle ivory floor veining/grout; light ceiling and cabinetry finishes; neutral-warm room lights used at a low level during daytime; gentler interior image contrast; grounded eye-level room shortcuts and paired room renders. The kitchen viewpoint is now clear of the extended ICU wall.
+
+Preserved in each trial: every room boundary, wall, opening, floor, stair, furniture geometry and dimension, plot size, G+1 layout and doors. The separate 1.5 ft south extension remains a comparison option. Original Tirumala 2 / P12 and Tirumala 3 / P11 files remain unchanged.
+
+Validation: geometry equality before/after this presentation pass; 18 room-camera checks and two room-selector checks; 13 Python regressions; 77 viewer regressions; package hashes and ZIP contents verified.

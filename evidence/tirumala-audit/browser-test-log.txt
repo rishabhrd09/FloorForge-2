@@ -1,0 +1,18 @@
+PASS tirumala-2 Normal 3D view has usable height and only the current plan controls
+PASS tirumala-2 ArrowUp walks from the roadside across the entrance threshold
+PASS tirumala-2 ICU glass opening can be targeted from walking mode
+PASS tirumala-2 F closes the ICU glass panels
+PASS tirumala-2 F fully reopens the ICU connection
+PASS tirumala-2 interior_kitchen_living_dining stays at real eye level after physics
+PASS tirumala-2 interior_icu_veranda_garden stays at real eye level after physics
+PASS tirumala-2 Exterior camera exits walking without snapping back
+tirumala-2 {"start":[8.522,-0.26499998569488525,1.4],"after":[8.522,-0.26499998569488525,1.4],"onGround":true,"doors":["stair-window","master-rear","drawing-north","caregiver-north","caregiver-rear","store-door","kitchen-east","master-door","bath-door","caregiver-lobby","wc-caregiver-only","lightwell-maintenance","bath-rear","master-lightwell","wc-rear","drawing-northeast-only","icu-glass-living","icu-veranda-window","living-veranda-wood","living-veranda-mesh","icu-veranda-glass"]}
+PASS tirumala-3 Normal 3D view has usable height and only the current plan controls
+PASS tirumala-3 ArrowUp walks from the roadside across the entrance threshold
+PASS tirumala-3 ICU glass opening can be targeted from walking mode
+PASS tirumala-3 F closes the ICU glass panels
+PASS tirumala-3 F fully reopens the ICU connection
+PASS tirumala-3 interior_kitchen_living_dining stays at real eye level after physics
+PASS tirumala-3 interior_icu_veranda_garden stays at real eye level after physics
+PASS tirumala-3 Exterior camera exits walking without snapping back
+tirumala-3 {"start":[8.522,-0.26499998569488525,1.4],"after":[8.522,-0.26499998569488525,1.4],"onGround":true,"doors":["drawing-veranda-only","living-veranda-wood","living-veranda-mesh","icu-glass-living","stair-window","icu-east-window","icu-north-window","master-rear","drawing-north","caregiver-north","caregiver-rear","store-door","kitchen-east","icu-veranda-glass","master-door","bath-door","caregiver-lobby","wc-caregiver-only","lightwell-maintenance","bath-rear","master-lightwell","wc-rear"]}

@@ -1,0 +1,25 @@
+PASS tirumala-2 plan-2d-dimensioned.svg loads HTTP 200 
+Rendered tirumala-2/renders/plan-2d-dimensioned.png
+PASS tirumala-2 plan-2d-material-overhead.svg loads HTTP 200 
+Rendered tirumala-2/renders/plan-2d-material-overhead.png
+PASS tirumala-3 plan-2d-dimensioned.svg loads HTTP 200 
+Rendered tirumala-3/renders/plan-2d-dimensioned.png
+PASS tirumala-3 plan-2d-material-overhead.svg loads HTTP 200 
+Rendered tirumala-3/renders/plan-2d-material-overhead.png
+PASS tirumala-2 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=1, 14 spaces) and populated 3D meshes {"buildId":"sample:tirumala-2","planHash":"7985678c092f3d2506feb062a96db0b5de37eb2266a2c0ae246b7319efc16799","storeys":1,"roomCount":14,"widthFt":"40","depthFt":"50","facing":"90","meshCount":169}
+PASS tirumala-2 specifications dialog displays title and Home ICU 
+PASS tirumala-2 camera exterior_east activated 
+PASS tirumala-2 camera exterior_northeast activated 
+PASS tirumala-2 camera cutaway_roof_off activated 
+PASS tirumala-2 camera interior_kitchen_living_dining activated 
+PASS tirumala-2 camera interior_icu_veranda_garden activated 
+PASS tirumala-2 camera closeup_flooring_glazing_porch activated 
+PASS tirumala-3 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=1, 14 spaces) and populated 3D meshes {"buildId":"sample:tirumala-3","planHash":"b0d3db66be33590db5172cecd6fd8d5c4a1a0a909a2faec6c3c7ba7bff2eb5f4","storeys":1,"roomCount":14,"widthFt":"40","depthFt":"50","facing":"90","meshCount":179}
+PASS tirumala-3 specifications dialog displays title and Home ICU 
+PASS tirumala-3 camera exterior_east activated 
+PASS tirumala-3 camera exterior_northeast activated 
+PASS tirumala-3 camera cutaway_roof_off activated 
+PASS tirumala-3 camera interior_kitchen_living_dining activated 
+PASS tirumala-3 camera interior_icu_veranda_garden activated 
+PASS tirumala-3 camera closeup_flooring_glazing_porch activated 
+PASS Zero uncaught page errors during Tirumala 2 and Tirumala 3 studio & render verification []

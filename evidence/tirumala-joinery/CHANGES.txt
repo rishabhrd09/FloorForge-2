@@ -1,0 +1,45 @@
+TIRUMALA 2 + TIRUMALA 3 — APPROVED PALETTE & LAYERED ICU ENTRANCE
+30 October 2026
+
+Ivory / limestone / teak is now recorded as the user's approved finish palette.
+
+ICU entrance, viewed from the living hall:
+  Living hall -> wooden privacy door -> independent glass slider -> ICU.
+The timber panels conceal the glass when closed. Parking the wood reveals the
+closed glass behind it. Both can be opened completely. The two layers occupy
+the same doorway and use separate tracks; this is not a second entrance.
+The outermost wooden panel has the accessible handle when the stack is open.
+The existing veranda-side glass connection is retained.
+
+Studio now has three ICU entrance view buttons: Wood closed, Reveal glass and
+Both open. The comparison page includes matching views of both projects.
+
+Selected existing ground-floor windows are taller, without widening or moving
+their horizontal openings. Heads align at 2850 mm (about 9 ft 4 1/4 in):
+- Master rear: 600 mm sill, 2250 mm glazing height.
+- Drawing north: 450 mm sill, 2400 mm glazing height.
+- Caregiver north/rear: 750 mm sill, 2100 mm glazing height.
+- Kitchen east: 950 mm sill retained above counter, 1900 mm glazing height.
+- ICU exterior windows: 450 mm sill, 2400 mm glazing height.
+Large upper-floor glazing retains its approved height and width.
+These windows use a broad fixed centre with sliding side vents, slim charcoal
+frames and brass handles. The sashes do not swing into the north gully or
+terrace paths. Bathroom and lightwell privacy openings are unchanged.
+
+PRESERVATION
+All 21 room/area polygons per sample, their areas, complete ground plan, first-
+floor layout, stairs, kitchen, counters, furniture positions, veranda, parking
+levels and plot dimensions are identical to the preceding approved G+1 model.
+Original My Desired Home, Bungalow and Tirumala reference samples are unchanged.
+Before-revision packages and models are retained under before/.
+
+VERIFICATION
+21 geometry checks passed; 54 scene/collision/walking/door tests passed.
+Tests confirm that wood is physically the front layer from the hall, opening
+wood exposes the still-closed glass, and both open layers clear the entrance.
+The parked wooden handle is selectable from a grounded standing position.
+Browser/render verification is recorded in renders.txt. Final package hashes
+and unchanged geometry are recorded in delivery-verification.json.
+
+These remain real-time architectural design models, with the existing G+1
+structural-review caveat; no room or plot scaling has been introduced.
