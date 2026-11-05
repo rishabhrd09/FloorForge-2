@@ -1,56 +1,81 @@
 {
   "project": "Tirumala 5",
-  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
-  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
-  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
-  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
+  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+  "verificationScript": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/scripts/refresh_tirumala_5_atrium_verification.py",
+    "sha256": "ca8ac65694eef75baae730edbd9b1d160bc13997ea9214cbc98a0e2444f353bf",
+    "bytes": 22816
+  },
+  "generatedAt": "2026-11-05T12:11:51.188403+00:00",
   "baseline": {
-    "path": "/private/tmp/tirumala5-pre-stacked.json",
-    "sha256": "92243c9cbce71b4cc0fa4a4668bfd98481f0afd1b952948279950b8308452418",
-    "bytes": 251780
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-atrium/baselines/pre-atrium-building.json",
+    "sha256": "680ee031929efd1a1929edfb8e01681234a6734a1645f612761286b16fbefa87",
+    "bytes": 265749
   },
   "plotUnchanged": true,
+  "allowedRoomPolygonChanges": [
+    "s2-indoor-landing",
+    "s2-terrace"
+  ],
+  "otherRoomFieldsUnchanged": true,
+  "unauthorizedRoomFields": [],
+  "allStairRecordsUnchanged": true,
+  "storeysUnchanged": true,
   "ground": {
-    "spacesUnchanged": true,
-    "wallsUnchanged": true,
-    "openingsUnchanged": true,
-    "stairsUnchanged": true
+    "checks": {
+      "spacesUnchanged": true,
+      "stairsUnchanged": true,
+      "openingsExactlyApprovedWindowChange": true,
+      "wallHostsExactlyApprovedWindowChange": true,
+      "masonryExactlyApprovedCutout": true,
+      "canonicalMasonryExactlyApprovedCutout": true,
+      "canonicalOtherFieldsUnchanged": true,
+      "wallHeightsUnchanged": true
+    },
+    "passed": true,
+    "approvedOpening": "drawing-north",
+    "approvedOpeningMm": {
+      "a": [
+        11507.4,
+        8600
+      ],
+      "b": [
+        11507.4,
+        11000
+      ],
+      "width": 2400,
+      "height": 2400,
+      "sill": 450
+    },
+    "approvedMasonryCutoutMm": [
+      11432.4,
+      8600.0,
+      11582.4,
+      11000.0
+    ],
+    "compiledWallDifferenceBeyondApprovedMm2": 0.0,
+    "canonicalWallDifferenceBeyondApprovedMm2": 0.0
   },
   "roomDifferences": [
     {
       "room": "s2-indoor-landing",
       "floor": 2,
-      "differenceMm2": 7551774.999999999,
-      "beforeSqFt": 31.827591432960656,
-      "afterSqFt": 87.06555781167118,
-      "areaChangeSqFt": 55.23796637871053,
+      "differenceMm2": 12516030.0,
+      "beforeSqFt": 87.06555781167118,
+      "afterSqFt": 135.89097837917896,
+      "areaChangeSqFt": 48.82542056750776,
       "authorized": true
     },
     {
       "room": "s2-terrace",
       "floor": 2,
-      "differenceMm2": 5798309.999999999,
-      "beforeSqFt": 646.0575498928777,
-      "afterSqFt": 583.6450604845655,
-      "areaChangeSqFt": -62.412489408312155,
-      "authorized": true
-    },
-    {
-      "room": "u-bedroom",
-      "floor": 1,
-      "differenceMm2": 868680.0000000005,
-      "beforeSqFt": 167.55232121575352,
-      "afterSqFt": 176.90271491654093,
-      "areaChangeSqFt": 9.350393700787402,
-      "authorized": true
-    },
-    {
-      "room": "u-gallery",
-      "floor": 1,
-      "differenceMm2": 9390120.0,
-      "beforeSqFt": 169.33848451030238,
-      "afterSqFt": 191.61848740364144,
-      "areaChangeSqFt": 22.28000289333908,
+      "differenceMm2": 9891030.0,
+      "beforeSqFt": 583.6450604845655,
+      "afterSqFt": 477.178899635577,
+      "areaChangeSqFt": -106.46616084898854,
       "authorized": true
     }
   ],
@@ -173,6 +198,22 @@
       "differenceMm2": 0.0,
       "beforeSqFt": 37.58757455514912,
       "afterSqFt": 37.58757455514912,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "u-bedroom",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 176.90271491654093,
+      "afterSqFt": 176.90271491654093,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "u-gallery",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 191.61848740364144,
+      "afterSqFt": 191.61848740364144,
       "areaChangeSqFt": 0.0
     },
     {

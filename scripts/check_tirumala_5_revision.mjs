@@ -5,6 +5,51 @@ import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
+function inspectAtriumRayGeometry() {
+  const v = window.__ff.viewer, Vector = v.camera.position.constructor;
+  v.root.updateMatrixWorld(true);
+  const samples = [v.data.cameras.ground_skylight.position.slice(0,2),[2.1,6.4],[4.5,6.4],[2.1,7.4],[4.5,7.4]]
+    .map(([x,y]) => ({origin: [x,y,1.63], hits: []}));
+  for (const mesh of v.meshes) {
+    const geometry = mesh.geometry, position = geometry.getAttribute('position');
+    if (!position) continue;
+    const bucket = mesh.userData.bucket || {}, material = mesh.material;
+    const transparent = bucket.transparent || material.opacity < .98 || material.transmission > 0;
+    const world = new Float64Array(position.count * 3), p = new Vector();
+    for (let i=0;i<position.count;i++) {
+      p.fromBufferAttribute(position,i).applyMatrix4(mesh.matrixWorld);
+      world.set([p.x,p.y,p.z],i*3);
+    }
+    const index = geometry.index, count = index ? index.count : position.count;
+    for (let i=0;i<count;i+=3) {
+      const ia=(index ? index.getX(i) : i)*3, ib=(index ? index.getX(i+1) : i+1)*3, ic=(index ? index.getX(i+2) : i+2)*3;
+      const ax=world[ia], az=world[ia+2], bx=world[ib], bz=world[ib+2], cx=world[ic], cz=world[ic+2];
+      const den=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);
+      if (Math.abs(den)<1e-12) continue;
+      for (const sample of samples) {
+        const [x,y,originHeight]=sample.origin, z=-y;
+        if (x<Math.min(ax,bx,cx)-1e-8 || x>Math.max(ax,bx,cx)+1e-8 || z<Math.min(az,bz,cz)-1e-8 || z>Math.max(az,bz,cz)+1e-8) continue;
+        const u=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/den;
+        const vv=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/den, w=1-u-vv;
+        if (Math.min(u,vv,w)<-1e-8) continue;
+        const height=u*world[ia+1]+vv*world[ib+1]+w*world[ic+1];
+        if (height<=originHeight+1e-5) continue;
+        const hit={height:Number(height.toFixed(5)),material:bucket.material,floor:bucket.floor,roles:bucket.roles,transparent:!!transparent};
+        if (!sample.hits.some(h => h.material===hit.material && Math.abs(h.height-hit.height)<.0001)) sample.hits.push(hit);
+      }
+    }
+  }
+  for (const sample of samples) {
+    sample.hits.sort((a,b)=>a.height-b.height);
+    sample.opaqueObstructions=sample.hits.filter(h=>!h.transparent);
+    sample.reachesWeatherGlass=sample.hits.some(h=>h.material==='t5-rooflight-glass' && h.transparent && h.height>10.546);
+    sample.pass=sample.reachesWeatherGlass && sample.opaqueObstructions.length===0;
+  }
+  return {planHash:v.data.planHash,method:'Upward vertical ray / actual transformed render-mesh triangles, including invisible buckets',samples,
+    passed:samples.every(s=>s.pass),roofEquipment:v.data.roofEquipment,
+    solarPanelCount:v.data.nodes.filter(n=>n.id.startsWith('t5-solar-module-') && n.id.endsWith('-backing')).length};
+}
+
 const root = resolve(import.meta.dirname, '..');
 const upperOnly = process.argv.includes('--upper-only');
 const out = resolve(root, process.env.T5_CHECK_OUT || `evidence/tirumala-5-revision${upperOnly ? '-upper' : ''}`);
@@ -72,10 +117,16 @@ async function door(id, desired = 1, exercise = false) {
 try {
   const aperture = id => plan.openings.find(o => o.id === id);
   const main = aperture('living-veranda'), icu = aperture('icu-glass-living');
+  const retired = ['u-master-south','u-atrium-south','s2-hall-south','s2-stair-south-window-proposed'];
+  const east = ['u-stair-east','s2-stair-east','s2-gallery-east'];
   const fresh = main?.a[0] === 7300 && Math.abs(icu?.a[0] - 5452.4) < .01 &&
-    /stacked/.test(upper.revision) && second.stairs.some(s => s.id.startsWith('s2-west-')) &&
+    /skylit-atrium/.test(upper.revision) && second.stairs.some(s => s.id.startsWith('s2-west-')) &&
+    JSON.stringify(second.skylight?.boundsMm) === JSON.stringify([1675,6075,5000,7800]) &&
+    Array.isArray(second.atriumOpening) &&
+    retired.every(id=>!building.openings.some(o=>o.id===id)) &&
+    east.every(id=>building.openings.some(o=>o.id===id)) &&
     building.openings.some(o => o.id === 's2-stair-terrace-proposed');
-  check('Generated files contain the approved junction and stacked upper stair revision', fresh,
+  check('Generated files contain the approved skylit atrium, east glazing and retained stacked stairs', fresh,
     {main: main?.a, icu: icu?.a, upperRevision: upper.revision,
       internalTerraceDoor: building.openings.some(o => o.id === 's2-stair-terrace-proposed')});
   if (!fresh) throw Error('Fresh Tirumala 5 build required; old geometry was not tested as the new revision.');
@@ -165,6 +216,13 @@ try {
   results.initial = initial;
   check('Viewer loaded the current generated project', initial.planHash === building.planHash, initial.planHash);
   check('Initial arrival settles on the real floor with the parked car visible', initial.supported && initial.carVisible, initial.position);
+  const skyRays = await page.evaluate(inspectAtriumRayGeometry);
+  results.atriumRayGeometry = skyRays;
+  check('Ground-to-roof rays reach weather glazing without opaque slab, ceiling or soffit obstructions',
+    skyRays.passed && skyRays.planHash === building.planHash, skyRays);
+  check('Four actual solar panels remain on the highest hall roof',
+    skyRays.solarPanelCount === 4 && skyRays.roofEquipment?.solarModules === 4, skyRays.roofEquipment);
+  if (!skyRays.passed) throw Error('Rendered geometry blocks the reviewed ground-to-skylight sightline.');
 
   if (!upperOnly) {
   await walk('Street approach to gate', 9.45, -1.0, -.3);
@@ -259,9 +317,34 @@ try {
     ['Stacked west flight landing',.7,8.35,5.083],
     ['Stacked north flight upper landing',3.95,8.35,6.658],
     ['Second-floor indoor arrival',5.7,8.35,7.016],
-    ['Enclosed second-floor hall approach',5.95,9.55,7.016],
   ]) await walk(name,x,y,h);
   await screenshot('second-indoor-arrival');
+  for (const [name,x,y] of [
+    ['Enclosed north-side route around atrium',5.8,8.35],
+    ['Expanded gallery beside skylight opening',5.8,5.475],
+    ['New east gallery in front of large glazing',3.35,5.475],
+  ]) await walk(name,x,y,7.016);
+  const atriumGuard = await page.evaluate(() => {
+    const w=window.__ff.viewer.walker, start=[w.position.x,-w.position.z,w.position.y];
+    w.yaw=0; w.pitch=0;
+    let minimumHeight=w.position.y;
+    for(let i=0;i<180;i++) { w.update(1/120,{forward:1,strafe:0}); minimumHeight=Math.min(minimumHeight,w.position.y); }
+    for(let i=0;i<45;i++) w.update(1/120,{forward:0,strafe:0});
+    const position=[w.position.x,-w.position.z,w.position.y];
+    return {start,position,minimumHeight,grounded:w.onGround,
+      pass:w.onGround && Math.abs(w.position.y-7.016)<.055 && minimumHeight>6.96 && position[1]<6.075 && position[1]>5.475};
+  });
+  results.atriumGuard = atriumGuard;
+  check('Atrium east-edge guard physically blocks a walking approach to the open shaft',atriumGuard.pass,atriumGuard);
+  if (!atriumGuard.pass) throw Error('Atrium guarding failed real walking collision.');
+  await screenshot('second-atrium-guard');
+  for (const [name,x,y] of [
+    ['Return from atrium edge to clear gallery',3.35,5.475],
+    ['Use south end of enlarged indoor gallery',2.2,5.475],
+    ['Return through east gallery',5.8,5.475],
+    ['Return beside north atrium guard',5.8,8.35],
+    ['Enclosed second-floor hall approach',5.95,9.55],
+  ]) await walk(name,x,y,7.016);
   await door('s2-hall-entry',1,true);
   await walk('Second-floor hall entry',4.675,9.55,7.016);
   // The open hall door projects west along y=10.05. Follow the actual
@@ -285,6 +368,9 @@ try {
   await walk('Indoor landing directly to terrace',7.15,8.4,7.016);
   await walk('Terrace back to indoor landing',5.5,8.55,7.016);
   await door('s2-stair-terrace-proposed',0);
+  await walk('Closed terrace door leaves atrium gallery approach clear',5.8,8.35,7.016);
+  await walk('Use atrium gallery with terrace door closed',5.8,5.475,7.016);
+  await walk('Return through atrium gallery with terrace door closed',5.8,8.35,7.016);
   await walk('Second-floor stair descent approach',5.7,8.35,7.016);
   for (const [name,x,y,h] of [
     ['Descend stacked arrival connector',3.95,8.35,6.658],

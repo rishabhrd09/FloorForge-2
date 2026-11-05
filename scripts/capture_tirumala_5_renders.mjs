@@ -7,6 +7,51 @@ const {chromium} = await import(
     '/Users/rishabh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
 
+function inspectAtriumRayGeometry() {
+  const v = window.__ff.viewer, Vector = v.camera.position.constructor;
+  v.root.updateMatrixWorld(true);
+  const samples = [v.data.cameras.ground_skylight.position.slice(0,2),[2.1,6.4],[4.5,6.4],[2.1,7.4],[4.5,7.4]]
+    .map(([x,y]) => ({origin: [x,y,1.63], hits: []}));
+  for (const mesh of v.meshes) {
+    const geometry = mesh.geometry, position = geometry.getAttribute('position');
+    if (!position) continue;
+    const bucket = mesh.userData.bucket || {}, material = mesh.material;
+    const transparent = bucket.transparent || material.opacity < .98 || material.transmission > 0;
+    const world = new Float64Array(position.count * 3), p = new Vector();
+    for (let i=0;i<position.count;i++) {
+      p.fromBufferAttribute(position,i).applyMatrix4(mesh.matrixWorld);
+      world.set([p.x,p.y,p.z],i*3);
+    }
+    const index = geometry.index, count = index ? index.count : position.count;
+    for (let i=0;i<count;i+=3) {
+      const ia=(index ? index.getX(i) : i)*3, ib=(index ? index.getX(i+1) : i+1)*3, ic=(index ? index.getX(i+2) : i+2)*3;
+      const ax=world[ia], az=world[ia+2], bx=world[ib], bz=world[ib+2], cx=world[ic], cz=world[ic+2];
+      const den=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);
+      if (Math.abs(den)<1e-12) continue;
+      for (const sample of samples) {
+        const [x,y,originHeight]=sample.origin, z=-y;
+        if (x<Math.min(ax,bx,cx)-1e-8 || x>Math.max(ax,bx,cx)+1e-8 || z<Math.min(az,bz,cz)-1e-8 || z>Math.max(az,bz,cz)+1e-8) continue;
+        const u=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/den;
+        const vv=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/den, w=1-u-vv;
+        if (Math.min(u,vv,w)<-1e-8) continue;
+        const height=u*world[ia+1]+vv*world[ib+1]+w*world[ic+1];
+        if (height<=originHeight+1e-5) continue;
+        const hit={height:Number(height.toFixed(5)),material:bucket.material,floor:bucket.floor,roles:bucket.roles,transparent:!!transparent};
+        if (!sample.hits.some(h => h.material===hit.material && Math.abs(h.height-hit.height)<.0001)) sample.hits.push(hit);
+      }
+    }
+  }
+  for (const sample of samples) {
+    sample.hits.sort((a,b)=>a.height-b.height);
+    sample.opaqueObstructions=sample.hits.filter(h=>!h.transparent);
+    sample.reachesWeatherGlass=sample.hits.some(h=>h.material==='t5-rooflight-glass' && h.transparent && h.height>10.546);
+    sample.pass=sample.reachesWeatherGlass && sample.opaqueObstructions.length===0;
+  }
+  return {planHash:v.data.planHash,method:'Upward vertical ray / actual transformed render-mesh triangles, including invisible buckets',samples,
+    passed:samples.every(s=>s.pass),roofEquipment:v.data.roofEquipment,
+    solarPanelCount:v.data.nodes.filter(n=>n.id.startsWith('t5-solar-module-') && n.id.endsWith('-backing')).length};
+}
+
 const root = resolve(import.meta.dirname, '..');
 const port = 8901;
 const url = `http://127.0.0.1:${port}`;
@@ -20,6 +65,7 @@ const server = spawn(
 server.stderr.on('data', d => process.stderr.write(d));
 
 let browser;
+let capturedPlanHash = null;
 const outReportDir = resolve(root, 'output/tirumala-5-delivery');
 mkdirSync(outReportDir, {recursive: true});
 const checks = [];
@@ -50,7 +96,7 @@ try {
   });
   const rendersDir = resolve(root, `examples/gallery/${slug}/renders`);
   mkdirSync(rendersDir, {recursive: true});
-  for (const svgBase of ['plan-2d-dimensioned', 'plan-2d-material-overhead', 'plan-first-floor', 'plan-second-floor', 'site-context-plan']) {
+  for (const svgBase of ['plan-2d-dimensioned', 'plan-2d-material-overhead', 'plan-first-floor', 'plan-second-floor', 'plan-roof', 'site-context-plan']) {
     const svgUrl = `${url}/samples/${slug}/renders/${svgBase}.svg`;
     const resp = await svgPage.goto(svgUrl);
     check(`${slug} ${svgBase}.svg loads HTTP 200`, resp && resp.ok());
@@ -63,7 +109,7 @@ try {
   }
   await svgPage.close();
 
-  // 2. Open Studio & verify + capture 3D views for tirumala-4
+  // 2. Open Studio & verify + capture 3D views for Tirumala 5.
   const page = await browser.newPage({
     viewport: {width: 1600, height: 1080},
     deviceScaleFactor: 1.5,
@@ -122,6 +168,7 @@ try {
     siteMode: window.__ff.viewer?.siteMode,
     siteModeButtonText: document.getElementById('toggle-site-mode')?.textContent,
   }));
+  capturedPlanHash = state.planHash;
   check(
     `${slug} loads in Studio with 40x50 ft East-facing G+2 layout (storeys=3, 23 spaces), empty car porch default (carVisible=false), and Proposed site mode`,
     state.storeys === 3 &&
@@ -168,7 +215,7 @@ try {
         positions.some(([x,y]) => Math.abs(n.position[0]-x)<1e-6 && Math.abs(n.position[1]-y)<1e-6)).length};
   });
   check('Stacked-stair revision removes all nine suspended pendant parts while retaining ceiling downlights',
-    /stacked/.test(stackedRevision.revision) && stackedRevision.cleanup?.pendantPartsRemoved === 9 &&
+    /skylit-atrium/.test(stackedRevision.revision) && stackedRevision.cleanup?.pendantPartsRemoved === 9 &&
     stackedRevision.cleanup?.pendantGroupsRemoved === 3 && stackedRevision.cleanup?.ceilingDownlightsRetained &&
     stackedRevision.lingeringPendantParts === 0, stackedRevision.cleanup);
   check('North bedroom has a one-foot south extension with its rear wall retained',
@@ -177,6 +224,22 @@ try {
     stackedRevision.guest.polygon.some(p => Math.abs(p[0]-8350)<.01) &&
     stackedRevision.bridgeClear === 1100, {extension:stackedRevision.extension, guest:stackedRevision.guest.bounds,
       guestAreaSqFt:stackedRevision.guest.area_m2/.09290304, bridgeClear:stackedRevision.bridgeClear});
+  const atrium = await page.evaluate(() => {
+    const b=window.__ff.building, s=b.planning.secondPlan, ids=b.openings.map(o=>o.id);
+    return {revision:s.revision,aperture:s.skylight?.boundsMm,opening:s.atriumOpening,
+      terraceSqFt:s.rooms.find(r=>r.id==='s2-terrace').area_m2/.09290304,
+      removedSouthWindows:['u-master-south','u-atrium-south','s2-hall-south','s2-stair-south-window-proposed'].every(id=>!ids.includes(id)),
+      newEastWindows:['u-stair-east','s2-stair-east','s2-gallery-east'].every(id=>ids.includes(id))};
+  });
+  check('Current atrium revision has aligned roof opening, closed south windows and new east glazing',
+    /skylit-atrium/.test(atrium.revision) && JSON.stringify(atrium.aperture)===JSON.stringify([1675,6075,5000,7800]) &&
+    Array.isArray(atrium.opening) && atrium.removedSouthWindows && atrium.newEastWindows &&
+    Math.abs(atrium.terraceSqFt-477)<1, atrium);
+  const skyRays = await page.evaluate(inspectAtriumRayGeometry);
+  check('Actual render meshes preserve ground-to-skylight views through both upper slabs and highest roof',
+    skyRays.passed && skyRays.planHash===capturedPlanHash,skyRays);
+  check('Highest hall roof carries four physical solar modules clear of the skylight',
+    skyRays.solarPanelCount===4 && skyRays.roofEquipment?.solarModules===4,skyRays.roofEquipment);
 
   // Verify Specifications dialog
   await page.locator('.project-workspace [data-project-view="specs"]').click();
@@ -373,6 +436,9 @@ try {
   for (const name of ['living_double_height', 'upper_gallery', 'first_stair_up', 'upper_master', 'upper_office', 'upper_guest', 'upper_terrace', 'second_hall', 'second_terrace', 'second_stair_arrival']) {
     await captureSolidCamera(name, name.replaceAll('_', '-') + '.png', {indoor: !['upper_terrace','second_terrace','second_stair_arrival'].includes(name)});
   }
+  await captureSolidCamera('ground_skylight', 'ground_skylight.png', {indoor:true});
+  await captureSolidCamera('second_atrium', 'second_atrium.png', {indoor:true});
+  await captureSolidCamera('roof_solar', 'roof_solar.png', {indoor:false});
 
   // 3D Roof-off cutaway view (with carVisible: false by default!)
   const cutOk = await page.evaluate(() => {
@@ -490,7 +556,10 @@ try {
       ['first gallery',6.9,8.35,3.508],['east-edge indoor bridge',6.9,5.475,3.508],
       ['stacked stair start',1.9,5.55,3.508],['south starter landing',.7,5.55,3.858],
       ['west flight landing',.7,8.35,5.083],['north flight landing',3.95,8.35,6.658],
-      ['second arrival',5.7,8.35,7.016],['indoor hall approach',5.95,9.55,7.016],
+      ['second arrival',5.7,8.35,7.016],['north atrium passage',5.8,8.35,7.016],
+      ['expanded east gallery',5.8,5.475,7.016],['east gallery window approach',2.2,5.475,7.016],
+      ['return east gallery',5.8,5.475,7.016],['return north atrium passage',5.8,8.35,7.016],
+      ['indoor hall approach',5.95,9.55,7.016],
       ['second hall',4.675,9.55,7.016],['return to indoor landing',5.95,9.55,7.016],
       ['descent approach',5.7,8.35,7.016],['arrival connector descent',3.95,8.35,6.658],
       ['north flight descent',.7,8.35,5.083],['west flight descent',.7,5.55,3.858],
@@ -512,11 +581,11 @@ try {
         grounded:w.onGround,error,frames,pass});
       if(!pass)break;
     }
-    return {segments,expectedSegments:points.length,passed:segments.length===points.length&&segments.every(s=>s.pass),
+    return {planHash:v.data.planHash,segments,expectedSegments:points.length,passed:segments.length===points.length&&segments.every(s=>s.pass),
       initialSpawns:1,laterTeleports:0};
   });
   writeFileSync(resolve(outReportDir,'second-stair-route.json'),JSON.stringify(upperRoute,null,2));
-  check('Continuous walk first interior → indoor bridge → stacked stairs → second hall → first interior',
+  check('Continuous walk first interior → indoor bridge → stacked stairs → expanded atrium gallery → second hall → first interior',
     upperRoute.passed,upperRoute);
 
   check('Zero uncaught page errors during Tirumala 5 studio & render verification', errors.length === 0, errors);
@@ -524,7 +593,7 @@ try {
   errors.push(e.message);
   throw e;
 } finally {
-  writeFileSync(resolve(outReportDir, 'browser-checks.json'), JSON.stringify({checks, errors}, null, 2));
+  writeFileSync(resolve(outReportDir, 'browser-checks.json'), JSON.stringify({planHash:capturedPlanHash,finished:new Date().toISOString(),checks, errors}, null, 2));
   await browser?.close();
   server.kill('SIGTERM');
 }

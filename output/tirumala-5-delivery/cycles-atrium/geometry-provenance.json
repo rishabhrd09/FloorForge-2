@@ -1,0 +1,153 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
+  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+  "verificationScript": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/scripts/refresh_tirumala_5_atrium_verification.py",
+    "sha256": "ca8ac65694eef75baae730edbd9b1d160bc13997ea9214cbc98a0e2444f353bf",
+    "bytes": 22816
+  },
+  "generatedAt": "2026-11-05T12:11:51.188403+00:00",
+  "directory": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium",
+  "currentPresentationGlb": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "sha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+    "bytes": 222892484
+  },
+  "renders": [
+    {
+      "camera": "exterior_northeast",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/exterior/render-manifest.json",
+        "sha256": "3b614bbcb5421f1f5380687a0884c30046e60cc82ce3a486f66a108614bf36d2",
+        "bytes": 1321
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+          "actualSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+          "recordedSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+          "actualSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/exterior/exterior_northeast-day.png",
+          "recordedSha256": "0b95387d616c052db4b2697188561ca1f1bf88c805e9352a973733c9cb78012c",
+          "actualSha256": "0b95387d616c052db4b2697188561ca1f1bf88c805e9352a973733c9cb78012c"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "ground_skylight",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/render-manifest.json",
+        "sha256": "9d2bd74a3f84a7e3d2ea64b63e7dbba16b29fb9e00a24ffc9a6681d0f64bbcb5",
+        "bytes": 3860
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+          "actualSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+          "recordedSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+          "actualSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+          "recordedSha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361",
+          "actualSha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "second_atrium",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/render-manifest.json",
+        "sha256": "9d2bd74a3f84a7e3d2ea64b63e7dbba16b29fb9e00a24ffc9a6681d0f64bbcb5",
+        "bytes": 3860
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+          "actualSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+          "recordedSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+          "actualSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/second_atrium-day.png",
+          "recordedSha256": "a3ac76e99e5b836da656c3ba5f2faedf8f7a17c798b4b9898b236b7f38e77660",
+          "actualSha256": "a3ac76e99e5b836da656c3ba5f2faedf8f7a17c798b4b9898b236b7f38e77660"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "roof_solar",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/render-manifest.json",
+        "sha256": "9d2bd74a3f84a7e3d2ea64b63e7dbba16b29fb9e00a24ffc9a6681d0f64bbcb5",
+        "bytes": 3860
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+          "actualSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+          "recordedSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+          "actualSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+          "recordedSha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7",
+          "actualSha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7"
+        }
+      },
+      "verified": true,
+      "problems": []
+    }
+  ],
+  "deliveryImages": [
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/exterior/exterior_northeast-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/second_atrium-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    }
+  ],
+  "verified": true,
+  "method": "Checks generation-time manifest hashes against actual files; never relabels old renders as current"
+}

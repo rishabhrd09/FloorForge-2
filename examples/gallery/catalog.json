@@ -311,7 +311,7 @@
   {
     "id": "tirumala-5",
     "title": "Tirumala 5",
-    "description": "40 × 50 ft G+2: Plan A ground floor, vertically aligned indoor stairs with an east-side gallery, southward-enlarged first-floor guest bedroom, second-floor family hall and garden terrace. ICU 15 ft wide; open washing bay and under-stair pantry.",
+    "description": "40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, enclosed second-floor east gallery, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall. ICU 15 ft wide; open washing bay and under-stair pantry.",
     "style": "Ivory · limestone · teak · Plan A",
     "directory": "gallery/tirumala-5",
     "basedOnSample": "tirumala-4",
@@ -321,7 +321,7 @@
     "depthFt": 50,
     "roofAccess": false,
     "terraceAccess": true,
-    "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+    "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
     "hasSpecifications": true
   }
 ]

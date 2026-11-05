@@ -18,10 +18,12 @@ ICU = [4310, 1674, 8882, 5759.6]
 UTILITY = [150, 150, 2283.6, 1521.6]
 PANTRY = [2000, 8290, 3371.6, 8899.6]
 PANTRY_AISLE = [2000, 7375.6, 3371.6, 8290]
+DRAWING_NORTH_WINDOW = dict(a=[11507.4, 8600], b=[11507.4, 11000],
+                            sill=450, height=2400)
 
 
 def ground_revision(plan):
-    """Apply the approved doorway, corner closure and recliner proposal only."""
+    """Apply the approved Tirumala 5 ground-floor changes only."""
     removed = {(7200,5759.6,7502.4,5909.6), (7200,5909.6,7275,5924.6),
                (7125,5924.6,7275,6100), (7125,7900,7275,8050),
                (4160,5759.6,5602.4,5909.6)}
@@ -34,6 +36,19 @@ def ground_revision(plan):
         if dx:
             for key in ('a','b','swing'):
                 if key in opening: opening[key][0] += dx
+        if opening['id']=='drawing-north':
+            opening.update(deepcopy(DRAWING_NORTH_WINDOW),
+                           window_style='picture-with-sliding-vents')
+    # One continuous north-facing drawing window, with its real masonry cutout.
+    # Its 400 mm end piers remain inside the unchanged drawing-room envelope;
+    # the veranda doorway on the east wall is unaffected.
+    window_cut=box(11432.4,8600,11582.4,11000)
+    wall_rects=[]
+    for rect in plan['wallRects']:
+        remaining=box(*rect).difference(window_cut)
+        parts=[remaining] if remaining.geom_type=='Polygon' else list(remaining.geoms)
+        wall_rects.extend(list(part.bounds) for part in parts if not part.is_empty)
+    plan['wallRects']=wall_rects
     for key in ('woodStacks','meshStacks'):
         for b in plan['entrance'][key]: b[0] += 100; b[2] += 100
     for p in plan['glass']['path']: p[0] -= 150
@@ -64,7 +79,7 @@ def ground_revision(plan):
         heightMm=1800,southFinish='opaque ivory',eastFinish='ventilated teak-look slats',access='north side open')
     plan['groundRevision']=dict(extraCornerClosed=True,livingDoorNorthShiftMm=100,
         icuLivingDoorSouthShiftMm=150,icuFootAisleMm=914.4,retainedRearLobbyDoor='lobby-open-entry',
-        livingCoffeeTableEastShiftMm=400)
+        livingCoffeeTableEastShiftMm=400,drawingNorthWindowMm=deepcopy(DRAWING_NORTH_WINDOW))
 
 
 def ring(poly):

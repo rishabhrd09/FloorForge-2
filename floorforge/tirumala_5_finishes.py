@@ -300,7 +300,10 @@ def _opening_reveals(scene, building, k):
             k.poly_mesh(poly,z0,z1,mat,floor,role,'t5lux-reveal-'+op['id']+'-'+label)
         # Deep rectangular aluminium reveals create visible returns and honest
         # shadows. Their entire cross-section lies outside the clear opening.
-        span(-.055,0,.076,.14,base,top+.055,'left')
+        # This outward-opening terrace leaf is 44 mm thick. Relieve the
+        # hinge-side decorative trim by 25 mm so its fully open face clears it.
+        left_edge=-.025 if op['id']=='s2-stair-terrace-proposed' else 0
+        span(left_edge-.055,left_edge,.076,.14,base,top+.055,'left')
         span(length,length+.055,.076,.14,base,top+.055,'right')
         span(-.055,length+.055,.076,.14,top,top+.055,'head')
         if op['sill']:

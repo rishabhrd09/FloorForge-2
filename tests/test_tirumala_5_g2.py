@@ -128,7 +128,7 @@ def test_g2_stairs_height_spacing_and_lower_stair_headroom(model):
 def test_second_stair_landing_is_enclosed_and_roofed_with_clear_arrival(model):
     sp=model['planning']['secondPlan'];rooms={r['id']:shape(r['regions']) for r in sp['rooms']}
     roof=shape(sp['hallRoof']);outer=shape(sp['headhouseRegions'])
-    assert roof.covers(outer)
+    assert roof.covers(outer.difference(Polygon(sp['atriumOpening'])))
     assert rooms['s2-indoor-landing'].covers(box(5150,7800,6600,8900))
     assert rooms['s2-indoor-landing'].covers(box(5485.6,8900,6600,10050))
     assert 6600-5485.6>=1100

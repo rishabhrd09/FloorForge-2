@@ -1557,6 +1557,11 @@ def make_p11_p12_scene(b: dict[str, Any], report: dict[str, Any]) -> dict[str, A
         (7.74, 11.00, H - 0.25, 16),  # Lobby
     ]
     for lx, ly, lz, pwr in light_points:
+        # A recessed fixture cannot remain suspended in the new T5 atrium.
+        # Leave the other samples' double-height ceiling lighting untouched.
+        rooflight = b['planning'].get('secondPlan', {}).get('atriumOpening')
+        if rooflight and Polygon(rooflight).contains(Point(lx * 1000, ly * 1000)):
+            continue
         k.cylinder((lx, ly, lz + 0.02), 0.055, 0.012, "lamp", 0, "downlight")
         k.light((lx, ly, lz - 0.10), pwr, color="#ffe0b2", kind="downlight")
 
@@ -1830,6 +1835,7 @@ def make_p11_p12_scene(b: dict[str, Any], report: dict[str, Any]) -> dict[str, A
         from .tirumala_5_upper import finalize_scene
         from .tirumala_5_finishes import apply as apply_t5_finishes
         finalize_scene(scene, b)
+        scene['roofEquipment'] = copy.deepcopy(getattr(k, 'roof_equipment', {}))
         apply_t5_finishes(scene, b)
     elif is_tirumala_4(b):
         apply_tirumala_4_scene(scene, b)

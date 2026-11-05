@@ -14,7 +14,7 @@ from shapely.ops import unary_union
 
 from .tirumala_luxury import H, ring, regions, upper_plan
 
-REVISION = 'tirumala-5-g2-stacked-gallery-2026-11-05'
+REVISION = 'tirumala-5-g2-skylit-atrium-2026-11-05'
 LEVEL = 2 * H
 ROOM_HEIGHT = 3350
 HALL = [150, 9050, 5335.6, 14328]
@@ -29,6 +29,8 @@ BEDROOM_ROOF = [7895.2, 6200, 11582.4, 11550]
 STAIR_WIDTH = 1100
 RISE = 175
 ARRIVAL_RISE = (H - 18 * RISE) / 2
+ATRIUM = [1675, 6075, 5000, 7800]
+EAST_ENCLOSURE = [1525, 4875, 6600, 7800]
 
 
 def guest_shape():
@@ -39,7 +41,8 @@ def headhouse_shape():
     # Follow the stair core; the north return is clear of the last connector.
     return unary_union([box(150, 6600, 5335.6, 8900),
                         box(150, 4875, 1525, 6600),
-                        box(*SECOND_LOBBY), box(5485.6, 8900, 6600, 10050)])
+                        box(*SECOND_LOBBY), box(5485.6, 8900, 6600, 10050),
+                        box(*EAST_ENCLOSURE)])
 
 
 def stacked_steps(ground):
@@ -242,6 +245,13 @@ FIRST_OPENINGS = [{'id': 'u-master-door',
   'window_style': 'picture-with-sliding-vents'}]
 
 
+FIRST_OPENINGS = [o for o in FIRST_OPENINGS
+                  if o['id'] not in ('u-master-south', 'u-atrium-south')]
+FIRST_OPENINGS.append(dict(id='u-stair-east', a=[250,4800], b=[1250,4800],
+    raw_kind='window', sill=150, height=2900, connects=['u-gallery','outside'],
+    hinge='a', window_style='picture-with-sliding-vents'))
+
+
 def first_plan(ground):
     """Approved upper rooms and internal approach, without an exterior stair detour."""
     up=upper_plan(ground)
@@ -285,11 +295,12 @@ def second_plan(ground):
     up=first_plan(ground)
     roof=_shape(up['roof'])
     shaft=stacked_shaft(ground)
-    plate=roof.difference(shaft).difference(Polygon(up['lightwell']))
+    atrium=box(*ATRIUM)
+    plate=roof.difference(shaft).difference(Polygon(up['lightwell'])).difference(atrium)
     hall=box(*HALL);hall_shell=hall.buffer(150,join_style=2)
     headhouse=headhouse_shape().buffer(150,join_style=2)
     terrace=plate.difference(hall_shell.union(headhouse))
-    landing=headhouse_shape().difference(shaft)
+    landing=headhouse_shape().difference(shaft).difference(atrium)
     steps=stacked_steps(ground)
     furniture=[
         dict(id='s2-sofa',kind='sofa',bounds=[900,13000,3400,13900]),
@@ -306,16 +317,24 @@ def second_plan(ground):
                        _room('s2-indoor-landing','hall','Enclosed stair landing',landing),
                        _room('s2-terrace','terrace','Open roof garden terrace',terrace)],
                 floorPlate=regions(plate),stairVoid=regions(shaft),stairs=steps,
+                atriumOpening=ring(atrium),eastEnclosure=EAST_ENCLOSURE[:],
+                skylight=dict(boundsMm=ATRIUM[:],clearSizeMm=[3325,1725],
+                    areaSqFt=atrium.area/92903.04,roofElevationMm=LEVEL+ROOM_HEIGHT,
+                    glazing='Insulated solar-control glazing with laminated inner pane; sloping framed rooflight on raised drained curb.',
+                    scope='Architectural representation; structural support, glazing specification, fixing and waterproofing require engineering.'),
                 stairStartLanding=FIRST_APPROACH[:],stairArrival=SECOND_LOBBY[:],
                 headhouseClearEnvelope=HEADHOUSE_CLEAR[:],headhouseOuterEnvelope=HEADHOUSE_OUTER[:],
                 secondLanding=SECOND_LOBBY[:],headhouseRegions=regions(headhouse),lightwell=up['lightwell'],
                 lightwellClear=up['lightwellClear'],
-                hallRoof=regions(hall_shell.union(headhouse)),roofOutline=regions(roof),
+                hallRoof=regions(hall_shell.union(headhouse).difference(atrium)),roofOutline=regions(roof),
                 newBedRoof=regions(guest_shape().buffer(150,join_style=2)),furniture=furniture,
                 landingGuards=[[[1250,6600],[1525,6600]],
-                               [[1250,6600],[1250,7800]],[[1250,7800],[5150,7800]]],
+                               [[1250,6600],[1250,7800]],[[1250,7800],[5150,7800]],
+                               [[1675,6075],[1675,7800]],[[1675,6075],[5000,6075]],
+                               [[5000,6075],[5000,7800]]],
                 circulationPaths={'stairs_to_hall':[[5150,8350],[6050,8350],[6050,9550],[5200,9550]],
-                  'stairs_to_terrace':[[5150,8350],[6050,8350],[6050,8400],[6900,8400]]},
+                  'stairs_to_terrace':[[5150,8350],[6050,8350],[6050,8400],[6900,8400]],
+                  'stairs_to_east_gallery':[[5700,8350],[5800,8350],[5800,5475],[2200,5475]]},
                 minimumAnalyticGroundStairHeadroomMm=H-RISE-180,
                 riserHeightsMm=[RISE]*18+[ARRIVAL_RISE]*2,
                 pantryClearance={'cabinetHeightMm':1800,
@@ -327,6 +346,7 @@ def second_plan(ground):
                  'headhouseSupportEnvelopeMm':HEADHOUSE_OUTER[:],
                  'guestRoofRegions':regions(guest_shape().buffer(150,join_style=2)),
                  'landingReturnSupport':'The final 150 mm wall band follows the existing lightwell wall directly below; slab cutout and clear lightwell stay unchanged.',
+                 'atriumSupport':'Trim second-floor slab and highest roof around the aligned aperture; enclosure and trimmer supports must be coordinated with the lower structure. Preserve the clear vertical sightline.',
                  'status':'Concept only: design foundations, continuous load paths, new bedroom edge support and roof, approach landing and stair waist, seismic system and saturated planter loads before construction.'},
                 gardenNote='Shallow perimeter planting; raised pots over supported edges; paved circulation, drainage and overflow provision.')
 
@@ -407,13 +427,13 @@ def compile_addition(b):
     defs=[('s2-hall-entry',[5410.6,9050],[5410.6,10050],'door',0,2700,['s2-indoor-landing','s2-hall']),
           ('s2-hall-garden',[5410.6,12400],[5410.6,14100],'sliding-door',0,2850,['s2-hall','s2-terrace']),
           ('s2-hall-rear',[800,14403],[4400,14403],'window',600,2250,['s2-hall','outside']),
-          ('s2-hall-south',[75,10300],[75,12300],'window',600,2250,['s2-hall','outside']),
           ('s2-stair-terrace-proposed',[6675,7900],[6675,8900],'door',0,2700,['s2-indoor-landing','s2-terrace']),
-          ('s2-stair-south-window-proposed',[75,7000],[75,8300],'window',1200,1700,['s2-indoor-landing','outside'])]
+          ('s2-stair-east',[250,4800],[1250,4800],'window',150,2900,['s2-indoor-landing','outside']),
+          ('s2-gallery-east',[1800,4800],[5700,4800],'window',150,2900,['s2-indoor-landing','outside'])]
     for ident,a,c,kind,sill,height,conn in defs:
         op=_opening(b,ident,2,a,c,kind,sill,height,conn)
         if ident=='s2-hall-entry':op.update(hinge='b',swing_vec=[4410.6,10050])
-        if ident=='s2-stair-terrace-proposed':op.update(hinge='a',swing_vec=[5675,7900])
+        if ident=='s2-stair-terrace-proposed':op.update(hinge='a',swing_vec=[7675,7900])
         wall=wall.difference(LineString([a,c]).buffer(90,cap_style=2))
     sp['wallRegions']=regions(wall)
     sp['openingSchedule']=deepcopy([o for o in b['openings'] if o['floor']==2])
@@ -423,13 +443,15 @@ def compile_addition(b):
            polygon=r['polygon'],holes=r['holes'],thickness=150,height=ROOM_HEIGHT,rooms=['s2-hall','s2-indoor-landing'],external=True,structural=True))
     b['floor_plates'].append(dict(id='plate-floor-2',floor=2,floorId='floor-2',regions=sp['floorPlate'],
        outline=sp['floorPlate'],slab=sp['floorPlate'][0]['polygon'],holes=sp['floorPlate'][0]['holes'],
-       thickness=180,elevation=LEVEL,openings=[r['polygon'] for r in sp['stairVoid']]+[sp['lightwell']]))
+       thickness=180,elevation=LEVEL,openings=[r['polygon'] for r in sp['stairVoid']]+[sp['lightwell'],sp['atriumOpening']]))
     roof1=next(r for r in b['roofs'] if r['floor']==1)
     roof1.update(regions=sp['floorPlate'],ceiling=sp['floorPlate'],slab=sp['floorPlate'][0]['polygon'],
                  holes=sp['floorPlate'][0]['holes'],elevation=LEVEL,parapet_height=1100)
     b['roofs'].append(dict(id='roof-floor-2',floor=2,regions=sp['hallRoof'],ceiling=sp['hallRoof'],
-       slab=sp['hallRoof'][0]['polygon'],holes=[],elevation=LEVEL+ROOM_HEIGHT,thickness=180,parapet_height=300))
+       slab=sp['hallRoof'][0]['polygon'],holes=sp['hallRoof'][0]['holes'],elevation=LEVEL+ROOM_HEIGHT,thickness=180,parapet_height=300))
     b['shafts'][0]['floors']=[0,1,2]
+    b['shafts'].append(dict(id='living-rooflight-atrium',kind='atrium',floors=[0,1,2],
+                           polygon=sp['atriumOpening'],rooflight=deepcopy(sp['skylight'])))
     return b
 
 
@@ -463,7 +485,10 @@ def add_scene(k,mats,b,door_motion,lawns):
         k.poly_mesh(p(r),z-.20,z-.18,'ceiling',1,'ceiling',f's2-soffit-{i}')
     for i,r in enumerate(sp['wallRegions']):k.poly_mesh(p(r),z,top,'wall',2,'wall',f's2-wall-{i}')
     # Roof slab and broad ivory fascia with timber soffit; stops short of the lightwell.
-    roof=_shape(sp['hallRoof']);over=roof.buffer(300,join_style=2).intersection(box(0,4425,7050,14780)).difference(Polygon(sp['lightwell']))
+    roof=_shape(sp['hallRoof']);atrium=Polygon(sp['atriumOpening'])
+    roof_envelope=roof.union(atrium)
+    outer_over=roof_envelope.buffer(300,join_style=2).intersection(box(0,4425,7050,14780)).difference(Polygon(sp['lightwell']))
+    over=outer_over.difference(atrium)
     def mm(poly):
         from shapely.affinity import scale
         return scale(poly,xfact=.001,yfact=.001,origin=(0,0))
@@ -481,8 +506,11 @@ def add_scene(k,mats,b,door_motion,lawns):
         k.rect((x-.06,y-.06,z+.013,x+.06,y+.06,z+.018),'steel',2,'detail','s2-drain-'+str(x))
 
     # Continuous high-level band makes roof depth legible; a 300mm non-accessible roof upstand.
-    edge=mm(over.difference(over.buffer(-140,join_style=2)))
+    edge=mm(outer_over.difference(outer_over.buffer(-140,join_style=2)))
     k.poly_mesh(edge,top+.18,top+.48,'wall',2,'parapet','s2-upper-roof-upstand')
+    from .tirumala_5_rooflight import add_rooflight_and_solar
+    roof_equipment=add_rooflight_and_solar(k,mats,b)
+    k.roof_equipment=roof_equipment
     for op in (o for o in b['openings'] if o['floor']==2):
         ax,ay=[v/1000 for v in op['a']];bx,by=[v/1000 for v in op['b']]
         length=math.hypot(bx-ax,by-ay);ux,uy=(bx-ax)/length,(by-ay)/length;nx,ny=-uy,ux
@@ -597,7 +625,7 @@ def add_scene(k,mats,b,door_motion,lawns):
         x=6.0+i*.25;k.rect((x,11.95,z+2.72,x+.06,14.30,z+2.82),'teak-warm',2,'pergola')
     for x,y in [(1.8,10),(4.6,10),(1.8,13),(4.6,13)]:
         k.cylinder((x,y,top-.04),.065,.02,'lamp',2,'fixture');k.light((x,y,top-.15),28,color='#ffe6ce',kind='s2-hall')
-    for x,y in [(4.7,7.15),(.7,7.75)]:
+    for x,y in [(4.7,5.45),(5.8,7.15),(.7,7.75)]:
         k.cylinder((x,y,top-.04),.055,.02,'lamp',2,'fixture');k.light((x,y,top-.15),20,color='#ffe6ce',kind='s2-stair')
     for x,y in [(6.3,12.3),(9.5,12.3)]:k.light((x,y,z+2.45),16,color='#ffe6bf',kind='s2-pergola')
     _trim_embedded_slab_faces(k,b)
@@ -651,12 +679,16 @@ def cameras(b):
     defs={'second_hall':('Second floor · family hall',[4.4,10.75,z+1.63],[2.2,12.4,z+1.35],66),
           'second_terrace':('Second floor · open garden terrace',[10.0,9.3,z+1.63],[7.5,13.1,z+1.1],66),
           'second_stair_arrival':('Second floor · stair arrival',[5.8,8.35,z+1.63],[3.5,8.35,z-.5],66),
-          'first_stair_up':('First floor · indoor bridge and stacked stairs',[5.7,5.475,H/1000+1.63],[1.55,5.475,H/1000+1.4],64)}
+          'first_stair_up':('First floor · indoor bridge and stacked stairs',[5.7,5.475,H/1000+1.63],[1.55,5.475,H/1000+1.4],64),
+          'ground_skylight':('Ground floor · view through atrium to rooflight',[3.7,7.6,1.63],[3.35,6.96,10.85],70),
+          'second_atrium':('Second floor · enclosed east landing and skylight',[5.8,5.45,z+1.63],[2.8,7.0,9.4],70),
+          'roof_solar':('Highest roof · skylight and compact solar array',[16,-5,20],[3.8,9.0,9.0],50)}
     out={}
     for ident,(label,pos,target,fov) in defs.items():
         dx,dy,dz=[target[i]-pos[i] for i in range(3)]
-        out[ident]=dict(id=ident,label=label,position=pos,target=target,fov=fov,floor=1 if ident=='first_stair_up' else 2,
-            enter_walk=True,eye_height_above_ffl_m=1.63,walker=dict(position=pos[:],yaw_rad=math.atan2(-dx,dy),pitch_rad=math.atan2(dz,math.hypot(dx,dy))))
+        floor=0 if ident=='ground_skylight' else 1 if ident=='first_stair_up' else 2
+        out[ident]=dict(id=ident,label=label,position=pos,target=target,fov=fov,floor=floor,
+            enter_walk=ident!='roof_solar',eye_height_above_ffl_m=1.63,walker=dict(position=pos[:],yaw_rad=math.atan2(-dx,dy),pitch_rad=math.atan2(dz,math.hypot(dx,dy))))
     return out
 
 
@@ -671,7 +703,7 @@ def finalize_scene(scene,b):
             node['position'][0]-=.001
             node['interiorSkinInsetMm']=2
     scene['storeys']=3
-    scene['bounds'][5]=LEVEL/1000+ROOM_HEIGHT/1000+.60
+    scene['bounds'][5]=LEVEL/1000+ROOM_HEIGHT/1000+.80
     scene['walk']['floors'].append(dict(floor=2,position=[5.8,8.35,LEVEL/1000],yaw_deg=0))
     scene['cameras'].update(cameras(b))
     scene['g2Addition']={'revision':REVISION,'stairRiserMm':RISE,'stairWidthMm':1100,
@@ -679,6 +711,9 @@ def finalize_scene(scene,b):
          'stairRoute':'First gallery → east-edge indoor bridge → South / West / North stacked stair → enclosed second landing.',
          'secondStairHeadroomMm':b['planning']['secondPlan']['minimumAnalyticGroundStairHeadroomMm'],
          'firstDoubleHeightClearMm':[5050,1725],
+         'continuousAtriumClearMm':[3325,1725],
+         'skylight':deepcopy(b['planning']['secondPlan']['skylight']),
+         'solarModules':4,'solarRoof':'Highest roof above second-floor hall; no extra storey',
          'guestBedroomClearMm':[GUEST[2]-GUEST[0],GUEST[3]-GUEST[1]],
          'guestBedroomFrontClearMm':GUEST[2]-GUEST_EXTENSION[0],
          'guestBedroomExtensionMm':GUEST_EXTENSION[:],
@@ -700,9 +735,11 @@ def second_plan_elements(b):
     for a,c in [([5500,8350],[700,8350]),([700,8350],[700,5550]),([700,5550],[1750,5550])]:
         items.append(L(a,c,stroke='#38584a',width=.5,layer='A-STAIR'))
     for a,c in sp['landingGuards']:items.append(L(a,c,stroke='#38584a',width=.7,layer='A-GUARD'))
+    items.append(P(sp['atriumOpening'],fill='#edf5f7',stroke='#397d90',width=.5,layer='A-VOID'))
+    items.append(T(3350,7100,'OPEN TO GROUND BELOW',140,layer='A-ANNO'))
+    items.append(T(3350,6800,'ROOFLIGHT ABOVE',140,layer='A-ANNO'))
     items.append(T(2700,8550,'DOWN TO FIRST FLOOR',150,layer='A-ANNO'))
-    items.append(T(4675,7350,'INDOOR',120,layer='A-ANNO'))
-    items.append(T(4675,7080,'LANDING',120,layer='A-ANNO'))
+    items.append(T(3700,5600,'ENCLOSED EAST LANDING',140,layer='A-ANNO'))
     for f in sp['furniture']:items.append(P(ring(box(*f['bounds'])),fill='#c6b59d',stroke='#8a8276',width=.15,layer='A-FURN'))
     items.append(T(2750,10600,'Second-floor family hall',210,layer='A-ANNO'))
     items.append(T(2750,10150,f'{_mm_to_ft_in(HALL[2]-HALL[0])} × {_mm_to_ft_in(HALL[3]-HALL[1])}',180,layer='A-ANNO'))
@@ -734,6 +771,7 @@ def second_svg(b):
     for reg in sp['stairVoid']:poly(reg['polygon'],'#fff')
     for step in sp['stairs']:poly(ring(box(*step['bounds'])),'#f4f0e8','#aaa99d')
     for reg in sp['wallRegions']:poly(reg['polygon'],'#394942','#394942')
+    poly(sp['atriumOpening'],'#edf5f7','#397d90')
     for f in sp['furniture']:poly(ring(box(*f['bounds'])),'#c6b59d','#8d8578')
     for o in (o for o in b['openings'] if o['floor']==2):out.append(f'<line x1="{tx(o["a"][0])}" y1="{ty(o["a"][1])}" x2="{tx(o["b"][0])}" y2="{ty(o["b"][1])}" stroke="{"#57919c" if o["sill"] else "#aa794b"}" stroke-width="4"/>')
     text(2800,10320,'FAMILY HALL',16,700)
@@ -742,9 +780,12 @@ def second_svg(b):
     text(9200,10000,'OPEN ROOF GARDEN',15,700)
     area=next(r['area_m2'] for r in sp['rooms'] if r['id']=='s2-terrace')/.09290304
     text(9200,9610,f'{area:.0f} sq ft · irregular terrace',12)
-    text(4200,5500,'OPEN SKY TERRACE',14,700)
+    text(3700,5500,'ENCLOSED EAST LANDING',12,700)
     text(2700,8650,'DOWN TO FIRST',10,700)
-    text(3500,7250,'INDOOR LANDING',10,700)
+    text(3337,7150,'OPEN TO GROUND',11,700)
+    text(3337,6900,'Rooflight above',11)
+    text(3337,6600,'10′11″ × 5′8″',12,700)
+    text(3337,6350,'61.7 sq ft clear aperture',10)
     for a,c in sp['landingGuards']:
         out.append(f'<line x1="{tx(a[0])}" y1="{ty(a[1])}" x2="{tx(c[0])}" y2="{ty(c[1])}" stroke="#38584a" stroke-width="3"/>')
     down=[[5500,8350],[700,8350],[700,5550],[1750,5550]]
@@ -759,7 +800,7 @@ def second_svg(b):
            'Same lower stair footprint: 18 risers of 6⅞ in plus 2 arrival risers of 7 in.',
            'Indoor bridge reaches the South → West → North stair; 3 ft 7¼ in clear width.',
            'Opaque parapets, shallow planters, pergola and clear paved walking routes.',
-           'Enclosed top arrival: 4 ft 9⅛ in × 3 ft 7¼ in; separate hall and garden doors.',
+           'Enclosed landing gains 48.8 sq ft; aligned rooflight is visible from ground floor.',
            'Concept model: foundations, member sizes, wind/seismic and garden loads need engineering.']
     for i,t in enumerate(notes):out.append(f'<text x="55" y="{1200+i*28}" font-size="13">{html.escape(t)}</text>')
     out.append('</g></svg>');return ''.join(out)
@@ -849,3 +890,51 @@ def first_svg(b):
         extra.append(f'<text x="{tx(x)}" y="{ty(y)}" text-anchor="middle" font-size="{sz}" font-weight="700" stroke="#faf9f5" stroke-width="3" paint-order="stroke">{t}</text>')
     extra.append('</g>')
     return out.replace('</g></svg>','</g>'+''.join(extra)+'</svg>')
+
+
+def roof_svg(b):
+    """Dimensioned highest-roof equipment plan, authored from the same geometry."""
+    from .tirumala_p11_p12 import _mm_to_ft_in
+    sp=b['planning']['secondPlan'];s=.066;left=84;top=105
+    tx=lambda x:left+x*s;ty=lambda y:top+(15240-y)*s
+    out=['<svg xmlns="http://www.w3.org/2000/svg" width="980" height="1320" viewBox="0 0 980 1320">',
+      '<rect width="980" height="1320" fill="#faf9f5"/><g font-family="Arial,sans-serif" fill="#253c34">',
+      '<text x="55" y="40" font-size="25" font-weight="700">Tirumala 5 · Highest roof / solar and rooflight</text>',
+      '<text x="55" y="66" font-size="14">Ground + first + second floor · West ↑ · North → · 40 × 50 ft plot</text>']
+    def poly(points,fill,stroke='#8b978d'):
+        pts=' '.join(f'{tx(x):.2f},{ty(y):.2f}' for x,y in points)
+        out.append(f'<polygon points="{pts}" fill="{fill}" stroke="{stroke}"/>')
+    def text(x,y,t,size=13):
+        out.append(f'<text x="{tx(x)}" y="{ty(y)}" text-anchor="middle" font-size="{size}">{html.escape(t)}</text>')
+    poly(b['plot'],'#f5f2e9')
+    for reg in sp['roofOutline']:poly(reg['polygon'],'#e1e8d8')
+    for reg in sp['hallRoof']:poly(reg['polygon'],'#faf8f0')
+    poly(sp['lightwell'],'#fff')
+    text(6300,11000,'Lightwell',11)
+    poly(sp['atriumOpening'],'#b9dbe2','#397d90')
+    for i in (1,2):
+        x=ATRIUM[0]+(ATRIUM[2]-ATRIUM[0])*i/3
+        poly(ring(box(x-18,ATRIUM[1],x+18,ATRIUM[3])),'#3b4f4b')
+    text(3337,7450,'GLAZED ROOFLIGHT',12)
+    text(3337,7020,'10′11″ × 5′8″',14)
+    text(3337,6610,'View to ground below',11)
+    for row in range(2):
+        for col in range(2):
+            x=1150+1230*col;y=10000+1860*row
+            poly(ring(box(x,y,x+1130,y+1760)),'#243b51','#526875')
+            for r in range(1,10):
+                out.append(f'<line x1="{tx(x)}" y1="{ty(y+r*176)}" x2="{tx(x+1130)}" y2="{ty(y+r*176)}" stroke="#718497" stroke-width=".5"/>')
+    text(2950,13950,'4 solar modules · face south',13)
+    text(4450,11900,'Clear service path',11)
+    text(2800,9450,'On roof above family hall',12)
+    text(9000,9700,'OPEN TERRACE BELOW',14)
+    text(9000,9250,'477 sq ft',13)
+    text(6100,-400,'EAST · entrance side',14)
+    for i,line in enumerate([
+        'Rooflight slopes 3° east; raised curb, framed glass and external drainage channel.',
+        'Solar array footprint: 7′9″ × 11′10½″. Clear east service approach: about 3′1⅜″.',
+        'No added storey. Solar panels sit on the highest roof above the second-floor hall.',
+        'Concept model: structural trimmers, glass, waterproofing and solar anchorage require engineering.'
+    ]):out.append(f'<text x="55" y="{1190+i*28}" font-size="13">{html.escape(line)}</text>')
+    out.append('</g></svg>')
+    return ''.join(out)

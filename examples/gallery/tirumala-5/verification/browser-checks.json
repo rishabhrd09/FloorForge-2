@@ -1,4 +1,6 @@
 {
+  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+  "finished": "2026-11-05T10:07:32.449Z",
   "checks": [
     {
       "name": "tirumala-5 plan-2d-dimensioned.svg loads HTTP 200",
@@ -17,6 +19,10 @@
       "pass": true
     },
     {
+      "name": "tirumala-5 plan-roof.svg loads HTTP 200",
+      "pass": true
+    },
+    {
       "name": "tirumala-5 site-context-plan.svg loads HTTP 200",
       "pass": true
     },
@@ -25,13 +31,13 @@
       "pass": true,
       "detail": {
         "buildId": "sample:tirumala-5",
-        "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
         "storeys": 3,
         "roomCount": 23,
         "widthFt": "40",
         "depthFt": "50",
         "facing": "90",
-        "meshCount": 384,
+        "meshCount": 387,
         "defaultCarVisible": false,
         "carVisible": false,
         "carButtonText": "Show car",
@@ -89,6 +95,346 @@
       }
     },
     {
+      "name": "Current atrium revision has aligned roof opening, closed south windows and new east glazing",
+      "pass": true,
+      "detail": {
+        "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+        "aperture": [
+          1675,
+          6075,
+          5000,
+          7800
+        ],
+        "opening": [
+          [
+            5000,
+            6075
+          ],
+          [
+            5000,
+            7800
+          ],
+          [
+            1675,
+            7800
+          ],
+          [
+            1675,
+            6075
+          ]
+        ],
+        "terraceSqFt": 477.1788996355769,
+        "removedSouthWindows": true,
+        "newEastWindows": true
+      }
+    },
+    {
+      "name": "Actual render meshes preserve ground-to-skylight views through both upper slabs and highest roof",
+      "pass": true,
+      "detail": {
+        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+        "method": "Upward vertical ray / actual transformed render-mesh triangles, including invisible buckets",
+        "samples": [
+          {
+            "origin": [
+              3.7,
+              7.6,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.89692,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.91092,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              2.1,
+              6.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.83403,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.84803,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              4.5,
+              6.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.83403,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.84803,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              2.1,
+              7.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.88644,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.90044,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              4.5,
+              7.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.88644,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.90044,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          }
+        ],
+        "passed": true,
+        "roofEquipment": {
+          "clearApertureMm": [
+            1675,
+            6075,
+            5000,
+            7800
+          ],
+          "clearSizeMm": [
+            3325,
+            1725
+          ],
+          "roofSlabTopMm": 10546,
+          "rooflightCurbOutsideClearAperture": true,
+          "rooflightDrainDirection": "East, into an external curb-side gutter",
+          "rooflightOuterBoundsMm": [
+            1555.0000000000002,
+            5870,
+            5120,
+            7920
+          ],
+          "rooflightSlopeDegrees": 3,
+          "solarArrayBoundsMm": [
+            1150,
+            10000,
+            3510,
+            13620
+          ],
+          "solarFaces": "South",
+          "solarHallRoofBoundsMm": [
+            150,
+            9050,
+            5335.6,
+            14328
+          ],
+          "solarMaintenanceClearancesMm": {
+            "east": 950,
+            "north": 1825.6,
+            "south": 1000,
+            "west": 708
+          },
+          "solarModuleBoundsMm": [
+            [
+              1150,
+              10000,
+              2280,
+              11760
+            ],
+            [
+              2380,
+              10000,
+              3510,
+              11760
+            ],
+            [
+              1150,
+              11860,
+              2280,
+              13620
+            ],
+            [
+              2380,
+              11860,
+              3510,
+              13620
+            ]
+          ],
+          "solarModules": 4,
+          "solarTiltDegrees": 8,
+          "status": "Architectural concept; glazing, drainage, anchorage and roof loads require engineering."
+        },
+        "solarPanelCount": 4
+      }
+    },
+    {
+      "name": "Highest hall roof carries four physical solar modules clear of the skylight",
+      "pass": true,
+      "detail": {
+        "clearApertureMm": [
+          1675,
+          6075,
+          5000,
+          7800
+        ],
+        "clearSizeMm": [
+          3325,
+          1725
+        ],
+        "roofSlabTopMm": 10546,
+        "rooflightCurbOutsideClearAperture": true,
+        "rooflightDrainDirection": "East, into an external curb-side gutter",
+        "rooflightOuterBoundsMm": [
+          1555.0000000000002,
+          5870,
+          5120,
+          7920
+        ],
+        "rooflightSlopeDegrees": 3,
+        "solarArrayBoundsMm": [
+          1150,
+          10000,
+          3510,
+          13620
+        ],
+        "solarFaces": "South",
+        "solarHallRoofBoundsMm": [
+          150,
+          9050,
+          5335.6,
+          14328
+        ],
+        "solarMaintenanceClearancesMm": {
+          "east": 950,
+          "north": 1825.6,
+          "south": 1000,
+          "west": 708
+        },
+        "solarModuleBoundsMm": [
+          [
+            1150,
+            10000,
+            2280,
+            11760
+          ],
+          [
+            2380,
+            10000,
+            3510,
+            11760
+          ],
+          [
+            1150,
+            11860,
+            2280,
+            13620
+          ],
+          [
+            2380,
+            11860,
+            3510,
+            13620
+          ]
+        ],
+        "solarModules": 4,
+        "solarTiltDegrees": 8,
+        "status": "Architectural concept; glazing, drainage, anchorage and roof loads require engineering."
+      }
+    },
+    {
       "name": "tirumala-5 specifications dialog displays Tirumala 5 and Home ICU",
       "pass": true
     },
@@ -105,7 +451,7 @@
         "sun": 3.15,
         "vacantLots": 2,
         "facade": {
-          "exteriorFinishTriangles": 376,
+          "exteriorFinishTriangles": 363,
           "exteriorOpenings": [
             "drawing-veranda-only",
             "living-veranda",
@@ -123,7 +469,6 @@
             "wc-rear",
             "u-terrace-door",
             "u-master-rear",
-            "u-master-south",
             "u-office-rear",
             "u-office-north",
             "u-bedroom-north",
@@ -133,12 +478,12 @@
             "u-gallery-lightwell",
             "u-master-lightwell",
             "u-atrium-east",
-            "u-atrium-south",
+            "u-stair-east",
             "s2-hall-garden",
             "s2-hall-rear",
-            "s2-hall-south",
             "s2-stair-terrace-proposed",
-            "s2-stair-south-window-proposed"
+            "s2-stair-east",
+            "s2-gallery-east"
           ],
           "frameColor": "#1d2022",
           "houseGeometryChanged": false,
@@ -154,7 +499,7 @@
       "name": "Desired Home facade, substantial exterior glass and two vacant adjoining grass lots",
       "pass": true,
       "detail": {
-        "exteriorFinishTriangles": 376,
+        "exteriorFinishTriangles": 363,
         "exteriorOpenings": [
           "drawing-veranda-only",
           "living-veranda",
@@ -172,7 +517,6 @@
           "wc-rear",
           "u-terrace-door",
           "u-master-rear",
-          "u-master-south",
           "u-office-rear",
           "u-office-north",
           "u-bedroom-north",
@@ -182,12 +526,12 @@
           "u-gallery-lightwell",
           "u-master-lightwell",
           "u-atrium-east",
-          "u-atrium-south",
+          "u-stair-east",
           "s2-hall-garden",
           "s2-hall-rear",
-          "s2-hall-south",
           "s2-stair-terrace-proposed",
-          "s2-stair-south-window-proposed"
+          "s2-stair-east",
+          "s2-gallery-east"
         ],
         "frameColor": "#1d2022",
         "houseGeometryChanged": false,
@@ -390,6 +734,18 @@
       "pass": true
     },
     {
+      "name": "tirumala-5 camera ground_skylight (ground_skylight.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_atrium (second_atrium.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera roof_solar (roof_solar.png) activated",
+      "pass": true
+    },
+    {
       "name": "tirumala-5 camera cutaway_roof_off activated",
       "pass": true
     },
@@ -408,7 +764,7 @@
         "porchFloorY": -0.1524,
         "livingFloorY": 0,
         "upperFloorY": 3.508,
-        "cpuSubmissionMsPerFrame": 1.85
+        "cpuSubmissionMsPerFrame": 1.88
       }
     },
     {
@@ -482,9 +838,10 @@
       }
     },
     {
-      "name": "Continuous walk first interior → indoor bridge → stacked stairs → second hall → first interior",
+      "name": "Continuous walk first interior → indoor bridge → stacked stairs → expanded atrium gallery → second hall → first interior",
       "pass": true,
       "detail": {
+        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
         "segments": [
           {
             "name": "first gallery",
@@ -606,6 +963,91 @@
             "pass": true
           },
           {
+            "name": "north atrium passage",
+            "target": [
+              5.8,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.793657707202773,
+              8.34999999842599
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.0063422927972267285,
+            "frames": 59,
+            "pass": true
+          },
+          {
+            "name": "expanded east gallery",
+            "target": [
+              5.8,
+              5.475,
+              7.016
+            ],
+            "position": [
+              5.799988601804169,
+              5.4801906750814435
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005190687596069588,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "east gallery window approach",
+            "target": [
+              2.2,
+              5.475,
+              7.016
+            ],
+            "position": [
+              2.205125464819563,
+              5.4750073405094035
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005125470075969141,
+            "frames": 242,
+            "pass": true
+          },
+          {
+            "name": "return east gallery",
+            "target": [
+              5.8,
+              5.475,
+              7.016
+            ],
+            "position": [
+              5.794591675343236,
+              5.475000010968931
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005408324656774897,
+            "frames": 241,
+            "pass": true
+          },
+          {
+            "name": "return north atrium passage",
+            "target": [
+              5.8,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.799990301793942,
+              8.344809358911675
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.00519065014839209,
+            "frames": 204,
+            "pass": true
+          },
+          {
             "name": "indoor hall approach",
             "target": [
               5.95,
@@ -613,13 +1055,13 @@
               7.016
             ],
             "position": [
-              5.948912829085348,
-              9.544891373016105
+              5.949337971700114,
+              9.544681403935883
             ],
             "height": 7.015999794006348,
             "grounded": true,
-            "error": 0.005223026924902281,
-            "frames": 118,
+            "error": 0.005359640432258643,
+            "frames": 117,
             "pass": true
           },
           {
@@ -630,12 +1072,12 @@
               7.016
             ],
             "position": [
-              4.680391765926788,
-              9.549978559029881
+              4.680400566961905,
+              9.549977647814115
             ],
             "height": 7.015999794006348,
             "grounded": true,
-            "error": 0.0053918085578471,
+            "error": 0.005400613217981067,
             "frames": 120,
             "pass": true
           },
@@ -647,12 +1089,12 @@
               7.016
             ],
             "position": [
-              5.9446965034298005,
-              9.549999911185674
+              5.944696673976988,
+              9.54999990741329
             ],
             "height": 7.015999794006348,
             "grounded": true,
-            "error": 0.0053034965709433425,
+            "error": 0.005303326023819956,
             "frames": 120,
             "pass": true
           },
@@ -664,12 +1106,12 @@
               7.016
             ],
             "position": [
-              5.701035296855543,
-              8.355076187278105
+              5.701035297664029,
+              8.355076187714157
             ],
             "height": 7.015999794006348,
             "grounded": true,
-            "error": 0.0051806869101973805,
+            "error": 0.005180687499020749,
             "frames": 118,
             "pass": true
           },
@@ -681,12 +1123,12 @@
               6.658
             ],
             "position": [
-              3.9553289140655656,
-              8.350015335395877
+              3.955328914082304,
+              8.350015335397233
             ],
             "height": 6.6579999923706055,
             "grounded": true,
-            "error": 0.005328936131400725,
+            "error": 0.005328936148142722,
             "frames": 145,
             "pass": true
           },
@@ -698,12 +1140,12 @@
               5.083
             ],
             "position": [
-              0.705131367682085,
-              8.350000024010606
+              0.7051313676824097,
+              8.350000024010612
             ],
             "height": 5.083000183105469,
             "grounded": true,
-            "error": 0.005131367682141172,
+            "error": 0.005131367682465912,
             "frames": 224,
             "pass": true
           },
@@ -715,12 +1157,12 @@
               3.858
             ],
             "position": [
-              0.7000095063603798,
+              0.7000095063603808,
               5.55522310177973
             ],
             "height": 3.8580000400543213,
             "grounded": true,
-            "error": 0.005223110430797968,
+            "error": 0.00522311043079797,
             "frames": 200,
             "pass": true
           },
@@ -732,12 +1174,12 @@
               3.508
             ],
             "position": [
-              1.8945386953780319,
+              1.894538695378032,
               5.550023563615604
             ],
             "height": 3.507999897003174,
             "grounded": true,
-            "error": 0.005461355456103343,
+            "error": 0.005461355456103121,
             "frames": 116,
             "pass": true
           },
@@ -793,7 +1235,7 @@
             "pass": true
           }
         ],
-        "expectedSegments": 18,
+        "expectedSegments": 23,
         "passed": true,
         "initialSpawns": 1,
         "laterTeleports": 0
@@ -807,14 +1249,19 @@
   ],
   "errors": [],
   "project": "Tirumala 5",
-  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
-  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
-  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
-  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
+  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+  "verificationScript": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/scripts/refresh_tirumala_5_atrium_verification.py",
+    "sha256": "ca8ac65694eef75baae730edbd9b1d160bc13997ea9214cbc98a0e2444f353bf",
+    "bytes": 22816
+  },
+  "generatedAt": "2026-11-05T12:11:51.188403+00:00",
   "evidenceSource": {
     "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
-    "sha256": "70f8d2052e1eac54770737ced28e18aecbb52aeab692ef6cf3d52195fde89b28",
-    "bytes": 22512
+    "sha256": "d6b65ebdf352ffb5cfa0a6af074572c447cc2309ed431ec81e68fbc2a113b53d",
+    "bytes": 33609
   },
   "scope": "Exactly the checks recorded in the current capture report; not additional checks"
 }

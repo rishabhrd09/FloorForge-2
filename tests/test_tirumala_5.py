@@ -45,7 +45,7 @@ def test_plan_a_retains_all_unrequested_rooms_stairs_and_openings(model):
         assert p[key]==original[key],key
     ops={o['id']:o for o in p['openings']}
     for o in original['openings']:
-        if o['id'] not in ('kitchen-east','store-door','stair-window','icu-east-window','living-veranda','icu-glass-living'): assert ops[o['id']]==o
+        if o['id'] not in ('kitchen-east','store-door','stair-window','icu-east-window','living-veranda','icu-glass-living','drawing-north'): assert ops[o['id']]==o
     assert 'store-door' not in ops
     assert ops['stair-window']['connects']==['g-kitchen','g-stair']
 
