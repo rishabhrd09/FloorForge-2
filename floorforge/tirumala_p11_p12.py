@@ -1401,12 +1401,16 @@ def make_p11_p12_scene(b: dict[str, Any], report: dict[str, Any]) -> dict[str, A
                     k.rect((tx0, sy0, tz - riser_h, tx1, sy1, tz - 0.028), "wall", 0, "stair", f"stair-{sid}-riser-{r_i}")
                     k.rect((tx0, sy0, tz - 0.028, tx1 + 0.015, sy1, tz), "oak-warm", 0, "stair", f"stair-{sid}-tread-{r_i}")
 
-    # Modern charcoal-bronze + glass stair balustrade along inner stair edges
+    # Tag the inherited lower guard so individual samples can replace its
+    # style without removing unrelated ground-floor railings.
+    lower_guard_mark = len(k.nodes)
     k.beam((1.25, 6.15, 0.35 + 0.92), (1.25, 7.80, 1.575 + 0.92), 0.022, "walnut", 0, "railing")
     k.beam((1.25, 7.80, 1.575 + 0.92), (3.45, 7.80, 3.15 + 0.92), 0.022, "walnut", 0, "railing")
     k.beam((3.45, 7.80, 3.15 + 0.92), (4.55, 7.80, 3.15 + 0.92), 0.022, "walnut", 0, "railing")
     for bx_, by_, bz_ in ((1.25, 6.20, 0.38), (1.25, 7.00, 0.96), (1.25, 7.80, 1.575), (2.35, 7.80, 2.36), (3.45, 7.80, 3.15), (4.50, 7.80, 3.15)):
         k.beam((bx_, by_, bz_), (bx_, by_, bz_ + 0.92), 0.016, "frame", 0, "railing")
+    for node in k.nodes[lower_guard_mark:]:
+        node['owner'] = 'inherited-ground-stair-guard'
 
     # ------------------------------------------------------------------
     # 7. EXACT AUTHORITATIVE FURNITURE PLACEMENT

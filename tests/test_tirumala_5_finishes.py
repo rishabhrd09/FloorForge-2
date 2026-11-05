@@ -52,10 +52,11 @@ def test_actual_slab_sizes_match_the_label(delivery):
     assert scene['materials']['ivory-marble-exterior-matte']['roughness']>.5
 
 
-def test_opaque_terrace_edge_keeps_gallery_glass_and_doorways(delivery):
+def test_opaque_terrace_and_gallery_edges_keep_doorways_clear(delivery):
     scene,building=delivery
     assert not any(n['id'].startswith('terrace-guard-') for n in scene['nodes'])
-    assert len([n for n in scene['nodes'] if n['id'].startswith(('gallery-glass-', 'internal-gallery-guard-'))])>=2
+    assert not any(n['id'].startswith(('gallery-glass-', 'internal-gallery-guard-')) for n in scene['nodes'])
+    assert any(n['id']=='t5-first-gallery-parapet' for n in scene['nodes'])
     node=next(n for n in scene['nodes'] if n['id']=='t5lux-first-opaque-parapet')
     assert scene['materials'][node['material']].get('alpha',1)==1
     asset=scene['assets'][node['asset']]

@@ -222,7 +222,7 @@ try {
     Math.abs(stackedRevision.extension[2]-stackedRevision.extension[0]-304.8)<.01 &&
     stackedRevision.guest.polygon.some(p => Math.abs(p[0]-8045.2)<.01) &&
     stackedRevision.guest.polygon.some(p => Math.abs(p[0]-8350)<.01) &&
-    stackedRevision.bridgeClear === 1100, {extension:stackedRevision.extension, guest:stackedRevision.guest.bounds,
+    stackedRevision.bridgeClear === 1080, {extension:stackedRevision.extension, guest:stackedRevision.guest.bounds,
       guestAreaSqFt:stackedRevision.guest.area_m2/.09290304, bridgeClear:stackedRevision.bridgeClear});
   const atrium = await page.evaluate(() => {
     const b=window.__ff.building, s=b.planning.secondPlan, ids=b.openings.map(o=>o.id);
@@ -437,6 +437,8 @@ try {
     await captureSolidCamera(name, name.replaceAll('_', '-') + '.png', {indoor: !['upper_terrace','second_terrace','second_stair_arrival'].includes(name)});
   }
   await captureSolidCamera('ground_skylight', 'ground_skylight.png', {indoor:true});
+  await captureSolidCamera('first_gallery_parapet', 'first-gallery-parapet.png', {indoor:true});
+  await captureSolidCamera('ground_stair_railing', 'ground-stair-railing.png', {indoor:true});
   await captureSolidCamera('second_atrium', 'second_atrium.png', {indoor:true});
   await captureSolidCamera('second_gallery_end', 'second-landing-endcap.png', {indoor:true});
   await captureSolidCamera('roof_solar', 'roof_solar.png', {indoor:false});

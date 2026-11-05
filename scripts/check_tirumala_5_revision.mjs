@@ -138,7 +138,7 @@ try {
     guest.polygon.some(p => Math.abs(p[0] - 8350) < .01),
     {areaSqFt: guest.area_m2 / .09290304, polygon: guest.polygon});
   check('The first-floor connector is the approved indoor east-edge bridge',
-    upper.bridgeClearWidthMm === 1100 && upper.bridgeGrossWidthMm === 1200 &&
+    upper.bridgeClearWidthMm === 1080 && upper.bridgeGrossWidthMm === 1200 &&
     upper.circulationPaths.arrival_to_stair.every(p => p[1] >= 4875),
     {clearWidthMm: upper.bridgeClearWidthMm, route: upper.circulationPaths.arrival_to_stair});
   const hallEntry = building.openings.find(o => o.id === 's2-hall-entry');

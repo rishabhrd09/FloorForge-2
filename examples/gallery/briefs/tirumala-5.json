@@ -4308,7 +4308,7 @@
     "tirumalaRevision": 32,
     "units": "mm",
     "upperPlan": {
-      "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+      "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
       "rooms": [
         {
           "id": "u-master",
@@ -6544,12 +6544,68 @@
         8350,
         9200
       ],
-      "bridgeClearWidthMm": 1100,
-      "bridgeGrossWidthMm": 1200
+      "bridgeClearWidthMm": 1080,
+      "bridgeGrossWidthMm": 1200,
+      "galleryParapet": {
+        "polygon": [
+          [
+            6420,
+            5955
+          ],
+          [
+            1525,
+            5955
+          ],
+          [
+            1525,
+            6075
+          ],
+          [
+            6300,
+            6075
+          ],
+          [
+            6300,
+            7800
+          ],
+          [
+            5150,
+            7800
+          ],
+          [
+            5150,
+            7920
+          ],
+          [
+            6300,
+            7920
+          ],
+          [
+            6420,
+            7920
+          ],
+          [
+            6420,
+            7800
+          ],
+          [
+            6420,
+            6075
+          ]
+        ],
+        "guardIndices": [
+          0,
+          1,
+          2
+        ],
+        "thicknessMm": 120,
+        "heightMm": 1100,
+        "finish": "warm-white plaster with ivory coping"
+      }
     },
     "wallThickness": 150,
     "secondPlan": {
-      "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+      "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
       "levelMm": 7016,
       "roomHeightMm": 3350,
       "rooms": [
@@ -8068,7 +8124,7 @@
       },
       "gardenNote": "Shallow perimeter planting; raised pots over supported edges; paved circulation, drainage and overflow provision."
     },
-    "g2Revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05"
+    "g2Revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05"
   },
   "draftRevision": 4,
   "editorState": {
@@ -12358,7 +12414,7 @@
       "tirumalaRevision": 32,
       "units": "mm",
       "upperPlan": {
-        "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
         "rooms": [
           {
             "id": "u-master",
@@ -14594,12 +14650,68 @@
           8350,
           9200
         ],
-        "bridgeClearWidthMm": 1100,
-        "bridgeGrossWidthMm": 1200
+        "bridgeClearWidthMm": 1080,
+        "bridgeGrossWidthMm": 1200,
+        "galleryParapet": {
+          "polygon": [
+            [
+              6420,
+              5955
+            ],
+            [
+              1525,
+              5955
+            ],
+            [
+              1525,
+              6075
+            ],
+            [
+              6300,
+              6075
+            ],
+            [
+              6300,
+              7800
+            ],
+            [
+              5150,
+              7800
+            ],
+            [
+              5150,
+              7920
+            ],
+            [
+              6300,
+              7920
+            ],
+            [
+              6420,
+              7920
+            ],
+            [
+              6420,
+              7800
+            ],
+            [
+              6420,
+              6075
+            ]
+          ],
+          "guardIndices": [
+            0,
+            1,
+            2
+          ],
+          "thicknessMm": 120,
+          "heightMm": 1100,
+          "finish": "warm-white plaster with ivory coping"
+        }
       },
       "wallThickness": 150,
       "secondPlan": {
-        "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
         "levelMm": 7016,
         "roomHeightMm": 3350,
         "rooms": [
@@ -16118,7 +16230,7 @@
         },
         "gardenNote": "Shallow perimeter planting; raised pots over supported edges; paved circulation, drainage and overflow provision."
       },
-      "g2Revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05"
+      "g2Revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05"
     },
     "guideEdited": false,
     "guideFloors": [

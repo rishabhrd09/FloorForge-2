@@ -74,6 +74,56 @@ def test_atrium_matches_reviewed_aperture_and_lower_void(model):
     assert sp.get('skylight'), 'Weather glazing must be explicitly described'
 
 
+def test_first_gallery_parapet_is_solid_supported_and_keeps_arrival_clear(model, scene):
+    up = model['planning']['upperPlan']
+    nodes = [n for n in scene['nodes'] if n['id'] in {
+        't5-first-gallery-parapet', 't5-first-gallery-coping'}]
+    assert len(nodes) == 2
+    footprint = unary_union([mesh_footprint(scene, n) for n in nodes])
+    plate = scale(shape(up['floorPlate']), xfact=.001, yfact=.001, origin=(0, 0))
+    void = scale(FIRST_VOID, xfact=.001, yfact=.001, origin=(0, 0))
+    assert plate.buffer(1e-6).covers(footprint)
+    assert footprint.intersection(void).area < 1e-8
+    # The L and its long bridge continuation need continuous opaque geometry.
+    assert footprint.covers(LineString([(6.31, 6.075), (6.31, 7.81), (5.15, 7.81)]))
+    assert footprint.covers(LineString([(1.525, 6.0), (6.36, 6.0), (6.36, 7.81)]))
+    assert up['bridgeClearWidthMm'] == 1080
+    vertices = np.concatenate([world_vertices(scene, n) for n in nodes])
+    assert vertices[:, 2].min() == pytest.approx(3.508)
+    assert vertices[:, 2].max() == pytest.approx(4.608)
+    for node in nodes:
+        mat = scene['materials'][node['material']]
+        assert mat.get('alpha', 1) == 1 and mat.get('transmission', 0) == 0
+        assert node['floor'] == 1 and node['role'] == 'railing'
+        assert scene['assets'][node['asset']].get('closed') is not False
+    arrival = LineString([(5.7, 8.35), (6.9, 8.35), (6.9, 5.475), (1.525, 5.475)]).buffer(.35, cap_style=2, join_style=2)
+    assert footprint.intersection(arrival).area < 1e-8
+    assert not any(n['id'].startswith('internal-gallery-guard-') for n in scene['nodes'])
+
+
+def test_lower_stair_matches_upper_rail_geometry_and_has_dense_infill(scene):
+    lower = {n['id'].removeprefix('t5-stair-0-'): n for n in scene['nodes']
+             if n['id'].startswith('t5-stair-0-')}
+    upper = {n['id'].removeprefix('t5-stair-1-'): n for n in scene['nodes']
+             if n['id'].startswith('t5-stair-1-')}
+    assert lower.keys() == upper.keys()
+    assert len(lower) > 60
+    assert not any(n.get('owner') == 'inherited-ground-stair-guard' for n in scene['nodes'])
+    for key, node in lower.items():
+        peer = upper[key]
+        assert node['floor'] == 0 and peer['floor'] == 1
+        assert node['material'] == peer['material']
+        assert node['role'] == peer['role'] == 'railing'
+        assert np.allclose(world_vertices(scene, peer) - world_vertices(scene, node), [0, 0, 3.508])
+        assert node['material'] == ('teak-warm' if key.endswith('handrail') else 'frame')
+    for segment in range(7):
+        pickets = [n for key, n in lower.items() if key.startswith(f'guard-{segment}-picket-')]
+        centers = [world_vertices(scene, n)[:, :2].mean(axis=0) for n in pickets]
+        # The guard must have infill, not just the sparse legacy support posts.
+        assert len(centers) >= 4
+        assert max(np.linalg.norm(b-a) for a, b in zip(centers, centers[1:])) <= .120001
+
+
 def test_second_slab_and_top_roof_both_clear_the_atrium(model):
     sp = model['planning']['secondPlan']
     assert shape(sp['floorPlate']).intersection(APERTURE).area < .01

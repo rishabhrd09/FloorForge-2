@@ -56,15 +56,15 @@
   "option": "Plan A",
   "sourceOption": "P11",
   "sourceVersion": "p13-icu-east-extension-2026-10-30",
-  "currentVersion": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+  "currentVersion": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
   "spaciousnessRevision": "tirumala-4-2026-10-31",
   "optionLabel": "Ivory · limestone · teak · Plan A",
   "optionTag": "Plan A · 15 ft ICU · Forecourt utility · Under-stair pantry · G+2",
-  "optionTrade": "Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. Removing the unused second-floor east passage tail reduces the clear landing/gallery from 135.9 to 124.3 sq ft; it remains 37.2 sq ft larger than the delivered stacked-gallery revision. A continuous metal-and-teak guard closes the shortened end and joins the atrium edge. The coordinated enclosure, atrium and walls previously reduced the roof terrace by 106.5 sq ft; it remains 477.2 sq ft open. The family hall, stairs, first and ground floors, terraces, opaque highest roof and glazed atrium are unchanged by this landing revision.",
+  "optionTrade": "Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. Removing the unused second-floor east passage tail reduces the clear landing/gallery from 135.9 to 124.3 sq ft; it remains 37.2 sq ft larger than the delivered stacked-gallery revision. A continuous metal-and-teak guard closes the shortened end and joins the atrium edge. The coordinated enclosure, atrium and walls previously reduced the roof terrace by 106.5 sq ft; it remains 477.2 sq ft open. The latest finish revision makes the first-floor gallery edges, including the long bridge edge, continuously opaque white and matches the lower stair guard to the upper metal-and-teak stair guard. Floor slabs, stair geometry, room dimensions, terraces and atrium retain their geometry.",
   "title": "Tirumala 5",
-  "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
   "groundGeometryHash": "843cb4993c0a77cb0f9ad670097386e6d7c5f71343371cbdb6d43e2655c4f92c",
-  "geometryHash": "9dcb270315e19320f3062c7e5e44ed339e793d5cf5c3be07c0747c1156da30b7",
+  "geometryHash": "08fe3d9b6d7ba9c1c670d9ac8f2a4912a7c2e5fcf10301af3c5d8cbb6680b0f4",
   "defaultCarVisible": false,
   "siteModes": [
     "proposed",
@@ -494,7 +494,7 @@
   },
   "upperFloor": {
     "balconyRevision": "Small north balcony absorbed; front guest section extends 1 ft south with a stepped return retaining the rear gallery; large terrace retained.",
-    "bridgeClearWidthMm": 1100,
+    "bridgeClearWidthMm": 1080,
     "bridgeGrossWidthMm": 1200,
     "circulationPaths": {
       "arrival_to_guest": [
@@ -846,6 +846,62 @@
         ]
       ]
     ],
+    "galleryParapet": {
+      "finish": "warm-white plaster with ivory coping",
+      "guardIndices": [
+        0,
+        1,
+        2
+      ],
+      "heightMm": 1100,
+      "polygon": [
+        [
+          6420.0,
+          5955.0
+        ],
+        [
+          1525.0,
+          5955.0
+        ],
+        [
+          1525.0,
+          6075.0
+        ],
+        [
+          6300.0,
+          6075.0
+        ],
+        [
+          6300.0,
+          7800.0
+        ],
+        [
+          5150.0,
+          7800.0
+        ],
+        [
+          5150.0,
+          7920.0
+        ],
+        [
+          6300.0,
+          7920.0
+        ],
+        [
+          6420.0,
+          7920.0
+        ],
+        [
+          6420.0,
+          7800.0
+        ],
+        [
+          6420.0,
+          6075.0
+        ]
+      ],
+      "thicknessMm": 120
+    },
     "guestExtensionMm": [
       8045.2,
       6350,
@@ -1233,7 +1289,7 @@
         "window_style": "picture-with-sliding-vents"
       }
     ],
-    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
     "roof": [
       {
         "holes": [
@@ -3194,9 +3250,9 @@
     }
   ],
   "projectId": "tirumala-5",
-  "version": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
-  "subtitle": "G+2 · skylit atrium · guarded second landing · family hall and roof garden",
-  "description": "40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.",
+  "version": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+  "subtitle": "G+2 · solid white first gallery · matching teak and metal stairs · skylit atrium",
+  "description": "40 × 50 ft G+2: retained Plan A rooms, a continuous solid white first-floor gallery parapet, matching charcoal-picket and teak handrails on both stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.",
   "sourceProject": "tirumala-4",
   "secondFloor": {
     "atriumOpening": [
@@ -3955,7 +4011,7 @@
       "note": "Dry cabinet below sloping ground stair; minimum occurs at its south end, not a walk-in room.",
       "waistThicknessMm": 150
     },
-    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
     "riserHeightsMm": [
       175,
       175,
@@ -5150,7 +5206,7 @@
     "utilityWorkingDepthMm": 771.6
   },
   "g2Design": {
-    "bridgeClearWidthMm": 1100,
+    "bridgeClearWidthMm": 1080,
     "continuousAtriumClearMm": [
       3325,
       1725
@@ -5159,6 +5215,62 @@
       5050,
       1725
     ],
+    "firstGalleryParapet": {
+      "finish": "warm-white plaster with ivory coping",
+      "guardIndices": [
+        0,
+        1,
+        2
+      ],
+      "heightMm": 1100,
+      "polygon": [
+        [
+          6420.0,
+          5955.0
+        ],
+        [
+          1525.0,
+          5955.0
+        ],
+        [
+          1525.0,
+          6075.0
+        ],
+        [
+          6300.0,
+          6075.0
+        ],
+        [
+          6300.0,
+          7800.0
+        ],
+        [
+          5150.0,
+          7800.0
+        ],
+        [
+          5150.0,
+          7920.0
+        ],
+        [
+          6300.0,
+          7920.0
+        ],
+        [
+          6420.0,
+          7920.0
+        ],
+        [
+          6420.0,
+          7800.0
+        ],
+        [
+          6420.0,
+          6075.0
+        ]
+      ],
+      "thicknessMm": 120
+    },
     "guestBedroomClearMm": [
       3082.3999999999996,
       5050
@@ -5181,7 +5293,7 @@
       "note": "Dry cabinet below sloping ground stair; minimum occurs at its south end, not a walk-in room.",
       "waistThicknessMm": 150
     },
-    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
     "secondFloorMm": 7016.0,
     "secondStairHeadroomMm": 3153.0,
     "skylight": {
@@ -5202,6 +5314,7 @@
     },
     "solarModules": 4,
     "solarRoof": "Highest roof above second-floor hall; no extra storey",
+    "stairGuardFinish": "Matching charcoal vertical pickets and teak handrails on both stacked stair flights",
     "stairRiserHeightsMm": [
       175,
       175,

@@ -1,6 +1,6 @@
 {
-  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
-  "finished": "2026-11-05T10:07:32.449Z",
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+  "finished": "2026-11-05T15:53:06.638Z",
   "checks": [
     {
       "name": "tirumala-5 plan-2d-dimensioned.svg loads HTTP 200",
@@ -31,13 +31,13 @@
       "pass": true,
       "detail": {
         "buildId": "sample:tirumala-5",
-        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
         "storeys": 3,
         "roomCount": 23,
         "widthFt": "40",
         "depthFt": "50",
         "facing": "90",
-        "meshCount": 387,
+        "meshCount": 389,
         "defaultCarVisible": false,
         "carVisible": false,
         "carButtonText": "Show car",
@@ -91,14 +91,14 @@
           11400
         ],
         "guestAreaSqFt": 176.90271491654093,
-        "bridgeClear": 1100
+        "bridgeClear": 1080
       }
     },
     {
       "name": "Current atrium revision has aligned roof opening, closed south windows and new east glazing",
       "pass": true,
       "detail": {
-        "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
         "aperture": [
           1675,
           6075,
@@ -132,7 +132,7 @@
       "name": "Actual render meshes preserve ground-to-skylight views through both upper slabs and highest roof",
       "pass": true,
       "detail": {
-        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
         "method": "Upward vertical ray / actual transformed render-mesh triangles, including invisible buckets",
         "samples": [
           {
@@ -738,7 +738,19 @@
       "pass": true
     },
     {
+      "name": "tirumala-5 camera first_gallery_parapet (first-gallery-parapet.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ground_stair_railing (ground-stair-railing.png) activated",
+      "pass": true
+    },
+    {
       "name": "tirumala-5 camera second_atrium (second_atrium.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_gallery_end (second-landing-endcap.png) activated",
       "pass": true
     },
     {
@@ -764,7 +776,7 @@
         "porchFloorY": -0.1524,
         "livingFloorY": 0,
         "upperFloorY": 3.508,
-        "cpuSubmissionMsPerFrame": 1.88
+        "cpuSubmissionMsPerFrame": 1.84
       }
     },
     {
@@ -841,7 +853,7 @@
       "name": "Continuous walk first interior → indoor bridge → stacked stairs → expanded atrium gallery → second hall → first interior",
       "pass": true,
       "detail": {
-        "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
         "segments": [
           {
             "name": "first gallery",
@@ -1247,21 +1259,5 @@
       "detail": []
     }
   ],
-  "errors": [],
-  "project": "Tirumala 5",
-  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
-  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
-  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
-  "verificationScript": {
-    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/scripts/refresh_tirumala_5_atrium_verification.py",
-    "sha256": "ca8ac65694eef75baae730edbd9b1d160bc13997ea9214cbc98a0e2444f353bf",
-    "bytes": 22816
-  },
-  "generatedAt": "2026-11-05T12:11:51.188403+00:00",
-  "evidenceSource": {
-    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
-    "sha256": "d6b65ebdf352ffb5cfa0a6af074572c447cc2309ed431ec81e68fbc2a113b53d",
-    "bytes": 33609
-  },
-  "scope": "Exactly the checks recorded in the current capture report; not additional checks"
+  "errors": []
 }

@@ -311,7 +311,7 @@
   {
     "id": "tirumala-5",
     "title": "Tirumala 5",
-    "description": "40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall. ICU 15 ft wide; open washing bay and under-stair pantry.",
+    "description": "40 × 50 ft G+2: retained Plan A rooms, a continuous solid white first-floor gallery parapet, matching charcoal-picket and teak handrails on both stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall. ICU 15 ft wide; open washing bay and under-stair pantry.",
     "style": "Ivory · limestone · teak · Plan A",
     "directory": "gallery/tirumala-5",
     "basedOnSample": "tirumala-4",
@@ -321,7 +321,7 @@
     "depthFt": 50,
     "roofAccess": false,
     "terraceAccess": true,
-    "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+    "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
     "hasSpecifications": true
   }
 ]

@@ -1,0 +1,23 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
+  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+  "verificationScript": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/scripts/refresh_tirumala_5_atrium_verification.py",
+    "sha256": "ca8ac65694eef75baae730edbd9b1d160bc13997ea9214cbc98a0e2444f353bf",
+    "bytes": 22816
+  },
+  "generatedAt": "2026-11-05T12:11:51.188403+00:00",
+  "baseline": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-atrium/baselines/other-samples-sha256.json",
+    "sha256": "3c1799012cb251d0cd6bca309d316cc3920384fc2f0813aa239bd80869b87f68",
+    "bytes": 43705
+  },
+  "filesChecked": 445,
+  "changed": [],
+  "missing": [],
+  "added": [],
+  "passed": true
+}

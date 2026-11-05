@@ -14,7 +14,7 @@ from shapely.ops import unary_union
 
 from .tirumala_luxury import H, ring, regions, upper_plan
 
-REVISION = 'tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05'
+REVISION = 'tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05'
 LEVEL = 2 * H
 ROOM_HEIGHT = 3350
 HALL = [150, 9050, 5335.6, 14328]
@@ -288,7 +288,13 @@ def first_plan(ground):
           'arrival_to_main_terrace':[[5700,8350],[7300,8350],[7300,4800]],
           'arrival_to_office':[[5700,8350],[7400,8350],[7400,9250],[7380,9520],[7600,9700],[7742.8,9900],[7742.8,12025],[8200,12025]]},
         balconyRevision='Small north balcony absorbed; front guest section extends 1 ft south with a stepped return retaining the rear gallery; large terrace retained.',
-        guestExtensionMm=GUEST_EXTENSION[:],bridgeClearWidthMm=1100,bridgeGrossWidthMm=1200)
+        guestExtensionMm=GUEST_EXTENSION[:],bridgeClearWidthMm=1080,bridgeGrossWidthMm=1200)
+    # All three flat gallery edges share one opaque parapet on the existing
+    # slab. The arrival steps retain the matching metal-and-teak stair guards.
+    parapet=unary_union([box(6300,6075,6420,7920),box(5150,7800,6420,7920),
+                        box(1525,5955,6420,6075)])
+    up['galleryParapet']=dict(polygon=ring(parapet),guardIndices=[0,1,2],
+        thicknessMm=120,heightMm=1100,finish='warm-white plaster with ivory coping')
     return up
 
 
@@ -470,6 +476,7 @@ def add_scene(k,mats,b,door_motion,lawns):
     # boundaries; the old rail at y7.8 would block the new indoor approach.
     retained=[];skip_rail=False
     for node in k.nodes:
+        if node.get('owner')=='inherited-ground-stair-guard':continue
         if node['id'].startswith('gallery-glass-'):
             skip_rail=True;continue
         if skip_rail and node.get('role')=='railing':
@@ -477,11 +484,9 @@ def add_scene(k,mats,b,door_motion,lawns):
         skip_rail=False
         if node['id'] not in old:retained.append(node)
     k.nodes[:]=retained
-    for i,(a,c) in enumerate(b['planning']['upperPlan']['galleryGuards']):
-        aa=tuple(v/1000 for v in a);cc=tuple(v/1000 for v in c)
-        k.poly_mesh(LineString([aa,cc]).buffer(.012,cap_style=2),z1+.08,z1+1.08,
-                    'railglass',1,'railing',f'internal-gallery-guard-{i}')
-        k.beam((*aa,z1+1.10),(*cc,z1+1.10),.018,'frame',1,'railing')
+    parapet=Polygon([(x/1000,y/1000) for x,y in b['planning']['upperPlan']['galleryParapet']['polygon']])
+    k.poly_mesh(parapet,z1,z1+1.06,'wall',1,'railing','t5-first-gallery-parapet')
+    k.poly_mesh(parapet,z1+1.06,z1+1.10,'limestone',1,'railing','t5-first-gallery-coping')
     for i,r in enumerate(sp['floorPlate']):
         k.poly_mesh(p(r),z-.18,z-.014,'slab',2,'slab',f's2-slab-{i}')
         k.poly_mesh(p(r),z-.014,z,'ivory-marble-polished',2,'floor',f's2-floor-{i}')
@@ -570,12 +575,18 @@ def add_scene(k,mats,b,door_motion,lawns):
                [(4.55,7.80,z1+3.15),(5.15,7.80,z)],
                [(3.45,8.90,z1+3.15),(4.55,8.90,z1+3.15)],
                [(4.55,8.90,z1+3.15),(5.15,8.90,z)]]
-    for i,(a,c) in enumerate(railpaths):
-        k.beam((a[0],a[1],a[2]+1.05),(c[0],c[1],c[2]+1.05),.035,'teak-warm',1,'railing')
-        count=max(2,math.ceil(math.dist(a[:2],c[:2])/.12))
-        for j in range(count+1):
-            t=j/count;x=a[0]+(c[0]-a[0])*t;y=a[1]+(c[1]-a[1])*t;zz=a[2]+(c[2]-a[2])*t
-            k.beam((x,y,zz+.02),(x,y,zz+1.02),.012,'frame',1,'railing')
+    # Identical teak rails and closely spaced charcoal pickets for both
+    # stacked stairs, including the two short arrival-step edges.
+    for floor in (0,1):
+        offset=(floor-1)*z1
+        for i,(a,c) in enumerate(railpaths):
+            k.beam((a[0],a[1],a[2]+offset+1.05),(c[0],c[1],c[2]+offset+1.05),.035,'teak-warm',floor,'railing')
+            k.nodes[-1].update(id=f't5-stair-{floor}-guard-{i}-handrail',owner=f't5-stair-{floor}-guard')
+            count=max(2,math.ceil(math.dist(a[:2],c[:2])/.12))
+            for j in range(count+1):
+                t=j/count;x=a[0]+(c[0]-a[0])*t;y=a[1]+(c[1]-a[1])*t;zz=a[2]+(c[2]-a[2])*t+offset
+                k.beam((x,y,zz+.02),(x,y,zz+1.02),.012,'frame',floor,'railing')
+                k.nodes[-1].update(id=f't5-stair-{floor}-guard-{i}-picket-{j}',owner=f't5-stair-{floor}-guard')
     # Opaque perimeter / lightwell parapets; inset on supported slab edges.
     plate=mm(_shape(sp['floorPlate']))
     enclosed_shell=mm(box(*HALL).buffer(150,join_style=2).union(_shape(sp['headhouseRegions'])))
@@ -699,6 +710,8 @@ def cameras(b):
           'second_terrace':('Second floor · open garden terrace',[10.0,9.3,z+1.63],[7.5,13.1,z+1.1],66),
           'second_stair_arrival':('Second floor · stair arrival',[5.8,8.35,z+1.63],[3.5,8.35,z-.5],66),
           'first_stair_up':('First floor · indoor bridge and stacked stairs',[5.7,5.475,H/1000+1.63],[1.55,5.475,H/1000+1.4],64),
+          'first_gallery_parapet':('First floor · continuous white gallery parapet',[7.0,6.35,H/1000+1.63],[5.3,7.65,H/1000+.4],68),
+          'ground_stair_railing':('Ground floor · matching teak and metal stair railing',[3.7,7.6,1.63],[1.65,8.0,2.3],68),
           'ground_skylight':('Ground floor · view through atrium to rooflight',[3.7,7.6,1.63],[3.35,6.96,10.85],70),
           'second_atrium':('Second floor · enclosed east landing and skylight',[5.8,5.45,z+1.63],[2.8,7.0,9.4],70),
           'second_gallery_end':('Second floor · guarded gallery end',[2.8,5.475,z+1.63],[1.5,5.475,z+1.20],68),
@@ -706,7 +719,7 @@ def cameras(b):
     out={}
     for ident,(label,pos,target,fov) in defs.items():
         dx,dy,dz=[target[i]-pos[i] for i in range(3)]
-        floor=0 if ident=='ground_skylight' else 1 if ident=='first_stair_up' else 2
+        floor=0 if ident.startswith('ground_') else 1 if ident.startswith('first_') else 2
         out[ident]=dict(id=ident,label=label,position=pos,target=target,fov=fov,floor=floor,
             enter_walk=ident!='roof_solar',eye_height_above_ffl_m=1.63,walker=dict(position=pos[:],yaw_rad=math.atan2(-dx,dy),pitch_rad=math.atan2(dz,math.hypot(dx,dy))))
     return out
@@ -738,7 +751,9 @@ def finalize_scene(scene,b):
          'guestBedroomFrontClearMm':GUEST[2]-GUEST_EXTENSION[0],
          'guestBedroomExtensionMm':GUEST_EXTENSION[:],
          'stairRiserHeightsMm':b['planning']['secondPlan']['riserHeightsMm'],
-         'bridgeClearWidthMm':1100,
+         'bridgeClearWidthMm':b['planning']['upperPlan']['bridgeClearWidthMm'],
+         'firstGalleryParapet':deepcopy(b['planning']['upperPlan']['galleryParapet']),
+         'stairGuardFinish':'Matching charcoal vertical pickets and teak handrails on both stacked stair flights',
          'structuralStatus':b['planning']['secondPlan']['structuralConcept']['status'],
          'pantryClearance':deepcopy(b['planning']['secondPlan']['pantryClearance'])}
 
@@ -820,7 +835,7 @@ def second_svg(b):
     text(6100,-450,'EAST · entrance side below',14,700)
     notes=['New second floor at +23 ft ¼ in; hall clear height 10 ft 11⅞ in.',
            'Same lower stair footprint: 18 risers of 6⅞ in plus 2 arrival risers of 7 in.',
-           'Indoor bridge reaches the South → West → North stair; 3 ft 7¼ in clear width.',
+           'Indoor bridge reaches the South → West → North stair; 3 ft 6½ in clear width.',
            'Opaque parapets, shallow planters, pergola and clear paved walking routes.',
            'Gallery tail removed; metal-and-teak end guard. Rooflight visible from ground floor.',
            'Concept model: foundations, member sizes, wind/seismic and garden loads need engineering.']
@@ -875,10 +890,12 @@ def first_plan_elements(b):
         items.append(P(ring(box(*st['bounds'])),fill='#e9e2d6',stroke='#889087',width=.15,layer='A-STAIR'))
     for a,c in [([1800,5550],[700,5550]),([700,5550],[700,8350]),([700,8350],[5500,8350])]:
         items.append(L(a,c,stroke='#38584a',width=.5,layer='A-STAIR'))
-    for a,c in up['galleryGuards']:items.append(L(a,c,stroke='#38584a',width=.7,layer='A-GUARD'))
+    for i,(a,c) in enumerate(up['galleryGuards']):
+        if i not in up['galleryParapet']['guardIndices']:items.append(L(a,c,stroke='#38584a',width=.7,layer='A-GUARD'))
+    items.append(P(up['galleryParapet']['polygon'],fill='#e9e4d8',stroke='#626e62',width=.3,layer='A-GUARD'))
     items.append(T(2750,8500,'UP TO SECOND · 20 RISERS',145,layer='A-ANNO'))
     items.append(T(5450,8050,'Arrival from ground',115,layer='A-ANNO'))
-    items.append(T(4000,5500,'INDOOR BRIDGE · 3 ft 7¼ in CLEAR',140,layer='A-ANNO'))
+    items.append(T(4000,5500,'INDOOR BRIDGE · 3 ft 6½ in CLEAR',140,layer='A-ANNO'))
     items.append(T(3700,7050,'OPEN TO LIVING BELOW',210,layer='A-ANNO'))
     items.append(T(3700,6700,'94 sq ft clear opening',170,layer='A-ANNO'))
     return items,bounds
@@ -904,13 +921,16 @@ def first_svg(b):
         extra.append(f'<polygon points="{pts(ring(box(*st["bounds"])))}" fill="#e9e2d6" stroke="#a7ab9c" stroke-width=".7"/>')
     up_arrow=[[1800,5550],[700,5550],[700,8350],[5500,8350]]
     extra.append(f'<polyline points="{pts(up_arrow)}" fill="none" stroke="#38584a" stroke-width="2" marker-end="url(#stair-up-arrow)"/>')
-    for a,c in up['galleryGuards']:
+    for i,(a,c) in enumerate(up['galleryGuards']):
+        if i in up['galleryParapet']['guardIndices']:continue
         extra.append(f'<line x1="{tx(a[0])}" y1="{ty(a[1])}" x2="{tx(c[0])}" y2="{ty(c[1])}" stroke="#38584a" stroke-width="2"/>')
+    extra.append(f'<polygon points="{pts(up["galleryParapet"]["polygon"])}" fill="#e9e4d8" stroke="#626e62" stroke-width=".7"/>')
     for x,y,t,sz in [(2700,8630,'UP TO SECOND · 20 RISERS',10),
-                     (4000,5550,'Indoor bridge · 3 ft 7¼ in clear',11),(5600,8100,'From ground',10),
+                     (4000,5550,'Indoor bridge · 3 ft 6½ in clear',11),(5600,8100,'From ground',10),
                      (3700,7050,'OPEN TO LIVING / DINING',14),(3700,6700,'94 sq ft clear opening',13)]:
         extra.append(f'<text x="{tx(x)}" y="{ty(y)}" text-anchor="middle" font-size="{sz}" font-weight="700" stroke="#faf9f5" stroke-width="3" paint-order="stroke">{t}</text>')
     extra.append('</g>')
+    extra.append('<text x="55" y="1390" font-family="Arial,sans-serif" font-size="13" fill="#253c34">First gallery: continuous white parapet · Both stairs: black pickets and teak handrails</text>')
     return out.replace('</g></svg>','</g>'+''.join(extra)+'</svg>')
 
 
