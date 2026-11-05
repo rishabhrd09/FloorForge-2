@@ -438,6 +438,7 @@ try {
   }
   await captureSolidCamera('ground_skylight', 'ground_skylight.png', {indoor:true});
   await captureSolidCamera('second_atrium', 'second_atrium.png', {indoor:true});
+  await captureSolidCamera('second_gallery_end', 'second-landing-endcap.png', {indoor:true});
   await captureSolidCamera('roof_solar', 'roof_solar.png', {indoor:false});
 
   // 3D Roof-off cutaway view (with carVisible: false by default!)

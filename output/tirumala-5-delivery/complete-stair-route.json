@@ -9948,5 +9948,15 @@
       "detail": []
     }
   ],
-  "failure": null
+  "failure": null,
+  "evidenceStatus": "historical-prior-atrium-revision",
+  "historicalOnly": true,
+  "appliesToCurrentLandingRevision": false,
+  "historicalAnnotation": {
+    "annotatedAt": "2026-11-05T14:18:48.197240+00:00",
+    "reason": "This complete-route report belongs to the pre-trim skylit-atrium revision. Original revision, planHash, input hashes, source, route records and pass result are preserved. It is not current guarded-landing acceptance.",
+    "currentRevision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+    "currentFinalUpperRuntime": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision-upper/runtime-acceptance.json",
+    "currentDeliveryQa": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/delivery-qa.json"
+  }
 }

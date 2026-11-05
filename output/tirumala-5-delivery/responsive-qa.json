@@ -1,11 +1,11 @@
 {
-  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
-  "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
-  "generatedAt": "2026-11-05T12:07:22.196Z",
+  "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+  "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+  "generatedAt": "2026-11-05T14:11:59.910Z",
   "url": "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html",
-  "htmlSha256": "756104257cc19e8d3208d42f6af34da820fe5e785b2719d97ce3662561f696b4",
-  "buildingSha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
-  "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+  "htmlSha256": "b3a397bae3c8200fe57b8f06bac60e9145ffd26928a1454c647063442555a88e",
+  "buildingSha256": "b4f366d472c1494569ddd4c14b2a53576c07d0818b28c1fd8baf04e05ca10137",
+  "sceneSha256": "b2d6c8bb1a4659157964260e26d2a24ab00626a43fd9f366cc10956754acb66c",
   "inputsUnchanged": true,
   "results": [
     {
@@ -14,35 +14,35 @@
       "detail": {
         "width": 1440,
         "scrollWidth": 1440,
-        "height": 9724,
-        "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+        "height": 9991,
+        "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
         "images": [
           {
-            "src": "cycles-atrium/exterior/exterior_northeast-day.png?v=atrium-20261105",
+            "src": "second-landing-endcap.png?v=guarded-landing-20261105",
             "loaded": true,
-            "naturalWidth": 1600,
-            "naturalHeight": 1040
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
           },
           {
-            "src": "plan-2d-dimensioned.png?v=atrium-20261105",
+            "src": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 3200,
             "naturalHeight": 4200
           },
           {
-            "src": "plan-first-floor.png?v=atrium-20261105",
+            "src": "plan-first-floor.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2900
           },
           {
-            "src": "plan-second-floor.png?v=atrium-20261105",
+            "src": "plan-second-floor.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2900
           },
           {
-            "src": "plan-roof.png?v=atrium-20261105",
+            "src": "plan-roof.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2640
@@ -54,55 +54,55 @@
             "naturalHeight": 1000
           },
           {
-            "src": "cycles-atrium/second_atrium-day.png?v=atrium-20261105",
-            "loaded": true,
-            "naturalWidth": 1400,
-            "naturalHeight": 1000
-          },
-          {
-            "src": "interior-veranda-living.png?v=atrium-20261105",
+            "src": "second_atrium.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "interior-icu-veranda-garden.png?v=atrium-20261105",
+            "src": "interior-veranda-living.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "first-stair-up.png?v=atrium-20261105",
+            "src": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "upper-guest.png?v=atrium-20261105",
+            "src": "first-stair-up.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "second-stair-arrival.png?v=atrium-20261105",
+            "src": "upper-guest.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "second-terrace.png?v=atrium-20261105",
+            "src": "second-stair-arrival.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "upper-terrace.png?v=atrium-20261105",
+            "src": "second-terrace.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "forecourt-utility.png?v=atrium-20261105",
+            "src": "upper-terrace.png?v=guarded-landing-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "forecourt-utility.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
@@ -118,7 +118,7 @@
       },
       "errors": [],
       "screenshot": "delivery-desktop.png",
-      "screenshotSha256": "9b10c3e6b153ede34f0b32c1207922d0aacd32d0e23d093695bc91f9c7a8435f"
+      "screenshotSha256": "fddb558544841ea10a3b5c7acd37ef803e4bb738e053fb6836b72d7a7d7e30fa"
     },
     {
       "width": 390,
@@ -126,35 +126,35 @@
       "detail": {
         "width": 390,
         "scrollWidth": 390,
-        "height": 12639,
-        "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+        "height": 13366,
+        "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
         "images": [
           {
-            "src": "cycles-atrium/exterior/exterior_northeast-day.png?v=atrium-20261105",
+            "src": "second-landing-endcap.png?v=guarded-landing-20261105",
             "loaded": true,
-            "naturalWidth": 1600,
-            "naturalHeight": 1040
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
           },
           {
-            "src": "plan-2d-dimensioned.png?v=atrium-20261105",
+            "src": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 3200,
             "naturalHeight": 4200
           },
           {
-            "src": "plan-first-floor.png?v=atrium-20261105",
+            "src": "plan-first-floor.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2900
           },
           {
-            "src": "plan-second-floor.png?v=atrium-20261105",
+            "src": "plan-second-floor.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2900
           },
           {
-            "src": "plan-roof.png?v=atrium-20261105",
+            "src": "plan-roof.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 1960,
             "naturalHeight": 2640
@@ -166,55 +166,55 @@
             "naturalHeight": 1000
           },
           {
-            "src": "cycles-atrium/second_atrium-day.png?v=atrium-20261105",
-            "loaded": true,
-            "naturalWidth": 1400,
-            "naturalHeight": 1000
-          },
-          {
-            "src": "interior-veranda-living.png?v=atrium-20261105",
+            "src": "second_atrium.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "interior-icu-veranda-garden.png?v=atrium-20261105",
+            "src": "interior-veranda-living.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "first-stair-up.png?v=atrium-20261105",
+            "src": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "upper-guest.png?v=atrium-20261105",
+            "src": "first-stair-up.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "second-stair-arrival.png?v=atrium-20261105",
+            "src": "upper-guest.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "second-terrace.png?v=atrium-20261105",
+            "src": "second-stair-arrival.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "upper-terrace.png?v=atrium-20261105",
+            "src": "second-terrace.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
           },
           {
-            "src": "forecourt-utility.png?v=atrium-20261105",
+            "src": "upper-terrace.png?v=guarded-landing-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "forecourt-utility.png?v=guarded-landing-20261105",
             "loaded": true,
             "naturalWidth": 2400,
             "naturalHeight": 1560
@@ -230,7 +230,7 @@
       },
       "errors": [],
       "screenshot": "delivery-mobile.png",
-      "screenshotSha256": "4070fe1d0e6a4366866727b97417963d56836399d218a711c0aa37fca3d2efea"
+      "screenshotSha256": "393af6e78a54ac221402f208ebf09fccc21025e0b6aa8a25c6577e3d60b03d96"
     }
   ],
   "passed": true

@@ -338,9 +338,49 @@ try {
   check('Atrium east-edge guard physically blocks a walking approach to the open shaft',atriumGuard.pass,atriumGuard);
   if (!atriumGuard.pass) throw Error('Atrium guarding failed real walking collision.');
   await screenshot('second-atrium-guard');
+  await walk('Return from atrium edge to clear gallery',3.35,5.475,7.016);
+  await walk('Use retained south end of indoor gallery',2.2,5.475,7.016);
+  // Walk into the new south-end guard using real capsule input. The removed
+  // dead-end slab must not remain as invisible support, nor may a visitor slip
+  // around either end of the barrier into the stair/atrium opening.
+  results.landingEndGuards = [];
+  for (const attempt of [
+    {name:'South endpoint blocks ordinary walking',yaw:Math.PI/2},
+    {name:'South endpoint blocks running',yaw:Math.PI/2,run:true},
+    {name:'South endpoint blocks crouched walking',yaw:Math.PI/2,crouch:true},
+    {name:'Atrium-side endpoint corner blocks diagonal running',yaw:Math.PI/4,run:true},
+    {name:'Window-side endpoint corner blocks diagonal crouching',yaw:3*Math.PI/4,crouch:true},
+  ]) {
+    await walk(`Approach: ${attempt.name}`,2.2,5.475,7.016);
+    const guard = await page.evaluate(attempt => {
+      const w=window.__ff.viewer.walker;
+      const start=[w.position.x,-w.position.z,w.position.y],trace=[];
+      w.yaw=attempt.yaw;w.pitch=0;
+      let minimumHeight=w.position.y,minimumX=w.position.x;
+      let minimumY=-w.position.z,maximumY=-w.position.z;
+      for(let i=0;i<240;i++) {
+        w.update(1/120,{forward:1,strafe:0,run:!!attempt.run,crouch:!!attempt.crouch});
+        minimumHeight=Math.min(minimumHeight,w.position.y);
+        minimumX=Math.min(minimumX,w.position.x);
+        minimumY=Math.min(minimumY,-w.position.z);maximumY=Math.max(maximumY,-w.position.z);
+        if(i%24===0)trace.push([w.position.x,-w.position.z,w.position.y,w.onGround]);
+      }
+      for(let i=0;i<45;i++)w.update(1/120,{forward:0,strafe:0});
+      const position=[w.position.x,-w.position.z,w.position.y];
+      return {name:attempt.name,start,position,minimumHeight,minimumX,minimumY,maximumY,
+        grounded:w.onGround,trace,
+        pass:w.onGround && Math.abs(w.position.y-7.016)<.055 && minimumHeight>6.96 &&
+          minimumX>=1.675+w.s.radius-.06 && minimumY>4.875 && maximumY<6.075};
+    },attempt);
+    results.landingEndGuards.push(guard);
+    check(attempt.name,guard.pass,guard);
+    if(!guard.pass)throw Error(`Second-floor endpoint collision failed: ${attempt.name}`);
+  }
+  await walk('Return safely from endpoint corner',2.2,5.475,7.016);
+  await walk('Endpoint review viewpoint reached by walking',2.8,5.475,7.016);
+  await page.evaluate(()=>{const w=window.__ff.viewer.walker;w.yaw=Math.PI/2;w.pitch=-.1;});
+  await screenshot('second-landing-endcap');
   for (const [name,x,y] of [
-    ['Return from atrium edge to clear gallery',3.35,5.475],
-    ['Use south end of enlarged indoor gallery',2.2,5.475],
     ['Return through east gallery',5.8,5.475],
     ['Return beside north atrium guard',5.8,8.35],
     ['Enclosed second-floor hall approach',5.95,9.55],

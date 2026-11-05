@@ -25,7 +25,7 @@ Independent sample derived from the delivered Tirumala 4. Plot: 40 ft north–so
 | Gallery overlooking living (first) | 21′10¾″ × 25′1⅛″ | 191.6 sq ft |
 | Open garden terrace (first) | 29′7⅝″ × 10′9″ | 318.5 sq ft |
 | Second-floor family hall (second) | 17′0⅛″ × 17′3¾″ | 294.6 sq ft |
-| Enclosed stair landing (second) | 21′1⅞″ × 16′11¾″ | 135.9 sq ft |
+| Enclosed stair landing (second) | 16′1⅞″ × 16′11¾″ | 124.3 sq ft |
 | Open roof garden terrace (second) | 20′ × 31′9″ | 477.2 sq ft |
 
 ## Selected changes
@@ -39,7 +39,8 @@ Independent sample derived from the delivered Tirumala 4. Plot: 40 ft north–so
 - The living coffee table moves 400 mm east, opening an 800 mm gap to the sofa and clearing the tested route around dining to the ground stair.
 - Ground room dimensions and original ground stair retained. The upper stair follows the same South–West–North footprint, one floor above, reached through the 1100 mm clear indoor passage beside the east glazing. The enclosed second landing and short return connect to the unchanged family hall. Hanging gold-disc pendants and their cords remain removed; ceiling lights remain.
 - North first-floor bedroom: front portion widened one foot south to 11 ft 1⅜ in; rear width 10 ft 1⅜ in and east–west length 16 ft 6⅞ in. Stepped clear area 176.9 sq ft. Rear wall retained to preserve the 3 ft passage. Small balcony and connector remain removed; large first terrace retained with opaque ivory parapets.
-- Second floor: the expanded east enclosure provides 135.9 sq ft of clear landing/gallery floor, a gain of 48.8 sq ft over the delivered stacked-gallery revision. The open garden terrace is 477.2 sq ft after the enclosure, rooflight opening and wall allowance, a total reduction of 106.5 sq ft. The furnished family hall and large first-floor terrace retain their dimensions. Keep planting at supported edges and walking routes open.
+- Second-floor landing, before → after: the unused east/window-side passage tail is removed, reducing clear landing/gallery floor from 135.9 to 124.3 sq ft (11.6 sq ft removed). The remaining landing is 37.2 sq ft larger than the delivered stacked-gallery revision. A continuous visible metal-picket guard with a teak handrail closes the new end at X=1675 mm, Y=4875–6075 mm, then joins the atrium edge (+X north, +Y west). The stair route and hall access remain open.
+- This landing trim changes only the second-floor passage end. The ground and first floors, all stairs, furnished family hall, terraces, opaque highest roof and atrium/skylight remain unchanged. The open garden terrace remains 477.2 sq ft, following the earlier 106.5 sq ft reduction for the enclosure, rooflight opening and wall allowance. Keep planting at supported edges and walking routes open.
 - Rooflight: sloping framed solar-control glazing with a laminated inner pane, raised opaque curb, narrow mullions and an east-side gutter. The curb and drainage sit outside the clear vertical aperture. This is an architectural assembly; final glass build-up, anchorage, waterproofing and drainage need project-specific engineering.
 - Windows: south-facing openings on the first and second floors are removed. Tall east-facing stair/gallery bays use 150 mm sills and 2900 mm glazing height. The ground-floor drawing room has one north-facing 2400 mm (7 ft 10½ in) wide × 2400 mm high opening with a 450 mm sill and retained end piers; its veranda entrance and room dimensions remain unchanged.
 - Solar: four compact photovoltaic modules sit on the highest opaque roof above the second-floor family hall. They face south on low supports and remain clear of the skylight, terrace routes and stairs. This is roof equipment, not another floor; output, mounting loads and electrical design are not certified by the visualization.
@@ -49,4 +50,4 @@ Independent sample derived from the delivered Tirumala 4. Plot: 40 ft north–so
 
 Architectural visualization, not a certified structural design: the additional occupied floor requires an engineer to verify foundations, column and beam continuity, slab and balcony loads, lateral stability, stair support, guard design and saturated terrace planter loads. Final falls, waterproofing, drains and overflow outlets need construction detailing. Road widths and context evidence follow Tirumala 4; unmeasured background geometry remains illustrative.
 
-Plan hash: `31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c`
+Plan hash: `19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796`

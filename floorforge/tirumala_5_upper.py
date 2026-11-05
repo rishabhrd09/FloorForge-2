@@ -14,7 +14,7 @@ from shapely.ops import unary_union
 
 from .tirumala_luxury import H, ring, regions, upper_plan
 
-REVISION = 'tirumala-5-g2-skylit-atrium-2026-11-05'
+REVISION = 'tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05'
 LEVEL = 2 * H
 ROOM_HEIGHT = 3350
 HALL = [150, 9050, 5335.6, 14328]
@@ -31,6 +31,7 @@ RISE = 175
 ARRIVAL_RISE = (H - 18 * RISE) / 2
 ATRIUM = [1675, 6075, 5000, 7800]
 EAST_ENCLOSURE = [1525, 4875, 6600, 7800]
+GALLERY_END_CUTOUT = [150, 4875, 1675, 7800]
 
 
 def guest_shape():
@@ -296,11 +297,12 @@ def second_plan(ground):
     roof=_shape(up['roof'])
     shaft=stacked_shaft(ground)
     atrium=box(*ATRIUM)
-    plate=roof.difference(shaft).difference(Polygon(up['lightwell'])).difference(atrium)
+    gallery_end=box(*GALLERY_END_CUTOUT)
+    plate=roof.difference(shaft).difference(Polygon(up['lightwell'])).difference(atrium).difference(gallery_end)
     hall=box(*HALL);hall_shell=hall.buffer(150,join_style=2)
     headhouse=headhouse_shape().buffer(150,join_style=2)
     terrace=plate.difference(hall_shell.union(headhouse))
-    landing=headhouse_shape().difference(shaft).difference(atrium)
+    landing=headhouse_shape().difference(shaft).difference(atrium).difference(gallery_end)
     steps=stacked_steps(ground)
     furniture=[
         dict(id='s2-sofa',kind='sofa',bounds=[900,13000,3400,13900]),
@@ -318,6 +320,7 @@ def second_plan(ground):
                        _room('s2-terrace','terrace','Open roof garden terrace',terrace)],
                 floorPlate=regions(plate),stairVoid=regions(shaft),stairs=steps,
                 atriumOpening=ring(atrium),eastEnclosure=EAST_ENCLOSURE[:],
+                galleryEndCutout=ring(gallery_end),landingGuardStyle='metal-and-teak',
                 skylight=dict(boundsMm=ATRIUM[:],clearSizeMm=[3325,1725],
                     areaSqFt=atrium.area/92903.04,roofElevationMm=LEVEL+ROOM_HEIGHT,
                     glazing='Insulated solar-control glazing with laminated inner pane; sloping framed rooflight on raised drained curb.',
@@ -328,10 +331,10 @@ def second_plan(ground):
                 lightwellClear=up['lightwellClear'],
                 hallRoof=regions(hall_shell.union(headhouse).difference(atrium)),roofOutline=regions(roof),
                 newBedRoof=regions(guest_shape().buffer(150,join_style=2)),furniture=furniture,
-                landingGuards=[[[1250,6600],[1525,6600]],
-                               [[1250,6600],[1250,7800]],[[1250,7800],[5150,7800]],
-                               [[1675,6075],[1675,7800]],[[1675,6075],[5000,6075]],
-                               [[5000,6075],[5000,7800]]],
+                landingGuards=[[[1675,4875],[1675,6075]],
+                               [[1675,6075],[5000,6075]],
+                               [[5000,6075],[5000,7800]],
+                               [[5000,7800],[5150,7800]]],
                 circulationPaths={'stairs_to_hall':[[5150,8350],[6050,8350],[6050,9550],[5200,9550]],
                   'stairs_to_terrace':[[5150,8350],[6050,8350],[6050,8400],[6900,8400]],
                   'stairs_to_east_gallery':[[5700,8350],[5800,8350],[5800,5475],[2200,5475]]},
@@ -443,7 +446,7 @@ def compile_addition(b):
            polygon=r['polygon'],holes=r['holes'],thickness=150,height=ROOM_HEIGHT,rooms=['s2-hall','s2-indoor-landing'],external=True,structural=True))
     b['floor_plates'].append(dict(id='plate-floor-2',floor=2,floorId='floor-2',regions=sp['floorPlate'],
        outline=sp['floorPlate'],slab=sp['floorPlate'][0]['polygon'],holes=sp['floorPlate'][0]['holes'],
-       thickness=180,elevation=LEVEL,openings=[r['polygon'] for r in sp['stairVoid']]+[sp['lightwell'],sp['atriumOpening']]))
+       thickness=180,elevation=LEVEL,openings=[r['polygon'] for r in sp['stairVoid']]+[sp['lightwell'],sp['atriumOpening'],sp['galleryEndCutout']]))
     roof1=next(r for r in b['roofs'] if r['floor']==1)
     roof1.update(regions=sp['floorPlate'],ceiling=sp['floorPlate'],slab=sp['floorPlate'][0]['polygon'],
                  holes=sp['floorPlate'][0]['holes'],elevation=LEVEL,parapet_height=1100)
@@ -581,13 +584,29 @@ def add_scene(k,mats,b,door_motion,lawns):
     boundary=plate.difference(plate.buffer(-.12,join_style=2)).difference(enclosed_shell.buffer(.05))
     k.poly_mesh(boundary,z,z+1.10,'wall',2,'parapet','s2-opaque-terrace-parapet')
     k.poly_mesh(boundary.buffer(.015,join_style=2),z+1.10,z+1.14,'limestone',2,'coping','s2-terrace-coping')
-    # Guard the exposed shaft edges and close the unusably narrow ledge near
-    # the starter. The actual x5.15 arrival remains open to the enclosed lobby.
+    # End the second-floor gallery at the atrium edge. Opaque metal pickets
+    # and a teak handrail close every exposed landing edge; the x5.15 stair
+    # arrival stays open. The low base sits entirely on retained floor.
+    guard_base=unary_union([LineString([(x/1000,y/1000) for x,y in line]).buffer(.10,cap_style=2,join_style=2)
+                           for line in sp['landingGuards']]).intersection(plate)
+    # Keep point-touching base pieces separate so extrusion cannot weld them
+    # into a non-manifold shared vertical edge. Discard zero-area remnants.
+    base_parts=[guard_base] if guard_base.geom_type=='Polygon' else guard_base.geoms
+    for i,part in enumerate(p for p in base_parts if p.geom_type=='Polygon' and p.area>1e-8):
+        k.poly_mesh(part,z,z+.12,'wall',2,'railing',f's2-landing-guard-base-{i}')
+    guard_posts=set()
     for i,(a,c) in enumerate(sp['landingGuards']):
         aa=tuple(v/1000 for v in a);cc=tuple(v/1000 for v in c)
-        k.poly_mesh(LineString([aa,cc]).buffer(.012,cap_style=2),z+.08,z+1.08,
-                    'railglass',2,'railing',f's2-landing-guard-{i}')
-        k.beam((*aa,z+1.10),(*cc,z+1.10),.018,'frame',2,'railing')
+        k.beam((*aa,z+1.10),(*cc,z+1.10),.035,'teak-warm',2,'railing')
+        k.nodes[-1].update(id=f's2-landing-guard-{i}-handrail',owner='s2-landing-guard')
+        count=max(1,math.ceil(math.dist(aa,cc)/.11))
+        for j in range(count+1):
+            t=j/count;x=aa[0]+(cc[0]-aa[0])*t;y=aa[1]+(cc[1]-aa[1])*t
+            key=(round(x,6),round(y,6))
+            if key in guard_posts:continue
+            guard_posts.add(key)
+            k.beam((x,y,z+.02),(x,y,z+1.10),.012,'frame',2,'railing')
+            k.nodes[-1].update(id=f's2-landing-guard-{i}-picket-{j}',owner='s2-landing-guard')
     # Furnish the hall sparingly: full size seating, compact library, generous central routes.
     k.rb((2.15,13.45,z+.37),(2.5,.9,.60),'fabric',2,'furniture',.11,owner='s2-sofa')
     k.rb((2.15,13.82,z+.79),(2.5,.16,.65),'linen',2,'furniture',.06)
@@ -682,6 +701,7 @@ def cameras(b):
           'first_stair_up':('First floor · indoor bridge and stacked stairs',[5.7,5.475,H/1000+1.63],[1.55,5.475,H/1000+1.4],64),
           'ground_skylight':('Ground floor · view through atrium to rooflight',[3.7,7.6,1.63],[3.35,6.96,10.85],70),
           'second_atrium':('Second floor · enclosed east landing and skylight',[5.8,5.45,z+1.63],[2.8,7.0,9.4],70),
+          'second_gallery_end':('Second floor · guarded gallery end',[2.8,5.475,z+1.63],[1.5,5.475,z+1.20],68),
           'roof_solar':('Highest roof · skylight and compact solar array',[16,-5,20],[3.8,9.0,9.0],50)}
     out={}
     for ident,(label,pos,target,fov) in defs.items():
@@ -729,6 +749,7 @@ def second_plan_elements(b):
     sp=b['planning']['secondPlan'];items=[P(b['plot'],fill='#faf8f2',stroke='#bbb',width=.2,layer='A-SITE')]
     for r in sp['rooms']:
         for reg in r['regions']:items.append(P(reg['polygon'],fill='#f3e9d8' if r['kind']=='hall' else '#deead8',stroke='#c4c8ba',width=.2,layer='A-AREA'))
+    items.append(P(sp['galleryEndCutout'],fill='#edf5f7',stroke='none',width=.1,layer='A-VOID'))
     for reg in sp['wallRegions']:items.append(P(reg['polygon'],fill='#394942',stroke='none',width=.1,layer='A-WALL'))
     for o in (o for o in b['openings'] if o['floor']==2):items.append(L(o['a'],o['b'],stroke='#3e8e9e' if o['sill'] else '#9c6c42',width=.6,layer='A-DOOR'))
     for st in sp['stairs']:items.append(P(ring(box(*st['bounds'])),fill='#f4f0e8',stroke='#889087',width=.15,layer='A-STAIR'))
@@ -768,6 +789,7 @@ def second_svg(b):
     for r in sp['rooms']:
         for reg in r['regions']:poly(reg['polygon'],'#f3e9d8' if r['kind']=='hall' else '#dce8d3')
     poly(sp['lightwell'],'#fff');text(6380,11000,'LIGHTWELL',11)
+    poly(sp['galleryEndCutout'],'#edf5f7','#397d90')
     for reg in sp['stairVoid']:poly(reg['polygon'],'#fff')
     for step in sp['stairs']:poly(ring(box(*step['bounds'])),'#f4f0e8','#aaa99d')
     for reg in sp['wallRegions']:poly(reg['polygon'],'#394942','#394942')
@@ -800,7 +822,7 @@ def second_svg(b):
            'Same lower stair footprint: 18 risers of 6⅞ in plus 2 arrival risers of 7 in.',
            'Indoor bridge reaches the South → West → North stair; 3 ft 7¼ in clear width.',
            'Opaque parapets, shallow planters, pergola and clear paved walking routes.',
-           'Enclosed landing gains 48.8 sq ft; aligned rooflight is visible from ground floor.',
+           'Gallery tail removed; metal-and-teak end guard. Rooflight visible from ground floor.',
            'Concept model: foundations, member sizes, wind/seismic and garden loads need engineering.']
     for i,t in enumerate(notes):out.append(f'<text x="55" y="{1200+i*28}" font-size="13">{html.escape(t)}</text>')
     out.append('</g></svg>');return ''.join(out)

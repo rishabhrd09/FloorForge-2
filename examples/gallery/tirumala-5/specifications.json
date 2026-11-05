@@ -56,15 +56,15 @@
   "option": "Plan A",
   "sourceOption": "P11",
   "sourceVersion": "p13-icu-east-extension-2026-10-30",
-  "currentVersion": "tirumala-5-g2-skylit-atrium-2026-11-05",
+  "currentVersion": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
   "spaciousnessRevision": "tirumala-4-2026-10-31",
   "optionLabel": "Ivory · limestone · teak · Plan A",
   "optionTag": "Plan A · 15 ft ICU · Forecourt utility · Under-stair pantry · G+2",
-  "optionTrade": "Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. The second-floor east enclosure adds 48.8 sq ft of clear indoor landing/gallery floor. The coordinated enclosure, atrium and walls reduce the previous roof terrace by 106.5 sq ft, leaving 477.2 sq ft open. The large first-floor terrace and family hall dimensions are unchanged.",
+  "optionTrade": "Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. Removing the unused second-floor east passage tail reduces the clear landing/gallery from 135.9 to 124.3 sq ft; it remains 37.2 sq ft larger than the delivered stacked-gallery revision. A continuous metal-and-teak guard closes the shortened end and joins the atrium edge. The coordinated enclosure, atrium and walls previously reduced the roof terrace by 106.5 sq ft; it remains 477.2 sq ft open. The family hall, stairs, first and ground floors, terraces, opaque highest roof and glazed atrium are unchanged by this landing revision.",
   "title": "Tirumala 5",
-  "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+  "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
   "groundGeometryHash": "843cb4993c0a77cb0f9ad670097386e6d7c5f71343371cbdb6d43e2655c4f92c",
-  "geometryHash": "1a83b677b56283389356fbba36af5d8d7a9a09f48dfd8fcece245b3a66d2e044",
+  "geometryHash": "9dcb270315e19320f3062c7e5e44ed339e793d5cf5c3be07c0747c1156da30b7",
   "defaultCarVisible": false,
   "siteModes": [
     "proposed",
@@ -1233,7 +1233,7 @@
         "window_style": "picture-with-sliding-vents"
       }
     ],
-    "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
     "roof": [
       {
         "holes": [
@@ -3173,12 +3173,12 @@
       "name": "Enclosed stair landing",
       "floor": 2,
       "kind": "hall",
-      "widthM": 6.45,
+      "widthM": 4.925,
       "depthM": 5.175,
-      "widthFtIn": "21′1⅞″",
+      "widthFtIn": "16′1⅞″",
       "depthFtIn": "16′11¾″",
-      "areaM2": 12.624685,
-      "areaSqFt": 135.9
+      "areaM2": 11.546559999999998,
+      "areaSqFt": 124.3
     },
     {
       "id": "s2-terrace",
@@ -3194,9 +3194,9 @@
     }
   ],
   "projectId": "tirumala-5",
-  "version": "tirumala-5-g2-skylit-atrium-2026-11-05",
-  "subtitle": "G+2 · skylit atrium · indoor gallery · family hall and roof garden",
-  "description": "40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, enclosed second-floor east gallery, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.",
+  "version": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+  "subtitle": "G+2 · skylit atrium · guarded second landing · family hall and roof garden",
+  "description": "40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.",
   "sourceProject": "tirumala-4",
   "secondFloor": {
     "atriumOpening": [
@@ -3284,10 +3284,6 @@
         "holes": [
           [
             [
-              7285.6,
-              12000.0
-            ],
-            [
               5485.6,
               12000.0
             ],
@@ -3298,57 +3294,13 @@
             [
               7285.6,
               10050.0
+            ],
+            [
+              7285.6,
+              12000.0
             ]
           ],
           [
-            [
-              1250.0,
-              6100.0
-            ],
-            [
-              1250.0,
-              6150.0
-            ],
-            [
-              1250.0,
-              6385.7143
-            ],
-            [
-              1250.0,
-              6621.4286
-            ],
-            [
-              1250.0,
-              6857.1429
-            ],
-            [
-              1250.0,
-              7092.8571
-            ],
-            [
-              1250.0,
-              7328.5714
-            ],
-            [
-              1250.0,
-              7564.2857
-            ],
-            [
-              1250.0,
-              7800.0
-            ],
-            [
-              1494.4444,
-              7800.0
-            ],
-            [
-              1675.0,
-              7800.0
-            ],
-            [
-              1675.0,
-              6075.0
-            ],
             [
               5000.0,
               6075.0
@@ -3454,63 +3406,55 @@
               5000.0
             ],
             [
-              1250.0,
-              5000.0
+              150.0,
+              4875.0
             ],
             [
-              1387.5,
-              5000.0
+              1675.0,
+              4875.0
             ],
             [
-              1525.0,
-              5000.0
-            ],
-            [
-              1525.0,
-              6100.0
-            ],
-            [
-              1387.5,
-              6100.0
+              1675.0,
+              6075.0
             ]
           ]
         ],
         "polygon": [
           [
             11582.4,
+            8900.0
+          ],
+          [
+            11582.4,
+            6200.0
+          ],
+          [
+            8350.0,
+            6200.0
+          ],
+          [
+            8350.0,
+            4800.0
+          ],
+          [
+            0.0,
+            4800.0
+          ],
+          [
+            0.0,
+            8900.0
+          ],
+          [
+            0.0,
+            14478.0
+          ],
+          [
+            11582.4,
+            14478.0
+          ],
+          [
+            11582.4,
             11550.0
-          ],
-          [
-            11582.4,
-            8900.0
-          ],
-          [
-            11582.4,
-            6200.0
-          ],
-          [
-            8350.0,
-            6200.0
-          ],
-          [
-            8350.0,
-            4800.0
-          ],
-          [
-            0.0,
-            4800.0
-          ],
-          [
-            0.0,
-            8900.0
-          ],
-          [
-            0.0,
-            14478.0
-          ],
-          [
-            11582.4,
-            14478.0
           ]
         ]
       }
@@ -3596,6 +3540,24 @@
         "id": "s2-terrace-table",
         "kind": "table"
       }
+    ],
+    "galleryEndCutout": [
+      [
+        1675.0,
+        4875.0
+      ],
+      [
+        1675.0,
+        7800.0
+      ],
+      [
+        150.0,
+        7800.0
+      ],
+      [
+        150.0,
+        4875.0
+      ]
     ],
     "gardenNote": "Shallow perimeter planting; raised pots over supported edges; paved circulation, drainage and overflow provision.",
     "hallRoof": [
@@ -3699,64 +3661,45 @@
         ]
       }
     ],
+    "landingGuardStyle": "metal-and-teak",
     "landingGuards": [
       [
         [
-          1250,
-          6600
+          1675,
+          4875
         ],
         [
-          1525,
-          6600
+          1675,
+          6075
         ]
       ],
       [
         [
-          1250,
-          6600
+          1675,
+          6075
         ],
         [
-          1250,
+          5000,
+          6075
+        ]
+      ],
+      [
+        [
+          5000,
+          6075
+        ],
+        [
+          5000,
           7800
         ]
       ],
       [
         [
-          1250,
+          5000,
           7800
         ],
         [
           5150,
-          7800
-        ]
-      ],
-      [
-        [
-          1675,
-          6075
-        ],
-        [
-          1675,
-          7800
-        ]
-      ],
-      [
-        [
-          1675,
-          6075
-        ],
-        [
-          5000,
-          6075
-        ]
-      ],
-      [
-        [
-          5000,
-          6075
-        ],
-        [
-          5000,
           7800
         ]
       ]
@@ -4012,7 +3955,7 @@
       "note": "Dry cabinet below sloping ground stair; minimum occurs at its south end, not a walk-in room.",
       "waistThicknessMm": 150
     },
-    "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
     "riserHeightsMm": [
       175,
       175,
@@ -4155,9 +4098,9 @@
         "roofed": true
       },
       {
-        "area_m2": 12.624685,
+        "area_m2": 11.546559999999998,
         "bounds": [
-          150.0,
+          1675.0,
           4875.0,
           6600.0,
           10050.0
@@ -4169,10 +4112,6 @@
         "polygon": [
           [
             5485.6,
-            8900.0
-          ],
-          [
-            5485.6,
             10050.0
           ],
           [
@@ -4190,82 +4129,10 @@
           [
             6600.0,
             4875.0
-          ],
-          [
-            1525.0,
-            4875.0
-          ],
-          [
-            150.0,
-            4875.0
-          ],
-          [
-            150.0,
-            5000.0
-          ],
-          [
-            1250.0,
-            5000.0
-          ],
-          [
-            1387.5,
-            5000.0
-          ],
-          [
-            1525.0,
-            5000.0
-          ],
-          [
-            1525.0,
-            6100.0
-          ],
-          [
-            1387.5,
-            6100.0
-          ],
-          [
-            1250.0,
-            6100.0
-          ],
-          [
-            1250.0,
-            6150.0
-          ],
-          [
-            1250.0,
-            6385.7143
-          ],
-          [
-            1250.0,
-            6621.4286
-          ],
-          [
-            1250.0,
-            6857.1429
-          ],
-          [
-            1250.0,
-            7092.8571
-          ],
-          [
-            1250.0,
-            7328.5714
-          ],
-          [
-            1250.0,
-            7564.2857
-          ],
-          [
-            1250.0,
-            7800.0
-          ],
-          [
-            1494.4444,
-            7800.0
           ],
           [
             1675.0,
-            7800.0
+            4875.0
           ],
           [
             1675.0,
@@ -4290,6 +4157,10 @@
           [
             5335.6,
             8900.0
+          ],
+          [
+            5485.6,
+            8900.0
           ]
         ],
         "regions": [
@@ -4298,10 +4169,6 @@
             "polygon": [
               [
                 5485.6,
-                8900.0
-              ],
-              [
-                5485.6,
                 10050.0
               ],
               [
@@ -4319,82 +4186,10 @@
               [
                 6600.0,
                 4875.0
-              ],
-              [
-                1525.0,
-                4875.0
-              ],
-              [
-                150.0,
-                4875.0
-              ],
-              [
-                150.0,
-                5000.0
-              ],
-              [
-                1250.0,
-                5000.0
-              ],
-              [
-                1387.5,
-                5000.0
-              ],
-              [
-                1525.0,
-                5000.0
-              ],
-              [
-                1525.0,
-                6100.0
-              ],
-              [
-                1387.5,
-                6100.0
-              ],
-              [
-                1250.0,
-                6100.0
-              ],
-              [
-                1250.0,
-                6150.0
-              ],
-              [
-                1250.0,
-                6385.7143
-              ],
-              [
-                1250.0,
-                6621.4286
-              ],
-              [
-                1250.0,
-                6857.1429
-              ],
-              [
-                1250.0,
-                7092.8571
-              ],
-              [
-                1250.0,
-                7328.5714
-              ],
-              [
-                1250.0,
-                7564.2857
-              ],
-              [
-                1250.0,
-                7800.0
-              ],
-              [
-                1494.4444,
-                7800.0
               ],
               [
                 1675.0,
-                7800.0
+                4875.0
               ],
               [
                 1675.0,
@@ -4419,6 +4214,10 @@
               [
                 5335.6,
                 8900.0
+              ],
+              [
+                5485.6,
+                8900.0
               ]
             ]
           }
@@ -4438,10 +4237,6 @@
         "kind": "terrace",
         "name": "Open roof garden terrace",
         "polygon": [
-          [
-            11582.4,
-            8900.0
-          ],
           [
             11582.4,
             6200.0
@@ -4485,16 +4280,16 @@
           [
             11582.4,
             11550.0
+          ],
+          [
+            11582.4,
+            8900.0
           ]
         ],
         "regions": [
           {
             "holes": [],
             "polygon": [
-              [
-                11582.4,
-                8900.0
-              ],
               [
                 11582.4,
                 6200.0
@@ -4538,6 +4333,10 @@
               [
                 11582.4,
                 11550.0
+              ],
+              [
+                11582.4,
+                8900.0
               ]
             ]
           }
@@ -5382,7 +5181,7 @@
       "note": "Dry cabinet below sloping ground stair; minimum occurs at its south end, not a walk-in room.",
       "waistThicknessMm": 150
     },
-    "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+    "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
     "secondFloorMm": 7016.0,
     "secondStairHeadroomMm": 3153.0,
     "skylight": {
@@ -5438,8 +5237,12 @@
     "clearApertureFtIn": "10′10⅞″ × 5′7⅞″",
     "apertureAreaSqFt": 61.74,
     "firstFloorDoubleHeightAreaSqFt": 93.77,
-    "secondLandingAreaSqFt": 135.89,
-    "secondLandingGainSqFt": 48.83,
+    "secondLandingAreaSqFt": 124.29,
+    "secondLandingGainSqFt": 37.22,
+    "previousAtriumLandingAreaSqFt": 135.89,
+    "secondLandingTailRemovedSqFt": 11.6,
+    "landingTrimComparisonRevision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+    "landingGuard": "Continuous visible metal pickets and teak handrail across the shortened east passage end, joining the atrium guard.",
     "remainingSecondTerraceAreaSqFt": 477.18,
     "previousSecondTerraceAreaSqFt": 583.65,
     "comparisonRevision": "tirumala-5-g2-stacked-gallery-2026-11-05",

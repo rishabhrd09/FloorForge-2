@@ -45,8 +45,10 @@ def main(finalize=False):
     # Measured comparison with the delivered stacked-gallery revision, not an
     # estimate based on rectangular envelopes of these irregular spaces.
     previous_landing_sqft=87.06555781167117
+    previous_atrium_landing_sqft=135.89097837917896
     previous_terrace_sqft=583.6450604845654
     landing_gain_sqft=landing_sqft-previous_landing_sqft
+    landing_tail_removed_sqft=previous_atrium_landing_sqft-landing_sqft
     skylight=second['skylight']
     aperture_ft=' × '.join(_mm_to_ft_in(v) for v in skylight['clearSizeMm'])
     geom_hash=hashlib.sha256(json.dumps({'ground':plan,'upper':b['planning']['upperPlan'],'second':b['planning']['secondPlan']},sort_keys=True).encode()).hexdigest()
@@ -56,12 +58,12 @@ def main(finalize=False):
         areaM2=r['area_m2'],areaSqFt=round(r['area_m2']/0.09290304,1)) for r in b['spaces']]
     spec=json.loads((SOURCE/'specifications.json').read_text())
     spec.update(title='Tirumala 5',id='tirumala-5',projectId='tirumala-5',basedOnSample='tirumala-4',option='Plan A',version=UPPER_REVISION,
-        subtitle='G+2 · skylit atrium · indoor gallery · family hall and roof garden',
-        description='40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, enclosed second-floor east gallery, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.',
+        subtitle='G+2 · skylit atrium · guarded second landing · family hall and roof garden',
+        description='40 × 50 ft G+2: retained Plan A rooms and stacked indoor stairs, a continuous glazed-roof atrium, a shortened second-floor east gallery with a continuous metal-and-teak end guard, tall east glazing, a wider drawing-room north window and compact solar panels above the family hall.',
         sourceProject='tirumala-4',sourcePlanHash=source['planHash'],sourceVersion=source['planning']['canonicalPlan']['version'],
         currentVersion=UPPER_REVISION,optionLabel='Ivory · limestone · teak · Plan A',
         optionTag='Plan A · 15 ft ICU · Forecourt utility · Under-stair pantry · G+2',
-        optionTrade=f'Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. The second-floor east enclosure adds {landing_gain_sqft:.1f} sq ft of clear indoor landing/gallery floor. The coordinated enclosure, atrium and walls reduce the previous roof terrace by {previous_terrace_sqft-terrace_sqft:.1f} sq ft, leaving {terrace_sqft:.1f} sq ft open. The large first-floor terrace and family hall dimensions are unchanged.',
+        optionTrade=f'Plan A kitchen, ICU, forecourt washing bay, pantry, stacked stairs and the enlarged first-floor bedroom are retained. Removing the unused second-floor east passage tail reduces the clear landing/gallery from {previous_atrium_landing_sqft:.1f} to {landing_sqft:.1f} sq ft; it remains {landing_gain_sqft:.1f} sq ft larger than the delivered stacked-gallery revision. A continuous metal-and-teak guard closes the shortened end and joins the atrium edge. The coordinated enclosure, atrium and walls previously reduced the roof terrace by {previous_terrace_sqft-terrace_sqft:.1f} sq ft; it remains {terrace_sqft:.1f} sq ft open. The family hall, stairs, first and ground floors, terraces, opaque highest roof and glazed atrium are unchanged by this landing revision.',
         notes=json.loads((OUT/'project.floorforge.json').read_text())['notes'],
         groundGeometryHash=hashlib.sha256(json.dumps(plan,sort_keys=True).encode()).hexdigest(),
         planHash=b['planHash'],geometryHash=geom_hash,rooms=rooms,upperFloor=b['planning']['upperPlan'],secondFloor=b['planning']['secondPlan'],
@@ -80,6 +82,10 @@ def main(finalize=False):
         firstFloorDoubleHeightAreaSqFt=round(void_sqft,2),
         secondLandingAreaSqFt=round(landing_sqft,2),
         secondLandingGainSqFt=round(landing_gain_sqft,2),
+        previousAtriumLandingAreaSqFt=round(previous_atrium_landing_sqft,2),
+        secondLandingTailRemovedSqFt=round(landing_tail_removed_sqft,2),
+        landingTrimComparisonRevision='tirumala-5-g2-skylit-atrium-2026-11-05',
+        landingGuard='Continuous visible metal pickets and teak handrail across the shortened east passage end, joining the atrium guard.',
         remainingSecondTerraceAreaSqFt=round(terrace_sqft,2),
         previousSecondTerraceAreaSqFt=round(previous_terrace_sqft,2),
         comparisonRevision='tirumala-5-g2-stacked-gallery-2026-11-05',
@@ -132,7 +138,8 @@ def main(finalize=False):
         '- The living coffee table moves 400 mm east, opening an 800 mm gap to the sofa and clearing the tested route around dining to the ground stair.',
         '- Ground room dimensions and original ground stair retained. The upper stair follows the same South–West–North footprint, one floor above, reached through the 1100 mm clear indoor passage beside the east glazing. The enclosed second landing and short return connect to the unchanged family hall. Hanging gold-disc pendants and their cords remain removed; ceiling lights remain.',
         f'- North first-floor bedroom: front portion widened one foot south to 11 ft 1⅜ in; rear width 10 ft 1⅜ in and east–west length 16 ft 6⅞ in. Stepped clear area {guest["area_m2"]/0.09290304:.1f} sq ft. Rear wall retained to preserve the 3 ft passage. Small balcony and connector remain removed; large first terrace retained with opaque ivory parapets.',
-        f'- Second floor: the expanded east enclosure provides {landing_sqft:.1f} sq ft of clear landing/gallery floor, a gain of {landing_gain_sqft:.1f} sq ft over the delivered stacked-gallery revision. The open garden terrace is {terrace_sqft:.1f} sq ft after the enclosure, rooflight opening and wall allowance, a total reduction of {previous_terrace_sqft-terrace_sqft:.1f} sq ft. The furnished family hall and large first-floor terrace retain their dimensions. Keep planting at supported edges and walking routes open.',
+        f'- Second-floor landing, before → after: the unused east/window-side passage tail is removed, reducing clear landing/gallery floor from {previous_atrium_landing_sqft:.1f} to {landing_sqft:.1f} sq ft ({landing_tail_removed_sqft:.1f} sq ft removed). The remaining landing is {landing_gain_sqft:.1f} sq ft larger than the delivered stacked-gallery revision. A continuous visible metal-picket guard with a teak handrail closes the new end at X=1675 mm, Y=4875–6075 mm, then joins the atrium edge (+X north, +Y west). The stair route and hall access remain open.',
+        f'- This landing trim changes only the second-floor passage end. The ground and first floors, all stairs, furnished family hall, terraces, opaque highest roof and atrium/skylight remain unchanged. The open garden terrace remains {terrace_sqft:.1f} sq ft, following the earlier {previous_terrace_sqft-terrace_sqft:.1f} sq ft reduction for the enclosure, rooflight opening and wall allowance. Keep planting at supported edges and walking routes open.',
         '- Rooflight: sloping framed solar-control glazing with a laminated inner pane, raised opaque curb, narrow mullions and an east-side gutter. The curb and drainage sit outside the clear vertical aperture. This is an architectural assembly; final glass build-up, anchorage, waterproofing and drainage need project-specific engineering.',
         '- Windows: south-facing openings on the first and second floors are removed. Tall east-facing stair/gallery bays use 150 mm sills and 2900 mm glazing height. The ground-floor drawing room has one north-facing 2400 mm (7 ft 10½ in) wide × 2400 mm high opening with a 450 mm sill and retained end piers; its veranda entrance and room dimensions remain unchanged.',
         '- Solar: four compact photovoltaic modules sit on the highest opaque roof above the second-floor family hall. They face south on low supports and remain clear of the skylight, terrace routes and stairs. This is roof equipment, not another floor; output, mounting loads and electrical design are not certified by the visualization.',
