@@ -1,0 +1,124 @@
+{
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "results": [
+    {
+      "width": 1440,
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "images": [
+          {
+            "src": "cycles-revision/exterior_northeast-day.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-2d-dimensioned.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-first-floor.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-second-floor.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/interior_veranda_living-day.png",
+            "loaded": true
+          },
+          {
+            "src": "interior-icu-veranda-garden.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/first_stair_up-day.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/upper_guest-day.png",
+            "loaded": true
+          },
+          {
+            "src": "second-stair-arrival.png",
+            "loaded": true
+          },
+          {
+            "src": "second-terrace.png",
+            "loaded": true
+          },
+          {
+            "src": "upper-terrace.png",
+            "loaded": true
+          },
+          {
+            "src": "forecourt-utility.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "width": 390,
+      "pass": true,
+      "detail": {
+        "width": 390,
+        "scrollWidth": 390,
+        "images": [
+          {
+            "src": "cycles-revision/exterior_northeast-day.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-2d-dimensioned.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-first-floor.png",
+            "loaded": true
+          },
+          {
+            "src": "plan-second-floor.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/interior_veranda_living-day.png",
+            "loaded": true
+          },
+          {
+            "src": "interior-icu-veranda-garden.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/first_stair_up-day.png",
+            "loaded": true
+          },
+          {
+            "src": "cycles-revision/upper_guest-day.png",
+            "loaded": true
+          },
+          {
+            "src": "second-stair-arrival.png",
+            "loaded": true
+          },
+          {
+            "src": "second-terrace.png",
+            "loaded": true
+          },
+          {
+            "src": "upper-terrace.png",
+            "loaded": true
+          },
+          {
+            "src": "forecourt-utility.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    }
+  ],
+  "passed": true
+}

@@ -106,11 +106,11 @@ def export_ifc(b, scene=None):
         for st in b['stairs']:
             if st['to_floor'] is None:continue
             g2_ground=b.get('planning',{}).get('g2Revision') and st.get('id')=='g-stair' and scene
-            if (st.get('shape') in ('two-flight-l-stair','two-flight-u-stair') and st.get('id')=='s2-stair') or g2_ground:
-                # G+2 uses the authored C-shaped ground stair and stacked L stair,
+            if (st.get('shape') in ('two-flight-l-stair','two-flight-u-stair','three-flight-c-stair') and st.get('id')=='s2-stair') or g2_ground:
+                # G+2 uses the authored ground and upper stair geometry,
                 # not the legacy generic switchback. Include their exact treads,
                 # arrival connectors and structural waist meshes in the IFC.
-                prefixes=('stair-','arrival-connector-','g-south-waist','g-west-waist','g-north-waist') if g2_ground else ('s2-west-','s2-south-','s2-north-','s2-turn-landing')
+                prefixes=('stair-','arrival-connector-','g-south-waist','g-west-waist','g-north-waist') if g2_ground else ('s2-',)
                 stair_nodes=[n for n in (scene or {}).get('nodes',[]) if n['id'].startswith(prefixes) and n['role']=='stair']
                 if stair_nodes:
                     import numpy as np
@@ -127,9 +127,10 @@ def export_ifc(b, scene=None):
                 else:
                     parts=[w.solid(box(*step['bounds']),step['top']-st['floor']*H-190,190) for step in st['flights']]
                     shp=rep(parts)
-                stair_name='Ground three-flight C staircase' if g2_ground else 'Second-floor indoor return staircase' if st.get('shape')=='two-flight-u-stair' else 'Second-floor linked L staircase'
-                stair_note='18 retained 175 mm risers plus two 179 mm arrival risers; same authored geometry as 3D' if g2_ground else '20 equal risers; same authored geometry as 3D'
-                stair_type='.USERDEFINED.' if g2_ground else '.HALF_TURN_STAIR.' if st.get('shape')=='two-flight-u-stair' else '.QUARTER_TURN_STAIR.'
+                stacked_c=st.get('shape')=='three-flight-c-stair'
+                stair_name='Ground three-flight C staircase' if g2_ground else 'Second-floor stacked three-flight C staircase' if stacked_c else 'Second-floor indoor return staircase' if st.get('shape')=='two-flight-u-stair' else 'Second-floor linked L staircase'
+                stair_note='18 retained 175 mm risers plus two 179 mm arrival risers; same authored geometry as 3D' if g2_ground or stacked_c else '20 equal risers; same authored geometry as 3D'
+                stair_type='.USERDEFINED.' if g2_ground or stacked_c else '.HALF_TURN_STAIR.' if st.get('shape')=='two-flight-u-stair' else '.QUARTER_TURN_STAIR.'
                 obj=E('IFCSTAIR',text(guid(st['id'])),'$',text(stair_name),text(stair_note),'$',placements[st['floor']],shp,text(st['id']),stair_type)
                 contents[st['floor']].append(obj);properties(obj,st['id'])
                 continue

@@ -17,7 +17,7 @@ from shapely.ops import unary_union
 
 from .scene_kit import Kit
 
-REVISION = 'tirumala-5-reference-finishes-interior-return-2026-11-05'
+REVISION = 'tirumala-5-reference-finishes-stacked-stair-2026-11-05'
 H = 3.508
 
 
@@ -240,7 +240,7 @@ def _utility_privacy(scene, building, k):
 
 
 def _upper_revision_cleanup(scene, building):
-    """Remove orphan opening details and keep pendants inside the retained void."""
+    """Remove orphan opening details and the three suspended atrium pendants."""
     openings = {o['id'] for o in building['openings']}
     retired = {'u-side-terrace-door', 'u-bedroom-terrace', 's2-stair-entry'} - openings
     prefixes = tuple(prefix + ident + '-' for ident in retired
@@ -249,6 +249,21 @@ def _upper_revision_cleanup(scene, building):
               or (prefixes and n['id'].startswith(prefixes))}
     if 's2-stair-entry' in retired:
         remove.update(('s2-stair-entry-canopy', 's2-stair-entry-soffit', 's2-stair-start-platform'))
+    # These are the source cluster's three locations, plus the previous
+    # revision's positions. Each pendant has a cord, brass disc and emissive
+    # diffuser; remove all three together rather than leaving floating cords.
+    # Restrict the selection to this cluster so ceiling downlights and their
+    # actual light sources remain intact. The cluster itself has no point lights.
+    pendant_xy = ((3.10, 6.35), (3.65, 6.55), (4.05, 6.15),
+                  (3.10, 5.80), (3.65, 6.00), (4.05, 5.65))
+    pendants = [n for n in scene['nodes']
+                if n.get('floor') == 1 and n.get('role') == 'fixture'
+                and n.get('asset') == 'unit-cylinder'
+                and n.get('material') in ('brass', 'lamp')
+                and n['position'][2] > 4
+                and any(abs(n['position'][0]-x) < 1e-6
+                        and abs(n['position'][1]-y) < 1e-6 for x, y in pendant_xy)]
+    remove.update(n['id'] for n in pendants)
     scene['nodes'][:] = [n for n in scene['nodes'] if n['id'] not in remove]
     scene['colliders'][:] = [c for c in scene['colliders'] if c['id'] not in retired]
     for ident in retired:
@@ -256,25 +271,10 @@ def _upper_revision_cleanup(scene, building):
     if 'openings' in scene.get('opening_model', {}):
         scene['opening_model']['openings'][:] = [o for o in scene['opening_model']['openings']
                                                 if o['id'] not in retired]
-    void = Polygon(building['planning']['upperPlan']['void'])
-    # The source cluster uses three fixture nodes at each XY: cord, brass
-    # shade and diffuser. Move the complete group, preserving each height.
-    relocated = 0
-    if void.bounds[3] <= 6600.01:
-        moves = ((3.10, 6.35, 5.80), (3.65, 6.55, 6.00), (4.05, 6.15, 5.65))
-        for node in scene['nodes']:
-            if node.get('floor') != 1 or node.get('role') != 'fixture' or node['asset'] != 'unit-cylinder':
-                continue
-            x, y, z = node['position']
-            if z < 4 or node['material'] not in ('brass', 'lamp'):
-                continue
-            for px, py, target_y in moves:
-                if abs(x-px) < 1e-6 and abs(y-py) < 1e-6:
-                    node['position'][1] = target_y
-                    relocated += 1
-                    break
     scene['tirumala5Finish']['upperCleanup'] = dict(retiredOpeningIds=sorted(retired),
-        removedNodeCount=len(remove), pendantPartsRelocated=relocated)
+        removedNodeCount=len(remove), pendantPartsRemoved=len(pendants),
+        pendantGroupsRemoved=len({tuple(n['position'][:2]) for n in pendants}),
+        suspendedAtriumDecoration=False, ceilingDownlightsRetained=True)
 
 
 def _opening_reveals(scene, building, k):

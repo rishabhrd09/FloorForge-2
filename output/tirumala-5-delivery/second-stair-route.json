@@ -1,142 +1,314 @@
-[
-  {
-    "target": [
-      4,
-      7.15
-    ],
-    "position": [
-      4.053219340032009,
-      7.15
-    ],
-    "height": 3.6833999156951904,
-    "grounded": true,
-    "error": 0.05321934003200912,
-    "frames": 95
-  },
-  {
-    "target": [
-      0.7,
-      7.15
-    ],
-    "position": [
-      0.7389413545473361,
-      7.15
-    ],
-    "height": 5.26200008392334,
-    "grounded": true,
-    "error": 0.03894135454733616,
-    "frames": 182
-  },
-  {
-    "target": [
-      0.7,
-      8.35
-    ],
-    "position": [
-      0.7016908355035445,
-      8.297895941786328
-    ],
-    "height": 5.26200008392334,
-    "grounded": true,
-    "error": 0.05213148575509594,
-    "frames": 69
-  },
-  {
-    "target": [
-      4.8,
-      8.35
-    ],
-    "position": [
-      4.763140599246952,
-      8.349531386167936
-    ],
-    "height": 7.015999794006348,
-    "grounded": true,
-    "error": 0.036862379505362274,
-    "frames": 221
-  },
-  {
-    "target": [
-      4.8,
-      9.7
-    ],
-    "position": [
-      4.798658417506141,
-      9.650846595066437
-    ],
-    "height": 7.015999794006348,
-    "grounded": true,
-    "error": 0.0491717099575621,
-    "frames": 77
-  },
-  {
-    "target": [
-      4.8,
-      8.35
-    ],
-    "position": [
-      4.799961454570142,
-      8.387375033899135
-    ],
-    "height": 7.015999794006348,
-    "grounded": true,
-    "error": 0.03737505377536804,
-    "frames": 75
-  },
-  {
-    "target": [
-      0.7,
-      8.35
-    ],
-    "position": [
-      0.738352226564195,
-      8.3503496168888
-    ],
-    "height": 5.26200008392334,
-    "grounded": true,
-    "error": 0.03835382007571449,
-    "frames": 221
-  },
-  {
-    "target": [
-      0.7,
-      7.15
-    ],
-    "position": [
-      0.7016753508854399,
-      7.2024352032111105
-    ],
-    "height": 5.26200008392334,
-    "grounded": true,
-    "error": 0.05246196085145658,
-    "frames": 69
-  },
-  {
-    "target": [
-      4,
-      7.15
-    ],
-    "position": [
-      3.958041869463442,
-      7.150667030488231
-    ],
-    "height": 3.6833999156951904,
-    "grounded": true,
-    "error": 0.041963432269001594,
-    "frames": 179
-  },
-  {
-    "target": [
-      5.7,
-      7.15
-    ],
-    "position": [
-      5.662321614646507,
-      7.150014427804743
-    ],
-    "height": 3.507999897003174,
-    "grounded": true,
-    "error": 0.03767838811583967,
-    "frames": 98
-  }
-]
+{
+  "segments": [
+    {
+      "name": "first gallery",
+      "target": [
+        6.9,
+        8.35,
+        3.508
+      ],
+      "position": [
+        6.894538681491714,
+        8.35
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005461318508286794,
+      "frames": 116,
+      "pass": true
+    },
+    {
+      "name": "east-edge indoor bridge",
+      "target": [
+        6.9,
+        5.475,
+        3.508
+      ],
+      "position": [
+        6.899990206531647,
+        5.4801906430529925
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005190652291919165,
+      "frames": 204,
+      "pass": true
+    },
+    {
+      "name": "stacked stair start",
+      "target": [
+        1.9,
+        5.55,
+        3.508
+      ],
+      "position": [
+        1.9051506615195977,
+        5.549928051615942
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005151164010146984,
+      "frames": 315,
+      "pass": true
+    },
+    {
+      "name": "south starter landing",
+      "target": [
+        0.7,
+        5.55,
+        3.858
+      ],
+      "position": [
+        0.705176081565704,
+        5.549999693670197
+      ],
+      "height": 3.8580000400543213,
+      "grounded": true,
+      "error": 0.005176081574768612,
+      "frames": 117,
+      "pass": true
+    },
+    {
+      "name": "west flight landing",
+      "target": [
+        0.7,
+        8.35,
+        5.083
+      ],
+      "position": [
+        0.7000095894225163,
+        8.344776891320993
+      ],
+      "height": 5.083000183105469,
+      "grounded": true,
+      "error": 0.005223117481900465,
+      "frames": 200,
+      "pass": true
+    },
+    {
+      "name": "north flight landing",
+      "target": [
+        3.95,
+        8.35,
+        6.658
+      ],
+      "position": [
+        3.9445898651049554,
+        8.349991364069467
+      ],
+      "height": 6.6579999923706055,
+      "grounded": true,
+      "error": 0.005410141787594652,
+      "frames": 223,
+      "pass": true
+    },
+    {
+      "name": "second arrival",
+      "target": [
+        5.7,
+        8.35,
+        7.016
+      ],
+      "position": [
+        5.694580781952722,
+        8.349999973532636
+      ],
+      "height": 7.015999794006348,
+      "grounded": true,
+      "error": 0.005419218047342485,
+      "frames": 145,
+      "pass": true
+    },
+    {
+      "name": "indoor hall approach",
+      "target": [
+        5.95,
+        9.55,
+        7.016
+      ],
+      "position": [
+        5.948912829085348,
+        9.544891373016105
+      ],
+      "height": 7.015999794006348,
+      "grounded": true,
+      "error": 0.005223026924902281,
+      "frames": 118,
+      "pass": true
+    },
+    {
+      "name": "second hall",
+      "target": [
+        4.675,
+        9.55,
+        7.016
+      ],
+      "position": [
+        4.680391765926788,
+        9.549978559029881
+      ],
+      "height": 7.015999794006348,
+      "grounded": true,
+      "error": 0.0053918085578471,
+      "frames": 120,
+      "pass": true
+    },
+    {
+      "name": "return to indoor landing",
+      "target": [
+        5.95,
+        9.55,
+        7.016
+      ],
+      "position": [
+        5.9446965034298005,
+        9.549999911185674
+      ],
+      "height": 7.015999794006348,
+      "grounded": true,
+      "error": 0.0053034965709433425,
+      "frames": 120,
+      "pass": true
+    },
+    {
+      "name": "descent approach",
+      "target": [
+        5.7,
+        8.35,
+        7.016
+      ],
+      "position": [
+        5.701035296855543,
+        8.355076187278105
+      ],
+      "height": 7.015999794006348,
+      "grounded": true,
+      "error": 0.0051806869101973805,
+      "frames": 118,
+      "pass": true
+    },
+    {
+      "name": "arrival connector descent",
+      "target": [
+        3.95,
+        8.35,
+        6.658
+      ],
+      "position": [
+        3.9553289140655656,
+        8.350015335395877
+      ],
+      "height": 6.6579999923706055,
+      "grounded": true,
+      "error": 0.005328936131400725,
+      "frames": 145,
+      "pass": true
+    },
+    {
+      "name": "north flight descent",
+      "target": [
+        0.7,
+        8.35,
+        5.083
+      ],
+      "position": [
+        0.705131367682085,
+        8.350000024010606
+      ],
+      "height": 5.083000183105469,
+      "grounded": true,
+      "error": 0.005131367682141172,
+      "frames": 224,
+      "pass": true
+    },
+    {
+      "name": "west flight descent",
+      "target": [
+        0.7,
+        5.55,
+        3.858
+      ],
+      "position": [
+        0.7000095063603798,
+        5.55522310177973
+      ],
+      "height": 3.8580000400543213,
+      "grounded": true,
+      "error": 0.005223110430797968,
+      "frames": 200,
+      "pass": true
+    },
+    {
+      "name": "south starter descent",
+      "target": [
+        1.9,
+        5.55,
+        3.508
+      ],
+      "position": [
+        1.8945386953780319,
+        5.550023563615604
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005461355456103343,
+      "frames": 116,
+      "pass": true
+    },
+    {
+      "name": "return indoor bridge",
+      "target": [
+        6.9,
+        5.475,
+        3.508
+      ],
+      "position": [
+        6.89474207264969,
+        5.475078808011535
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005258517920842952,
+      "frames": 315,
+      "pass": true
+    },
+    {
+      "name": "return first gallery",
+      "target": [
+        6.9,
+        8.35,
+        3.508
+      ],
+      "position": [
+        6.899990574339202,
+        8.344810888971208
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005189119589314121,
+      "frames": 204,
+      "pass": true
+    },
+    {
+      "name": "first arrival",
+      "target": [
+        5.7,
+        8.35,
+        3.508
+      ],
+      "position": [
+        5.7054613039200825,
+        8.34997658997442
+      ],
+      "height": 3.507999897003174,
+      "grounded": true,
+      "error": 0.005461354093702839,
+      "frames": 116,
+      "pass": true
+    }
+  ],
+  "expectedSegments": 18,
+  "passed": true,
+  "initialSpawns": 1,
+  "laterTeleports": 0
+}

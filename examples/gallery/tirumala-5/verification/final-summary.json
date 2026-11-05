@@ -1,17 +1,245 @@
 {
   "project": "Tirumala 5",
-  "revision": "G+2",
-  "planHash": "55e64cf8c1e64dc7e480704726ec3a2ded3637a013317353cc65ad1c3530d226",
-  "pythonTestsPassed": 27,
-  "viewerTestsPassed": 90,
-  "fullBrowserChecks": 63,
-  "fullBrowserFailures": 0,
-  "finalAffectedViewChecks": 22,
-  "finalAffectedViewFailures": 0,
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "preservation": true,
+  "otherSamples": true,
   "continuousWalkPassed": true,
-  "walkSegments": 16,
-  "sceneSha256": "9a9cf80ca2cf04744cff19d89f344576b0931830280be0c75bea672bbc07fe3a",
+  "walkSegments": 106,
+  "runtime": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-stacked-final/runtime-acceptance.json",
+      "sha256": "9384936c447271d20c622757235cdbd209dbfa3c11fea55ccf446d5c6d7de326",
+      "bytes": 193400
+    },
+    "checkCount": 144,
+    "failures": [],
+    "errors": [],
+    "passed": true
+  },
+  "browserCapture": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+      "sha256": "70f8d2052e1eac54770737ced28e18aecbb52aeab692ef6cf3d52195fde89b28",
+      "bytes": 22512
+    },
+    "checkCount": 66,
+    "failures": [],
+    "errors": [],
+    "passed": true
+  },
+  "pythonTests": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/verification/python-tests.json",
+      "sha256": "6d9a7d0a6ee1b6e05711a963d939d057f6ea8855553966f8f56e8fba9b5d3d7d",
+      "bytes": 374
+    },
+    "observedResult": {
+      "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+      "command": ".venv/bin/python -m pytest tests/test_tirumala_5.py tests/test_tirumala_5_g2.py tests/test_tirumala_5_finishes.py tests/test_exports.py -q",
+      "exitCode": 0,
+      "passed": 41,
+      "durationSeconds": 4.15,
+      "source": "Observed exec session 54479 completion: 41 passed in 4.15s"
+    },
+    "passed": true
+  },
+  "responsiveBrowser": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/responsive-qa.json",
+      "sha256": "ac17eecfb422234c2d4a038b62fbda978dbdcbc104b29b3db097cc76670fe09c",
+      "bytes": 2954
+    },
+    "results": [
+      {
+        "width": 1440,
+        "pass": true,
+        "detail": {
+          "width": 1440,
+          "scrollWidth": 1440,
+          "images": [
+            {
+              "src": "cycles-revision/exterior_northeast-day.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-2d-dimensioned.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-first-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-second-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/interior_veranda_living-day.png",
+              "loaded": true
+            },
+            {
+              "src": "interior-icu-veranda-garden.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/first_stair_up-day.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/upper_guest-day.png",
+              "loaded": true
+            },
+            {
+              "src": "second-stair-arrival.png",
+              "loaded": true
+            },
+            {
+              "src": "second-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "upper-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "forecourt-utility.png",
+              "loaded": true
+            }
+          ]
+        },
+        "errors": []
+      },
+      {
+        "width": 390,
+        "pass": true,
+        "detail": {
+          "width": 390,
+          "scrollWidth": 390,
+          "images": [
+            {
+              "src": "cycles-revision/exterior_northeast-day.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-2d-dimensioned.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-first-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-second-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/interior_veranda_living-day.png",
+              "loaded": true
+            },
+            {
+              "src": "interior-icu-veranda-garden.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/first_stair_up-day.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/upper_guest-day.png",
+              "loaded": true
+            },
+            {
+              "src": "second-stair-arrival.png",
+              "loaded": true
+            },
+            {
+              "src": "second-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "upper-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "forecourt-utility.png",
+              "loaded": true
+            }
+          ]
+        },
+        "errors": []
+      }
+    ],
+    "passed": true
+  },
+  "deliveryAssetsPassed": true,
+  "cyclesVerified": true,
   "architecturalModelOnly": true,
   "structuralDesignCertified": false,
-  "ifcValidation": "STEP references verified; independent schema validation unavailable (IfcOpenShell not installed)"
+  "exportChecks": {
+    "dxf": {
+      "annotation_scope": "Floor plans with dimension chains (true DIMENSION entities), tags, grid, levels and section marker; elevations, section and schedules are in PDF/SVG.",
+      "autocad_gui": "NOT TESTED",
+      "dimension_chains": 6,
+      "dimension_entities": 6,
+      "entities": 417,
+      "layers": [
+        "A-WALL",
+        "A-WIND",
+        "A-DOOR",
+        "A-FLOR",
+        "A-FURN",
+        "A-ANNO",
+        "A-DIMS",
+        "A-STAIR",
+        "A-SITE",
+        "A-TAGS",
+        "A-GRID",
+        "A-LEVL",
+        "A-SECT",
+        "A-EXT",
+        "A-GATE",
+        "A-LAND",
+        "S-GRID"
+      ],
+      "status": "ezdxf_reimport_pass",
+      "units": "mm"
+    },
+    "exterior": {
+      "accessibility_review": "OUTSTANDING",
+      "assemblies": 0,
+      "assembly_count": 0,
+      "geometry_screen": "preliminary_geometry_pass",
+      "landscape_feature_count": 0,
+      "landscape_features": 0,
+      "opening_refinements": 0,
+      "protected_interior": "unchanged",
+      "regulatory_review": "OUTSTANDING",
+      "revision": "fef9d8ec02107d7fb33b",
+      "structural_review": "OUTSTANDING",
+      "theme": "warm_modern_minimal",
+      "theme_label": "Warm Modern Minimal"
+    },
+    "glb": {
+      "geometries": 1418,
+      "node_count": 3317,
+      "separate_viewer": "pending",
+      "status": "trimesh_reimport_pass",
+      "units": "m",
+      "up": "Y"
+    },
+    "ifc": {
+      "bim_viewer": "NOT RUN",
+      "entities": 5294,
+      "exterior_scope": "Facade and landscape assemblies are represented in scene/GLB and drawings; IFC includes wall/opening/space coordination and movable furniture meshes.",
+      "furnishing_count": 23,
+      "independent_schema_validation": "NOT RUN",
+      "schema": "IFC4",
+      "scope": "Walls, spaces, floor/roof slabs, related apertures, storeys; authored movable furniture meshes when a scene is supplied. No reinforcement or certified MEP.",
+      "status": "STEP_reference_check_pass"
+    }
+  },
+  "passed": true
 }

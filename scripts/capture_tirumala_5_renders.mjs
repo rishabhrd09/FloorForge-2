@@ -157,6 +157,26 @@ try {
       Math.abs(revision.area - 15 * (4085.6 / 304.8)) < 0.01,
     revision
   );
+  const stackedRevision = await page.evaluate(() => {
+    const v = window.__ff.viewer, up = window.__ff.building.planning.upperPlan;
+    const positions = [[3.10,6.35],[3.65,6.55],[4.05,6.15],[3.10,5.80],[3.65,6.00],[4.05,5.65]];
+    return {revision: up.revision, guest: up.rooms.find(r => r.id === 'u-bedroom'),
+      extension: up.guestExtensionMm, bridgeClear: up.bridgeClearWidthMm,
+      cleanup: v.data.tirumala5Finish?.upperCleanup,
+      lingeringPendantParts: v.data.nodes.filter(n => n.floor === 1 && n.role === 'fixture' &&
+        n.asset === 'unit-cylinder' && ['brass','lamp'].includes(n.material) && n.position[2] > 4 &&
+        positions.some(([x,y]) => Math.abs(n.position[0]-x)<1e-6 && Math.abs(n.position[1]-y)<1e-6)).length};
+  });
+  check('Stacked-stair revision removes all nine suspended pendant parts while retaining ceiling downlights',
+    /stacked/.test(stackedRevision.revision) && stackedRevision.cleanup?.pendantPartsRemoved === 9 &&
+    stackedRevision.cleanup?.pendantGroupsRemoved === 3 && stackedRevision.cleanup?.ceilingDownlightsRetained &&
+    stackedRevision.lingeringPendantParts === 0, stackedRevision.cleanup);
+  check('North bedroom has a one-foot south extension with its rear wall retained',
+    Math.abs(stackedRevision.extension[2]-stackedRevision.extension[0]-304.8)<.01 &&
+    stackedRevision.guest.polygon.some(p => Math.abs(p[0]-8045.2)<.01) &&
+    stackedRevision.guest.polygon.some(p => Math.abs(p[0]-8350)<.01) &&
+    stackedRevision.bridgeClear === 1100, {extension:stackedRevision.extension, guest:stackedRevision.guest.bounds,
+      guestAreaSqFt:stackedRevision.guest.area_m2/.09290304, bridgeClear:stackedRevision.bridgeClear});
 
   // Verify Specifications dialog
   await page.locator('.project-workspace [data-project-view="specs"]').click();
@@ -350,7 +370,7 @@ try {
   await captureSolidCamera('interior_master', 'interior-master.png', {indoor: true});
   await captureSolidCamera('interior_drawing', 'interior-drawing.png', {indoor: true});
 
-  for (const name of ['living_double_height', 'upper_gallery', 'upper_master', 'upper_office', 'upper_guest', 'upper_terrace', 'second_hall', 'second_terrace', 'second_stair_arrival']) {
+  for (const name of ['living_double_height', 'upper_gallery', 'first_stair_up', 'upper_master', 'upper_office', 'upper_guest', 'upper_terrace', 'second_hall', 'second_terrace', 'second_stair_arrival']) {
     await captureSolidCamera(name, name.replaceAll('_', '-') + '.png', {indoor: !['upper_terrace','second_terrace','second_stair_arrival'].includes(name)});
   }
 
@@ -465,28 +485,39 @@ try {
     const v=window.__ff.viewer,w=v.walker;v.setMode('walk');v.paused=true;
     for(const item of v.openings.items)item.goal=1;
     for(let i=0;i<120;i++)v.openings.update(1/60);
-    w.position.set(5.7,3.523,-7.15);w.velocity.set(0,0,0);
-    const points=[[4.0,7.15],[.7,7.15],[.7,8.35],[4.8,8.35],[4.8,9.7],
-      [4.8,8.35],[.7,8.35],[.7,7.15],[4.0,7.15],[5.7,7.15]];
-    const result=[];
-    for(const [x,y] of points){
+    w.position.set(5.7,3.523,-8.35);w.velocity.set(0,0,0);
+    const points=[
+      ['first gallery',6.9,8.35,3.508],['east-edge indoor bridge',6.9,5.475,3.508],
+      ['stacked stair start',1.9,5.55,3.508],['south starter landing',.7,5.55,3.858],
+      ['west flight landing',.7,8.35,5.083],['north flight landing',3.95,8.35,6.658],
+      ['second arrival',5.7,8.35,7.016],['indoor hall approach',5.95,9.55,7.016],
+      ['second hall',4.675,9.55,7.016],['return to indoor landing',5.95,9.55,7.016],
+      ['descent approach',5.7,8.35,7.016],['arrival connector descent',3.95,8.35,6.658],
+      ['north flight descent',.7,8.35,5.083],['west flight descent',.7,5.55,3.858],
+      ['south starter descent',1.9,5.55,3.508],['return indoor bridge',6.9,5.475,3.508],
+      ['return first gallery',6.9,8.35,3.508],['first arrival',5.7,8.35,3.508],
+    ];
+    const segments=[];
+    for(const [name,x,y,height] of points){
       let error=99,frames=0;
-      while(frames++<2200){
+      while(frames++<2400){
         const dx=x-w.position.x,dy=y+w.position.z;error=Math.hypot(dx,dy);
-        if(error<.055)break;
-        w.yaw=Math.atan2(-dx,dy);w.update(1/120,{forward:1,strafe:0});
+        if(error<.012)break;
+        w.yaw=Math.atan2(-dx,dy);w.update(1/120,{forward:Math.min(1,error/.6),strafe:0});
       }
-      w.velocity.set(0,0,0);
-      for(let i=0;i<20;i++)w.update(1/120,{forward:0,strafe:0});
-      result.push({target:[x,y],position:[w.position.x,-w.position.z],height:w.position.y,grounded:w.onGround,error,frames});
-      if(error>.12)break;
+      for(let i=0;i<45;i++)w.update(1/120,{forward:0,strafe:0});
+      error=Math.hypot(x-w.position.x,y+w.position.z);
+      const pass=error<.12&&w.onGround&&Math.abs(w.position.y-height)<.055;
+      segments.push({name,target:[x,y,height],position:[w.position.x,-w.position.z],height:w.position.y,
+        grounded:w.onGround,error,frames,pass});
+      if(!pass)break;
     }
-    return result;
+    return {segments,expectedSegments:points.length,passed:segments.length===points.length&&segments.every(s=>s.pass),
+      initialSpawns:1,laterTeleports:0};
   });
   writeFileSync(resolve(outReportDir,'second-stair-route.json'),JSON.stringify(upperRoute,null,2));
-  check('Continuous walk first interior → second hall → first interior',upperRoute.length===10&&
-    upperRoute.every(r=>r.error<.12&&r.grounded)&&Math.abs(upperRoute[4].height-7.016)<.035&&
-    Math.abs(upperRoute[9].height-3.508)<.035,upperRoute);
+  check('Continuous walk first interior → indoor bridge → stacked stairs → second hall → first interior',
+    upperRoute.passed,upperRoute);
 
   check('Zero uncaught page errors during Tirumala 5 studio & render verification', errors.length === 0, errors);
 } catch (e) {

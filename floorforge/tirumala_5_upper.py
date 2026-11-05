@@ -14,19 +14,62 @@ from shapely.ops import unary_union
 
 from .tirumala_luxury import H, ring, regions, upper_plan
 
-REVISION = 'tirumala-5-g2-interior-return-2026-11-05'
+REVISION = 'tirumala-5-g2-stacked-gallery-2026-11-05'
 LEVEL = 2 * H
 ROOM_HEIGHT = 3350
 HALL = [150, 9050, 5335.6, 14328]
 GUEST = [8350, 6350, 11432.4, 11400]
-FIRST_APPROACH = [4050, 6600, 6300, 7800]
-SECOND_SHAFT = [150, 6600, 4050, 8900]
-HEADHOUSE_CLEAR = [150, 6600, 5335.6, 8900]
-HEADHOUSE_OUTER = [0, 6450, 5485.6, 9050]
-SECOND_LOBBY = [4050, 6600, 5335.6, 8900]
-BEDROOM_ROOF = [8200, 6200, 11582.4, 11550]
+GUEST_EXTENSION = [8045.2, 6350, 8350, 9200]
+FIRST_APPROACH = [1525, 4875, 6300, 6075]
+SECOND_SHAFT = [150, 5000, 5150, 8900]
+HEADHOUSE_CLEAR = [150, 4875, 6600, 10050]
+HEADHOUSE_OUTER = [0, 4725, 6750, 10200]
+SECOND_LOBBY = [5150, 7800, 6600, 8900]
+BEDROOM_ROOF = [7895.2, 6200, 11582.4, 11550]
 STAIR_WIDTH = 1100
-RISE = H / 20
+RISE = 175
+ARRIVAL_RISE = (H - 18 * RISE) / 2
+
+
+def guest_shape():
+    return box(*GUEST).union(box(*GUEST_EXTENSION))
+
+
+def headhouse_shape():
+    # Follow the stair core; the north return is clear of the last connector.
+    return unary_union([box(150, 6600, 5335.6, 8900),
+                        box(150, 4875, 1525, 6600),
+                        box(*SECOND_LOBBY), box(5485.6, 8900, 6600, 10050)])
+
+
+def stacked_steps(ground):
+    """Exact lower-stair XY and levels, translated up one floor."""
+    steps = []; rise_index = 0
+    for st in ground['stairs']:
+        x0, y0, x1, y1 = Polygon(st['polygon']).bounds
+        if 'level' in st:
+            steps.append(dict(id='s2-'+st['id'], bounds=[x0,y0,x1,y1],
+                              top=H+st['level'], landing=True))
+            continue
+        n = int(st['risers']); direction = st['direction']
+        for i in range(n):
+            if direction == 'South':
+                dx=(x1-x0)/n; bounds=[x1-(i+1)*dx,y0,x1-i*dx,y1]
+            elif direction == 'West':
+                dy=(y1-y0)/n; bounds=[x0,y0+i*dy,x1,y0+(i+1)*dy]
+            else:
+                dx=(x1-x0)/n; bounds=[x0+i*dx,y0,x0+(i+1)*dx,y1]
+            rise_index += 1
+            steps.append(dict(id=f"s2-{st['id']}-{i+1}", bounds=bounds,
+                              top=H+rise_index*RISE, landing=False))
+    for i,st in enumerate(upper_plan(ground)['connectorSteps']):
+        steps.append(dict(id=f's2-arrival-connector-{i+1}', bounds=st['bounds'][:],
+                          top=H+st['top'], landing=False))
+    return steps
+
+
+def stacked_shaft(ground):
+    return unary_union([box(*st['bounds']) for st in stacked_steps(ground)])
 
 
 def _shape(regs):
@@ -36,7 +79,8 @@ def _shape(regs):
 def _room(ident, kind, name, poly):
     rr=regions(poly)
     return dict(id=ident, kind=kind, name=name, polygon=rr[0]['polygon'],
-                regions=rr, bounds=list(poly.bounds), area_m2=poly.area/1e6)
+                regions=rr, bounds=list(poly.bounds), area_m2=poly.area/1e6,
+                enclosed=kind!='terrace',roofed=kind!='terrace')
 
 
 # Fixed, reviewed opening schedule for the approved first-floor revision.
@@ -68,14 +112,14 @@ FIRST_OPENINGS = [{'id': 'u-master-door',
   'hinge': 'a',
   'swing_vec': [9175.0, 11600]},
  {'id': 'u-bedroom-door',
-  'a': [8275, 8500],
-  'b': [8275, 9400],
+  'a': [7970.2, 8250],
+  'b': [7970.2, 9150],
   'raw_kind': 'door',
   'sill': 0,
   'height': 2450,
   'connects': ['u-gallery', 'u-bedroom'],
   'hinge': 'a',
-  'swing_vec': [9175.0, 8500]},
+  'swing_vec': [8870.2, 8250]},
  {'id': 'u-bath-door',
   'a': [7200, 12525],
   'b': [8100, 12525],
@@ -202,8 +246,9 @@ def first_plan(ground):
     """Approved upper rooms and internal approach, without an exterior stair detour."""
     up=upper_plan(ground)
     rooms={r['id']:r for r in up['rooms']}
-    rooms['u-bedroom'].update(_room('u-bedroom','bedroom','Guest bedroom',box(*GUEST)))
+    rooms['u-bedroom'].update(_room('u-bedroom','bedroom','Guest bedroom',guest_shape()))
     gallery=_shape(rooms['u-gallery']['regions']).union(box(*FIRST_APPROACH))
+    gallery=gallery.difference(guest_shape().buffer(150,join_style=2))
     rooms['u-gallery'].update(_room('u-gallery','hall','Gallery overlooking living',gallery))
     terrace=_shape(rooms['u-terrace']['regions']).intersection(box(0,1524,9032,4800))
     rooms['u-terrace'].update(_room('u-terrace','terrace','Open garden terrace',terrace))
@@ -211,47 +256,41 @@ def first_plan(ground):
     for r in rooms.values():
         if r['kind'] not in ('hall','terrace'):
             pp=_shape(r['regions']);solids.append(pp.buffer(150,join_style=2).difference(pp))
-    solids.append(unary_union([box(6250,4725,8350,4875),box(8200,4800,8350,8125),
+    solids.append(unary_union([box(6250,4725,8350,4875),box(8200,4800,8350,6200),
                                box(0,4800,150,8900),box(150,4725,6300,4875)]))
     lightwell=Polygon(up['lightwellClear'])
     solids.append(lightwell.buffer(150,join_style=2).difference(lightwell))
     raw=unary_union(solids);wall=raw
     for op in FIRST_OPENINGS:wall=wall.difference(LineString([op['a'],op['b']]).buffer(90,cap_style=2))
-    void=box(1250,4875,6300,6600)
+    void=box(1250,6075,6300,7800)
     plate=unary_union([_shape(r['regions']) for r in rooms.values()]+[raw])
     plate=plate.difference(lightwell).difference(_shape(up['stairVoid'])).difference(void)
     up.update(revision=REVISION,wallRegions=regions(wall),floorPlate=regions(plate),void=ring(void),
-        roof=regions(_shape(up['roof']).union(box(*BEDROOM_ROOF))),
+        roof=regions(_shape(up['roof']).union(guest_shape().buffer(150,join_style=2))),
         openingSchedule=deepcopy(FIRST_OPENINGS),stairApproach=FIRST_APPROACH[:],
-        galleryGuards=[[[6300,4875],[6300,6600]],[[4050,6600],[6300,6600]],
-                       [[4050,7800],[5150,7800]],[[4550,8900],[5150,8900]]],
+        galleryGuards=[[[6300,6075],[6300,7800]],[[1525,6075],[6300,6075]],
+                       [[5150,7800],[6300,7800]],[[4550,7800],[5150,7800]],
+                       [[4550,8900],[5150,8900]]],
         circulationPaths={
-          'arrival_to_stair':[[5700,8350],[5700,7150],[4050,7150]],
-          'arrival_to_guest':[[5700,8350],[7700,8350],[7700,8950],[8200,8950]],
+          'arrival_to_stair':[[5700,8350],[6900,8350],[6900,5475],[1525,5475]],
+          'arrival_to_guest':[[5700,8350],[7400,8350],[7400,8700],[7895.2,8700]],
           'arrival_to_main_terrace':[[5700,8350],[7300,8350],[7300,4800]],
-          'arrival_to_office':[[5700,8350],[7750,8350],[7750,12025],[8200,12025]]},
-        balconyRevision='Small north balcony absorbed into guest bedroom; connector and bump removed; large terrace retained.')
+          'arrival_to_office':[[5700,8350],[7400,8350],[7400,9250],[7380,9520],[7600,9700],[7742.8,9900],[7742.8,12025],[8200,12025]]},
+        balconyRevision='Small north balcony absorbed; front guest section extends 1 ft south with a stepped return retaining the rear gallery; large terrace retained.',
+        guestExtensionMm=GUEST_EXTENSION[:],bridgeClearWidthMm=1100,bridgeGrossWidthMm=1200)
     return up
 
 
 def second_plan(ground):
     up=first_plan(ground)
     roof=_shape(up['roof'])
-    # Two opposed flights share the retained interior stair core. The approach
-    # occupies only the approved strip of the old double-height void.
-    shaft=box(*SECOND_SHAFT)
+    shaft=stacked_shaft(ground)
     plate=roof.difference(shaft).difference(Polygon(up['lightwell']))
     hall=box(*HALL);hall_shell=hall.buffer(150,join_style=2)
-    headhouse=box(*HEADHOUSE_OUTER)
+    headhouse=headhouse_shape().buffer(150,join_style=2)
     terrace=plate.difference(hall_shell.union(headhouse))
-    steps=[]
-    for i in range(10):
-        steps.append(dict(id=f's2-south-{i+1}',bounds=[4050-(i+1)*280,6600,4050-i*280,7700],
-                          top=H+(i+1)*RISE))
-    steps.append(dict(id='s2-turn-landing',bounds=[150,6600,1250,8900],top=H+10*RISE))
-    for i in range(10):
-        steps.append(dict(id=f's2-north-{i+1}',bounds=[1250+i*280,7800,1250+(i+1)*280,8900],
-                          top=H+(11+i)*RISE))
+    landing=headhouse_shape().difference(shaft)
+    steps=stacked_steps(ground)
     furniture=[
         dict(id='s2-sofa',kind='sofa',bounds=[900,13000,3400,13900]),
         dict(id='s2-coffee',kind='table',bounds=[1700,11700,2800,12350]),
@@ -264,20 +303,21 @@ def second_plan(ground):
     ]
     return dict(revision=REVISION,levelMm=LEVEL,roomHeightMm=ROOM_HEIGHT,
                 rooms=[_room('s2-hall','hall','Second-floor family hall',hall),
-                       _room('s2-indoor-landing','hall','Enclosed stair landing',box(*SECOND_LOBBY)),
+                       _room('s2-indoor-landing','hall','Enclosed stair landing',landing),
                        _room('s2-terrace','terrace','Open roof garden terrace',terrace)],
                 floorPlate=regions(plate),stairVoid=regions(shaft),stairs=steps,
-                stairStartLanding=FIRST_APPROACH[:],stairArrival=[4050,7800,5335.6,8900],
+                stairStartLanding=FIRST_APPROACH[:],stairArrival=SECOND_LOBBY[:],
                 headhouseClearEnvelope=HEADHOUSE_CLEAR[:],headhouseOuterEnvelope=HEADHOUSE_OUTER[:],
-                secondLanding=SECOND_LOBBY[:],lightwell=up['lightwell'],
+                secondLanding=SECOND_LOBBY[:],headhouseRegions=regions(headhouse),lightwell=up['lightwell'],
+                lightwellClear=up['lightwellClear'],
                 hallRoof=regions(hall_shell.union(headhouse)),roofOutline=regions(roof),
-                newBedRoof=regions(box(*BEDROOM_ROOF)),furniture=furniture,
-                landingGuards=[[[4050,6600],[4050,7800]]],
-                circulationPaths={'stairs_to_hall':[[4050,8350],[4675,8350],[4675,9500]],
-                  'stairs_to_terrace':[[4675,8350],[4675,7150],[5900,7150]]},
-                minimumAnalyticGroundStairHeadroomMm=min(
-                    H+10*RISE-180+(i*2200/9)/2800*(10*RISE)-(1575+(i+1)*175)
-                    for i in range(9)),
+                newBedRoof=regions(guest_shape().buffer(150,join_style=2)),furniture=furniture,
+                landingGuards=[[[1250,6600],[1525,6600]],
+                               [[1250,6600],[1250,7800]],[[1250,7800],[5150,7800]]],
+                circulationPaths={'stairs_to_hall':[[5150,8350],[6050,8350],[6050,9550],[5200,9550]],
+                  'stairs_to_terrace':[[5150,8350],[6050,8350],[6050,8400],[6900,8400]]},
+                minimumAnalyticGroundStairHeadroomMm=H-RISE-180,
+                riserHeightsMm=[RISE]*18+[ARRIVAL_RISE]*2,
                 pantryClearance={'cabinetHeightMm':1800,
                   'minimumUnderWaistMm':1575+(2000-1250)/2200*1575-150,
                   'centreUnderWaistMm':1575+((2000+3371.6)/2-1250)/2200*1575-150,
@@ -285,7 +325,8 @@ def second_plan(ground):
                   'note':'Dry cabinet below sloping ground stair; minimum occurs at its south end, not a walk-in room.'},
                 structuralConcept={'hallSupportLinesMm':[[0,8975,5550,8975],[0,14403,5550,14403]],
                  'headhouseSupportEnvelopeMm':HEADHOUSE_OUTER[:],
-                 'guestRoofEnvelopeMm':BEDROOM_ROOF[:],
+                 'guestRoofRegions':regions(guest_shape().buffer(150,join_style=2)),
+                 'landingReturnSupport':'The final 150 mm wall band follows the existing lightwell wall directly below; slab cutout and clear lightwell stay unchanged.',
                  'status':'Concept only: design foundations, continuous load paths, new bedroom edge support and roof, approach landing and stair waist, seismic system and saturated planter loads before construction.'},
                 gardenNote='Shallow perimeter planting; raised pots over supported edges; paved circulation, drainage and overflow provision.')
 
@@ -297,7 +338,9 @@ def project_addition(project):
     cp['g2Revision']=REVISION
     cp['floors']=[f for f in cp['floors'] if f.get('id')!='floor-2']
     cp['floors'][1]['rooms']=[dict(id=r['id'],kind=r['kind'],name=r['name'],polygon=deepcopy(r['polygon'])) for r in cp['upperPlan']['rooms']]
-    cp['floors'].append(dict(id='floor-2',rooms=[dict(id=r['id'],kind=r['kind'],name=r['name'],polygon=deepcopy(r['polygon'])) for r in cp['secondPlan']['rooms']],walls=[],openings=[]))
+    cp['floors'].append(dict(id='floor-2',rooms=[dict(id=r['id'],kind=r['kind'],name=r['name'],
+        polygon=deepcopy(r['polygon']),enclosed=r['kind']!='terrace',roofed=r['kind']!='terrace')
+        for r in cp['secondPlan']['rooms']],walls=[],openings=[]))
     project['brief'].update(storeys=3,roof_access=False)
     project['editorState']['customPlan']=deepcopy(cp)
     return project
@@ -351,25 +394,26 @@ def compile_addition(b):
         b['spaces'].append(dict(id=r['id'],name=r['name'],kind=r['kind'],floor=2,floorId='floor-2',
           polygon=r['polygon'],clear=r['polygon'],holes=r['regions'][0]['holes'],regions=r['regions'],
           bounds=r['bounds'],area_m2=r['area_m2'],areaSqFt=r['area_m2']/.09290304,elevation_mm=LEVEL,
-          walkable=True,enclosed=r['kind']=='hall',roofed=r['kind']=='hall',wet=False,ceilingHeight=ROOM_HEIGHT))
+          walkable=True,enclosed=r['kind']!='terrace',roofed=r['kind']!='terrace',wet=False,ceilingHeight=ROOM_HEIGHT))
     stair_poly=_shape(sp['stairVoid'])
     b['stairs'].append(dict(id='s2-stair',floor=1,to_floor=2,roomId='s2-stair',linkId='s2-stair',
-       shape='two-flight-u-stair',kind='two-flight-u-stair',risers=20,riser_count=20,riser_mm=RISE,
-       tread_mm=280,flight_width=1100,landing_mm=1100,width=3900,depth=2300,x=150,y=6600,
+       shape='three-flight-c-stair',kind='three-flight-c-stair',risers=20,riser_count=20,riser_mm=RISE,
+       tread_mm=2200/9,flight_width=1100,landing_mm=1100,width=5000,depth=3900,x=150,y=5000,
+       riser_heights_mm=sp['riserHeightsMm'],
        polygon=ring(stair_poly),flights=deepcopy(sp['stairs']),arrival_elevation_mm=LEVEL,
-       elevation_mm=H,route='First gallery → indoor approach → U-return stair → enclosed second landing → hall / roof garden'))
+       elevation_mm=H,route='First gallery → indoor east-edge bridge → South / West / North stacked stair → enclosed second landing → hall / roof garden'))
     hall=box(*HALL); wall=unary_union([hall.buffer(150,join_style=2).difference(hall),
-        box(*HEADHOUSE_OUTER).difference(box(*HEADHOUSE_CLEAR))])
-    defs=[('s2-hall-entry',[4150,8975],[5200,8975],'door',0,2700,['s2-indoor-landing','s2-hall']),
+        headhouse_shape().buffer(150,join_style=2).difference(headhouse_shape())])
+    defs=[('s2-hall-entry',[5410.6,9050],[5410.6,10050],'door',0,2700,['s2-indoor-landing','s2-hall']),
           ('s2-hall-garden',[5410.6,12400],[5410.6,14100],'sliding-door',0,2850,['s2-hall','s2-terrace']),
           ('s2-hall-rear',[800,14403],[4400,14403],'window',600,2250,['s2-hall','outside']),
           ('s2-hall-south',[75,10300],[75,12300],'window',600,2250,['s2-hall','outside']),
-          ('s2-stair-terrace-proposed',[5410.6,6650],[5410.6,7650],'door',0,2700,['s2-indoor-landing','s2-terrace']),
+          ('s2-stair-terrace-proposed',[6675,7900],[6675,8900],'door',0,2700,['s2-indoor-landing','s2-terrace']),
           ('s2-stair-south-window-proposed',[75,7000],[75,8300],'window',1200,1700,['s2-indoor-landing','outside'])]
     for ident,a,c,kind,sill,height,conn in defs:
         op=_opening(b,ident,2,a,c,kind,sill,height,conn)
-        if ident=='s2-hall-entry':op.update(hinge='b',swing_vec=[5200,10025])
-        if ident=='s2-stair-terrace-proposed':op.update(hinge='a',swing_vec=[4410.6,6650])
+        if ident=='s2-hall-entry':op.update(hinge='b',swing_vec=[4410.6,10050])
+        if ident=='s2-stair-terrace-proposed':op.update(hinge='a',swing_vec=[5675,7900])
         wall=wall.difference(LineString([a,c]).buffer(90,cap_style=2))
     sp['wallRegions']=regions(wall)
     sp['openingSchedule']=deepcopy([o for o in b['openings'] if o['floor']==2])
@@ -419,7 +463,7 @@ def add_scene(k,mats,b,door_motion,lawns):
         k.poly_mesh(p(r),z-.20,z-.18,'ceiling',1,'ceiling',f's2-soffit-{i}')
     for i,r in enumerate(sp['wallRegions']):k.poly_mesh(p(r),z,top,'wall',2,'wall',f's2-wall-{i}')
     # Roof slab and broad ivory fascia with timber soffit; stops short of the lightwell.
-    roof=_shape(sp['hallRoof']);over=roof.buffer(300,join_style=2).intersection(box(0,6150,6000,14780)).difference(Polygon(sp['lightwell']))
+    roof=_shape(sp['hallRoof']);over=roof.buffer(300,join_style=2).intersection(box(0,4425,7050,14780)).difference(Polygon(sp['lightwell']))
     def mm(poly):
         from shapely.affinity import scale
         return scale(poly,xfact=.001,yfact=.001,origin=(0,0))
@@ -479,21 +523,22 @@ def add_scene(k,mats,b,door_motion,lawns):
     waist('g-south-waist',(1.525,5.55),(1.25,5.55),1.1,0,.35,floor=0,thickness=.15)
     waist('g-west-waist',(.7,6.15),(.7,7.8),1.1,.35,1.575,floor=0,thickness=.15)
     waist('g-north-waist',(1.25,8.35),(3.45,8.35),1.1,1.575,3.15,floor=0,thickness=.15)
-    waist('s2-south-waist',(4.05,7.15),(1.25,7.15),1.1,z1,z1+10*RISE/1000)
-    waist('s2-north-waist',(1.25,8.35),(4.05,8.35),1.1,z1+10*RISE/1000,z)
+    waist('s2-south-waist',(1.525,5.55),(1.25,5.55),1.1,z1,z1+.35)
+    waist('s2-west-waist',(.7,6.15),(.7,7.8),1.1,z1+.35,z1+1.575)
+    waist('s2-north-waist',(1.25,8.35),(3.45,8.35),1.1,z1+1.575,z1+3.15)
     for step in sp['stairs']:
         x0,y0,x1,y1=[v/1000 for v in step['bounds']];zz=step['top']/1000
+        # Contiguous tread bodies meet without duplicated coplanar side faces.
         k.rect((x0,y0,zz-.19,x1,y1,zz-.025),'wall',1,'stair',step['id']+'-body')
         k.rect((x0,y0,zz-.025,x1,y1,zz),'limestone',1,'stair',step['id']+'-tread')
-    # Guard the open side of both flights; keep landing arrival and entry open.
-    mid=z1+10*RISE/1000
-    railpaths=[[(4.05,6.6,z1),(1.25,6.6,mid)],
-               [(4.05,7.7,z1),(1.25,7.7,mid)],
-               [(1.25,7.8,mid),(4.05,7.8,z)],
-               [(1.25,8.9,mid),(4.05,8.9,z)],
-               [(.15,6.6,mid),(1.25,6.6,mid)],
-               [(.15,6.6,mid),(.15,8.9,mid)],
-               [(.15,8.9,mid),(1.25,8.9,mid)]]
+    # Guard only exposed sides; never cap a starter, turn or arrival route.
+    railpaths=[[(1.525,6.10,z1),(1.25,6.10,z1+.35)],
+               [(1.25,6.15,z1+.35),(1.25,7.80,z1+1.575)],
+               [(1.25,7.80,z1+1.575),(3.45,7.80,z1+3.15)],
+               [(3.45,7.80,z1+3.15),(4.55,7.80,z1+3.15)],
+               [(4.55,7.80,z1+3.15),(5.15,7.80,z)],
+               [(3.45,8.90,z1+3.15),(4.55,8.90,z1+3.15)],
+               [(4.55,8.90,z1+3.15),(5.15,8.90,z)]]
     for i,(a,c) in enumerate(railpaths):
         k.beam((a[0],a[1],a[2]+1.05),(c[0],c[1],c[2]+1.05),.035,'teak-warm',1,'railing')
         count=max(2,math.ceil(math.dist(a[:2],c[:2])/.12))
@@ -502,14 +547,14 @@ def add_scene(k,mats,b,door_motion,lawns):
             k.beam((x,y,zz+.02),(x,y,zz+1.02),.012,'frame',1,'railing')
     # Opaque perimeter / lightwell parapets; inset on supported slab edges.
     plate=mm(_shape(sp['floorPlate']))
-    enclosed_shell=mm(box(*HALL).buffer(150,join_style=2).union(box(*HEADHOUSE_OUTER)))
+    enclosed_shell=mm(box(*HALL).buffer(150,join_style=2).union(_shape(sp['headhouseRegions'])))
     terrace=mm(_shape(next(r for r in sp['rooms'] if r['id']=='s2-terrace')['regions']))
     k.poly_mesh(terrace,z+.001,z+.012,'terrace-stone',2,'terrace','s2-terrace-finish')
     boundary=plate.difference(plate.buffer(-.12,join_style=2)).difference(enclosed_shell.buffer(.05))
     k.poly_mesh(boundary,z,z+1.10,'wall',2,'parapet','s2-opaque-terrace-parapet')
     k.poly_mesh(boundary.buffer(.015,join_style=2),z+1.10,z+1.14,'limestone',2,'coping','s2-terrace-coping')
-    # The indoor landing guards the shaft only east of the upper arrival.
-    # x4.05, y7.8..8.9 remains fully clear for the return flight.
+    # Guard the exposed shaft edges and close the unusably narrow ledge near
+    # the starter. The actual x5.15 arrival remains open to the enclosed lobby.
     for i,(a,c) in enumerate(sp['landingGuards']):
         aa=tuple(v/1000 for v in a);cc=tuple(v/1000 for v in c)
         k.poly_mesh(LineString([aa,cc]).buffer(.012,cap_style=2),z+.08,z+1.08,
@@ -603,10 +648,10 @@ def _trim_embedded_slab_faces(k,b):
 
 def cameras(b):
     z=LEVEL/1000
-    defs={'second_hall':('Second floor · family hall',[4.75,9.7,z+1.63],[2.2,12,z+1.35],66),
+    defs={'second_hall':('Second floor · family hall',[4.4,10.75,z+1.63],[2.2,12.4,z+1.35],66),
           'second_terrace':('Second floor · open garden terrace',[10.0,9.3,z+1.63],[7.5,13.1,z+1.1],66),
-          'second_stair_arrival':('Second floor · stair arrival',[4.8,8.35,z+1.63],[2.8,8.35,z-.5],66),
-          'first_stair_up':('First floor · indoor stairs to second floor',[5.7,7.15,H/1000+1.63],[1.8,7.15,H/1000+2],64)}
+          'second_stair_arrival':('Second floor · stair arrival',[5.8,8.35,z+1.63],[3.5,8.35,z-.5],66),
+          'first_stair_up':('First floor · indoor bridge and stacked stairs',[5.7,5.475,H/1000+1.63],[1.55,5.475,H/1000+1.4],64)}
     out={}
     for ident,(label,pos,target,fov) in defs.items():
         dx,dy,dz=[target[i]-pos[i] for i in range(3)]
@@ -627,14 +672,18 @@ def finalize_scene(scene,b):
             node['interiorSkinInsetMm']=2
     scene['storeys']=3
     scene['bounds'][5]=LEVEL/1000+ROOM_HEIGHT/1000+.60
-    scene['walk']['floors'].append(dict(floor=2,position=[4.8,8.35,LEVEL/1000],yaw_deg=0))
+    scene['walk']['floors'].append(dict(floor=2,position=[5.8,8.35,LEVEL/1000],yaw_deg=0))
     scene['cameras'].update(cameras(b))
     scene['g2Addition']={'revision':REVISION,'stairRiserMm':RISE,'stairWidthMm':1100,
          'secondFloorMm':LEVEL,'hallClearMm':[HALL[2]-HALL[0],HALL[3]-HALL[1]],
-         'stairRoute':'First-floor gallery → indoor approach → U-return stair → enclosed second landing.',
+         'stairRoute':'First gallery → east-edge indoor bridge → South / West / North stacked stair → enclosed second landing.',
          'secondStairHeadroomMm':b['planning']['secondPlan']['minimumAnalyticGroundStairHeadroomMm'],
          'firstDoubleHeightClearMm':[5050,1725],
          'guestBedroomClearMm':[GUEST[2]-GUEST[0],GUEST[3]-GUEST[1]],
+         'guestBedroomFrontClearMm':GUEST[2]-GUEST_EXTENSION[0],
+         'guestBedroomExtensionMm':GUEST_EXTENSION[:],
+         'stairRiserHeightsMm':b['planning']['secondPlan']['riserHeightsMm'],
+         'bridgeClearWidthMm':1100,
          'structuralStatus':b['planning']['secondPlan']['structuralConcept']['status'],
          'pantryClearance':deepcopy(b['planning']['secondPlan']['pantryClearance'])}
 
@@ -648,7 +697,7 @@ def second_plan_elements(b):
     for reg in sp['wallRegions']:items.append(P(reg['polygon'],fill='#394942',stroke='none',width=.1,layer='A-WALL'))
     for o in (o for o in b['openings'] if o['floor']==2):items.append(L(o['a'],o['b'],stroke='#3e8e9e' if o['sill'] else '#9c6c42',width=.6,layer='A-DOOR'))
     for st in sp['stairs']:items.append(P(ring(box(*st['bounds'])),fill='#f4f0e8',stroke='#889087',width=.15,layer='A-STAIR'))
-    for a,c in [([4500,8350],[700,8350]),([700,8350],[700,7150]),([700,7150],[4050,7150])]:
+    for a,c in [([5500,8350],[700,8350]),([700,8350],[700,5550]),([700,5550],[1750,5550])]:
         items.append(L(a,c,stroke='#38584a',width=.5,layer='A-STAIR'))
     for a,c in sp['landingGuards']:items.append(L(a,c,stroke='#38584a',width=.7,layer='A-GUARD'))
     items.append(T(2700,8550,'DOWN TO FIRST FLOOR',150,layer='A-ANNO'))
@@ -693,24 +742,24 @@ def second_svg(b):
     text(9200,10000,'OPEN ROOF GARDEN',15,700)
     area=next(r['area_m2'] for r in sp['rooms'] if r['id']=='s2-terrace')/.09290304
     text(9200,9610,f'{area:.0f} sq ft · irregular terrace',12)
-    text(3200,5575,'OPEN SKY TERRACE',14,700)
+    text(4200,5500,'OPEN SKY TERRACE',14,700)
     text(2700,8650,'DOWN TO FIRST',10,700)
-    text(4685,7420,'INDOOR',10,700);text(4685,7160,'LANDING',10,700)
+    text(3500,7250,'INDOOR LANDING',10,700)
     for a,c in sp['landingGuards']:
         out.append(f'<line x1="{tx(a[0])}" y1="{ty(a[1])}" x2="{tx(c[0])}" y2="{ty(c[1])}" stroke="#38584a" stroke-width="3"/>')
-    down=[[4500,8350],[700,8350],[700,7150],[4050,7150]]
+    down=[[5500,8350],[700,8350],[700,5550],[1750,5550]]
     out.append(f'<polyline points="{pts(down)}" fill="none" stroke="#38584a" stroke-width="1.6"/>')
-    out.append(f'<path d="M {tx(3890)} {ty(7250)} L {tx(4050)} {ty(7150)} L {tx(3890)} {ty(7050)}" fill="none" stroke="#38584a" stroke-width="1.6"/>')
+    out.append(f'<path d="M {tx(1590)} {ty(5650)} L {tx(1750)} {ty(5550)} L {tx(1590)} {ty(5450)}" fill="none" stroke="#38584a" stroke-width="1.6"/>')
     poly(ring(box(8000,10200,10600,12550)),'#8aa276')
     text(9300,11380,'Shallow garden',12)
     dim(150,14700,HALL[2],14700,_mm_to_ft_in(HALL[2]-HALL[0]));dim(5150,9050,5150,14328,_mm_to_ft_in(5278))
     dim(0,15600,12192,15600,'40 ft');dim(-450,0,-450,15240,'50 ft')
     text(6100,-450,'EAST · entrance side below',14,700)
     notes=['New second floor at +23 ft ¼ in; hall clear height 10 ft 11⅞ in.',
-           '20 equal 6⅞ in risers; 3 ft 7¼ in wide stair stacked over the existing core.',
-           'Indoor U-return stair continues from the first gallery; ground stair remains unchanged.',
+           'Same lower stair footprint: 18 risers of 6⅞ in plus 2 arrival risers of 7 in.',
+           'Indoor bridge reaches the South → West → North stair; 3 ft 7¼ in clear width.',
            'Opaque parapets, shallow planters, pergola and clear paved walking routes.',
-           'Enclosed top landing: 4 ft 2⅝ in × 7 ft 6½ in; hall and garden doors remain separate.',
+           'Enclosed top arrival: 4 ft 9⅛ in × 3 ft 7¼ in; separate hall and garden doors.',
            'Concept model: foundations, member sizes, wind/seismic and garden loads need engineering.']
     for i,t in enumerate(notes):out.append(f'<text x="55" y="{1200+i*28}" font-size="13">{html.escape(t)}</text>')
     out.append('</g></svg>');return ''.join(out)
@@ -724,11 +773,11 @@ def validate_addition(b):
     plate=_shape(sp['floorPlate']);shaft=_shape(sp['stairVoid']);plot=Polygon(b['plot'])
     fit=all(p.is_valid and plot.covers(p) for p in rooms.values())
     no_overlap=rooms['s2-hall'].intersection(rooms['s2-terrace']).area<1
-    treads=[st for st in sp['stairs'] if st['id']!='s2-turn-landing']
+    treads=[st for st in sp['stairs'] if not st.get('landing')]
     rises=[treads[0]['top']-H]+[c['top']-a['top'] for a,c in zip(treads,treads[1:])]
-    flight_ok=len(treads)==20 and all(abs(r-RISE)<.001 for r in rises) and abs(treads[-1]['top']-LEVEL)<.001
-    # The return flight is stacked over the retained ground north flight.
-    # Check each old tread at its leading edge, where the new waist is lowest.
+    flight_ok=len(treads)==20 and all(abs(r-e)<.001 for r,e in zip(rises,[175]*18+[179]*2)) and abs(treads[-1]['top']-LEVEL)<.001
+    # Congruent upper/lower flights: the leading-edge difference subtracts
+    # one 175 mm rise and the 180 mm waist from the 3508 mm floor spacing.
     minimum_lower_stair_headroom_mm=sp['minimumAnalyticGroundStairHeadroomMm']
     up=b['planning']['upperPlan']
     gallery=_shape(next(r for r in up['rooms'] if r['id']=='u-gallery')['regions'])
@@ -737,14 +786,14 @@ def validate_addition(b):
     no_outside_entry=not any(o['id']=='s2-stair-entry' for o in b['openings'])
     entry=next((o for o in b['openings'] if o['id']=='s2-hall-entry'),None)
     arrival=box(*sp['stairArrival'])
-    hall_entry=LineString([[4800,8350],[4800,9300]]).buffer(250,cap_style=2)
+    hall_entry=LineString(sp['circulationPaths']['stairs_to_hall']).buffer(350,cap_style=2)
     return [
       dict(id='g2_hall_terrace_fit',category='geometry',status='pass' if fit and no_overlap else 'fail',
            detail='Second hall and open terrace fit the retained 40 × 50 ft plot without overlapping rooms.'),
-      dict(id='g2_stair_risers_and_landings',category='circulation',status='pass' if flight_ok and entry and plate.covers(arrival) else 'fail',
-           detail='20 equal 175.4mm risers, 1100mm wide U-return flights and an enclosed landing reach +7016mm.'),
+      dict(id='g2_stair_risers_and_landings',category='circulation',status='pass' if flight_ok and entry and plate.covers(arrival) and plate.covers(hall_entry) else 'fail',
+           detail='Ground stair footprint copied exactly: 18 × 175 mm risers plus 2 × 179 mm arrival risers, 1100 mm wide, reaching +7016 mm.'),
       dict(id='g2_indoor_stair_route',category='circulation',status='pass' if indoor_route and no_outside_entry and entry and entry['connects']==['s2-indoor-landing','s2-hall'] else 'fail',
-           detail='1100mm first-gallery approach leads directly to the internal stair; the hall is entered from the enclosed second landing.'),
+           detail='1100 mm clear indoor east-edge bridge leads to the stacked South / West / North stair; enclosed top landing connects hall and terrace.'),
       dict(id='g2_stair_opening_and_headroom',category='circulation',status='pass' if plate.intersection(shaft).area<1 and minimum_lower_stair_headroom_mm>=2100 else 'fail',
            detail=f'Second slab clears stair void. Analytic minimum above retained ground stair under new waist: {minimum_lower_stair_headroom_mm:.0f}mm.'),
       dict(id='g2_lightwell_retained',category='geometry',status='pass' if plate.intersection(Polygon(sp['lightwell']).buffer(-1)).area<1 else 'fail',
@@ -756,16 +805,19 @@ def first_plan_elements(b):
     from .tirumala_luxury import upper_plan_elements
     from .drawings import P,T,L
     items,bounds=upper_plan_elements(b)
-    items=[i for i in items if i.get('text')!='STAIR ↑ + 2 arrival steps']
+    items=[i for i in items if i.get('text') not in
+           ('STAIR ↑ + 2 arrival steps','OPEN TO LIVING BELOW','Double height · 23 ft overall')]
     sp=b['planning']['secondPlan'];up=b['planning']['upperPlan']
     for st in sp['stairs']:
         items.append(P(ring(box(*st['bounds'])),fill='#e9e2d6',stroke='#889087',width=.15,layer='A-STAIR'))
-    for a,c in [([4500,7150],[700,7150]),([700,7150],[700,8350]),([700,8350],[4050,8350])]:
+    for a,c in [([1800,5550],[700,5550]),([700,5550],[700,8350]),([700,8350],[5500,8350])]:
         items.append(L(a,c,stroke='#38584a',width=.5,layer='A-STAIR'))
     for a,c in up['galleryGuards']:items.append(L(a,c,stroke='#38584a',width=.7,layer='A-GUARD'))
     items.append(T(2750,8500,'UP TO SECOND · 20 RISERS',145,layer='A-ANNO'))
     items.append(T(5450,8050,'Arrival from ground',115,layer='A-ANNO'))
-    items.append(T(5200,7150,'INDOOR APPROACH',140,layer='A-ANNO'))
+    items.append(T(4000,5500,'INDOOR BRIDGE · 3 ft 7¼ in CLEAR',140,layer='A-ANNO'))
+    items.append(T(3700,7050,'OPEN TO LIVING BELOW',210,layer='A-ANNO'))
+    items.append(T(3700,6700,'94 sq ft clear opening',170,layer='A-ANNO'))
     return items,bounds
 
 
@@ -776,22 +828,24 @@ def first_svg(b):
     out=out.replace('Stairs ↑','').replace('>+2<','>↓ GF<')
     out=re.sub(r'<text[^>]*>(OPEN TO LIVING / DINING|23 ft double-height space)</text>','',out)
     out=out.replace('Existing 18 stair risers retained + two 179 mm arrival risers to +3.508 m.',
-                    'Ground stair retained; indoor 20-riser return stair reaches the second-floor hall.')
+                    'Ground stair retained; same footprint above reached by an indoor east-edge bridge.')
     out=out.replace('Gallery overlooks living. Open terrace is on this same first-floor level.',
-                    'Guest room absorbs small balcony; connector removed; large garden terrace retained.')
+                    'Guest room extends 1 ft south at front; 3 ft rear gallery and large terrace retained.')
+    out=out.replace('Office + guest bedroom; shared bath accessed from the gallery.',
+                    'Guest width: 11 ft 1⅜ in at front, 10 ft 1⅜ in at rear; area 177 sq ft.')
     sp=b['planning']['secondPlan'];up=b['planning']['upperPlan'];s=.066;left=84;top=105;depth=15240
     tx=lambda x:left+x*s;ty=lambda y:top+(depth-y)*s
     pts=lambda p:' '.join(f'{tx(x):.2f},{ty(y):.2f}' for x,y in p)
     extra=['<defs><marker id="stair-up-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1 L9 5 L0 9" fill="none" stroke="#38584a"/></marker></defs><g font-family="Arial,sans-serif" fill="#253c34">']
     for st in sp['stairs']:
         extra.append(f'<polygon points="{pts(ring(box(*st["bounds"])))}" fill="#e9e2d6" stroke="#a7ab9c" stroke-width=".7"/>')
-    up_arrow=[[4500,7150],[700,7150],[700,8350],[4050,8350]]
+    up_arrow=[[1800,5550],[700,5550],[700,8350],[5500,8350]]
     extra.append(f'<polyline points="{pts(up_arrow)}" fill="none" stroke="#38584a" stroke-width="2" marker-end="url(#stair-up-arrow)"/>')
     for a,c in up['galleryGuards']:
         extra.append(f'<line x1="{tx(a[0])}" y1="{ty(a[1])}" x2="{tx(c[0])}" y2="{ty(c[1])}" stroke="#38584a" stroke-width="2"/>')
     for x,y,t,sz in [(2700,8630,'UP TO SECOND · 20 RISERS',10),
-                     (5100,7280,'Indoor',11),(5100,7030,'approach',11),(5600,8100,'From ground',10),
-                     (3700,6050,'OPEN TO LIVING / DINING',14),(3700,5700,'94 sq ft clear opening',13)]:
+                     (4000,5550,'Indoor bridge · 3 ft 7¼ in clear',11),(5600,8100,'From ground',10),
+                     (3700,7050,'OPEN TO LIVING / DINING',14),(3700,6700,'94 sq ft clear opening',13)]:
         extra.append(f'<text x="{tx(x)}" y="{ty(y)}" text-anchor="middle" font-size="{sz}" font-weight="700" stroke="#faf9f5" stroke-width="3" paint-order="stroke">{t}</text>')
     extra.append('</g>')
     return out.replace('</g></svg>','</g>'+''.join(extra)+'</svg>')

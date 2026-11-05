@@ -21,17 +21,17 @@
       "pass": true
     },
     {
-      "name": "tirumala-5 loads in Studio with 40x50 ft East-facing G+2 layout (storeys=3, 22 spaces), empty car porch default (carVisible=false), and Proposed site mode",
+      "name": "tirumala-5 loads in Studio with 40x50 ft East-facing G+2 layout (storeys=3, 23 spaces), empty car porch default (carVisible=false), and Proposed site mode",
       "pass": true,
       "detail": {
         "buildId": "sample:tirumala-5",
-        "planHash": "55e64cf8c1e64dc7e480704726ec3a2ded3637a013317353cc65ad1c3530d226",
+        "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
         "storeys": 3,
-        "roomCount": 22,
+        "roomCount": 23,
         "widthFt": "40",
         "depthFt": "50",
         "facing": "90",
-        "meshCount": 371,
+        "meshCount": 384,
         "defaultCarVisible": false,
         "carVisible": false,
         "carButtonText": "Show car",
@@ -53,7 +53,43 @@
       }
     },
     {
-      "name": "tirumala-5 specifications dialog displays Tirumala 4 and Home ICU",
+      "name": "Stacked-stair revision removes all nine suspended pendant parts while retaining ceiling downlights",
+      "pass": true,
+      "detail": {
+        "ceilingDownlightsRetained": true,
+        "pendantGroupsRemoved": 3,
+        "pendantPartsRemoved": 9,
+        "removedNodeCount": 12,
+        "retiredOpeningIds": [
+          "s2-stair-entry",
+          "u-bedroom-terrace",
+          "u-side-terrace-door"
+        ],
+        "suspendedAtriumDecoration": false
+      }
+    },
+    {
+      "name": "North bedroom has a one-foot south extension with its rear wall retained",
+      "pass": true,
+      "detail": {
+        "extension": [
+          8045.2,
+          6350,
+          8350,
+          9200
+        ],
+        "guest": [
+          8045.2,
+          6350,
+          11432.4,
+          11400
+        ],
+        "guestAreaSqFt": 176.90271491654093,
+        "bridgeClear": 1100
+      }
+    },
+    {
+      "name": "tirumala-5 specifications dialog displays Tirumala 5 and Home ICU",
       "pass": true
     },
     {
@@ -69,7 +105,7 @@
         "sun": 3.15,
         "vacantLots": 2,
         "facade": {
-          "exteriorFinishTriangles": 402,
+          "exteriorFinishTriangles": 376,
           "exteriorOpenings": [
             "drawing-veranda-only",
             "living-veranda",
@@ -86,23 +122,23 @@
             "master-lightwell",
             "wc-rear",
             "u-terrace-door",
-            "u-side-terrace-door",
             "u-master-rear",
             "u-master-south",
             "u-office-rear",
             "u-office-north",
             "u-bedroom-north",
-            "u-bedroom-terrace",
+            "u-bedroom-east-proposed",
             "u-bath-rear",
             "u-ensuite-rear",
             "u-gallery-lightwell",
             "u-master-lightwell",
             "u-atrium-east",
             "u-atrium-south",
-            "s2-hall-entry",
             "s2-hall-garden",
             "s2-hall-rear",
-            "s2-hall-south"
+            "s2-hall-south",
+            "s2-stair-terrace-proposed",
+            "s2-stair-south-window-proposed"
           ],
           "frameColor": "#1d2022",
           "houseGeometryChanged": false,
@@ -118,7 +154,7 @@
       "name": "Desired Home facade, substantial exterior glass and two vacant adjoining grass lots",
       "pass": true,
       "detail": {
-        "exteriorFinishTriangles": 402,
+        "exteriorFinishTriangles": 376,
         "exteriorOpenings": [
           "drawing-veranda-only",
           "living-veranda",
@@ -135,23 +171,23 @@
           "master-lightwell",
           "wc-rear",
           "u-terrace-door",
-          "u-side-terrace-door",
           "u-master-rear",
           "u-master-south",
           "u-office-rear",
           "u-office-north",
           "u-bedroom-north",
-          "u-bedroom-terrace",
+          "u-bedroom-east-proposed",
           "u-bath-rear",
           "u-ensuite-rear",
           "u-gallery-lightwell",
           "u-master-lightwell",
           "u-atrium-east",
           "u-atrium-south",
-          "s2-hall-entry",
           "s2-hall-garden",
           "s2-hall-rear",
-          "s2-hall-south"
+          "s2-hall-south",
+          "s2-stair-terrace-proposed",
+          "s2-stair-south-window-proposed"
         ],
         "frameColor": "#1d2022",
         "houseGeometryChanged": false,
@@ -322,6 +358,10 @@
       "pass": true
     },
     {
+      "name": "tirumala-5 camera first_stair_up (first-stair-up.png) activated",
+      "pass": true
+    },
+    {
       "name": "tirumala-5 camera upper_master (upper-master.png) activated",
       "pass": true
     },
@@ -368,7 +408,7 @@
         "porchFloorY": -0.1524,
         "livingFloorY": 0,
         "upperFloorY": 3.508,
-        "cpuSubmissionMsPerFrame": 1.84
+        "cpuSubmissionMsPerFrame": 1.85
       }
     },
     {
@@ -432,132 +472,332 @@
       "pass": true,
       "detail": {
         "name": "veranda to ICU",
-        "error": 0.03355649868370136,
+        "error": 0.12875358951720642,
         "floor": 5.551115123125783e-17,
         "grounded": true,
         "position": [
-          8,
-          5.366443501316299
+          8.109622086800535,
+          5.467531362336779
         ]
       }
     },
     {
-      "name": "Continuous walk first terrace → second hall → first terrace",
+      "name": "Continuous walk first interior → indoor bridge → stacked stairs → second hall → first interior",
       "pass": true,
-      "detail": [
-        {
-          "target": [
-            0.7,
-            5.5
-          ],
-          "position": [
-            0.7,
-            5.451799826518823
-          ],
-          "height": 4.034200191497803,
-          "grounded": true,
-          "error": 0.048200173481177444,
-          "frames": 77
-        },
-        {
-          "target": [
-            0.7,
-            8.35
-          ],
-          "position": [
-            0.7,
-            8.306077813617652
-          ],
-          "height": 5.26200008392334,
-          "grounded": true,
-          "error": 0.043922186382348016,
-          "frames": 158
-        },
-        {
-          "target": [
-            4.8,
-            8.35
-          ],
-          "position": [
-            4.761544935441637,
-            8.349588041338322
-          ],
-          "height": 7.0279998779296875,
-          "grounded": true,
-          "error": 0.038457271095682255,
-          "frames": 221
-        },
-        {
-          "target": [
-            4.8,
-            9.7
-          ],
-          "position": [
-            4.798600673061537,
-            9.650860365117584
-          ],
-          "height": 7.015999794006348,
-          "grounded": true,
-          "error": 0.04915955484194095,
-          "frames": 77
-        },
-        {
-          "target": [
-            4.8,
-            8.35
-          ],
-          "position": [
-            4.799959781045969,
-            8.387388863021219
-          ],
-          "height": 7.0279998779296875,
-          "grounded": true,
-          "error": 0.03738888465284481,
-          "frames": 75
-        },
-        {
-          "target": [
-            0.7,
-            8.35
-          ],
-          "position": [
-            0.7383506780768967,
-            8.350349732272013
-          ],
-          "height": 5.26200008392334,
-          "grounded": true,
-          "error": 0.038352272704754484,
-          "frames": 221
-        },
-        {
-          "target": [
-            0.7,
-            5.5
-          ],
-          "position": [
-            0.7007241988080343,
-            5.553824860005169
-          ],
-          "height": 4.034200191497803,
-          "grounded": true,
-          "error": 0.05382973173339799,
-          "frames": 155
-        },
-        {
-          "target": [
-            0.7,
-            4.15
-          ],
-          "position": [
-            0.7000229727932092,
-            4.194531664307367
-          ],
-          "height": 3.5239999294281006,
-          "grounded": true,
-          "error": 0.04453167023291639,
-          "frames": 80
-        }
-      ]
+      "detail": {
+        "segments": [
+          {
+            "name": "first gallery",
+            "target": [
+              6.9,
+              8.35,
+              3.508
+            ],
+            "position": [
+              6.894538681491714,
+              8.35
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461318508286794,
+            "frames": 116,
+            "pass": true
+          },
+          {
+            "name": "east-edge indoor bridge",
+            "target": [
+              6.9,
+              5.475,
+              3.508
+            ],
+            "position": [
+              6.899990206531647,
+              5.4801906430529925
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005190652291919165,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "stacked stair start",
+            "target": [
+              1.9,
+              5.55,
+              3.508
+            ],
+            "position": [
+              1.9051506615195977,
+              5.549928051615942
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005151164010146984,
+            "frames": 315,
+            "pass": true
+          },
+          {
+            "name": "south starter landing",
+            "target": [
+              0.7,
+              5.55,
+              3.858
+            ],
+            "position": [
+              0.705176081565704,
+              5.549999693670197
+            ],
+            "height": 3.8580000400543213,
+            "grounded": true,
+            "error": 0.005176081574768612,
+            "frames": 117,
+            "pass": true
+          },
+          {
+            "name": "west flight landing",
+            "target": [
+              0.7,
+              8.35,
+              5.083
+            ],
+            "position": [
+              0.7000095894225163,
+              8.344776891320993
+            ],
+            "height": 5.083000183105469,
+            "grounded": true,
+            "error": 0.005223117481900465,
+            "frames": 200,
+            "pass": true
+          },
+          {
+            "name": "north flight landing",
+            "target": [
+              3.95,
+              8.35,
+              6.658
+            ],
+            "position": [
+              3.9445898651049554,
+              8.349991364069467
+            ],
+            "height": 6.6579999923706055,
+            "grounded": true,
+            "error": 0.005410141787594652,
+            "frames": 223,
+            "pass": true
+          },
+          {
+            "name": "second arrival",
+            "target": [
+              5.7,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.694580781952722,
+              8.349999973532636
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005419218047342485,
+            "frames": 145,
+            "pass": true
+          },
+          {
+            "name": "indoor hall approach",
+            "target": [
+              5.95,
+              9.55,
+              7.016
+            ],
+            "position": [
+              5.948912829085348,
+              9.544891373016105
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005223026924902281,
+            "frames": 118,
+            "pass": true
+          },
+          {
+            "name": "second hall",
+            "target": [
+              4.675,
+              9.55,
+              7.016
+            ],
+            "position": [
+              4.680391765926788,
+              9.549978559029881
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.0053918085578471,
+            "frames": 120,
+            "pass": true
+          },
+          {
+            "name": "return to indoor landing",
+            "target": [
+              5.95,
+              9.55,
+              7.016
+            ],
+            "position": [
+              5.9446965034298005,
+              9.549999911185674
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.0053034965709433425,
+            "frames": 120,
+            "pass": true
+          },
+          {
+            "name": "descent approach",
+            "target": [
+              5.7,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.701035296855543,
+              8.355076187278105
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.0051806869101973805,
+            "frames": 118,
+            "pass": true
+          },
+          {
+            "name": "arrival connector descent",
+            "target": [
+              3.95,
+              8.35,
+              6.658
+            ],
+            "position": [
+              3.9553289140655656,
+              8.350015335395877
+            ],
+            "height": 6.6579999923706055,
+            "grounded": true,
+            "error": 0.005328936131400725,
+            "frames": 145,
+            "pass": true
+          },
+          {
+            "name": "north flight descent",
+            "target": [
+              0.7,
+              8.35,
+              5.083
+            ],
+            "position": [
+              0.705131367682085,
+              8.350000024010606
+            ],
+            "height": 5.083000183105469,
+            "grounded": true,
+            "error": 0.005131367682141172,
+            "frames": 224,
+            "pass": true
+          },
+          {
+            "name": "west flight descent",
+            "target": [
+              0.7,
+              5.55,
+              3.858
+            ],
+            "position": [
+              0.7000095063603798,
+              5.55522310177973
+            ],
+            "height": 3.8580000400543213,
+            "grounded": true,
+            "error": 0.005223110430797968,
+            "frames": 200,
+            "pass": true
+          },
+          {
+            "name": "south starter descent",
+            "target": [
+              1.9,
+              5.55,
+              3.508
+            ],
+            "position": [
+              1.8945386953780319,
+              5.550023563615604
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461355456103343,
+            "frames": 116,
+            "pass": true
+          },
+          {
+            "name": "return indoor bridge",
+            "target": [
+              6.9,
+              5.475,
+              3.508
+            ],
+            "position": [
+              6.89474207264969,
+              5.475078808011535
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005258517920842952,
+            "frames": 315,
+            "pass": true
+          },
+          {
+            "name": "return first gallery",
+            "target": [
+              6.9,
+              8.35,
+              3.508
+            ],
+            "position": [
+              6.899990574339202,
+              8.344810888971208
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005189119589314121,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "first arrival",
+            "target": [
+              5.7,
+              8.35,
+              3.508
+            ],
+            "position": [
+              5.7054613039200825,
+              8.34997658997442
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461354093702839,
+            "frames": 116,
+            "pass": true
+          }
+        ],
+        "expectedSegments": 18,
+        "passed": true,
+        "initialSpawns": 1,
+        "laterTeleports": 0
+      }
     },
     {
       "name": "Zero uncaught page errors during Tirumala 5 studio & render verification",
@@ -565,5 +805,16 @@
       "detail": []
     }
   ],
-  "errors": []
+  "errors": [],
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "evidenceSource": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+    "sha256": "70f8d2052e1eac54770737ced28e18aecbb52aeab692ef6cf3d52195fde89b28",
+    "bytes": 22512
+  },
+  "scope": "Exactly the checks recorded in the current capture report; not additional checks"
 }

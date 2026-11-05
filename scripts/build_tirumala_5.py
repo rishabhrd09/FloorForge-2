@@ -13,8 +13,9 @@ sys.path.insert(0,str(ROOT))
 from floorforge.pipeline import run, deterministic_zip
 from floorforge.tirumala_5 import build_project, REVISION, ICU, KITCHEN, UTILITY, PANTRY, PANTRY_AISLE
 from floorforge.tirumala_p11_p12 import render_dimensioned_2d_svg, render_material_overhead_2d_svg, _mm_to_ft_in
-from floorforge.tirumala_5_upper import first_svg, second_svg
+from floorforge.tirumala_5_upper import first_svg, second_svg, REVISION as UPPER_REVISION
 from floorforge.tirumala_4 import generate_site_context_plan_svg
+from shapely.geometry import Polygon
 
 OUT=ROOT/'examples/gallery/tirumala-5'
 SOURCE=ROOT/'examples/gallery/tirumala-4'
@@ -35,19 +36,21 @@ def main(finalize=False):
     b=json.loads((OUT/'building.json').read_text());scene=json.loads((OUT/'scene.json').read_text())
     source=json.loads((SOURCE/'building.json').read_text())
     plan=b['planning']['canonicalPlan']
+    void_sqft=Polygon(b['planning']['upperPlan']['void']).area/92903.04
+    guest=next(r for r in b['planning']['upperPlan']['rooms'] if r['id']=='u-bedroom')
     geom_hash=hashlib.sha256(json.dumps({'ground':plan,'upper':b['planning']['upperPlan'],'second':b['planning']['secondPlan']},sort_keys=True).encode()).hexdigest()
     rooms=[dict(id=r['id'],name=r['name'],floor=r['floor'],kind=r['kind'],
         widthM=(r['bounds'][2]-r['bounds'][0])/1000,depthM=(r['bounds'][3]-r['bounds'][1])/1000,
         widthFtIn=_mm_to_ft_in(r['bounds'][2]-r['bounds'][0]),depthFtIn=_mm_to_ft_in(r['bounds'][3]-r['bounds'][1]),
         areaM2=r['area_m2'],areaSqFt=round(r['area_m2']/0.09290304,1)) for r in b['spaces']]
     spec=json.loads((SOURCE/'specifications.json').read_text())
-    spec.update(title='Tirumala 5',id='tirumala-5',projectId='tirumala-5',basedOnSample='tirumala-4',option='Plan A',version=REVISION,
+    spec.update(title='Tirumala 5',id='tirumala-5',projectId='tirumala-5',basedOnSample='tirumala-4',option='Plan A',version=UPPER_REVISION,
         subtitle='G+2 · family hall and roof garden · large ivory slabs · Plan A retained',
-        description='40 × 50 ft G+2: Plan A ground floor, fully indoor stairs, enlarged first-floor guest bedroom, second-floor family hall and garden terrace, ivory slabs and opaque parapets.',
+        description='40 × 50 ft G+2: Plan A ground floor, vertically aligned indoor stairs with an east-side gallery, southward-enlarged first-floor guest bedroom, second-floor family hall and garden terrace.',
         sourceProject='tirumala-4',sourcePlanHash=source['planHash'],sourceVersion=source['planning']['canonicalPlan']['version'],
-        currentVersion=REVISION,optionLabel='Ivory · limestone · teak · Plan A',
+        currentVersion=UPPER_REVISION,optionLabel='Ivory · limestone · teak · Plan A',
         optionTag='Plan A · 15 ft ICU · Forecourt utility · Under-stair pantry · G+2',
-        optionTrade='The old wash/store strip becomes kitchen and ICU space. Washing moves to an open 7 × 4½ ft forecourt bay; dry pantry moves below the high stair flight. Ground rooms and ground stairs retain their sizes; entrances shift slightly, first guest bedroom absorbs the small balcony, and upper stairs move fully indoors.',
+        optionTrade='Plan A kitchen, ICU, forecourt washing bay, pantry and ground stairs are retained. The upper stair follows the ground stair footprint, reached by an indoor east-side gallery. The front of the north bedroom extends one foot south while its rear passage remains three feet wide. The new second-floor landing uses a small strip of roof terrace; the large first-floor terrace is unchanged.',
         notes=json.loads((OUT/'project.floorforge.json').read_text())['notes'],
         groundGeometryHash=hashlib.sha256(json.dumps(plan,sort_keys=True).encode()).hexdigest(),
         planHash=b['planHash'],geometryHash=geom_hash,rooms=rooms,upperFloor=b['planning']['upperPlan'],secondFloor=b['planning']['secondPlan'],
@@ -80,7 +83,7 @@ def main(finalize=False):
     ctx['measuredClearanceAuditMm'] += [
         dict(zone='Home ICU — clear dimensions',measuredMm='4572 × 4085.6',measuredFtIn='15 ft × 13 ft 4⅞ in',status='Plan A geometry'),
         dict(zone='Home ICU — bed south edge to south wall',measuredMm=1457.6,measuredFtIn=_mm_to_ft_in(1457.6),note='Head faces south; furniture projections reduce this envelope span.'),
-        dict(zone='Home ICU — foot aisle to north wall',measuredMm=914.4,measuredFtIn='3′',note='Bed ends at7967.6mm; room north inner face8882mm.'),
+        dict(zone='Home ICU — foot aisle to north wall',measuredMm=914.4,measuredFtIn='3′',note='Bed ends at 7967.6 mm; room north inner face 8882 mm.'),
     ]+spec['clearanceAudit']
     for camera_group in ('reference_cameras','sightline_cameras'):
         for key,cam in ctx.get(camera_group,{}).items():
@@ -95,14 +98,15 @@ def main(finalize=False):
         '| Room / area | Clear bounding span | Net area |','|---|---|---|']
     for r in rooms: lines.append(f"| {r['name']} ({['ground','first','second'][r['floor']]}) | {r['widthFtIn']} × {r['depthFtIn']} | {r['areaSqFt']} sq ft |")
     lines += ['', '## Selected changes','',
-        '- ICU: 15 ft × 13 ft 4⅞ in, about 201.1 sq ft. North, east and west limits unchanged; south wall moves 3 ft 9 in south. Recliner now has its head south and feet north, with a3ft foot aisle. ICU living glass/wood assembly shifts150mm south; veranda assembly shifts100mm north. Extra corner gap is infilled; drawing and true rear-lobby doors remain.',
+        '- ICU: 15 ft × 13 ft 4⅞ in, about 201.1 sq ft. North, east and west limits unchanged; south wall moves 3 ft 9 in south. Recliner now has its head south and feet north, with a 3 ft foot aisle. ICU living glass/wood assembly shifts 150 mm south; veranda assembly shifts 100 mm north. Extra corner gap is infilled; drawing and true rear-lobby doors remain.',
         '- Kitchen: 13 ft 1⅞ in × 10 ft 3⅛ in; the former wash/store strip becomes kitchen. L-counter stays along south and east walls. Cooking fittings move with the south leg; sink remains beneath the east window. No fridge or puja.',
-        '- Forecourt utility: 7 ft × 4 ft 6 in, open to sky at the southeast end, with sink, top-loading washer, short worktop and indicative drain. Fixtures are 600 mm deep, leaving 771.6 mm (2 ft 6⅜ in) working depth. Enter from the east forecourt at the north end; no new kitchen door. South opaque ivory wall and ventilated east teak-look screen are1800mm high, within boundary thickness.',
+        '- Forecourt utility: 7 ft × 4 ft 6 in, open to sky at the southeast end, with sink, top-loading washer, short worktop and indicative drain. Fixtures are 600 mm deep, leaving 771.6 mm (2 ft 6⅜ in) working depth. Enter from the east forecourt at the north end; no new kitchen door. South opaque ivory wall and ventilated east teak-look screen are 1800 mm high, within boundary thickness.',
         '- Dry pantry: 4 ft 6 in × 2 ft cabinet below the high stair flight, 1800 mm tall. The added stair waist leaves approximately 1962 mm minimum height above the floor over this cabinet, about 162 mm above its top at the lowest end. A 3 ft operating aisle is reserved. Dining shifts 425 mm east. This is cabinet storage, not a walk-in room.',
         '- Kitchen-to-hall opening beside the retained serving top is 843.2 mm (2 ft 9¼ in). This is the narrowest new connection; no claim of wheelchair certification.',
-        '- The kitchen extension receives coordinated roof/terrace coverage. A local ICU ceiling covers the former living corner; rear ground rooms stay in place. The indoor upper stair reduces the clear double-height opening to approximately 94 sq ft.',
+        f'- The kitchen extension retains coordinated roof/terrace coverage. The approved ground rooms remain unchanged. The indoor east-side gallery leaves a {void_sqft:.1f} sq ft double-height opening between the gallery and stacked stair.',
         '- The living coffee table moves 400 mm east, opening an 800 mm gap to the sofa and clearing the tested route around dining to the ground stair.',
-        '- Ground room dimensions and original ground stair retained. New upper return stair connects the first interior arrival to an enclosed second landing and family hall. Guest bedroom absorbs the small balcony:10ft1⅜in ×16ft6⅞in. The small balcony connector and projecting corner are removed; large first terrace retained with opaque ivory parapets.',
+        '- Ground room dimensions and original ground stair retained. The upper stair follows the same South–West–North footprint, one floor above, reached through a new indoor passage beside the east glazing. An enclosed second landing and short return connect to the unchanged family hall. Its extra landing occupies part of the second-floor terrace. Hanging gold-disc pendants and their cords are removed; ceiling lights remain.',
+        f'- North first-floor bedroom: front portion widened one foot south to 11 ft 1⅜ in; rear width 10 ft 1⅜ in and east–west length 16 ft 6⅞ in. Stepped clear area {guest["area_m2"]/0.09290304:.1f} sq ft. Rear wall retained to preserve the 3 ft passage. Small balcony and connector remain removed; large first terrace retained with opaque ivory parapets.',
         '- Second floor: enclosed indoor stair landing, furnished family hall and open garden terrace, with planting at supported edges, open walking routes, large glazing and a shaded pergola.',
         '- Interior floors use 3200 × 1600 mm (approximately 10½ × 5¼ ft) ivory slabs. Outdoor variants have matte surfaces; teak joinery, substantial dark window frames, white fascia and timber soffits follow supplied references.',
         '', '## Coordination still needed','',

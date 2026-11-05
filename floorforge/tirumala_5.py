@@ -155,11 +155,11 @@ def build_project():
     cp['upperPlan']=upper_plan(plan)
     cp['floors'][1]['rooms']=[dict(id=r['id'],kind=r['kind'],name=r['name'],polygon=deepcopy(r['polygon'])) for r in cp['upperPlan']['rooms']]
     project['brief']['title']='Tirumala 5'
-    project['draftRevision']=3
+    project['draftRevision']=4
     project['notes']='Tirumala 5 — selected Plan A, based on Tirumala 4. 40 × 50 ft; 15 ft wide ICU; kitchen against south wall; 7 × 4.5 ft forecourt utility; dry pantry below high stair flight. Ground room sizes, ground staircase and parking retained. Living entrance shifted 100 mm north, ICU living opening 150 mm south, extra corner gap closed while drawing and rear-lobby access remain. ICU recliner head south, feet north. Utility screened in ivory and teak.'
     from .tirumala_5_upper import project_addition
     project_addition(project)
-    project['notes'] += ' G+2 revision: fully indoor return stair from the existing first-floor arrival to the enclosed second landing and family hall. First north guest bedroom absorbs the small balcony; connector and projecting corner removed. Main terrace retained with opaque ivory parapets. Living clear double-height opening is approximately 94 sq ft. Large 3200 × 1600 mm slabs, substantial glazing, teak joinery and coordinated roof/beam expression. Structural dimensions are architectural concept placeholders pending engineering.'
+    project['notes'] += ' G+2 revision: an indoor gallery beside the east glazing leads to a South–West–North upper staircase aligned directly above the original ground stair, with an enclosed second landing and family hall. The first north guest bedroom extends one foot south in its front portion; its rear wall retains the three-foot circulation passage. The small balcony, connector and projecting corner remain removed. Main terrace retained with opaque ivory parapets. The double-height opening remains beside the indoor gallery and the hanging disc pendants are removed. Large 3200 × 1600 mm slabs, substantial glazing, teak joinery and coordinated roof/beam expression. Structural dimensions are architectural concept placeholders pending engineering.'
     project['editorState']['customPlan']=deepcopy(cp)
     # JavaScript serializes 150.0 as 150; use the same numeric form before hashing.
     from .tirumala_p11_p12 import _browser_numbers

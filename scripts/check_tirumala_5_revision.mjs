@@ -11,6 +11,8 @@ const out = resolve(root, process.env.T5_CHECK_OUT || `evidence/tirumala-5-revis
 const {chromium} = await import(process.env.PLAYWRIGHT_MODULE || '/Users/rishabh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
 const building = JSON.parse(readFileSync(resolve(root, 'examples/gallery/tirumala-5/building.json'), 'utf8'));
 const plan = building.planning.canonicalPlan;
+const upper = building.planning.upperPlan;
+const second = building.planning.secondPlan;
 const results = {planHash: building.planHash, mode: upperOnly ? 'first-floor arrival → second → first' : 'full gate-to-roof round trip', started: new Date().toISOString(), checks: [], routes: [], interactions: [], errors: [], initialSpawns: 1, laterTeleports: 0};
 mkdirSync(out, {recursive: true});
 const browser = await chromium.launch({headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist']});
@@ -40,6 +42,12 @@ async function walk(name, x, y, h, options = {}) {
   }
   return result;
 }
+async function path(name, points, height) {
+  for (const [i, point] of points.entries()) {
+    await walk(`${name} ${i + 1}`, point[0] / 1000, point[1] / 1000,
+      point.length > 2 ? point[2] / 1000 : height);
+  }
+}
 async function door(id, desired = 1, exercise = false) {
   const sequence = exercise ? [desired === 1 ? 0 : 1, desired] : [desired];
   for (const wanted of sequence) {
@@ -64,9 +72,31 @@ async function door(id, desired = 1, exercise = false) {
 try {
   const aperture = id => plan.openings.find(o => o.id === id);
   const main = aperture('living-veranda'), icu = aperture('icu-glass-living');
-  const fresh = main?.a[0] === 7300 && Math.abs(icu?.a[0] - 5452.4) < .01 && building.openings.some(o => o.id === 's2-stair-terrace-proposed');
-  check('Generated files contain the approved junction and internal upper stair revision', fresh, {main: main?.a, icu: icu?.a, internalTerraceDoor: building.openings.some(o => o.id === 's2-stair-terrace-proposed')});
+  const fresh = main?.a[0] === 7300 && Math.abs(icu?.a[0] - 5452.4) < .01 &&
+    /stacked/.test(upper.revision) && second.stairs.some(s => s.id.startsWith('s2-west-')) &&
+    building.openings.some(o => o.id === 's2-stair-terrace-proposed');
+  check('Generated files contain the approved junction and stacked upper stair revision', fresh,
+    {main: main?.a, icu: icu?.a, upperRevision: upper.revision,
+      internalTerraceDoor: building.openings.some(o => o.id === 's2-stair-terrace-proposed')});
   if (!fresh) throw Error('Fresh Tirumala 5 build required; old geometry was not tested as the new revision.');
+  const guest = upper.rooms.find(r => r.id === 'u-bedroom');
+  const expectedGuestArea = (3082.4 * 5050 + 304.8 * 2850) / 1e6;
+  check('North bedroom gains one foot only at its front section, retaining the rear wall',
+    Math.abs(guest.area_m2 - expectedGuestArea) < .00001 &&
+    guest.polygon.some(p => Math.abs(p[0] - 8045.2) < .01) &&
+    guest.polygon.some(p => Math.abs(p[0] - 8350) < .01),
+    {areaSqFt: guest.area_m2 / .09290304, polygon: guest.polygon});
+  check('The first-floor connector is the approved indoor east-edge bridge',
+    upper.bridgeClearWidthMm === 1100 && upper.bridgeGrossWidthMm === 1200 &&
+    upper.circulationPaths.arrival_to_stair.every(p => p[1] >= 4875),
+    {clearWidthMm: upper.bridgeClearWidthMm, route: upper.circulationPaths.arrival_to_stair});
+  const hallEntry = building.openings.find(o => o.id === 's2-hall-entry');
+  const indoorLanding = building.spaces.find(s => s.id === 's2-indoor-landing');
+  check('Second-floor arrival is enclosed and roofed with the widened hall doorway',
+    indoorLanding?.enclosed === true && indoorLanding?.roofed === true &&
+    hallEntry?.width === 1000 && hallEntry?.a[1] === 9050 && hallEntry?.b[1] === 10050,
+    {enclosed: indoorLanding?.enclosed, roofed: indoorLanding?.roofed,
+      openingMm: hallEntry?.width, jambClearMm: hallEntry?.width - 110});
 
   page = await browser.newPage({viewport: {width: 1280, height: 900}});
   page.on('pageerror', e => results.errors.push(e.message));
@@ -196,32 +226,74 @@ try {
     ['First-floor stair arrival',5.7,8.35,3.508]
   ]) await walk(name,x,y,h);
   } else await walk('First-floor interior arrival',5.7,8.35,3.508);
+  // The guest extension is stepped: the widened front and the retained rear
+  // passage must both be usable with real collision and furnished rooms.
+  await walk('First gallery toward enlarged guest',7.4,8.35,3.508);
+  await walk('Enlarged guest doorway approach',7.4,8.7,3.508);
+  await door('u-bedroom-door',1,true);
+  await walk('Enter enlarged north bedroom',8.65,8.7,3.508);
+  // The inward-opening leaf lies across y=8.25 to x=8.8702 when open.
+  // Walk around its free end before testing the new front floor area.
+  await walk('Pass around open bedroom door',9.25,8.7,3.508);
+  await walk('Bedroom front beyond open door swing',9.25,7.25,3.508);
+  await walk('Use widened bedroom front portion',8.35,7.25,3.508);
+  await walk('Return around bedroom door free end',9.25,7.25,3.508);
+  await walk('Return behind open bedroom door',9.25,8.7,3.508);
+  await walk('Return through enlarged bedroom',8.65,8.7,3.508);
+  await walk('Back to guest gallery',7.4,8.7,3.508);
+  await door('u-bedroom-door',0);
+  const officeRoute = upper.circulationPaths.arrival_to_office.slice(2,-1);
+  await path('Retained rear gallery to office',officeRoute,3.508);
+  await door('u-office-door',1,true);
+  await walk('Enter retained first-floor office',8.8,12.025,3.508);
+  await walk('Return from office to retained three-foot gallery',7.7428,12.025,3.508);
+  await door('u-office-door',0);
+  await path('Return through stepped bedroom gallery',[...officeRoute].reverse(),3.508);
+  await walk('Return to main first-floor gallery',7.4,8.35,3.508);
+  await walk('Return to first-floor stair arrival',5.7,8.35,3.508);
   for (const [name,x,y,h] of [
-    ['First interior connector',5.7,7.15,3.508],
-    ['Internal upper-stair approach',4.45,7.15,3.508],['Upper south-flight landing',.7,7.15,5.262],
-    ['Upper turn landing',.7,8.35,5.262],['Second-floor indoor arrival',4.675,8.35,7.016]
+    ['First gallery to indoor bridge',6.9,8.35,3.508],
+    ['Turn onto east-edge indoor bridge',6.9,5.475,3.508],
+    ['Follow indoor bridge to stacked stair start',1.9,5.55,3.508],
+    ['Stacked south starter landing',.7,5.55,3.858],
+    ['Stacked west flight landing',.7,8.35,5.083],
+    ['Stacked north flight upper landing',3.95,8.35,6.658],
+    ['Second-floor indoor arrival',5.7,8.35,7.016],
+    ['Enclosed second-floor hall approach',5.95,9.55,7.016],
   ]) await walk(name,x,y,h);
   await screenshot('second-indoor-arrival');
   await door('s2-hall-entry',1,true);
-  await walk('Second-floor hall entry',4.675,9.7,7.016);
+  await walk('Second-floor hall entry',4.675,9.55,7.016);
+  // The open hall door projects west along y=10.05. Follow the actual
+  // furnished-room aisle around its free end instead of through its leaf.
+  await walk('Hall entry around open door free end',3.95,9.55,7.016);
+  await walk('Hall clear of inward door swing',3.95,10.5,7.016);
+  await walk('Hall furniture aisle beyond door swing',4.675,10.5,7.016);
   await walk('Second-floor hall garden-door approach',4.675,13.25,7.016);
   await door('s2-hall-garden',1,true);
   await walk('Hall to roof garden terrace',6.1,13.25,7.016);
   await screenshot('second-garden-terrace');
   await walk('Return from garden into hall',4.675,13.25,7.016);
-  await walk('Hall back to indoor landing',4.675,8.35,7.016);
-  await walk('Indoor terrace-door operating clearance',4.675,8.2,7.016);
+  await walk('Hall return along furniture aisle',4.675,10.5,7.016);
+  await walk('Hall return beyond inward door swing',3.95,10.5,7.016);
+  await walk('Hall return around open door free end',3.95,9.55,7.016);
+  await walk('Hall back to indoor-door approach',4.675,9.55,7.016);
+  await walk('Hall back to indoor landing',5.95,9.55,7.016);
+  await walk('Indoor terrace-door landing approach',5.95,8.55,7.016);
+  await walk('Indoor terrace-door operating clearance',5.5,8.55,7.016);
   await door('s2-stair-terrace-proposed',1,true);
-  await walk('Indoor terrace-door approach',4.675,7.15,7.016);
-  await walk('Indoor landing directly to terrace',5.95,7.15,7.016);
-  await walk('Terrace back to indoor landing',4.675,7.15,7.016);
-  await walk('Step clear of terrace door before closing',4.675,8.2,7.016);
+  await walk('Indoor landing directly to terrace',7.15,8.4,7.016);
+  await walk('Terrace back to indoor landing',5.5,8.55,7.016);
   await door('s2-stair-terrace-proposed',0);
-  await walk('Second-floor stair descent approach',4.675,8.35,7.016);
+  await walk('Second-floor stair descent approach',5.7,8.35,7.016);
   for (const [name,x,y,h] of [
-    ['Descend upper north flight',.7,8.35,5.262],['Return across intermediate landing',.7,7.15,5.262],
-    ['Descend upper south flight',4.25,7.15,3.508],['Back in first-floor interior',5.7,7.15,3.508],
-    ['First arrival for ground descent',5.7,8.35,3.508]
+    ['Descend stacked arrival connector',3.95,8.35,6.658],
+    ['Descend stacked north flight',.7,8.35,5.083],
+    ['Descend stacked west flight',.7,5.55,3.858],
+    ['Descend stacked south starter',1.9,5.55,3.508],
+    ['Return along indoor bridge',6.9,5.475,3.508],
+    ['Return to first-floor gallery',6.9,8.35,3.508],
+    ['First arrival for ground descent',5.7,8.35,3.508],
   ]) await walk(name,x,y,h);
   if (!upperOnly) for (const [name,x,y,h] of [
     ['Descend to ground stair landing',.7,8.35,1.575],

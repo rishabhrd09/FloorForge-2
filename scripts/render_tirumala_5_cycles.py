@@ -11,6 +11,7 @@ Camera poses come from the delivered scene, including their real floor heights.
 """
 import argparse
 import copy
+import hashlib
 import json
 import math
 import sys
@@ -139,6 +140,9 @@ def scene_camera(data, key, args):
 def main():
     args = arguments()
     data = json.loads(args.scene.read_text())
+    provenance = dict(planHash=data['planHash'],
+                      sceneSha256=hashlib.sha256(args.scene.read_bytes()).hexdigest(),
+                      glbSha256=hashlib.sha256(args.glb.read_bytes()).hexdigest())
     keys = args.cameras or ['exterior_northeast', 'interior_kitchen_living_dining', 'second_terrace']
     missing = [k for k in keys if k not in data['cameras']]
     if missing:
@@ -166,7 +170,7 @@ def main():
         stem = key + '-' + args.grade
         output = (args.out / (stem + '.png')).resolve()
         sc.render.filepath = str(output)
-        record = dict(camera=key, image=str(output), scene=str(args.scene.resolve()),
+        record = dict(**provenance, camera=key, image=str(output), scene=str(args.scene.resolve()),
                       glb=str(args.glb.resolve()), geometry='delivered presentation GLB; no scaling',
                       position=list(camera.location), target=data['cameras'][key]['target'],
                       fov=data['cameras'][key].get('fov', 62), width=args.width, height=args.height,
@@ -178,6 +182,7 @@ def main():
         if args.blend:
             bpy.ops.wm.save_as_mainfile(filepath=str((args.out / (stem + '.blend')).resolve()))
         bpy.ops.render.render(write_still=True)
+        record['imageSha256'] = hashlib.sha256(output.read_bytes()).hexdigest()
         manifest.append(record)
         (args.out / 'render-manifest.json').write_text(json.dumps(manifest, indent=2))
         print('TIRUMALA5_RENDER ' + json.dumps(record), flush=True)

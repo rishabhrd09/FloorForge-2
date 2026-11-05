@@ -117,11 +117,31 @@ def test_utility_privacy_retains_window_air_gaps_and_north_access(delivery):
     assert max(_world_vertices(scene, n)[:, 0].max() for n in retained) == pytest.approx(8.042)
 
 
-def test_upper_revision_clears_retired_details_and_relocates_complete_pendants(delivery):
+@pytest.mark.parametrize('positions', [
+    [(3.1,6.35), (3.65,6.55), (4.05,6.15)],
+    [(3.1,5.8), (3.65,6.0), (4.05,5.65)],
+])
+def test_upper_revision_removes_complete_pendants_but_preserves_downlights(delivery, positions):
     scene, building = map(copy.deepcopy, delivery)
     retired = {'u-side-terrace-door', 'u-bedroom-terrace', 's2-stair-entry'}
     building['openings'][:] = [o for o in building['openings'] if o['id'] not in retired]
-    building['planning']['upperPlan']['void'] = [[1250,4875], [6300,4875], [6300,6600], [1250,6600]]
+    # Exercise both original and previously relocated clusters independently
+    # of whether the checked-in delivery already has the new finish applied.
+    _upper_revision_cleanup(scene, building)
+    remaining_fixtures = [copy.deepcopy(n) for n in scene['nodes'] if n.get('role') == 'fixture']
+    remaining_lights = copy.deepcopy(scene['lights'])
+    pendant_ids = set()
+    for group, ((x,y), drop) in enumerate(zip(positions, [0,.30,-.20])):
+        z = 4.3 + drop
+        for part, material, height, scale in [
+            ('cord','brass',(z+6.996)/2,[.006,.006,6.996-z]),
+            ('disc','brass',z,[.18,.18,.05]),
+            ('diffuser','lamp',z-.029,[.16,.16,.008]),
+        ]:
+            ident = f'fixture-atrium-{group}-{part}'
+            pendant_ids.add(ident)
+            scene['nodes'].append(dict(id=ident,owner=ident,asset='unit-cylinder',floor=1,
+                role='fixture',material=material,position=[x,y,height],scale=scale,rotation=[0,0,0]))
     before = copy.deepcopy(building)
     _upper_revision_cleanup(scene, building)
     for node in scene['nodes']:
@@ -130,12 +150,12 @@ def test_upper_revision_clears_retired_details_and_relocates_complete_pendants(d
                        for ident in retired for prefix in ('op-', 't4-exterior-finish-op-', 't5lux-reveal-'))
     assert not any('s2-stair-entry-canopy' == n['id'] for n in scene['nodes'])
     assert not retired.intersection(scene['door_motion'])
-    moved = [n for n in scene['nodes'] if n.get('floor') == 1 and n.get('role') == 'fixture'
-             and n['asset'] == 'unit-cylinder' and n['position'][2] > 4
-             and any(abs(n['position'][0]-x)<1e-6 and abs(n['position'][1]-y)<1e-6
-                     for x,y in [(3.1,5.8), (3.65,6.0), (4.05,5.65)])]
-    assert len(moved) == 9
-    assert all(_world_vertices(scene,n)[:,1].max() < 6.6 for n in moved)
+    assert not pendant_ids.intersection(n['id'] for n in scene['nodes'])
+    assert [n for n in scene['nodes'] if n.get('role') == 'fixture'] == remaining_fixtures
+    assert scene['lights'] == remaining_lights
+    assert scene['tirumala5Finish']['upperCleanup']['pendantPartsRemoved'] == 9
+    assert scene['tirumala5Finish']['upperCleanup']['pendantGroupsRemoved'] == 3
+    assert scene['tirumala5Finish']['upperCleanup']['suspendedAtriumDecoration'] is False
     assert building == before
 
 

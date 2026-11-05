@@ -1,0 +1,8 @@
+{
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "command": ".venv/bin/python -m pytest tests/test_tirumala_5.py tests/test_tirumala_5_g2.py tests/test_tirumala_5_finishes.py tests/test_exports.py -q",
+  "exitCode": 0,
+  "passed": 41,
+  "durationSeconds": 4.15,
+  "source": "Observed exec session 54479 completion: 41 passed in 4.15s"
+}

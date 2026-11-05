@@ -1,87 +1,466 @@
 {
-  "images": [
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "html": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html",
+    "sha256": "63e2550d3f2d4b42dc53a066ef42ef671b70222d97e765eba878a9e6e4505a4a",
+    "bytes": 17331
+  },
+  "audit": "Static local references and image decoding only",
+  "localReferences": [
     {
-      "src": "cycles-revision/exterior_northeast-day.png",
-      "ok": true
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "98ce539c151631fcb6c51e635ecd9a4715196a7d3327d9e77f63fb06eedd596e"
     },
     {
-      "src": "plan-2d-dimensioned.png",
-      "ok": true
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "98ce539c151631fcb6c51e635ecd9a4715196a7d3327d9e77f63fb06eedd596e"
     },
     {
-      "src": "plan-first-floor.png",
-      "ok": true
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/drawings.pdf",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+      "exists": true,
+      "sha256": "50c9446caeb33d8e6f6313aec520aa3d78e75d12db25766a4006e0f32eaae564"
     },
     {
-      "src": "plan-second-floor.png",
-      "ok": true
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/FloorForge-export.zip",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+      "exists": true,
+      "sha256": "b47f3b593eafa5457fc78da3c9b5e9fa55b1b026de68b688c30f322756fc7409"
     },
     {
-      "src": "cycles-revision/interior/interior_veranda_living-day.png",
-      "ok": true
+      "tag": "a",
+      "reference": "cycles-revision/exterior_northeast-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+      "exists": true,
+      "sha256": "ce4edb07a88bf8217cfd4b1502e577dae5a88f015f7e7031353979f264140418"
     },
     {
-      "src": "interior-icu-veranda-garden.png",
-      "ok": true
+      "tag": "img",
+      "reference": "cycles-revision/exterior_northeast-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+      "exists": true,
+      "sha256": "ce4edb07a88bf8217cfd4b1502e577dae5a88f015f7e7031353979f264140418",
+      "dimensions": [
+        1600,
+        1040
+      ],
+      "imageDecodes": true
     },
     {
-      "src": "upper-gallery.png",
-      "ok": true
+      "tag": "a",
+      "reference": "plan-2d-dimensioned.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+      "exists": true,
+      "sha256": "67a79ae7ad352218e60fe867ebbd506be4694f0dfd3255a582a2f67991d3ebac"
     },
     {
-      "src": "upper-guest.png",
-      "ok": true
+      "tag": "img",
+      "reference": "plan-2d-dimensioned.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+      "exists": true,
+      "sha256": "67a79ae7ad352218e60fe867ebbd506be4694f0dfd3255a582a2f67991d3ebac",
+      "dimensions": [
+        3200,
+        4200
+      ],
+      "imageDecodes": true
     },
     {
-      "src": "second-stair-arrival.png",
-      "ok": true
+      "tag": "a",
+      "reference": "plan-first-floor.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+      "exists": true,
+      "sha256": "6badc2705f63a892de7b64e561f7926067a492c9d4ad748426b38154f6e27dff"
     },
     {
-      "src": "second-terrace.png",
-      "ok": true
+      "tag": "img",
+      "reference": "plan-first-floor.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+      "exists": true,
+      "sha256": "6badc2705f63a892de7b64e561f7926067a492c9d4ad748426b38154f6e27dff",
+      "dimensions": [
+        1960,
+        2900
+      ],
+      "imageDecodes": true
     },
     {
-      "src": "upper-terrace.png",
-      "ok": true
+      "tag": "a",
+      "reference": "plan-second-floor.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+      "exists": true,
+      "sha256": "9faa6c836c303ee2dc28a2315e0338b49281bf869ad51fe3d2f067fafa6aefc9"
     },
     {
-      "src": "forecourt-utility.png",
-      "ok": true
+      "tag": "img",
+      "reference": "plan-second-floor.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+      "exists": true,
+      "sha256": "9faa6c836c303ee2dc28a2315e0338b49281bf869ad51fe3d2f067fafa6aefc9",
+      "dimensions": [
+        1960,
+        2900
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-revision/interior_veranda_living-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior_veranda_living-day.png",
+      "exists": true,
+      "sha256": "1f49a4a4abf655a17e990606e214868fd26d07f8656cb4313d8739f9eb60d9e4"
+    },
+    {
+      "tag": "img",
+      "reference": "cycles-revision/interior_veranda_living-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior_veranda_living-day.png",
+      "exists": true,
+      "sha256": "1f49a4a4abf655a17e990606e214868fd26d07f8656cb4313d8739f9eb60d9e4",
+      "dimensions": [
+        1600,
+        1040
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "interior-icu-veranda-garden.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+      "exists": true,
+      "sha256": "a58081989c7eceb0b14ac6441da0325521ceb048353bcce0bc53fe6aa30fb94e"
+    },
+    {
+      "tag": "img",
+      "reference": "interior-icu-veranda-garden.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+      "exists": true,
+      "sha256": "a58081989c7eceb0b14ac6441da0325521ceb048353bcce0bc53fe6aa30fb94e",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-revision/first_stair_up-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/first_stair_up-day.png",
+      "exists": true,
+      "sha256": "e6f8a1133da60280621e3cedffb95f7c76bc66fbcb0d5faeea690977754df9ec"
+    },
+    {
+      "tag": "img",
+      "reference": "cycles-revision/first_stair_up-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/first_stair_up-day.png",
+      "exists": true,
+      "sha256": "e6f8a1133da60280621e3cedffb95f7c76bc66fbcb0d5faeea690977754df9ec",
+      "dimensions": [
+        1600,
+        1040
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-revision/upper_guest-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_guest-day.png",
+      "exists": true,
+      "sha256": "a7fe38508316e422511c7c6593e2111776ff11892e0de4592b4f85078fd6c93c"
+    },
+    {
+      "tag": "img",
+      "reference": "cycles-revision/upper_guest-day.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_guest-day.png",
+      "exists": true,
+      "sha256": "a7fe38508316e422511c7c6593e2111776ff11892e0de4592b4f85078fd6c93c",
+      "dimensions": [
+        1600,
+        1040
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "second-stair-arrival.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+      "exists": true,
+      "sha256": "a21152e576b22916931a9a5ace2edf097081ce0ef965fe77f630a4b5d8a1bcb2"
+    },
+    {
+      "tag": "img",
+      "reference": "second-stair-arrival.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+      "exists": true,
+      "sha256": "a21152e576b22916931a9a5ace2edf097081ce0ef965fe77f630a4b5d8a1bcb2",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "second-terrace.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+      "exists": true,
+      "sha256": "5c275c7587ab936939fffd193ce3249a6930a12bb9f2216e38f513f9035aa1cd"
+    },
+    {
+      "tag": "img",
+      "reference": "second-terrace.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+      "exists": true,
+      "sha256": "5c275c7587ab936939fffd193ce3249a6930a12bb9f2216e38f513f9035aa1cd",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "upper-terrace.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+      "exists": true,
+      "sha256": "cd35eab4d01d923ba52d0c1075c5cd3da679c0820a276169e867a672ef347d38"
+    },
+    {
+      "tag": "img",
+      "reference": "upper-terrace.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+      "exists": true,
+      "sha256": "cd35eab4d01d923ba52d0c1075c5cd3da679c0820a276169e867a672ef347d38",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "forecourt-utility.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+      "exists": true,
+      "sha256": "c53dd584fd1f3fc46a2c6cea73b96692bacc0dace04c0bc86a7648fbb6bf9e52"
+    },
+    {
+      "tag": "img",
+      "reference": "forecourt-utility.png",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+      "exists": true,
+      "sha256": "c53dd584fd1f3fc46a2c6cea73b96692bacc0dace04c0bc86a7648fbb6bf9e52",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "98ce539c151631fcb6c51e635ecd9a4715196a7d3327d9e77f63fb06eedd596e"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/drawings.pdf",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+      "exists": true,
+      "sha256": "50c9446caeb33d8e6f6313aec520aa3d78e75d12db25766a4006e0f32eaae564"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/FloorForge-export.zip",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+      "exists": true,
+      "sha256": "b47f3b593eafa5457fc78da3c9b5e9fa55b1b026de68b688c30f322756fc7409"
+    },
+    {
+      "tag": "a",
+      "reference": "../../evidence/tirumala-5-g2/references/review.txt",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-g2/references/review.txt",
+      "exists": true,
+      "sha256": "0bfde9a5ce5928c1f6d546ea725d5bf6597db570a32a28d5024f36772d2e43dc"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/DESIGN_GUIDE.md",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/DESIGN_GUIDE.md",
+      "exists": true,
+      "sha256": "58c6285c353bd5c2aeea1d4004acb944591b6d0d8ebbc9e2e94708f175a52826"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/specifications.json",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/specifications.json",
+      "exists": true,
+      "sha256": "3c66acc1044e6e6c7c09527380c87865846974508fdf715e0852246707ccb0c3"
+    },
+    {
+      "tag": "a",
+      "reference": "browser-checks.json",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+      "exists": true,
+      "sha256": "70f8d2052e1eac54770737ced28e18aecbb52aeab692ef6cf3d52195fde89b28"
+    },
+    {
+      "tag": "a",
+      "reference": "../../evidence/tirumala-5-stacked-final/runtime-acceptance.json",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-stacked-final/runtime-acceptance.json",
+      "exists": true,
+      "sha256": "9384936c447271d20c622757235cdbd209dbfa3c11fea55ccf446d5c6d7de326"
     }
   ],
-  "links": [
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html#plans",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/interior_veranda_living-day.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-gallery.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-guest.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
-    "https://www.laminam.com/usa/en/sizes-and-thickness/",
-    "https://www.schueco.com/schueco/architects/products/sliding-systems",
-    "https://www.iitk.ac.in/nicee/EQTips/EQTip25.pdf",
+  "missingFiles": [],
+  "externalLinksNotFetched": [
     "https://stg.wbdg.org/resources/extensive-vegetative-roofs",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-g2/references/review.txt",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/DESIGN_GUIDE.md",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/specifications.json",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
-    "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision/runtime-acceptance.json"
+    "https://www.iitk.ac.in/nicee/EQTips/EQTip25.pdf",
+    "https://www.laminam.com/usa/en/sizes-and-thickness/",
+    "https://www.schueco.com/schueco/architects/products/sliding-systems"
   ],
   "desktopOverflow": false,
-  "missingFiles": [],
   "mobileOverflow": false,
-  "errors": []
+  "responsiveLayoutStatus": "Verified by the recorded browser checks",
+  "passed": true,
+  "responsive": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/responsive-qa.json",
+      "sha256": "ac17eecfb422234c2d4a038b62fbda978dbdcbc104b29b3db097cc76670fe09c",
+      "bytes": 2954
+    },
+    "results": [
+      {
+        "width": 1440,
+        "pass": true,
+        "detail": {
+          "width": 1440,
+          "scrollWidth": 1440,
+          "images": [
+            {
+              "src": "cycles-revision/exterior_northeast-day.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-2d-dimensioned.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-first-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-second-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/interior_veranda_living-day.png",
+              "loaded": true
+            },
+            {
+              "src": "interior-icu-veranda-garden.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/first_stair_up-day.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/upper_guest-day.png",
+              "loaded": true
+            },
+            {
+              "src": "second-stair-arrival.png",
+              "loaded": true
+            },
+            {
+              "src": "second-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "upper-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "forecourt-utility.png",
+              "loaded": true
+            }
+          ]
+        },
+        "errors": []
+      },
+      {
+        "width": 390,
+        "pass": true,
+        "detail": {
+          "width": 390,
+          "scrollWidth": 390,
+          "images": [
+            {
+              "src": "cycles-revision/exterior_northeast-day.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-2d-dimensioned.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-first-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "plan-second-floor.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/interior_veranda_living-day.png",
+              "loaded": true
+            },
+            {
+              "src": "interior-icu-veranda-garden.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/first_stair_up-day.png",
+              "loaded": true
+            },
+            {
+              "src": "cycles-revision/upper_guest-day.png",
+              "loaded": true
+            },
+            {
+              "src": "second-stair-arrival.png",
+              "loaded": true
+            },
+            {
+              "src": "second-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "upper-terrace.png",
+              "loaded": true
+            },
+            {
+              "src": "forecourt-utility.png",
+              "loaded": true
+            }
+          ]
+        },
+        "errors": []
+      }
+    ],
+    "passed": true
+  }
 }

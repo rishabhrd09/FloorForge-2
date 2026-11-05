@@ -1,87 +1,212 @@
 {
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "baseline": {
+    "path": "/private/tmp/tirumala5-pre-stacked.json",
+    "sha256": "92243c9cbce71b4cc0fa4a4668bfd98481f0afd1b952948279950b8308452418",
+    "bytes": 251780
+  },
   "plotUnchanged": true,
+  "ground": {
+    "spacesUnchanged": true,
+    "wallsUnchanged": true,
+    "openingsUnchanged": true,
+    "stairsUnchanged": true
+  },
   "roomDifferences": [
     {
-      "room": "u-terrace",
-      "differenceMm2": 685732.8000000003
+      "room": "s2-indoor-landing",
+      "floor": 2,
+      "differenceMm2": 7551774.999999999,
+      "beforeSqFt": 31.827591432960656,
+      "afterSqFt": 87.06555781167118,
+      "areaChangeSqFt": 55.23796637871053,
+      "authorized": true
+    },
+    {
+      "room": "s2-terrace",
+      "floor": 2,
+      "differenceMm2": 5798309.999999999,
+      "beforeSqFt": 646.0575498928777,
+      "afterSqFt": 583.6450604845655,
+      "areaChangeSqFt": -62.412489408312155,
+      "authorized": true
+    },
+    {
+      "room": "u-bedroom",
+      "floor": 1,
+      "differenceMm2": 868680.0000000005,
+      "beforeSqFt": 167.55232121575352,
+      "afterSqFt": 176.90271491654093,
+      "areaChangeSqFt": 9.350393700787402,
+      "authorized": true
+    },
+    {
+      "room": "u-gallery",
+      "floor": 1,
+      "differenceMm2": 9390120.0,
+      "beforeSqFt": 169.33848451030238,
+      "afterSqFt": 191.61848740364144,
+      "areaChangeSqFt": 22.28000289333908,
+      "authorized": true
     }
   ],
   "unchangedRooms": [
     {
-      "room": "g-bedroom",
-      "differenceMm2": 0.0
+      "room": "g-access-lobby",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 28.051181102362197,
+      "afterSqFt": 28.051181102362197,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-bath",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 47.99999999999999,
+      "afterSqFt": 47.99999999999999,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "g-bedroom",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 276.69235151680294,
+      "afterSqFt": 276.69235151680294,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-care",
-      "differenceMm2": 0.0
-    },
-    {
-      "room": "g-drawing",
-      "differenceMm2": 0.0
-    },
-    {
-      "room": "g-caregiver",
-      "differenceMm2": 0.0
-    },
-    {
-      "room": "g-caregiver-bath",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 201.0629921259843,
+      "afterSqFt": 201.0629921259843,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-care-court",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 26.640678281356564,
+      "afterSqFt": 26.640678281356564,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "g-access-lobby",
-      "differenceMm2": 0.0
+      "room": "g-caregiver",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 92.17036600739868,
+      "afterSqFt": 92.17036600739868,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "g-veranda",
-      "differenceMm2": 0.0
+      "room": "g-caregiver-bath",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 37.58757516895033,
+      "afterSqFt": 37.58757516895033,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "g-wash-gully",
-      "differenceMm2": 0.0
+      "room": "g-drawing",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 106.17176789909134,
+      "afterSqFt": 106.17176789909134,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-kitchen",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 134.9284156901647,
+      "afterSqFt": 134.9284156901647,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-living",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 238.44179221691778,
+      "afterSqFt": 238.44179221691778,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "g-stair",
-      "differenceMm2": 0.0
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 80.51404991698872,
+      "afterSqFt": 80.51404991698872,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "u-master",
-      "differenceMm2": 0.0
+      "room": "g-veranda",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 100.51147432850422,
+      "afterSqFt": 100.51147432850422,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "u-master-bath",
-      "differenceMm2": 0.0
+      "room": "g-wash-gully",
+      "floor": 0,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 31.5,
+      "afterSqFt": 31.5,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "u-study",
-      "differenceMm2": 0.0
-    },
-    {
-      "room": "u-bedroom",
-      "differenceMm2": 0.0
+      "room": "s2-hall",
+      "floor": 2,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 294.6038880966651,
+      "afterSqFt": 294.6038880966651,
+      "areaChangeSqFt": 0.0
     },
     {
       "room": "u-bath",
-      "differenceMm2": 0.0
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 37.58757455514912,
+      "afterSqFt": 37.58757455514912,
+      "areaChangeSqFt": 0.0
     },
     {
-      "room": "u-gallery",
-      "differenceMm2": 0.0
+      "room": "u-master",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 276.69235221969063,
+      "afterSqFt": 276.69235221969063,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "u-master-bath",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 47.99999999999997,
+      "afterSqFt": 47.99999999999997,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "u-study",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 92.17036600739868,
+      "afterSqFt": 92.17036600739868,
+      "areaChangeSqFt": 0.0
+    },
+    {
+      "room": "u-terrace",
+      "floor": 1,
+      "differenceMm2": 0.0,
+      "beforeSqFt": 318.491536983074,
+      "afterSqFt": 318.491536983074,
+      "areaChangeSqFt": 0.0
     }
-  ]
+  ],
+  "passed": true
 }

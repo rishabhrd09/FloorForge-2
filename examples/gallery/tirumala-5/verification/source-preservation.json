@@ -1,5 +1,17 @@
 {
-  "filesChecked": 211,
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "baseline": {
+    "path": "/private/tmp/tirumala5-other-samples-baseline.json",
+    "sha256": "e39f931b7c124dbecaddcd04978dbfc6b6aa60327c7159e2321940686b753094",
+    "bytes": 43705
+  },
+  "filesChecked": 445,
   "changed": [],
+  "missing": [],
+  "added": [],
   "passed": true
 }
