@@ -1,0 +1,135 @@
+{
+  "checks": [
+    {
+      "name": "Actual plot, units, front and survey controls reach selected backend values",
+      "pass": true
+    },
+    {
+      "name": "Plot plus survey produces measured one-floor geometry without AI",
+      "pass": true
+    },
+    {
+      "name": "Changing the survey changes room geometry and geometry identity",
+      "pass": true
+    },
+    {
+      "name": "Enabled written dimensions create a real measurement question",
+      "pass": true
+    },
+    {
+      "name": "Text-only selection consumes measured text while excluding plot and survey",
+      "pass": true
+    },
+    {
+      "name": "Text-only room goal produces the measured two-bedroom canonical plan",
+      "pass": true
+    },
+    {
+      "name": "Use this description checkbox actually excludes its parsed requirements",
+      "pass": true
+    },
+    {
+      "name": "Method-level text exclusion retains original words but ignores their values",
+      "pass": true
+    },
+    {
+      "name": "Excluded survey requests a room goal instead of applying hidden counts",
+      "pass": true
+    },
+    {
+      "name": "Autosaved unresolved input conflicts restore as editable drafts",
+      "pass": true
+    },
+    {
+      "name": "Compass offers all five maintained grids",
+      "pass": true
+    },
+    {
+      "name": "4x4 selector updates saved allocation basis and visible cells",
+      "pass": true
+    },
+    {
+      "name": "4x5 selector updates saved allocation basis and visible cells",
+      "pass": true
+    },
+    {
+      "name": "4x6 selector updates saved allocation basis and visible cells",
+      "pass": true
+    },
+    {
+      "name": "5x5 selector updates saved allocation basis and visible cells",
+      "pass": true
+    },
+    {
+      "name": "6x7 selector updates saved allocation basis and visible cells",
+      "pass": true
+    },
+    {
+      "name": "Arrow navigation and Enter open a room picker without dragging",
+      "pass": true
+    },
+    {
+      "name": "Room catalogue names all 28 types",
+      "pass": true
+    },
+    {
+      "name": "Keyboard-selected cell gets a stable room allocation",
+      "pass": true
+    },
+    {
+      "name": "Touch placement retains LR half-cell ownership",
+      "pass": true
+    },
+    {
+      "name": "Touch placement retains FB half-cell ownership",
+      "pass": true
+    },
+    {
+      "name": "Undo reverses the latest touch allocation",
+      "pass": true
+    },
+    {
+      "name": "Redo restores both split directions and stable room identities",
+      "pass": true
+    },
+    {
+      "name": "Both split axes reach actual measured room polygons",
+      "pass": true
+    },
+    {
+      "name": "Occupied 4x4 ground and first maps compile every requested floor",
+      "pass": true
+    },
+    {
+      "name": "Full 16-cell maps retain floor switching and front road",
+      "pass": true
+    },
+    {
+      "name": "First floor keeps complete ownership after switching",
+      "pass": true
+    },
+    {
+      "name": "Occupied 4x5 ground and first maps compile every requested floor",
+      "pass": true
+    },
+    {
+      "name": "Occupied 4x6 ground and first maps compile every requested floor",
+      "pass": true
+    },
+    {
+      "name": "Occupied 5x5 ground and first maps compile every requested floor",
+      "pass": true
+    },
+    {
+      "name": "Occupied 6x7 ground and first maps compile every requested floor",
+      "pass": true
+    },
+    {
+      "name": "No browser exceptions in input selection or accessible Compass editing",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-inputs-egpo2S",
+  "serverErrors": ""
+}

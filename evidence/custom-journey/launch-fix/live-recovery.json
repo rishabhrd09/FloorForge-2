@@ -1,0 +1,18 @@
+[
+  {
+    "origin": "http://127.0.0.1:57594/",
+    "status": 200,
+    "journey_api_version": 1,
+    "loaded_build_id": "b59951ba99262852df407ad8d48278f32af93cdbaf32806c97e36dd4e7e40fba",
+    "disk_build_id": "b59951ba99262852df407ad8d48278f32af93cdbaf32806c97e36dd4e7e40fba",
+    "restart_required": false
+  },
+  {
+    "origin": "http://127.0.0.1:8912/",
+    "status": 200,
+    "journey_api_version": 1,
+    "loaded_build_id": "b59951ba99262852df407ad8d48278f32af93cdbaf32806c97e36dd4e7e40fba",
+    "disk_build_id": "b59951ba99262852df407ad8d48278f32af93cdbaf32806c97e36dd4e7e40fba",
+    "restart_required": false
+  }
+]

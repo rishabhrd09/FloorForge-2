@@ -1,0 +1,24 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.0.2, pluggy-1.6.0 -- /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home
+configfile: pytest.ini
+collecting ... collected 15 items
+
+tests/test_journey_http.py::test_disabled_compass_flag_blocks_mutating_consumers_and_keeps_draft_readable PASSED [  6%]
+tests/test_journey_http.py::test_http_generation_has_no_metadata_bypass_of_approval[project0] PASSED [ 13%]
+tests/test_journey_http.py::test_http_generation_has_no_metadata_bypass_of_approval[project1] PASSED [ 20%]
+tests/test_journey_http.py::test_http_generation_has_no_metadata_bypass_of_approval[project2] PASSED [ 26%]
+tests/test_journey_http.py::test_http_generation_has_no_metadata_bypass_of_approval[project3] PASSED [ 33%]
+tests/test_journey_http.py::test_http_generation_has_no_metadata_bypass_of_approval[project4] PASSED [ 40%]
+tests/test_journey_http.py::test_inputs_endpoint_restores_conflicting_and_invalid_drafts_without_publication PASSED [ 46%]
+tests/test_journey_http.py::test_disabled_text_identity_and_provenance_survive_actual_http_preparation PASSED [ 53%]
+tests/test_journey_http.py::test_unknown_or_malformed_preparation_ids_are_recoverable_http_errors[/api/design/approve-body0] PASSED [ 60%]
+tests/test_journey_http.py::test_unknown_or_malformed_preparation_ids_are_recoverable_http_errors[/api/design/approve-body1] PASSED [ 66%]
+tests/test_journey_http.py::test_unknown_or_malformed_preparation_ids_are_recoverable_http_errors[/api/design/confirm-body2] PASSED [ 73%]
+tests/test_journey_http.py::test_malformed_json_and_unknown_preparation_download_do_not_break_server PASSED [ 80%]
+tests/test_journey_http.py::test_cancellation_endpoints_require_token_and_local_origin PASSED [ 86%]
+tests/test_journey_http.py::test_render_rejects_missing_and_malformed_build_without_starting_blender PASSED [ 93%]
+tests/test_journey_http.py::test_three_floor_http_approval_generation_and_downloads_share_geometry PASSED [100%]
+
+============================= 15 passed in 10.77s ==============================

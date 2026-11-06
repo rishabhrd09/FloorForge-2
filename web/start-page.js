@@ -31,7 +31,7 @@ class FloorForgeStartPage {
   this.$('journey-action').onclick=()=>this.options.next(this.source,this.ai);
   this.$('journey-dismiss').onclick=()=>{this.$('journey-guide').hidden=true;};
  }
- setReady(){this.ready=true;document.querySelectorAll('[data-start]').forEach(b=>b.disabled=false);this.$('start-status').textContent='Ready when you are. Your work stays on this device.';}
+ setReady(){this.ready=true;document.querySelectorAll('[data-start]').forEach(b=>b.disabled=false);this.$('start-status').textContent=this.options.serverMessage?.()||'Ready when you are. Your work stays on this device.';}
  show(){if(!this.ready)return;this.dismissSetup(false);this.options.save();document.body.classList.add('at-start');this.$('start-page').hidden=false;document.querySelector('.workspace').hidden=true;this.options.pause(true);window.scrollTo(0,0);this.$('start-title').focus();}
  enter(){this.$('start-setup').hidden=true;document.body.classList.remove('setting-up','at-start');this.$('start-page').hidden=true;document.querySelector('.workspace').hidden=false;this.options.pause(false);window.scrollTo(0,0);requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));}
  choose(id){
@@ -39,6 +39,9 @@ class FloorForgeStartPage {
   if(id==='samples'||id==='customize'){this.options.samples(id==='customize');return;}
   if(id==='saved'){this.saved();return;}
   this.$('start-setup-form').reset();this.setupUnit='ft';this.selectedInputs=new Set(id==='import'?['dxf']:this.options.compassEnabled()?['plot','compass']:['plot','survey']);
+  this.setupMode=id;
+  try{const saved=JSON.parse(sessionStorage.getItem('floorforge-start-draft-v1')||'null');if(saved?.mode===id){const kinds=new Set(FloorForgeHomeInputs.choices.map(([kind])=>kind));this.selectedInputs=new Set((saved.inputs||[]).filter(kind=>kinds.has(kind)));for(const [field,value]of Object.entries(saved.values||{})){if(!this.setupFields().includes(field))continue;const input=this.$(field);if(field==='start-local')input.checked=value===true;else input.value=String(value);}this.setupUnit=this.$('start-units').value;}}catch{}
+  this.$('start-setup-status').textContent=this.options.serverMessage?.()||'';
   this.renderInputs();this.summary();this.$('start-page').hidden=true;document.querySelector('.workspace').hidden=true;this.$('start-setup').hidden=false;document.body.classList.add('setting-up');this.options.pause(true);window.scrollTo(0,0);this.$('start-setup-title').focus();
  }
  dismissSetup(focus=true){this.$('start-setup').hidden=true;document.body.classList.remove('setting-up');this.$('start-page').hidden=false;if(focus){window.scrollTo(0,0);document.querySelector('[data-start="new"]').focus();}}
@@ -64,7 +67,9 @@ class FloorForgeStartPage {
    const inputs=[...this.selectedInputs];if(!inputs.length)throw Error('Choose at least one starting input.');
    this.source=FloorForgeHomeInputs.route(inputs,this.options.compassEnabled());this.ai=inputs.includes('sketch')&&this.$('start-local').checked;
    const dimensions=FloorForgeHomeInputs.dimensions(Number(this.$('start-width').value),Number(this.$('start-depth').value),this.$('start-units').value);
+   try{sessionStorage.setItem('floorforge-start-draft-v1',JSON.stringify({mode:this.setupMode,inputs,values:Object.fromEntries(this.setupFields().map(id=>[id,id==='start-local'?this.$(id).checked:this.$(id).value]))}));}catch{}
    await this.options.create({title:this.$('start-name').value.trim()||'My new home',...dimensions,storeys:Number(this.$('start-floors').value),bearing:Number(this.$('start-bearing').value),context:this.$('start-context').value,ai:this.ai,source:this.source,inputs});
+   try{sessionStorage.removeItem('floorforge-start-draft-v1');}catch{}
    this.enter();this.$('journey-guide').hidden=false;
    this.$('journey-title').textContent='Your custom design';
    const inputNames=FloorForgeHomeInputs.choices.filter(([id])=>inputs.includes(id)).map(([,title])=>title).join(', ');this.$('journey-copy').textContent='Your inputs: '+inputNames+'. '+(this.source==='dxf'?'Import your prepared drawing, then refine its exact rooms. Your other inputs can be added alongside it.':this.source==='sketch'?'Add your sketch as a reference, then arrange its rooms on Compass.':this.source==='text'?'Write your requirements in Ideas, then review the fields we understood before generating.':this.source==='brief'?'Your plot is ready. Choose your home requirements, then review the resolved inputs before generating.':'Your plot is ready. Draw rooms on Compass and generate. Room questions and other inputs are optional and can be added later.');
@@ -72,6 +77,7 @@ class FloorForgeStartPage {
    if(this.source==='compass')await this.options.next(this.source,this.ai);else this.$('journey-action').focus();
   }catch(e){this.$('start-setup-status').textContent=e.message;}finally{button.disabled=false;}
  }
+ setupFields(){return ['start-name','start-units','start-width','start-depth','start-floors','start-bearing','start-context','start-local'];}
  saved(){
   const list=this.$('start-saved-list');list.replaceChildren();
   for(const [id,item]of Object.entries(this.options.saved()).sort((a,b)=>(b[1].savedAt||'').localeCompare(a[1].savedAt||''))){

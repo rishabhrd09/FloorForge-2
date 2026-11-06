@@ -1,0 +1,67 @@
+{
+  "branch": "codex/myverandah-custom-journey",
+  "base": "839609731077e9623ce819cdfd80b1152a8a0956",
+  "merged": false,
+  "deployed": false,
+  "python": {
+    "tests": 1041,
+    "passed": 1040,
+    "failures": 1,
+    "seconds": 359.051,
+    "knownBaselineFailure": "tests/test_electrical_tour.py::test_tour_page_loads_its_data_offline",
+    "finalFocusedPassed": 138,
+    "note": "Final focused run covers the last wall-thickness clarification change after the full suite began."
+  },
+  "browser": {
+    "journey": {
+      "checks": 20,
+      "passed": true,
+      "evidence": "browser-checks.json"
+    },
+    "imports": {
+      "checks": 15,
+      "passed": true,
+      "evidence": "browser-import-checks.json"
+    },
+    "inputConsumers": {
+      "checks": 32,
+      "passed": true,
+      "evidence": "browser-input-checks.json"
+    },
+    "gallery": {
+      "checks": 10,
+      "passed": true,
+      "evidence": "gallery/checks.json"
+    },
+    "upgradeRecovery": {
+      "checks": 17,
+      "passed": true,
+      "evidence": "launch-fix/checks.json"
+    }
+  },
+  "frontendMetamorphicCases": 100,
+  "protectedFilesUnchanged": 2897,
+  "generated": {
+    "floorCount": 3,
+    "geometryHash": "ce530568c076455657a79d43d0de1875a466cf75a3070da8d20db123feb6fe5f",
+    "buildId": "8e8e2ea96b98d8ab6310dd16",
+    "cyclesStatus": "completed",
+    "cyclesSeconds": 8.671,
+    "pdfPages": 16,
+    "pdfReview": "pdf-review.json",
+    "portablePackage": "artifacts/FloorForge-export.zip"
+  },
+  "humanNoviceTrial": "pending at user request",
+  "remoteCrossPlatformCI": "configured, not run",
+  "documentation": "../../docs/CUSTOM_JOURNEY_IMPLEMENTATION.md",
+  "runtimeFix": {
+    "cause": "An old Python process served current web assets but lacked /api/design/inputs and the journey module.",
+    "sameOriginRestart": "http://127.0.0.1:57594/",
+    "existingOutputFilesUnchanged": 1087,
+    "serverRegressionTestsPassed": 76,
+    "fullBrowserJourneyChecksPassed": 20,
+    "upgradeBrowserChecksPassed": 17,
+    "liveUI": "Exact 40x60 ft, West, three-floor Plot+Compass setup opened Compass after clicking Create my custom design.",
+    "requiredUserAction": "Reload the old browser tab to load the new journey JavaScript."
+  }
+}

@@ -185,7 +185,10 @@ def sky(scene_data, grade):
     nt = world.node_tree
     background = nt.nodes['Background']
     texture = nt.nodes.new('ShaderNodeTexSky')
-    texture.sky_type = 'NISHITA'
+    # Blender 5 renamed Nishita to Single Scattering. Keep the same sky
+    # model on 4.x and 5.x without silently switching render appearance.
+    sky_types = texture.bl_rna.properties['sky_type'].enum_items.keys()
+    texture.sky_type = 'NISHITA' if 'NISHITA' in sky_types else 'SINGLE_SCATTERING'
     # The sky carries the sun's scattered glow; direct sunlight comes from a Sun lamp below, which Cycles samples
     # far better than a 0.5 degree disc in the world texture (crisp shadows, no denoiser smearing).
     texture.sun_disc = False
@@ -194,7 +197,10 @@ def sky(scene_data, grade):
     texture.sun_rotation = rotation
     texture.altitude = 0
     texture.air_density = 1.0
-    texture.dust_density = .7
+    if hasattr(texture, 'dust_density'):
+        texture.dust_density = .7
+    else:
+        texture.aerosol_density = .7
     texture.ozone_density = 1.0
     nt.links.new(texture.outputs['Color'], background.inputs['Color'])
     background.inputs['Strength'].default_value = grade['sky']

@@ -101,16 +101,21 @@ def test_full_grid_never_steals_regions_to_make_an_impossible_room_fit():
     assert draft == before
 
 
-def test_trailing_empty_floors_generate_now_and_survive_reopen():
+def test_trailing_empty_floors_require_explicit_scope_and_survive_reopen():
     project, draft = starter()
     project['brief']['storeys'] = 3
     draft['floors'] += [{'id': 'first', 'splits': []}, {'id': 'second', 'splits': []}]
     draft['rooms'].append({'id': 'later', 'kind': 'bedroom', 'name': 'Bedroom later',
                            'floorId': 'second', 'regions': [], 'required': True})
     result = prepare(project, draft, 3)
+    assert not result['valid']
+    assert result['scope'] == 3
+    assert any(issue['code'] == 'EMPTY_FLOOR' for issue in result['issues'])
+    assert not any(c['code'] == 'DRAWN_FLOORS' for c in result['adjustments'])
+    assert result['question']['code'] == 'EMPTY_FLOOR'
+    # A lower preview scope is a separate explicit user request.
+    result = prepare(project, draft, 1)
     assert result['valid'], result['issues']
-    assert result['scope'] == 1
-    assert any(c['code'] == 'DRAWN_FLOORS' for c in result['adjustments'])
     reopened = json.loads(json.dumps(accepted(project, result)))
     assert len(reopened['compass']['floors']) == 3
     assert next(r for r in reopened['compass']['rooms'] if r['id'] == 'later') == draft['rooms'][-1]

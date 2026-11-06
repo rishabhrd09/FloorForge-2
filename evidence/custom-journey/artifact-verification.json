@@ -1,0 +1,219 @@
+{
+  "valid": true,
+  "floorCount": 3,
+  "geometryHash": "ce530568c076455657a79d43d0de1875a466cf75a3070da8d20db123feb6fe5f",
+  "appearance": {
+    "preset": "warm-natural",
+    "schema": "myverandah.appearance/1",
+    "geometryEffect": "none",
+    "materials": {
+      "style": "warm",
+      "exterior_theme": "warm_modern_minimal",
+      "interior_theme": "bright_natural"
+    },
+    "components": {
+      "kitchen": "timber",
+      "furniture": "linen",
+      "facade": "warm-plaster"
+    },
+    "appearanceHash": "7b1e0c67784fb803083ac08a5c7725f008d7f1c58b1f3c4ff18ec591749e20b9",
+    "componentOptions": [
+      {
+        "id": "kitchen",
+        "label": "Kitchen fronts & counter",
+        "choices": [
+          {
+            "id": "soft-white",
+            "label": "Soft white",
+            "description": "Soft white cabinet fronts and a pale stone counter."
+          },
+          {
+            "id": "timber",
+            "label": "Timber",
+            "description": "Timber cabinet fronts and the same pale stone counter."
+          }
+        ],
+        "compatible": true,
+        "reason": "Available on the existing fitted geometry; sizes and clearances stay unchanged.",
+        "geometryEffect": "none",
+        "dimensions": [
+          {
+            "roomId": "custom-F0-kitchen",
+            "label": "Kitchen",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4000
+          }
+        ],
+        "dimensionNote": "Room envelope, not a proposed cabinet size."
+      },
+      {
+        "id": "furniture",
+        "label": "Furniture upholstery",
+        "choices": [
+          {
+            "id": "linen",
+            "label": "Natural linen",
+            "description": "Warm neutral upholstery on the fitted furniture."
+          },
+          {
+            "id": "sage",
+            "label": "Sage fabric",
+            "description": "Muted green upholstery on the same furniture."
+          }
+        ],
+        "compatible": true,
+        "reason": "Available on the existing fitted geometry; sizes and clearances stay unchanged.",
+        "geometryEffect": "none",
+        "dimensions": [
+          {
+            "roomId": "custom-F0-bedroom",
+            "label": "Bedroom",
+            "kind": "room-envelope",
+            "width_mm": 4000,
+            "depth_mm": 4000
+          },
+          {
+            "roomId": "custom-F0-hall",
+            "label": "Hall",
+            "kind": "room-envelope",
+            "width_mm": 1200,
+            "depth_mm": 8250
+          },
+          {
+            "roomId": "custom-F0-kitchen",
+            "label": "Kitchen",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4000
+          },
+          {
+            "roomId": "custom-F0-living",
+            "label": "Living",
+            "kind": "room-envelope",
+            "width_mm": 4000,
+            "depth_mm": 4100
+          },
+          {
+            "roomId": "custom-F0-stair",
+            "label": "Stair",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4100
+          },
+          {
+            "roomId": "custom-F1-bedroom",
+            "label": "Bedroom",
+            "kind": "room-envelope",
+            "width_mm": 4000,
+            "depth_mm": 4000
+          },
+          {
+            "roomId": "custom-F1-drying-room",
+            "label": "Drying Room",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4000
+          },
+          {
+            "roomId": "custom-F1-hall",
+            "label": "Hall",
+            "kind": "room-envelope",
+            "width_mm": 1200,
+            "depth_mm": 8250
+          },
+          {
+            "roomId": "custom-F1-stair",
+            "label": "Stair",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4100
+          },
+          {
+            "roomId": "custom-F1-terrace",
+            "label": "Terrace",
+            "kind": "room-envelope",
+            "width_mm": 4150,
+            "depth_mm": 4250
+          },
+          {
+            "roomId": "custom-F2-bedroom",
+            "label": "Bedroom",
+            "kind": "room-envelope",
+            "width_mm": 4000,
+            "depth_mm": 4000
+          },
+          {
+            "roomId": "custom-F2-hall",
+            "label": "Hall",
+            "kind": "room-envelope",
+            "width_mm": 1200,
+            "depth_mm": 8250
+          },
+          {
+            "roomId": "custom-F2-stair",
+            "label": "Stair",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4100
+          },
+          {
+            "roomId": "custom-F2-study",
+            "label": "Study",
+            "kind": "room-envelope",
+            "width_mm": 2200,
+            "depth_mm": 4000
+          }
+        ],
+        "dimensionNote": "Room envelope, not a proposed cabinet size."
+      },
+      {
+        "id": "facade",
+        "label": "Facade & wall finish",
+        "choices": [
+          {
+            "id": "warm-plaster",
+            "label": "Warm plaster",
+            "description": "Warm pale plaster on the shared exterior and interior wall material."
+          },
+          {
+            "id": "earth-render",
+            "label": "Earth render",
+            "description": "Muted earth plaster on the same wall surfaces; no new architectural pieces."
+          }
+        ],
+        "compatible": true,
+        "reason": "Available on the existing fitted geometry; sizes and clearances stay unchanged.",
+        "geometryEffect": "none",
+        "dimensions": [],
+        "dimensionNote": "Room envelope, not a proposed cabinet size."
+      }
+    ]
+  },
+  "preparationSeconds": 0.2129,
+  "generationSeconds": 1.2732,
+  "output": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-verified-qgwc8spo",
+  "buildId": "8e8e2ea96b98d8ab6310dd16",
+  "note": "Local timings for this fixture, not a production capacity guarantee. Certificate key stays outside artifacts.",
+  "finalRender": {
+    "id": "9f831479367d50b2",
+    "status": "completed",
+    "buildId": "8e8e2ea96b98d8ab6310dd16",
+    "geometryHash": "ce530568c076455657a79d43d0de1875a466cf75a3070da8d20db123feb6fe5f",
+    "engine": "Blender Cycles",
+    "options": {
+      "view": "hero",
+      "grade": "day",
+      "width": 960,
+      "height": 540,
+      "samples": 32
+    },
+    "result": {
+      "url": "/renders/9f831479367d50b2/final.png",
+      "geometryHash": "ce530568c076455657a79d43d0de1875a466cf75a3070da8d20db123feb6fe5f",
+      "sha256": "f4a7f3c3951bffde470e49e88fb2ebd7e980890428c451255f14d8d5b4b64a15",
+      "label": "Completed Cycles still \u00b7 base model materials"
+    },
+    "seconds": 8.671
+  }
+}

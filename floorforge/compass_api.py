@@ -23,11 +23,31 @@ def dispatch(path, body):
     require_enabled()
     if path in ('/api/compass/check', '/api/compass/convert', '/api/compass/prepare'):
         fields(body, ('project', 'compass', 'scope'), 'Compass conversion request')
+        project = body.get('project', {})
+        draft = body.get('compass')
+        original = None
+        if project.get('designJourney') is not None:
+            from copy import deepcopy
+            from .design_journey import editing_project
+            original = deepcopy(project)
+            if draft is not None:
+                original['compass'] = deepcopy(draft)
+                original.setdefault('editorState', {})['compassDraft'] = deepcopy(draft)
+            project = editing_project(original, target='compass')
+            # The preparation/search tools read only this metadata for pins;
+            # source selection has already been resolved into project.brief.
+            if path == '/api/compass/prepare':
+                project['designJourney'] = {'pins': deepcopy(original['designJourney'].get('pins', {}))}
         if path == '/api/compass/prepare':
             from .compass_prepare import prepare
-            return prepare(body.get('project', {}), body.get('compass'), body.get('scope'))
-        from .compass_adapter import proposal
-        return proposal(body.get('project', {}), body.get('compass'), body.get('scope'))
+            result = prepare(project, draft, body.get('scope'))
+        else:
+            from .compass_adapter import proposal
+            result = proposal(project, draft, body.get('scope'))
+        if original is not None:
+            result['designJourney'] = deepcopy(original['designJourney'])
+            result['draftPreserved'] = True
+        return result
     if path == '/api/compass/remap':
         fields(body, ('compass', 'rows', 'cols'), 'Compass remapping request')
         return remap(body.get('compass'), body.get('rows'), body.get('cols'))

@@ -589,10 +589,8 @@ def fuse(payload: dict, *, compass_draft=False) -> dict:
     # Do not add a null Compass key: legacy project hashes must remain byte-identical.
     plan_hash=sha({'values':out,'grid':grid,'placement_hints':placement_hints,'customPlan':custom,**placements,**compass_identity})
     attachments=payload.get('attachments',[])
-    if not isinstance(attachments,list) or len(attachments)>12: raise DesignError('ATTACHMENT_LIMIT','Maximum 12 reference records.')
-    for a in attachments:
-        if not isinstance(a,dict) or set(a)-{'name','kind','sha256','note'}:
-            raise DesignError('ATTACHMENT_SCHEMA','References contain name, kind, hash and note only; images stay on your device.')
+    from .reference_trace import validate_references
+    validate_references(attachments)
     if attachments: notices.append('Uploaded images are references only until manually traced; automatic OCR/CV recognition is not implemented.')
     if out['eldercare']: notices.append('Eldercare request preserved. Specialist care-room and step-free access design require professional review; this generator does not certify them.')
     if provenance['front_mm']['selected'][:1]==[sources[1]['id']] and sources[1]['kind']=='derived':

@@ -63,21 +63,18 @@ def prepare(project, compass, scope=None):
     changes = []
     # Compile once to resolve all form/text/source precedence through the same
     # intent path used for actual generation; never reinterpret the plot here.
-    initial = proposal(project, draft, scope)
+    compiler_project = {k: v for k, v in project.items() if k != 'designJourney'}
+    initial = proposal(compiler_project, draft, scope)
     scope = initial['scope']
-    included = draft['floors'][:scope]
-    placed = {r['floorId'] for r in draft['rooms'] if r['regions']}
-    while scope > 1 and included[scope - 1]['id'] not in placed:
-        scope -= 1
-    if scope != initial['scope']:
-        changes.append({'code': 'DRAWN_FLOORS', 'message': f'Generate the {scope} drawn floor(s) now. Unfinished upper floors remain saved.',
-                        'before': initial['scope'], 'after': scope})
-        initial = proposal(project, draft, scope)
+    # Missing upper-floor allocations need an explicit scope decision. Never
+    # convert a requested multi-floor home into a ground-only success.
+    pins = project.get('designJourney', {}).get('pins', {})
+    pinned = set(pins.get('positions', [])) | set(pins.get('dimensions', []))
     by_id = {r['id']: r for r in draft['rooms']}
     repaired = set()
     for problem in initial['issues']:
         ident = problem.get('roomId')
-        if problem['code'] not in ('ROOM_MINIMUM', 'NARROW_NECK') or ident not in by_id or ident in repaired:
+        if problem['code'] not in ('ROOM_MINIMUM', 'NARROW_NECK') or ident not in by_id or ident in repaired or ident in pinned:
             continue
         repaired.add(ident)
         room = by_id[ident]
@@ -88,5 +85,9 @@ def prepare(project, compass, scope=None):
                             'before': list(room['regions']), 'after': refs})
             room['regions'] = refs
     # Exact conversion still owns openings, access, support and geometry checks.
-    result = proposal(project, draft, scope) if changes else initial
-    return {**result, 'candidate': draft, 'adjustments': changes}
+    result = proposal(compiler_project, draft, scope) if changes else initial
+    from .compass_repair import search, guided_question
+    repair = search(project, draft, result)
+    response = {**result, 'candidate': draft, 'adjustments': changes, **repair}
+    response['question'] = guided_question(draft, response)
+    return response
