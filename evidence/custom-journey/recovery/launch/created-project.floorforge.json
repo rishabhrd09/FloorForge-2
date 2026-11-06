@@ -1,0 +1,259 @@
+{
+  "schema": "floorforge.project/0.5",
+  "brief": {
+    "attached_baths": "all",
+    "bedrooms": 3,
+    "budget_lakh": 65,
+    "change_policy": "exterior_refinement",
+    "cost_contingency_pct": 10,
+    "depth_mm": 18288,
+    "eldercare": false,
+    "exterior_theme": "modern_tropical",
+    "finish": "standard",
+    "floor_height_mm": 3150,
+    "interior_layout_locked": true,
+    "interior_theme": "bright_natural",
+    "latitude": 22.72,
+    "longitude": 75.86,
+    "open_kitchen": true,
+    "parking": false,
+    "plinth_mm": 450,
+    "pooja": true,
+    "rate_high_inr_ft2": 2800,
+    "rate_low_inr_ft2": 2000,
+    "road_bearing_deg": 270,
+    "roof_access": false,
+    "seed": 0,
+    "soil": "unknown",
+    "solar_date": "2026-03-21",
+    "solar_hour": 15,
+    "storeys": 3,
+    "style": "warm",
+    "theme_version": "1",
+    "timezone_hours": 5.5,
+    "title": "West-facing three-floor launch regression",
+    "variant": 0,
+    "vastu": "moderate",
+    "width_mm": 12192
+  },
+  "sources": [
+    {
+      "id": "studio-field-edits",
+      "kind": "form",
+      "enabled": true,
+      "values": {
+        "bedrooms": 3
+      }
+    }
+  ],
+  "designJourney": {
+    "schema": "myverandah.journey/1",
+    "projectId": "91172c8e-3337-4775-b5d0-fa47f0db144d",
+    "enabledInputs": [
+      "plot",
+      "compass"
+    ],
+    "answers": {},
+    "approvals": {},
+    "appearance": {
+      "preset": "warm-natural"
+    }
+  },
+  "editorState": {
+    "mode": "compass",
+    "homeInputs": [
+      "plot",
+      "compass"
+    ],
+    "compassDraft": {
+      "schema": "floorforge.compass-input/1",
+      "grid": {
+        "rows": 4,
+        "cols": 4,
+        "basis": "buildable-envelope",
+        "rowOrigin": "front"
+      },
+      "floors": [
+        {
+          "id": "compass-floor-0",
+          "splits": []
+        },
+        {
+          "id": "compass-floor-1",
+          "splits": []
+        },
+        {
+          "id": "compass-floor-2",
+          "splits": []
+        }
+      ],
+      "rooms": [
+        {
+          "id": "compass-room-1",
+          "kind": "living",
+          "name": "Living",
+          "floorId": "compass-floor-0",
+          "regions": [],
+          "required": true
+        },
+        {
+          "id": "compass-room-2",
+          "kind": "kitchen",
+          "name": "Kitchen",
+          "floorId": "compass-floor-0",
+          "regions": [],
+          "required": true
+        },
+        {
+          "id": "compass-room-3",
+          "kind": "bedroom",
+          "name": "Master bedroom",
+          "floorId": "compass-floor-0",
+          "regions": [],
+          "required": true,
+          "role": "master"
+        },
+        {
+          "id": "compass-room-4",
+          "kind": "bedroom",
+          "name": "Bedroom 2",
+          "floorId": "compass-floor-1",
+          "regions": [],
+          "required": true
+        },
+        {
+          "id": "compass-room-5",
+          "kind": "bedroom",
+          "name": "Bedroom 3",
+          "floorId": "compass-floor-2",
+          "regions": [],
+          "required": true
+        }
+      ],
+      "connections": [],
+      "stairLinks": [],
+      "site": {
+        "context": "middle",
+        "gate": "planner",
+        "zones": []
+      },
+      "requirements": []
+    },
+    "compassScope": 3,
+    "guideFloors": [
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": false,
+    "customPlan": {
+      "schema": "floorforge.custom-plan/1",
+      "units": "mm",
+      "wallThickness": 150,
+      "floors": [
+        {
+          "id": "floor-0",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-1",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-2",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        }
+      ],
+      "stairs": []
+    },
+    "savedRoomEdits": [],
+    "savedFurnitureLayout": [],
+    "usePlacements": false,
+    "roomBoard": null,
+    "useRoomBoard": false
+  },
+  "text": "",
+  "attachments": [],
+  "draftRevision": 1
+}

@@ -54,6 +54,10 @@ jobs:
       - run: python -m pip install -r requirements-dev.lock.txt
       - run: npm install --no-save --package-lock=false playwright@1.62.1
       - run: npx playwright install --with-deps chromium
+      - name: Verify approval identity and guided editor routing
+        run: |
+          node tests/design_journey_state.cjs
+          node tests/design_journey_recovery.cjs
       - name: Exercise the offline custom-home journey
         run: node scripts/check_custom_journey.mjs
         env:
@@ -68,6 +72,10 @@ jobs:
           FLOORFORGE_PYTHON: python
       - name: Exercise an old server with updated app files and same-port recovery
         run: node scripts/check_custom_launch.mjs
+        env:
+          FLOORFORGE_PYTHON: python
+      - name: Exercise guided edits and recovery through the complete Compass journey
+        run: node scripts/check_custom_recovery.mjs
         env:
           FLOORFORGE_PYTHON: python
       - uses: actions/upload-artifact@v4
@@ -85,4 +93,5 @@ jobs:
             evidence/custom-journey/browser-text-consumer.json
             evidence/custom-journey/launch-fix/checks.json
             evidence/custom-journey/launch-fix/*.png
+            evidence/custom-journey/recovery/**
 # This workflow is authored, not evidence that those platforms have passed.

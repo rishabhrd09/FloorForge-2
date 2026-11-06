@@ -4,7 +4,7 @@ import {mkdtempSync,mkdirSync,writeFileSync,readFileSync} from 'node:fs';
 import {resolve,join} from 'node:path';
 import {tmpdir} from 'node:os';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const root=resolve(import.meta.dirname,'..'),port=Number(process.env.MYVERANDAH_IMPORT_PORT||8913),url=`http://127.0.0.1:${port}`,work=mkdtempSync(join(tmpdir(),'myverandah-imports-')),out=resolve(root,'evidence/custom-journey');mkdirSync(out,{recursive:true});
+const root=resolve(import.meta.dirname,'..'),port=Number(process.env.MYVERANDAH_IMPORT_PORT||8913),url=`http://127.0.0.1:${port}`,work=mkdtempSync(join(tmpdir(),'myverandah-imports-')),out=resolve(root,process.env.MYVERANDAH_EVIDENCE_DIR||'evidence/custom-journey');mkdirSync(out,{recursive:true});
 const server=spawn(process.env.FLOORFORGE_PYTHON||resolve(root,'.venv/bin/python'),['-m','floorforge','serve','--no-browser','--port',String(port),'--out',work],{cwd:root,stdio:['ignore','ignore','pipe']});let serverErrors='';server.stderr.on('data',d=>serverErrors+=d);
 let browser,page;const checks=[],errors=[];function check(name,pass){checks.push({name,pass:!!pass});console.log(pass?'PASS':'FAIL',name);if(!pass)throw Error(name);}
 try{

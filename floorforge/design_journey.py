@@ -394,7 +394,8 @@ def resolve_sources(project):
             if src['enabled']:
                 q = _question('TEXT_INTERPRETATION', 'Is this interpretation correct?', assumption,
                     [_choice('confirm', 'Use this interpretation', assumption, True),
-                     _choice('edit', 'Edit the description', 'Add explicit units or measurements.', action='edit-input')],
+                     _choice('edit', 'Edit the description', 'Add explicit units or measurements.', action='edit-input',
+                             editor={'kind': 'text', 'sourceId': src['id']})],
                     identity=[src['id'], src.get('text'), assumption])
                 if answers.get(q['id']) != 'confirm':
                     questions.append(q)
@@ -453,9 +454,11 @@ def resolve_sources(project):
     if essential:
         q = _question('PLOT_BASICS', 'Confirm the remaining plot basics',
             'Please supply ' + ', '.join(k.replace('_mm', '').replace('_', ' ') for k in essential) + ' in Plot basics or an enabled written input.',
-            [_choice('edit', 'Complete plot basics', 'Enable plot dimensions and confirm the road and requested floors.', True, action='edit-plot'),
+            [_choice('edit', 'Complete plot basics', 'Enable plot dimensions and confirm the road and requested floors.', True,
+                     action='edit-plot', editor={'kind': 'plot', 'field': essential[0]}),
              _choice('defaults', 'Use these starting values', ', '.join(k.replace('_mm', '').replace('_', ' ') + ': ' + str(DEFAULTS[k]) + (' mm' if k.endswith('_mm') else '') for k in essential),
                      values={k: DEFAULTS[k] for k in essential})], identity=essential)
+        q.update(editor={'kind': 'plot', 'field': essential[0]}, missingFields=list(essential))
         if answers.get(q['id']) == 'defaults':
             resolved.update({k: DEFAULTS[k] for k in essential})
         else:
@@ -473,6 +476,7 @@ def resolve_sources(project):
              _choice(str(minimum + 1), f'{minimum + 1} bedrooms', 'Keep the same basic programme with one more bedroom.'),
              _choice('edit', 'Set my room goals', 'Open the guided home brief for a different programme.', action='edit-survey')],
             identity={'storeys': resolved.get('storeys', 1)})
+        q['editor'] = {'kind': 'survey', 'field': 'bedrooms'}
         if answers.get(q['id']) in (str(minimum), str(minimum + 1)):
             resolved.update(bedrooms=int(answers[q['id']]), attached_baths=0, pooja=False, parking=False, eldercare=False)
             source = {'id': 'room-goal-answer', 'kind': 'survey', 'enabled': True, 'units': 'mm', 'floorIds': [],
@@ -601,14 +605,39 @@ def resolve_sources(project):
             'activeSourceIds': [s['id'] for s in active]}
 
 
-def _geometry_question(issues):
-    problem = issues[0] if issues else {'code': 'LAYOUT_REVIEW', 'message': 'Review the editable layout.'}
-    affected = [{k: i[k] for k in ('floor', 'floorId', 'roomId', 'id', 'regions') if k in i} for i in issues[:8]]
-    return _question(problem.get('code', 'LAYOUT_REVIEW'), 'Let’s resolve this part of your plan',
-        problem.get('message', 'Review the affected rooms.'),
-        [_choice('edit', 'Edit the affected rooms', 'Keep the draft and adjust the highlighted area.', True, action='edit-layout'),
-         _choice('repair', 'Recommend a change', 'Search bounded alternatives and review changes before applying.', action='repair-layout')],
-        affected=affected, identity=issues)
+def _geometry_question(issues, project=None):
+    from .journey_diagnostics import enrich_issues, first_issue, contextualize_question
+    project = project or {}
+    enriched = enrich_issues(issues, project)
+    problem = first_issue(enriched)
+    kind = problem['editor']['kind']
+    name, floor = problem.get('name', 'This part of the plan'), problem.get('floorName')
+    title = name + (' · ' + floor if floor else '')
+    choices = [_choice('edit', 'Open ' + (floor or 'the affected layout'),
+                       'The editor will show the issue and the next steps. Your draft stays saved.', True,
+                       action='edit-layout', editor=problem['editor'])]
+    if kind == 'plot':
+        title = 'Check this plot measurement before arranging rooms'
+        choices = [_choice('edit', 'Review plot dimensions and setbacks', problem['message'], True,
+                           action='edit-plot', editor={'kind': 'plot'})]
+    elif kind == 'survey':
+        title = 'Review the room goals and available space'
+        choices = [_choice('edit', 'Review room goals', 'Keep each requested room unless you explicitly revise it.', True,
+                           action='edit-survey', editor={'kind': 'survey'}),
+                   _choice('plot', 'Review plot dimensions and setbacks', 'Check the buildable area and units.',
+                           action='edit-plot', editor={'kind': 'plot'})]
+    elif kind == 'inputs':
+        choices = [_choice('edit', 'Review the selected input', problem['message'], True,
+                           action='edit-input', editor={'kind': 'inputs'})]
+    elif problem['code'] == 'EMPTY_FLOOR':
+        title = (floor or 'This requested floor') + ' still needs rooms'
+        if kind == 'compass':
+            choices.append(_choice('scope', 'Choose a smaller preview scope',
+                                   'Only include fewer floors after an explicit scope choice.', action='choose-scope'))
+    elif problem['code'] in ('UNPLACED', 'REQUIRED_ROOM_UNPLACED'):
+        title = 'Place ' + name + (' on ' + floor if floor else '')
+    q = _question(problem['code'], title, problem['message'], choices, identity=issues)
+    return contextualize_question(q, enriched, project)
 
 
 def _apply_appearance(project, meta):
@@ -746,9 +775,10 @@ def prepare(project):
                 from .compass_repair import search, guided_question
                 repair_project = {**payload, 'designJourney': resolved['meta']}
                 repair = search(repair_project, draft, check)
-                result['issues'] = check['issues']
+                from .journey_diagnostics import enrich_issues
+                result['issues'] = enrich_issues(check['issues'], payload, check.get('sizes', []))
                 result.update({k: repair[k] for k in ('alternatives', 'search', 'graph') if k in repair})
-                result['question'] = guided_question(draft, {**check, **repair}) or _geometry_question(check['issues'])
+                result['question'] = guided_question(draft, {**check, **repair}) or _geometry_question(check['issues'], payload)
                 result['questions'] = [result['question']]
                 return result
             payload['compassScope'] = check['scope']
@@ -799,9 +829,9 @@ def prepare(project):
                       geometryRevision=project.get('draftRevision', 0))
         return result
     except DesignError as exc:
-        detail = exc.details if isinstance(exc.details, dict) else {}
-        result['issues'] = detail.get('errors', [exc.record()])
-        result['question'] = _geometry_question(result['issues'])
+        from .journey_diagnostics import enrich_issues, error_issues
+        result['issues'] = enrich_issues(error_issues(exc), payload)
+        result['question'] = _geometry_question(result['issues'], payload)
         result['questions'] = [result['question']]
         return result
 
@@ -888,6 +918,30 @@ def approve_floor(preparation, floorId, geometryHash, secret):
     return {**record, 'signature': _signature(record, secret)}
 
 
+def reusable_floor_approvals(preparation, approvals, secret):
+    """Retain only authentic reviews of the current dependency-aware floors.
+
+    The signed homeGeometryHash records the original review's provenance. An
+    independent floor edit need not change a different floor's review: its hash
+    already includes shared stairs, support envelopes, voids and pinned rules.
+    The current coordinated home still requires a new explicit confirmation.
+    """
+    if not preparation.get('valid'):
+        return {}
+    if isinstance(approvals, dict):
+        approvals = list(approvals.values())
+    if not isinstance(approvals, list):
+        return {}
+    current = {floor['id']: floor['geometryHash'] for floor in preparation['floors']}
+    return {record['floorId']: deepcopy(record) for record in approvals
+            if isinstance(record, dict)
+            and record.get('schema') == 'myverandah.floor-approval/1'
+            and isinstance(record.get('floorId'), str)
+            and record['floorId'] in current
+            and record.get('geometryHash') == current[record['floorId']]
+            and _valid_signature(record, secret)}
+
+
 def confirm_home(preparation, approvals, geometryHash, secret):
     if not preparation.get('valid') or geometryHash != preparation.get('geometryHash'):
         raise DesignError('APPROVAL_STALE', 'Review the current coordinated home before confirming.')
@@ -895,11 +949,10 @@ def confirm_home(preparation, approvals, geometryHash, secret):
         approvals = list(approvals.values())
     if not isinstance(approvals, list):
         raise DesignError('APPROVAL_REQUIRED', 'Approve every requested floor first.')
+    reusable = reusable_floor_approvals(preparation, approvals, secret)
     signed = []
     for floor in preparation['floors']:
-        record = next((a for a in approvals if isinstance(a, dict) and a.get('floorId') == floor['id']), None)
-        if (not _valid_signature(record, secret) or record.get('geometryHash') != floor['geometryHash']
-                or record.get('homeGeometryHash') != geometryHash):
+        if floor['id'] not in reusable:
             raise DesignError('APPROVAL_REQUIRED', 'Approve the current drawing for ' + floor['name'] + ' first.')
         signed.append({'floorId': floor['id'], 'geometryHash': floor['geometryHash']})
     record = {'schema': 'myverandah.home-approval/1', 'geometryHash': geometryHash, 'floors': signed}

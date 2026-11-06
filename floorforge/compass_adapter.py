@@ -34,7 +34,8 @@ def compile_compass(value, values, scope=None, hints=()):
 
     def issue(code, message, room=None, **extra):
         issues.append({'code': code, 'message': message, 'severity': 'error',
-                       **({'roomId': room['id'], 'floor': next(i for i, f in enumerate(floors) if f['id'] == room['floorId']), 'regions': room['regions']} if room else {}), **extra})
+                       **({'roomId': room['id'], 'name': room['name'], 'floorId': room['floorId'],
+                           'floor': next(i for i, f in enumerate(floors) if f['id'] == room['floorId']), 'regions': room['regions']} if room else {}), **extra})
 
     if W < 1000 or D < 1000:
         issue('ENVELOPE', 'Plot dimensions and setbacks leave too little buildable area.')
@@ -108,8 +109,11 @@ def compile_compass(value, values, scope=None, hints=()):
                 changes.append({'roomId': q['id'], 'message': 'Ground-only scope reserves this stair area as a landing; unfinished upper-floor flights and roof access are omitted.'})
             target['rooms'].append(q)
         plan['floors'].append(target)
-        if drawn and not target['rooms']:
-            issue('EMPTY_FLOOR', 'Draw at least one room on this floor, or choose fewer floors for the preview.', floor=floors.index(floor))
+        if not target['rooms']:
+            index = floors.index(floor)
+            name = ('Ground', 'First', 'Second')[index]
+            issue('EMPTY_FLOOR', f'{name} floor has no placed rooms. Add its intended rooms, or explicitly choose a smaller preview scope.',
+                  floor=index, floorId=floor['id'], name=name+' floor')
     stair_links = list(compass['stairLinks'])
     if drawn and scope > 1:
         linked = {rid for s in stair_links for rid in s['roomIds']}
@@ -172,6 +176,8 @@ def compile_compass(value, values, scope=None, hints=()):
               'sourceHash': identity, 'adapterVersion': ADAPTER, 'scope': scope, 'values': v,
               'roomMapping': {r['id']: r['id'] for r in rooms if r['id'] in polygons}}
     if issues:
+        from .journey_diagnostics import enrich_issues
+        result['issues'] = enrich_issues(issues, {'compass': compass}, sizes)
         return result
     intent = {'values': v, 'customPlan': plan, 'planHash': identity}
     try:
@@ -299,7 +305,10 @@ def compile_compass(value, values, scope=None, hints=()):
     except DesignError as exc:
         detail = exc.details if isinstance(exc.details, dict) else {}
         for problem in detail.get('errors', [{'code': exc.code, 'message': str(exc)}]):
-            issues.append({**problem, 'roomId': problem.get('id'), 'severity': 'error'})
+            issues.append({**problem, 'roomId': problem.get('roomId', problem.get('id')), 'severity': 'error'})
+    if issues:
+        from .journey_diagnostics import enrich_issues
+        result['issues'] = enrich_issues(issues, {'compass': compass}, sizes)
     return result
 
 

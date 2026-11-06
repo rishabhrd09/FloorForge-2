@@ -1,0 +1,92 @@
+{
+  "checks": [
+    {
+      "name": "Journey starts locally without an AI provider",
+      "pass": true
+    },
+    {
+      "name": "Six combinable starting inputs are visible",
+      "pass": true
+    },
+    {
+      "name": "Nine ordered journey stages are keyboard buttons",
+      "pass": true
+    },
+    {
+      "name": "All three requested floor drawings publish before 3D",
+      "pass": true
+    },
+    {
+      "name": "2D review dialog fills the actual viewport",
+      "pass": true
+    },
+    {
+      "name": "Dimensioned floor image is loaded",
+      "pass": true
+    },
+    {
+      "name": "Each requested floor has its own signed approval",
+      "pass": true
+    },
+    {
+      "name": "Three compatible appearance presets follow whole-home confirmation",
+      "pass": true
+    },
+    {
+      "name": "Style-only selection retains exact geometry and signed approval",
+      "pass": true
+    },
+    {
+      "name": "Modular furniture materials retain geometry approval",
+      "pass": true
+    },
+    {
+      "name": "Approved home generates exactly one matching interactive scene",
+      "pass": true
+    },
+    {
+      "name": "Portable project embeds original reference bytes and IDs",
+      "pass": true
+    },
+    {
+      "name": "Save and upload retain floor IDs and approval records",
+      "pass": true
+    },
+    {
+      "name": "Mobile 2D review fits the viewport",
+      "pass": true
+    },
+    {
+      "name": "Older preparation cannot replace a newer geometry edit",
+      "pass": true
+    },
+    {
+      "name": "An unresolved conflicting draft reopens with every source retained",
+      "pass": true
+    },
+    {
+      "name": "Conflicting sources become one guided decision",
+      "pass": true
+    },
+    {
+      "name": "Source decision is previewed and applied explicitly",
+      "pass": true
+    },
+    {
+      "name": "Undo restores the previous source decision and editable draft",
+      "pass": true
+    },
+    {
+      "name": "No browser exceptions",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "timings": {
+    "prepareSeconds": 0.303,
+    "generateSeconds": 12.043
+  },
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-browser-tmlUsx",
+  "serverErrors": ""
+}

@@ -58,14 +58,14 @@ class JourneyService:
                 **{k:result[k] for k in ('sources','requirements','questions','question')}}
 
     def prepare(self, project):
-        from .design_journey import prepare
+        from .design_journey import prepare, reusable_floor_approvals, verify_approval
         from .reference_trace import validate_references
         from .drawings import pdf_sheets, dxf_export
         from .pipeline import kernel_hash
         validate_references(project.get('attachments', []))
         result = prepare(copy.deepcopy(project))
         if not result.get('valid'):
-            return self.public(result)
+            return {**self.public(result), 'approvals': {}, 'confirmation': None}
         # This identity includes source interpretation and appearance, while the
         # independent geometryHash governs approval reuse across finishes.
         ident = sha({'project': project, 'kernel': kernel_hash()})[:32]
@@ -100,6 +100,21 @@ class JourneyService:
         public = self.public(result)
         public['downloads'] = {name: f'/preparations/{ident}/{name}' for name in
                                ('drawings.pdf', 'floorplans.dxf', 'canonical.json')}
+        # Trust is local to this studio, not to a portable JSON record or the
+        # immutable drawing cache. Always return the authoritative reusable set
+        # so an imported/expired approval cannot disable the review controls.
+        journey = project.get('designJourney') or {}
+        secret = self.secret()
+        public['approvals'] = reusable_floor_approvals(result, journey.get('approvals', {}), secret)
+        public['confirmation'] = None
+        certificate = journey.get('confirmation')
+        if certificate:
+            try:
+                verify_approval(result, certificate, secret)
+            except DesignError:
+                pass
+            else:
+                public['confirmation'] = copy.deepcopy(certificate)
         return public
 
     @staticmethod

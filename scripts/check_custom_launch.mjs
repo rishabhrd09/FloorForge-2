@@ -12,7 +12,7 @@ const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const root=resolve(import.meta.dirname,'..');
 const python=process.env.FLOORFORGE_PYTHON||resolve(root,'.venv/bin/python');
 const work=mkdtempSync(join(tmpdir(),'myverandah-launch-'));
-const out=resolve(root,'evidence/custom-journey/launch-fix');mkdirSync(out,{recursive:true});
+const out=resolve(root,process.env.MYVERANDAH_EVIDENCE_DIR||'evidence/custom-journey/launch-fix');mkdirSync(out,{recursive:true});
 const freePort=()=>new Promise((resolve,reject)=>{const s=net.createServer();s.once('error',reject);s.listen(0,'127.0.0.1',()=>{const p=s.address().port;s.close(()=>resolve(p));});});
 const port=Number(process.env.MYVERANDAH_LAUNCH_PORT||await freePort());
 const url=`http://127.0.0.1:${port}`;

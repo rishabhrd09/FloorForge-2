@@ -504,11 +504,11 @@ $('import-plan-file').onchange=async event=>{
 // Additive Compass integration; published samples and viewer code are not rewritten.
 function initCompassWorkspace(){
  if(typeof FloorForgeCompassEditor==='undefined'){$('compass-open').hidden=true;$('compass-mode-option').hidden=true;return;}
- compassEditor=new FloorForgeCompassEditor({registry:session.spaceRegistry,gridOptions:session.compass?.gridOptions,adapterVersion:session.compass?.adapterVersion,project:collect,request:fetchJSON,error:e=>toast(e.message),
+ compassEditor=new FloorForgeCompassEditor({registry:session.spaceRegistry,gridOptions:session.compass?.gridOptions,adapterVersion:session.compass?.adapterVersion,project:collect,request:fetchJSON,error:e=>{if(e.data?.details?.question&&designJourney){compassEditor?.dialog.close();designJourney.prepare();}else toast(e.message);},
   changed:()=>{if($('plan-mode').value==='compass')markDraftChanged();else{clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{try{localStorage.setItem('floorforge-draft-v1',JSON.stringify(collect()));}catch(e){toast('Autosave unavailable; use Save project.');}},500);}},
   save:()=>projectWorkspace?.save(),activate:()=>{$('plan-mode').value='compass';$('grid-used').checked=false;},
   getPins:()=>designJourney?.state.pins||currentProject.designJourney?.pins||{},setPins:pins=>{if(designJourney){designJourney.state.pins=pins;designJourney.persist();}else{currentProject.designJourney={...(currentProject.designJourney||{}),schema:'myverandah.journey/1',pins};}},restore:snapshot=>{if(snapshot.journeyPins&&designJourney){designJourney.state.pins=snapshot.journeyPins;designJourney.persist();}const mode=$('plan-mode').value;for(const key of ['width_mm','depth_mm','road_bearing_deg','bedrooms','storeys','roof_access']){const id={width_mm:'width',depth_mm:'depth',road_bearing_deg:'facing',roof_access:'adv-roof_access'}[key]||key;const current=key==='roof_access'?$(id).checked:Number($(id).value)*(key==='width_mm'||key==='depth_mm'?(unit==='ft'?304.8:1000):1);if(Math.abs(Number(current)-Number(snapshot.brief[key]))>.01)compassEditor.options.setFields({[key]:snapshot.brief[key]});}$('plan-mode').value=snapshot.mode;if(mode!==snapshot.mode)markDraftChanged();},
-  exit:()=>homeDesignUI?.setStage('edit'),inputs:()=>homeDesignUI?.showCategory(0),generate,preferences:()=>{homeDesignUI?.setStage('edit');homeDesignUI?.showCategory(1);$('budget').focus();},
+  exit:()=>homeDesignUI?.setStage('edit'),inputs:()=>homeDesignUI?.showCategory(0),generate,editIssue:question=>designJourney?.editQuestion(question),preferences:()=>{homeDesignUI?.setStage('edit');homeDesignUI?.showCategory(1);$('budget').focus();},
   setFields:fields=>{for(const [key,value]of Object.entries(fields)){explicitEdits.add(key);if(key==='width_mm'||key==='depth_mm')$(key==='width_mm'?'width':'depth').value=value/(unit==='ft'?304.8:1000);else if(key==='road_bearing_deg')$('facing').value=value;else if(key==='roof_access')$('adv-roof_access').checked=value;else if(key==='storeys'||key==='bedrooms')$(key).value=value;}syncSetbacks();renderCompass();markDraftChanged();},
   fineTune:(plan,values)=>{$('plan-dialog').classList.add('compass-advanced');$('plan-back-map').hidden=false;planEditor.load(plan,plan.floors.length);roomBoard.active=false;$('storeys').value=plan.floors.length;explicitEdits.add('storeys');if(values){$('adv-roof_access').checked=values.roof_access;explicitEdits.add('roof_access');}$('plan-mode').value='custom';planEditor.setDetail?.(true);markDraftChanged();$('plan-dialog').showModal();planEditor.render();}
  });
@@ -522,11 +522,47 @@ function cancelCurrentGeneration(message='Generation cancelled; your draft is pr
  const id=activeGenerationJob;if(!id)return;activeGenerationJob=null;
  fetchJSON('/api/jobs/'+id+'/cancel',{}).catch(e=>toast('Could not cancel immediately: '+e.message));status(message);
 }
+async function openJourneyEditor(target){
+ homeDesignUI?.setStage('edit');showTab('home');designJourney.clearEditorGuidance();
+ // Choosing to supply the missing plot/programme explicitly activates its consumer.
+ if(['plot','survey'].includes(target.kind)&&!homeDesignUI?.inputs.includes(target.kind)){homeDesignUI?.setInputs([...(homeDesignUI?.inputs||[]),target.kind]);markDraftChanged();}
+ const kind=target.kind,closeEditors=()=>{for(const id of ['compass-dialog','plan-dialog','import-plan-dialog','myv-reference-dialog'])$(id)?.close();};
+ const recheck=async()=>{closeEditors();await designJourney.prepare();},returnToQuestion=()=>{closeEditors();designJourney.open(3);};
+ if(kind==='compass'&&session.compass?.enabled){
+  if(Number.isInteger(target.floorIndex))compassEditor.floor=target.floorIndex;
+  await compassEditor.open({skipSetup:true,view:target.view});if(!compassEditor.dialog.open)throw Error('The Compass editor could not open. Check your plot dimensions and try again.');
+  compassEditor.focusIssue(target);const banner=designJourney.showEditorGuidance(compassEditor.dialog,target,{recheck,returnToQuestion});banner.scrollIntoView({block:'nearest'});
+  if(target.action==='choose-scope'){const scope=$('c-quick-scope');scope.closest('details').open=true;scope.classList.add('myv-field-affected');scope.focus({preventScroll:true});}
+  if(target.action==='review-pin'&&compassEditor.selected){compassEditor.roomsOpen=true;compassEditor.catalogueOpen=false;compassEditor.render();const details=$('c-room-details').closest('details');details.open=true;$('c-size-lock').focus();}
+  return;
+ }
+ if(kind==='plan'){
+  closeEditors();if(Number.isInteger(target.floorIndex))planEditor.floor=Math.max(0,Math.min(target.floorIndex,planEditor.plan.floors.length-1));
+  planEditor.selected=new Set(target.roomIds);planEditor.setDetail(true);$('plan-dialog').showModal();planEditor.render();
+  if(target.issues.length)planEditor.presentErrors(target.issues,target.message);
+  const banner=designJourney.showEditorGuidance($('plan-dialog'),target,{recheck,returnToQuestion});banner.focus();return;
+ }
+ closeEditors();let parent,focus;
+ if(kind==='dxf'){$('import-plan-open').click();parent=$('import-plan-dialog');focus=$('import-plan-choose');}
+ else{
+  const field=target.field,plotField=field&&({width_mm:'width',depth_mm:'depth',road_bearing_deg:'facing',storeys:'storeys'}[field]||'adv-'+field),advanced=kind==='plot'&&(plotField?.startsWith('adv-')||/setback|buildable|envelope/i.test(target.message+' '+target.title));
+  const category=kind==='plot'?(field==='storeys'?1:advanced?3:0):kind==='survey'?1:kind==='inputs'?0:2;homeDesignUI?.showCategory(category);
+  focus=kind==='plot'?$(plotField|| (advanced?'adv-front_mm':'width')):kind==='survey'?$('bedrooms'):kind==='inputs'?document.querySelector('[data-design-input]'):(kind==='sketch'?$('reference-open'):$('description'));
+  if(kind==='inputs')focus=document.querySelector('[data-design-input]');
+  parent=kind==='inputs'?$('design-input-choices').parentElement:document.querySelector(`[data-brief-panel="${category}"]`);
+  if(kind==='sketch'){
+   const ref=savedImages.find(r=>r.id===target.sourceId);if(ref){openReference(ref);parent=$('myv-reference-dialog');focus=$('myv-known-length');}
+  }
+  if(focus){for(let node=focus.parentElement;node;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true;focus.classList.add('myv-field-affected');}
+ }
+ if(!parent)parent=$('brief-form');const banner=designJourney.showEditorGuidance(parent,target,{recheck,returnToQuestion});if(focus)focus.classList.add('myv-field-affected');banner.scrollIntoView({block:'center'});focus?.focus({preventScroll:true});
+}
+
 function initDesignJourney(){
  if(typeof MyVerandahDesignJourney==='undefined')return;
  designJourney=new MyVerandahDesignJourney({project:collect,isSample:()=>currentProjectIsSample&&!currentProject.designJourney,
   request:fetchJSON,persist:state=>{const appearanceChanged=JSON.stringify(currentProject.designJourney?.appearance)!==JSON.stringify(state.appearance);currentProject.designJourney=state;if(appearanceChanged&&designJourney)markDraftChanged();try{localStorage.setItem('floorforge-draft-v1',JSON.stringify(collect()));}catch(e){toast('Browser storage is full. Save project to keep the original reference images.');}},
-  cancel:()=>cancelCurrentGeneration('New preparation cancelled the older generation.'),repair:()=>{if(compassEditor?.draft)setTimeout(()=>compassEditor.check({prepare:true}).catch(e=>toast(e.message)),100);},
+  cancel:()=>cancelCurrentGeneration('New preparation cancelled the older generation.'),editTarget:openJourneyEditor,clearEditTarget:()=>{if(compassEditor)compassEditor.editContext=null;},repair:()=>{if(compassEditor?.draft)setTimeout(()=>compassEditor.check({prepare:true}).catch(e=>toast(e.message)),100);},
   edit:(stage,floor)=>{homeDesignUI?.setStage('edit');if(stage<2){homeDesignUI?.showCategory(0);$(stage===0?'design-input-choices':'width').scrollIntoView({block:'center'});return;}if($('plan-mode').value==='custom'&&planEditor?.plan?.floors.some(f=>f.rooms.length)){if(Number.isInteger(floor))planEditor.floor=floor;planEditor.setDetail(true);$('plan-dialog').showModal();planEditor.render();}else if(session.compass?.enabled){if(Number.isInteger(floor))compassEditor.floor=floor;compassEditor.open({skipSetup:true});}else{homeDesignUI?.showCategory(1);$('bedrooms').focus();}},
   save:()=>$('save-project').click(),download,generate,notify:toast,restore:applyProject,applyCompass:(candidate,scope)=>{compassEditor.options.activate();compassEditor.commit(candidate);compassEditor.scope=scope;},
   survey:()=>{homeDesignUI?.setInputs([...new Set([...(homeDesignUI?.inputs||[]),'survey'])]);homeDesignUI?.setStage('edit');homeDesignUI?.showCategory(1);markDraftChanged();$('bedrooms').focus();},import:()=>$('import-plan-open').click(),samples:()=>sampleGallery.open('view'),selectedSample:()=>sampleGallery.selected,

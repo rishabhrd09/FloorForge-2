@@ -1,0 +1,20 @@
+PASS Journey starts locally without an AI provider
+PASS Six combinable starting inputs are visible
+PASS Nine ordered journey stages are keyboard buttons
+PASS All three requested floor drawings publish before 3D
+PASS 2D review dialog fills the actual viewport
+PASS Dimensioned floor image is loaded
+PASS Each requested floor has its own signed approval
+PASS Three compatible appearance presets follow whole-home confirmation
+PASS Style-only selection retains exact geometry and signed approval
+PASS Modular furniture materials retain geometry approval
+PASS Approved home generates exactly one matching interactive scene
+PASS Portable project embeds original reference bytes and IDs
+PASS Save and upload retain floor IDs and approval records
+PASS Mobile 2D review fits the viewport
+PASS Older preparation cannot replace a newer geometry edit
+PASS An unresolved conflicting draft reopens with every source retained
+PASS Conflicting sources become one guided decision
+PASS Source decision is previewed and applied explicitly
+PASS Undo restores the previous source decision and editable draft
+PASS No browser exceptions

@@ -1,8 +1,12 @@
 # MyVerandah custom-home journey
 
-Implementation branch: `codex/myverandah-custom-journey`, based on clean
-`development` commit `8396097`. No deployment or main-branch merge is part of
-this work. Existing planning documents are preserved.
+Originally implemented on `codex/myverandah-custom-journey`, based on clean
+`development` commit `8396097`. At the user's request on November 6, all prior
+work was checkpointed as `7d17668` and fast-forwarded onto local `development`.
+The original feature branch retains that recovery checkpoint. Nothing has been
+pushed, deployed or merged to `main`. Existing planning documents are preserved.
+See [the recovery verification report](CUSTOM_JOURNEY_RECOVERY.md) for the
+subsequent guided-edit and approval fixes and fresh end-to-end evidence.
 
 ## Baseline audit
 

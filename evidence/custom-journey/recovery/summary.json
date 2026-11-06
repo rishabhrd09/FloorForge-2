@@ -1,0 +1,113 @@
+{
+  "verifiedAt": "2026-11-06T07:13:54.115125+00:00",
+  "branch": "development",
+  "remoteDevelopment": "839609731077e9623ce819cdfd80b1152a8a0956",
+  "priorWorkCheckpoint": "7d176687f974e1a47fa956578c9dbe7ec1fea713",
+  "mainUntouched": "f3b5c9807ebfeacd1c5d3e24aa0177c43ec104d0",
+  "beforeSwitchBackup": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-before-development-5c38kg9_",
+  "pushed": false,
+  "deployed": false,
+  "kernelHash": "4e95c261f4f186dfae0df7f5c2bd2fa0a157336a75899fc9f29effe664fefa4d",
+  "pytest": {
+    "passed": 1079,
+    "failed": 1,
+    "durationSeconds": 433.99,
+    "knownBaselineFailure": "tests/test_electrical_tour.py::test_tour_page_loads_its_data_offline",
+    "report": "pytest.xml"
+  },
+  "browser": {
+    "journey": {
+      "passed": 20,
+      "failed": 0,
+      "errors": 0,
+      "report": "journey/browser-checks.json",
+      "timings": {
+        "prepareSeconds": 0.303,
+        "generateSeconds": 12.043
+      }
+    },
+    "inputs": {
+      "passed": 32,
+      "failed": 0,
+      "errors": 0,
+      "report": "inputs/browser-input-checks.json",
+      "timings": null
+    },
+    "imports": {
+      "passed": 15,
+      "failed": 0,
+      "errors": 0,
+      "report": "imports/browser-import-checks.json",
+      "timings": null
+    },
+    "launch": {
+      "passed": 17,
+      "failed": 0,
+      "errors": 0,
+      "report": "launch/checks.json",
+      "timings": null
+    },
+    "recovery": {
+      "passed": 46,
+      "failed": 0,
+      "errors": 0,
+      "report": "verified/checks.json",
+      "timings": {
+        "text-interpretation": 23.814,
+        "first-floor-unplaced": 21.074,
+        "second-floor-unplaced": 21.477,
+        "invalid-plot": 20.649,
+        "empty-second-floor": 20.434,
+        "exact-stair-link": 20.854,
+        "occupied-repair": 25.413,
+        "locked-no-alternative": 22.37,
+        "generationSeconds": 5.232,
+        "complete-west-three-floors": 55.818,
+        "foreign-studio-approval": 21.737
+      }
+    }
+  },
+  "totalBrowserChecks": 130,
+  "node": [
+    "100 geometry/appearance/source/pin/answer metamorphic cases",
+    "12 edit-action routes, all3floors, exact-plan illustrations, legacy metadata and missing middle stairs",
+    "Actual prepare() trust filtering for local/foreign approval state"
+  ],
+  "preservation": {
+    "repository": {
+      "checked": 2897,
+      "unchanged": 2897,
+      "changed": [],
+      "passed": true
+    },
+    "existingStudioOutputs": {
+      "checked": 1087,
+      "changed": [],
+      "added": [],
+      "passed": true
+    }
+  },
+  "liveStudio": {
+    "journey_api_version": 1,
+    "loaded_build_id": "4e95c261f4f186dfae0df7f5c2bd2fa0a157336a75899fc9f29effe664fefa4d",
+    "disk_build_id": "4e95c261f4f186dfae0df7f5c2bd2fa0a157336a75899fc9f29effe664fefa4d",
+    "restart_required": false,
+    "url": "http://127.0.0.1:57594",
+    "matchesDevelopment": true,
+    "liveUICheck": "40 \u00d7 60 ft, West, Ground + First + Second: Create my custom design opened Compass with West road visible.",
+    "surface": "Fresh in-app browser tab; existing Safari storage was not accessed."
+  },
+  "pdfReview": {
+    "pageCount": 16,
+    "reviewedPage": 2,
+    "sha256": "e455370494695c77460ae04758285c58059ea5feb110c3e5d96049da3de8e688",
+    "matchesVisuallyReviewedPublication": true,
+    "observation": "First-floor renamed room, dimensions, stair, orientation, scale and notes legible; no overlap."
+  },
+  "humanNoviceTrial": "Pending at user request",
+  "remoteCI": "Configured; not run",
+  "limitations": [
+    "Bounded solver may require explicit edits; no promise of feasibility or global optimality.",
+    "Arbitrary CAD, uncalibrated image-to-geometry and professional construction approval remain outside supported scope."
+  ]
+}

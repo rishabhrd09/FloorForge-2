@@ -1,0 +1,949 @@
+{
+  "baseline": false,
+  "checks": [
+    {
+      "name": "Impossible exact size preserves the draft with no fabricated solution",
+      "pass": true
+    },
+    {
+      "name": "No-alternative question cannot repeat an identical Recommend search",
+      "pass": true
+    },
+    {
+      "name": "Exact-dimension question offers an explicit pin review",
+      "pass": true
+    },
+    {
+      "name": "Explicitly releasing exact dimensions advances to validated choices",
+      "pass": true
+    },
+    {
+      "name": "Actual start retains 40 by 60 feet, West road and three floors",
+      "pass": true
+    },
+    {
+      "name": "2: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "2: edit opens the affected floor and room",
+      "pass": true
+    },
+    {
+      "name": "2: named floor and concrete issue remain visible",
+      "pass": true
+    },
+    {
+      "name": "2: actual cell placement clears the blocker and reaches all-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "2D publication is complete before any presentation build",
+      "pass": true
+    },
+    {
+      "name": "Editing an approved First floor opens that exact Compass floor",
+      "pass": true
+    },
+    {
+      "name": "Independent First-floor edit invalidates only First approval",
+      "pass": true
+    },
+    {
+      "name": "Reapproving only changed First floor permits fresh whole-home confirmation",
+      "pass": true
+    },
+    {
+      "name": "Appearance preserves immutable geometry and floor approvals",
+      "pass": true
+    },
+    {
+      "name": "Interactive 3D contains all three floors and exactly the approved geometry identity",
+      "pass": true,
+      "detail": {
+        "storeys": 3,
+        "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+        "planHash": "a24949869cba3774ba74f5e4c55d178d5179471b76dd00b0c380df5f7662d622",
+        "nodes": 1132,
+        "buildId": "D8C2469F"
+      }
+    },
+    {
+      "name": "Save project downloads the actual approved portable home",
+      "pass": true
+    },
+    {
+      "name": "Save and upload retain all floors, allocations, answers, appearance and approvals",
+      "pass": true
+    },
+    {
+      "name": "Browser reopen restores three-floor design without losing approval",
+      "pass": true
+    },
+    {
+      "name": "A portable approved home opens editable in a different local studio",
+      "pass": true
+    },
+    {
+      "name": "Foreign approval signatures do not disable floor review or bypass confirmation",
+      "pass": true
+    },
+    {
+      "name": "All floors can be reapproved and confirmed after portable transfer",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "case": "locked-no-alternative",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 7.871,
+              "depth_mm": 3334.5,
+              "width_mm": 2360.5
+            },
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "floorName": "Ground floor",
+            "name": "Living",
+            "regions": [
+              "0:0"
+            ],
+            "required": {
+              "depth_mm": 4000,
+              "locked": true,
+              "minimum_area_m2": 9.5,
+              "minimum_width_mm": 2400,
+              "width_mm": 2400
+            },
+            "roomId": "living"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "keep-dimension",
+            "label": "Keep the exact dimension; edit regions",
+            "recommended": true
+          },
+          {
+            "action": "review-pin",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "review-pin",
+            "label": "Review the dimension pin",
+            "recommended": false
+          }
+        ],
+        "code": "SIZE_LOCK",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "kind": "compass",
+          "roomId": "living",
+          "view": "map"
+        },
+        "explanation": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+        "id": "question-47c686c2be34da7b",
+        "issue": {
+          "code": "SIZE_LOCK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        "prompt": "This map does not match a pinned dimension. Which should stay fixed?",
+        "recommended": "keep-dimension",
+        "remainingIssueCount": 2,
+        "steps": [
+          "Open Living and compare its measured clear size with the locked target.",
+          "Adjust its assigned cells, or explicitly unlock the size target in Room details before requesting a new recommendation."
+        ],
+        "title": "This map does not match a pinned dimension. Which should stay fixed?"
+      },
+      "issues": [
+        {
+          "code": "NARROW_NECK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        {
+          "code": "ROOM_MINIMUM",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living: 7.87 m², 2.36 m narrow side. This type needs 9.5 m² and 2.4 m. Enlarge its assigned area.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        {
+          "code": "SIZE_LOCK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "locked-no-alternative",
+      "phase": "after edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 7.871,
+              "depth_mm": 3334.5,
+              "width_mm": 2360.5
+            },
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "floorName": "Ground floor",
+            "name": "Living",
+            "regions": [
+              "0:0"
+            ],
+            "required": {
+              "minimum_area_m2": 9.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "living"
+          }
+        ],
+        "choices": [
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-eb97a9cbc320ca88",
+            "id": "repair-eb97a9cbc320ca88",
+            "illustration": [
+              {
+                "after": [
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "before": [
+                  "0:1",
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "floorId": "ground",
+                "roomId": "hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "0:1"
+                ],
+                "before": [
+                  "0:0"
+                ],
+                "floorId": "ground",
+                "roomId": "living"
+              }
+            ],
+            "label": "Preview option 1",
+            "recommended": true
+          },
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-2b2321f7bb4895b1",
+            "id": "repair-2b2321f7bb4895b1",
+            "illustration": [
+              {
+                "after": [
+                  "0:2",
+                  "0:3",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "before": [
+                  "0:1",
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "floorId": "ground",
+                "roomId": "hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "0:1",
+                  "1:0",
+                  "1:1"
+                ],
+                "before": [
+                  "0:0"
+                ],
+                "floorId": "ground",
+                "roomId": "living"
+              }
+            ],
+            "label": "Preview option 2",
+            "recommended": false
+          },
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "edit-map",
+            "label": "Keep my map and edit",
+            "recommended": false
+          }
+        ],
+        "code": "NARROW_NECK",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "kind": "compass",
+          "roomId": "living",
+          "view": "map"
+        },
+        "explanation": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+        "id": "question-3c55526d7776aa86",
+        "issue": {
+          "code": "NARROW_NECK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        "prompt": "May I adjust these room boundaries to make the home work?",
+        "recommended": "repair-eb97a9cbc320ca88",
+        "remainingIssueCount": 1,
+        "steps": [
+          "Give Living enough connected cells for its minimum size after walls.",
+          "If neighbouring cells are occupied, review a proposed boundary change or explicitly reassign cells. Pinned rooms stay fixed."
+        ],
+        "title": "May I adjust these room boundaries to make the home work?"
+      }
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "floorName": "Second floor",
+            "name": "bed",
+            "regions": [],
+            "required": {
+              "minimum_area_m2": 7.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "f2-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 2,
+              "floorId": "floor-2",
+              "floorIndex": 2,
+              "kind": "compass",
+              "roomId": "f2-bed",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open Second floor",
+            "recommended": true
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "kind": "compass",
+          "roomId": "f2-bed",
+          "view": "map"
+        },
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-edd0b01e39e9a1b2",
+        "issue": {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        },
+        "prompt": "Place bed on Second floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "On Second floor, select bed from the room checklist and assign connected cells.",
+          "If this room is no longer wanted, explicitly change its required setting. Then check again."
+        ],
+        "title": "Place bed on Second floor"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "generated scene",
+      "storeys": 3,
+      "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+      "planHash": "a24949869cba3774ba74f5e4c55d178d5179471b76dd00b0c380df5f7662d622",
+      "nodes": 1132,
+      "buildId": "D8C2469F",
+      "approvedGeometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "saved artifacts",
+      "artifactBase": "http://127.0.0.1:54736/builds/d8c2469f812a48638cb9eeec/",
+      "files": [
+        "canonical.json",
+        "geometry-approval.json",
+        "export-checks.json",
+        "manifest.json",
+        "drawings.pdf",
+        "floorplans.dxf"
+      ]
+    },
+    {
+      "case": "foreign-studio-approval",
+      "phase": "before edit",
+      "valid": true,
+      "question": null,
+      "issues": [],
+      "alternatives": []
+    }
+  ],
+  "network": [
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/confirm",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/intent",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/generate",
+      "status": 202
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/ca50aa558f0a41a9",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/ca50aa558f0a41a9",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/ca50aa558f0a41a9",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/ca50aa558f0a41a9",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/confirm",
+      "status": 200
+    }
+  ],
+  "timings": {
+    "locked-no-alternative": 25.341,
+    "generationSeconds": 5.594,
+    "complete-west-three-floors": 68.485,
+    "foreign-studio-approval": 23.575
+  },
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-recovery-PKz2DC",
+  "serverErrors": "",
+  "humanTrial": "Pending at user request"
+}

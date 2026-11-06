@@ -1,0 +1,1089 @@
+{
+  "schema": "floorforge.project/0.5",
+  "brief": {
+    "width_mm": 12192,
+    "depth_mm": 18288,
+    "front_mm": 3000,
+    "rear_mm": 1200,
+    "left_mm": 1000,
+    "right_mm": 1000,
+    "bedrooms": 3,
+    "storeys": 3,
+    "roof_access": false,
+    "title": "Recovery allocation complete-west-three-floors",
+    "road_bearing_deg": 270,
+    "exterior_theme": "modern_tropical",
+    "interior_theme": "bright_natural"
+  },
+  "editorState": {
+    "mode": "compass",
+    "homeInputs": [
+      "plot",
+      "compass"
+    ],
+    "compassDraft": {
+      "schema": "floorforge.compass-input/2",
+      "grid": {
+        "rows": 4,
+        "cols": 4,
+        "basis": "buildable-envelope",
+        "rowOrigin": "front"
+      },
+      "floors": [
+        {
+          "id": "floor-0",
+          "splits": []
+        },
+        {
+          "id": "floor-1",
+          "splits": []
+        },
+        {
+          "id": "floor-2",
+          "splits": []
+        }
+      ],
+      "rooms": [
+        {
+          "id": "f0-stairs",
+          "name": "stairs",
+          "kind": "stair",
+          "floorId": "floor-0",
+          "regions": [
+            "0:0",
+            "1:0"
+          ]
+        },
+        {
+          "id": "f0-hall",
+          "name": "hall",
+          "kind": "living",
+          "floorId": "floor-0",
+          "regions": [
+            "0:1",
+            "0:2",
+            "1:1",
+            "1:2",
+            "1:3",
+            "2:0",
+            "2:1",
+            "2:2",
+            "2:3"
+          ]
+        },
+        {
+          "id": "f0-bed",
+          "name": "bed",
+          "kind": "bedroom",
+          "floorId": "floor-0",
+          "regions": [
+            "3:0",
+            "3:1",
+            "3:2",
+            "3:3"
+          ]
+        },
+        {
+          "id": "f0-kitchen",
+          "name": "kitchen",
+          "kind": "kitchen",
+          "floorId": "floor-0",
+          "regions": [
+            "0:3"
+          ]
+        },
+        {
+          "id": "f1-stairs",
+          "name": "stairs",
+          "kind": "stair",
+          "floorId": "floor-1",
+          "regions": [
+            "0:0",
+            "1:0"
+          ]
+        },
+        {
+          "id": "f1-hall",
+          "name": "hall",
+          "kind": "hall",
+          "floorId": "floor-1",
+          "regions": [
+            "0:1",
+            "0:2",
+            "0:3",
+            "1:1",
+            "1:2",
+            "1:3",
+            "2:0",
+            "2:1",
+            "2:2",
+            "2:3"
+          ]
+        },
+        {
+          "id": "f1-bed",
+          "name": "Guest bedroom upstairs",
+          "kind": "bedroom",
+          "floorId": "floor-1",
+          "regions": [
+            "3:0",
+            "3:1",
+            "3:2",
+            "3:3"
+          ],
+          "required": true
+        },
+        {
+          "id": "f2-stairs",
+          "name": "stairs",
+          "kind": "stair",
+          "floorId": "floor-2",
+          "regions": [
+            "0:0",
+            "1:0"
+          ]
+        },
+        {
+          "id": "f2-hall",
+          "name": "hall",
+          "kind": "hall",
+          "floorId": "floor-2",
+          "regions": [
+            "0:1",
+            "0:2",
+            "0:3",
+            "1:1",
+            "1:2",
+            "1:3",
+            "2:0",
+            "2:1",
+            "2:2",
+            "2:3"
+          ]
+        },
+        {
+          "id": "f2-bed",
+          "name": "bed",
+          "kind": "bedroom",
+          "floorId": "floor-2",
+          "regions": [
+            "3:0",
+            "3:1",
+            "3:2",
+            "3:3"
+          ]
+        }
+      ],
+      "stairLinks": [
+        {
+          "id": "linked-core",
+          "roomIds": [
+            "f0-stairs",
+            "f1-stairs",
+            "f2-stairs"
+          ]
+        }
+      ],
+      "programme": "drawn",
+      "site": {
+        "context": "unknown",
+        "gate": "planner",
+        "zones": []
+      },
+      "connections": [],
+      "requirements": []
+    },
+    "compassScope": 3,
+    "guideFloors": [
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": false,
+    "customPlan": {
+      "schema": "floorforge.custom-plan/1",
+      "units": "mm",
+      "wallThickness": 150,
+      "floors": [
+        {
+          "id": "floor-0",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-1",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        },
+        {
+          "id": "floor-2",
+          "rooms": [],
+          "walls": [],
+          "openings": []
+        }
+      ],
+      "stairs": []
+    },
+    "savedRoomEdits": [],
+    "savedFurnitureLayout": [],
+    "usePlacements": false,
+    "roomBoard": null,
+    "useRoomBoard": false
+  },
+  "designJourney": {
+    "schema": "myverandah.journey/1",
+    "enabledInputs": [
+      "plot",
+      "compass"
+    ],
+    "answers": {},
+    "approvals": {
+      "floor-0": {
+        "floorId": "floor-0",
+        "geometryHash": "36b8bd3da817f2015df843be2c7e99e944e5ff704ca9824350f3a7b3efb01c18",
+        "homeGeometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a",
+        "schema": "myverandah.floor-approval/1",
+        "signature": "bd1a3e480cf047c696d67329ad6aa5e8e3fb78d8bc753774735691f174de3bc6"
+      },
+      "floor-1": {
+        "floorId": "floor-1",
+        "geometryHash": "1d7eecd1465cb8c0ff7d8d2c46e9407ee10715f0b55a667c5d42f43f6d51fbfc",
+        "homeGeometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+        "schema": "myverandah.floor-approval/1",
+        "signature": "5aeec71a9f1ff61e724cd200f87adc86b3a9cfc47dbdcfd3515551e6b4bca58b"
+      },
+      "floor-2": {
+        "floorId": "floor-2",
+        "geometryHash": "e74a4c7996cbb64d6f220153390d9e0dd1b564e87b56b7aed6be017ccde3eba4",
+        "homeGeometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a",
+        "schema": "myverandah.floor-approval/1",
+        "signature": "9cc1858281c583f67b0bfb6dc68a3b4ad4afe58d3727c30443b1fd3898148897"
+      }
+    },
+    "appearance": {
+      "preset": "quiet-modern"
+    },
+    "projectId": "b7d9a6d3-ee2c-40f9-b7b6-d70f68b19dfd",
+    "preparationId": "fa723472425b8ec99c20e524daf26f3d",
+    "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+    "confirmation": {
+      "floors": [
+        {
+          "floorId": "floor-0",
+          "geometryHash": "36b8bd3da817f2015df843be2c7e99e944e5ff704ca9824350f3a7b3efb01c18"
+        },
+        {
+          "floorId": "floor-1",
+          "geometryHash": "1d7eecd1465cb8c0ff7d8d2c46e9407ee10715f0b55a667c5d42f43f6d51fbfc"
+        },
+        {
+          "floorId": "floor-2",
+          "geometryHash": "e74a4c7996cbb64d6f220153390d9e0dd1b564e87b56b7aed6be017ccde3eba4"
+        }
+      ],
+      "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+      "schema": "myverandah.home-approval/1",
+      "signature": "c6d957e179fe38a491c8f6e27a05d18ed9cdbf52064a0b807b4e111b2e64d30c"
+    },
+    "sourceReport": [
+      {
+        "enabled": true,
+        "floorIds": [],
+        "id": "plot-basics",
+        "interpretation": {
+          "method": "explicit measured data"
+        },
+        "kind": "plot",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "units": "mm",
+        "values": {
+          "depth_mm": 18288,
+          "front_mm": 3000,
+          "left_mm": 1000,
+          "rear_mm": 1200,
+          "right_mm": 1000,
+          "road_bearing_deg": 270,
+          "roof_access": false,
+          "storeys": 3,
+          "width_mm": 12192
+        }
+      },
+      {
+        "enabled": false,
+        "floorIds": [],
+        "id": "home-goals",
+        "interpretation": {
+          "method": "explicit measured data"
+        },
+        "kind": "survey",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "units": "mm",
+        "values": {
+          "bedrooms": 3
+        }
+      },
+      {
+        "enabled": true,
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "id": "compass-map",
+        "interpretation": {
+          "method": "explicit measured data"
+        },
+        "kind": "compass",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "units": "mm",
+        "values": {}
+      }
+    ],
+    "requirements": [
+      {
+        "field": "width_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:width_mm",
+        "label": "width",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 12192
+      },
+      {
+        "field": "depth_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:depth_mm",
+        "label": "depth",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 18288
+      },
+      {
+        "field": "front_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:front_mm",
+        "label": "front",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 3000
+      },
+      {
+        "field": "rear_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:rear_mm",
+        "label": "rear",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 1200
+      },
+      {
+        "field": "left_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:left_mm",
+        "label": "left",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 1000
+      },
+      {
+        "field": "right_mm",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:right_mm",
+        "label": "right",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 1000
+      },
+      {
+        "field": "storeys",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:storeys",
+        "label": "storeys",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 3
+      },
+      {
+        "field": "roof_access",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:roof_access",
+        "label": "roof access",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": false
+      },
+      {
+        "field": "road_bearing_deg",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "plot-basics:road_bearing_deg",
+        "label": "road bearing deg",
+        "message": "",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "plot-basics",
+        "sourceId": "plot-basics",
+        "status": "applied",
+        "units": "mm",
+        "value": 270
+      },
+      {
+        "field": "bedrooms",
+        "floorIds": [],
+        "floorIndices": [],
+        "id": "home-goals:bedrooms",
+        "label": "bedrooms",
+        "message": "Excluded by your input choice.",
+        "provenance": {
+          "origin": "project",
+          "path": "brief",
+          "revisions": [
+            {
+              "enabled": true,
+              "id": "studio-field-edits",
+              "kind": "form",
+              "values": {
+                "bedrooms": 3
+              }
+            }
+          ],
+          "supersededValues": {
+            "bedrooms": 3
+          }
+        },
+        "source": "home-goals",
+        "sourceId": "home-goals",
+        "status": "excluded",
+        "units": "mm",
+        "value": 3
+      },
+      {
+        "field": "layout",
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:layout",
+        "label": "layout",
+        "message": "Measured room layout.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ]
+      },
+      {
+        "field": "room-f0-stairs",
+        "fixed": false,
+        "floorIds": [
+          "floor-0"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f0-stairs",
+        "label": "room-f0-stairs",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f0-stairs",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "stair"
+      },
+      {
+        "field": "room-f0-hall",
+        "fixed": false,
+        "floorIds": [
+          "floor-0"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f0-hall",
+        "label": "room-f0-hall",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f0-hall",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "living"
+      },
+      {
+        "field": "room-f0-bed",
+        "fixed": false,
+        "floorIds": [
+          "floor-0"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f0-bed",
+        "label": "room-f0-bed",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f0-bed",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "bedroom"
+      },
+      {
+        "field": "room-f0-kitchen",
+        "fixed": false,
+        "floorIds": [
+          "floor-0"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f0-kitchen",
+        "label": "room-f0-kitchen",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f0-kitchen",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "kitchen"
+      },
+      {
+        "field": "room-f1-stairs",
+        "fixed": false,
+        "floorIds": [
+          "floor-1"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f1-stairs",
+        "label": "room-f1-stairs",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f1-stairs",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "stair"
+      },
+      {
+        "field": "room-f1-hall",
+        "fixed": false,
+        "floorIds": [
+          "floor-1"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f1-hall",
+        "label": "room-f1-hall",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f1-hall",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "hall"
+      },
+      {
+        "field": "room-f1-bed",
+        "fixed": false,
+        "floorIds": [
+          "floor-1"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f1-bed",
+        "label": "room-f1-bed",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f1-bed",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "bedroom"
+      },
+      {
+        "field": "room-f2-stairs",
+        "fixed": false,
+        "floorIds": [
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f2-stairs",
+        "label": "room-f2-stairs",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f2-stairs",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "stair"
+      },
+      {
+        "field": "room-f2-hall",
+        "fixed": false,
+        "floorIds": [
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f2-hall",
+        "label": "room-f2-hall",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f2-hall",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "hall"
+      },
+      {
+        "field": "room-f2-bed",
+        "fixed": false,
+        "floorIds": [
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:room-f2-bed",
+        "label": "room-f2-bed",
+        "message": "Room identity, type and floor are retained.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "roomId": "f2-bed",
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "bedroom"
+      },
+      {
+        "field": "bedrooms",
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:bedrooms",
+        "label": "bedrooms",
+        "message": "Inferred from the enabled Compass room programme within the explicitly selected floor scope.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": 3
+      },
+      {
+        "field": "drawn-programme",
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:drawn-programme",
+        "label": "drawn-programme",
+        "message": "Preview only the placed rooms on 3 floor(s), including 3 bedrooms. Empty cells stay empty; upper drafts remain saved.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "Preview only the placed rooms on 3 floor(s), including 3 bedrooms. Empty cells stay empty; upper drafts remain saved."
+      },
+      {
+        "field": "plot-context",
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:plot-context",
+        "label": "plot-context",
+        "message": "Plot context: unknown. Exposure and additional roads are not inferred.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "reference-only",
+        "units": "mm",
+        "value": "Plot context: unknown. Exposure and additional roads are not inferred."
+      },
+      {
+        "field": "linked-core",
+        "floorIds": [
+          "floor-0",
+          "floor-1",
+          "floor-2"
+        ],
+        "floorIndices": [],
+        "id": "compass-map:linked-core",
+        "label": "linked-core",
+        "message": "Linked stair core compiled into the included floors.",
+        "provenance": {
+          "origin": "project",
+          "path": "compass / editorState.compassDraft"
+        },
+        "source": "compass-map",
+        "sourceId": "compass-map",
+        "status": "applied",
+        "units": "mm",
+        "value": "Linked stair core compiled into the included floors."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "studio-field-edits",
+      "kind": "form",
+      "enabled": true,
+      "values": {
+        "bedrooms": 3
+      }
+    }
+  ],
+  "text": "",
+  "attachments": [],
+  "draftRevision": 8
+}

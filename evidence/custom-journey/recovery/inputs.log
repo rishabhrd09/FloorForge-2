@@ -1,0 +1,32 @@
+PASS Actual plot, units, front and survey controls reach selected backend values
+PASS Plot plus survey produces measured one-floor geometry without AI
+PASS Changing the survey changes room geometry and geometry identity
+PASS Enabled written dimensions create a real measurement question
+PASS Text-only selection consumes measured text while excluding plot and survey
+PASS Text-only room goal produces the measured two-bedroom canonical plan
+PASS Use this description checkbox actually excludes its parsed requirements
+PASS Method-level text exclusion retains original words but ignores their values
+PASS Excluded survey requests a room goal instead of applying hidden counts
+PASS Autosaved unresolved input conflicts restore as editable drafts
+PASS Compass offers all five maintained grids
+PASS 4x4 selector updates saved allocation basis and visible cells
+PASS 4x5 selector updates saved allocation basis and visible cells
+PASS 4x6 selector updates saved allocation basis and visible cells
+PASS 5x5 selector updates saved allocation basis and visible cells
+PASS 6x7 selector updates saved allocation basis and visible cells
+PASS Arrow navigation and Enter open a room picker without dragging
+PASS Room catalogue names all 28 types
+PASS Keyboard-selected cell gets a stable room allocation
+PASS Touch placement retains LR half-cell ownership
+PASS Touch placement retains FB half-cell ownership
+PASS Undo reverses the latest touch allocation
+PASS Redo restores both split directions and stable room identities
+PASS Both split axes reach actual measured room polygons
+PASS Occupied 4x4 ground and first maps compile every requested floor
+PASS Full 16-cell maps retain floor switching and front road
+PASS First floor keeps complete ownership after switching
+PASS Occupied 4x5 ground and first maps compile every requested floor
+PASS Occupied 4x6 ground and first maps compile every requested floor
+PASS Occupied 5x5 ground and first maps compile every requested floor
+PASS Occupied 6x7 ground and first maps compile every requested floor
+PASS No browser exceptions in input selection or accessible Compass editing

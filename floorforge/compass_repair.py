@@ -337,19 +337,19 @@ def guided_question(draft, result):
     """One coupled decision at a time; the remaining issues stay inspectable."""
     if result.get('valid'):
         return None
-    problems = result.get('issues', [])
-    priority = {'EMPTY_FLOOR': 0, 'UNPLACED': 1, 'STAIR_LINK': 2, 'STAIR_ALIGNMENT': 2,
-                'STAIR_FIT': 2, 'UNLINKED_STAIR': 2, 'OPEN_SKY_BLOCKED': 3,
-                'UNSUPPORTED_FLOOR': 3, 'SIZE_LOCK': 4, 'TEXT_CONFLICT': 4,
-                'NO_ENTRY': 5, 'ENTRY_WALL': 5, 'UNREACHABLE': 6,
-                'BEDROOM_THROUGH_ROUTE': 6, 'NO_EXTERNAL_WINDOW': 7}
-    problem = min(problems, key=lambda p: priority.get(p['code'], 8)) if problems else {'code': 'REPAIR_LIMIT', 'message': 'Keep editing this map.'}
+    from .journey_diagnostics import enrich_issues, first_issue, contextualize_question
+    context = {'compass': {**draft, 'floors': draft['floors'][:result.get('scope')]},
+               'brief': result.get('values', {})}
+    problems = enrich_issues(result.get('issues', []), context, result.get('sizes', []))
+    problem = first_issue(problems)
     code = problem['code']
     by_id = {r['id']: r for r in draft['rooms']}
     rid = problem.get('roomId') or problem.get('id')
     affected_ids = [rid] if rid in by_id else [r['id'] for r in draft['rooms'] if
-        (r['kind'] == 'stair' if 'STAIR' in code else r['floorId'] == (draft['floors'][problem.get('floor', 0)]['id'] if draft['floors'] else None))]
+        (r['kind'] == 'stair' if 'STAIR' in code else r['floorId'] == problem.get('floorId'))]
     affected = [{'roomId': ident, 'floorId': by_id[ident]['floorId'], 'regions': by_id[ident]['regions']} for ident in affected_ids]
+    if not affected and problem.get('floorId'):
+        affected = [{'floorId': problem['floorId'], 'regions': []}]
     if not affected and 'STAIR' in code:
         affected = [{'floorId': floor['id'], 'regions': []} for floor in draft['floors'][:result.get('scope')]]
     alternatives = result.get('alternatives', [])
@@ -365,6 +365,12 @@ def guided_question(draft, result):
         title = 'Would you like to finish every requested floor or review a smaller scope?'
         choices = [{'id': 'finish-floors', 'label': 'Finish the requested floors', 'action': 'edit', 'recommended': True},
                    {'id': 'choose-scope', 'label': 'Choose a smaller preview scope', 'action': 'choose-scope', 'recommended': False}]
+    elif code in ('UNPLACED', 'REQUIRED_ROOM_UNPLACED'):
+        title = f'Where should {problem.get("name", "this required room")} go on {problem.get("floorName", "this floor")}?'
+        choices = [{'id': 'place-room', 'label': 'Place this required room', 'action': 'edit', 'recommended': True}]
+    elif code in ('ENVELOPE', 'ENVELOPE_TOO_SMALL', 'FIELD_RANGE'):
+        title = 'Check the plot dimensions and setbacks first'
+        choices = [{'id': 'review-plot', 'label': 'Review plot dimensions and setbacks', 'action': 'review-plot', 'recommended': True}]
     elif 'STAIR' in code:
         title = 'May I reserve one aligned stair area on the requested floors?'
         choices = [{'id': 'align-stairs', 'label': 'Edit aligned stairs and landings', 'action': 'edit-stairs', 'recommended': True},
@@ -382,7 +388,8 @@ def guided_question(draft, result):
         title = f'How would you like to resolve {name} first?'
         choices = [{'id': 'edit-area', 'label': 'Edit the highlighted area', 'action': 'edit', 'recommended': True},
                    {'id': 'review-plot', 'label': 'Review plot dimensions and setbacks', 'action': 'review-plot', 'recommended': False}]
-    return {'id': 'question-'+sha({'code': code, 'affected': affected, 'sourceHash': result.get('sourceHash')})[:16],
+    question = {'id': 'question-'+sha({'code': code, 'affected': affected, 'sourceHash': result.get('sourceHash')})[:16],
             'code': code, 'title': title, 'prompt': title, 'explanation': problem.get('message', ''),
             'affected': affected, 'choices': choices, 'recommended': choices[0]['id'],
             'remainingIssueCount': max(0, len(problems)-1), 'draftPreserved': True}
+    return contextualize_question(question, problems, context, result.get('sizes', []))

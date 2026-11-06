@@ -5,7 +5,7 @@ import {resolve,join} from 'node:path';
 import {tmpdir} from 'node:os';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const root=resolve(import.meta.dirname,'..'),port=Number(process.env.MYVERANDAH_TEST_PORT||8910),url=`http://127.0.0.1:${port}`;
-const out=resolve(root,'evidence/custom-journey'),work=mkdtempSync(join(tmpdir(),'myverandah-browser-'));mkdirSync(out,{recursive:true});
+const out=resolve(root,process.env.MYVERANDAH_EVIDENCE_DIR||'evidence/custom-journey'),work=mkdtempSync(join(tmpdir(),'myverandah-browser-'));mkdirSync(out,{recursive:true});
 const python=process.env.FLOORFORGE_PYTHON||resolve(root,'.venv/bin/python');
 const server=spawn(python,['-m','floorforge','serve','--no-browser','--port',String(port),'--out',work],{cwd:root,stdio:['ignore','ignore','pipe']});
 let serverErrors='';server.stderr.on('data',chunk=>serverErrors+=chunk.toString());
