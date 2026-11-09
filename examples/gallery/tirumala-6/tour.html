@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tirumala 6 · Private garden verandah</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f3eb;color:#292b24;font:16px/1.5 "DM Sans",system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:clamp(18px,4vw,54px)}header{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem}h1{font:clamp(38px,6vw,74px)/1 Georgia,serif;font-weight:400;letter-spacing:-.05em;margin:0}p{margin:.4rem 0}a{color:#354b3c;text-underline-offset:4px}.actions{display:flex;align-items:center;gap:1.3rem;flex-wrap:wrap}.action{color:white;background:#334839;text-decoration:none;padding:.7rem 1rem;border-radius:3px}nav{display:flex;gap:.45rem;flex-wrap:wrap;margin:1rem 0}button{border:1px solid #cbc7b9;color:inherit;background:transparent;font:inherit;padding:.45rem .8rem;cursor:pointer;border-radius:3px}button[aria-pressed=true]{background:#353a31;border-color:#353a31;color:white}figure{margin:0}img{width:100%;height:auto;display:block;aspect-ratio:1200/920;object-fit:contain;background:#e4e2d9}figcaption{margin-top:.8rem}strong{font-weight:600}
+</style>
+<main><header><div><h1>Tirumala 6</h1><p>Private garden verandah · 50′ × 40′ corner plot</p></div><div class="actions"><a id="walkLink" class="action" href="preview.html">Enter the 3D walkthrough</a><a href="drawings.pdf">Floor drawings</a><a href="tirumala-6-textured.glb" download>Textured 3D model</a></div></header>
+<nav aria-label="Rendered views"></nav>
+<figure><img id="render" width="1200" height="920" src="renders/ground.png" alt="Furnished ground-floor cutaway."><figcaption aria-live="polite" id="caption"></figcaption></figure>
+</main>
+<script>
+const views=[
+ ['Ground floor','ground','Shared 16′ × 14′ east arrival porch at house level, 16′ × 17′ ICU and 16′ × 13′ master sleeping area.'],
+ ['First floor','first','Southwest master suite with private entry and bath, northwest study and a northeast bedroom with an attached balcony.'],
+ ['Second floor','second','The stairs open directly into the east hall. A separate timber door leads into the west TV lounge and office. Both halls open to the north terrace.'],
+ ['Colony view','colony_overview','The 12 m north road faces the colony garden. Across the 9 m east road is the screened basketball court.'],
+ ['Exterior','exterior','Ivory compound walls, teak entrance gates, limestone porch, teak gallery screen and a solid white roof-terrace parapet.'],
+ ['East gates','east_arrival','The pedestrian gate slides behind the garden screen. Paired vehicle gates open onto a 1:10 entrance ramp.'],
+ ['Verandah','garden_verandah','The planted court and verandah connect the ICU and caregiver room beneath the north terrace.'],
+ ['Home ICU','icu_garden','Adjustable bed, visitor seat and level sliding doors to the garden verandah.'],
+ ['Kitchen','kitchen','The enlarged 14′ × 10′ kitchen has a 14′ south-wall worktop facing the refrigerator. A separate door at the northeast corner leads to the wash utility.'],
+ ['Living hall','living_gallery','View the seating and dining area from the east, with the open gallery above.'],
+ ['Living rooflight','living_rooflight','Look up from the living room through the first-floor overlook and the smaller roof opening.'],
+ ['Stair lobby','stair_lobby','One level lobby serves the descending and ascending stairs beside a rectangular overlook with opaque ivory parapets.'],
+ ['Suite northlight','suite_northlight','North sky lights the southwest suite through a dedicated roof collector and lined shaft.'],
+ ['Master suite','master_suite','The private entry vestibule leads to the southwest bedroom and its west-side bathroom.'],
+ ['TV lounge','leisure_hall','A 98-inch television and low teak media console face the three-seat sofa.'],
+ ['Hall windows','hall_windows','The open east hall has a 16′ east window and a north window facing the terrace.'],
+ ['Office corner','office_corner','A desk, desktop computer and swivel chair sit beside the west window.'],
+ ['East balcony','upper_balcony','Wide sliding doors from the first-floor gallery open onto the 12′ × 8′ east balcony.'],
+ ['North terrace','north_roof_terrace','The open north terrace measures 50′ east–west by 15′ north–south. A timber door connects it to the indoor hall. A solid white parapet follows the exposed edges. The framing below runs past the ICU garden, east lawn and reading loggia.']
+];
+const nav=document.querySelector('nav'),image=document.querySelector('#render'),caption=document.querySelector('#caption');
+function selectView(index){const [title,id,description]=views[index];document.getElementById('walkLink').href=['hall_windows','living_gallery','living_rooflight','master_suite','upper_balcony','stair_lobby','suite_northlight'].includes(id)?'preview.html#'+id:'preview.html';image.src='renders/'+id+'.png';image.alt=title+'. '+description;caption.textContent=description;Array.from(nav.children).forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));}
+views.forEach(([name],i)=>{const button=document.createElement('button');button.type='button';button.textContent=name;button.addEventListener('click',()=>selectView(i));nav.append(button)});
+function openLinkedView(){selectView(Math.max(0,views.findIndex(view=>view[1]===(location.hash==='#east_roof_terrace'?'north_roof_terrace':location.hash.slice(1)))))}
+window.addEventListener('hashchange',openLinkedView);openLinkedView();
+</script></html>

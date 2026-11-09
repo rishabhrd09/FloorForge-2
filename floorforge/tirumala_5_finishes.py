@@ -34,7 +34,11 @@ def _kit(scene):
 
 
 def _materials(scene):
-    mats = scene['materials']
+    apply_house_palette(scene['materials'])
+
+
+def apply_house_palette(mats):
+    """Shared ivory slab, teak joinery and charcoal frame specification."""
     # 3.2 x 1.6 m slab = 10 ft 6 in x 5 ft 3 in. Thin visible joints, not a
     # texture whose repeat is silently split into four much smaller tiles.
     interior = dict(color='#efe9de', alt='#d5cdbf', kind='tile', texture='tile',
@@ -69,15 +73,20 @@ def _materials(scene):
         't5-cove-warm': dict(color='#ffe8c5', emission=.32, roughness=.60),
     })
     for name in ('wall', 'ceiling', 't4-facade-plaster'):
+        if name not in mats:continue
         mats[name].update(color='#f0ede6' if name != 'ceiling' else '#f5f2eb',
                           normal=.08, roughness_scale=.96)
     for name in ('oak', 'oak-warm'):
+        if name not in mats:continue
         mats[name].update(color='#b0916a', alt='#c4ad87', normal=.10, roughness_scale=.92)
     for name in ('timber', 'teak-warm', 't4-facade-timber'):
+        if name not in mats:continue
         mats[name].update(color='#79583c', alt='#aa8258', normal=.12, roughness_scale=.85)
     for name in ('frame', 't4-facade-frame'):
+        if name not in mats:continue
         mats[name].update(color='#24272a', normal=.08, roughness_scale=.95)
-    mats['t4-facade-glass'].update(color='#cbd7d5', alpha=.23, glassOpacity=.19,
+    glass=mats.get('t4-facade-glass',mats.get('glass',{}))
+    glass.update(color='#cbd7d5', alpha=.23, glassOpacity=.19,
         glassReflectivity=.56, glassEnv=1.35, roughness_override=.025)
     mats['counter'].update(color='#ece7dd', alt='#c6bfb1', normal=.05,
         roughness_scale=.95, clearcoat=.12, clearcoat_roughness=.25)
@@ -341,6 +350,15 @@ def _interior_detail(scene, k):
         k.light((x,y,3.23),10,color='#ffecd6',kind='downlight')
 
 
+def apply_house_daylight(profile):
+    """Daylight, lamp fill and camera tones for the ivory-and-teak house palette."""
+    profile.setdefault('interior', {}).update(exposureScale=1.04,contrast=1.015,
+        punch=.14,vignette=.035,warmth=.065,dayLampLevel=.20)
+    profile.setdefault('exterior', {}).update(contrast=1.02,warmth=.055,punch=.14)
+    profile.setdefault('lighting', {}).setdefault('day', {}).update(sun=3.15,env=.34,bounce=.74,
+        skyBounceColor='#f5f4ef',bounceColor='#e0d9cc',turbidity=2.6)
+
+
 def apply(scene, building):
     """Call after Tirumala 5 base scene refinement; affects this sample only."""
     if building.get('planning',{}).get('tirumalaMeta',{}).get('projectId') != 'tirumala-5':
@@ -362,9 +380,5 @@ def apply(scene, building):
     _interior_detail(scene,k)
     # Restrained tone/exposure, no widened geometry or artificial wide-angle
     # camera tricks. Improved diffuse fill keeps ivory from becoming muddy.
-    scene['presentation']['interior'].update(exposureScale=1.04,contrast=1.015,
-        punch=.14,vignette=.035,warmth=.065,dayLampLevel=.20)
-    scene['presentation']['exterior'].update(contrast=1.02,warmth=.055,punch=.14)
-    scene['presentation']['lighting']['day'].update(sun=3.15,env=.34,bounce=.74,
-        skyBounceColor='#f5f4ef',bounceColor='#e0d9cc',turbidity=2.6)
+    apply_house_daylight(scene['presentation'])
     scene['quality']='Shared dimensionally consistent architectural model with large-slab PBR finishes, deep joinery reveals and opaque terrace parapets.'

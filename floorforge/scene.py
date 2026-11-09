@@ -48,6 +48,14 @@ TERRACE_FINISH = {'modern_tropical': {'slab': 'roof', 'cap': 'frame', 'pergola':
                   'current': {'slab': 'stone', 'cap': 'frame', 'pergola': 'frame'}}
 
 def make_scene(building, report):
+    from .tirumala_6 import private_garden, furnish
+    if private_garden(building):
+        # The authored three-flight stair and undercroft replace the generic U core.
+        base = {**building, 'stairs': [], 'planning': {**building['planning'], 'privateGarden': False},
+                'spaces': [{**s, 'furnishedBySample': s['id'] in ('leisure-hall','auditorium'), 'southRunKitchen': building['planning'].get('eastPorchRevision') and s['id']=='kitchen'} for s in building['spaces']]}
+        if 'exterior' in base:
+            base['exterior']={**base['exterior'], 'landscape': {**base['exterior']['landscape'], 'boundary': {}}}
+        return furnish(make_scene(base, report), building)
     from .tirumala_p11_p12 import is_p11_p12, make_p11_p12_scene
     if is_p11_p12(building):
         b_ext = building if building.get('exterior') else apply_exterior_preferences(building)
@@ -351,7 +359,7 @@ def make_scene(building, report):
                     gates.append({'id':'exterior-pedestrian-gate','label':'Pedestrian gate','floor':-1,'kind':'gate',
                                   'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
                                   'parts':[{'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[hx,hy,zb],'angle':-math.pi/2 if hinge_right else math.pi/2}]})
-    elif not heritage:
+    elif not heritage and not b.get('siteBoundary'):
         for xa, ya, xb, yb in [(xmin, ymin, xmin + .15, ymax), (xmax - .15, ymin, xmax, ymax), (xmin, ymax - .15, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, .65), 'wall', role='site'); rect((xa - .02, ya - .02, .65, xb + .02, yb + .02, .69), 'stone', role='site')
         for xa, xb in [(xmin, ex - gate_half), (ex + gate_half, xmax)]:
@@ -908,7 +916,7 @@ def make_scene(building, report):
             else:
                 ball((knob[0] + uv[0] * .04, knob[1] + uv[1] * .04, base + 1.), (.035, .035, .035), 'brass', o['floor'], 'door')
 
-        if doors_closed and o['kind'] in ('door','entry'):
+        if o.get('initiallyClosed',doors_closed) and o['kind'] in ('door','entry'):
             # Store closed canonical geometry for exports, with explicit inward runtime motion.
             pivot = pv if o['kind']=='entry' and modern else hinge
             direction = uv if o.get('hinge','start')=='start' or (o['kind']=='entry' and modern) else -uv
@@ -1871,16 +1879,21 @@ def make_scene(building, report):
             return
         room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
         x0, y0, x1, y1 = clear.bounds
-        found = None
-        for run in np.arange(round(min(4.5, max(x1 - x0, y1 - y0) - .08), 1), 1.49, -.3):
-            cands = spots(ctx, run + .08, .66, front=.95, height=.92, step=.05)
-            if cands:
-                found = (float(run), max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L'])))
-                break
+        south_run=room.get('southRunKitchen')
+        if south_run:
+            # Cabinet modules stop 30 mm short of each end of the stone top.
+            found=(y1-y0-.06,dict(c=np.array([x0,(y0+y1)/2]),t=np.array([0.,1.]),n=np.array([1.,0.])))
+        else:
+            found = None
+            for run in np.arange(round(min(4.5, max(x1 - x0, y1 - y0) - .08), 1), 1.49, -.3):
+                cands = spots(ctx, run + .08, .66, front=.95, height=.92, step=.05)
+                if cands:
+                    found = (float(run), max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L'])))
+                    break
         if not found:
             return
         run, sp = found
-        fridge = upgraded_interior and run > 2.7
+        fridge = upgraded_interior and run > 2.7 and not south_run
         base_run = run - .78 if fridge else run
         u0 = -run / 2
         nseg = max(2, int(base_run / .6))
@@ -1891,7 +1904,15 @@ def make_scene(building, report):
                 lbox(sp, a0 + .02, a0 + ww - .035, .6, .622, z + zz, z + zz + .20, M['fronts'], f)
                 h0, h1 = P(sp, a0 + .14, .64), P(sp, a0 + ww - .14, .64)
                 beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
-        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f)
+        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f, owner='kitchen-platform' if south_run else None)
+        if south_run:
+            cy=(y0+y1)/2
+            rect((x1-.68,cy-.37,z+.012,x1-.015,cy+.37,z+1.94),'appliance',f,'furniture','north-wall-fridge','north-wall-fridge')
+            rect((x1-.695,cy-.37,z+.79,x1-.68,cy+.37,z+.805),'frame',f,'detail','fridge-divider')
+            beam((x1-.705,cy-.28,z+.98),(x1-.705,cy-.28,z+1.48),.012,'frame',f,'detail')
+            fridge_foot=box(x1-.70,cy-.37,x1,cy+.37)
+            ctx['placed'].append(fridge_foot)
+            furnishing('refrigerator',room,fridge_foot)
         if fridge:
             f0 = u0 + base_run + .02
             lbox(sp, f0, f0 + .72, 0, .65, z + .02, z + 1.95, 'appliance', f)
@@ -2133,6 +2154,8 @@ def make_scene(building, report):
             if room.get('mechanicalVentilation'):
                 cp=p.representative_point();ch=room.get('ceilingHeight',H*1000-150)/1000
                 rect((cp.x-.12,cp.y-.12,z+ch-.02,cp.x+.12,cp.y+.12,z+ch-.01),'frame',f,'fixture',room['id']+'/exhaust-grille',room['id'])
+        if room.get('furnishedBySample'):
+            continue
         if heritage and hi.furnish(room):
             continue
         if custom and kind == 'drying-yard' and room.get('drain'):
@@ -2277,6 +2300,11 @@ def make_scene(building, report):
     if custom or rooftop:
         for guard in rb_model.get('guards',[]):
             edge=LineString(np.array(guard['points'])/1000);f=guard['floor'];z=f*H;own=guard['owner']
+            if guard.get('parapet'):
+                footprint = metres(geometry(guard['parapet']))
+                poly_mesh(footprint,z,z+guard['height']/1000,'t5-ivory-render',f,'parapet',guard['id'],own)
+                colliders.append({'id':guard['id'],'floor':f,'polygon':list(footprint.exterior.coords),'kind':'guard'})
+                continue
             space=next((s for s in b['spaces'] if s['id']==own),{})
             if heritage:
                 hs.guard(guard, space, colliders)

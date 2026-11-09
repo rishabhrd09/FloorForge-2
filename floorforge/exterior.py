@@ -1080,6 +1080,8 @@ def apply_exterior_preferences(building: dict[str, Any]) -> dict[str, Any]:
         },
     }
     revision["schema"] = "floorforge.building/0.4" if building.get("planning",{}).get("custom") else "floorforge.building/0.3"
+    if "siteBoundary" in building:
+        exterior["landscape"] = {**exterior["landscape"], "boundary": {"gates": building["siteBoundary"]["gates"]}}
     revision["exterior"] = exterior
     return revision
 

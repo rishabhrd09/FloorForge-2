@@ -350,7 +350,27 @@ def plan_elements(b, scene, floor=0):
             elems.append(P(list(part.exterior.coords),'none',LIGHT,.15,'A-FLOR'))
             for hole in part.interiors:elems.append(P(list(hole.coords),'none',INK,.2,'A-FLOR'))
         for guard in b.get('guards',[]):
-            if guard['floor']==floor:elems.append(P(guard['points'],'none',ACCENT,.3,'A-FLOR',False))
+            if guard['floor']!=floor:continue
+            if guard.get('parapet'):
+                for region in guard['parapet']:
+                    elems.append(P(region['polygon'],'#e7e4dc',INK,.25,'A-WALL'))
+            else:elems.append(P(guard['points'],'none',ACCENT,.3,'A-FLOR',False))
+    if b.get('planning',{}).get('privateGarden') and b['roofs'][-1].get('rooflight'):
+        if floor==1:
+            hole=next(h for h in b['floor_plates'][1]['openings'] if h['id']=='living-lightwell-1')
+            label=Polygon(hole['regions'][0]['polygon']).representative_point()
+            elems.append(T(label.x,label.y,'OPEN TO LIVING BELOW',125,'A-FLOR'))
+        if floor in (1,2) and b['roofs'][-1].get('suiteNorthlight'):
+            shaft=Polygon(b['roofs'][-1]['suiteNorthlight'][0]['polygon'])
+            elems.append(P(list(shaft.exterior.coords),'none',ACCENT,.25,'A-WIND'))
+            elems.append(T(shaft.centroid.x,shaft.centroid.y,'SUITE NORTHLIGHT',105,'A-WIND'))
+        if floor==2:
+            glass=Polygon(b['roofs'][-1]['rooflight'][0]['polygon'])
+            elems.append(P(list(glass.exterior.coords),'none',ACCENT,.25,'A-WIND'))
+            elems.append(T(glass.centroid.x,glass.centroid.y,'ROOFLIGHT OVER',125,'A-WIND'))
+    for member in b.get('terraceFrame', []):
+        if member['kind']=='column' and member['floor']==floor:
+            elems.append(P(list(box(*member['bounds']).exterior.coords),'#aaa7a0',INK,.25,'A-WALL'))
     # Walls cut at +1.2 m: solid poché with every opening that crosses the cut removed.
     for wall in [w for w in b['walls'] if w['floor'] == floor]:
         p = Polygon(wall['polygon'])
@@ -415,6 +435,11 @@ def plan_elements(b, scene, floor=0):
         elems.append(T(c[0], c[1] - 60, tags[o['id']], 150, 'A-TAGS'))
     # Stairs: treads, the walking line with its arrow, UP/DN and the riser note.
     for st in [s for s in b['stairs'] if s['floor'] == floor]:
+        if st.get('shape')=='three-flight-c-stair' and st.get('flights') and 'bounds' in st['flights'][0]:
+            for part in st['flights']:
+                a,c,d,e=part['bounds']
+                elems.append(P([(a,c),(d,c),(d,e),(a,e)],'none',INK,.15,'A-STAIR'))
+            continue
         x, y = st['x'], st['y']; fw = st['flight_width']; land = st['landing_mm']; tr = st['tread_mm']
         if st.get('shape')=='quarter-turn':
             from .stair_geometry import quarter_parts, quarter_path
@@ -555,10 +580,35 @@ def plan_elements(b, scene, floor=0):
         elems.append(C(cut, cy, 280, INK, .2, 'A-SECT')); elems.append(T(cut, cy - 85, 'A', 220, 'A-SECT'))
         elems.append(P([(cut - 280, cy + sgn * 120), (cut - 620, cy), (cut - 280, cy - sgn * 120)], INK, INK, .1, 'A-SECT'))
     north_point(elems, left - 1500, top - 700, v['road_bearing_deg'])
+    if floor==0 and b.get('siteBoundary'):
+        elems.extend(enclosure_elements(b['siteBoundary'], b.get('vehicleRamp')))
     return elems, bounds_of(elems)
 
 
 # ---------------------------------------------------------------------------------------------- site plan
+def enclosure_elements(boundary, ramp=None):
+    items=[P(run['polygon'], '#b9b2a5', INK, .22, 'A-SITE') for run in boundary['runs']]
+    if ramp:
+        x,X,y,Y=(ramp[k] for k in ('x0','x1','y0','y1'))
+        items.append(P([(x,y),(X,y),(X,Y),(x,Y)],'none',ACCENT,.22,'A-SITE'))
+        mid=(x+X)/2
+        items.append(L((mid,y+80),(mid,Y-160),ACCENT,.3,'A-SITE'))
+        items.append(P([(mid-70,Y-330),(mid,Y-160),(mid+70,Y-330)],'none',ACCENT,.25,'A-SITE',closed=False))
+        items.append(T(mid,Y+300,'UP 1:10',115,'A-SITE'))
+    for gate in boundary['gates']:
+        lo,hi=gate['x0_mm'],gate['x1_mm']
+        items.append(L((lo,185),(hi,185),ACCENT,.45,'A-GATE'))
+        if gate['operation']=='sliding':
+            items.append(L((hi,210),(hi+hi-lo,210),ACCENT,.18,'A-GATE',True))
+        else:
+            for pivot,direction in ((lo,1),(hi,-1)):
+                radius=(hi-lo)/2
+                arc=[(pivot+direction*radius*math.cos(t),185+radius*math.sin(t)) for t in np.linspace(0,math.pi/2,14)]
+                items.append(P(arc,'none',ACCENT,.18,'A-GATE',closed=False))
+                items.append(L((pivot,185),(pivot,185+radius),ACCENT,.22,'A-GATE'))
+    return items
+
+
 def site_elements(b, scene):
     v = b['brief']; fp = Polygon(b['footprint']); plot = Polygon(b['plot']); xmin, ymin, xmax, ymax = plot.bounds; W, D = fp.bounds[2:]
     elems = [P(list(plot.exterior.coords), '#f0f3eb', INK, .35, 'A-SITE'), P(b['footprint'], '#dadfd6', INK, .4)]
@@ -608,7 +658,13 @@ def site_elements(b, scene):
         if txt:
             elems.append(T(x, y, txt, 170))
     boundary = exterior.get('landscape', {}).get('boundary', {})
-    if boundary:
+    if b.get('siteBoundary'):
+        elems.extend(enclosure_elements(b['siteBoundary'], b.get('vehicleRamp')))
+        for gate in b['siteBoundary']['gates']:
+            label='PEDESTRIAN / SLIDING' if gate['kind']=='pedestrian' else 'CAR / INWARD PAIR'
+            elems.append(T((gate['x0_mm']+gate['x1_mm'])/2,-1050,label,115,'A-GATE'))
+        elems.append(T(xmax+850,(ymin+ymax)/2,'NORTH ROAD',160,'A-SITE'))
+    elif boundary:
         for x0, x1, gate in gate_openings(boundary):
             if gate.get('operation') == 'sliding':
                 elems.append(L((x0, ymin + 170), (x1, ymin + 170), ACCENT, .45, 'A-GATE'))

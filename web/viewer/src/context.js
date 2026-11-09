@@ -263,8 +263,8 @@ function buildTirumalaColonyContext(viewer, data) {
   const [xmin, ymin, gz, xmax, ymax] = data.bounds;
   const g = gz;
   const rnd = mulberry32(26039);
-  const refined = !!data.exteriorRefinement;
-  const realistic = !!data.realismRefinement;
+  const refined = !!data.exteriorRefinement || ctx.detailLevel === 'reference';
+  const realistic = !!data.realismRefinement || ctx.detailLevel === 'reference';
   const lawnPockets = [];
   const meshFaces = [];
   const jointHalf = realistic ? .006 : .025;
@@ -721,8 +721,13 @@ function buildTirumalaColonyContext(viewer, data) {
       addGroovedCornerPier(px0, py0, px1, py1, ph);
     }
     // Roadside mixed burgundy/green shrub border along the North & East plot boundary walls (R10, R11, R12, R14, V03, V05)
+    const gateGaps = ctx.entryGaps || [];
+    let eastBeds = [[.45, xmax-3.40]];
+    for (const [lo, hi] of gateGaps) {
+      eastBeds = eastBeds.flatMap(([a,b]) => [[a, Math.min(b,lo-.30)], [Math.max(a,hi+.30), b]].filter(([l,r]) => r>l));
+    }
     if (refined) {
-      for (const [x0,y0,x1,y1] of [[xmax+.045,.60,xmax+.70,ymax-.40],[.45,-.68,xmax-3.40,-.045]]) {
+      for (const [x0,y0,x1,y1] of [[xmax+.045,.60,xmax+.70,ymax-.40],...eastBeds.map(([a,b])=>[a,-.68,b,-.045])]) {
         boxGeo(x0,y0,g+.03,x1,y1,g+.045,buckets.plantingSoil);
         const north=(x0>xmax);
         if(north) boxGeo(x1-.025,y0,g+.03,x1,y1,g+.058,buckets.wallCoping);
@@ -734,7 +739,7 @@ function buildTirumalaColonyContext(viewer, data) {
       addMixedHedgePoint(xmax + 0.36, y, plotHedgeIdx++);
     }
     for (let x = xmin + 0.8; x < xmax - 3.6; x += refined ? .58 : 1.05) {
-      addMixedHedgePoint(x, ymin - 0.36, plotHedgeIdx++);
+      if (!gateGaps.some(([a,b])=>x>a-.52 && x<b+.52)) addMixedHedgePoint(x, ymin - 0.36, plotHedgeIdx++);
     }
   }
 

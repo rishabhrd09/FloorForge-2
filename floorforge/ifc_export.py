@@ -76,9 +76,41 @@ def export_ifc(b, scene=None):
     for wall in b['walls']:
         obj=E('IFCWALL',text(guid(wall['id'])),'$',text(wall['id']),text('Nominal wall; structural role unverified'),'$',placements[wall['floor']],rep(w.solid(Polygon(wall['polygon']),0,wall['height'])),text(wall['id']),'.NOTDEFINED.')
         walls[wall['id']]=obj;contents[wall['floor']].append(obj)
+    for member in b.get('terraceFrame', []):
+        kind=member['kind'].upper()
+        f=member['floor']
+        shape=rep(w.solid(box(*member['bounds']),member['base'],member['top']-member['base']))
+        obj=E('IFC'+kind,text(guid(member['id'])),'$',text(member['id']),text('Concept framing; member sizing unverified'),'$',placements[f],shape,text(member['id']),'.'+kind+'.')
+        contents[f].append(obj)
+    if b.get('siteBoundary'):
+        # Group slats and jambs into identifiable assemblies using the same
+        # geometry as the walkthrough, in their closed coordination position.
+        from collections import defaultdict
+        assemblies=defaultdict(list)
+        for part in b['siteBoundary']['parts']:
+            x,y,z,X,Y,Z=part['bounds']
+            assemblies[part['owner']].append(w.solid(box(x,y,X,Y),z,Z-z))
+        for owner,parts in assemblies.items():
+            if '-leaf-' in owner:
+                obj=E('IFCDOOR',text(guid(owner)),'$',text(owner),'$','$',placements[0],rep(parts),text(owner),'$','$','.GATE.','.NOTDEFINED.','$')
+            else:
+                obj=E('IFCWALL',text(guid(owner)),'$',text(owner),'$','$',placements[0],rep(parts),text(owner),'.NOTDEFINED.')
+            contents[0].append(obj)
     for space in b['spaces']:
         obj=E('IFCSPACE',text(guid(space['id'])),'$',text(space['name']),text('Clear-space study volume'),'$',placements[space['floor']],rep(w.solid(Polygon(space['clear'],space.get('holes',[])),0,space.get('ceilingHeight',H-150))),text(space['id']),'.ELEMENT.','.NOTDEFINED.','$')
         spaces[space['floor']].append(obj)
+    if b.get('vehicleRamp'):
+        from .tirumala_6_site import ramp_geometry
+        vertices,triangles=ramp_geometry(b['vehicleRamp'])
+        coords='('+','.join('('+','.join(number(v) for v in pt)+')' for pt in vertices)+')'
+        points=E('IFCCARTESIANPOINTLIST3D',coords)
+        faces='('+','.join('('+','.join(str(i+1) for i in tri)+')' for tri in triangles)+')'
+        mesh=E('IFCTRIANGULATEDFACESET',points,'$','.T.',faces,'$')
+        body=E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+mesh+')')
+        shape=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+body+')')
+        ident='car-entry-ramp'
+        obj=E('IFCRAMP',text(guid(ident)),'$',text('East vehicle apron'),'$','$',placements[0],shape,text(ident),'.STRAIGHT_RUN_RAMP.')
+        contents[0].append(obj)
     for step in b.get('entrance_steps',[]):
         obj=E('IFCSLAB',text(guid(step['id'])),'$',text('Dining entrance step'),'$','$',placements[0],rep(w.solid(Polygon(step['polygon']),step['bottom'],step['top']-step['bottom'])),text(step['id']),'.LANDING.')
         contents[0].append(obj)
@@ -105,6 +137,11 @@ def export_ifc(b, scene=None):
     if b.get('planning',{}).get('custom') or b.get('rooftop'):
         for st in b['stairs']:
             if st['to_floor'] is None:continue
+            if st.get('shape')=='three-flight-c-stair' and st['id'].startswith('t6-stair-'):
+                parts=[w.solid(box(*s['bounds']),s['top']-st['floor']*H-190,190) for s in st['flights']]
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Three-flight garden stair'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.USERDEFINED.')
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
             g2_ground=b.get('planning',{}).get('g2Revision') and st.get('id')=='g-stair' and scene
             if (st.get('shape') in ('two-flight-l-stair','two-flight-u-stair','three-flight-c-stair') and st.get('id')=='s2-stair') or g2_ground:
                 # G+2 uses the authored ground and upper stair geometry,
@@ -156,6 +193,12 @@ def export_ifc(b, scene=None):
             contents[st['floor']].append(obj);properties(obj,st['id'])
         from shapely.geometry import LineString
         for guard in b.get('guards',[]):
+            if guard.get('parapet'):
+                from .plan_geometry import geometry
+                p=geometry(guard['parapet'])
+                obj=E('IFCWALL',text(guid(guard['id'])),'$',text('Solid white terrace parapet'),'$','$',placements[guard['floor']],rep(solids(p,0,guard['height'])),text(guard['id']),'.PARAPET.')
+                contents[guard['floor']].append(obj)
+                continue
             p=LineString(guard['points']).buffer(8,cap_style=2,join_style=2)
             obj=E('IFCRAILING',text(guid(guard['id'])),'$',text('Exposed-edge guard'),'$','$',placements[guard['floor']],rep(solids(p,60,1040)),text(guard['id']),'.GUARDRAIL.')
             contents[guard['floor']].append(obj)
@@ -169,18 +212,29 @@ def export_ifc(b, scene=None):
         import numpy as np
         from .scene import transformation
         nodes={n['id']:n for n in scene['nodes']}
-        for item in scene.get('editables',[]):
+        def mesh_shape(node_ids,floor):
             meshes=[]
-            for ident in item['nodeIds']:
+            for ident in node_ids:
                 node=nodes[ident];asset=scene['assets'][node['asset']]
                 vertices=np.array(asset['vertices'],float)
                 matrix=transformation(node)
                 vertices=(vertices @ matrix[:3,:3].T+matrix[:3,3])*1000
-                vertices[:,2]-=item['floor']*H
+                vertices[:,2]-=floor*H
                 points=E('IFCCARTESIANPOINTLIST3D','('+','.join('('+','.join(number(x) for x in v)+')' for v in vertices)+')')
                 faces='('+','.join('('+','.join(str(i+1) for i in face)+')' for face in asset['faces'])+')'
                 meshes.append(E('IFCTRIANGULATEDFACESET',points,'$', '.T.' if asset.get('closed') else '.F.',faces,'$'))
-            shape=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+            return E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+        if 'living-rooflight-pane' in nodes:
+            glazing=[i for i in nodes if i.startswith(('living-rooflight-','rooflight-kerb-','rooflight-side-','rooflight-cap-'))]
+            shape=mesh_shape(glazing,2)
+            obj=E('IFCWINDOW',text(guid('living-rooflight')),'$',text('Living hall rooflight'),'$','$',placements[2],shape,text('living-rooflight'),'$','$','.SKYLIGHT.','.NOTDEFINED.','$')
+            contents[2].append(obj)
+        if 'suite-northlight-pane' in nodes:
+            members=[i for i in nodes if i.startswith(('suite-northlight-','suite-light-lining-'))]
+            obj=E('IFCWINDOW',text(guid('suite-northlight')),'$',text('Suite north-facing roof light and lined shaft'),'$','$',placements[2],mesh_shape(members,2),text('suite-northlight'),'$','$','.SKYLIGHT.','.NOTDEFINED.','$')
+            contents[2].append(obj)
+        for item in scene.get('editables',[]):
+            shape=mesh_shape(item['nodeIds'],item['floor'])
             obj=E('IFCFURNISHINGELEMENT',text(guid(item['id'])),'$',text(item['label']),text('Authored furniture assembly'),'$',placements[item['floor']],shape,text(item['id']))
             contents[item['floor']].append(obj);properties(obj,item['id'])
     for f,fl in floors.items():

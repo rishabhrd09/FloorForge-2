@@ -123,6 +123,13 @@ class FloorForgeViewer {
     this.resized = true;
   }
 
+  setQualityPreference(name) {
+    if (name !== 'auto' && !QUALITY[name]) return;
+    this.autoQuality = name === 'auto';
+    this.frameTimes.length = 0;
+    this.setQuality(this.autoQuality ? detectQuality() : name);
+  }
+
   setQuality(name) {
     if (!QUALITY[name] || name === this.qualityName) return;
     this.qualityName = name;
@@ -139,7 +146,11 @@ class FloorForgeViewer {
   resize() {
     const c = this.canvas;
     const w = Math.max(1, c.clientWidth), h = Math.max(1, c.clientHeight);
-    const ratio = Math.min(window.devicePixelRatio || 1, this.q.pixelRatio);
+    const nativeRatio = window.devicePixelRatio || 1;
+    // Supersample fine window frames even on a 1× monitor when Ultra is selected.
+    const ratio = this.qualityName === 'ultra'
+      ? Math.min(this.q.pixelRatio, Math.max(1.5, nativeRatio), Math.max(1, Math.sqrt(8294400 / (w*h))))
+      : Math.min(nativeRatio, this.q.pixelRatio);
     this.renderer.setPixelRatio(ratio);
     this.renderer.setSize(w, h, false);
     this.composer.setSize(w, h, false);
@@ -481,7 +492,9 @@ class FloorForgeViewer {
     const inside = this.indoor || 0;
     const m = this.metered || this.meterRoom();
     const profile = this.data?.presentation?.interior;
-    const expScale = 1 + ((profile?.exposureScale ?? 1) - 1) * inside;
+    const daylight = this.gradeName === 'day' || this.gradeName === 'overcast';
+    const scale = (daylight ? profile?.daylightExposureScale : undefined) ?? profile?.exposureScale ?? 1;
+    const expScale = 1 + (scale - 1) * inside;
     const exposure = (g.exposure + (m.exposure - g.exposure) * inside) * expScale;
     this.gradeEffect.set('exposure', exposure);
     // Bloom only what the exposed image renders near white, whatever the metered exposure.

@@ -323,5 +323,20 @@
     "terraceAccess": true,
     "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
     "hasSpecifications": true
+  },
+  {
+    "id": "tirumala-6",
+    "title": "Tirumala 6",
+    "description": "Private ICU verandah and garden, an open dining gallery, two upper bedrooms, a central east balcony and an open upper stair hall leading into the TV lounge and office next to a full-width north terrace.",
+    "style": "Ivory limestone · teak · charcoal",
+    "directory": "gallery/tirumala-6",
+    "basedOnSample": "tirumala-5",
+    "bedrooms": 4,
+    "storeys": 3,
+    "widthFt": 40,
+    "depthFt": 50,
+    "roofAccess": false,
+    "terraceAccess": true,
+    "planHash": "08e8622b99567a9e03dc140584457cfa79a8e7f87f58e4a545a6469624416110"
   }
 ]

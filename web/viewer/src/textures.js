@@ -63,7 +63,8 @@ void surface(vec2 p, out vec3 c, out float h, out float r){
   float hi = fbm(p * 96., vec2(96.), 3);
   float grain = vnoise(p * 384., vec2(384.));
   h = hi * .55 + grain * .35 + mid * .25;
-  c = uBase * (.955 + .07 * (lo - .5) + .035 * (mid - .5) + .02 * (grain - .5));
+  // uP.x adds mottling for textured plaster. Smooth paint keeps its original variation.
+  c = uBase * (.955 + (.07 + uP.x) * (lo - .5) + (.035 + .5 * uP.x) * (mid - .5) + .02 * (grain - .5));
   r = .82 + .1 * hi;
 }`,
   concrete: /* glsl */`

@@ -72,7 +72,7 @@ def normalize(plan,storeys):
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
                 allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','centerTree','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns','wallPaint','floorFinish'},'walls':{'id','a','b','height','finishStyle'},
-                         'openings':{'id','roomId','side','edgeIndex','kind','offset','width','height','sill','hinge','servingCounter','counterInset','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide','grille'}}[key]
+                         'openings':{'id','roomId','side','edgeIndex','kind','offset','width','height','sill','hinge','servingCounter','counterInset','initiallyClosed','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide','grille'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
@@ -153,6 +153,7 @@ def normalize(plan,storeys):
                     if 'grille' in o and (type(o['grille']) is not bool or not heritage or o['kind'] not in ('window','door','entry') or any(o.get(k) for k in ('fixed','timberScreen','sliding'))):fail('GRILLE','Open steel grilles apply to plain windows and doors of a heritage-bungalow plan.',o['id'],f)
                     if 'screenSliding' in o and (type(o['screenSliding']) is not bool or not o.get('timberScreen')):fail('SCREEN_SLIDING','A sliding screen requires the timber and screen assembly.',o['id'],f)
                     if 'timberScreen' in o and (type(o['timberScreen']) is not bool or o['kind']!='door' or o.get('sliding') or o['width']<1800):fail('TIMBER_SCREEN','Paired timber and screen leaves require a hinged door at least 1.8 m wide.',o['id'],f)
+                    if 'initiallyClosed' in o and (type(o['initiallyClosed']) is not bool or o['kind']!='door' or o.get('timberScreen')):fail('DOOR_STATE','An individual closed starting pose requires a plain hinged door.',o['id'],f)
                     if 'fixed' in o and (type(o['fixed']) is not bool or o['kind']!='window'):fail('FIXED_WINDOW','Fixed glazing requires a window.',o['id'],f)
                     if 'stackingSliding' in o and (type(o['stackingSliding']) is not bool or not o.get('sliding') or o.get('slidingPanels')!=2):fail('STACKING_SLIDING','Wall-stacking glazing requires two sliding panels.',o['id'],f)
                     if 'slidingPanels' in o and (not o.get('sliding') or type(o['slidingPanels']) is not int or o['slidingPanels'] not in (2,3)):fail('SLIDING_PANELS','Choose two or three sliding glass panels.',o['id'],f)
@@ -450,6 +451,7 @@ def compile_plan(intent):
                     fail('OPENING_OVERLAP','Two openings overlap.',o['id'],f,ids=[o['id'],old['id']])
             openings.append({'id':o['id'],'wall_id':host['id'],'floor':f,'kind':o['kind'],'offset':offset,
                              'width':width,'sill':o['sill'],'height':o['height'],'connects':connects,
+                             **({'initiallyClosed':o['initiallyClosed']} if 'initiallyClosed' in o else {}),
                              'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'screenSliding':True} if o.get('screenSliding') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'stackingSliding':True} if o.get('stackingSliding') else {}),**({'fixed':True} if o.get('fixed') else {}),**({'servingCounter':o['servingCounter'],**({'counterSpan':[list(start),list(end)],'counterInset':o.get('counterInset',0)} if o.get('counterInset') or o.get('openSide') else {})} if o.get('servingCounter') else {}),**({'grille':True} if o.get('grille') else {})})
     linked=set()
     for st in plan['stairs']:
@@ -528,13 +530,26 @@ def compile_plan(intent):
                                    'points':[stair_point(frame,[xx,y_hole]),stair_point(frame,[xx,y+depth])],'height':1100})
     for s in spaces:
         if s['kind']=='stair' and s['id'] not in linked:fail('UNLINKED_STAIR','Link this staircase to its corresponding space on the next floor.',s['id'],s['floor'])
-    # No automatic structure: unsupported projections and obstructions over an open terrace are blocked.
+    # Upper plates need a supporting outline or explicitly modelled framing.
+    sample_meta = plan.get('tirumalaMeta')
+    framed_north_deck = (isinstance(sample_meta,dict) and sample_meta.get('projectId')=='tirumala-6'
+                         and sample_meta.get('northTerrace') is True)
     for f in range(1,v['storeys']):
         outline=geometry(plates[f]['outline']);below=geometry(plates[f-1]['outline'])
+        covered_courts = set()
+        explicit_deck = Polygon()
+        if f==2 and framed_north_deck:
+            from .tirumala_6_terrace import north_deck
+            # Only the actual authored deck over these three courts uses the
+            # two-storey frame. The rest of the floor needs ordinary support.
+            explicit_deck = north_deck().intersection(floor_polys[f].get('roof-garden', Polygon()))
+            below = below.union(explicit_deck)
+            covered_courts = {'garden','lawn','loggia'}
         if outline.difference(below.buffer(.1)).area>1:fail('UNSUPPORTED_FLOOR','Upper-floor geometry projects beyond the supporting floor below.',plan['floors'][f]['id'],f,unsupported=regions(outline.difference(below.buffer(.1))))
         for s in spaces:
             if s['floor']<f and ((s['kind'] in OPEN_SKY and s['kind']!='void') or s.get('openToSky')):
-                if outline.intersection(polys[s['id']]).area>1:fail('OPEN_SKY_BLOCKED','A higher floor covers this open-air space. Move it or use a covered veranda.',s['id'],s['floor'])
+                overhead = outline.difference(explicit_deck) if s['id'] in covered_courts and not s.get('openToSky') else outline
+                if overhead.intersection(polys[s['id']]).area>1:fail('OPEN_SKY_BLOCKED','A higher floor covers this open-air space. Move it or use a covered veranda.',s['id'],s['floor'])
     for s in spaces:
         if s['kind']=='void':
             if s['floor']==0:fail('VOID_LEVEL','A double-height void belongs on the floor above the room it opens into.',s['id'],s['floor'])
@@ -647,6 +662,11 @@ def compile_plan(intent):
             entrance_steps.append({'id':o['id']+'-step-'+str(j),'openingId':o['id'],'polygon':[[a-150,y0],[c+150,y0],[c+150,y1],[a-150,y1]],
                                    'bottom':-plinth,'top':-plinth+(j+1)*plinth/count})
     if entrance_steps:b['entrance_steps']=entrance_steps
+    if isinstance(plan.get('tirumalaMeta'),dict) and plan['tirumalaMeta'].get('projectId')=='tirumala-6':
+        from .tirumala_6 import coordinate_levels
+        b['planning'].pop('tirumalaMeta')
+        b['planning']['privateGarden']=True
+        coordinate_levels(b, plan)
     identifiers=[item['id'] for key in ('floors','spaces','walls','openings','stairs','floor_plates','roofs','guards') for item in b[key]]
     if len(identifiers)!=len(set(identifiers)):fail('OBJECT_ID_CONFLICT','An authored ID conflicts with a generated object ID; rename the authored ID.')
     return b
