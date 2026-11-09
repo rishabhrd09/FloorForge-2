@@ -1,0 +1,27 @@
+{
+  "errors": [],
+  "desktop": {
+    "width": 752,
+    "scroll": 752,
+    "svg": true,
+    "selected": "US",
+    "detail": "L stair: first floor to roof · 71.75 sq ft clearRepeat the west-then-north L flight above the ground stair. The first-floor landing wraps around the east end to reach the next flight; it is not a dead end. The roof has an enclosed stair head and an outward timber exit onto the accessible roof.",
+    "overflow": []
+  },
+  "mobileGround": {
+    "width": 328,
+    "scroll": 328,
+    "svg": true,
+    "selected": "K",
+    "detail": "Kitchen · 151.5 sq ft clear151.5 sq ft. Main working bay 12.5 × 11 ft plus the east return. A 4 ft route from the entrance stays clear along the north side. The low counter faces west toward dining.",
+    "overflow": []
+  },
+  "mobileFirst": {
+    "width": 328,
+    "scroll": 328,
+    "svg": true,
+    "selected": "U1",
+    "detail": "Front master suite · 203.5 sq ft clear203.5 sq ft sleeping/seating space: 17 × 11 ft main rectangle plus the east bay. Over drawing, puja and part of kitchen/entry; separate bath/dress over the remaining kitchen. Timber doors to the family lounge and terrace.",
+    "overflow": []
+  }
+}

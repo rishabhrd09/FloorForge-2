@@ -102,7 +102,9 @@ export async function exportPresentation(viewer, { context = true, grass = true,
   });
   if (viewer.groundMesh) add(viewer.groundMesh, 'ground');
   viewer.vegetation?.group.traverse((o) => { if (o.isMesh && (grass || o !== viewer.vegetation.lawn)) add(o, o === viewer.vegetation.lawn ? 'lawn-grass' : 'planting'); });
-  if (context && viewer.context) viewer.context.traverse((o) => { if (o.isMesh) add(o, 'context', contextRadius); });
+  // Proposed and pre-construction planting are mutually exclusive site modes.
+  // Traversing hidden groups exports the old plot's trees through the new home.
+  if (context && viewer.context) viewer.context.traverseVisible((o) => { if (o.isMesh) add(o, 'context', contextRadius); });
   const exporter = new GLTFExporter();
   const glb = await exporter.parseAsync(group, { binary: true, onlyVisible: false, maxTextureSize: 2048 });
   group.traverse((o) => { if (o.isMesh) o.geometry.dispose(); });

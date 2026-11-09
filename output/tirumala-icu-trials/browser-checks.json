@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "check": "Full ground-floor selector works",
+      "pass": false
+    },
+    {
+      "check": "Mobile comparison does not overflow",
+      "pass": true
+    },
+    {
+      "check": "compact-only same true-scale interior camera",
+      "pass": true,
+      "detail": {
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "eye": 1.6299999999999997,
+        "fov": 64
+      }
+    },
+    {
+      "check": "south-extension same true-scale interior camera",
+      "pass": true,
+      "detail": {
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "eye": 1.6299999999999997,
+        "fov": 64
+      }
+    }
+  ],
+  "errors": [
+    "points.map is not a function",
+    "points.map is not a function"
+  ]
+}

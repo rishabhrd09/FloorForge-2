@@ -4,3 +4,16 @@ output/** -text
 # Bundles that published samples copy byte-for-byte (their tests compare digests); keep them LF on every checkout.
 web/viewer.js -text
 web/plan-reveal.js -text
+
+# Tirumala models, renders, references and exported review packages.
+# Keep large binary progress in LFS without rewriting earlier sample history.
+**/tirumala*/**/*.png filter=lfs diff=lfs merge=lfs -text
+**/tirumala*/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+**/tirumala*/**/*.zip filter=lfs diff=lfs merge=lfs -text
+**/tirumala*/**/*.pdf filter=lfs diff=lfs merge=lfs -text
+**/tirumala*/**/*.glb filter=lfs diff=lfs merge=lfs -text
+**/tirumala*/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+examples/gallery/thumbnails/tirumala*.png filter=lfs diff=lfs merge=lfs -text
+output/tirumala-4-prompt-pack.zip filter=lfs diff=lfs merge=lfs -text
+output/my-desired-home-40x50-concepts/*.png filter=lfs diff=lfs merge=lfs -text
+output/my-desired-home-40x50-concepts/*.zip filter=lfs diff=lfs merge=lfs -text

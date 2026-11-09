@@ -205,7 +205,7 @@ def modern_candidate(building: dict[str, Any], preferences, helpers: dict[str, A
                     lo = max(lo, p1 + 120) if (lo + hi) / 2 >= (p0 + p1) / 2 else lo
             if hi - lo >= 1100 and (best is None or hi - lo > best[1] - best[0]):
                 best = (lo, hi)
-    if best:
+    if best and F >= 700:
         lo, hi = best
         w = min(2800, hi - lo - 160)
         cx = (lo + hi) / 2
@@ -316,9 +316,13 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
             side_parking = True
             carport_x = (xmax-3000, xmax-250)
     frontage = plan_frontage(plot.bounds, ex, steps_x=steps_x, parking=v["parking"], front_mm=F, carport_x=carport_x, wall_mm=wt)
+    is_tirumala = building.get("planning", {}).get("colonyContext") == "tirumala-colony"
     boundary = {
         **frontage, "movement_clearance_mm": 500,
-        "style": "rendered_wall_black_slats", "front_wall_height_mm": 1500, "side_wall_height_mm": 1850,
+        "style": "rendered_wall_black_slats",
+        "front_wall_height_mm": 950 if is_tirumala else 1500,
+        "side_wall_height_mm": 1850,
+        **({"right_wall_height_mm": 900} if is_tirumala else {}),
         "wall_thickness_mm": wt, "review_status": "geometry_screen_pending",
     }
     ped = next(g for g in frontage["gates"] if g["kind"] == "pedestrian")
@@ -470,6 +474,10 @@ def modern_landscape(building: dict[str, Any], porch, carport, patio) -> dict[st
     # stepping stones in pebbles.
     for side, gap in (("left", Lm), ("right", Rm)):
         if gap < 700:
+            continue
+        if is_tirumala and side == "right":
+            # North road frontage on Tirumala has a low 0.90 m boundary wall and private lawn/veranda outlook;
+            # omit the 1.78 m side-alley timber fence and breeze screen so seated care-room sightlines stay open.
             continue
         if side == "left":
             x0, x1 = xmin + wt, -60

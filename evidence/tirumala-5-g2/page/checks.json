@@ -1,0 +1,110 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    "errors": [],
+    "width": 1440,
+    "bodyWidth": 1440,
+    "images": [
+      {
+        "src": "cycles/exterior_northeast-day.png",
+        "width": 1600
+      },
+      {
+        "src": "plan-2d-dimensioned.png",
+        "width": 3200
+      },
+      {
+        "src": "plan-first-floor.png",
+        "width": 1960
+      },
+      {
+        "src": "plan-second-floor.png",
+        "width": 1960
+      },
+      {
+        "src": "cycles/interior_kitchen_living_dining-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/interior_veranda_living-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/second_hall-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/second_terrace-day.png",
+        "width": 1600
+      },
+      {
+        "src": "interior-icu-veranda-garden.png",
+        "width": 2400
+      },
+      {
+        "src": "upper-gallery.png",
+        "width": 2400
+      }
+    ],
+    "h1": "Tirumala 5\nA home that opens to the garden.",
+    "pass": true
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    "errors": [],
+    "width": 390,
+    "bodyWidth": 390,
+    "images": [
+      {
+        "src": "cycles/exterior_northeast-day.png",
+        "width": 1600
+      },
+      {
+        "src": "plan-2d-dimensioned.png",
+        "width": 3200
+      },
+      {
+        "src": "plan-first-floor.png",
+        "width": 1960
+      },
+      {
+        "src": "plan-second-floor.png",
+        "width": 1960
+      },
+      {
+        "src": "cycles/interior_kitchen_living_dining-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/interior_veranda_living-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/second_hall-day.png",
+        "width": 1600
+      },
+      {
+        "src": "cycles/second_terrace-day.png",
+        "width": 1600
+      },
+      {
+        "src": "interior-icu-veranda-garden.png",
+        "width": 2400
+      },
+      {
+        "src": "upper-gallery.png",
+        "width": 2400
+      }
+    ],
+    "h1": "Tirumala 5\nA home that opens to the garden.",
+    "pass": true
+  }
+]

@@ -1,0 +1,20 @@
+✔ removing a bridge or replacing it never disconnects its donor (0.555125ms)
+✔ replacement is a proposal until explicitly confirmed (0.341125ms)
+✔ division and assignment are one transaction and undo restores whole ownership (0.166125ms)
+✔ whole-cell merge validates both owners (0.105583ms)
+✔ corner contact does not connect either half (0.040833ms)
+✔ assigning the selected owner again preserves the room; erasing is explicit (0.0875ms)
+✔ moving an unplaced room removes cross-floor relationships and entry selection atomically (0.457375ms)
+✔ whole and half ownership cannot overlap or bypass a floor partition (0.183083ms)
+✔ shared input edits save a recoverable pending Compass draft instead of stale accepted geometry (0.159417ms)
+✔ editor revision and selection do not invalidate accepted input (0.090667ms)
+✔ active Compass data takes precedence over a retained different inactive draft when reopening (0.081917ms)
+✔ random assignment/removal sequences preserve connectivity, ownership and exact undo (15.030084ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 54.826958

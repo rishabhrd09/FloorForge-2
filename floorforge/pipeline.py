@@ -28,7 +28,7 @@ def runtime_versions():
     return result
 
 def kernel_hash():
-    files=sorted((ROOT/'floorforge').glob('*.py'))+sorted((ROOT/'web').glob('*.js'))+sorted((ROOT/'web').glob('*.css'))+sorted((ROOT/'web').glob('*.html'))
+    files=sorted((ROOT/'floorforge').glob('*.py'))+[ROOT/'floorforge/compass_grids.json']+sorted((ROOT/'web').glob('*.js'))+sorted((ROOT/'web').glob('*.css'))+sorted((ROOT/'web').glob('*.html'))
     return sha({str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
 
 def preview_html(scene,building,plan_svg):
@@ -37,14 +37,27 @@ def preview_html(scene,building,plan_svg):
     import html
     title=html.escape(building['brief']['title']);style=STYLES[building['brief']['style']]['label']
     theme=building.get('exterior',{}).get('theme','current');theme_label=html.escape('Heritage Bungalow' if building.get('planning',{}).get('facadeStyle')=='heritage-bungalow' else {'modern_tropical':'Modern Tropical','warm_modern_minimal':'Warm Modern Minimal','tropical_verandah':'Tropical Verandah','earth_terracotta':'Earth & Terracotta'}.get(theme,style))
+    if scene.get('appearanceComponents',{}).get('preset'):
+        from .design_journey import PRESETS
+        theme_label=html.escape(PRESETS[scene['appearanceComponents']['preset']]['label'])
+    colony_button='<button id="colonyBtn">Colony view</button>' if 'colony_overview' in scene.get('cameras',{}) else ''
+    quality_select = ('<select id="qualitySelect" aria-label="Rendering detail" title="Rendering detail">'
+                      '<option value="auto">Detail · Auto</option><option value="high">Detail · High</option>'
+                      '<option value="ultra">Detail · Ultra</option></select>') if building.get('planning',{}).get('privateGarden') else ''
     return '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FloorForge | Offline walkthrough</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#f3f1e8;color:#21372d;font:14px/1.5 system-ui}header{height:64px;border-bottom:1px solid #d7dcd0;padding:20px 30px;display:flex;justify-content:space-between}.brand{font-weight:750;letter-spacing:.13em}main{display:grid;grid-template-columns:290px 1fr;height:calc(100vh - 64px)}aside{padding:28px 26px;border-right:1px solid #d7dcd0;overflow:auto}h1{font:40px/1.1 Georgia,serif;letter-spacing:-.04em;margin:10px 0 14px}p{color:#677366}small{color:#7f5840}section{position:relative;min-width:0;background:#1b1f1d}section.expanded{position:fixed;inset:0;z-index:50}.tools{position:absolute;left:18px;top:16px;right:18px;z-index:4;display:flex;gap:6px;flex-wrap:wrap}button,a{font:inherit;border:1px solid #cfd5ca;padding:8px 13px;border-radius:6px;background:#f9f8f1e6;color:#243b2d;cursor:pointer;text-decoration:none}button.active{background:#243b2d;color:#fff;border-color:#243b2d}button:focus-visible,a:focus-visible{outline:3px solid #9d663f;outline-offset:2px}canvas{width:100%;height:100%;display:block;outline:none}#plan{position:absolute;inset:60px 0 40px;background:white;overflow:auto;z-index:5}#plan svg{width:100%;height:100%}[hidden]{display:none!important}.status{position:absolute;bottom:14px;left:18px;right:18px;z-index:4;font-size:11px;color:#344639;background:#f9f8f1d9;padding:6px 10px;border-radius:5px;max-width:720px}.exports{display:flex;gap:6px;flex-wrap:wrap;margin-top:22px}.exports a{font-size:11px;padding:6px 9px}kbd{border:1px solid #cfd5ca;border-radius:4px;padding:0 5px;background:#fff;font-size:11px}@media(max-width:760px){main{grid-template-columns:1fr;height:auto}aside{padding:18px 22px}h1{font-size:30px;margin:6px 0}section{height:72vh}header{padding:20px}.details{display:none}}</style>
+<style>*{box-sizing:border-box}body{margin:0;background:#f3f1e8;color:#21372d;font:14px/1.5 system-ui}header{height:64px;border-bottom:1px solid #d7dcd0;padding:20px 30px;display:flex;justify-content:space-between}.brand{font-weight:750;letter-spacing:.13em}main{display:grid;grid-template-columns:290px 1fr;height:calc(100vh - 64px)}aside{padding:28px 26px;border-right:1px solid #d7dcd0;overflow:auto}h1{font:40px/1.1 Georgia,serif;letter-spacing:-.04em;margin:10px 0 14px}p{color:#677366}small{color:#7f5840}section{position:relative;min-width:0;background:#1b1f1d}section.expanded{position:fixed;inset:0;z-index:50}.tools{position:absolute;left:18px;top:16px;right:18px;z-index:4;display:flex;gap:6px;flex-wrap:wrap}button,a,select{font:inherit;border:1px solid #cfd5ca;padding:8px 13px;border-radius:6px;background:#f9f8f1e6;color:#243b2d;cursor:pointer;text-decoration:none}button.active{background:#243b2d;color:#fff;border-color:#243b2d}button:focus-visible,a:focus-visible{outline:3px solid #9d663f;outline-offset:2px}canvas{width:100%;height:100%;display:block;outline:none}#plan{position:absolute;inset:60px 0 40px;background:white;overflow:auto;z-index:5}#plan svg{width:100%;height:100%}[hidden]{display:none!important}.status{position:absolute;bottom:14px;left:18px;right:18px;z-index:4;font-size:11px;color:#344639;background:#f9f8f1d9;padding:6px 10px;border-radius:5px;max-width:720px}.exports{display:flex;gap:6px;flex-wrap:wrap;margin-top:22px}.exports a{font-size:11px;padding:6px 9px}kbd{border:1px solid #cfd5ca;border-radius:4px;padding:0 5px;background:#fff;font-size:11px}@media(max-width:760px){main{grid-template-columns:1fr;height:auto}aside{padding:18px 22px}h1{font-size:30px;margin:6px 0}section{height:72vh}header{padding:20px}.details{display:none}}</style>
 <header><span class="brand">FLOORFORGE</span><span>OFFLINE WALKTHROUGH · ALPHA 0.3</span></header><main><aside><small>GENERATED, NOT A PHOTOGRAPH</small><h1>'''+title+'''</h1><p>'''+theme_label+'''<br>One model. Every view. Walk every room.</p><div class="details"><p><strong>Walk in</strong>, click the view, then use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move, the mouse to look, <kbd>Shift</kbd> to run, <kbd>Space</kbd> to jump and <kbd>C</kbd> to crouch. Walk up the stairs to reach the next floor. <kbd>↑</kbd>/<kbd>↓</kbd> move forward/back; <kbd>←</kbd>/<kbd>→</kbd> turn. Look at a nearby door or window and press <kbd>F</kbd> or tap its prompt to open or close it. <kbd>Esc</kbd> releases the mouse.</p><p>Drag to orbit outside; scroll to zoom. This preview needs no installation or network.</p></div><small>PRELIMINARY — ENGINEER TO REVIEW.<br>Not a structural design or construction approval.</small><div class="exports"><a href="drawings.pdf">Drawing set</a><a href="floorplans.dxf">DXF</a><a href="model.glb">GLB</a><a href="model.ifc">IFC*</a><a href="report.json">Review</a></div><p><small>*IFC viewer acceptance remains unverified. Real-time raster render with procedural materials and planting; not a verified photographic still.</small></p></aside>
-<section><div class="tools"><button data-mode="solid" class="active">Exterior</button><button data-mode="walk">Walk in</button><button data-mode="dollhouse">Dollhouse</button><button data-mode="tour">Orbit tour</button><button id="planBtn">Drawing</button><button id="floorBtn">Ground floor</button><button id="gradeBtn">Daylight</button><button id="focusBtn" title="The home alone, filling the whole screen (Esc to exit)">◎ Focus</button><button id="fullBtn" title="Explore the home in a large view (Esc to exit)">⤢ Large view</button><button id="zoomIn" title="Zoom in (or double-click a spot on the house)" aria-label="Zoom in">+</button><button id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button id="carBtn" hidden aria-pressed="true" title="Show or hide the parked Škoda Kylaq">Hide car</button><button id="pngBtn" title="A large 3840-pixel still of this view">Save PNG</button><button id="glbBtn" title="The textured scene with its planting, for Blender and other renderers">Blender GLB</button></div><canvas id="view" tabindex="0" aria-label="Interactive 3D home: drag to orbit; in walk mode use Up/Down Arrow to move forward/back, Left/Right Arrow to turn, A/D to move sideways, mouse look, F open/close nearby doors and windows, Shift run, Space jump"></canvas><div id="plan" hidden>'''+plan_svg+'''</div><div class="status" id="status">Loading local geometry…</div></section></main><script>'''+script+'''</script><script id="scene-data" type="application/json">'''+data+'''</script><script>
-const scene=JSON.parse(document.getElementById('scene-data').textContent);let floor=0,grade=0;const grades=[['day','Daylight'],['golden','Golden hour'],['dusk','Blue hour'],['night','Night']];
+<section><div class="tools"><button data-mode="solid" class="active">Exterior</button><button data-mode="walk">Walk in</button><button data-mode="dollhouse">Dollhouse</button><button data-mode="tour">Orbit tour</button>'''+colony_button+quality_select+'''<button id="planBtn">Drawing</button><button id="floorBtn">Ground floor</button><button id="gradeBtn">Daylight</button><button id="siteBtn" hidden title="Switch between the proposed home and Existing pre-construction plot">Site: Proposed</button><button id="focusBtn" title="The home alone, filling the whole screen (Esc to exit)">◎ Focus</button><button id="fullBtn" title="Explore the home in a large view (Esc to exit)">⤢ Large view</button><button id="zoomIn" title="Zoom in (or double-click a spot on the house)" aria-label="Zoom in">+</button><button id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button id="carBtn" hidden aria-pressed="true" title="Show or hide the parked Škoda Kylaq">Hide car</button><button id="pngBtn" title="A large 3840-pixel still of this view">Save PNG</button><button id="glbBtn" title="The textured scene with its planting, for Blender and other renderers">Blender GLB</button></div><canvas id="view" tabindex="0" aria-label="Interactive 3D home: drag to orbit; in walk mode use Up/Down Arrow to move forward/back, Left/Right Arrow to turn, A/D to move sideways, mouse look, F open/close nearby doors and windows, Shift run, Space jump"></canvas><div id="plan" hidden>'''+plan_svg+'''</div><div class="status" id="status">Loading local geometry…</div></section></main><script>'''+script+'''</script><script id="scene-data" type="application/json">'''+data+'''</script><script>
+const scene=JSON.parse(document.getElementById('scene-data').textContent);let floor=0,grade=0;const grades=[['day','Daylight'],['overcast','Overcast'],['golden','Golden hour'],['dusk','Blue hour'],['night','Night']];
 const $=id=>document.getElementById(id),setActive=m=>document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
 try{let v=new FloorForgeViewer($('view'),{onStatus:t=>$('status').textContent=t,hudInset:64});v.frameInsets={top:document.querySelector('.tools').offsetHeight+24,bottom:48,left:10,right:10};v.setScene(scene);v.onModeChange=setActive;v.onFloorChange=f=>{floor=f;$('floorBtn').textContent=f===scene.roof_level?'Roof terrace':['Ground floor','First floor','Second floor'][f];};window.__ff={viewer:v,scene,ready:true};
+if(scene.walk?.startOnOpen){v.setMode('walk');setActive('walk');}
+const linkedCamera=location.hash.slice(1);
+if(scene.cameras?.[linkedCamera]?.enter_walk)v.setNamedCamera(linkedCamera);
+if($('qualitySelect'))$('qualitySelect').onchange=e=>v.setQualityPreference(e.target.value);
+if($('colonyBtn'))$('colonyBtn').onclick=()=>{$('plan').hidden=true;v.setFloor(0);v.setMode('solid');v.setNamedCamera('colony_overview');setActive('solid');};
 const syncCar=()=>{const b=$('carBtn');b.hidden=!v.hasCar;b.textContent=v.carVisible?'Hide car':'Show car';b.setAttribute('aria-pressed',String(v.carVisible));};v.onCarChange=syncCar;syncCar();$('carBtn').onclick=()=>v.setCarVisible(!v.carVisible);
+const siteBtn=$('siteBtn');if(siteBtn&&scene.context?.style==='tirumala-colony'){siteBtn.hidden=false;siteBtn.onclick=()=>{const next=v.siteMode==='existing'?'proposed':'existing';v.setSiteMode(next);siteBtn.textContent=next==='existing'?'Site: Existing plot':'Site: Proposed';siteBtn.classList.toggle('active',next==='existing');};}
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{$('plan').hidden=true;v.setMode(b.dataset.mode);setActive(b.dataset.mode);if(b.dataset.mode==='walk')$('view').focus();});
 $('planBtn').onclick=()=>$('plan').hidden=!$('plan').hidden;$('floorBtn').onclick=e=>{if(v.mode==='walk'){$('status').textContent='Use the staircase to change floor while walking.';return;}floor=(floor+1)%(scene.storeys+(scene.roof_level==null?0:1));v.setFloor(floor);e.target.textContent=floor===scene.roof_level?'Roof terrace':['Ground floor','First floor','Second floor'][floor];};
 $('gradeBtn').onclick=e=>{grade=(grade+1)%grades.length;v.setGrade(grades[grade][0]);e.target.textContent=grades[grade][1];};
@@ -59,12 +72,20 @@ def deterministic_zip(files):
             info=zipfile.ZipInfo(name,(2026,9,6,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o644<<16;z.writestr(info,data)
     return out.getvalue()
 
-def run(payload:dict,out:Path,target='exports',progress=lambda **kw:None,use_cache=True):
+def run(payload:dict,out:Path,target='exports',progress=lambda **kw:None,use_cache=True,cancelled=lambda:False):
     if target not in DEPS:raise DesignError('STAGE','Unknown pipeline stage: '+str(target))
+    if cancelled():raise DesignError('JOB_CANCELLED','Generation cancelled; the editable draft is retained.')
+    portable_payload=payload;preparation=None
+    if payload.get('designJourney') is not None:
+        from .journey_service import JourneyService
+        payload,preparation=JourneyService(out).generation_payload(payload)
     out=Path(out);cache=out/'.cache';code=kernel_hash();versions=runtime_versions();done={};records=[]
     def visit(name):
+        if cancelled():raise DesignError('JOB_CANCELLED','Generation cancelled; the editable draft is retained.')
         if name in done:return done[name]
-        d={dep:visit(dep) for dep in DEPS[name]};key=sha({'name':name,'code':code,'runtime':versions,'deps':{k:sha(v) for k,v in d.items()},'input':payload if name=='intent' else None});path=cache/name/(key+'.json')
+        d={dep:visit(dep) for dep in DEPS[name]}
+        stage_input=payload if name=='intent' else {'appearanceHash':preparation['appearance']['appearanceHash']} if name=='scene' and preparation else None
+        key=sha({'name':name,'code':code,'runtime':versions,'deps':{k:sha(v) for k,v in d.items()},'input':stage_input});path=cache/name/(key+'.json')
         progress(stage=name,status='running');start=time.perf_counter();hit=False
         if use_cache and path.is_file() and name!='exports':
             record=read_json(path)
@@ -72,17 +93,31 @@ def run(payload:dict,out:Path,target='exports',progress=lambda **kw:None,use_cac
             result=record['data'];hit=True
         elif name=='intent':result=fuse(payload)
         elif name=='programme':result=d['intent']
-        elif name=='layout':result=generate_layout(d['programme'])
+        elif name=='layout':
+            # The custom journey's accepted building is the adapter input, so
+            # presentation and export never independently fit an approved room.
+            result=preparation['building'] if preparation is not None else generate_layout(d['programme'])
         elif name=='openings':result={'items':d['layout']['openings'],'status':'generated_from_room_adjacency'}
         elif name=='anchors':result=derive_facade_anchors(d['layout'])
         elif name=='exterior':result=apply_exterior_preferences(d['layout'])
         elif name=='structure':result={'status':'not_designed','geometry_is_not_a_load_path':'No member sizes, footings or reinforcement designed.'}
         elif name=='validate':result=validate(d.get('exterior',d['layout']))
         elif name=='documents':result=reports(d['exterior'],d['validate'])
-        elif name=='scene':result=make_scene(d['exterior'],d['documents'])
+        elif name=='scene':
+            result=make_scene(d['exterior'],d['documents'])
+            if preparation is not None:
+                from .journey_components import apply_components
+                result=apply_components(result,preparation['appearance'],d['exterior'])
         elif name=='sheets':result=make_sheets(d['exterior'],d['scene'],d['documents'])
         elif name=='render':result={'status':'raster_scene_ready','offline_photoreal':'not_rendered','external_adapter':'scripts/blender_scene.py'}
-        elif name=='exports':result=publish(payload,d,out,code,versions,records)
+        elif name=='exports':result=publish(portable_payload,d,out,code,versions,records,preparation=preparation,cancelled=cancelled)
+        if preparation is not None and name in ('layout','exterior','scene'):
+            if name in ('layout','exterior'):
+                from .design_journey import canonical_model
+                if sha(canonical_model(result,pins=preparation['canonical'].get('pins'))) != preparation['geometryHash']:
+                    raise DesignError('APPROVED_GEOMETRY_CHANGED','An appearance adapter changed approved geometry. Return to 2D review.')
+            result={**result,'geometryHash':preparation['geometryHash'],'canonicalSchema':preparation['canonical']['schema']}
+            if name=='scene':result['appearanceHash']=preparation['appearance']['appearanceHash']
         if name!='exports' and use_cache and not hit:atomic(path,canonical({'hash':sha(result),'data':result}))
         duration=round(time.perf_counter()-start,4)
         record={'stage':name,'revision':__version__,'input_hashes':{k:sha(v) for k,v in d.items()},'output_hash':sha(result),'license':'FloorForge authored code; runtime ledger in licenses/','external_api_cost_usd':0,'local_compute_cost':'not estimated','key':key,'status':result.get('status','generated') if isinstance(result,dict) else 'generated'}
@@ -93,7 +128,8 @@ def run(payload:dict,out:Path,target='exports',progress=lambda **kw:None,use_cac
         path=out/('stage-'+target+'.json');atomic(path,canonical({'output':result,'manifest':records}));return {'target':target,'path':str(path),'output':result,'stages':records}
     return result
 
-def publish(payload,d,out,code,versions,records):
+def publish(payload,d,out,code,versions,records,preparation=None,cancelled=lambda:False):
+    if cancelled():raise DesignError('JOB_CANCELLED','Generation cancelled before publication.')
     bid=sha({'input':payload,'code':code,'runtime':versions})[:24];parent=out/'builds';dest=parent/bid;parent.mkdir(parents=True,exist_ok=True)
     if dest.is_dir():
         manifest=read_json(dest/'manifest.json')
@@ -107,6 +143,11 @@ def publish(payload,d,out,code,versions,records):
                'intent.json':canonical(d['intent']),'building.json':canonical(b),'scene.json':canonical(sc),
                'report.json':canonical(report),'review.json':canonical(d['validate']),
                'sheets.json':canonical([{'id':s['id'],'title':s['title'],'scale':s['scale'],'planHash':b.get('planHash')} for s in d['sheets']])}
+        if preparation is not None:
+            files['canonical.json']=canonical(preparation['canonical'])
+            files['geometry-approval.json']=canonical({'geometryHash':preparation['geometryHash'],
+                'confirmation':payload['designJourney']['confirmation'],
+                'floorApprovals':payload['designJourney'].get('approvals',{})})
         for sheet in d['sheets']:files['sheets/'+sheet['id']+'.svg']=svg_sheet(sheet,b).encode('utf8')
         files['drawings.pdf']=pdf_sheets(d['sheets'],b,report)
         files['model.glb']=glb_bytes(sc)
@@ -123,8 +164,13 @@ def publish(payload,d,out,code,versions,records):
         files['preview.html']=preview_html(sc,b,svg_sheet(d['sheets'][0],b)).encode('utf8')
         files['REVIEW_BEFORE_USE.txt']=(BANNER+'\n\nNo regulatory or structural approval.\nIFC independently unverified.\nRenders are preliminary raster studies.\n\n'+report['cost']['basis']).encode('utf8')
         manifest={'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'version':__version__,'build_id':bid,'kernel_sha256':code,'runtime':versions,'input_sha256':sha(payload),'stages':records,'checks':checks,'files':{k:hashlib.sha256(v).hexdigest() for k,v in sorted(files.items())},'banner':BANNER}
+        if preparation is not None:
+            manifest['geometryHash']=preparation['geometryHash']
+            manifest['appearanceHash']=preparation['appearance']['appearanceHash']
         for name,data in files.items():atomic(temp/name,data)
-        files['manifest.json']=canonical(manifest);atomic(temp/'manifest.json',files['manifest.json']);atomic(temp/'FloorForge-export.zip',deterministic_zip(files));os.replace(temp,dest)
+        files['manifest.json']=canonical(manifest);atomic(temp/'manifest.json',files['manifest.json']);atomic(temp/'FloorForge-export.zip',deterministic_zip(files))
+        if cancelled():raise DesignError('JOB_CANCELLED','Generation cancelled before publication.')
+        os.replace(temp,dest)
     finally:
         if temp.exists():shutil.rmtree(temp)
     return {'id':bid,'path':str(dest),'status':'published','cached':False,'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0)}

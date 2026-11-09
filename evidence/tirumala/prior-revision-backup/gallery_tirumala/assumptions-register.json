@@ -1,0 +1,129 @@
+{
+  "schema": "floorforge.tirumala-assumptions-register/1",
+  "project_id": "tirumala",
+  "title": "Tirumala \u2014 Evidence, Assumptions & Site Measurement Register",
+  "owner_confirmed_facts": [
+    {
+      "id": "CONF-01",
+      "item": "Plot orientation & corner status",
+      "value": "Northeast (NE) corner plot with an EAST-facing principal entrance.",
+      "notes": "'Northeast corner plot' describes the two adjoining roads (North and East); the front entrance faces East."
+    },
+    {
+      "id": "CONF-02",
+      "item": "East frontage & West boundary length",
+      "value": "40 ft 0 in = 12.192 m (12,192 mm), running North\u2013South."
+    },
+    {
+      "id": "CONF-03",
+      "item": "North boundary & South boundary length",
+      "value": "50 ft 0 in = 15.240 m (15,240 mm), running East\u2013West."
+    },
+    {
+      "id": "CONF-04",
+      "item": "Total plot area",
+      "value": "2,000 sq ft = 185.806 m\u00b2."
+    },
+    {
+      "id": "CONF-05",
+      "item": "North road & surroundings",
+      "value": "12.0 m road along the North boundary, followed by a colony garden and existing houses beyond."
+    },
+    {
+      "id": "CONF-06",
+      "item": "East road & surroundings",
+      "value": "9.0 m road along the East frontage, followed by a basketball-court enclosure and garden/planting."
+    },
+    {
+      "id": "CONF-07",
+      "item": "Northwest utility cabinets",
+      "value": "Two electrical feeder cabinets outside the plot near its Northwest (NW) corner."
+    },
+    {
+      "id": "CONF-08",
+      "item": "North frontage streetlight pole",
+      "value": "A streetlight pole along the North frontage between the Northeast and Northwest corners."
+    },
+    {
+      "id": "CONF-09",
+      "item": "Care room east-of-midpoint placement",
+      "value": "The Ground Floor Residential Care Room (g-care) is positioned in the North/Northeast zone strictly east of the plot's East\u2013West midpoint (X_geo >= 7.620 m; actual outer wall X_geo in [7.650, 13.400] m, clear interior X_geo in [7.800, 13.250] m)."
+    }
+  ],
+  "directly_visible_photo_features": [
+    {
+      "photo": "N-01 (ending 26039)",
+      "features": "12 m concrete road, opposite raised masonry planting edge, manicured lawn, pergola with shaded seating, spherical/ornate decorative pots, slim garden lights, coconut/areca palms, and a two-storey white/grey house with a dark blue-grey vertical facade panel."
+    },
+    {
+      "photo": "N-02 (ending 26040)",
+      "features": "Pair of light-coloured electrical feeder cabinets of differing sizes (smaller cabinet on left/east, taller louvred cabinet on right/west), surrounding green hedge, low brown-grey boundary wall, interlocking paver verge, trees, and nearby streetlight pole."
+    },
+    {
+      "photo": "N-03 (ending 26041)",
+      "features": "Southward view across the 12 m North road toward the plot's North frontage (East on image-left, West on image-right), showing low boundary wall, hedge, interlocking pavers, streetlight pole, and roadside vegetation. Temporary parked white car excluded."
+    },
+    {
+      "photo": "E-01 (ending 26044)",
+      "features": "Oblique East/Southeast view across the 9 m East road toward the tall pale metal mesh basketball-court enclosure, repeated tubular posts, coconut palms, leafy trees, raised planting bed, hedge, pavers, and lights."
+    },
+    {
+      "photo": "N-04 (ending 26042)",
+      "features": "Cross-check leftward view from the North road toward the East court enclosure, paved passage, and low corner wall."
+    },
+    {
+      "photo": "NE-01 (ending 26043)",
+      "features": "Close-up near the Northeast corner showing weathered masonry pillar with cream/ochre cap, low wall, hedge, paver footpath, and corner planting."
+    }
+  ],
+  "estimated_dimensions_and_placements": [
+    {
+      "parameter": "north_road_width_m (12.0 m ROW interpretation)",
+      "working_value": "8.40 m concrete carriageway + 1.80 m south paver verge + 1.80 m north garden verge = 12.00 m total",
+      "reversible_in": "floorforge/tirumala_context.py :: default_colony_parameters()"
+    },
+    {
+      "parameter": "east_road_width_m (9.0 m ROW interpretation)",
+      "working_value": "6.00 m concrete carriageway + 1.50 m west paver verge + 1.50 m east court-side verge = 9.00 m total",
+      "reversible_in": "floorforge/tirumala_context.py :: default_colony_parameters()"
+    },
+    {
+      "parameter": "Provisional building setbacks",
+      "working_value": "East front = 1.840 m, North right = 1.242 m, West rear = 1.250 m, South left = 1.050 m (ground coverage 64.74% <= 65%)",
+      "reversible_in": "scripts/build_tirumala.py"
+    },
+    {
+      "parameter": "NW feeder cabinet offsets & sizes",
+      "working_value": "Smaller East cabinet (0.78 x 0.48 x 1.22 m) at X_geo = 1.25 m; Taller West cabinet (1.05 x 0.55 x 1.62 m) at X_geo = 0.10 m, in North verge (Y_geo ~ 12.73 m)",
+      "reversible_in": "floorforge/tirumala_context.py :: default_colony_parameters()"
+    },
+    {
+      "parameter": "North streetlight pole position",
+      "working_value": "X_geo = 4.35 m, Y_geo = 12.74 m (6.2 m height)",
+      "reversible_in": "floorforge/tirumala_context.py :: default_colony_parameters()"
+    }
+  ],
+  "provisional_photo_assignments": [
+    {
+      "photo": "N-04",
+      "status": "Provisional leftward cross-check view; camera bearing (~122\u00b0 SE) is estimated and used only to verify continuity between N-03 and E-01."
+    },
+    {
+      "photo": "NE-01",
+      "status": "Provisional close-up near NE corner; visible masonry pillar is modelled as an existing wall pier reference (X_geo = 15.08 m), not treated as a surveyed boundary pin."
+    }
+  ],
+  "unknowns_requiring_site_measurement": [
+    "Exact surveyed plot corner coordinates (total-station tie to existing masonry walls, hedges, and NE pillar).",
+    "Statutory road width definition (whether 12 m North and 9 m East dimensions denote carriageway-only or total right-of-way including verges and drains).",
+    "Exact footpath, paver verge, and stormwater drain widths and invert levels.",
+    "Spot elevations of Natural Ground Level (NGL), road crown levels, and flood/plinth datum.",
+    "Exact trunk coordinates, girth, species, and crown spread of roadside and garden trees.",
+    "Exact measured offsets of the two NW electrical feeder cabinets, underground cable routing, and statutory transformer/feeder clearance.",
+    "Exact measured offset of the North streetlight pole and overhead/underground service lines.",
+    "Exact depth of the North colony garden and setback distance to the opposite white/grey house.",
+    "Basketball-court exact footprint, internal surface material, hoop/backstop positions, and floodlight pole heights hidden behind dense tree screening.",
+    "Exact adjoining building massing, boundary wall heights, and window positions on the South and West neighbouring plots.",
+    "Applicable local municipal building bylaws (setbacks, FAR/FSI, maximum height, coverage, and road-corner splay requirements)."
+  ]
+}

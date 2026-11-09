@@ -1,0 +1,34 @@
+[
+  {
+    "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+    "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+    "glbSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+    "camera": "exterior_northeast",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/exterior/exterior_northeast-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      21.44367218017578,
+      -12.198543548583984,
+      7.874176025390625
+    ],
+    "target": [
+      6.3,
+      6.7,
+      3.1
+    ],
+    "fov": 48,
+    "width": 1600,
+    "height": 1040,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.107,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "0b95387d616c052db4b2697188561ca1f1bf88c805e9352a973733c9cb78012c"
+  }
+]

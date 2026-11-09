@@ -391,7 +391,9 @@ def validate_values(values: dict, custom=False) -> dict:
     ints={'width_mm':(5000,50000),'depth_mm':(6500,60000),'bedrooms':(1,8),'storeys':(1,3),
           'front_mm':(0,15000),'rear_mm':(0,10000),'left_mm':(0,10000),'right_mm':(0,10000),
           'plinth_mm':(0,900),'floor_height_mm':(2950,3600),'variant':(0,2),'seed':(0,2147483647)}
-    if custom:ints['bedrooms']=(0,360)
+    if custom:
+        ints['bedrooms']=(0,360)
+        ints['floor_height_mm']=(2950,3700)
     for k,(lo,hi) in ints.items():
         if type(d[k]) is not int or not lo<=d[k]<=hi:
             raise DesignError('FIELD_RANGE',f'{k} must be an integer between {lo} and {hi}.')
@@ -427,17 +429,25 @@ def validate_values(values: dict, custom=False) -> dict:
     return d
 
 
-def fuse(payload: dict) -> dict:
+def fuse(payload: dict, *, compass_draft=False) -> dict:
     if not isinstance(payload,dict): raise DesignError('INPUT_OBJECT','Expected a project object.')
-    if set(payload)-{'schema','sources','brief','text','grid','customPlan','draftRevision','editorState','attachments','notes','roomEdits','furnitureLayout'}:
+    version=re.fullmatch(r'floorforge\.project/(\d+)(?:\.(\d+))?',str(payload.get('schema','')))
+    if version and (int(version[1]),int(version[2] or 0))>(0,5):
+        raise DesignError('PROJECT_NEWER_VERSION','This project needs a newer reader. Keep the original file for recovery; it cannot be downgraded or overwritten here.')
+    if set(payload)-{'schema','sources','brief','text','grid','customPlan','draftRevision','editorState','attachments','notes','roomEdits','furnitureLayout','compass','compassScope','compassAcceptance'}:
         raise DesignError('PROJECT_FIELDS','Unknown project top-level fields.')
+    compass=payload.get('compass')
+    if compass is not None and (payload.get('customPlan') is not None or payload.get('grid') is not None or payload.get('roomEdits')):
+        raise DesignError('COMPASS_AUTHORITY','Choose Compass or another geometry input; use Fine-tune for direct polygon edits.')
+    if compass is None and (payload.get('compassScope') is not None or payload.get('compassAcceptance') is not None):
+        raise DesignError('COMPASS_AUTHORITY','Scope and acceptance belong to an active Compass input.')
     brief_input=payload.get('brief') if isinstance(payload.get('brief'),dict) else {}
     defaults=dict(DEFAULTS)
     # Projects written before the exterior upgrade must retain their current
     # appearance until the owner explicitly selects an upgrade.
-    if 'exterior_theme' not in brief_input and payload.get('schema') not in ('floorforge.project/0.3','floorforge.project/0.4'):
+    if 'exterior_theme' not in brief_input and payload.get('schema') not in ('floorforge.project/0.3','floorforge.project/0.4','floorforge.project/0.5'):
         defaults['exterior_theme']='current'
-    if 'interior_theme' not in brief_input and payload.get('schema') not in ('floorforge.project/0.3','floorforge.project/0.4'):
+    if 'interior_theme' not in brief_input and payload.get('schema') not in ('floorforge.project/0.3','floorforge.project/0.4','floorforge.project/0.5'):
         defaults['interior_theme']='current'
     sources=[{'id':'defaults','kind':'defaults','enabled':True,'values':defaults}]
     if payload.get('brief') is not None:
@@ -485,7 +495,7 @@ def fuse(payload: dict) -> dict:
         provenance[key]={'value':out[key],'selected':[s['id'] for s in chosen],
                          'superseded':[s['id'] for s in candidates if s not in chosen]}
     if conflicts: raise DesignError('INPUT_CONFLICT','Equal-priority inputs disagree. Resolve them before generating.',conflicts)
-    out=validate_values(out,custom=payload.get('customPlan') is not None)
+    out=validate_values(out,custom=payload.get('customPlan') is not None or compass is not None or compass_draft or (isinstance(payload.get('editorState'),dict) and payload['editorState'].get('mode')=='compass'))
     grid=payload.get('grid');grid_hints=[]
     if isinstance(grid,dict) and grid.get('mode')=='spatial_hint':
         grid_hints=_validate_spatial_grid(grid,out['storeys'])
@@ -512,8 +522,19 @@ def fuse(payload: dict) -> dict:
     placement_hints=list(placement.values());_check_spatial_programme(grid_hints,out)
     editor=payload.get('editorState')
     if editor is not None:
-        if not isinstance(editor,dict) or set(editor)-{'mode','guideFloors','guideEdited','customPlan','savedRoomEdits','savedFurnitureLayout','usePlacements','roomBoard','useRoomBoard'} or editor.get('mode') not in ('automatic','guide','custom'):
+        if not isinstance(editor,dict) or set(editor)-{'mode','homeInputs','guideFloors','guideEdited','customPlan','savedRoomEdits','savedFurnitureLayout','usePlacements','roomBoard','useRoomBoard','compassDraft','compassScope','compassAcceptance'} or editor.get('mode') not in ('automatic','guide','custom','compass'):
             raise DesignError('EDITOR_STATE','Invalid saved editor state.')
+        if 'homeInputs' in editor:
+            inputs=editor['homeInputs']
+            if (not isinstance(inputs,list) or not 1<=len(inputs)<=6
+                    or any(not isinstance(x,str) or x not in {'plot','compass','survey','sketch','dxf','text'} for x in inputs)
+                    or len(set(inputs))!=len(inputs)):
+                raise DesignError('EDITOR_STATE','Choose one or more distinct home input methods.')
+        if editor.get('compassDraft') is not None:
+            from .compass_input import normalize as normalize_compass
+            normalize_compass(editor['compassDraft'])
+        if 'compassScope' in editor and (type(editor['compassScope']) is not int or not 1<=editor['compassScope']<=3):
+            raise DesignError('COMPASS_SCOPE','Saved Compass scope must include one to three consecutive floors.')
         if 'usePlacements' in editor and type(editor['usePlacements']) is not bool:
             raise DesignError('EDITOR_STATE','Saved placement selection must be true or false.')
         if editor.get('roomBoard') is not None:
@@ -546,12 +567,30 @@ def fuse(payload: dict) -> dict:
         notices.append('Custom Plan is authoritative: room geometry, floor assignments and openings bypass the automatic planner.')
     from .placement_edits import normalize_edits
     placements=normalize_edits(payload)
-    plan_hash=sha({'values':out,'grid':grid,'placement_hints':placement_hints,'customPlan':custom,**placements})
+    compass_identity={};compass_result=None;compass_full_values=None
+    if compass is not None:
+        from .compass_adapter import compile_compass
+        from .compass_input import normalize as normalize_compass, ADAPTER
+        compass=normalize_compass(compass)
+        compass_result=compile_compass(compass,out,payload.get('compassScope'),placement_hints)
+        if not compass_result['valid']:
+            raise DesignError('COMPASS_INVALID','Resolve the Compass layout issues before generating.',{'errors':compass_result['issues']})
+        acceptance=payload.get('compassAcceptance')
+        expected={'sourceHash':compass_result['sourceHash'],'adapterVersion':ADAPTER}
+        if acceptance!=expected:
+            raise DesignError('COMPASS_STALE','The accepted geometry belongs to an older map, site or scope. Check and accept a new proposal.')
+        for key in ('storeys','bedrooms','roof_access'):
+            if out[key]!=compass_result['values'][key]:
+                provenance[key]={'value':compass_result['values'][key],'selected':['compass-scope'],'superseded':provenance[key]['selected']}
+        compass_full_values=dict(out)
+        out=compass_result['values'];custom=compass_result['customPlan'];placement_hints=[]
+        compass_identity={'compassIdentity':{'sourceHash':compass_result['sourceHash'],'scope':compass_result['scope'],'adapterVersion':ADAPTER}}
+        notices.append(f'Compass controls the authored room regions. Generated scope: {compass_result["scope"]} occupied floor(s); upper drafts are retained.')
+    # Do not add a null Compass key: legacy project hashes must remain byte-identical.
+    plan_hash=sha({'values':out,'grid':grid,'placement_hints':placement_hints,'customPlan':custom,**placements,**compass_identity})
     attachments=payload.get('attachments',[])
-    if not isinstance(attachments,list) or len(attachments)>12: raise DesignError('ATTACHMENT_LIMIT','Maximum 12 reference records.')
-    for a in attachments:
-        if not isinstance(a,dict) or set(a)-{'name','kind','sha256','note'}:
-            raise DesignError('ATTACHMENT_SCHEMA','References contain name, kind, hash and note only; images stay on your device.')
+    from .reference_trace import validate_references
+    validate_references(attachments)
     if attachments: notices.append('Uploaded images are references only until manually traced; automatic OCR/CV recognition is not implemented.')
     if out['eldercare']: notices.append('Eldercare request preserved. Specialist care-room and step-free access design require professional review; this generator does not certify them.')
     if provenance['front_mm']['selected'][:1]==[sources[1]['id']] and sources[1]['kind']=='derived':
@@ -563,6 +602,8 @@ def fuse(payload: dict) -> dict:
     result = {**placements,'planHash':plan_hash,'draftRevision':revision,'customPlan':custom,'values':out,'provenance':provenance,'sources':sources,'grid':grid,'placement_hints':placement_hints,'text_reading':reading,
             'attachments':attachments,'notes':payload.get('notes',''),'notices':notices,
             'schema':'floorforge.intent/0.2','orientation':'Road at local -Y; bearing is the outward road-facing true azimuth.'}
+    if compass_result:
+        result.update(compassIdentity=compass_identity['compassIdentity'],compassEffects=compass_result['effects'],compassFullValues=compass_full_values)
     from .input_audit import audit_inputs
     result['input_audit'] = audit_inputs(payload, result)
     return result

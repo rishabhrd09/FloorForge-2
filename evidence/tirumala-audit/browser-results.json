@@ -1,0 +1,916 @@
+{
+  "results": [
+    {
+      "slug": "tirumala-2",
+      "start": [
+        8.522,
+        -0.26499998569488525,
+        1.4
+      ],
+      "afterThreeSeconds": [
+        8.522,
+        -0.26499998569488525,
+        1.4
+      ],
+      "onGround": true,
+      "doors": [
+        {
+          "id": "stair-window",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-stair-window-leaf-0-left",
+            "op-stair-window-leaf-0-right",
+            "op-stair-window-leaf-0-bottom",
+            "op-stair-window-leaf-0-top",
+            "op-stair-window-leaf-0-glass",
+            "op-stair-window-leaf-0-handle",
+            "op-stair-window-leaf-1-left",
+            "op-stair-window-leaf-1-right",
+            "op-stair-window-leaf-1-bottom",
+            "op-stair-window-leaf-1-top",
+            "op-stair-window-leaf-1-glass",
+            "op-stair-window-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "master-rear",
+          "initial": 0,
+          "parts": 3,
+          "ids": [
+            "op-master-rear-leaf-0-left",
+            "op-master-rear-leaf-0-right",
+            "op-master-rear-leaf-0-bottom",
+            "op-master-rear-leaf-0-top",
+            "op-master-rear-leaf-0-glass",
+            "op-master-rear-leaf-0-handle",
+            "op-master-rear-leaf-1-left",
+            "op-master-rear-leaf-1-right",
+            "op-master-rear-leaf-1-bottom",
+            "op-master-rear-leaf-1-top",
+            "op-master-rear-leaf-1-glass",
+            "op-master-rear-leaf-1-handle",
+            "op-master-rear-leaf-2-left",
+            "op-master-rear-leaf-2-right",
+            "op-master-rear-leaf-2-bottom",
+            "op-master-rear-leaf-2-top",
+            "op-master-rear-leaf-2-glass",
+            "op-master-rear-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "drawing-north",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-drawing-north-leaf-0-left",
+            "op-drawing-north-leaf-0-right",
+            "op-drawing-north-leaf-0-bottom",
+            "op-drawing-north-leaf-0-top",
+            "op-drawing-north-leaf-0-glass",
+            "op-drawing-north-leaf-0-handle",
+            "op-drawing-north-leaf-1-left",
+            "op-drawing-north-leaf-1-right",
+            "op-drawing-north-leaf-1-bottom",
+            "op-drawing-north-leaf-1-top",
+            "op-drawing-north-leaf-1-glass",
+            "op-drawing-north-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "caregiver-north",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-caregiver-north-leaf-0-left",
+            "op-caregiver-north-leaf-0-right",
+            "op-caregiver-north-leaf-0-bottom",
+            "op-caregiver-north-leaf-0-top",
+            "op-caregiver-north-leaf-0-glass",
+            "op-caregiver-north-leaf-0-handle",
+            "op-caregiver-north-leaf-1-left",
+            "op-caregiver-north-leaf-1-right",
+            "op-caregiver-north-leaf-1-bottom",
+            "op-caregiver-north-leaf-1-top",
+            "op-caregiver-north-leaf-1-glass",
+            "op-caregiver-north-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "caregiver-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-caregiver-rear-leaf-0-left",
+            "op-caregiver-rear-leaf-0-right",
+            "op-caregiver-rear-leaf-0-bottom",
+            "op-caregiver-rear-leaf-0-top",
+            "op-caregiver-rear-leaf-0-glass",
+            "op-caregiver-rear-leaf-0-handle",
+            "op-caregiver-rear-leaf-1-left",
+            "op-caregiver-rear-leaf-1-right",
+            "op-caregiver-rear-leaf-1-bottom",
+            "op-caregiver-rear-leaf-1-top",
+            "op-caregiver-rear-leaf-1-glass",
+            "op-caregiver-rear-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "store-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-store-door-leaf-0-left",
+            "op-store-door-leaf-0-right",
+            "op-store-door-leaf-0-bottom",
+            "op-store-door-leaf-0-top",
+            "op-store-door-leaf-0-glass",
+            "op-store-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "kitchen-east",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-kitchen-east-leaf-0-left",
+            "op-kitchen-east-leaf-0-right",
+            "op-kitchen-east-leaf-0-bottom",
+            "op-kitchen-east-leaf-0-top",
+            "op-kitchen-east-leaf-0-glass",
+            "op-kitchen-east-leaf-0-handle",
+            "op-kitchen-east-leaf-1-left",
+            "op-kitchen-east-leaf-1-right",
+            "op-kitchen-east-leaf-1-bottom",
+            "op-kitchen-east-leaf-1-top",
+            "op-kitchen-east-leaf-1-glass",
+            "op-kitchen-east-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "master-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-door-leaf-0",
+            "op-master-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "bath-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-bath-door-leaf-0",
+            "op-bath-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "caregiver-lobby",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-lobby-leaf-0",
+            "op-caregiver-lobby-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "wc-caregiver-only",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-wc-caregiver-only-leaf-0",
+            "op-wc-caregiver-only-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "lightwell-maintenance",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-lightwell-maintenance-leaf-0",
+            "op-lightwell-maintenance-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "bath-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-bath-rear-leaf-0-left",
+            "op-bath-rear-leaf-0-right",
+            "op-bath-rear-leaf-0-bottom",
+            "op-bath-rear-leaf-0-top",
+            "op-bath-rear-leaf-0-glass",
+            "op-bath-rear-leaf-0-handle",
+            "op-bath-rear-leaf-1-left",
+            "op-bath-rear-leaf-1-right",
+            "op-bath-rear-leaf-1-bottom",
+            "op-bath-rear-leaf-1-top",
+            "op-bath-rear-leaf-1-glass",
+            "op-bath-rear-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "master-lightwell",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-lightwell-leaf-0-left",
+            "op-master-lightwell-leaf-0-right",
+            "op-master-lightwell-leaf-0-bottom",
+            "op-master-lightwell-leaf-0-top",
+            "op-master-lightwell-leaf-0-glass",
+            "op-master-lightwell-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "wc-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-wc-rear-leaf-0-left",
+            "op-wc-rear-leaf-0-right",
+            "op-wc-rear-leaf-0-bottom",
+            "op-wc-rear-leaf-0-top",
+            "op-wc-rear-leaf-0-glass",
+            "op-wc-rear-leaf-0-handle",
+            "op-wc-rear-leaf-1-left",
+            "op-wc-rear-leaf-1-right",
+            "op-wc-rear-leaf-1-bottom",
+            "op-wc-rear-leaf-1-top",
+            "op-wc-rear-leaf-1-glass",
+            "op-wc-rear-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "drawing-northeast-only",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-drawing-northeast-only-leaf-0",
+            "op-drawing-northeast-only-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "icu-glass-living",
+          "initial": 1,
+          "parts": 3,
+          "ids": [
+            "op-icu-glass-living-leaf-0-left",
+            "op-icu-glass-living-leaf-0-right",
+            "op-icu-glass-living-leaf-0-bottom",
+            "op-icu-glass-living-leaf-0-top",
+            "op-icu-glass-living-leaf-0-glass",
+            "op-icu-glass-living-leaf-0-handle",
+            "op-icu-glass-living-leaf-1-left",
+            "op-icu-glass-living-leaf-1-right",
+            "op-icu-glass-living-leaf-1-bottom",
+            "op-icu-glass-living-leaf-1-top",
+            "op-icu-glass-living-leaf-1-glass",
+            "op-icu-glass-living-leaf-1-handle",
+            "op-icu-glass-living-leaf-2-left",
+            "op-icu-glass-living-leaf-2-right",
+            "op-icu-glass-living-leaf-2-bottom",
+            "op-icu-glass-living-leaf-2-top",
+            "op-icu-glass-living-leaf-2-glass",
+            "op-icu-glass-living-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "icu-veranda-window",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-icu-veranda-window-leaf-0-left",
+            "op-icu-veranda-window-leaf-0-right",
+            "op-icu-veranda-window-leaf-0-bottom",
+            "op-icu-veranda-window-leaf-0-top",
+            "op-icu-veranda-window-leaf-0-glass",
+            "op-icu-veranda-window-leaf-0-handle",
+            "op-icu-veranda-window-leaf-1-left",
+            "op-icu-veranda-window-leaf-1-right",
+            "op-icu-veranda-window-leaf-1-bottom",
+            "op-icu-veranda-window-leaf-1-top",
+            "op-icu-veranda-window-leaf-1-glass",
+            "op-icu-veranda-window-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "living-veranda-wood",
+          "initial": 1,
+          "parts": 4,
+          "ids": [
+            "op-living-veranda-leaf-wood-0",
+            "op-living-veranda-leaf-wood-0-handle",
+            "op-living-veranda-leaf-wood-1",
+            "op-living-veranda-leaf-wood-1-handle",
+            "op-living-veranda-leaf-wood-2",
+            "op-living-veranda-leaf-wood-2-handle",
+            "op-living-veranda-leaf-wood-3",
+            "op-living-veranda-leaf-wood-3-handle"
+          ]
+        },
+        {
+          "id": "living-veranda-mesh",
+          "initial": 1,
+          "parts": 2,
+          "ids": [
+            "op-living-veranda-mesh-0",
+            "op-living-veranda-mesh-rail-0",
+            "op-living-veranda-mesh-1",
+            "op-living-veranda-mesh-rail-1"
+          ]
+        },
+        {
+          "id": "icu-veranda-glass",
+          "initial": 1,
+          "parts": 3,
+          "ids": [
+            "op-icu-veranda-glass-leaf-0-left",
+            "op-icu-veranda-glass-leaf-0-right",
+            "op-icu-veranda-glass-leaf-0-bottom",
+            "op-icu-veranda-glass-leaf-0-top",
+            "op-icu-veranda-glass-leaf-0-glass",
+            "op-icu-veranda-glass-leaf-0-handle",
+            "op-icu-veranda-glass-leaf-1-left",
+            "op-icu-veranda-glass-leaf-1-right",
+            "op-icu-veranda-glass-leaf-1-bottom",
+            "op-icu-veranda-glass-leaf-1-top",
+            "op-icu-veranda-glass-leaf-1-glass",
+            "op-icu-veranda-glass-leaf-1-handle",
+            "op-icu-veranda-glass-leaf-2-left",
+            "op-icu-veranda-glass-leaf-2-right",
+            "op-icu-veranda-glass-leaf-2-bottom",
+            "op-icu-veranda-glass-leaf-2-top",
+            "op-icu-veranda-glass-leaf-2-glass",
+            "op-icu-veranda-glass-leaf-2-handle"
+          ]
+        }
+      ],
+      "acceptance": [
+        {
+          "name": "Normal 3D view has usable height and only the current plan controls",
+          "pass": true,
+          "detail": {
+            "height": 698,
+            "visibleHeight": 698,
+            "alternativesHidden": true,
+            "cameras": [
+              "",
+              "interior_kitchen_living_dining",
+              "interior_icu_veranda_garden"
+            ]
+          }
+        },
+        {
+          "name": "ArrowUp walks from the roadside across the entrance threshold",
+          "pass": true,
+          "detail": {
+            "start": [
+              8.522,
+              -0.26499998569488525,
+              1.4
+            ],
+            "end": [
+              8.522,
+              5.551115123125783e-17,
+              -0.36177931354117027
+            ],
+            "supported": true
+          }
+        },
+        {
+          "name": "ICU glass opening can be targeted from walking mode",
+          "pass": true,
+          "detail": {
+            "target": "icu-glass-living",
+            "value": 1
+          }
+        },
+        {
+          "name": "F closes the ICU glass panels",
+          "pass": true,
+          "detail": 0
+        },
+        {
+          "name": "F fully reopens the ICU connection",
+          "pass": true,
+          "detail": 1
+        },
+        {
+          "name": "interior_kitchen_living_dining stays at real eye level after physics",
+          "pass": true,
+          "detail": {
+            "mode": "walk",
+            "feet": [
+              6.75,
+              0,
+              -4.15
+            ],
+            "eye": [
+              6.750003392603733,
+              1.6300449370041932,
+              -4.150014248935681
+            ],
+            "fov": 68,
+            "grounded": true
+          }
+        },
+        {
+          "name": "interior_icu_veranda_garden stays at real eye level after physics",
+          "pass": true,
+          "detail": {
+            "mode": "walk",
+            "feet": [
+              7.95,
+              0,
+              -7.35
+            ],
+            "eye": [
+              7.9499999034443265,
+              1.6300003027831524,
+              -7.349999979574761
+            ],
+            "fov": 64,
+            "grounded": true
+          }
+        },
+        {
+          "name": "Exterior camera exits walking without snapping back",
+          "pass": true,
+          "detail": "solid"
+        }
+      ]
+    },
+    {
+      "slug": "tirumala-3",
+      "start": [
+        8.522,
+        -0.26499998569488525,
+        1.4
+      ],
+      "afterThreeSeconds": [
+        8.522,
+        -0.26499998569488525,
+        1.4
+      ],
+      "onGround": true,
+      "doors": [
+        {
+          "id": "drawing-veranda-only",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-drawing-veranda-only-leaf-0",
+            "op-drawing-veranda-only-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "living-veranda-wood",
+          "initial": 1,
+          "parts": 4,
+          "ids": [
+            "op-living-veranda-leaf-wood-0",
+            "op-living-veranda-leaf-wood-0-handle",
+            "op-living-veranda-leaf-wood-1",
+            "op-living-veranda-leaf-wood-1-handle",
+            "op-living-veranda-leaf-wood-2",
+            "op-living-veranda-leaf-wood-2-handle",
+            "op-living-veranda-leaf-wood-3",
+            "op-living-veranda-leaf-wood-3-handle"
+          ]
+        },
+        {
+          "id": "living-veranda-mesh",
+          "initial": 1,
+          "parts": 2,
+          "ids": [
+            "op-living-veranda-mesh-0",
+            "op-living-veranda-mesh-rail-0",
+            "op-living-veranda-mesh-1",
+            "op-living-veranda-mesh-rail-1"
+          ]
+        },
+        {
+          "id": "icu-glass-living",
+          "initial": 1,
+          "parts": 3,
+          "ids": [
+            "op-icu-glass-living-leaf-0-left",
+            "op-icu-glass-living-leaf-0-right",
+            "op-icu-glass-living-leaf-0-bottom",
+            "op-icu-glass-living-leaf-0-top",
+            "op-icu-glass-living-leaf-0-glass",
+            "op-icu-glass-living-leaf-0-handle",
+            "op-icu-glass-living-leaf-1-left",
+            "op-icu-glass-living-leaf-1-right",
+            "op-icu-glass-living-leaf-1-bottom",
+            "op-icu-glass-living-leaf-1-top",
+            "op-icu-glass-living-leaf-1-glass",
+            "op-icu-glass-living-leaf-1-handle",
+            "op-icu-glass-living-leaf-2-left",
+            "op-icu-glass-living-leaf-2-right",
+            "op-icu-glass-living-leaf-2-bottom",
+            "op-icu-glass-living-leaf-2-top",
+            "op-icu-glass-living-leaf-2-glass",
+            "op-icu-glass-living-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "stair-window",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-stair-window-leaf-0-left",
+            "op-stair-window-leaf-0-right",
+            "op-stair-window-leaf-0-bottom",
+            "op-stair-window-leaf-0-top",
+            "op-stair-window-leaf-0-glass",
+            "op-stair-window-leaf-0-handle",
+            "op-stair-window-leaf-1-left",
+            "op-stair-window-leaf-1-right",
+            "op-stair-window-leaf-1-bottom",
+            "op-stair-window-leaf-1-top",
+            "op-stair-window-leaf-1-glass",
+            "op-stair-window-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "icu-east-window",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-icu-east-window-leaf-0-left",
+            "op-icu-east-window-leaf-0-right",
+            "op-icu-east-window-leaf-0-bottom",
+            "op-icu-east-window-leaf-0-top",
+            "op-icu-east-window-leaf-0-glass",
+            "op-icu-east-window-leaf-0-handle",
+            "op-icu-east-window-leaf-1-left",
+            "op-icu-east-window-leaf-1-right",
+            "op-icu-east-window-leaf-1-bottom",
+            "op-icu-east-window-leaf-1-top",
+            "op-icu-east-window-leaf-1-glass",
+            "op-icu-east-window-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "icu-north-window",
+          "initial": 0,
+          "parts": 3,
+          "ids": [
+            "op-icu-north-window-leaf-0-left",
+            "op-icu-north-window-leaf-0-right",
+            "op-icu-north-window-leaf-0-bottom",
+            "op-icu-north-window-leaf-0-top",
+            "op-icu-north-window-leaf-0-glass",
+            "op-icu-north-window-leaf-0-handle",
+            "op-icu-north-window-leaf-1-left",
+            "op-icu-north-window-leaf-1-right",
+            "op-icu-north-window-leaf-1-bottom",
+            "op-icu-north-window-leaf-1-top",
+            "op-icu-north-window-leaf-1-glass",
+            "op-icu-north-window-leaf-1-handle",
+            "op-icu-north-window-leaf-2-left",
+            "op-icu-north-window-leaf-2-right",
+            "op-icu-north-window-leaf-2-bottom",
+            "op-icu-north-window-leaf-2-top",
+            "op-icu-north-window-leaf-2-glass",
+            "op-icu-north-window-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "master-rear",
+          "initial": 0,
+          "parts": 3,
+          "ids": [
+            "op-master-rear-leaf-0-left",
+            "op-master-rear-leaf-0-right",
+            "op-master-rear-leaf-0-bottom",
+            "op-master-rear-leaf-0-top",
+            "op-master-rear-leaf-0-glass",
+            "op-master-rear-leaf-0-handle",
+            "op-master-rear-leaf-1-left",
+            "op-master-rear-leaf-1-right",
+            "op-master-rear-leaf-1-bottom",
+            "op-master-rear-leaf-1-top",
+            "op-master-rear-leaf-1-glass",
+            "op-master-rear-leaf-1-handle",
+            "op-master-rear-leaf-2-left",
+            "op-master-rear-leaf-2-right",
+            "op-master-rear-leaf-2-bottom",
+            "op-master-rear-leaf-2-top",
+            "op-master-rear-leaf-2-glass",
+            "op-master-rear-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "drawing-north",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-drawing-north-leaf-0-left",
+            "op-drawing-north-leaf-0-right",
+            "op-drawing-north-leaf-0-bottom",
+            "op-drawing-north-leaf-0-top",
+            "op-drawing-north-leaf-0-glass",
+            "op-drawing-north-leaf-0-handle",
+            "op-drawing-north-leaf-1-left",
+            "op-drawing-north-leaf-1-right",
+            "op-drawing-north-leaf-1-bottom",
+            "op-drawing-north-leaf-1-top",
+            "op-drawing-north-leaf-1-glass",
+            "op-drawing-north-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "caregiver-north",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-caregiver-north-leaf-0-left",
+            "op-caregiver-north-leaf-0-right",
+            "op-caregiver-north-leaf-0-bottom",
+            "op-caregiver-north-leaf-0-top",
+            "op-caregiver-north-leaf-0-glass",
+            "op-caregiver-north-leaf-0-handle",
+            "op-caregiver-north-leaf-1-left",
+            "op-caregiver-north-leaf-1-right",
+            "op-caregiver-north-leaf-1-bottom",
+            "op-caregiver-north-leaf-1-top",
+            "op-caregiver-north-leaf-1-glass",
+            "op-caregiver-north-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "caregiver-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-caregiver-rear-leaf-0-left",
+            "op-caregiver-rear-leaf-0-right",
+            "op-caregiver-rear-leaf-0-bottom",
+            "op-caregiver-rear-leaf-0-top",
+            "op-caregiver-rear-leaf-0-glass",
+            "op-caregiver-rear-leaf-0-handle",
+            "op-caregiver-rear-leaf-1-left",
+            "op-caregiver-rear-leaf-1-right",
+            "op-caregiver-rear-leaf-1-bottom",
+            "op-caregiver-rear-leaf-1-top",
+            "op-caregiver-rear-leaf-1-glass",
+            "op-caregiver-rear-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "store-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-store-door-leaf-0-left",
+            "op-store-door-leaf-0-right",
+            "op-store-door-leaf-0-bottom",
+            "op-store-door-leaf-0-top",
+            "op-store-door-leaf-0-glass",
+            "op-store-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "kitchen-east",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-kitchen-east-leaf-0-left",
+            "op-kitchen-east-leaf-0-right",
+            "op-kitchen-east-leaf-0-bottom",
+            "op-kitchen-east-leaf-0-top",
+            "op-kitchen-east-leaf-0-glass",
+            "op-kitchen-east-leaf-0-handle",
+            "op-kitchen-east-leaf-1-left",
+            "op-kitchen-east-leaf-1-right",
+            "op-kitchen-east-leaf-1-bottom",
+            "op-kitchen-east-leaf-1-top",
+            "op-kitchen-east-leaf-1-glass",
+            "op-kitchen-east-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "icu-veranda-glass",
+          "initial": 1,
+          "parts": 3,
+          "ids": [
+            "op-icu-veranda-glass-leaf-0-left",
+            "op-icu-veranda-glass-leaf-0-right",
+            "op-icu-veranda-glass-leaf-0-bottom",
+            "op-icu-veranda-glass-leaf-0-top",
+            "op-icu-veranda-glass-leaf-0-glass",
+            "op-icu-veranda-glass-leaf-0-handle",
+            "op-icu-veranda-glass-leaf-1-left",
+            "op-icu-veranda-glass-leaf-1-right",
+            "op-icu-veranda-glass-leaf-1-bottom",
+            "op-icu-veranda-glass-leaf-1-top",
+            "op-icu-veranda-glass-leaf-1-glass",
+            "op-icu-veranda-glass-leaf-1-handle",
+            "op-icu-veranda-glass-leaf-2-left",
+            "op-icu-veranda-glass-leaf-2-right",
+            "op-icu-veranda-glass-leaf-2-bottom",
+            "op-icu-veranda-glass-leaf-2-top",
+            "op-icu-veranda-glass-leaf-2-glass",
+            "op-icu-veranda-glass-leaf-2-handle"
+          ]
+        },
+        {
+          "id": "master-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-door-leaf-0",
+            "op-master-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "bath-door",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-bath-door-leaf-0",
+            "op-bath-door-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "caregiver-lobby",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-lobby-leaf-0",
+            "op-caregiver-lobby-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "wc-caregiver-only",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-wc-caregiver-only-leaf-0",
+            "op-wc-caregiver-only-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "lightwell-maintenance",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-lightwell-maintenance-leaf-0",
+            "op-lightwell-maintenance-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "bath-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-bath-rear-leaf-0-left",
+            "op-bath-rear-leaf-0-right",
+            "op-bath-rear-leaf-0-bottom",
+            "op-bath-rear-leaf-0-top",
+            "op-bath-rear-leaf-0-glass",
+            "op-bath-rear-leaf-0-handle",
+            "op-bath-rear-leaf-1-left",
+            "op-bath-rear-leaf-1-right",
+            "op-bath-rear-leaf-1-bottom",
+            "op-bath-rear-leaf-1-top",
+            "op-bath-rear-leaf-1-glass",
+            "op-bath-rear-leaf-1-handle"
+          ]
+        },
+        {
+          "id": "master-lightwell",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-lightwell-leaf-0-left",
+            "op-master-lightwell-leaf-0-right",
+            "op-master-lightwell-leaf-0-bottom",
+            "op-master-lightwell-leaf-0-top",
+            "op-master-lightwell-leaf-0-glass",
+            "op-master-lightwell-leaf-0-handle"
+          ]
+        },
+        {
+          "id": "wc-rear",
+          "initial": 0,
+          "parts": 2,
+          "ids": [
+            "op-wc-rear-leaf-0-left",
+            "op-wc-rear-leaf-0-right",
+            "op-wc-rear-leaf-0-bottom",
+            "op-wc-rear-leaf-0-top",
+            "op-wc-rear-leaf-0-glass",
+            "op-wc-rear-leaf-0-handle",
+            "op-wc-rear-leaf-1-left",
+            "op-wc-rear-leaf-1-right",
+            "op-wc-rear-leaf-1-bottom",
+            "op-wc-rear-leaf-1-top",
+            "op-wc-rear-leaf-1-glass",
+            "op-wc-rear-leaf-1-handle"
+          ]
+        }
+      ],
+      "acceptance": [
+        {
+          "name": "Normal 3D view has usable height and only the current plan controls",
+          "pass": true,
+          "detail": {
+            "height": 698,
+            "visibleHeight": 698,
+            "alternativesHidden": true,
+            "cameras": [
+              "",
+              "interior_kitchen_living_dining",
+              "interior_icu_veranda_garden"
+            ]
+          }
+        },
+        {
+          "name": "ArrowUp walks from the roadside across the entrance threshold",
+          "pass": true,
+          "detail": {
+            "start": [
+              8.522,
+              -0.26499998569488525,
+              1.4
+            ],
+            "end": [
+              8.522,
+              0,
+              -0.36177931354117027
+            ],
+            "supported": true
+          }
+        },
+        {
+          "name": "ICU glass opening can be targeted from walking mode",
+          "pass": true,
+          "detail": {
+            "target": "icu-glass-living",
+            "value": 1
+          }
+        },
+        {
+          "name": "F closes the ICU glass panels",
+          "pass": true,
+          "detail": 0
+        },
+        {
+          "name": "F fully reopens the ICU connection",
+          "pass": true,
+          "detail": 1
+        },
+        {
+          "name": "interior_kitchen_living_dining stays at real eye level after physics",
+          "pass": true,
+          "detail": {
+            "mode": "walk",
+            "feet": [
+              4.95,
+              5.551115123125783e-17,
+              -5.3
+            ],
+            "eye": [
+              4.949999707113575,
+              1.6300449370041932,
+              -5.300014644321276
+            ],
+            "fov": 68,
+            "grounded": true
+          }
+        },
+        {
+          "name": "interior_icu_veranda_garden stays at real eye level after physics",
+          "pass": true,
+          "detail": {
+            "mode": "walk",
+            "feet": [
+              6.3717337343215625,
+              5.551115123125783e-17,
+              -2.5676590785729796
+            ],
+            "eye": [
+              6.371733808085177,
+              1.6300003027831524,
+              -2.5676590130053225
+            ],
+            "fov": 66,
+            "grounded": true
+          }
+        },
+        {
+          "name": "Exterior camera exits walking without snapping back",
+          "pass": true,
+          "detail": "solid"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

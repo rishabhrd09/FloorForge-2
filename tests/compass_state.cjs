@@ -1,0 +1,169 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const C=require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../web/compass-state.js'),'utf8')+';CompassState;');
+const gridOptions=require('../floorforge/compass_grids.json');C.configureGrids(gridOptions);
+function draft(){return {schema:'floorforge.compass-input/1',grid:{rows:4,cols:4,basis:'buildable-envelope',rowOrigin:'front'},floors:[{id:'ground',splits:[]}],rooms:[{id:'a',name:'Bedroom 1',kind:'bedroom',floorId:'ground',regions:['0:0','0:1','0:2']},{id:'b',name:'Bedroom 2',kind:'bedroom',floorId:'ground',regions:[]}],connections:[],stairLinks:[],site:{context:'unknown',gate:'planner',zones:[]},requirements:[]};}
+test('removing a bridge or replacing it never disconnects its donor',()=>{const d=draft(),before=JSON.stringify(d);assert.throws(()=>C.assign(d,'ground','0:1',null));assert.throws(()=>C.assign(d,'ground','0:1','b',{replace:true}));assert.equal(JSON.stringify(d),before);});
+test('replacement is a proposal until explicitly confirmed',()=>{const d=draft(),result=C.assign(d,'ground','0:2','b');assert.ok(result.confirmation);assert.equal(d.rooms[0].regions.length,3);const accepted=C.assign(d,'ground','0:2','b',{replace:true}).draft;assert.deepEqual(accepted.rooms[1].regions,['0:2']);});
+test('division and assignment are one transaction and undo restores whole ownership',()=>{const h=new C.History(draft()),before=JSON.stringify(h.value);h.commit(C.splitAssign(h.value,'ground',0,2,'R','b',{replace:true}).draft);assert.deepEqual(h.value.floors[0].splits,['0:2']);assert.ok(h.value.rooms[0].regions.includes('0:2:L'));h.undo();assert.equal(JSON.stringify(h.value),before);h.redo();assert.ok(h.value.rooms[1].regions.includes('0:2:R'));});
+test('whole-cell merge validates both owners',()=>{let d=C.splitAssign(draft(),'ground',0,2,'R','b',{replace:true}).draft;d=C.whole(d,'ground',0,2,'a');assert.deepEqual(d.floors[0].splits,[]);assert.equal(d.rooms[1].regions.length,0);});
+test('corner contact does not connect either half',()=>{assert.equal(C.connected(['0:0:L','1:0:R']),false);assert.equal(C.connected(['0:0:R','0:1:L']),true);});
+test('assigning the selected owner again preserves the room; erasing is explicit',()=>{const d=draft();assert.deepEqual(C.assign(d,'ground','0:1','a').draft,d);assert.equal(C.assign(d,'ground','0:2',null).draft.rooms[0].regions.length,2);});
+test('moving an unplaced room removes cross-floor relationships and entry selection atomically',()=>{const d=draft();d.floors.push({id:'first',splits:[]});d.connections=[{id:'a-b',from:'a',to:'b',kind:'door',width:900}];d.site.entryRoomId='b';const before=C.clone(d),h=new C.History(d);h.commit(C.moveRoom(d,'b','first'));assert.equal(h.value.rooms[1].floorId,'first');assert.deepEqual(h.value.connections,[]);assert.equal(h.value.site.entryRoomId,undefined);assert.deepEqual(d,before);h.undo();assert.deepEqual(h.value,before);});
+test('whole and half ownership cannot overlap or bypass a floor partition',()=>{const d=draft();d.rooms[1].regions=['0:0:R'];assert.throws(()=>C.validate(d),/whole or divided/);d.floors[0].splits=['0:0'];assert.throws(()=>C.validate(d),/whole or divided/);});
+const E=require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../web/compass-editor.js'),'utf8')+';FloorForgeCompassEditor;');
+function editor(){const e=Object.create(E.prototype);e.history=new C.History(draft());e.scope=1;e.version=1;e.acceptance={sourceHash:'reviewed',adapterVersion:'compass/1'};e.acceptanceKey=null;return e;}
+test('shared input edits save a recoverable pending Compass draft instead of stale accepted geometry',()=>{const e=editor(),p={brief:{budget_lakh:65},sources:[],editorState:{mode:'compass',...e.serialize()}};e.bindAcceptance(p);p.brief.budget_lakh=66;const saved=e.activeProject(p);assert.equal(saved.compass,undefined);assert.equal(saved.editorState.compassAcceptance,undefined);assert.ok(saved.editorState.compassDraft);assert.equal(e.acceptance,null);});
+test('editor revision and selection do not invalidate accepted input',()=>{const e=editor(),p={brief:{budget_lakh:65},sources:[],draftRevision:1,editorState:{mode:'compass',...e.serialize()}};e.bindAcceptance(p);p.draftRevision=44;p.editorState.selectedRoom='b';assert.equal(e.activeProject(p).compassAcceptance.sourceHash,'reviewed');});
+test('active Compass data takes precedence over a retained different inactive draft when reopening',()=>{const e=editor(),active=draft(),inactive=draft();inactive.rooms[0].name='Old draft';e.load({compass:active,editorState:{compassDraft:inactive}});assert.deepEqual(e.draft,active);});
+test('random assignment/removal sequences preserve connectivity, ownership and exact undo',()=>{let seed=61823;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};const h=new C.History(draft());for(let i=0;i<500;i++){const before=JSON.stringify(h.value),r=Math.floor(random()*4),c=Math.floor(random()*4),who=random()<.3?null:random()<.5?'a':'b';try{const result=C.assign(h.value,'ground',`${r}:${c}`,who,{replace:true});const changed=h.commit(result.draft);C.validate(h.value);if(changed){const after=JSON.stringify(h.value);h.undo();assert.equal(JSON.stringify(h.value),before);h.redo();assert.equal(JSON.stringify(h.value),after);}}catch(e){assert.equal(JSON.stringify(h.value),before);}}});
+const H=require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../web/home-design.js'),'utf8')+';FloorForgeHomeInputs;');
+test('mixed intake selects one geometry route and respects the Compass rollout flag',()=>{assert.equal(H.route(['plot','text','compass'],true),'compass');assert.equal(H.route(['compass','dxf','sketch'],true),'dxf');assert.equal(H.route(['compass','survey'],false),'brief');assert.equal(H.route(['sketch'],true),'sketch');});
+test('single and combined input choices are restored independently of the active layout',()=>{for(const inputs of [['text'],['plot','compass','survey','sketch','dxf','text']]){const p={editorState:{mode:'custom',homeInputs:inputs}},restored=H.restore(JSON.parse(JSON.stringify(p)),true);assert.deepEqual(restored,inputs);restored.pop();assert.deepEqual(p.editorState.homeInputs,inputs);}assert.deepEqual(H.restore({text:'Kitchen at rear',attachments:[{name:'sketch.png'}],editorState:{mode:'compass'}},true),['plot','compass','text','sketch']);assert.deepEqual(H.restore({},false),['plot','survey']);});
+test('plot units round only at the canonical millimetre boundary',()=>{assert.deepEqual(H.dimensions(40,60,'ft'),H.dimensions(12.192,18.288,'m'));assert.deepEqual(H.dimensions(30.5,45.25,'ft'),{width_mm:9296,depth_mm:13792});assert.throws(()=>H.dimensions(NaN,4,'m'));assert.throws(()=>H.dimensions(0,4,'m'));});
+test('fit-to-window keeps every map row within the available box without distorting the plot',()=>{for(const width of [180,390,800])for(const height of [170,450,800])for(const ratio of [.25,.8,1,3.5]){const fit=H.fitMap(width,height,ratio);assert.ok(fit.width<=width&&fit.height<=height);assert.ok(fit.width>0&&fit.height>0);assert.ok(Math.abs(fit.width-fit.height*ratio)<=1+ratio);}assert.deepEqual(H.fitMap(0,450,1),{width:0,height:0});});
+test('room labels remain inside authored L-shapes and divided allocations',()=>{for(const rows of [4,6,8])for(const regions of [['0:0','1:0','2:0','2:1','2:2'],['0:0:L','1:0:L'],['0:0:R','0:1','1:1'],['0:0','0:1','1:0','1:1']]){const before=JSON.stringify(regions),owned=C.micro(regions),rect=C.labelRect(regions,rows);assert.ok(rect&&rect.width>0&&rect.height>0);for(let y=rect.bottom;y<rect.bottom+rect.height;y++)for(let x=rect.left;x<rect.left+rect.width;x++)assert.ok(owned.has(`${y}:${x}`));assert.equal(JSON.stringify(regions),before);}assert.equal(C.labelRect([],4),null);});
+test('catalogue searches the shared types and does not confuse the current checklist with available types',()=>{const registry={bedroom:{label:'Bedroom'},bathroom:{label:'Bathroom'},'care-room':{label:'Home care room'},future:{label:'Future space'}};assert.equal(C.catalogue(registry).length,4);assert.equal(C.catalogue(registry,'care')[0].kind,'care-room');assert.equal(C.catalogue(registry,'shower')[0].kind,'bathroom');assert.equal(C.catalogue(registry,'future')[0].kind,'future');assert.deepEqual(C.catalogue(registry,'unknown'),[]);});
+test('adding a typed room preserves ownership, keeps a distinct identity and supports exact undo',()=>{const d=draft(),before=C.clone(d),registry={bedroom:{label:'Bedroom'},bathroom:{label:'Bathroom'}};const h=new C.History(d);h.commit(C.addRoom(d,registry,'ground','bathroom','bath-a'));assert.equal(h.value.rooms.at(-1).kind,'bathroom');assert.deepEqual(h.value.rooms.at(-1).regions,[]);assert.deepEqual(d,before);h.commit(C.addRoom(h.value,registry,'ground','bathroom','bath-b'));assert.equal(h.value.rooms.at(-1).name,'Bathroom 2');h.commit(C.assign(h.value,'ground','3:3','bath-b').draft);assert.equal(C.owner(h.value,'ground','3:3').kind,'bathroom');h.undo();h.undo();h.undo();assert.deepEqual(h.value,before);assert.throws(()=>C.addRoom(d,registry,'ground','bathroom','a'),/identity/);});
+test('unsupported lift design and ground-floor voids cannot be added as ordinary rooms',()=>{const d=draft(),registry={void:{label:'Double-height void'},'lift-shaft':{label:'Lift'}};assert.throws(()=>C.addRoom(d,registry,'ground','void','v'),/floor above/);assert.throws(()=>C.addRoom(d,registry,'ground','lift-shaft','l'),/unavailable/);d.floors.push({id:'first',splits:[]});assert.equal(C.addRoom(d,registry,'first','void','v').rooms.at(-1).kind,'void');});
+test('bedroom numbering follows existing typed rooms even when the first is named Master',()=>{const d=draft();d.rooms[0].name='Master bedroom';assert.equal(C.addRoom(d,{bedroom:{label:'Bedroom'}},'ground','bedroom','c').rooms.at(-1).name,'Bedroom 3');});
+test('undoing a catalogue addition clears a removed selection before more painting',()=>{const e=editor();e.floor=0;e.selected='new-room';e.brief={storeys:1};e.options={restore:()=>{},project:()=>({editorState:{mode:'compass'}}),changed:()=>{}};const before=e.capture();e.history=new C.History(C.addRoom(e.draft,{bathroom:{label:'Bathroom'}},'ground','bathroom','new-room'));e.commands=[before];e.redoCommands=[];e.render=()=>{};e.message=()=>{};e.travel('undo');assert.equal(e.selected,null);assert.equal(e.draft.rooms.some(r=>r.id==='new-room'),false);});
+test('old accepted room rules reopen as a retained draft without moving rooms or changing input sources',()=>{const active=draft(),old={compass:active,compassScope:1,compassAcceptance:{sourceHash:'old',adapterVersion:'compass/1'},sources:[{id:'form',values:{budget_lakh:65}}],editorState:{mode:'compass',compassDraft:{...draft(),rooms:[]},customPlan:{saved:'exact'}}},before=C.clone(old),result=C.restoreForAdapter(old,'compass/2');assert.ok(result.reviewRequired);assert.deepEqual(old,before);assert.deepEqual(result.project.editorState.compassDraft,active);assert.deepEqual(result.project.sources,old.sources);assert.equal(result.project.editorState.compassScope,1);assert.equal(result.project.compass,undefined);assert.equal(result.project.editorState.compassAcceptance,undefined);assert.deepEqual(result.project.editorState.customPlan,old.editorState.customPlan);const e=editor();e.options={adapterVersion:'compass/2'};e.load(old);assert.equal(e.acceptance,null);assert.deepEqual(e.draft,active);});
+test('current acceptances and inactive legacy input modes retain their authority',()=>{const current={compass:draft(),compassAcceptance:{adapterVersion:'compass/2'}},inactive={editorState:{mode:'automatic',compassDraft:draft(),compassAcceptance:{adapterVersion:'compass/1'}}};for(const p of [current,inactive,{brief:{bedrooms:3}}]){const result=C.restoreForAdapter(p,'compass/2');assert.equal(result.project,p);assert.equal(result.reviewRequired,false);}});
+
+test('choosing a new type for an empty cell creates and places one typed room in one undoable edit',()=>{const original=draft(),before=C.clone(original),h=new C.History(original);h.commit(C.addAndAllocate(h.value,{bathroom:{label:'Bathroom'}},'ground','bathroom','bath',{row:3,col:3}).draft);assert.equal(C.owner(h.value,'ground','3:3').id,'bath');assert.equal(h.value.rooms.at(-1).kind,'bathroom');assert.deepEqual(original,before);h.undo();assert.deepEqual(h.value,before);h.redo();assert.equal(C.owner(h.value,'ground','3:3').kind,'bathroom');});
+test('catalogue placement into a half keeps creation, division and replacement atomic',()=>{const original=draft(),before=C.clone(original),registry={bathroom:{label:'Bathroom'}},target={row:0,col:2,half:'R'};const proposal=C.addAndAllocate(original,registry,'ground','bathroom','bath',target);assert.ok(proposal.confirmation);assert.deepEqual(original,before);const h=new C.History(original);h.commit(C.addAndAllocate(h.value,registry,'ground','bathroom','bath',target,{replace:true}).draft);assert.deepEqual(h.value.floors[0].splits,['0:2']);assert.equal(C.owner(h.value,'ground','0:2:L').id,'a');assert.equal(C.owner(h.value,'ground','0:2:R').kind,'bathroom');h.undo();assert.deepEqual(h.value,before);});
+test('whole-cell assignment checks every half owner and rejects disconnecting the donor',()=>{const split=C.splitAssign(draft(),'ground',0,2,'R','b',{replace:true}).draft;assert.match(C.allocate(split,'ground',{row:0,col:2},null).confirmation.message,/Bedroom 1 and Bedroom 2/);const merged=C.allocate(split,'ground',{row:0,col:2},null,{replace:true}).draft;assert.deepEqual(merged.floors[0].splits,[]);assert.equal(C.owner(merged,'ground','0:2'),undefined);const d=draft(),before=C.clone(d);assert.throws(()=>C.addAndAllocate(d,{study:{label:'Study'}},'ground','study','study',{row:0,col:1},{replace:true}),/disconnected/);assert.deepEqual(d,before);});
+test('catalogue reuses a requested unplaced room instead of silently duplicating the programme',async()=>{const e=editor();e.floor=0;e.registry={bedroom:{label:'Bedroom'}};let selected;e.applyRoomChoice=async(id,kind)=>{selected={id,kind};};await e.selectCatalogueType('bedroom');assert.deepEqual(selected,{id:'b',kind:null});assert.equal(e.draft.rooms.length,2);});
+test('cancelling a cell replacement does not leave a newly added catalogue room behind',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell={floorId:'ground',row:0,col:2,half:'R'};e.selected='a';e.ask=async()=>1;const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.deepEqual(e.draft,before);assert.equal(e.selected,'a');assert.equal(e.pendingCell.half,'R');});
+test('an L-shaped room uses its wider owned area for a readable label',()=>{const regions=['0:2','0:3','1:2','2:2','3:2'],before=[...regions],rect=C.labelRect(regions,4,.8);assert.equal(rect.bottom,0);assert.equal(rect.width,4);assert.equal(rect.height,2);assert.deepEqual(regions,before);});
+test('choosing a new room brush leaves the programme unchanged until its first painted cell',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell=null;e.render=()=>{};e.$=()=>({focus:()=>{}});e.focusOrigin=()=>{};e.commit=next=>e.history.commit(next);const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.deepEqual(e.draft,before);assert.equal(e.brushKind,'bathroom');await e.chooseCell(3,3);assert.equal(e.brushKind,null);assert.equal(C.owner(e.draft,'ground','3:3').kind,'bathroom');e.history.undo();assert.deepEqual(e.draft,before);});
+
+for(const {cols,rows,cells} of gridOptions){
+ test(`${cells} cells: rightmost whole/half assignments survive floors, serialization and exact undo`,()=>{
+  const d=draft();d.grid={...d.grid,cols,rows};d.rooms.forEach(r=>r.regions=[]);d.floors.push({id:'first',splits:[]},{id:'second',splits:[]});
+  const h=new C.History(d),original=C.clone(d),registry={bathroom:{label:'Bathroom'}};
+  for(const [i,floor] of d.floors.entries())h.commit(C.addAndAllocate(h.value,registry,floor.id,'bathroom','bath-'+i,{row:rows-1,col:cols-1,half:'R'}).draft);
+  const saved=JSON.parse(JSON.stringify(h.value));C.validate(saved);
+  for(const [i,floor] of saved.floors.entries()){assert.equal(C.owner(saved,floor.id,`${rows-1}:${cols-1}:R`).id,'bath-'+i);assert.deepEqual(floor.splits,[`${rows-1}:${cols-1}`]);}
+  assert.throws(()=>C.allocate(saved,'ground',{row:rows,col:0},'a'),/existing cell/);assert.throws(()=>C.allocate(saved,'ground',{row:0,col:cols,half:'R'},'a'),/existing cell/);
+  for(let i=0;i<3;i++)h.undo();assert.deepEqual(h.value,original);for(let i=0;i<3;i++)h.redo();assert.deepEqual(h.value,saved);
+ });
+ test(`${cells} cells: labels can occupy the last microcolumn without leaving their room`,()=>{
+  const regions=[`${rows-1}:${cols-1}:R`],rect=C.labelRect(regions,rows,1,cols);assert.equal(rect.left,2*cols-1);assert.equal(rect.bottom,2*(rows-1));assert.equal(rect.width,1);assert.equal(rect.height,2);
+ });
+ test(`${cells} cells: choosing an empty grid changes both axes in one undoable transaction`,async()=>{
+  const e=editor();e.draft.rooms.forEach(r=>r.regions=[]);e.gridOptions=gridOptions;e.commit=next=>e.history.commit(next);await e.changeDensity(`${cols}x${rows}`);assert.equal(e.draft.grid.cols,cols);assert.equal(e.draft.grid.rows,rows);
+  if(cols!==4||rows!==4){e.history.undo();assert.deepEqual(e.draft.grid,draft().grid);}
+ });
+}
+test('only a currently saved legacy 32-cell grid is added to new-map choices',()=>{const e=editor();e.gridOptions=gridOptions;assert.equal(e.gridChoices().length,5);e.draft.grid.rows=8;assert.equal(e.gridChoices().length,6);assert.ok(e.gridChoices().at(-1).legacy);assert.match(e.gridLabel(e.gridChoices().at(-1)),/saved legacy map/);});
+test('column-change preview sends both dimensions and cancel preserves the exact draft',async()=>{const e=editor();e.gridOptions=gridOptions;e.render=()=>{};e.remapPreview=()=>'';e.ask=async()=>1;const original=C.clone(e.draft);let request;e.options={request:async(path,body)=>{request={path,body};return {valid:true,candidate:{...C.clone(body.compass),grid:{...body.compass.grid,cols:5,rows:5}}};}};await e.changeDensity('5x5');assert.equal(request.path,'/api/compass/remap');assert.equal(request.body.cols,5);assert.equal(request.body.rows,5);assert.deepEqual(e.draft,original);});
+test('invalid or stale remap responses never replace the live map',async()=>{for(const stale of [false,true]){const e=editor();e.gridOptions=gridOptions;e.render=()=>{};e.message=()=>{};e.ask=async()=>0;const original=C.clone(e.draft);e.options={request:async()=>{if(stale)e.version++;return {valid:stale,issues:[{message:'Boundary conflict'}]};}};await e.changeDensity('6x7');assert.deepEqual(e.draft,original);}});
+test('new grid shapes reject stale acceptances after their first edit',async()=>{const e=editor();e.gridOptions=gridOptions;e.draft.rooms.forEach(r=>r.regions=[]);e.render=()=>{};e.$=()=>({textContent:''});e.message=()=>{};e.floor=0;e.brief={storeys:1};e.options={project:()=>({editorState:{mode:'compass'}}),changed:()=>{}};e.commands=[];e.redoCommands=[];await e.changeDensity('6x7');assert.equal(e.acceptance,null);assert.equal(e.draft.grid.cols,6);assert.equal(e.commands.length,1);});
+test('drawing on an upper floor includes that floor in the next generation and undo restores scope',()=>{
+ const e=editor();e.draft.floors.push({id:'first',splits:[]});e.brief={storeys:2};e.commands=[];e.redoCommands=[];e.options={project:()=>({editorState:{mode:'compass'}}),changed:()=>{},restore:()=>{}};e.changed=()=>{};e.render=()=>{};e.message=()=>{};e.floor=1;
+ const next=C.clone(e.draft);next.rooms.push({id:'upper',floorId:'first',kind:'store',name:'Upper store',regions:['0:0']});e.commit(next);assert.equal(e.scope,2);e.travel('undo');assert.equal(e.scope,1);assert.ok(!e.draft.rooms.some(r=>r.id==='upper'));
+});
+test('prepared changes are optional, checked again, and stale responses cannot generate',async()=>{
+ for(const action of ['cancel','apply','stale']){
+  const e=editor(),events=[];e.scope=1;e.brief={storeys:1};e.commands=[];e.redoCommands=[];e.version=1;e.$=()=>({disabled:false});e.options={project:()=>({editorState:{mode:'compass'}}),generate:async()=>events.push('generate')};e.baseProject=()=>({brief:{storeys:1}});e.commit=next=>e.history.commit(next);e.changed=()=>{e.version++;};e.message=()=>{};e.setView=()=>events.push('review');e.dialog={close:()=>events.push('close')};e.activateProposal=()=>events.push('accept');
+  const candidate=C.drawnDraft(e.draft);candidate.rooms[0].regions.push('1:0','1:1','1:2');const original=C.drawnDraft(e.draft);let checks=0;
+  e.check=async({prepare=false}={})=>{checks++;return {valid:true,version:e.version,snapshot:JSON.stringify(e.baseProject()),scope:1,candidate,adjustments:prepare?[{message:'Enlarge room'}]:[]};};
+  e.ask=async()=>{if(action==='stale')e.version++;return action==='cancel'?1:0;};
+  await e.quickGenerate();assert.equal(e.previewBusy,false);
+  if(action==='apply'){assert.deepEqual(e.draft,candidate);assert.equal(checks,2);assert.deepEqual(events,['accept','close','generate']);assert.deepEqual(e.commands[0].draft,original);}
+  else{assert.deepEqual(e.draft,original);assert.equal(checks,1);assert.deepEqual(events,[]);}
+ }
+});
+test('sample adaptation settles Compass form values before preparing geometry',async()=>{
+ const e=editor();e.scope=1;e.$=()=>({disabled:false});e.commit=next=>e.history.commit(next);let mode='automatic',bedrooms=1,generated=false;
+ e.options={activate:()=>{mode='compass';},changed:()=>{if(mode==='compass')bedrooms=2;},generate:async()=>{generated=true;}};
+ e.check=async()=>{assert.equal(mode,'compass');assert.equal(bedrooms,2);return {valid:true};};e.activateProposal=()=>{};e.dialog={close:()=>{}};
+ await e.quickGenerate();assert.ok(generated);
+});
+test('acceptance is bound after derived form changes and still rejects later user edits',()=>{
+ const e=editor();e.brief={storeys:1};e.commands=[];e.render=()=>{};let project={brief:{bedrooms:1},sources:[],editorState:{mode:'automatic'}};
+ e.options={activate:()=>{project.editorState.mode='compass';},project:()=>e.activeProject({...C.clone(project),editorState:{...project.editorState}}),changed:()=>{project.sources=[{id:'studio-field-edits',kind:'form',values:{bedrooms:1}}];e.options.project();}};
+ const p={valid:true,version:e.version,snapshot:JSON.stringify(e.baseProject()),sourceHash:'new',adapterVersion:'compass/2'};e.activateProposal(p);
+ assert.equal(e.acceptance.sourceHash,'new');assert.equal(e.options.project().compassAcceptance.sourceHash,'new');
+ project.sources[0].values.bedrooms=2;assert.equal(e.options.project().compassAcceptance,undefined);assert.equal(e.acceptance,null);
+});
+test('compact room selection closes the drawer and retains the selected brush without creating a room',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell=null;e.roomsOpen=true;e.compactLibrary=()=>true;e.render=()=>{};e.$=()=>({focus:()=>{}});const before=C.clone(e.draft);await e.applyRoomChoice(null,'bathroom');assert.equal(e.roomsOpen,false);assert.equal(e.brushKind,'bathroom');assert.deepEqual(e.draft,before);});
+test('compact half placement closes the drawer only after the room has been committed',async()=>{const e=editor();e.floor=0;e.registry={bathroom:{label:'Bathroom'}};e.pendingCell={floorId:'ground',row:3,col:3,half:'R'};e.roomsOpen=true;e.compactLibrary=()=>true;e.render=()=>{};e.focusOrigin=()=>{};e.commit=next=>e.history.commit(next);await e.applyRoomChoice(null,'bathroom');assert.equal(e.roomsOpen,false);assert.equal(C.owner(e.draft,'ground','3:3:R').kind,'bathroom');assert.deepEqual(e.draft.floors[0].splits,['3:3']);});
+
+for(const {cols,rows,cells} of gridOptions){
+ test(`${cells} cells: both axes persist on three floors and undo without losing room types`,()=>{
+  const d=draft();d.grid={...d.grid,cols,rows};d.rooms.forEach(r=>r.regions=[]);d.floors.push({id:'first',splits:[]},{id:'second',splits:[]});
+  const history=new C.History(d),before=C.clone(d),registry={pooja:{label:'Pooja'},store:{label:'Store'}};
+  for(const [i,floor] of d.floors.entries())for(const [half,kind,col] of [['F','pooja',cols-1],['R','store',cols-2]])history.commit(C.addAndAllocate(history.value,registry,floor.id,kind,kind+i,{row:rows-1,col,half}).draft);
+  const reopened=JSON.parse(JSON.stringify(history.value));C.validate(reopened);
+  for(const [i,floor] of reopened.floors.entries()){
+   assert.deepEqual(C.splitHalves(floor,`${rows-1}:${cols-1}`),['F','B']);assert.equal(C.owner(reopened,floor.id,`${rows-1}:${cols-1}:F`).kind,'pooja');
+   assert.equal(C.owner(reopened,floor.id,`${rows-1}:${cols-2}:R`).kind,'store');
+  }
+  for(let i=0;i<6;i++)history.undo();assert.deepEqual(history.value,before);for(let i=0;i<6;i++)history.redo();assert.deepEqual(history.value,reopened);
+ });
+}
+test('front/back halves connect at their real edges, including neighbouring left/right halves',()=>{
+ for(const [refs,expected] of [[['0:0:B','1:0:F'],true],[['0:0:F','1:0:F'],false],[['0:0:F','0:1:L'],true],[['0:0:F','1:1:L'],false]])assert.equal(C.connected(refs),expected);
+ const front=C.labelRect(['0:0:F'],4);assert.equal(front.bottom,0);assert.equal(front.height,1);assert.equal(front.width,2);
+ const back=C.labelRect(['0:0:B'],4);assert.equal(back.bottom,1);assert.equal(back.height,1);
+});
+test('changing a divided cell direction requires explicit replacement and exact undo',()=>{
+ const original=C.splitAssign(draft(),'ground',0,2,'R','b',{replace:true}).draft,before=C.clone(original),history=new C.History(original);
+ assert.match(C.allocate(original,'ground',{row:0,col:2,half:'B'},'b').confirmation.message,/split direction/);assert.deepEqual(original,before);
+ history.commit(C.allocate(original,'ground',{row:0,col:2,half:'B'},'b',{replace:true}).draft);
+ assert.equal(C.owner(history.value,'ground','0:2:B').id,'b');assert.equal(C.owner(history.value,'ground','0:2:F'),undefined);
+ assert.deepEqual(history.value.floors[0].splits,[]);assert.deepEqual(history.value.floors[0].horizontalSplits,['0:2']);history.undo();assert.deepEqual(history.value,before);
+});
+test('horizontal bridge removal is rejected and whole-cell merge clears either partition',()=>{
+ const d=draft();d.schema='floorforge.compass-input/2';d.floors[0].horizontalSplits=['0:1'];d.rooms[0].regions=['0:0','0:1:F','0:2'];
+ assert.throws(()=>C.allocate(d,'ground',{row:0,col:1,half:'F'},null),/disconnected/);
+ const merged=C.allocate(d,'ground',{row:0,col:1},'a',{replace:true}).draft;
+ assert.deepEqual(merged.floors[0].horizontalSplits,[]);assert.equal(C.owner(merged,'ground','0:1').id,'a');
+});
+test('front/back partitions reject wrong-axis refs, duplicate coverage and old versions',()=>{
+ const d=C.splitAssign(draft(),'ground',0,2,'F','b',{replace:true}).draft;
+ for(const mutate of [x=>x.rooms[1].regions=['0:2:L'],x=>x.floors[0].splits.push('0:2'),x=>x.schema='floorforge.compass-input/1',x=>x.rooms[0].regions.push('0:2:F')]){const bad=C.clone(d);mutate(bad);assert.throws(()=>C.validate(bad));}
+});
+test('below-floor labels use area overlap when the two floors have different split directions',()=>{
+ const e=editor();e.floor=1;const d=C.splitAssign(draft(),'ground',0,2,'R','b',{replace:true}).draft;d.floors.push({id:'first',splits:[]});e.history=new C.History(d);
+ assert.match(e.below(0,2,'F'),/Bedroom 1 \/ Bedroom 2/);assert.match(e.below(0,2,'L'),/Bedroom 1$/);
+});
+test('drawn-room preview preserves the full draft and optional input sources',()=>{
+ const d=draft(),before=C.clone(d),next=C.drawnDraft(d);assert.equal(next.programme,'drawn');assert.equal(next.schema,'floorforge.compass-input/2');
+ assert.deepEqual(next.rooms,before.rooms);assert.deepEqual(next.floors,before.floors);assert.deepEqual(d,before);assert.equal(next.rooms[1].required,undefined);
+});
+test('quick generation proceeds directly only after a current successful geometry check',async()=>{
+ for(const valid of [true,false]){
+  const e=editor();e.previewBusy=false;e.scope=1;const events=[];e.$=()=>({disabled:false});e.commit=next=>e.history.commit(next);e.setView=v=>events.push(v);e.dialog={close:()=>events.push('close')};e.options={generate:async()=>events.push('generate')};e.check=async()=>({valid});e.activateProposal=()=>events.push('accept');
+  await e.quickGenerate();assert.deepEqual(events,valid?['accept','close','generate']:['review']);assert.equal(e.previewBusy,false);assert.equal(e.draft.programme,'drawn');
+ }
+});
+test('stale or failed checks cannot generate and always release the busy state',async()=>{
+ for(const fail of [false,true]){const e=editor();e.$=()=>({disabled:false});e.commit=next=>e.history.commit(next);e.options={generate:()=>assert.fail('must not generate')};e.check=async()=>{if(fail)throw Error('network');return undefined;};if(fail)await assert.rejects(e.quickGenerate(),/network/);else await e.quickGenerate();assert.equal(e.previewBusy,false);}
+});
+
+test('wide-board labels retain adapter allocation dimensions on every supported grid and both split axes',()=>{
+ for(const {cols,rows} of gridOptions){const e=editor();e.units='m';e.history.value.grid={...e.draft.grid,cols,rows};e.brief={width_mm:cols*3200+2150,depth_mm:rows*3400+4350,left_mm:1000,right_mm:1000,front_mm:3000,rear_mm:1200};
+  assert.deepEqual(e.allocationSize(),{width:3200,depth:3400});assert.deepEqual(e.allocationSize('L'),{width:1600,depth:3400});assert.deepEqual(e.allocationSize('R'),{width:1600,depth:3400});assert.deepEqual(e.allocationSize('B'),{width:3200,depth:1700});assert.deepEqual(e.allocationSize('F'),{width:3200,depth:1700});assert.equal(e.formatSize('B'),'3.20 × 1.70 m');
+ }
+});
+test('entering and leaving enlarged split previews never changes the persisted draft',()=>{
+ const e=editor();e.floor=0;e.render=()=>{};e.$=()=>({focus(){}});e.focusOrigin=()=>{};const before=C.clone(e.draft);
+ e.openRefine(0,2);e.refineCell.direction='FB';assert.deepEqual(e.draft,before);assert.equal(e.pendingCell,null);e.closeRefine();assert.deepEqual(e.draft,before);assert.equal(e.refineCell,null);
+});
+test('Whole Cell cancellation keeps both owners, and restoration is one reversible transaction',async()=>{
+ const e=editor();e.floor=0;e.refineCell={row:0,col:2,direction:'LR'};e.history=new C.History(C.splitAssign(e.draft,'ground',0,2,'R','b',{replace:true}).draft);const before=C.clone(e.draft);e.commit=next=>e.history.commit(next);e.ask=async()=>2;await e.restoreWhole();assert.deepEqual(e.draft,before);
+ e.ask=async()=>0;await e.restoreWhole();assert.equal(C.owner(e.draft,'ground','0:2').id,'a');assert.deepEqual(e.draft.floors[0].splits,[]);e.history.undo();assert.deepEqual(e.draft,before);
+});
+test('coverage counts both half orientations by area, including half-empty cells',()=>{
+ const e=editor();e.floor=0;const d=draft();d.rooms[0].regions=['0:0'];d.rooms[1].regions=[];e.history=new C.History(C.splitAssign(d,'ground',0,0,'B','b',{replace:true}).draft);assert.equal(e.coverage(),6);e.history=new C.History(C.assign(e.draft,'ground','0:0:F',null).draft);assert.equal(e.coverage(),3);
+});
+test('Compass Save checkpoints the latest project and serializes both split axes for portable reopening',async()=>{
+ const e=editor();e.floor=0;let d=C.splitAssign(e.draft,'ground',0,2,'R','b',{replace:true}).draft;d=C.splitAssign(d,'ground',0,0,'B','a').draft;e.history=new C.History(d);let saved=0,blob,clicked=false;const originalDocument=global.document,create=URL.createObjectURL;
+ global.document={createElement:()=>({click(){clicked=true;}})};URL.createObjectURL=value=>{blob=value;return 'blob:compass-test';};
+ try{e.options={save:()=>saved++,project:()=>({schema:'floorforge.project/0.5',editorState:{mode:'compass',...e.serialize()}})};e.message=()=>{};e.download();const file=JSON.parse(await blob.text());const reopened=editor();reopened.load(file);assert.deepEqual(reopened.draft,d);assert.equal(saved,1);assert.ok(clicked);assert.deepEqual(reopened.draft.floors[0].horizontalSplits,['0:0']);assert.deepEqual(reopened.draft.floors[0].splits,['0:2']);}
+ finally{global.document=originalDocument;URL.createObjectURL=create;}
+});

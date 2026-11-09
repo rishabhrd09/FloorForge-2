@@ -1,0 +1,261 @@
+{
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+  "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+  "generatedAt": "2026-11-05T15:59:07.396Z",
+  "url": "file:///Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html",
+  "htmlSha256": "09758ce4ce2171a6180ee42958a68e354ed0d416eec0006f58f430d7e6843509",
+  "buildingSha256": "be5807fbb274080c4b04b43aaabf8899d16701f09fedb19fe8193ed33f41f8ae",
+  "sceneSha256": "e43535d771245a5427d5b4ff2e16d929dd7cb4c92f043443e1d0e05b431c5f76",
+  "inputsUnchanged": true,
+  "results": [
+    {
+      "width": 1440,
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "height": 10747,
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+        "images": [
+          {
+            "src": "first-gallery-parapet.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "plan-2d-dimensioned.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 3200,
+            "naturalHeight": 4200
+          },
+          {
+            "src": "plan-first-floor.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2900
+          },
+          {
+            "src": "plan-second-floor.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2900
+          },
+          {
+            "src": "plan-roof.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2640
+          },
+          {
+            "src": "ground-stair-railing.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "first-gallery-parapet.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+            "loaded": true,
+            "naturalWidth": 1400,
+            "naturalHeight": 1000
+          },
+          {
+            "src": "second_atrium.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "interior-veranda-living.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "interior-icu-veranda-garden.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "first-stair-up.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "upper-guest.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "second-stair-arrival.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "second-terrace.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "upper-terrace.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "forecourt-utility.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+            "loaded": true,
+            "naturalWidth": 1400,
+            "naturalHeight": 1000
+          }
+        ],
+        "overflowingElements": []
+      },
+      "errors": [],
+      "screenshot": "delivery-desktop.png",
+      "screenshotSha256": "e94e41da1bbd8fb0e6225037d08aa8726f0f657ff375dd8ff1b25e648e42d0b8"
+    },
+    {
+      "width": 390,
+      "pass": true,
+      "detail": {
+        "width": 390,
+        "scrollWidth": 390,
+        "height": 14615,
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+        "images": [
+          {
+            "src": "first-gallery-parapet.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "plan-2d-dimensioned.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 3200,
+            "naturalHeight": 4200
+          },
+          {
+            "src": "plan-first-floor.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2900
+          },
+          {
+            "src": "plan-second-floor.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2900
+          },
+          {
+            "src": "plan-roof.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 1960,
+            "naturalHeight": 2640
+          },
+          {
+            "src": "ground-stair-railing.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "first-gallery-parapet.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+            "loaded": true,
+            "naturalWidth": 1400,
+            "naturalHeight": 1000
+          },
+          {
+            "src": "second_atrium.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "interior-veranda-living.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "interior-icu-veranda-garden.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "first-stair-up.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "upper-guest.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "second-stair-arrival.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "second-terrace.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "upper-terrace.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "forecourt-utility.png?v=solid-gallery-20261105",
+            "loaded": true,
+            "naturalWidth": 2400,
+            "naturalHeight": 1560
+          },
+          {
+            "src": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+            "loaded": true,
+            "naturalWidth": 1400,
+            "naturalHeight": 1000
+          }
+        ],
+        "overflowingElements": []
+      },
+      "errors": [],
+      "screenshot": "delivery-mobile.png",
+      "screenshotSha256": "8658102cbdb85070ca5bc28bdd38a1a34de72830a11c26026855e797dcfbc6c9"
+    }
+  ],
+  "passed": true
+}

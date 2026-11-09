@@ -1,0 +1,767 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+  "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+  "buildingSha256": "b4f366d472c1494569ddd4c14b2a53576c07d0818b28c1fd8baf04e05ca10137",
+  "sceneSha256": "b2d6c8bb1a4659157964260e26d2a24ab00626a43fd9f366cc10956754acb66c",
+  "generatedAt": "2026-11-05T14:18:48.197240+00:00",
+  "audit": "Current delivery reference/image audit, exact-input responsive QA, and final upper-route runtime evidence for the guarded landing.",
+  "method": "Read-only audit of current files and existing recorded checks; no renders or runtime tests rerun during this metadata refresh.",
+  "html": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html",
+    "sha256": "b3a397bae3c8200fe57b8f06bac60e9145ffd26928a1454c647063442555a88e",
+    "bytes": 22722
+  },
+  "localReferences": [
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "9dedc94b2e188f7a7a866eb117e57372e7344043e4a8428ecd462153e4aafdc3"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "9dedc94b2e188f7a7a866eb117e57372e7344043e4a8428ecd462153e4aafdc3"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/drawings.pdf?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+      "exists": true,
+      "sha256": "0c47ee06798781e32480e86842a2613e2dc605f6a6e2e154f573c8f934124dd1"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/FloorForge-export.zip?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+      "exists": true,
+      "sha256": "b71d1c4f8dac9c65b290398ba02ec59682068cd382e8da1bf27f037990246506"
+    },
+    {
+      "tag": "a",
+      "reference": "second-landing-endcap.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-landing-endcap.png",
+      "exists": true,
+      "sha256": "e4a41dfe4db9c4691d88814567e63388d1ad7d39216751fe7e9aaea91c8d1d0a"
+    },
+    {
+      "tag": "img",
+      "reference": "second-landing-endcap.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-landing-endcap.png",
+      "exists": true,
+      "sha256": "e4a41dfe4db9c4691d88814567e63388d1ad7d39216751fe7e9aaea91c8d1d0a",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+      "exists": true,
+      "sha256": "121c435995f4b8adf1d8c1c73b73a3bbd5e6b85c0c556c5ca0dbbd79d58c950e"
+    },
+    {
+      "tag": "img",
+      "reference": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+      "exists": true,
+      "sha256": "121c435995f4b8adf1d8c1c73b73a3bbd5e6b85c0c556c5ca0dbbd79d58c950e",
+      "dimensions": [
+        3200,
+        4200
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "plan-first-floor.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+      "exists": true,
+      "sha256": "806720688fda1c5ce090ba520494152212aceca2ce6311e2497bacb030adf2c5"
+    },
+    {
+      "tag": "img",
+      "reference": "plan-first-floor.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+      "exists": true,
+      "sha256": "806720688fda1c5ce090ba520494152212aceca2ce6311e2497bacb030adf2c5",
+      "dimensions": [
+        1960,
+        2900
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "plan-second-floor.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+      "exists": true,
+      "sha256": "3572e5cfaa61b90748897d060ce62acf7f111f6876ff303a99a73a808bb5aced"
+    },
+    {
+      "tag": "img",
+      "reference": "plan-second-floor.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+      "exists": true,
+      "sha256": "3572e5cfaa61b90748897d060ce62acf7f111f6876ff303a99a73a808bb5aced",
+      "dimensions": [
+        1960,
+        2900
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "plan-roof.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-roof.png",
+      "exists": true,
+      "sha256": "992441488989cc61aecf9c3b43ae4eb9809d3f7dc48d8d281fe00d30dca12e2f"
+    },
+    {
+      "tag": "img",
+      "reference": "plan-roof.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-roof.png",
+      "exists": true,
+      "sha256": "992441488989cc61aecf9c3b43ae4eb9809d3f7dc48d8d281fe00d30dca12e2f",
+      "dimensions": [
+        1960,
+        2640
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+      "exists": true,
+      "sha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361"
+    },
+    {
+      "tag": "img",
+      "reference": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+      "exists": true,
+      "sha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361",
+      "dimensions": [
+        1400,
+        1000
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "historical-prior-atrium-revision"
+    },
+    {
+      "tag": "a",
+      "reference": "second_atrium.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second_atrium.png",
+      "exists": true,
+      "sha256": "27e189a1b6adfa9d88748e9ad7bd9bed7dcd38cd4d2cf4f0dc44dd1153eba5cf"
+    },
+    {
+      "tag": "img",
+      "reference": "second_atrium.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second_atrium.png",
+      "exists": true,
+      "sha256": "27e189a1b6adfa9d88748e9ad7bd9bed7dcd38cd4d2cf4f0dc44dd1153eba5cf",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-atrium/second_atrium-day.png?v=atrium-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/second_atrium-day.png",
+      "exists": true,
+      "sha256": "a3ac76e99e5b836da656c3ba5f2faedf8f7a17c798b4b9898b236b7f38e77660"
+    },
+    {
+      "tag": "a",
+      "reference": "interior-veranda-living.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-veranda-living.png",
+      "exists": true,
+      "sha256": "2585759bd3d94253a4a471b47ee34720b46f097fe90519a940ec7e5e8cacc898"
+    },
+    {
+      "tag": "img",
+      "reference": "interior-veranda-living.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-veranda-living.png",
+      "exists": true,
+      "sha256": "2585759bd3d94253a4a471b47ee34720b46f097fe90519a940ec7e5e8cacc898",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+      "exists": true,
+      "sha256": "8036d55aa89702b76046fb83a82692b72ce6f5ee308b266237a9c20f167c3b40"
+    },
+    {
+      "tag": "img",
+      "reference": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+      "exists": true,
+      "sha256": "8036d55aa89702b76046fb83a82692b72ce6f5ee308b266237a9c20f167c3b40",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "first-stair-up.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/first-stair-up.png",
+      "exists": true,
+      "sha256": "d4d7027c5a59a521b0be2829d96618e142330f8b22570b4765264c129df1e51c"
+    },
+    {
+      "tag": "img",
+      "reference": "first-stair-up.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/first-stair-up.png",
+      "exists": true,
+      "sha256": "d4d7027c5a59a521b0be2829d96618e142330f8b22570b4765264c129df1e51c",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "upper-guest.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-guest.png",
+      "exists": true,
+      "sha256": "e45d46cf080eb86c1286bc3be9edfa91c0b885ee13590f11202058553820157a"
+    },
+    {
+      "tag": "img",
+      "reference": "upper-guest.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-guest.png",
+      "exists": true,
+      "sha256": "e45d46cf080eb86c1286bc3be9edfa91c0b885ee13590f11202058553820157a",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "second-stair-arrival.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+      "exists": true,
+      "sha256": "a20a075a29679f43c0a5d0d5cdf0c545419da842c3abfcebc31c41dde2bc0e1f"
+    },
+    {
+      "tag": "img",
+      "reference": "second-stair-arrival.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+      "exists": true,
+      "sha256": "a20a075a29679f43c0a5d0d5cdf0c545419da842c3abfcebc31c41dde2bc0e1f",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "second-terrace.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+      "exists": true,
+      "sha256": "7df50a2bb05a6c7a2bdadd95df01c00b68e7c7de4b651c526dfcbef04f460e3b"
+    },
+    {
+      "tag": "img",
+      "reference": "second-terrace.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+      "exists": true,
+      "sha256": "7df50a2bb05a6c7a2bdadd95df01c00b68e7c7de4b651c526dfcbef04f460e3b",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "upper-terrace.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+      "exists": true,
+      "sha256": "62de6bd4d47c851d65a97ed202bf20c972e3ed4220fc56033843f38175d523a7"
+    },
+    {
+      "tag": "img",
+      "reference": "upper-terrace.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+      "exists": true,
+      "sha256": "62de6bd4d47c851d65a97ed202bf20c972e3ed4220fc56033843f38175d523a7",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "forecourt-utility.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+      "exists": true,
+      "sha256": "bb5a93dfb5969d593aefcae549385fdec58c7a519e30230c9c1cd7a39f09d688"
+    },
+    {
+      "tag": "img",
+      "reference": "forecourt-utility.png?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+      "exists": true,
+      "sha256": "bb5a93dfb5969d593aefcae549385fdec58c7a519e30230c9c1cd7a39f09d688",
+      "dimensions": [
+        2400,
+        1560
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "guarded-landing-visual-capture-before-final-base-topology-split"
+    },
+    {
+      "tag": "a",
+      "reference": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+      "exists": true,
+      "sha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7"
+    },
+    {
+      "tag": "img",
+      "reference": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+      "exists": true,
+      "sha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7",
+      "dimensions": [
+        1400,
+        1000
+      ],
+      "imageDecodes": true,
+      "evidenceStatus": "historical-prior-atrium-revision"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/preview.html",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/preview.html",
+      "exists": true,
+      "sha256": "9dedc94b2e188f7a7a866eb117e57372e7344043e4a8428ecd462153e4aafdc3"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/drawings.pdf?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/drawings.pdf",
+      "exists": true,
+      "sha256": "0c47ee06798781e32480e86842a2613e2dc605f6a6e2e154f573c8f934124dd1"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/FloorForge-export.zip?v=guarded-landing-20261105",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/FloorForge-export.zip",
+      "exists": true,
+      "sha256": "b71d1c4f8dac9c65b290398ba02ec59682068cd382e8da1bf27f037990246506"
+    },
+    {
+      "tag": "a",
+      "reference": "../../evidence/tirumala-5-g2/references/review.txt",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-g2/references/review.txt",
+      "exists": true,
+      "sha256": "0bfde9a5ce5928c1f6d546ea725d5bf6597db570a32a28d5024f36772d2e43dc"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/DESIGN_GUIDE.md",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/DESIGN_GUIDE.md",
+      "exists": true,
+      "sha256": "61e945da6fba2105ed91a1548777d1822c390ff70c7cf882c4666b17c40799e6"
+    },
+    {
+      "tag": "a",
+      "reference": "../../examples/gallery/tirumala-5/specifications.json",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/specifications.json",
+      "exists": true,
+      "sha256": "de55289bad0932c2d4e4cddeb1ce04aa7aadd49b5dd69df5233f2b628bff18e3"
+    },
+    {
+      "tag": "a",
+      "reference": "browser-checks.json",
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+      "exists": true,
+      "sha256": "0278865e5b004e3796300bbe3a75d80596710234b7d4d09647214b38b027f878"
+    }
+  ],
+  "missingFiles": [],
+  "externalLinksNotFetched": [
+    "https://stg.wbdg.org/resources/extensive-vegetative-roofs",
+    "https://www.iitk.ac.in/nicee/EQTips/EQTip25.pdf",
+    "https://www.laminam.com/usa/en/sizes-and-thickness/",
+    "https://www.schueco.com/schueco/architects/products/sliding-systems"
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false,
+  "responsiveLayoutStatus": "Verified at 1440 px and 390 px; recorded HTML, building and scene hashes match the final files.",
+  "responsive": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/responsive-qa.json",
+      "sha256": "85477a6f70f4cbee4d109a43e9e25892784fc2ab7d21075c88cb50869a4bc2c8",
+      "bytes": 7725
+    },
+    "matchesCurrentInputs": true,
+    "results": [
+      {
+        "width": 1440,
+        "pass": true,
+        "detail": {
+          "width": 1440,
+          "scrollWidth": 1440,
+          "height": 9991,
+          "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+          "images": [
+            {
+              "src": "second-landing-endcap.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 3200,
+              "naturalHeight": 4200
+            },
+            {
+              "src": "plan-first-floor.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2900
+            },
+            {
+              "src": "plan-second-floor.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2900
+            },
+            {
+              "src": "plan-roof.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2640
+            },
+            {
+              "src": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+              "loaded": true,
+              "naturalWidth": 1400,
+              "naturalHeight": 1000
+            },
+            {
+              "src": "second_atrium.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "interior-veranda-living.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "first-stair-up.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "upper-guest.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "second-stair-arrival.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "second-terrace.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "upper-terrace.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "forecourt-utility.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+              "loaded": true,
+              "naturalWidth": 1400,
+              "naturalHeight": 1000
+            }
+          ],
+          "overflowingElements": []
+        },
+        "errors": [],
+        "screenshot": "delivery-desktop.png",
+        "screenshotSha256": "fddb558544841ea10a3b5c7acd37ef803e4bb738e053fb6836b72d7a7d7e30fa"
+      },
+      {
+        "width": 390,
+        "pass": true,
+        "detail": {
+          "width": 390,
+          "scrollWidth": 390,
+          "height": 13366,
+          "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+          "images": [
+            {
+              "src": "second-landing-endcap.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "plan-2d-dimensioned.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 3200,
+              "naturalHeight": 4200
+            },
+            {
+              "src": "plan-first-floor.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2900
+            },
+            {
+              "src": "plan-second-floor.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2900
+            },
+            {
+              "src": "plan-roof.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 1960,
+              "naturalHeight": 2640
+            },
+            {
+              "src": "cycles-atrium/ground_skylight-day.png?v=atrium-20261105",
+              "loaded": true,
+              "naturalWidth": 1400,
+              "naturalHeight": 1000
+            },
+            {
+              "src": "second_atrium.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "interior-veranda-living.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "interior-icu-veranda-garden.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "first-stair-up.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "upper-guest.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "second-stair-arrival.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "second-terrace.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "upper-terrace.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "forecourt-utility.png?v=guarded-landing-20261105",
+              "loaded": true,
+              "naturalWidth": 2400,
+              "naturalHeight": 1560
+            },
+            {
+              "src": "cycles-atrium/roof_solar-day.png?v=atrium-20261105",
+              "loaded": true,
+              "naturalWidth": 1400,
+              "naturalHeight": 1000
+            }
+          ],
+          "overflowingElements": []
+        },
+        "errors": [],
+        "screenshot": "delivery-mobile.png",
+        "screenshotSha256": "393af6e78a54ac221402f208ebf09fccc21025e0b6aa8a25c6577e3d60b03d96"
+      }
+    ],
+    "passed": true
+  },
+  "geometryVerification": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision/landing-trim-verification.json",
+    "passed": true,
+    "inputBinding": "Geometry report building/scene/manifest hashes match the current files. The report is updated after this QA JSON to avoid circular content hashes.",
+    "originalAuditCheckCount": 36,
+    "currentReportCheckCount": 38
+  },
+  "finalRuntime": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision-upper/runtime-acceptance.json",
+      "sha256": "d44e6d8e38da84a89d3d0215ff3c28cf0774733f7eba73b234020fa0956d6121",
+      "bytes": 165940
+    },
+    "mode": "first-floor arrival → second → first",
+    "passed": true,
+    "checkCount": 103,
+    "routeLegCount": 74,
+    "guardTests": [
+      {
+        "name": "South endpoint blocks ordinary walking",
+        "passed": true
+      },
+      {
+        "name": "South endpoint blocks running",
+        "passed": true
+      },
+      {
+        "name": "South endpoint blocks crouched walking",
+        "passed": true
+      },
+      {
+        "name": "Atrium-side endpoint corner blocks diagonal running",
+        "passed": true
+      },
+      {
+        "name": "Window-side endpoint corner blocks diagonal crouching",
+        "passed": true
+      }
+    ],
+    "started": "2026-11-05T14:11:50.116Z",
+    "finished": "2026-11-05T14:12:35.867Z",
+    "scope": "Final topology: first-floor arrival to second floor and return, including five straight/diagonal walking, running and crouching guard tests.",
+    "bindingLimitation": "Runtime format records the current planHash rather than scene SHA-256; this run started after the final scene build."
+  },
+  "earlierFullRoundTrip": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision/runtime-acceptance.json",
+      "sha256": "29bdc513c3220e86d8a232703ad38386050ef77dfd3b97a89191542e2b7556e6",
+      "bytes": 252683
+    },
+    "mode": "full gate-to-roof round trip",
+    "passed": true,
+    "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+    "checkCount": 169,
+    "routeLegCount": 123,
+    "finished": "2026-11-05T13:53:16.433Z",
+    "evidenceStatus": "guarded-landing-before-final-guard-base-mesh-split",
+    "appliesToExactFinalTopology": false,
+    "limitation": "The full gate-to-roof round trip passed before the guard base was split into separate closed polygons. The split retains the visual footprint; the later upper-only run verifies the final topology. This is not a final-topology full-round-trip claim."
+  },
+  "earlierFullCapture": {
+    "source": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+      "sha256": "0278865e5b004e3796300bbe3a75d80596710234b7d4d09647214b38b027f878",
+      "bytes": 33749
+    },
+    "passed": true,
+    "checkCount": 74,
+    "finished": "2026-11-05T14:01:58.861Z",
+    "evidenceStatus": "guarded-landing-before-final-guard-base-mesh-split",
+    "appliesToExactFinalTopology": false,
+    "limitation": "WebGL images show the guarded landing before the final base mesh topology split. They are not relabelled as captures of the exact final scene topology."
+  },
+  "automatedTests": {
+    "passed": true,
+    "passedCount": 42,
+    "failedCount": 0,
+    "evidenceType": "coordinator-reported final test result",
+    "source": "Parent agent reported all 42 tests pass after the final guard-base mesh split. No saved test log was supplied at metadata refresh time.",
+    "independentlyRerunByThisAudit": false
+  },
+  "historicalEvidence": [
+    {
+      "source": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/complete-stair-route.json",
+        "sha256": "1773ff070028970f3c43fd1bf808e7fa27f89d8451b4fbd568abe539da093219",
+        "bytes": 211117
+      },
+      "revision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+      "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+      "historicalOnly": true,
+      "note": "Original old-revision complete-stair-route result is preserved and explicitly annotated historical."
+    }
+  ],
+  "cyclesEvidence": {
+    "evidenceStatus": "historical-prior-atrium-revision",
+    "currentGeometryVerified": false,
+    "displayedAsHistorical": true,
+    "note": "Cycles assets were not rerendered for the guarded landing. The delivery page labels them as prior-revision references; they do not prove the shortened passage or new guard."
+  },
+  "passed": true
+}

@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "checks": [
+    "ground: all clear zones valid, within plot and mutually non-overlapping",
+    "first: all clear zones valid, within plot and mutually non-overlapping",
+    "Care is rectangular, outside the northwest pocket and separate from north/west boundaries",
+    "Open-sky drawing porch has no first-floor room or terrace above it",
+    "Timber door openings include 3 inch total frame allowance beyond labelled clear widths",
+    "Living entry comes from PO through the shared side wall; no direct front-court-to-EN doorway remains",
+    "Uniform 4 ft front court; kitchen, puja, EN and PO share one outside alignment; court plus PO depth is 8 ft",
+    "Furniture footprints stay on clear floor; all openings align to walls; timber door sweeps avoid drawn furniture"
+  ],
+  "limits": [
+    "Review proposal only; live Revision 10 samples and 3D are unchanged.",
+    "Kitchen, puja and EN outside front wall faces align at y=4.5 ft with the front edge of PO. Front court is a uniform 4 ft deep; no entry projection.",
+    "Entry correction: front court \u2192 PO \u2192 EN \u2192 open living hall. PO also has the separate drawing-room door. The direct court-to-EN opening is removed.",
+    "Room areas are clear polygon areas; walls, terraces and voids are separate.",
+    "The upper lounge total includes circulation. Main seating bay is 12 \u00d7 8.5 ft.",
+    "Terrace over parking is a proposed structural extension, not an approved cantilever.",
+    "Local setbacks, structure, drains and roof-stair headroom remain to be coordinated."
+  ]
+}

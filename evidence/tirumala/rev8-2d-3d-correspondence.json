@@ -1,0 +1,331 @@
+{
+  "project": "tirumala",
+  "revision": 8,
+  "conversionMmPerFt": 304.8,
+  "declaredWallOpeningToleranceMm": 1.5,
+  "declaredFurnitureToleranceMm": 5.0,
+  "comparisonStripImage": "evidence/tirumala/options-A-to-E-2d-3d-comparison.png",
+  "options": [
+    {
+      "option": "A",
+      "label": "A \u2014 Original flow",
+      "planHash": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+      "geometryHash": "63e3b8c5e7ea788b0d03f7760b550aac9a0f88c80bc6ca36978590a43f37fcfe",
+      "plotBoundsMm": [
+        0,
+        0,
+        12192,
+        15240
+      ],
+      "mmPerFt": 304.8,
+      "wallCountGround": 58,
+      "wallCountFirst": 33,
+      "maxWall2d3dDeltaMm": 0.0,
+      "maxOpeningAlongWallDeltaMm": 0.0,
+      "declaredWallOpeningToleranceMm": 1.5,
+      "stairVerified": {
+        "coreMm": [
+          3658.0,
+          2286
+        ],
+        "riserCount": 20,
+        "riserMm": 182.9,
+        "treadMm": 287.8889,
+        "rotation": 90,
+        "openArrival": true,
+        "upperArrivalOutsideVoid": true
+      },
+      "levelsVerified": {
+        "frontCourtTopSceneMm": -4.0,
+        "parkingBayTopSceneMm": -268.0,
+        "datumDifferenceMm": 264.0,
+        "doubleHeightVoidClearMm": 7010,
+        "ordinaryRoomClearMm": 3353
+      },
+      "careBedVerified": {
+        "boundsMm": [
+          8001.0,
+          7757.5,
+          10135.0,
+          8824.5
+        ],
+        "headSouthMm": 8001.0,
+        "feetNorthMm": 10135.0,
+        "careWestEdgeFt": 35.5,
+        "nwGardenOpen": true
+      },
+      "sheetsPresent": [
+        "A-101",
+        "A-102",
+        "A-001",
+        "A-201",
+        "A-202",
+        "A-203",
+        "A-204",
+        "A-301",
+        "A-302",
+        "A-601",
+        "S-001"
+      ],
+      "overlayImage": "evidence/tirumala/option-A-2d-3d-overlay.png",
+      "status": "PASS"
+    },
+    {
+      "option": "B",
+      "label": "B \u2014 Larger care suite",
+      "planHash": "23d6796d9764b40fd2834d2a2654afa8d239f13e6998fbd082fc2c95fc4dcaf0",
+      "geometryHash": "e002b5ee1d3a55a85d5c1b21dbbdb81d8e50fd5e4b51c87df2948662b474bd70",
+      "plotBoundsMm": [
+        0,
+        0,
+        12192,
+        15240
+      ],
+      "mmPerFt": 304.8,
+      "wallCountGround": 54,
+      "wallCountFirst": 33,
+      "maxWall2d3dDeltaMm": 0.0,
+      "maxOpeningAlongWallDeltaMm": 0.0,
+      "declaredWallOpeningToleranceMm": 1.5,
+      "stairVerified": {
+        "coreMm": [
+          3658.0,
+          2286
+        ],
+        "riserCount": 20,
+        "riserMm": 182.9,
+        "treadMm": 287.8889,
+        "rotation": 90,
+        "openArrival": true,
+        "upperArrivalOutsideVoid": true
+      },
+      "levelsVerified": {
+        "frontCourtTopSceneMm": -4.0,
+        "parkingBayTopSceneMm": -268.0,
+        "datumDifferenceMm": 264.0,
+        "doubleHeightVoidClearMm": 7010,
+        "ordinaryRoomClearMm": 3353
+      },
+      "careBedVerified": {
+        "boundsMm": [
+          8001.0,
+          7757.5,
+          10135.0,
+          8824.5
+        ],
+        "headSouthMm": 8001.0,
+        "feetNorthMm": 10135.0,
+        "careWestEdgeFt": 36.5,
+        "nwGardenOpen": true
+      },
+      "sheetsPresent": [
+        "A-101",
+        "A-102",
+        "A-001",
+        "A-201",
+        "A-202",
+        "A-203",
+        "A-204",
+        "A-301",
+        "A-302",
+        "A-601",
+        "S-001"
+      ],
+      "overlayImage": "evidence/tirumala/option-B-2d-3d-overlay.png",
+      "status": "PASS"
+    },
+    {
+      "option": "C",
+      "label": "C \u2014 Garden first",
+      "planHash": "776cfc4d9c77b697234a3fccf67020d9db8a4e02bcbac7f53c2511f03474dc0b",
+      "geometryHash": "c9b8f23bc1f5848be15ca0f5dc1523606c6878d8019f20fe50fff3d4b1ea5147",
+      "plotBoundsMm": [
+        0,
+        0,
+        12192,
+        15240
+      ],
+      "mmPerFt": 304.8,
+      "wallCountGround": 58,
+      "wallCountFirst": 33,
+      "maxWall2d3dDeltaMm": 0.0,
+      "maxOpeningAlongWallDeltaMm": 0.0,
+      "declaredWallOpeningToleranceMm": 1.5,
+      "stairVerified": {
+        "coreMm": [
+          3658.0,
+          2286
+        ],
+        "riserCount": 20,
+        "riserMm": 182.9,
+        "treadMm": 287.8889,
+        "rotation": 90,
+        "openArrival": true,
+        "upperArrivalOutsideVoid": true
+      },
+      "levelsVerified": {
+        "frontCourtTopSceneMm": -4.0,
+        "parkingBayTopSceneMm": -268.0,
+        "datumDifferenceMm": 264.0,
+        "doubleHeightVoidClearMm": 7010,
+        "ordinaryRoomClearMm": 3353
+      },
+      "careBedVerified": {
+        "boundsMm": [
+          8001.0,
+          7757.5,
+          10135.0,
+          8824.5
+        ],
+        "headSouthMm": 8001.0,
+        "feetNorthMm": 10135.0,
+        "careWestEdgeFt": 35.5,
+        "nwGardenOpen": true
+      },
+      "sheetsPresent": [
+        "A-101",
+        "A-102",
+        "A-001",
+        "A-201",
+        "A-202",
+        "A-203",
+        "A-204",
+        "A-301",
+        "A-302",
+        "A-601",
+        "S-001"
+      ],
+      "overlayImage": "evidence/tirumala/option-C-2d-3d-overlay.png",
+      "status": "PASS"
+    },
+    {
+      "option": "D",
+      "label": "D \u2014 Larger drawing room",
+      "planHash": "9ac1a315d1849d22e1bae5f2e2814abbe70061012ce1aca2259822523c68cdaa",
+      "geometryHash": "dd445ea76d651340204ebd2208c091b638f203d66072f1cd1a9ecd919382a385",
+      "plotBoundsMm": [
+        0,
+        0,
+        12192,
+        15240
+      ],
+      "mmPerFt": 304.8,
+      "wallCountGround": 54,
+      "wallCountFirst": 33,
+      "maxWall2d3dDeltaMm": 0.0,
+      "maxOpeningAlongWallDeltaMm": 0.0,
+      "declaredWallOpeningToleranceMm": 1.5,
+      "stairVerified": {
+        "coreMm": [
+          3658.0,
+          2286
+        ],
+        "riserCount": 20,
+        "riserMm": 182.9,
+        "treadMm": 287.8889,
+        "rotation": 90,
+        "openArrival": true,
+        "upperArrivalOutsideVoid": true
+      },
+      "levelsVerified": {
+        "frontCourtTopSceneMm": -4.0,
+        "parkingBayTopSceneMm": -268.0,
+        "datumDifferenceMm": 264.0,
+        "doubleHeightVoidClearMm": 7010,
+        "ordinaryRoomClearMm": 3353
+      },
+      "careBedVerified": {
+        "boundsMm": [
+          8001.0,
+          8366.5,
+          10135.0,
+          9433.5
+        ],
+        "headSouthMm": 8001.0,
+        "feetNorthMm": 10135.0,
+        "careWestEdgeFt": 35.5,
+        "nwGardenOpen": true
+      },
+      "sheetsPresent": [
+        "A-101",
+        "A-102",
+        "A-001",
+        "A-201",
+        "A-202",
+        "A-203",
+        "A-204",
+        "A-301",
+        "A-302",
+        "A-601",
+        "S-001"
+      ],
+      "overlayImage": "evidence/tirumala/option-D-2d-3d-overlay.png",
+      "status": "PASS"
+    },
+    {
+      "option": "E",
+      "label": "E \u2014 Caregiver courtyard",
+      "planHash": "25675697a5b354d69579756924468cd944d4bf33173d02f452a700524200fb34",
+      "geometryHash": "525cdbde46c9708e155d5666b0225cdf99adf2db8ce558ccfb305de7f127fd44",
+      "plotBoundsMm": [
+        0,
+        0,
+        12192,
+        15240
+      ],
+      "mmPerFt": 304.8,
+      "wallCountGround": 58,
+      "wallCountFirst": 33,
+      "maxWall2d3dDeltaMm": 0.0,
+      "maxOpeningAlongWallDeltaMm": 0.0,
+      "declaredWallOpeningToleranceMm": 1.5,
+      "stairVerified": {
+        "coreMm": [
+          3658.0,
+          2286
+        ],
+        "riserCount": 20,
+        "riserMm": 182.9,
+        "treadMm": 287.8889,
+        "rotation": 90,
+        "openArrival": true,
+        "upperArrivalOutsideVoid": true
+      },
+      "levelsVerified": {
+        "frontCourtTopSceneMm": -4.0,
+        "parkingBayTopSceneMm": -268.0,
+        "datumDifferenceMm": 264.0,
+        "doubleHeightVoidClearMm": 7010,
+        "ordinaryRoomClearMm": 3353
+      },
+      "careBedVerified": {
+        "boundsMm": [
+          8001.0,
+          7757.5,
+          10135.0,
+          8824.5
+        ],
+        "headSouthMm": 8001.0,
+        "feetNorthMm": 10135.0,
+        "careWestEdgeFt": 35.5,
+        "nwGardenOpen": true
+      },
+      "sheetsPresent": [
+        "A-101",
+        "A-102",
+        "A-001",
+        "A-201",
+        "A-202",
+        "A-203",
+        "A-204",
+        "A-301",
+        "A-302",
+        "A-601",
+        "S-001"
+      ],
+      "overlayImage": "evidence/tirumala/option-E-2d-3d-overlay.png",
+      "status": "PASS"
+    }
+  ],
+  "allPassed": true
+}

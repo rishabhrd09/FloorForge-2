@@ -1,0 +1,3 @@
+Built tirumala-2: planHash=b5d8b2c80591442caea63ccdb5a4d6336fe938c7828908d04da3a3a21326c0bb -> /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-2
+Built tirumala-3: planHash=79eb1c2c3f72143cbdadda03b4ab3297c0713f2a68f3fc5986217c74b1291dfb -> /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3
+Updated examples/gallery/catalog.json with tirumala-2 and tirumala-3.

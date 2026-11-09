@@ -48,6 +48,18 @@ TERRACE_FINISH = {'modern_tropical': {'slab': 'roof', 'cap': 'frame', 'pergola':
                   'current': {'slab': 'stone', 'cap': 'frame', 'pergola': 'frame'}}
 
 def make_scene(building, report):
+    from .tirumala_6 import private_garden, furnish
+    if private_garden(building):
+        # The authored three-flight stair and undercroft replace the generic U core.
+        base = {**building, 'stairs': [], 'planning': {**building['planning'], 'privateGarden': False},
+                'spaces': [{**s, 'furnishedBySample': s['id'] in ('leisure-hall','auditorium'), 'southRunKitchen': building['planning'].get('eastPorchRevision') and s['id']=='kitchen'} for s in building['spaces']]}
+        if 'exterior' in base:
+            base['exterior']={**base['exterior'], 'landscape': {**base['exterior']['landscape'], 'boundary': {}}}
+        return furnish(make_scene(base, report), building)
+    from .tirumala_p11_p12 import is_p11_p12, make_p11_p12_scene
+    if is_p11_p12(building):
+        b_ext = building if building.get('exterior') else apply_exterior_preferences(building)
+        return make_p11_p12_scene(b_ext, report)
     b = building if building.get('exterior') else apply_exterior_preferences(building)
     v = b['brief']; exterior = b['exterior']; theme_id = exterior['theme']
     custom = bool(b.get('planning',{}).get('custom'))
@@ -165,10 +177,11 @@ def make_scene(building, report):
         wt = boundary.get('wall_thickness_mm', 150) / 1000
         if modern:
             fh, sh, solid, cap, pier_mat, tall = (boundary.get('front_wall_height_mm', 1500) / 1000, boundary.get('side_wall_height_mm', 1850) / 1000,
-                                                   .95, 'frame', 'wall', 2.1)
+                                                   min(.95, boundary.get('front_wall_height_mm', 1500) / 1000), 'frame', 'wall', 2.1)
         else:
             fh, sh, solid, cap, pier_mat, tall = .72 - g, .65 - g, .72 - g, 'stone', 'stone', 1.35 - g
         for xa, ya, xb, yb in [(xmin, ymin, xmin + wt, ymax), (xmax - wt, ymin, xmax, ymax), (xmin, ymax - wt, xmax, ymax)]:
+            wall_h = boundary['right_wall_height_mm'] / 1000 if (xb == xmax and 'right_wall_height_mm' in boundary) else sh
             # Rear wings can meet the boundary. Do not draw a second site wall
             # or its dark cap through their interior finishes.
             boundary_run = box(xa, ya, xb, yb)
@@ -177,12 +190,12 @@ def make_scene(building, report):
                 boundary_run = boundary_run.difference(fp.buffer(.02))
                 cap_run = cap_run.difference(fp.buffer(.02))
                 for part in _parts(boundary_run):
-                    poly_mesh(part, g, g + sh, 'wall', role='site')
+                    poly_mesh(part, g, g + wall_h, 'wall', role='site')
                 for part in _parts(cap_run):
-                    poly_mesh(part, g + sh, g + sh + (.035 if modern else .04), cap, role='site')
+                    poly_mesh(part, g + wall_h, g + wall_h + (.035 if modern else .04), cap, role='site')
             else:
-                rect((xa, ya, g, xb, yb, g + sh), 'wall', role='site')
-                rect((xa - .012, ya - .012, g + sh, xb + .012, yb + .012, g + sh + (.035 if modern else .04)), cap, role='site')
+                rect((xa, ya, g, xb, yb, g + wall_h), 'wall', role='site')
+                rect((xa - .012, ya - .012, g + wall_h, xb + .012, yb + .012, g + wall_h + (.035 if modern else .04)), cap, role='site')
         openings = [(x0 / 1000, x1 / 1000, gate) for x0, x1, gate in gate_openings(boundary)]
         lb = boundary.get('letterbox_pier')
         lbx = (lb['x0_mm'] / 1000, lb['x1_mm'] / 1000) if lb else None
@@ -346,7 +359,7 @@ def make_scene(building, report):
                     gates.append({'id':'exterior-pedestrian-gate','label':'Pedestrian gate','floor':-1,'kind':'gate',
                                   'start':[x0,hy,g],'axis':[1,0,0],'width':x1-x0,'height':hgt+.11,'base':g,'sill':0,'initial':0,
                                   'parts':[{'ids':[n['id'] for n in k.nodes[mark:]],'pivot':[hx,hy,zb],'angle':-math.pi/2 if hinge_right else math.pi/2}]})
-    elif not heritage:
+    elif not heritage and not b.get('siteBoundary'):
         for xa, ya, xb, yb in [(xmin, ymin, xmin + .15, ymax), (xmax - .15, ymin, xmax, ymax), (xmin, ymax - .15, xmax, ymax)]:
             rect((xa, ya, g, xb, yb, .65), 'wall', role='site'); rect((xa - .02, ya - .02, .65, xb + .02, yb + .02, .69), 'stone', role='site')
         for xa, xb in [(xmin, ex - gate_half), (ex + gate_half, xmax)]:
@@ -903,7 +916,7 @@ def make_scene(building, report):
             else:
                 ball((knob[0] + uv[0] * .04, knob[1] + uv[1] * .04, base + 1.), (.035, .035, .035), 'brass', o['floor'], 'door')
 
-        if doors_closed and o['kind'] in ('door','entry'):
+        if o.get('initiallyClosed',doors_closed) and o['kind'] in ('door','entry'):
             # Store closed canonical geometry for exports, with explicit inward runtime motion.
             pivot = pv if o['kind']=='entry' and modern else hinge
             direction = uv if o.get('hinge','start')=='start' or (o['kind']=='entry' and modern) else -uv
@@ -992,6 +1005,14 @@ def make_scene(building, report):
         mouth and every open connection to another public room."""
         room, clear = ctx['room'], ctx['clear']
         zones = []
+        # A concave quarter-turn core leaves its inner corner to the hall.
+        # Keep furniture out of both the bottom approach and the upper turn-out.
+        for core in b['stairs']:
+            if core['floor']!=room['floor'] or core.get('shape')!='quarter-turn':continue
+            sx,sy,fw,extent,land=[core[k]/1000 for k in ('x','y','flight_width','width','landing_mm')]
+            if core.get('rise_direction')=='south-east':
+                arrival=box(sx+extent-.01,sy+extent-fw,sx+extent+1.2,sy+extent) if core.get('to_floor') is not None else box(sx,sy-1.1,sx+fw+1.2,sy)
+                zones.append(arrival.intersection(clear))
         for s in b['spaces']:
             if s['floor'] != room['floor'] or s['id'] == room['id'] or s['kind'] not in ('stair', 'hall', 'living', 'dining', 'family'):
                 continue
@@ -1254,7 +1275,9 @@ def make_scene(building, report):
             pieces=[free] if free.geom_type=='Polygon' else list(getattr(free,'geoms',[]))
             return any(all(piece.intersects(portal) for portal in portals) for piece in pieces)
         best = None
-        for tw in sizes:
+        if b.get('planning',{}).get('colonyContext')=='tirumala-colony' and room.get('diningPosition') and anchor is not None:
+            best = ((sizes[0], 0.), anchor.x, anchor.y, sizes[0], room.get('diningOrientation', 0) == 0)
+        for tw in ([] if best else sizes):
             for along_x in ((room['diningOrientation']==0,) if 'diningOrientation' in room else (True, False)):
                 wx_, wy_ = (tw + .2, 2.0) if along_x else (2.0, tw + .2)
                 for cx_ in np.arange(x0 + wx_ / 2 + .25, x1 - wx_ / 2 - .25 + 1e-6, .1):
@@ -1790,8 +1813,9 @@ def make_scene(building, report):
         """A mandir: a teak cabinet with a marble altar shelf, a carved back panel lit from behind, brass lamps
         and a bell, on the wall facing the door."""
         room, f = ctx['room'], ctx['floor']; z = f * H
+        front_clear = .35 if any(o.get('openSide') and room['id'] in o['connects'] for o in b['openings']) else .7
         for mw in ((1.4,1.2,1.0,.8,.6) if room.get('altarWall') else (1.2,1.0,.8,.6)):
-            cands = spots(ctx, mw, .45, front=.7, height=2.1, step=.05)
+            cands = spots(ctx, mw, .45, front=front_clear, height=2.1, step=.05)
             if room.get('altarWall'):
                 normal={'front':(0,1),'rear':(0,-1),'left':(1,0),'right':(-1,0)}[room['altarWall']]
                 cands=[s for s in cands if np.allclose(s['n'],normal)]
@@ -1849,22 +1873,27 @@ def make_scene(building, report):
         """The longest solid wall takes the counter (a window above the worktop is welcome); sink under the window,
         hob clear of it, tall fridge at the end, wall cabinets and a lit backsplash where the wall is blank, and an
         island in a large kitchen."""
-        if ctx['room'].get('kitchenLayout')=='l-shaped-return':
+        if ctx['room'].get('kitchenLayout') in ('l-shaped-return','open-south-return'):
             from .modular_kitchen import l_shaped_kitchen
             l_shaped_kitchen(k,ctx,H,M)
             return
         room, f, clear = ctx['room'], ctx['floor'], ctx['clear']; z = f * H
         x0, y0, x1, y1 = clear.bounds
-        found = None
-        for run in np.arange(round(min(4.5, max(x1 - x0, y1 - y0) - .08), 1), 1.49, -.3):
-            cands = spots(ctx, run + .08, .66, front=.95, height=.92, step=.05)
-            if cands:
-                found = (float(run), max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L'])))
-                break
+        south_run=room.get('southRunKitchen')
+        if south_run:
+            # Cabinet modules stop 30 mm short of each end of the stone top.
+            found=(y1-y0-.06,dict(c=np.array([x0,(y0+y1)/2]),t=np.array([0.,1.]),n=np.array([1.,0.])))
+        else:
+            found = None
+            for run in np.arange(round(min(4.5, max(x1 - x0, y1 - y0) - .08), 1), 1.49, -.3):
+                cands = spots(ctx, run + .08, .66, front=.95, height=.92, step=.05)
+                if cands:
+                    found = (float(run), max(cands, key=lambda s: (-abs(s['s'] - s['L'] / 2), s['L'])))
+                    break
         if not found:
             return
         run, sp = found
-        fridge = upgraded_interior and run > 2.7
+        fridge = upgraded_interior and run > 2.7 and not south_run
         base_run = run - .78 if fridge else run
         u0 = -run / 2
         nseg = max(2, int(base_run / .6))
@@ -1875,7 +1904,15 @@ def make_scene(building, report):
                 lbox(sp, a0 + .02, a0 + ww - .035, .6, .622, z + zz, z + zz + .20, M['fronts'], f)
                 h0, h1 = P(sp, a0 + .14, .64), P(sp, a0 + ww - .14, .64)
                 beam((h0[0], h0[1], z + zz + .15), (h1[0], h1[1], z + zz + .15), .007, 'frame', f, 'detail')
-        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f)
+        lbox(sp, u0 - .03, u0 + base_run + .03, 0, .66, z + .83, z + .87, M['counter'], f, owner='kitchen-platform' if south_run else None)
+        if south_run:
+            cy=(y0+y1)/2
+            rect((x1-.68,cy-.37,z+.012,x1-.015,cy+.37,z+1.94),'appliance',f,'furniture','north-wall-fridge','north-wall-fridge')
+            rect((x1-.695,cy-.37,z+.79,x1-.68,cy+.37,z+.805),'frame',f,'detail','fridge-divider')
+            beam((x1-.705,cy-.28,z+.98),(x1-.705,cy-.28,z+1.48),.012,'frame',f,'detail')
+            fridge_foot=box(x1-.70,cy-.37,x1,cy+.37)
+            ctx['placed'].append(fridge_foot)
+            furnishing('refrigerator',room,fridge_foot)
         if fridge:
             f0 = u0 + base_run + .02
             lbox(sp, f0, f0 + .72, 0, .65, z + .02, z + 1.95, 'appliance', f)
@@ -2012,10 +2049,11 @@ def make_scene(building, report):
             return ctx['inside'].covers(foot) and not hits(foot, ctx['placed']+[q for q,_ in ctx['doors']])
         def finish(kind, foot, mark):
             furnishing(kind,room,foot);k.editable(kind,room,foot,mark);ctx['placed'].append(foot)
-        foot=box(cx-1.1,cy-.55,cx+1.1,cy+.55)
+        is_tirumala = b.get('planning',{}).get('colonyContext')=='tirumala-colony'
+        foot=box(cx-1.067,cy-.5335,cx+1.067,cy+.5335) if is_tirumala else box(cx-1.1,cy-.55,cx+1.1,cy+.55)
         if allowed(foot):
             mark=k.edit_mark()
-            rb((cx,cy,z+.26),(2.15,1.1,.25),M['bedframe'],f,r=.04,owner=room['id'])
+            rb((cx,cy,z+.26),(2.134 if is_tirumala else 2.15,1.067 if is_tirumala else 1.1,.25),M['bedframe'],f,r=.04,owner=room['id'])
             rb((cx+.28,cy,z+.48),(1.5,1.1,.22),'linen',f,r=.07,owner=room['id'])
             rb((cx-.70,cy,z+.64),(.70,1.1,.20),'linen',f,r=.07,owner=room['id'])
             k.nodes[-1]['rotation'][1]=.40
@@ -2023,6 +2061,21 @@ def make_scene(building, report):
             for xx in (cx-.9,cx+.9):
                 for yy in (cy-.45,cy+.45):cylinder((xx,yy,z+.10),.05,.15,'steel',f)
             finish('reclining-bed',foot,mark)
+        if b.get('planning',{}).get('colonyContext')=='tirumala-colony':
+            # Revision-8 care suite: 7 x 3.5 ft bed at x=26.25..33.25 ft (head SOUTH at x=26.25, feet NORTH at x=33.25),
+            # bedside table on the east head side, and visitor armchair on the west veranda side.
+            tx,ty=27.15*.3048,cy-2.70*.3048
+            tfoot=box(tx-.274,ty-.198,tx+.274,ty+.198)
+            if allowed(tfoot):
+                mark=k.edit_mark()
+                rb((tx,ty,z+.52),(.548,.396,.52),M['casework'],f,r=.02)
+                rb((tx,ty,z+.55),(.548,.396,.04),M['counter'],f,r=.015)
+                finish('equipment-table',tfoot,mark)
+            vx,vy=32.20*.3048,cy+4.60*.3048
+            vfoot=box(vx-.366,vy-.335,vx+.366,vy+.335)
+            if allowed(vfoot):
+                mark=k.edit_mark();chair(vx,vy,z,f,math.pi);finish('care-chair-right',vfoot,mark)
+            return
         # Facing +x, the occupant's left is +y and the veranda is to the right.
         equipment_left=room.get('careLayout')=='equipment-left'
         # Keep the bedside visitor seat; place the other two at the head wall,
@@ -2101,6 +2154,8 @@ def make_scene(building, report):
             if room.get('mechanicalVentilation'):
                 cp=p.representative_point();ch=room.get('ceilingHeight',H*1000-150)/1000
                 rect((cp.x-.12,cp.y-.12,z+ch-.02,cp.x+.12,cp.y+.12,z+ch-.01),'frame',f,'fixture',room['id']+'/exhaust-grille',room['id'])
+        if room.get('furnishedBySample'):
+            continue
         if heritage and hi.furnish(room):
             continue
         if custom and kind == 'drying-yard' and room.get('drain'):
@@ -2119,7 +2174,7 @@ def make_scene(building, report):
             continue
         if custom and kind == 'courtyard' and room.get('centerTree'):
             from .courtyard_finishes import specimen_court
-            specimen_court(k,materials,room,H)
+            specimen_court(k,materials,room,H,storeys=b['storeys'])
             continue
         if custom and kind == 'courtyard' and room.get('glassCover'):
             from .courtyard_finishes import skylit_garden
@@ -2245,6 +2300,11 @@ def make_scene(building, report):
     if custom or rooftop:
         for guard in rb_model.get('guards',[]):
             edge=LineString(np.array(guard['points'])/1000);f=guard['floor'];z=f*H;own=guard['owner']
+            if guard.get('parapet'):
+                footprint = metres(geometry(guard['parapet']))
+                poly_mesh(footprint,z,z+guard['height']/1000,'t5-ivory-render',f,'parapet',guard['id'],own)
+                colliders.append({'id':guard['id'],'floor':f,'polygon':list(footprint.exterior.coords),'kind':'guard'})
+                continue
             space=next((s for s in b['spaces'] if s['id']==own),{})
             if heritage:
                 hs.guard(guard, space, colliders)
@@ -2337,27 +2397,45 @@ def make_scene(building, report):
         if st['to_floor'] is None:
             continue
         f = st['floor']; z = f * H; x = st['x'] / 1000; y = st['y'] / 1000; r = st['riser_mm'] / 1000; t = st['tread_mm'] / 1000; fw = st['flight_width'] / 1000; well = st['well'] / 1000; land = st['landing_mm'] / 1000
+        if st.get('shape')=='quarter-turn':
+            from .stair_geometry import quarter_parts
+            for part in quarter_parts(st):
+                tx0,ty0,tz0,tx1,ty1,tz1=[v/1000 for v in part['bounds']]
+                rect((tx0,ty0,z+tz0,tx1,ty1,z+tz1),M['tread'],f,'stair',st['id']+'-'+part['id'])
+            run=(st['riser_count']//2-1)*t
+            reverse=st.get('rise_direction')=='south-east'
+            # Handrails guard both open inner edges and follow the physical tread slope.
+            paths=[((x+fw-.04,y,z+(H-r if reverse else r)),(x+fw-.04,y+run,z+H/2)),
+                   ((x+land,y+run+land-fw+.04,z+H/2),(x+land+run,y+run+land-fw+.04,z+(r if reverse else H-r)))]
+            for a,c in paths:
+                beam((a[0],a[1],a[2]+.9),(c[0],c[1],c[2]+.9),.025,'walnut',f,'railing')
+                for j in range(10):
+                    q=[a[i]+(c[i]-a[i])*j/9 for i in range(3)]
+                    beam(q,(q[0],q[1],q[2]+.89),.010,'frame',f,'railing')
+            continue
+        start_land = 0 if st.get('open_arrival') else land
         node_start=len(k.nodes)
         n=st['riser_count']//2;steps=n-1
         for j in range(steps):
-            yy = y + land + j * t
+            yy = y + start_land + j * t
             rect((x, yy, z + max(0, j * r - .08), x + fw, yy + t, z + (j + 1) * r), M['tread'], f, 'stair')
         # Landings and structural-stringer intent are visual coordination only.
-        mid_y = y + land + steps * t
+        mid_y = y + start_land + steps * t
         rect((x, mid_y, z + n * r - .16, x + 2 * fw + well, mid_y + land, z + n * r), M['tread'], f, 'stair')
         for j in range(steps):
-            yy = y + land + (steps - 1 - j) * t
+            yy = y + start_land + (steps - 1 - j) * t
             rect((x + fw + well, yy, z + n * r + j * r - .09, x + 2 * fw + well, yy + t, z + (n + 1 + j) * r), M['tread'], f, 'stair')
-        rect((x, y, z + H - .16, x + 2 * fw + well, y + land, z + H), M['tread'], f + 1, 'stair')
+        if not st.get('open_arrival'):
+            rect((x, y, z + H - .16, x + 2 * fw + well, y + land, z + H), M['tread'], f + 1, 'stair')
         # Handrails and pickets follow the two flight slopes.
         rails=[(x + fw - .04, z, True), (x + fw + well + .04, z + H, False)]
         if 'left' in st.get('open_sides',[]):rails.append((x+.04,z,True))
         if 'right' in st.get('open_sides',[]):rails.append((x+2*fw+well-.04,z+H,False))
         for xrail, start_z, ascending in rails:
             za = start_z + r if ascending else start_z; zb = z + n * r
-            beam((xrail, y + land, za + .9), (xrail, mid_y, zb + .9), .025, 'timber' if not upgraded_interior else 'walnut', f, 'railing')
+            beam((xrail, y + start_land, za + .9), (xrail, mid_y, zb + .9), .025, 'timber' if not upgraded_interior else 'walnut', f, 'railing')
             for j in range(n):
-                yy = y + land + j * t; zz = (z + (j + 1) * r) if ascending else (z + H - j * r)
+                yy = y + start_land + j * t; zz = (z + (j + 1) * r) if ascending else (z + H - j * r)
                 beam((xrail, yy, zz), (xrail, yy, zz + .89), .010, 'frame', f, 'railing')
 
         if st.get('rotation')==90:
@@ -3019,6 +3097,10 @@ def make_scene(building, report):
         from .upper_floor_finishes import upper_floor_finishes
         upper_floor_finishes(k,b,H)
 
+    if b.get('planning',{}).get('colonyContext')=='tirumala-colony':
+        from .tirumala_finishes import apply_tirumala_finishes
+        lawns.extend(apply_tirumala_finishes(k,materials,b,H))
+
     # Exact generated scene, not an image substitute.
     scene = {'editables': k.editables, 'input_audit':b.get('input_audit'),'planHash':b.get('planHash'),'draftRevision':b.get('draftRevision',0),'schema': 'floorforge.scene/0.4', 'units': 'm', 'up': 'Z', 'materials': materials, 'assets': k.assets, 'nodes': k.nodes,
             'lights': lights, 'colliders': colliders, 'furniture': furniture, 'floor_height': H, 'storeys': storeys, 'roof_level': storeys if rooftop else None,
@@ -3039,6 +3121,16 @@ def make_scene(building, report):
             'banner': b['banner']}
     if heritage:
         hs.finish_scene(scene)
+    if b.get('planning',{}).get('colonyContext')=='tirumala-colony':
+        from .tirumala_context import build_tirumala_context
+        ctx = build_tirumala_context(b, scene)
+        scene['context'] = ctx
+        scene['cameras'].update({
+            'hero': ctx['sightline_cameras']['ne_corner_two_roads'],
+            'east_arrival': ctx['sightline_cameras']['east_entrance_exterior'],
+            **ctx['reference_cameras'],
+            **ctx['sightline_cameras'],
+        })
     from .placement_edits import apply_furniture_edits
     return apply_furniture_edits(scene, b)
 

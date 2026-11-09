@@ -1,0 +1,321 @@
+{
+  "results": [
+    {
+      "slug": "tirumala-2",
+      "start": [
+        10.042,
+        0.3,
+        1.4
+      ],
+      "afterThreeSeconds": [
+        10.042,
+        -11.128159722222213,
+        1.4
+      ],
+      "onGround": false,
+      "doors": [
+        {
+          "id": "stair-window",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-stair-window-glass-0"
+          ]
+        },
+        {
+          "id": "master-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-rear-glass-0"
+          ]
+        },
+        {
+          "id": "drawing-north",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-drawing-north-glass-0"
+          ]
+        },
+        {
+          "id": "caregiver-north",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-north-glass-0"
+          ]
+        },
+        {
+          "id": "caregiver-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-rear-glass-0"
+          ]
+        },
+        {
+          "id": "kitchen-east",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-kitchen-east-glass-0"
+          ]
+        },
+        {
+          "id": "master-door",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-master-door-leaf"
+          ]
+        },
+        {
+          "id": "bath-door",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-bath-door-leaf"
+          ]
+        },
+        {
+          "id": "caregiver-lobby",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-lobby-leaf"
+          ]
+        },
+        {
+          "id": "wc-caregiver-only",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-wc-caregiver-only-leaf"
+          ]
+        },
+        {
+          "id": "lightwell-maintenance",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-lightwell-maintenance-leaf"
+          ]
+        },
+        {
+          "id": "bath-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-bath-rear-glass-0"
+          ]
+        },
+        {
+          "id": "master-lightwell",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-lightwell-glass-0"
+          ]
+        },
+        {
+          "id": "wc-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-wc-rear-glass-0"
+          ]
+        },
+        {
+          "id": "drawing-northeast-only",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-drawing-northeast-only-leaf"
+          ]
+        },
+        {
+          "id": "icu-veranda-window",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-icu-veranda-window-glass-0"
+          ]
+        },
+        {
+          "id": "living-veranda",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "living-veranda-wood-stack-0",
+            "living-veranda-wood-stack-1",
+            "op-living-veranda-fold-leaf-frame-0"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "tirumala-3",
+      "start": [
+        10.042,
+        0.3,
+        1.4
+      ],
+      "afterThreeSeconds": [
+        10.042,
+        -11.128159722222213,
+        1.4
+      ],
+      "onGround": false,
+      "doors": [
+        {
+          "id": "drawing-veranda-only",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-drawing-veranda-only-leaf"
+          ]
+        },
+        {
+          "id": "living-veranda",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "living-veranda-wood-stack-0",
+            "living-veranda-wood-stack-1",
+            "op-living-veranda-fold-leaf-frame-0"
+          ]
+        },
+        {
+          "id": "stair-window",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-stair-window-glass-0"
+          ]
+        },
+        {
+          "id": "icu-east-window",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-icu-east-window-glass-0"
+          ]
+        },
+        {
+          "id": "icu-north-window",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-icu-north-window-glass-0"
+          ]
+        },
+        {
+          "id": "master-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-rear-glass-0"
+          ]
+        },
+        {
+          "id": "drawing-north",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-drawing-north-glass-0"
+          ]
+        },
+        {
+          "id": "caregiver-north",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-north-glass-0"
+          ]
+        },
+        {
+          "id": "caregiver-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-rear-glass-0"
+          ]
+        },
+        {
+          "id": "kitchen-east",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-kitchen-east-glass-0"
+          ]
+        },
+        {
+          "id": "master-door",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-master-door-leaf"
+          ]
+        },
+        {
+          "id": "bath-door",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-bath-door-leaf"
+          ]
+        },
+        {
+          "id": "caregiver-lobby",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-caregiver-lobby-leaf"
+          ]
+        },
+        {
+          "id": "wc-caregiver-only",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-wc-caregiver-only-leaf"
+          ]
+        },
+        {
+          "id": "lightwell-maintenance",
+          "initial": 1,
+          "parts": 1,
+          "ids": [
+            "op-lightwell-maintenance-leaf"
+          ]
+        },
+        {
+          "id": "bath-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-bath-rear-glass-0"
+          ]
+        },
+        {
+          "id": "master-lightwell",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-master-lightwell-glass-0"
+          ]
+        },
+        {
+          "id": "wc-rear",
+          "initial": 0,
+          "parts": 1,
+          "ids": [
+            "op-wc-rear-glass-0"
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

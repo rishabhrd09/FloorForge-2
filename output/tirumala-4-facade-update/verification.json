@@ -1,0 +1,18 @@
+{
+  "verifiedAt": "2026-10-31T08:24:19.083612+00:00",
+  "entireBuildingUnchanged": true,
+  "allRoomAndOpeningDimensionsUnchanged": true,
+  "interiorWallFinishUnchanged": true,
+  "doorOperationUnchanged": true,
+  "facadePaletteMatchesMyDesiredHome": true,
+  "adjoiningLotsVacant": true,
+  "protectedSampleFilesUnchanged": 418,
+  "pythonTestsPassed": 32,
+  "viewerAndWalkingTestsPassed": 88,
+  "browserChecksPassed": 46,
+  "browserErrors": [],
+  "exportManifestFilesVerified": 79,
+  "exportZipVerified": true,
+  "exteriorFinishTriangles": 409,
+  "exteriorOpeningsRefined": 29
+}

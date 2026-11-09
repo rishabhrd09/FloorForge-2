@@ -76,9 +76,41 @@ def export_ifc(b, scene=None):
     for wall in b['walls']:
         obj=E('IFCWALL',text(guid(wall['id'])),'$',text(wall['id']),text('Nominal wall; structural role unverified'),'$',placements[wall['floor']],rep(w.solid(Polygon(wall['polygon']),0,wall['height'])),text(wall['id']),'.NOTDEFINED.')
         walls[wall['id']]=obj;contents[wall['floor']].append(obj)
+    for member in b.get('terraceFrame', []):
+        kind=member['kind'].upper()
+        f=member['floor']
+        shape=rep(w.solid(box(*member['bounds']),member['base'],member['top']-member['base']))
+        obj=E('IFC'+kind,text(guid(member['id'])),'$',text(member['id']),text('Concept framing; member sizing unverified'),'$',placements[f],shape,text(member['id']),'.'+kind+'.')
+        contents[f].append(obj)
+    if b.get('siteBoundary'):
+        # Group slats and jambs into identifiable assemblies using the same
+        # geometry as the walkthrough, in their closed coordination position.
+        from collections import defaultdict
+        assemblies=defaultdict(list)
+        for part in b['siteBoundary']['parts']:
+            x,y,z,X,Y,Z=part['bounds']
+            assemblies[part['owner']].append(w.solid(box(x,y,X,Y),z,Z-z))
+        for owner,parts in assemblies.items():
+            if '-leaf-' in owner:
+                obj=E('IFCDOOR',text(guid(owner)),'$',text(owner),'$','$',placements[0],rep(parts),text(owner),'$','$','.GATE.','.NOTDEFINED.','$')
+            else:
+                obj=E('IFCWALL',text(guid(owner)),'$',text(owner),'$','$',placements[0],rep(parts),text(owner),'.NOTDEFINED.')
+            contents[0].append(obj)
     for space in b['spaces']:
         obj=E('IFCSPACE',text(guid(space['id'])),'$',text(space['name']),text('Clear-space study volume'),'$',placements[space['floor']],rep(w.solid(Polygon(space['clear'],space.get('holes',[])),0,space.get('ceilingHeight',H-150))),text(space['id']),'.ELEMENT.','.NOTDEFINED.','$')
         spaces[space['floor']].append(obj)
+    if b.get('vehicleRamp'):
+        from .tirumala_6_site import ramp_geometry
+        vertices,triangles=ramp_geometry(b['vehicleRamp'])
+        coords='('+','.join('('+','.join(number(v) for v in pt)+')' for pt in vertices)+')'
+        points=E('IFCCARTESIANPOINTLIST3D',coords)
+        faces='('+','.join('('+','.join(str(i+1) for i in tri)+')' for tri in triangles)+')'
+        mesh=E('IFCTRIANGULATEDFACESET',points,'$','.T.',faces,'$')
+        body=E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+mesh+')')
+        shape=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+body+')')
+        ident='car-entry-ramp'
+        obj=E('IFCRAMP',text(guid(ident)),'$',text('East vehicle apron'),'$','$',placements[0],shape,text(ident),'.STRAIGHT_RUN_RAMP.')
+        contents[0].append(obj)
     for step in b.get('entrance_steps',[]):
         obj=E('IFCSLAB',text(guid(step['id'])),'$',text('Dining entrance step'),'$','$',placements[0],rep(w.solid(Polygon(step['polygon']),step['bottom'],step['top']-step['bottom'])),text(step['id']),'.LANDING.')
         contents[0].append(obj)
@@ -90,27 +122,83 @@ def export_ifc(b, scene=None):
     def solids(p,z,depth):
         return [w.solid(part,z,depth) for part in get_parts(p) if part.geom_type=='Polygon' and part.area>1]
     for f in range(b['storeys']):
-        obj=E('IFCSLAB',text(guid('slab/'+str(f))),'$',text('Floor slab / thickness assumption'),'$','$',placements[f],rep(solids(plate(b,f),-150,150)),text('SL-'+str(f)),'.FLOOR.')
+        slab_depth=next((p.get('thickness',150) for p in b.get('floor_plates',[]) if p['floor']==f),150) if b.get('planning',{}).get('g2Revision') else 150
+        obj=E('IFCSLAB',text(guid('slab/'+str(f))),'$',text('Floor slab / thickness assumption'),'$','$',placements[f],rep(solids(plate(b,f),-slab_depth,slab_depth)),text('SL-'+str(f)),'.FLOOR.')
         contents[f].append(obj);properties(obj,'slab/'+str(f))
         p=roof(b,f)
         if not p.is_empty:
-            obj=E('IFCSLAB',text(guid('roof/'+str(f))),'$',text('Roof / thickness assumption'),'$','$',placements[f],rep(solids(p,H-150,150)),text('ROOF-'+str(f)),'.ROOF.')
+            roof_depth=180 if b.get('planning',{}).get('g2Revision') else 150
+            roof_z=H-150
+            if b.get('planning',{}).get('g2Revision'):
+                record=next((r for r in b['roofs'] if r['floor']==f),{})
+                roof_z=record.get('elevation',(f+1)*H)-f*H-(0 if f==2 else roof_depth)
+            obj=E('IFCSLAB',text(guid('roof/'+str(f))),'$',text('Roof / thickness assumption'),'$','$',placements[f],rep(solids(p,roof_z,roof_depth)),text('ROOF-'+str(f)),'.ROOF.')
             contents[f].append(obj);properties(obj,'roof/'+str(f))
     if b.get('planning',{}).get('custom') or b.get('rooftop'):
         for st in b['stairs']:
             if st['to_floor'] is None:continue
+            if st.get('shape')=='three-flight-c-stair' and st['id'].startswith('t6-stair-'):
+                parts=[w.solid(box(*s['bounds']),s['top']-st['floor']*H-190,190) for s in st['flights']]
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Three-flight garden stair'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.USERDEFINED.')
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
+            g2_ground=b.get('planning',{}).get('g2Revision') and st.get('id')=='g-stair' and scene
+            if (st.get('shape') in ('two-flight-l-stair','two-flight-u-stair','three-flight-c-stair') and st.get('id')=='s2-stair') or g2_ground:
+                # G+2 uses the authored ground and upper stair geometry,
+                # not the legacy generic switchback. Include their exact treads,
+                # arrival connectors and structural waist meshes in the IFC.
+                prefixes=('stair-','arrival-connector-','g-south-waist','g-west-waist','g-north-waist') if g2_ground else ('s2-',)
+                stair_nodes=[n for n in (scene or {}).get('nodes',[]) if n['id'].startswith(prefixes) and n['role']=='stair']
+                if stair_nodes:
+                    import numpy as np
+                    from .scene import transformation
+                    meshes=[]
+                    for node in stair_nodes:
+                        asset=scene['assets'][node['asset']]; matrix=transformation(node)
+                        vv=np.array(asset['vertices'],float)@matrix[:3,:3].T+matrix[:3,3]
+                        vv=vv*1000;vv[:,2]-=st['floor']*H
+                        pts=E('IFCCARTESIANPOINTLIST3D','('+','.join('('+','.join(number(x) for x in v)+')' for v in vv)+')')
+                        faces='('+','.join('('+','.join(str(i+1) for i in face)+')' for face in asset['faces'])+')'
+                        meshes.append(E('IFCTRIANGULATEDFACESET',pts,'$', '.T.' if asset.get('closed') else '.F.',faces,'$'))
+                    shp=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+                else:
+                    parts=[w.solid(box(*step['bounds']),step['top']-st['floor']*H-190,190) for step in st['flights']]
+                    shp=rep(parts)
+                stacked_c=st.get('shape')=='three-flight-c-stair'
+                stair_name='Ground three-flight C staircase' if g2_ground else 'Second-floor stacked three-flight C staircase' if stacked_c else 'Second-floor indoor return staircase' if st.get('shape')=='two-flight-u-stair' else 'Second-floor linked L staircase'
+                stair_note='18 retained 175 mm risers plus two 179 mm arrival risers; same authored geometry as 3D' if g2_ground or stacked_c else '20 equal risers; same authored geometry as 3D'
+                stair_type='.USERDEFINED.' if g2_ground or stacked_c else '.HALF_TURN_STAIR.' if st.get('shape')=='two-flight-u-stair' else '.QUARTER_TURN_STAIR.'
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text(stair_name),text(stair_note),'$',placements[st['floor']],shp,text(st['id']),stair_type)
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
+            if st.get('shape')=='quarter-turn':
+                from .stair_geometry import quarter_parts
+                parts=[]
+                for part in quarter_parts(st):
+                    x0,y0,z0,x1,y1,z1=part['bounds'];parts.append(w.solid(box(x0,y0,x1,y1),z0,z1-z0))
+                obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Linked L staircase'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.QUARTER_TURN_STAIR.')
+                contents[st['floor']].append(obj);properties(obj,st['id'])
+                continue
             from .stair_geometry import shape as stair_shape
             stair_box=lambda *args: stair_shape(st,box(*args))
             n=st['riser_count']//2;steps=n-1;x=st['x'];y=st['y'];fw=st['flight_width'];land=st['landing_mm'];t=st['tread_mm'];r=st['riser_mm'];parts=[]
+            start_land=0 if st.get('open_arrival') else land
             for j in range(steps):
-                yy=y+land+j*t;bottom=max(0,j*r-80);parts.append(w.solid(stair_box(x,yy,x+fw,yy+t),bottom,(j+1)*r-bottom))
-                yy=y+land+(steps-1-j)*t;bottom=n*r+j*r-90;parts.append(w.solid(stair_box(x+fw+st['well'],yy,x+st['width'],yy+t),bottom,(n+1+j)*r-bottom))
-            parts.append(w.solid(stair_box(x,y+land+steps*t,x+st['width'],y+2*land+steps*t),n*r-160,160))
-            parts.append(w.solid(stair_box(x,y,x+st['width'],y+land),H-160,160))
+                yy=y+start_land+j*t;bottom=max(0,j*r-80);parts.append(w.solid(stair_box(x,yy,x+fw,yy+t),bottom,(j+1)*r-bottom))
+                yy=y+start_land+(steps-1-j)*t;bottom=n*r+j*r-90;parts.append(w.solid(stair_box(x+fw+st['well'],yy,x+st['width'],yy+t),bottom,(n+1+j)*r-bottom))
+            parts.append(w.solid(stair_box(x,y+start_land+steps*t,x+st['width'],y+start_land+land+steps*t),n*r-160,160))
+            if not st.get('open_arrival'):
+                parts.append(w.solid(stair_box(x,y,x+st['width'],y+land),H-160,160))
             obj=E('IFCSTAIR',text(guid(st['id'])),'$',text('Linked U staircase'),'$','$',placements[st['floor']],rep(parts),text(st['id']),'.HALF_TURN_STAIR.')
             contents[st['floor']].append(obj);properties(obj,st['id'])
         from shapely.geometry import LineString
         for guard in b.get('guards',[]):
+            if guard.get('parapet'):
+                from .plan_geometry import geometry
+                p=geometry(guard['parapet'])
+                obj=E('IFCWALL',text(guid(guard['id'])),'$',text('Solid white terrace parapet'),'$','$',placements[guard['floor']],rep(solids(p,0,guard['height'])),text(guard['id']),'.PARAPET.')
+                contents[guard['floor']].append(obj)
+                continue
             p=LineString(guard['points']).buffer(8,cap_style=2,join_style=2)
             obj=E('IFCRAILING',text(guid(guard['id'])),'$',text('Exposed-edge guard'),'$','$',placements[guard['floor']],rep(solids(p,60,1040)),text(guard['id']),'.GUARDRAIL.')
             contents[guard['floor']].append(obj)
@@ -124,18 +212,29 @@ def export_ifc(b, scene=None):
         import numpy as np
         from .scene import transformation
         nodes={n['id']:n for n in scene['nodes']}
-        for item in scene.get('editables',[]):
+        def mesh_shape(node_ids,floor):
             meshes=[]
-            for ident in item['nodeIds']:
+            for ident in node_ids:
                 node=nodes[ident];asset=scene['assets'][node['asset']]
                 vertices=np.array(asset['vertices'],float)
                 matrix=transformation(node)
                 vertices=(vertices @ matrix[:3,:3].T+matrix[:3,3])*1000
-                vertices[:,2]-=item['floor']*H
+                vertices[:,2]-=floor*H
                 points=E('IFCCARTESIANPOINTLIST3D','('+','.join('('+','.join(number(x) for x in v)+')' for v in vertices)+')')
                 faces='('+','.join('('+','.join(str(i+1) for i in face)+')' for face in asset['faces'])+')'
                 meshes.append(E('IFCTRIANGULATEDFACESET',points,'$', '.T.' if asset.get('closed') else '.F.',faces,'$'))
-            shape=E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+            return E('IFCPRODUCTDEFINITIONSHAPE','$','$','('+E('IFCSHAPEREPRESENTATION',ctx,text('Body'),text('Tessellation'),'('+','.join(meshes)+')')+')')
+        if 'living-rooflight-pane' in nodes:
+            glazing=[i for i in nodes if i.startswith(('living-rooflight-','rooflight-kerb-','rooflight-side-','rooflight-cap-'))]
+            shape=mesh_shape(glazing,2)
+            obj=E('IFCWINDOW',text(guid('living-rooflight')),'$',text('Living hall rooflight'),'$','$',placements[2],shape,text('living-rooflight'),'$','$','.SKYLIGHT.','.NOTDEFINED.','$')
+            contents[2].append(obj)
+        if 'suite-northlight-pane' in nodes:
+            members=[i for i in nodes if i.startswith(('suite-northlight-','suite-light-lining-'))]
+            obj=E('IFCWINDOW',text(guid('suite-northlight')),'$',text('Suite north-facing roof light and lined shaft'),'$','$',placements[2],mesh_shape(members,2),text('suite-northlight'),'$','$','.SKYLIGHT.','.NOTDEFINED.','$')
+            contents[2].append(obj)
+        for item in scene.get('editables',[]):
+            shape=mesh_shape(item['nodeIds'],item['floor'])
             obj=E('IFCFURNISHINGELEMENT',text(guid(item['id'])),'$',text(item['label']),text('Authored furniture assembly'),'$',placements[item['floor']],shape,text(item['id']))
             contents[item['floor']].append(obj);properties(obj,item['id'])
     for f,fl in floors.items():

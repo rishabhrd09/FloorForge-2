@@ -1,0 +1,35 @@
+{
+  "original_files_checked": 58,
+  "original_files_changed": [],
+  "packages": [
+    {
+      "project": "tirumala-2",
+      "files": 46,
+      "errors": [],
+      "zip_bytes": 30506220
+    },
+    {
+      "project": "tirumala-3",
+      "files": 46,
+      "errors": [],
+      "zip_bytes": 31629241
+    }
+  ],
+  "browser": {
+    "errors": [],
+    "samples": [
+      {
+        "project": "tirumala-2",
+        "passed": 8,
+        "total": 8,
+        "grounded": true
+      },
+      {
+        "project": "tirumala-3",
+        "passed": 8,
+        "total": 8,
+        "grounded": true
+      }
+    ]
+  }
+}

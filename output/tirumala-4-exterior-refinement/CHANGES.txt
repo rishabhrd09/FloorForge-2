@@ -1,0 +1,43 @@
+TIRUMALA 4 — EXTERIOR REFINEMENT, 31 OCTOBER 2026
+
+Applied to the existing Tirumala 4 sample based on Tirumala 3 / P13.
+
+What the review found
+- The small red projecting elements were solid burgundy boxes used as hedge proxies.
+- Small white flowers were also represented by boxes in the colony planting.
+- A gap at the north/east road corner appeared as an accidental grass patch.
+- Large paver modules, heavy rectangular streetlights and cool lighting weakened the exterior appearance.
+- Tall ornamental grass spilled visually over the pads in the narrow north-side strip.
+
+Implemented
+- Removed the burgundy and white proxy boxes; replaced them with low leaf geometry and small flowers.
+- Refined the house boundary using ivory render, a limestone base, thin coping, fine joints and small inset lights.
+- Preserved the photographed colony wall character separately in muted mauve-grey.
+- Added narrow soil beds and flush stone edges under the existing hedge runs.
+- Paved the empty corner around a defined grass/groundcover pocket, keeping the gate clear.
+- Shortened lawn blades and reduced ornamental accents in the existing north-side strip; retained its stepping pads.
+- Added textured concrete road and smaller paver modules; moved the north drain covers to the verge's road edge.
+- Replaced chunky streetlight beams with slimmer round poles at their existing positions.
+- Applied Tirumala-4-only warm-neutral bounce lighting and a softer overcast option.
+- Refreshed the gallery thumbnail, render set, standalone preview, model exports and export ZIP.
+- Corrected several source-photo filename labels in the comparison sheet.
+
+Preserved
+- 40 ft north-south by 50 ft east-west plot.
+- Entire building.json, including room polygons, dimensions, walls, openings, staircase, furniture layout, G+1 layout and levels.
+- Gate opening and existing house circulation.
+- Tirumala 2, Tirumala 3, original Tirumala, My Desired Home and Bungalow sample files.
+- Ground + upper geometry hash: b6484526b3006577c8ea77d195487ec31e7226a90a9804cd2f2d400bc74b78fc
+
+Verification
+- 32 Python sample/plan tests and 87 viewer/walking tests passed.
+- Browser checks cover the sample gallery, door layers, exterior materials, all capture cameras, optional parking view and porch/ground/upper-floor walking levels.
+- Complete file and geometry comparison, browser-check count and export integrity are recorded in verification.json.
+
+Scope of realism
+The images are screenshots of the actual interactive model. Planting, materials and light have been improved; they are not photographs. Neighbour buildings and trees remain simplified, and unmeasured colony positions are approximate. The changes do not enlarge rooms or imply a surveyed site reconstruction.
+
+View the result
+Open index.html in this folder for before/after views.
+From the project root run: bash start.sh
+Then choose Sample Projects -> Tirumala 4. Reload an existing viewer to load the updated bundle.

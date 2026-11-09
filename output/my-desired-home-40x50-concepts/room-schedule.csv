@@ -1,0 +1,117 @@
+Option,Floor,Room,Name,E-W dimension ft,N-S dimension ft,Area sq ft,Dimension type
+A,ground,CG,Caregiver,8.5,10.25,87.125,clear rectangle
+A,ground,CL,Caregiver lobby,8.5,2.25,19.125,clear rectangle
+A,ground,SP,Service spine,3.5,13.0,45.5,clear rectangle
+A,ground,WC,Common / caregiver WC,4.5,6.0,27.0,clear rectangle
+A,ground,MB,Master bathroom,4.5,6.5,29.25,clear rectangle
+A,ground,M,Ground master,10.5,12.0,126.0,clear rectangle
+A,ground,S,Stair,8.0,12.0,96.0,clear rectangle
+A,ground,K,L-shaped kitchen,10.0,10.5,105.0,clear rectangle
+A,ground,P,Parking,19.0,10.5,199.5,clear rectangle
+A,ground,DR,Drawing,15.5,13.5,209.25,clear rectangle
+A,ground,V,Veranda,5.5,13.5,74.25,clear rectangle
+A,ground,ICU,Home care / ICU,16.0,22.270341,356.325,clear rectangle
+A,ground,L,Living + dining,21.5,14.0,285.25,overall bounds; use polygon area
+A,ground,E,Entry porch,18.0,5.229659,94.134,clear rectangle
+A,ground,G,East planting strip,1.5,22.270341,33.406,clear rectangle
+A,first,B2,Bedroom 2,10.5,12.0,126.0,clear rectangle
+A,first,UB,Upper bathroom,4.5,6.5,29.25,clear rectangle
+A,first,US,Stair,8.0,12.0,96.0,clear rectangle
+A,first,O,Office,10.0,10.5,105.0,clear rectangle
+A,first,T,East terrace,19.0,16.229659,302.634,overall bounds; use polygon area
+A,first,NT,North terrace,15.5,13.5,209.25,clear rectangle
+A,first,RT,Caregiver roof,8.5,10.25,87.125,clear rectangle
+A,first,UL,West landing,8.5,2.25,19.125,clear rectangle
+A,first,UP,West gallery,3.5,13.0,45.5,clear rectangle
+A,first,U,Upper gallery,21.5,28.0,313.25,overall bounds; use polygon area
+A,first,VOID,Living void,6.0,6.0,36.0,clear rectangle
+A,first,B3,Upper master,16.0,13.5,216.0,clear rectangle
+A,first,B3B,Master ensuite,6.0,8.270341,49.622,clear rectangle
+A,first,BAL,Private balcony,9.5,8.270341,78.568,clear rectangle
+B,ground,CG,Caregiver,8.5,10.25,87.125,clear rectangle
+B,ground,CL,Caregiver lobby,8.5,2.25,19.125,clear rectangle
+B,ground,SP,Service spine,3.5,13.0,45.5,clear rectangle
+B,ground,WC,Common / caregiver WC,4.5,6.0,27.0,clear rectangle
+B,ground,MB,Master bathroom,4.5,6.5,29.25,clear rectangle
+B,ground,M,Ground master,10.5,12.0,126.0,clear rectangle
+B,ground,S,Stair,8.0,12.0,96.0,clear rectangle
+B,ground,K,L-shaped kitchen,10.0,10.5,105.0,clear rectangle
+B,ground,P,Parking,19.0,10.5,199.5,clear rectangle
+B,ground,DR,Drawing,17.884514,13.5,241.441,clear rectangle
+B,ground,V,Veranda,5.5,13.5,74.25,clear rectangle
+B,ground,ICU,Home care / ICU,13.615486,22.270341,303.222,clear rectangle
+B,ground,L,Living + dining,23.884514,14.0,318.633,overall bounds; use polygon area
+B,ground,E,Entry porch,15.615486,5.229659,81.664,clear rectangle
+B,ground,G,East planting strip,1.5,22.270341,33.406,clear rectangle
+B,first,B2,Bedroom 2,10.5,12.0,126.0,clear rectangle
+B,first,UB,Upper bathroom,4.5,6.5,29.25,clear rectangle
+B,first,US,Stair,8.0,12.0,96.0,clear rectangle
+B,first,O,Office,10.0,10.5,105.0,clear rectangle
+B,first,T,East terrace,19.0,16.229659,288.971,overall bounds; use polygon area
+B,first,NT,North terrace,17.884514,13.5,241.441,clear rectangle
+B,first,RT,Caregiver roof,8.5,10.25,87.125,clear rectangle
+B,first,UL,West landing,8.5,2.25,19.125,clear rectangle
+B,first,UP,West gallery,3.5,13.0,45.5,clear rectangle
+B,first,U,Upper gallery,23.884514,28.0,346.633,overall bounds; use polygon area
+B,first,VOID,Living void,6.0,6.0,36.0,clear rectangle
+B,first,B3,Upper master,13.615486,13.5,183.809,clear rectangle
+B,first,B3B,Master ensuite,6.0,8.270341,49.622,clear rectangle
+B,first,BAL,Private balcony,7.115486,8.270341,58.847,clear rectangle
+C,ground,CG,Caregiver,8.5,10.25,87.125,clear rectangle
+C,ground,CL,Caregiver lobby,8.5,2.25,19.125,clear rectangle
+C,ground,SP,Service spine,3.5,13.0,45.5,clear rectangle
+C,ground,WC,Common / caregiver WC,4.5,6.0,27.0,clear rectangle
+C,ground,MB,Master bathroom,4.5,6.5,29.25,clear rectangle
+C,ground,M,Ground master,10.5,12.0,126.0,clear rectangle
+C,ground,S,Stair,8.0,12.0,96.0,clear rectangle
+C,ground,K,L-shaped kitchen,10.0,10.5,105.0,clear rectangle
+C,ground,P,Parking,19.0,10.5,199.5,clear rectangle
+C,ground,DR,Drawing,13.5,13.5,182.25,clear rectangle
+C,ground,V,Veranda,5.5,13.5,74.25,clear rectangle
+C,ground,ICU,Home care / ICU,18.0,22.270341,400.866,clear rectangle
+C,ground,L,Living + dining,19.5,14.0,257.25,overall bounds; use polygon area
+C,ground,E,Entry porch,20.0,5.229659,104.593,clear rectangle
+C,ground,G,East planting strip,1.5,22.270341,33.406,clear rectangle
+C,first,B2,Bedroom 2,10.5,12.0,126.0,clear rectangle
+C,first,UB,Upper bathroom,4.5,6.5,29.25,clear rectangle
+C,first,US,Stair,8.0,12.0,96.0,clear rectangle
+C,first,O,Office,10.0,10.5,105.0,clear rectangle
+C,first,T,East terrace,20.0,16.229659,314.093,overall bounds; use polygon area
+C,first,NT,North terrace,13.5,13.5,182.25,clear rectangle
+C,first,RT,Caregiver roof,8.5,10.25,87.125,clear rectangle
+C,first,UL,West landing,8.5,2.25,19.125,clear rectangle
+C,first,UP,West gallery,3.5,13.0,45.5,clear rectangle
+C,first,U,Upper gallery,19.5,28.0,285.25,overall bounds; use polygon area
+C,first,VOID,Living void,6.0,6.0,36.0,clear rectangle
+C,first,B3,Upper master,18.0,13.5,243.0,clear rectangle
+C,first,B3B,Master ensuite,6.0,8.270341,49.622,clear rectangle
+C,first,BAL,Private balcony,11.5,8.270341,95.109,clear rectangle
+D,ground,CG,Caregiver,8.5,10.25,87.125,clear rectangle
+D,ground,CL,Caregiver lobby,8.5,2.25,19.125,clear rectangle
+D,ground,SP,Service spine,3.5,13.0,45.5,clear rectangle
+D,ground,WC,Common / caregiver WC,4.5,6.0,27.0,clear rectangle
+D,ground,MB,Master bathroom,4.5,6.5,29.25,clear rectangle
+D,ground,M,Ground master,10.5,12.0,126.0,clear rectangle
+D,ground,S,Stair,8.0,12.0,96.0,clear rectangle
+D,ground,K,L-shaped kitchen,10.0,10.5,105.0,clear rectangle
+D,ground,P,Parking,19.0,10.5,199.5,clear rectangle
+D,ground,DR,Drawing,10.5,13.615486,142.963,clear rectangle
+D,ground,V,Veranda,5.0,13.615486,68.077,clear rectangle
+D,ground,ICU,Home care / ICU,22.270341,13.615486,303.222,clear rectangle
+D,ground,L,Living + dining,24.5,10.384514,238.671,overall bounds; use polygon area
+D,ground,E,Entry porch,15.0,10.384514,155.768,clear rectangle
+D,ground,G,East planting strip,0.729659,13.615486,9.935,clear rectangle
+D,ground,NP,North path,40.0,3.0,120.0,clear rectangle
+D,first,B2,Bedroom 2,10.5,12.0,126.0,clear rectangle
+D,first,UB,Upper bathroom,4.5,6.5,29.25,clear rectangle
+D,first,US,Stair,8.0,12.0,96.0,clear rectangle
+D,first,O,Office,10.0,10.5,105.0,clear rectangle
+D,first,T,East terrace,19.0,21.384514,362.768,overall bounds; use polygon area
+D,first,NT,North terrace,10.5,13.615486,142.963,clear rectangle
+D,first,RT,Caregiver roof,8.5,10.25,87.125,clear rectangle
+D,first,UL,West landing,8.5,2.25,19.125,clear rectangle
+D,first,UP,West gallery,3.5,13.0,45.5,clear rectangle
+D,first,U,Upper gallery,24.5,24.5,309.248,overall bounds; use polygon area
+D,first,B3,Upper master,15.77,13.615486,214.716,clear rectangle
+D,first,B3B,Master ensuite,6.0,7.5,45.0,clear rectangle
+D,first,BAL,Private balcony,6.0,5.615486,33.693,clear rectangle

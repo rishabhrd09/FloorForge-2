@@ -1,0 +1,53 @@
+PASS tirumala-2 plan-2d-dimensioned.svg loads HTTP 200 
+Rendered tirumala-2/renders/plan-2d-dimensioned.png
+PASS tirumala-2 plan-2d-material-overhead.svg loads HTTP 200 
+Rendered tirumala-2/renders/plan-2d-material-overhead.png
+PASS tirumala-2 plan-first-floor.svg loads HTTP 200 
+Rendered tirumala-2/renders/plan-first-floor.png
+PASS tirumala-3 plan-2d-dimensioned.svg loads HTTP 200 
+Rendered tirumala-3/renders/plan-2d-dimensioned.png
+PASS tirumala-3 plan-2d-material-overhead.svg loads HTTP 200 
+Rendered tirumala-3/renders/plan-2d-material-overhead.png
+PASS tirumala-3 plan-first-floor.svg loads HTTP 200 
+Rendered tirumala-3/renders/plan-first-floor.png
+PASS tirumala-2 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=2, 21 spaces) and populated 3D meshes {"buildId":"sample:tirumala-2","planHash":"b5d8b2c80591442caea63ccdb5a4d6336fe938c7828908d04da3a3a21326c0bb","storeys":2,"roomCount":21,"widthFt":"40","depthFt":"50","facing":"90","meshCount":289}
+PASS tirumala-2 specifications dialog displays title and Home ICU 
+PASS tirumala-2 camera exterior_east activated 
+PASS tirumala-2 camera exterior_northeast activated 
+PASS tirumala-2 camera icu_layered_entry activated 
+PASS tirumala-2 private entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":0}
+PASS tirumala-2 camera icu_layered_entry activated 
+PASS tirumala-2 glass entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":1}
+PASS tirumala-2 camera icu_layered_entry activated 
+PASS tirumala-2 open entrance button operates both layers {"icu-glass-living":1,"icu-glass-living-wood":1}
+PASS tirumala-2 camera living_double_height activated 
+PASS tirumala-2 camera upper_gallery activated 
+PASS tirumala-2 camera upper_master activated 
+PASS tirumala-2 camera upper_office activated 
+PASS tirumala-2 camera upper_guest activated 
+PASS tirumala-2 camera upper_terrace activated 
+PASS tirumala-2 camera cutaway_roof_off activated 
+PASS tirumala-2 camera interior_kitchen_living_dining activated 
+PASS tirumala-2 camera interior_icu_veranda_garden activated 
+PASS tirumala-2 camera closeup_flooring_glazing_porch activated 
+PASS tirumala-3 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=2, 21 spaces) and populated 3D meshes {"buildId":"sample:tirumala-3","planHash":"79eb1c2c3f72143cbdadda03b4ab3297c0713f2a68f3fc5986217c74b1291dfb","storeys":2,"roomCount":21,"widthFt":"40","depthFt":"50","facing":"90","meshCount":296}
+PASS tirumala-3 specifications dialog displays title and Home ICU 
+PASS tirumala-3 camera exterior_east activated 
+PASS tirumala-3 camera exterior_northeast activated 
+PASS tirumala-3 camera icu_layered_entry activated 
+PASS tirumala-3 private entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":0}
+PASS tirumala-3 camera icu_layered_entry activated 
+PASS tirumala-3 glass entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":1}
+PASS tirumala-3 camera icu_layered_entry activated 
+PASS tirumala-3 open entrance button operates both layers {"icu-glass-living":1,"icu-glass-living-wood":1}
+PASS tirumala-3 camera living_double_height activated 
+PASS tirumala-3 camera upper_gallery activated 
+PASS tirumala-3 camera upper_master activated 
+PASS tirumala-3 camera upper_office activated 
+PASS tirumala-3 camera upper_guest activated 
+PASS tirumala-3 camera upper_terrace activated 
+PASS tirumala-3 camera cutaway_roof_off activated 
+PASS tirumala-3 camera interior_kitchen_living_dining activated 
+PASS tirumala-3 camera interior_icu_veranda_garden activated 
+PASS tirumala-3 camera closeup_flooring_glazing_porch activated 
+PASS Zero uncaught page errors during Tirumala 2 and Tirumala 3 studio & render verification []

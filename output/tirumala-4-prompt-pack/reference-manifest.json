@@ -1,0 +1,294 @@
+{
+  "prepared_date": "2026-10-31",
+  "purpose": "Prompt and evidence only; no sample changes",
+  "source_plan_hash": "22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba",
+  "assets": [
+    {
+      "file": "site-photos/R07-east-side-northwest.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-0c99e7fe-cb82-46cc-92e0-7493c3b00ff4.png",
+      "sha256": "5abff54b88997dbe1b74b79d6d05fa47d67cb62726c27dcbc483d99920fc56a4",
+      "attachment_number": 1
+    },
+    {
+      "file": "site-photos/R11-NE-corner-owner-labelled.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-7dc46530-be9e-466f-a5f8-b9027fba129c.png",
+      "sha256": "c5e7162c99a546acda9135caf8828f48782428e1a05ab0f8f4acb9869f8a2b33",
+      "attachment_number": 2
+    },
+    {
+      "file": "site-photos/R13-colony-junction-wide.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-9b18195c-be43-4dc1-a4aa-a2de2b41f921.png",
+      "sha256": "89082dfbe16fd05dcdb8ce07d94556757b47d6d7c0db006fb9b76eb73b0b6271",
+      "attachment_number": 3
+    },
+    {
+      "file": "site-photos/R14-wall-pole-and-paving.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-ff5650d1-b183-4325-9f13-c509115d2b06.png",
+      "sha256": "e56999de9f49f3b9085b2ef3a0f7a584504f7d11f3f8ac36d6d819ce8238b152",
+      "attachment_number": 4
+    },
+    {
+      "file": "site-photos/R12-vegetated-frontage-wide.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-49db7ae9-2591-441a-a6cb-ee6ece7a5105.png",
+      "sha256": "1daba9f672643e044170ddb49c4310c2666d0ee3e263b293162d3c038f75bee8",
+      "attachment_number": 5
+    },
+    {
+      "file": "site-photos/alternate-annotation/R11-wall-return-unconfirmed.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-9809c9ec-90e7-4597-9e56-9c3ff8b3b817.png",
+      "sha256": "b883e42f604083fa1cecec20bb9ce86d59d9d4f44181da4eae9f9e2da976df8f",
+      "attachment_number": 6
+    },
+    {
+      "file": "site-photos/R10-vegetated-frontage-close.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-14a944f1-0610-425d-b416-3e621a237f95.png",
+      "sha256": "bedc32146fe2146ee13f9a4139f5d42ab22b835a2336d4310311e773c5b3aea0",
+      "attachment_number": 7
+    },
+    {
+      "file": "site-photos/R09-colony-junction.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-5a87d7d3-ddcc-47f6-bab3-b831136c7bed.png",
+      "sha256": "87fe620652f6b7257257f38941aab6109bc0d9caaffd477da9c3e4dab59bfae8",
+      "attachment_number": 8
+    },
+    {
+      "file": "site-photos/R08-north-garden-outlook.png",
+      "source": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/codex-clipboard-d352094a-a3ce-48a9-979f-3931a181207b.png",
+      "sha256": "7be0c907f3269c4bfb1fe334b5363f1b73baee13fb8a1ad89309e80ba6927d7b",
+      "attachment_number": 9
+    },
+    {
+      "file": "video/tirumala_plot.mp4",
+      "source": "/Users/rishabh/Downloads/tirumala_plot.mp4",
+      "sha256": "a6cf28c55478a4e380e5e7d76758e9b87cc85d717a48d587b0680f817c76ce58",
+      "duration_seconds": 23.36
+    },
+    {
+      "file": "baseline-tirumala-3/project.floorforge.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/project.floorforge.json",
+      "sha256": "fe926d8ee6c1f219a9887ec153630f083d9a523d1e0740edde7199f06ea9164c"
+    },
+    {
+      "file": "baseline-tirumala-3/building.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/building.json",
+      "sha256": "70e8b6bc7cebb3e2f02d1c32ce5ed89ec96dc872115ce8eb99e66153def2f0d6"
+    },
+    {
+      "file": "baseline-tirumala-3/scene.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/scene.json",
+      "sha256": "f08614d835bdd438431e89cd91d4a6f39f1f7422c39775ce86f4027a6afdf0b3"
+    },
+    {
+      "file": "baseline-tirumala-3/specifications.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/specifications.json",
+      "sha256": "e48a63f86621d9a08db84646972e867cfe76024b9b19a348059112da07826080"
+    },
+    {
+      "file": "baseline-tirumala-3/site-context.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/site-context.json",
+      "sha256": "a82230555d6ed200674931389ee8792548cfbd409fcb8d2388d3d885a89c25c3"
+    },
+    {
+      "file": "baseline-tirumala-3/photo-reference-manifest.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/photo-reference-manifest.json",
+      "sha256": "e272720a0aee3092e72eda0a78b6652a740a7b00fc79940d757e0e8f95abc4fb"
+    },
+    {
+      "file": "baseline-tirumala-3/assumptions-register.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/assumptions-register.json",
+      "sha256": "41824a46d864a684abacd00a24ff97430b588773adb3ba4f255ba82c1fb6fa19"
+    },
+    {
+      "file": "baseline-tirumala-3/manifest.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/manifest.json",
+      "sha256": "96b1492b5f401050a301e646e8972d5aa1b6ddc794dfb91790248402dbaf5380"
+    },
+    {
+      "file": "baseline-tirumala-3/source-plan-data.json",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/source-plan-data.json",
+      "sha256": "4b76af8e1dbcf15a58f446e61b061a97fa224af13e480947f85d73cbbebef389"
+    },
+    {
+      "file": "baseline-tirumala-3/DESIGN_GUIDE.md",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/DESIGN_GUIDE.md",
+      "sha256": "cbd3b5d5f4a3d7e76b7450e981fd3be140de750dd1b138cf86d9e3a3eed3ec95"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/plan-2d-dimensioned.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/plan-2d-dimensioned.png",
+      "sha256": "ccd9d444b8cde1e44477ee7050c6c94c650643975927378e1b287d31a1cd88b8"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/plan-first-floor.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/plan-first-floor.png",
+      "sha256": "41d6fc0c3bf514e3f7b50831535ec3b962477c0fca2b5e42d534f721adc71842"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/plan-2d-dimensioned.svg",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/plan-2d-dimensioned.svg",
+      "sha256": "24eb6365e0a8a9b90d04fbd56aa3a34f0e57a0beb79b80b910b765e3c76a6128"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/plan-first-floor.svg",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/plan-first-floor.svg",
+      "sha256": "713c5dc23517b3379d6b9d8bf4cfe57a7eec48b16c60b8535c7accc36eacf8ea"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/exterior-northeast.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/exterior-northeast.png",
+      "sha256": "ca246f0115fc2d0a65ac154554955e88fb090ebb828086d037d231bbe2990c95"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/exterior-east.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/exterior-east.png",
+      "sha256": "e342b61f99140cca3ba1d43396ea185efac58c0bcafa10f3441b3772e0722fee"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/interior-icu-veranda-garden.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/interior-icu-veranda-garden.png",
+      "sha256": "a97c55af8cc3576258922be1a6598bb740da265a2e0859d482c23d549696510d"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/interior-kitchen-living-dining.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/interior-kitchen-living-dining.png",
+      "sha256": "32aae21c2db9d92cc9e4baa949904b33f5234514bbaabf8e86604146c19b0d22"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/interior-veranda-living.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/interior-veranda-living.png",
+      "sha256": "e0cf024cc6c0416b013984923d673b600ef4b1eb3d28039091785a833e778589"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/upper-gallery.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/upper-gallery.png",
+      "sha256": "3e37db310ebf4454a51d4724234fcf9863831df6903c9676a4f205a970898d09"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/upper-terrace.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/upper-terrace.png",
+      "sha256": "3e4b3da35f489457c8ea927df059ea6c172c468104b65f8f2927694b3e5c9e63"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/icu-door-both-open.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/icu-door-both-open.png",
+      "sha256": "c538bea7e160345df76e3c0f13393817605bca860ee160d39393a693bb27e232"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/icu-door-glass-revealed.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/icu-door-glass-revealed.png",
+      "sha256": "f2ad68d466eb3c118793b1dfa79cef2d4303fcd507d58f6ac725d163dd3fe53e"
+    },
+    {
+      "file": "baseline-tirumala-3/renders/icu-door-wood-closed.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/renders/icu-door-wood-closed.png",
+      "sha256": "c5cdebca1d89770eb04e4c08a61f5b8ac278b641b26ddbe4b64c84fb40ba0485"
+    },
+    {
+      "file": "prior-site-references/N-01_26039.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/N-01_26039.png",
+      "sha256": "aac86ea789dd6469109c413039b3d6d33c4c32632f7893d6293ebae7ccaa9544"
+    },
+    {
+      "file": "prior-site-references/N-02_26040.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/N-02_26040.png",
+      "sha256": "c74872ed7192906966c8f07dbf4af65b2b7a259514862ae2cd2f882f1956c2a8"
+    },
+    {
+      "file": "prior-site-references/N-03_26041.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/N-03_26041.png",
+      "sha256": "fb1c270db191ea4fdfa4d00edc802eb500b22fd6aff82c55121abd57c1237d6b"
+    },
+    {
+      "file": "prior-site-references/N-04_26042.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/N-04_26042.png",
+      "sha256": "963ca249627c4654a028df6827d4a9a9bbee68f7e59d24d5ca6d0b4fe6401681"
+    },
+    {
+      "file": "prior-site-references/NE-01_26043.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/NE-01_26043.png",
+      "sha256": "ea195f63e6ba147bf1a7635051bb64166168176049d78b223388ca9327dac557"
+    },
+    {
+      "file": "prior-site-references/E-01_26044.png",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-3/reference-assets/E-01_26044.png",
+      "sha256": "95ef4d96b5e5904a82858cbd21fe627f506c85eb469c774f82eb529adaa0d43b"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_context.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_context.py",
+      "sha256": "64ac684123a24fa2c62b36d13fe5d237ce5c0f30b8b9d741415012fedda3dede"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_p11_p12.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_p11_p12.py",
+      "sha256": "53049bcfda6f3f0159b3b940f7193f327cd4da05448e3f7c844bbdba20380ff8"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_spaciousness.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_spaciousness.py",
+      "sha256": "c26b4b8f0050490eeda8a6068ea1af719962aa98da07396b67f4b96d6090de50"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_icu_revision.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_icu_revision.py",
+      "sha256": "d8bf1899c2662f2878ec32a4fbbad068a66b76bbb2d886a099632fddf6486cc4"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_luxury.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_luxury.py",
+      "sha256": "1c7bbb620f4d13f62f39b388e214abb44804ef16e40523f67fa881c345662dd9"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_finishes.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_finishes.py",
+      "sha256": "54aecf02c2f16875b8d687d47d5c847a8c006bb47592ecfe3855acd88c3f6c44"
+    },
+    {
+      "file": "source-code-references/floorforge/tirumala_openings.py",
+      "source": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/floorforge/tirumala_openings.py",
+      "sha256": "5ca916126e49381e0a993983b484a857f4067a95050b9950890695c705c21254"
+    },
+    {
+      "file": "video-frames/V01-court-and-road.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 0.5,
+      "sha256": "82a28444b1237d4c978d8937454ea730b8a0dc72646e02e5358c033948c0c9b5",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    },
+    {
+      "file": "video-frames/V02-road-turn.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 3,
+      "sha256": "8562e1220d4592b3b5e6a19ae38f96a81656e79ffe7aa7511d6916df816b1685",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    },
+    {
+      "file": "video-frames/V03-boundary-and-planting.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 6,
+      "sha256": "af6be0685e71a1ac8f755a8e832c12b123f6f2ababa3126eb8a27b0a2e2d1116",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    },
+    {
+      "file": "video-frames/V04-colony-street.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 8.5,
+      "sha256": "754cbafd991123c917e5e75eabd2d1dc8ec41f2ef811afd6d0a74a85b7083092",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    },
+    {
+      "file": "video-frames/V05-wall-return.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 10,
+      "sha256": "b60c436dabe48d4757022ef5034d657c02977164a918b14c547d0577250a9a79",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    },
+    {
+      "file": "video-frames/V06-preconstruction-vegetation.jpg",
+      "source": "video/tirumala_plot.mp4",
+      "timestamp_seconds": 20,
+      "sha256": "32ea8bca7f89ae5973461ce91323e721f61e00cbbeb4255c1481805864cf4a6c",
+      "method": "ffmpeg frame extraction; no generative alteration; source camera roll retained"
+    }
+  ]
+}

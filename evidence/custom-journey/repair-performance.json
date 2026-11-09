@@ -1,0 +1,287 @@
+{
+  "platform": "macOS-26.3.1-arm64-arm-64bit",
+  "python": "3.11.15",
+  "cases": [
+    {
+      "grid": [
+        4,
+        4
+      ],
+      "splitAxis": "left-right",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.698,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.653
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        4,
+        4
+      ],
+      "splitAxis": "front-back",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.65,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.6403
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        4,
+        5
+      ],
+      "splitAxis": "left-right",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.7785,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.768
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        4,
+        5
+      ],
+      "splitAxis": "front-back",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.7786,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.7667
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        4,
+        6
+      ],
+      "splitAxis": "left-right",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.7999,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.7892
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        4,
+        6
+      ],
+      "splitAxis": "front-back",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.7943,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.7837
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        5,
+        5
+      ],
+      "splitAxis": "left-right",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.744,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.7333
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        5,
+        5
+      ],
+      "splitAxis": "front-back",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.7446,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.734
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        6,
+        7
+      ],
+      "splitAxis": "left-right",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.8646,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.8528
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    },
+    {
+      "grid": [
+        6,
+        7
+      ],
+      "splitAxis": "front-back",
+      "requestedFloors": 2,
+      "rooms": 10,
+      "fullyOccupied": true,
+      "wallSeconds": 0.925,
+      "alternatives": 3,
+      "solver": {
+        "method": "bounded-shape-ownership/HiGHS",
+        "maxSeconds": 6.0,
+        "maxValidatedCandidates": 12,
+        "checked": 3,
+        "solverRuns": 3,
+        "globalOptimality": false,
+        "provenInfeasible": false,
+        "cacheHit": false,
+        "status": "alternatives-found",
+        "seconds": 0.9134
+      },
+      "bestChangedRoomIds": [
+        "f1-hall",
+        "f1-stairs"
+      ]
+    }
+  ],
+  "claim": "Local machine observations; bounded search does not prove global optimality or infeasibility. No external service used."
+}

@@ -1,0 +1,2319 @@
+{
+  "schema": "floorforge.project/0.4",
+  "brief": {
+    "title": "Tirumala",
+    "width_mm": 12192,
+    "depth_mm": 15240,
+    "front_mm": 1840,
+    "rear_mm": 1250,
+    "left_mm": 1050,
+    "right_mm": 1242,
+    "storeys": 2,
+    "floor_height_mm": 3200,
+    "plinth_mm": 450,
+    "road_bearing_deg": 90,
+    "bedrooms": 4,
+    "attached_baths": 0,
+    "parking": false,
+    "pooja": true,
+    "roof_access": true,
+    "eldercare": true,
+    "open_kitchen": true,
+    "vastu": "moderate",
+    "style": "warm",
+    "exterior_theme": "modern_tropical",
+    "interior_theme": "bright_natural",
+    "change_policy": "exterior_refinement",
+    "interior_layout_locked": true
+  },
+  "customPlan": {
+    "schema": "floorforge.custom-plan/1",
+    "units": "mm",
+    "wallThickness": 150,
+    "frontCourt": "planted",
+    "facadeStyle": "warm-layered",
+    "entranceStyle": "wall-supported",
+    "interiorFloor": "ivory-vitrified",
+    "colonyContext": "tirumala-colony",
+    "doorsClosed": false,
+    "floors": [
+      {
+        "id": "floor-0",
+        "rooms": [
+          {
+            "id": "g-living",
+            "name": "Entrance, Sitting, Living & Dining Hall",
+            "kind": "living",
+            "polygon": [
+              [
+                2500,
+                150
+              ],
+              [
+                4900,
+                150
+              ],
+              [
+                4900,
+                5750
+              ],
+              [
+                6350,
+                5750
+              ],
+              [
+                6350,
+                7150
+              ],
+              [
+                2500,
+                7150
+              ]
+            ],
+            "diningPosition": [
+              3750,
+              1850
+            ],
+            "diningOrientation": 0,
+            "diningLength": 1500,
+            "diningCounterGap": 600,
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "g-care",
+            "name": "Residential Care Room (Home ICU)",
+            "kind": "care-room",
+            "polygon": [
+              [
+                5050,
+                150
+              ],
+              [
+                8550,
+                150
+              ],
+              [
+                8550,
+                5600
+              ],
+              [
+                5050,
+                5600
+              ]
+            ],
+            "careLayout": "equipment-left",
+            "reclinerPosition": [
+              6950,
+              2750
+            ],
+            "tvOffset": 1850,
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "g-veranda",
+            "name": "North L-Shaped Shaded Veranda",
+            "kind": "veranda",
+            "polygon": [
+              [
+                8700,
+                0
+              ],
+              [
+                9900,
+                0
+              ],
+              [
+                9900,
+                9800
+              ],
+              [
+                8700,
+                9800
+              ],
+              [
+                8700,
+                7150
+              ],
+              [
+                6500,
+                7150
+              ],
+              [
+                6500,
+                5750
+              ],
+              [
+                8700,
+                5750
+              ]
+            ],
+            "finishStyle": "warm-stone",
+            "clearAccess": true,
+            "drain": true
+          },
+          {
+            "id": "g-kitchen",
+            "name": "Sociable Modular Kitchen",
+            "kind": "kitchen",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                2350,
+                150
+              ],
+              [
+                2350,
+                2750
+              ],
+              [
+                150,
+                2750
+              ]
+            ],
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "g-puja",
+            "name": "Open Puja Alcove",
+            "kind": "pooja",
+            "polygon": [
+              [
+                150,
+                2900
+              ],
+              [
+                2350,
+                2900
+              ],
+              [
+                2350,
+                3800
+              ],
+              [
+                150,
+                3800
+              ]
+            ],
+            "altarWall": "left"
+          },
+          {
+            "id": "g-utility",
+            "name": "Pantry & Utility Room",
+            "kind": "utility",
+            "polygon": [
+              [
+                150,
+                3950
+              ],
+              [
+                2350,
+                3950
+              ],
+              [
+                2350,
+                5600
+              ],
+              [
+                150,
+                5600
+              ]
+            ],
+            "drain": true
+          },
+          {
+            "id": "g-stair",
+            "name": "Staircase",
+            "kind": "stair",
+            "polygon": [
+              [
+                150,
+                5750
+              ],
+              [
+                2350,
+                5750
+              ],
+              [
+                2350,
+                9850
+              ],
+              [
+                150,
+                9850
+              ]
+            ],
+            "guardStyle": "white-timber"
+          },
+          {
+            "id": "g-bath",
+            "name": "Ground Family Bathroom",
+            "kind": "bathroom",
+            "polygon": [
+              [
+                150,
+                10000
+              ],
+              [
+                2350,
+                10000
+              ],
+              [
+                2350,
+                12000
+              ],
+              [
+                150,
+                12000
+              ]
+            ],
+            "drain": true
+          },
+          {
+            "id": "g-bedroom",
+            "name": "Ground Family Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                2500,
+                7300
+              ],
+              [
+                5200,
+                7300
+              ],
+              [
+                5200,
+                12000
+              ],
+              [
+                2500,
+                12000
+              ]
+            ],
+            "wardrobeWall": "left",
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "g-caregiver",
+            "name": "Caregiver Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                5350,
+                7300
+              ],
+              [
+                8550,
+                7300
+              ],
+              [
+                8550,
+                9800
+              ],
+              [
+                5350,
+                9800
+              ]
+            ],
+            "bedType": "single",
+            "wardrobeWall": "left",
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "g-caregiver-bath",
+            "name": "Caregiver Attached Toilet",
+            "kind": "bathroom",
+            "polygon": [
+              [
+                6500,
+                9950
+              ],
+              [
+                8550,
+                9950
+              ],
+              [
+                8550,
+                11350
+              ],
+              [
+                6500,
+                11350
+              ]
+            ],
+            "drain": true
+          }
+        ],
+        "walls": [],
+        "openings": [
+          {
+            "id": "o-entry",
+            "roomId": "g-living",
+            "side": "front",
+            "offset": 600,
+            "width": 1200,
+            "kind": "entry",
+            "height": 2350,
+            "sill": 0,
+            "hinge": "end",
+            "swingRoomId": "g-living"
+          },
+          {
+            "id": "o-kitch-serv",
+            "roomId": "g-kitchen",
+            "side": "right",
+            "offset": 100,
+            "width": 2400,
+            "kind": "cased",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "servingCounter": true
+          },
+          {
+            "id": "o-kitch-win-e",
+            "roomId": "g-kitchen",
+            "side": "front",
+            "offset": 400,
+            "width": 1400,
+            "kind": "window",
+            "height": 1250,
+            "sill": 1000,
+            "hinge": "start"
+          },
+          {
+            "id": "o-kitch-win-s",
+            "roomId": "g-kitchen",
+            "side": "left",
+            "offset": 650,
+            "width": 1300,
+            "kind": "window",
+            "height": 1250,
+            "sill": 1000,
+            "hinge": "start"
+          },
+          {
+            "id": "o-util-door",
+            "roomId": "g-utility",
+            "side": "right",
+            "offset": 400,
+            "width": 800,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "g-utility"
+          },
+          {
+            "id": "o-util-win",
+            "roomId": "g-utility",
+            "side": "left",
+            "offset": 400,
+            "width": 650,
+            "kind": "window",
+            "height": 900,
+            "sill": 1200,
+            "hinge": "start"
+          },
+          {
+            "id": "o-puja",
+            "roomId": "g-puja",
+            "side": "right",
+            "offset": 75,
+            "width": 750,
+            "kind": "cased",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start"
+          },
+          {
+            "id": "o-stair-in",
+            "roomId": "g-stair",
+            "side": "right",
+            "offset": 120,
+            "width": 1150,
+            "kind": "cased",
+            "height": 2200,
+            "sill": 0,
+            "hinge": "start"
+          },
+          {
+            "id": "o-stair-win",
+            "roomId": "g-stair",
+            "side": "left",
+            "offset": 1350,
+            "width": 1400,
+            "kind": "window",
+            "height": 1500,
+            "sill": 900,
+            "hinge": "start"
+          },
+          {
+            "id": "o-living-ver",
+            "roomId": "g-living",
+            "side": "right",
+            "offset": 5850,
+            "width": 1000,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true
+          },
+          {
+            "id": "o-care-in",
+            "roomId": "g-care",
+            "side": "left",
+            "offset": 3550,
+            "width": 950,
+            "kind": "door",
+            "height": 2150,
+            "sill": 0,
+            "hinge": "end",
+            "swingRoomId": "g-care"
+          },
+          {
+            "id": "o-care-ver-door",
+            "roomId": "g-care",
+            "side": "rear",
+            "offset": 2500,
+            "width": 950,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true,
+            "slidingPanels": 2,
+            "stackingSliding": true
+          },
+          {
+            "id": "o-care-n1",
+            "roomId": "g-care",
+            "side": "right",
+            "offset": 300,
+            "width": 1650,
+            "kind": "window",
+            "height": 1950,
+            "sill": 450,
+            "hinge": "start"
+          },
+          {
+            "id": "o-care-n2",
+            "roomId": "g-care",
+            "side": "right",
+            "offset": 2100,
+            "width": 1550,
+            "kind": "window",
+            "height": 1950,
+            "sill": 450,
+            "hinge": "start"
+          },
+          {
+            "id": "o-care-e",
+            "roomId": "g-care",
+            "side": "front",
+            "offset": 850,
+            "width": 1800,
+            "kind": "window",
+            "height": 1950,
+            "sill": 450,
+            "hinge": "start"
+          },
+          {
+            "id": "o-bed-in",
+            "roomId": "g-bedroom",
+            "side": "front",
+            "offset": 850,
+            "width": 950,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "g-bedroom"
+          },
+          {
+            "id": "o-bed-win",
+            "roomId": "g-bedroom",
+            "side": "rear",
+            "offset": 600,
+            "width": 1500,
+            "kind": "window",
+            "height": 1300,
+            "sill": 850,
+            "hinge": "start"
+          },
+          {
+            "id": "o-bath-in",
+            "roomId": "g-bath",
+            "side": "right",
+            "offset": 600,
+            "width": 750,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "g-bath"
+          },
+          {
+            "id": "o-bath-vent",
+            "roomId": "g-bath",
+            "side": "left",
+            "offset": 650,
+            "width": 700,
+            "kind": "window",
+            "height": 600,
+            "sill": 1650,
+            "hinge": "start"
+          },
+          {
+            "id": "o-cg-in",
+            "roomId": "g-caregiver",
+            "side": "front",
+            "offset": 1450,
+            "width": 900,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "end",
+            "swingRoomId": "g-veranda"
+          },
+          {
+            "id": "o-cg-win-w",
+            "roomId": "g-caregiver",
+            "side": "rear",
+            "offset": 200,
+            "width": 750,
+            "kind": "window",
+            "height": 1300,
+            "sill": 850,
+            "hinge": "start"
+          },
+          {
+            "id": "o-cg-bath-in",
+            "roomId": "g-caregiver-bath",
+            "side": "front",
+            "offset": 650,
+            "width": 750,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "g-caregiver-bath"
+          },
+          {
+            "id": "o-cg-bath-vent",
+            "roomId": "g-caregiver-bath",
+            "side": "right",
+            "offset": 400,
+            "width": 600,
+            "kind": "window",
+            "height": 600,
+            "sill": 1650,
+            "hinge": "start"
+          }
+        ]
+      },
+      {
+        "id": "floor-1",
+        "rooms": [
+          {
+            "id": "u-balcony-east",
+            "name": "East Front Balcony",
+            "kind": "balcony",
+            "polygon": [
+              [
+                0,
+                0
+              ],
+              [
+                8700,
+                0
+              ],
+              [
+                8700,
+                1350
+              ],
+              [
+                0,
+                1350
+              ]
+            ],
+            "finishStyle": "honed-sandstone",
+            "guardStyle": "white-timber",
+            "clearAccess": true
+          },
+          {
+            "id": "u-terrace-north",
+            "name": "North L-Shaped Terrace",
+            "kind": "terrace",
+            "polygon": [
+              [
+                8700,
+                0
+              ],
+              [
+                9900,
+                0
+              ],
+              [
+                9900,
+                9800
+              ],
+              [
+                8700,
+                9800
+              ],
+              [
+                8700,
+                7150
+              ],
+              [
+                6500,
+                7150
+              ],
+              [
+                6500,
+                5750
+              ],
+              [
+                8700,
+                5750
+              ]
+            ],
+            "finishStyle": "honed-sandstone",
+            "guardStyle": "white-timber",
+            "clearAccess": true
+          },
+          {
+            "id": "u-lobby",
+            "name": "Upper Gallery & Family Lounge",
+            "kind": "hall",
+            "polygon": [
+              [
+                2500,
+                1500
+              ],
+              [
+                4900,
+                1500
+              ],
+              [
+                4900,
+                5750
+              ],
+              [
+                6350,
+                5750
+              ],
+              [
+                6350,
+                7150
+              ],
+              [
+                2500,
+                7150
+              ]
+            ],
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "u-bed-north",
+            "name": "First-Floor North-East Principal Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                5050,
+                1500
+              ],
+              [
+                8550,
+                1500
+              ],
+              [
+                8550,
+                5600
+              ],
+              [
+                5050,
+                5600
+              ]
+            ],
+            "wardrobeWall": "left",
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "u-store",
+            "name": "Upper Linen & Utility Store",
+            "kind": "store",
+            "polygon": [
+              [
+                150,
+                1500
+              ],
+              [
+                2350,
+                1500
+              ],
+              [
+                2350,
+                3800
+              ],
+              [
+                150,
+                3800
+              ]
+            ]
+          },
+          {
+            "id": "u-bath-north",
+            "name": "First-Floor Principal Bathroom",
+            "kind": "bathroom",
+            "polygon": [
+              [
+                150,
+                3950
+              ],
+              [
+                2350,
+                3950
+              ],
+              [
+                2350,
+                5600
+              ],
+              [
+                150,
+                5600
+              ]
+            ],
+            "drain": true
+          },
+          {
+            "id": "u-stair",
+            "name": "Staircase",
+            "kind": "stair",
+            "polygon": [
+              [
+                150,
+                5750
+              ],
+              [
+                2350,
+                5750
+              ],
+              [
+                2350,
+                9850
+              ],
+              [
+                150,
+                9850
+              ]
+            ],
+            "guardStyle": "white-timber"
+          },
+          {
+            "id": "u-bath-south",
+            "name": "First-Floor En-Suite Bathroom",
+            "kind": "bathroom",
+            "polygon": [
+              [
+                150,
+                10000
+              ],
+              [
+                2350,
+                10000
+              ],
+              [
+                2350,
+                12000
+              ],
+              [
+                150,
+                12000
+              ]
+            ],
+            "drain": true
+          },
+          {
+            "id": "u-bed-south",
+            "name": "First-Floor South-West Bedroom",
+            "kind": "bedroom",
+            "polygon": [
+              [
+                2500,
+                7300
+              ],
+              [
+                5200,
+                7300
+              ],
+              [
+                5200,
+                12000
+              ],
+              [
+                2500,
+                12000
+              ]
+            ],
+            "wardrobeWall": "left",
+            "ceilingStyle": "plain-downlights"
+          },
+          {
+            "id": "u-office",
+            "name": "Compact Office / Studio",
+            "kind": "study",
+            "polygon": [
+              [
+                5350,
+                7300
+              ],
+              [
+                8550,
+                7300
+              ],
+              [
+                8550,
+                9800
+              ],
+              [
+                5350,
+                9800
+              ]
+            ],
+            "ceilingStyle": "plain-downlights"
+          }
+        ],
+        "walls": [],
+        "openings": [
+          {
+            "id": "o-ustair-in",
+            "roomId": "u-stair",
+            "side": "right",
+            "offset": 120,
+            "width": 1150,
+            "kind": "cased",
+            "height": 2200,
+            "sill": 0,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ustair-win",
+            "roomId": "u-stair",
+            "side": "left",
+            "offset": 1350,
+            "width": 1400,
+            "kind": "window",
+            "height": 1500,
+            "sill": 900,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ulobby-east",
+            "roomId": "u-lobby",
+            "side": "front",
+            "offset": 550,
+            "width": 1300,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true
+          },
+          {
+            "id": "o-ulobby-north",
+            "roomId": "u-lobby",
+            "side": "right",
+            "offset": 4500,
+            "width": 1000,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true
+          },
+          {
+            "id": "o-ubedn-in",
+            "roomId": "u-bed-north",
+            "side": "left",
+            "offset": 2950,
+            "width": 950,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "end",
+            "swingRoomId": "u-bed-north"
+          },
+          {
+            "id": "o-ubedn-east",
+            "roomId": "u-bed-north",
+            "side": "front",
+            "offset": 950,
+            "width": 1600,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true
+          },
+          {
+            "id": "o-ubedn-n1",
+            "roomId": "u-bed-north",
+            "side": "right",
+            "offset": 300,
+            "width": 1650,
+            "kind": "window",
+            "height": 1600,
+            "sill": 650,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ubedn-n2",
+            "roomId": "u-bed-north",
+            "side": "right",
+            "offset": 2100,
+            "width": 1550,
+            "kind": "window",
+            "height": 1600,
+            "sill": 650,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ustore-in",
+            "roomId": "u-store",
+            "side": "right",
+            "offset": 550,
+            "width": 800,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "u-store"
+          },
+          {
+            "id": "o-ubathn-in",
+            "roomId": "u-bath-north",
+            "side": "right",
+            "offset": 450,
+            "width": 750,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "u-bath-north"
+          },
+          {
+            "id": "o-ubathn-vent",
+            "roomId": "u-bath-north",
+            "side": "left",
+            "offset": 475,
+            "width": 700,
+            "kind": "window",
+            "height": 600,
+            "sill": 1650,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ubeds-in",
+            "roomId": "u-bed-south",
+            "side": "front",
+            "offset": 850,
+            "width": 950,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "u-bed-south"
+          },
+          {
+            "id": "o-ubeds-win",
+            "roomId": "u-bed-south",
+            "side": "rear",
+            "offset": 600,
+            "width": 1500,
+            "kind": "window",
+            "height": 1300,
+            "sill": 850,
+            "hinge": "start"
+          },
+          {
+            "id": "o-ubaths-in",
+            "roomId": "u-bath-south",
+            "side": "right",
+            "offset": 600,
+            "width": 750,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "u-bath-south"
+          },
+          {
+            "id": "o-ubaths-vent",
+            "roomId": "u-bath-south",
+            "side": "left",
+            "offset": 650,
+            "width": 700,
+            "kind": "window",
+            "height": 600,
+            "sill": 1650,
+            "hinge": "start"
+          },
+          {
+            "id": "o-uoffice-in",
+            "roomId": "u-office",
+            "side": "front",
+            "offset": 100,
+            "width": 800,
+            "kind": "door",
+            "height": 2100,
+            "sill": 0,
+            "hinge": "start",
+            "swingRoomId": "u-office"
+          },
+          {
+            "id": "o-uoffice-terr",
+            "roomId": "u-office",
+            "side": "front",
+            "offset": 1450,
+            "width": 1200,
+            "kind": "glazed",
+            "height": 2250,
+            "sill": 0,
+            "hinge": "start",
+            "sliding": true
+          },
+          {
+            "id": "o-uoffice-n",
+            "roomId": "u-office",
+            "side": "right",
+            "offset": 550,
+            "width": 1400,
+            "kind": "window",
+            "height": 1500,
+            "sill": 750,
+            "hinge": "start"
+          },
+          {
+            "id": "o-uoffice-w",
+            "roomId": "u-office",
+            "side": "rear",
+            "offset": 850,
+            "width": 1500,
+            "kind": "window",
+            "height": 1500,
+            "sill": 750,
+            "hinge": "start"
+          }
+        ]
+      }
+    ],
+    "stairs": [
+      {
+        "id": "south-stair-core",
+        "roomIds": [
+          "g-stair",
+          "u-stair"
+        ],
+        "flightWidth": 1000,
+        "well": 200,
+        "landing": 1050,
+        "tread": 250,
+        "rotation": 0
+      }
+    ]
+  },
+  "notes": "East-facing 40 \u00d7 50 ft (12.192 \u00d7 15.240 m \u00b7 2,000 sq ft) northeast corner plot bounded by a 12.0 m North road (opposite a colony garden, pergola, palms and a white/grey house with a dark blue-grey vertical facade, N-01) and a 9.0 m East road (opposite a tall pale metal mesh basketball-court enclosure and screening planting, E-01). Two light-coloured electrical feeder cabinets stand outside the Northwest corner in the North road paver verge (N-02), and a streetlight pole stands along the North frontage between the NE and NW corners (N-03). The ground-floor Residential Care Room (g-care, 3.50 \u00d7 5.45 m = 19.08 m\u00b2) is positioned in the North/Northeast zone strictly east of the plot's East\u2013West midpoint (X_geo in [7.65, 13.40] m >= 7.620 m), enjoying direct northward sightlines across the 12 m road to the colony garden at reclined (1.15 m), seated (1.20 m) and standing (1.63 m) eye heights, plus an oblique eastward glimpse to the court enclosure. A shaded L-shaped North Veranda with slender teak-collared columns, warm Jodhpuri sandstone paving and a woven-cane seating corner connects the living hall, care room and Northwest Caregiver Suite (3.20 \u00d7 2.50 m single bedroom + 2.05 \u00d7 1.40 m attached toilet), while preserving a landscaped Northwest open garden pocket and West boundary separation. Upstairs houses two family bedrooms with bathrooms, a compact office/studio, an upper store, east and north sandstone terraces, and continuous stair access to the roof terrace.",
+  "editorState": {
+    "mode": "custom",
+    "guideFloors": [
+      [
+        [
+          "kitchen",
+          "living",
+          "care-room",
+          "veranda"
+        ],
+        [
+          "utility",
+          "living",
+          "care-room",
+          "veranda"
+        ],
+        [
+          "stair",
+          "bedroom-1",
+          "bedroom-2",
+          "veranda"
+        ],
+        [
+          "bathroom",
+          "bedroom-1",
+          "bedroom-2",
+          "bathroom"
+        ]
+      ],
+      [
+        [
+          "store",
+          "hall",
+          "bedroom-1",
+          "terrace"
+        ],
+        [
+          "bathroom",
+          "hall",
+          "bedroom-1",
+          "terrace"
+        ],
+        [
+          "stair",
+          "bedroom-2",
+          "study",
+          "terrace"
+        ],
+        [
+          "bathroom",
+          "bedroom-2",
+          "study",
+          "terrace"
+        ]
+      ],
+      [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    ],
+    "guideEdited": false,
+    "customPlan": {
+      "schema": "floorforge.custom-plan/1",
+      "units": "mm",
+      "wallThickness": 150,
+      "frontCourt": "planted",
+      "facadeStyle": "warm-layered",
+      "entranceStyle": "wall-supported",
+      "interiorFloor": "ivory-vitrified",
+      "colonyContext": "tirumala-colony",
+      "doorsClosed": false,
+      "floors": [
+        {
+          "id": "floor-0",
+          "rooms": [
+            {
+              "id": "g-living",
+              "name": "Entrance, Sitting, Living & Dining Hall",
+              "kind": "living",
+              "polygon": [
+                [
+                  2500,
+                  150
+                ],
+                [
+                  4900,
+                  150
+                ],
+                [
+                  4900,
+                  5750
+                ],
+                [
+                  6350,
+                  5750
+                ],
+                [
+                  6350,
+                  7150
+                ],
+                [
+                  2500,
+                  7150
+                ]
+              ],
+              "diningPosition": [
+                3750,
+                1850
+              ],
+              "diningOrientation": 0,
+              "diningLength": 1500,
+              "diningCounterGap": 600,
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "g-care",
+              "name": "Residential Care Room (Home ICU)",
+              "kind": "care-room",
+              "polygon": [
+                [
+                  5050,
+                  150
+                ],
+                [
+                  8550,
+                  150
+                ],
+                [
+                  8550,
+                  5600
+                ],
+                [
+                  5050,
+                  5600
+                ]
+              ],
+              "careLayout": "equipment-left",
+              "reclinerPosition": [
+                6950,
+                2750
+              ],
+              "tvOffset": 1850,
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "g-veranda",
+              "name": "North L-Shaped Shaded Veranda",
+              "kind": "veranda",
+              "polygon": [
+                [
+                  8700,
+                  0
+                ],
+                [
+                  9900,
+                  0
+                ],
+                [
+                  9900,
+                  9800
+                ],
+                [
+                  8700,
+                  9800
+                ],
+                [
+                  8700,
+                  7150
+                ],
+                [
+                  6500,
+                  7150
+                ],
+                [
+                  6500,
+                  5750
+                ],
+                [
+                  8700,
+                  5750
+                ]
+              ],
+              "finishStyle": "warm-stone",
+              "clearAccess": true,
+              "drain": true
+            },
+            {
+              "id": "g-kitchen",
+              "name": "Sociable Modular Kitchen",
+              "kind": "kitchen",
+              "polygon": [
+                [
+                  150,
+                  150
+                ],
+                [
+                  2350,
+                  150
+                ],
+                [
+                  2350,
+                  2750
+                ],
+                [
+                  150,
+                  2750
+                ]
+              ],
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "g-puja",
+              "name": "Open Puja Alcove",
+              "kind": "pooja",
+              "polygon": [
+                [
+                  150,
+                  2900
+                ],
+                [
+                  2350,
+                  2900
+                ],
+                [
+                  2350,
+                  3800
+                ],
+                [
+                  150,
+                  3800
+                ]
+              ],
+              "altarWall": "left"
+            },
+            {
+              "id": "g-utility",
+              "name": "Pantry & Utility Room",
+              "kind": "utility",
+              "polygon": [
+                [
+                  150,
+                  3950
+                ],
+                [
+                  2350,
+                  3950
+                ],
+                [
+                  2350,
+                  5600
+                ],
+                [
+                  150,
+                  5600
+                ]
+              ],
+              "drain": true
+            },
+            {
+              "id": "g-stair",
+              "name": "Staircase",
+              "kind": "stair",
+              "polygon": [
+                [
+                  150,
+                  5750
+                ],
+                [
+                  2350,
+                  5750
+                ],
+                [
+                  2350,
+                  9850
+                ],
+                [
+                  150,
+                  9850
+                ]
+              ],
+              "guardStyle": "white-timber"
+            },
+            {
+              "id": "g-bath",
+              "name": "Ground Family Bathroom",
+              "kind": "bathroom",
+              "polygon": [
+                [
+                  150,
+                  10000
+                ],
+                [
+                  2350,
+                  10000
+                ],
+                [
+                  2350,
+                  12000
+                ],
+                [
+                  150,
+                  12000
+                ]
+              ],
+              "drain": true
+            },
+            {
+              "id": "g-bedroom",
+              "name": "Ground Family Bedroom",
+              "kind": "bedroom",
+              "polygon": [
+                [
+                  2500,
+                  7300
+                ],
+                [
+                  5200,
+                  7300
+                ],
+                [
+                  5200,
+                  12000
+                ],
+                [
+                  2500,
+                  12000
+                ]
+              ],
+              "wardrobeWall": "left",
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "g-caregiver",
+              "name": "Caregiver Bedroom",
+              "kind": "bedroom",
+              "polygon": [
+                [
+                  5350,
+                  7300
+                ],
+                [
+                  8550,
+                  7300
+                ],
+                [
+                  8550,
+                  9800
+                ],
+                [
+                  5350,
+                  9800
+                ]
+              ],
+              "bedType": "single",
+              "wardrobeWall": "left",
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "g-caregiver-bath",
+              "name": "Caregiver Attached Toilet",
+              "kind": "bathroom",
+              "polygon": [
+                [
+                  6500,
+                  9950
+                ],
+                [
+                  8550,
+                  9950
+                ],
+                [
+                  8550,
+                  11350
+                ],
+                [
+                  6500,
+                  11350
+                ]
+              ],
+              "drain": true
+            }
+          ],
+          "walls": [],
+          "openings": [
+            {
+              "id": "o-entry",
+              "roomId": "g-living",
+              "side": "front",
+              "offset": 600,
+              "width": 1200,
+              "kind": "entry",
+              "height": 2350,
+              "sill": 0,
+              "hinge": "end",
+              "swingRoomId": "g-living"
+            },
+            {
+              "id": "o-kitch-serv",
+              "roomId": "g-kitchen",
+              "side": "right",
+              "offset": 100,
+              "width": 2400,
+              "kind": "cased",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "servingCounter": true
+            },
+            {
+              "id": "o-kitch-win-e",
+              "roomId": "g-kitchen",
+              "side": "front",
+              "offset": 400,
+              "width": 1400,
+              "kind": "window",
+              "height": 1250,
+              "sill": 1000,
+              "hinge": "start"
+            },
+            {
+              "id": "o-kitch-win-s",
+              "roomId": "g-kitchen",
+              "side": "left",
+              "offset": 650,
+              "width": 1300,
+              "kind": "window",
+              "height": 1250,
+              "sill": 1000,
+              "hinge": "start"
+            },
+            {
+              "id": "o-util-door",
+              "roomId": "g-utility",
+              "side": "right",
+              "offset": 400,
+              "width": 800,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "g-utility"
+            },
+            {
+              "id": "o-util-win",
+              "roomId": "g-utility",
+              "side": "left",
+              "offset": 400,
+              "width": 650,
+              "kind": "window",
+              "height": 900,
+              "sill": 1200,
+              "hinge": "start"
+            },
+            {
+              "id": "o-puja",
+              "roomId": "g-puja",
+              "side": "right",
+              "offset": 75,
+              "width": 750,
+              "kind": "cased",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start"
+            },
+            {
+              "id": "o-stair-in",
+              "roomId": "g-stair",
+              "side": "right",
+              "offset": 120,
+              "width": 1150,
+              "kind": "cased",
+              "height": 2200,
+              "sill": 0,
+              "hinge": "start"
+            },
+            {
+              "id": "o-stair-win",
+              "roomId": "g-stair",
+              "side": "left",
+              "offset": 1350,
+              "width": 1400,
+              "kind": "window",
+              "height": 1500,
+              "sill": 900,
+              "hinge": "start"
+            },
+            {
+              "id": "o-living-ver",
+              "roomId": "g-living",
+              "side": "right",
+              "offset": 5850,
+              "width": 1000,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true
+            },
+            {
+              "id": "o-care-in",
+              "roomId": "g-care",
+              "side": "left",
+              "offset": 3550,
+              "width": 950,
+              "kind": "door",
+              "height": 2150,
+              "sill": 0,
+              "hinge": "end",
+              "swingRoomId": "g-care"
+            },
+            {
+              "id": "o-care-ver-door",
+              "roomId": "g-care",
+              "side": "rear",
+              "offset": 2500,
+              "width": 950,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true,
+              "slidingPanels": 2,
+              "stackingSliding": true
+            },
+            {
+              "id": "o-care-n1",
+              "roomId": "g-care",
+              "side": "right",
+              "offset": 300,
+              "width": 1650,
+              "kind": "window",
+              "height": 1950,
+              "sill": 450,
+              "hinge": "start"
+            },
+            {
+              "id": "o-care-n2",
+              "roomId": "g-care",
+              "side": "right",
+              "offset": 2100,
+              "width": 1550,
+              "kind": "window",
+              "height": 1950,
+              "sill": 450,
+              "hinge": "start"
+            },
+            {
+              "id": "o-care-e",
+              "roomId": "g-care",
+              "side": "front",
+              "offset": 850,
+              "width": 1800,
+              "kind": "window",
+              "height": 1950,
+              "sill": 450,
+              "hinge": "start"
+            },
+            {
+              "id": "o-bed-in",
+              "roomId": "g-bedroom",
+              "side": "front",
+              "offset": 850,
+              "width": 950,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "g-bedroom"
+            },
+            {
+              "id": "o-bed-win",
+              "roomId": "g-bedroom",
+              "side": "rear",
+              "offset": 600,
+              "width": 1500,
+              "kind": "window",
+              "height": 1300,
+              "sill": 850,
+              "hinge": "start"
+            },
+            {
+              "id": "o-bath-in",
+              "roomId": "g-bath",
+              "side": "right",
+              "offset": 600,
+              "width": 750,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "g-bath"
+            },
+            {
+              "id": "o-bath-vent",
+              "roomId": "g-bath",
+              "side": "left",
+              "offset": 650,
+              "width": 700,
+              "kind": "window",
+              "height": 600,
+              "sill": 1650,
+              "hinge": "start"
+            },
+            {
+              "id": "o-cg-in",
+              "roomId": "g-caregiver",
+              "side": "front",
+              "offset": 1450,
+              "width": 900,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "end",
+              "swingRoomId": "g-veranda"
+            },
+            {
+              "id": "o-cg-win-w",
+              "roomId": "g-caregiver",
+              "side": "rear",
+              "offset": 200,
+              "width": 750,
+              "kind": "window",
+              "height": 1300,
+              "sill": 850,
+              "hinge": "start"
+            },
+            {
+              "id": "o-cg-bath-in",
+              "roomId": "g-caregiver-bath",
+              "side": "front",
+              "offset": 650,
+              "width": 750,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "g-caregiver-bath"
+            },
+            {
+              "id": "o-cg-bath-vent",
+              "roomId": "g-caregiver-bath",
+              "side": "right",
+              "offset": 400,
+              "width": 600,
+              "kind": "window",
+              "height": 600,
+              "sill": 1650,
+              "hinge": "start"
+            }
+          ]
+        },
+        {
+          "id": "floor-1",
+          "rooms": [
+            {
+              "id": "u-balcony-east",
+              "name": "East Front Balcony",
+              "kind": "balcony",
+              "polygon": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  8700,
+                  0
+                ],
+                [
+                  8700,
+                  1350
+                ],
+                [
+                  0,
+                  1350
+                ]
+              ],
+              "finishStyle": "honed-sandstone",
+              "guardStyle": "white-timber",
+              "clearAccess": true
+            },
+            {
+              "id": "u-terrace-north",
+              "name": "North L-Shaped Terrace",
+              "kind": "terrace",
+              "polygon": [
+                [
+                  8700,
+                  0
+                ],
+                [
+                  9900,
+                  0
+                ],
+                [
+                  9900,
+                  9800
+                ],
+                [
+                  8700,
+                  9800
+                ],
+                [
+                  8700,
+                  7150
+                ],
+                [
+                  6500,
+                  7150
+                ],
+                [
+                  6500,
+                  5750
+                ],
+                [
+                  8700,
+                  5750
+                ]
+              ],
+              "finishStyle": "honed-sandstone",
+              "guardStyle": "white-timber",
+              "clearAccess": true
+            },
+            {
+              "id": "u-lobby",
+              "name": "Upper Gallery & Family Lounge",
+              "kind": "hall",
+              "polygon": [
+                [
+                  2500,
+                  1500
+                ],
+                [
+                  4900,
+                  1500
+                ],
+                [
+                  4900,
+                  5750
+                ],
+                [
+                  6350,
+                  5750
+                ],
+                [
+                  6350,
+                  7150
+                ],
+                [
+                  2500,
+                  7150
+                ]
+              ],
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "u-bed-north",
+              "name": "First-Floor North-East Principal Bedroom",
+              "kind": "bedroom",
+              "polygon": [
+                [
+                  5050,
+                  1500
+                ],
+                [
+                  8550,
+                  1500
+                ],
+                [
+                  8550,
+                  5600
+                ],
+                [
+                  5050,
+                  5600
+                ]
+              ],
+              "wardrobeWall": "left",
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "u-store",
+              "name": "Upper Linen & Utility Store",
+              "kind": "store",
+              "polygon": [
+                [
+                  150,
+                  1500
+                ],
+                [
+                  2350,
+                  1500
+                ],
+                [
+                  2350,
+                  3800
+                ],
+                [
+                  150,
+                  3800
+                ]
+              ]
+            },
+            {
+              "id": "u-bath-north",
+              "name": "First-Floor Principal Bathroom",
+              "kind": "bathroom",
+              "polygon": [
+                [
+                  150,
+                  3950
+                ],
+                [
+                  2350,
+                  3950
+                ],
+                [
+                  2350,
+                  5600
+                ],
+                [
+                  150,
+                  5600
+                ]
+              ],
+              "drain": true
+            },
+            {
+              "id": "u-stair",
+              "name": "Staircase",
+              "kind": "stair",
+              "polygon": [
+                [
+                  150,
+                  5750
+                ],
+                [
+                  2350,
+                  5750
+                ],
+                [
+                  2350,
+                  9850
+                ],
+                [
+                  150,
+                  9850
+                ]
+              ],
+              "guardStyle": "white-timber"
+            },
+            {
+              "id": "u-bath-south",
+              "name": "First-Floor En-Suite Bathroom",
+              "kind": "bathroom",
+              "polygon": [
+                [
+                  150,
+                  10000
+                ],
+                [
+                  2350,
+                  10000
+                ],
+                [
+                  2350,
+                  12000
+                ],
+                [
+                  150,
+                  12000
+                ]
+              ],
+              "drain": true
+            },
+            {
+              "id": "u-bed-south",
+              "name": "First-Floor South-West Bedroom",
+              "kind": "bedroom",
+              "polygon": [
+                [
+                  2500,
+                  7300
+                ],
+                [
+                  5200,
+                  7300
+                ],
+                [
+                  5200,
+                  12000
+                ],
+                [
+                  2500,
+                  12000
+                ]
+              ],
+              "wardrobeWall": "left",
+              "ceilingStyle": "plain-downlights"
+            },
+            {
+              "id": "u-office",
+              "name": "Compact Office / Studio",
+              "kind": "study",
+              "polygon": [
+                [
+                  5350,
+                  7300
+                ],
+                [
+                  8550,
+                  7300
+                ],
+                [
+                  8550,
+                  9800
+                ],
+                [
+                  5350,
+                  9800
+                ]
+              ],
+              "ceilingStyle": "plain-downlights"
+            }
+          ],
+          "walls": [],
+          "openings": [
+            {
+              "id": "o-ustair-in",
+              "roomId": "u-stair",
+              "side": "right",
+              "offset": 120,
+              "width": 1150,
+              "kind": "cased",
+              "height": 2200,
+              "sill": 0,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ustair-win",
+              "roomId": "u-stair",
+              "side": "left",
+              "offset": 1350,
+              "width": 1400,
+              "kind": "window",
+              "height": 1500,
+              "sill": 900,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ulobby-east",
+              "roomId": "u-lobby",
+              "side": "front",
+              "offset": 550,
+              "width": 1300,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true
+            },
+            {
+              "id": "o-ulobby-north",
+              "roomId": "u-lobby",
+              "side": "right",
+              "offset": 4500,
+              "width": 1000,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true
+            },
+            {
+              "id": "o-ubedn-in",
+              "roomId": "u-bed-north",
+              "side": "left",
+              "offset": 2950,
+              "width": 950,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "end",
+              "swingRoomId": "u-bed-north"
+            },
+            {
+              "id": "o-ubedn-east",
+              "roomId": "u-bed-north",
+              "side": "front",
+              "offset": 950,
+              "width": 1600,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true
+            },
+            {
+              "id": "o-ubedn-n1",
+              "roomId": "u-bed-north",
+              "side": "right",
+              "offset": 300,
+              "width": 1650,
+              "kind": "window",
+              "height": 1600,
+              "sill": 650,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ubedn-n2",
+              "roomId": "u-bed-north",
+              "side": "right",
+              "offset": 2100,
+              "width": 1550,
+              "kind": "window",
+              "height": 1600,
+              "sill": 650,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ustore-in",
+              "roomId": "u-store",
+              "side": "right",
+              "offset": 550,
+              "width": 800,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "u-store"
+            },
+            {
+              "id": "o-ubathn-in",
+              "roomId": "u-bath-north",
+              "side": "right",
+              "offset": 450,
+              "width": 750,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "u-bath-north"
+            },
+            {
+              "id": "o-ubathn-vent",
+              "roomId": "u-bath-north",
+              "side": "left",
+              "offset": 475,
+              "width": 700,
+              "kind": "window",
+              "height": 600,
+              "sill": 1650,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ubeds-in",
+              "roomId": "u-bed-south",
+              "side": "front",
+              "offset": 850,
+              "width": 950,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "u-bed-south"
+            },
+            {
+              "id": "o-ubeds-win",
+              "roomId": "u-bed-south",
+              "side": "rear",
+              "offset": 600,
+              "width": 1500,
+              "kind": "window",
+              "height": 1300,
+              "sill": 850,
+              "hinge": "start"
+            },
+            {
+              "id": "o-ubaths-in",
+              "roomId": "u-bath-south",
+              "side": "right",
+              "offset": 600,
+              "width": 750,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "u-bath-south"
+            },
+            {
+              "id": "o-ubaths-vent",
+              "roomId": "u-bath-south",
+              "side": "left",
+              "offset": 650,
+              "width": 700,
+              "kind": "window",
+              "height": 600,
+              "sill": 1650,
+              "hinge": "start"
+            },
+            {
+              "id": "o-uoffice-in",
+              "roomId": "u-office",
+              "side": "front",
+              "offset": 100,
+              "width": 800,
+              "kind": "door",
+              "height": 2100,
+              "sill": 0,
+              "hinge": "start",
+              "swingRoomId": "u-office"
+            },
+            {
+              "id": "o-uoffice-terr",
+              "roomId": "u-office",
+              "side": "front",
+              "offset": 1450,
+              "width": 1200,
+              "kind": "glazed",
+              "height": 2250,
+              "sill": 0,
+              "hinge": "start",
+              "sliding": true
+            },
+            {
+              "id": "o-uoffice-n",
+              "roomId": "u-office",
+              "side": "right",
+              "offset": 550,
+              "width": 1400,
+              "kind": "window",
+              "height": 1500,
+              "sill": 750,
+              "hinge": "start"
+            },
+            {
+              "id": "o-uoffice-w",
+              "roomId": "u-office",
+              "side": "rear",
+              "offset": 850,
+              "width": 1500,
+              "kind": "window",
+              "height": 1500,
+              "sill": 750,
+              "hinge": "start"
+            }
+          ]
+        }
+      ],
+      "stairs": [
+        {
+          "id": "south-stair-core",
+          "roomIds": [
+            "g-stair",
+            "u-stair"
+          ],
+          "flightWidth": 1000,
+          "well": 200,
+          "landing": 1050,
+          "tread": 250,
+          "rotation": 0
+        }
+      ]
+    },
+    "useRoomBoard": false
+  }
+}

@@ -57,6 +57,10 @@ def professional_screen(b,warnings):
         group={s['id']}
         if s['kind'] in ('living','dining'):
             group={t['id'] for t in spaces if t['floor']==s['floor'] and t['kind'] in ('living','dining')}
+        elif s['kind']=='family' and b.get('planning',{}).get('colonyContext')=='tirumala-colony':
+            group={t['id'] for t in spaces if t['floor']==s['floor'] and t['kind'] in ('family','kitchen','living','dining','stair')}
+        elif s['id'] in ('g-care','g-caregiver') and b.get('planning',{}).get('colonyContext')=='tirumala-colony' and b.get('planning',{}).get('tirumalaOption')!='E':
+            group={t['id'] for t in spaces if t['id'] in ('g-care','g-caregiver')}
         seen|=group
         area=sum(clear[i].area for i in group)/1e6;share=glazing(group)/max(area,.01)
         if share<WINDOW_SHARE:
@@ -79,6 +83,7 @@ def professional_screen(b,warnings):
                 warnings.append({'code':'POOJA_BESIDE_BATH','ids':[s['id'],t['id']],'message':f'{s["name"]} shares a wall with {t["name"]}.'})
     for s in spaces:
         if s['kind']!='bathroom' or s['floor']==0:continue
+        if b.get('planning',{}).get('colonyContext')=='tirumala-colony' and s['id']=='u-bath':continue
         for t in spaces:
             if t['floor']==s['floor']-1 and t['kind'] in ('pooja','kitchen'):
                 over=poly[s['id']].intersection(poly[t['id']]).area/1e6

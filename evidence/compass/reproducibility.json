@@ -1,0 +1,16 @@
+{
+  "method": "Two clean generations per case, same dependency versions; no cross-platform equivalence claim.",
+  "checks": {
+    "legacy-default": {
+      "equal_build_ids": true,
+      "files_compared": 27,
+      "changed_artifacts": []
+    },
+    "compass-three-floors": {
+      "equal_build_ids": true,
+      "files_compared": 27,
+      "changed_artifacts": []
+    }
+  },
+  "seconds": 9.933
+}

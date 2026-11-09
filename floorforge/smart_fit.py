@@ -41,7 +41,7 @@ def fit_rectangles(plan, values, floor=None):
             core=next((s for s in plan['stairs'] if r['id'] in s['roomIds']),{})
             mw=2*core.get('flightWidth',1000)+core.get('well',200)
             steps=math.ceil(values['floor_height_mm']/190/2)-1
-            mh=2*core.get('landing',1050)+steps*core.get('tread',250)
+            mh=(core.get('landing',1050) if core.get('openArrival') else 2*core.get('landing',1050))+steps*core.get('tread',250)
             if core.get('rotation')==90:mw,mh=mh,mw
         if floor is not None and f==floor and f>0:
             from .upper_floor import support_box

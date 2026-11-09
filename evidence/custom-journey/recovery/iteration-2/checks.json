@@ -1,0 +1,297 @@
+{
+  "baseline": false,
+  "checks": [
+    {
+      "name": "Ambiguous written units produce an interpretation question",
+      "pass": true
+    },
+    {
+      "name": "Edit description opens and focuses the actual written-input field",
+      "pass": true
+    },
+    {
+      "name": "Corrected units reach approved-plan review without repeated interpretation",
+      "pass": true
+    },
+    {
+      "name": "1: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "1: edit opens the affected floor and room",
+      "pass": true
+    },
+    {
+      "name": "1: named floor and concrete issue remain visible",
+      "pass": true
+    },
+    {
+      "name": "1: actual cell placement clears the blocker and reaches all-floor 2D",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "case": "text-interpretation",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [],
+        "choices": [
+          {
+            "description": "\"40 x 60\" read as feet.",
+            "id": "confirm",
+            "label": "Use this interpretation",
+            "recommended": true
+          },
+          {
+            "action": "edit-input",
+            "description": "Add explicit units or measurements.",
+            "editor": {
+              "kind": "text",
+              "sourceId": "written-requirements"
+            },
+            "id": "edit",
+            "label": "Edit the description",
+            "recommended": false
+          }
+        ],
+        "code": "TEXT_INTERPRETATION",
+        "explanation": "\"40 x 60\" read as feet.",
+        "id": "text_interpretation-d8ade772e85739a2",
+        "prompt": "Is this interpretation correct?",
+        "recommended": "confirm",
+        "title": "Is this interpretation correct?"
+      },
+      "issues": [],
+      "alternatives": []
+    },
+    {
+      "case": "text-interpretation",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "first-floor-unplaced",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "floorName": "First floor",
+            "name": "bed",
+            "regions": [],
+            "required": {
+              "minimum_area_m2": 7.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "f1-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 1,
+              "floorId": "floor-1",
+              "floorIndex": 1,
+              "kind": "compass",
+              "roomId": "f1-bed",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open First floor",
+            "recommended": true
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "kind": "compass",
+          "roomId": "f1-bed",
+          "view": "map"
+        },
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-9087903bfe586fda",
+        "issue": {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-bed",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f1-bed"
+        },
+        "prompt": "Place bed on First floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "On First floor, select bed from the room checklist and assign connected cells.",
+          "If this room is no longer wanted, explicitly change its required setting. Then check again."
+        ],
+        "title": "Place bed on First floor"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-bed",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f1-bed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "first-floor-unplaced",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    }
+  ],
+  "network": [
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    }
+  ],
+  "timings": {
+    "text-interpretation": 21.337,
+    "first-floor-unplaced": 19.374
+  },
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-recovery-KFga4V",
+  "serverErrors": "",
+  "humanTrial": "Pending at user request"
+}

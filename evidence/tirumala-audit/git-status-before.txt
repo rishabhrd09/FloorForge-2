@@ -1,0 +1,55 @@
+ M examples/gallery/catalog.json
+ M floorforge/custom_plan.py
+ M floorforge/drawings.py
+ M floorforge/frontage.py
+ M floorforge/ifc_export.py
+ M floorforge/intent.py
+ M floorforge/modern_exterior.py
+ M floorforge/modular_kitchen.py
+ M floorforge/review.py
+ M floorforge/scene.py
+ M floorforge/smart_fit.py
+ M floorforge/stair_geometry.py
+ M floorforge/upper_floor.py
+ M web/app.js
+ M web/index.html
+ M web/plan-editor.js
+ M web/sample-gallery.js
+ M web/style.css
+ M web/viewer.js
+ M web/viewer/src/context.js
+ M web/viewer/src/index.js
+ M web/viewer/src/scene-builder.js
+?? evidence/tirumala-audit/
+?? evidence/tirumala/
+?? examples/gallery/briefs/tirumala-2.json
+?? examples/gallery/briefs/tirumala-3.json
+?? examples/gallery/briefs/tirumala-A.json
+?? examples/gallery/briefs/tirumala-B.json
+?? examples/gallery/briefs/tirumala-C.json
+?? examples/gallery/briefs/tirumala-D.json
+?? examples/gallery/briefs/tirumala-E.json
+?? examples/gallery/briefs/tirumala.json
+?? examples/gallery/thumbnails/tirumala-2.png
+?? examples/gallery/thumbnails/tirumala-3.png
+?? examples/gallery/thumbnails/tirumala.png
+?? examples/gallery/tirumala-2/
+?? examples/gallery/tirumala-3/
+?? examples/gallery/tirumala/
+?? floorforge/tirumala_context.py
+?? floorforge/tirumala_finishes.py
+?? floorforge/tirumala_p11_p12.py
+?? floorforge/tirumala_rev10.py
+?? floorforge/tirumala_rev8.py
+?? output/my-desired-home-40x50-concepts/
+?? output/tirumala-revision-11-proposal/
+?? scripts/build_tirumala.py
+?? scripts/build_tirumala_2_3.py
+?? scripts/capture_tirumala_2_3_renders.mjs
+?? scripts/check_tirumala.mjs
+?? scripts/check_tirumala_spacious.mjs
+?? scripts/compose_tirumala_evidence.py
+?? scripts/verify_tirumala_correspondence.py
+?? tests/test_tirumala.py
+?? tests/test_tirumala_2_3.py
+?? web/viewer/src/scene-builder.test.js

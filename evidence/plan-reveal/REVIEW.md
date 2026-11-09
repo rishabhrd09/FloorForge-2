@@ -26,4 +26,4 @@ The second review used frames from before the last round of changes below, so it
 
 ## Known limits (shared assets, not changed here)
 
-The low-poly frangipani, bedspread and leaf-material glitches, repeated wall art, and the default kitchen's fittings (vessel sink, no hood) come from the shared scene generator and viewer. Every sample uses those, so they were left unchanged here.
+The bedspread and leaf-material glitches, repeated wall art, and the default kitchen's fittings (vessel sink, no hood) come from the shared scene generator and viewer. Every sample uses those, so they were left unchanged here. Within the samples themselves, a later pass replaced the low-poly frangipani with the viewer's mango (Aangan) and ashoka (Long House) builders. It also moved the Long House to the L-shaped modular kitchen, with an inset sink, a tap and handled cabinets, and stopped a tulsi vrindavan cutting into a small court's planter.

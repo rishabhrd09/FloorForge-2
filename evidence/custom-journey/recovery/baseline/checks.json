@@ -1,0 +1,199 @@
+{
+  "baseline": true,
+  "baselineCommit": "7d17668",
+  "checks": [
+    {
+      "name": "Ambiguous written units produce an interpretation question",
+      "pass": true
+    },
+    {
+      "name": "Baseline reproduces description edit dead end",
+      "pass": true
+    },
+    {
+      "name": "1: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "Baseline reproduces lost upper-floor editor context",
+      "pass": true,
+      "detail": {
+        "floor": 0,
+        "selected": null
+      }
+    }
+  ],
+  "errors": [
+    {
+      "case": "first-floor-unplaced",
+      "message": "Cannot read properties of undefined (reading 'context')"
+    }
+  ],
+  "observations": [
+    {
+      "case": "text-interpretation",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [],
+        "choices": [
+          {
+            "description": "\"40 x 60\" read as feet.",
+            "id": "confirm",
+            "label": "Use this interpretation",
+            "recommended": true
+          },
+          {
+            "action": "edit-input",
+            "description": "Add explicit units or measurements.",
+            "id": "edit",
+            "label": "Edit the description",
+            "recommended": false
+          }
+        ],
+        "code": "TEXT_INTERPRETATION",
+        "explanation": "\"40 x 60\" read as feet.",
+        "id": "text_interpretation-d8ade772e85739a2",
+        "prompt": "Is this interpretation correct?",
+        "recommended": "confirm",
+        "title": "Is this interpretation correct?"
+      },
+      "issues": [],
+      "alternatives": []
+    },
+    {
+      "case": "first-floor-unplaced",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floorId": "floor-1",
+            "roomId": "f1-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "Keep the draft and adjust the highlighted area.",
+            "id": "edit",
+            "label": "Edit the affected rooms",
+            "recommended": true
+          },
+          {
+            "action": "repair-layout",
+            "description": "Search bounded alternatives and review changes before applying.",
+            "id": "repair",
+            "label": "Recommend a change",
+            "recommended": false
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-2b445c3be38f9c64",
+        "prompt": "Let’s resolve this part of your plan",
+        "recommended": "edit",
+        "title": "Let’s resolve this part of your plan"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "floorId": "floor-1",
+          "message": "Place bed, or explicitly make this room optional.",
+          "roomId": "f1-bed"
+        }
+      ],
+      "alternatives": []
+    }
+  ],
+  "network": [
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    }
+  ],
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-recovery-43rSQW",
+  "serverErrors": "",
+  "humanTrial": "Pending at user request"
+}

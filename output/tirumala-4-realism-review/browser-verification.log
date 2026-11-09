@@ -1,0 +1,55 @@
+PASS tirumala-4 plan-2d-dimensioned.svg loads HTTP 200 
+Rendered tirumala-4/renders/plan-2d-dimensioned.png
+PASS tirumala-4 plan-2d-material-overhead.svg loads HTTP 200 
+Rendered tirumala-4/renders/plan-2d-material-overhead.png
+PASS tirumala-4 plan-first-floor.svg loads HTTP 200 
+Rendered tirumala-4/renders/plan-first-floor.png
+PASS tirumala-4 site-context-plan.svg loads HTTP 200 
+Rendered tirumala-4/renders/site-context-plan.png
+PASS tirumala-4 loads in Studio with 40x50 ft East-facing G+1 layout (storeys=2, 21 spaces), empty car porch default (carVisible=false), and Proposed site mode {"buildId":"sample:tirumala-4","planHash":"096ae83c8d2a08b4a39649e25b2643cf7d52eaa2db140a71c59ec5ac015550fd","storeys":2,"roomCount":21,"widthFt":"40","depthFt":"50","facing":"90","meshCount":313,"defaultCarVisible":false,"carVisible":false,"carButtonText":"Show car","siteMode":"proposed","siteModeButtonText":"Site: Proposed"}
+PASS tirumala-4: P13 ICU geometry (150.8 sq ft), tirumala-4 presentation profile, and eye-level shortcuts loaded {"display":"P13","projectId":"tirumala-4","title":"Tirumala 4 · P13 · GROUND + FIRST","area":150.82363289726578,"profile":"tirumala-4-colony-and-interior-realism","reclinerShortcut":true,"verandaOutlookShortcut":true}
+PASS tirumala-4 specifications dialog displays Tirumala 4 and Home ICU 
+PASS Refined exterior uses leaf planting (no solid red blocks), textured paving/road, edged lawn and limestone boundary {"revision":"ivory-boundary-natural-planting-2026-10-31","redBlocks":false,"pavedTexture":true,"roadTexture":true,"grassPockets":4,"boundaryMaterial":"t4-boundary-limestone","sun":3.3,"vacantLots":2,"facade":{"exteriorFinishTriangles":409,"exteriorOpenings":["drawing-veranda-only","living-veranda","stair-window","icu-east-window","icu-north-window","master-rear","drawing-north","caregiver-north","caregiver-rear","kitchen-east","icu-veranda-glass","lightwell-maintenance","bath-rear","master-lightwell","wc-rear","u-terrace-door","u-side-terrace-door","u-master-rear","u-master-south","u-office-rear","u-office-north","u-bedroom-north","u-bedroom-terrace","u-bath-rear","u-ensuite-rear","u-gallery-lightwell","u-master-lightwell","u-atrium-east","u-atrium-south"],"frameColor":"#1d2022","houseGeometryChanged":false,"neighbours":"Owner-confirmed vacant adjoining lots shown with grass","revision":"desired-home-exterior-v1-2026-10-31","source":"my-desired-home","wallColor":"#f1efea"},"exteriorGlassOpacity":0.4}
+PASS Desired Home facade, substantial exterior glass and two vacant adjoining grass lots {"exteriorFinishTriangles":409,"exteriorOpenings":["drawing-veranda-only","living-veranda","stair-window","icu-east-window","icu-north-window","master-rear","drawing-north","caregiver-north","caregiver-rear","kitchen-east","icu-veranda-glass","lightwell-maintenance","bath-rear","master-lightwell","wc-rear","u-terrace-door","u-side-terrace-door","u-master-rear","u-master-south","u-office-rear","u-office-north","u-bedroom-north","u-bedroom-terrace","u-bath-rear","u-ensuite-rear","u-gallery-lightwell","u-master-lightwell","u-atrium-east","u-atrium-south"],"frameColor":"#1d2022","houseGeometryChanged":false,"neighbours":"Owner-confirmed vacant adjoining lots shown with grass","revision":"desired-home-exterior-v1-2026-10-31","source":"my-desired-home","wallColor":"#f1efea"}
+PASS Site review has diamond mesh, shadow coverage, eight exterior views and an unobstructed north-road camera {"meshFaces":2,"shadowRadius":43,"views":8,"geometryChanged":false,"northCameraX":18.6,"plotNorth":12.192}
+PASS tirumala-4 camera exterior_east (exterior-east.png) activated 
+PASS tirumala-4 camera exterior_northeast (exterior-northeast.png) activated 
+PASS tirumala-4 camera exterior_east (exterior-east-overcast.png) activated 
+PASS tirumala-4 camera north_garden_passage (north-garden-passage.png) activated 
+PASS tirumala-4 camera ref_r07_east_northwest (ref-r07-east-northwest.png) activated 
+PASS tirumala-4 camera ref_r07_east_northwest (ref-r07-existing-plot.png) activated 
+PASS tirumala-4 camera ref_r11_ne_corner (ref-r11-ne-corner.png) activated 
+PASS tirumala-4 camera ref_r08_north_garden (ref-r08-north-garden.png) activated 
+PASS tirumala-4 camera ref_v01_east_court_road (ref-v01-east-court-road.png) activated 
+PASS tirumala-4 camera ref_r09_colony_junction (ref-r09-colony-junction.png) activated 
+PASS tirumala-4 camera ref_r14_wall_pole_paving (ref-r14-wall-pole-paving.png) activated 
+PASS tirumala-4 camera ref_n03_north_frontage (ref-n03-north-frontage.png) activated 
+PASS tirumala-4 camera ref_n02_northwest_utilities (ref-n02-northwest-utilities.png) activated 
+PASS tirumala-4 camera ref_south_vacant (ref-south-vacant.png) activated 
+PASS tirumala-4 camera ref_west_vacant (ref-west-vacant.png) activated 
+PASS tirumala-4 camera icu_layered_entry (icu-door-wood-closed.png) activated 
+PASS tirumala-4 private entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":0}
+PASS tirumala-4 camera icu_layered_entry (icu-door-glass-revealed.png) activated 
+PASS tirumala-4 glass entrance button operates both layers {"icu-glass-living":0,"icu-glass-living-wood":1}
+PASS tirumala-4 camera icu_layered_entry (icu-door-both-open.png) activated 
+PASS tirumala-4 open entrance button operates both layers {"icu-glass-living":1,"icu-glass-living-wood":1}
+PASS tirumala-4 camera veranda_north_garden_outlook (veranda-north-garden-outlook.png) activated 
+PASS tirumala-4 camera interior_icu_veranda_garden (interior-icu-veranda-garden.png) activated 
+PASS tirumala-4 camera interior_icu_veranda_garden (interior-icu-overcast.png) activated 
+PASS tirumala-4 camera care_recliner_eye_level (interior-icu-recliner-sightline.png) activated 
+PASS tirumala-4 camera interior_kitchen_living_dining (interior-kitchen-living-dining.png) activated 
+PASS tirumala-4 camera living_sofa_eye_level (interior-living-sofa-sightline.png) activated 
+PASS tirumala-4 camera interior_veranda_living (interior-veranda-living.png) activated 
+PASS tirumala-4 camera interior_master (interior-master.png) activated 
+PASS tirumala-4 camera interior_drawing (interior-drawing.png) activated 
+PASS tirumala-4 camera living_double_height (living-double-height.png) activated 
+PASS tirumala-4 camera upper_gallery (upper-gallery.png) activated 
+PASS tirumala-4 camera upper_master (upper-master.png) activated 
+PASS tirumala-4 camera upper_office (upper-office.png) activated 
+PASS tirumala-4 camera upper_guest (upper-guest.png) activated 
+PASS tirumala-4 camera upper_terrace (upper-terrace.png) activated 
+PASS tirumala-4 camera cutaway_roof_off activated 
+PASS tirumala-4 camera closeup_flooring_glazing_porch (closeup-flooring-glazing-lower-porch.png) activated 
+PASS tirumala-4 camera closeup_flooring_glazing_porch (optional-parking-check-car-on.png) activated 
+PASS tirumala-4 walking level transitions verified (lower porch -0.1524m, ground 0.0m, upper +3.508m) and CPU submission timing {"porchFloorY":-0.1524,"livingFloorY":0,"upperFloorY":3.508,"cpuSubmissionMsPerFrame":1.73}
+PASS Zero uncaught page errors during Tirumala 4 studio & render verification []

@@ -121,14 +121,15 @@ def opening_types(b):
     names = {s['id']: s['name'] for s in b['spaces']}
     types, tags, counters = {}, {}, {}
     for o in sorted(b['openings'], key=lambda o: (o['floor'], o['id'])):
-        if o['kind'] == 'window':
+        kind = 'glazed' if b.get('planning', {}).get('g2Revision') and o.get('raw_kind') == 'sliding-door' else o['kind']
+        if kind == 'window':
             pre = 'V' if (o['sill'] >= 1500 or o['height'] <= 700) else 'W'
         else:
-            pre = {'glazed': 'SD', 'cased': 'O'}.get(o['kind'], 'D')
-        key = (pre, o['kind'], round(o['width']), round(o['height']), round(o['sill']), bool(o.get('fixed')), bool(o.get('stackingSliding')))
+            pre = {'glazed': 'SD', 'cased': 'O'}.get(kind, 'D')
+        key = (pre, kind, round(o['width']), round(o['height']), round(o['sill']), bool(o.get('fixed')), bool(o.get('stackingSliding')))
         if key not in types:
             counters[pre] = counters.get(pre, 0) + 1
-            types[key] = {'tag': f'{pre}{counters[pre]}', 'kind': o['kind'], 'width': round(o['width']), 'height': round(o['height']),
+            types[key] = {'tag': f'{pre}{counters[pre]}', 'kind': kind, 'width': round(o['width']), 'height': round(o['height']),
                           'sill': round(o['sill']), 'count': 0, 'rooms': [], **({'fixed':True} if o.get('fixed') else {}), **({'stackingSliding':True} if o.get('stackingSliding') else {})}
         t = types[key]; t['count'] += 1; tags[o['id']] = t['tag']
         room = next((names[r] for r in o['connects'] if r in names and (o['kind'] == 'window' or r == o.get('swing'))), None) or \
@@ -222,7 +223,113 @@ def bounds_of(elems, pad=250):
 
 
 # ---------------------------------------------------------------------------------------------- floor plans
+def _tirumala_rev8_meta(b):
+    p = b.get('planning', {})
+    if p.get('tirumalaOption') in ('P12-A', 'P11'):
+        return None
+    return p.get('tirumalaMeta') or p.get('tirumalaRev8')
+
+
+def _tirumala_rev8_plan_underlays(b, floor):
+    rev8 = _tirumala_rev8_meta(b)
+    if not rev8:
+        return [], []
+    cz = rev8.get('canonicalZones', {})
+    under, over = [], []
+    # Plot perimeter 40 x 50 ft (12192 x 15240 mm)
+    under.append(P([(0, 0), (12192, 0), (12192, 15240), (0, 15240)], '#fafaf5', INK, .3, 'A-SITE'))
+    over.append(T(6096, -340, 'EAST ROAD — 9.0 m ROW (40 FT FRONTAGE / PRINCIPAL ARRIVAL)', 155, 'A-SITE'))
+    over.append(T(12520, 7620, 'NORTH ROAD — 12.0 m ROW (50 FT DEPTH)', 155, 'A-SITE', rot=90))
+    opt = rev8.get('option', 'A')
+    lbl = rev8.get('label', '')
+    gh = rev8.get('geometryHash', '')[:12]
+    over.append(T(6096, 15560, f'TIRUMALA REV {rev8.get("revision", 8)} — OPTION {opt} ({lbl.upper()}) | GEOM HASH {gh}', 165, 'A-ANNO'))
+    if floor == 0:
+        fc = cz.get('frontCourt')
+        if fc:
+            under.append(P(fc, '#f4efe2', '#b5aa94', .18, 'A-SITE'))
+            over.append(T(4267, 1250, 'FRONT COURT (28 x 6.5 FT / +0.300 m)', 135, 'A-SITE'))
+        st = cz.get('entrySteps')
+        if st:
+            under.append(P(st, '#e6decb', INK, .22, 'A-STAIR'))
+            under.append(L((st[0][0], 305), (st[1][0], 305), INK, .18, 'A-STAIR'))
+            over.append(T((st[0][0] + st[1][0]) / 2, 290, '2 UP (2 x 150 mm -> +0.300 m)', 115, 'A-STAIR'))
+        pk = cz.get('parking')
+        if pk:
+            under.append(P(pk, '#e7e6de', '#8a887f', .22, 'A-SITE'))
+            over.append(T(10440, 5620, 'CAR BAY 10.5 x 19 FT (FFL ±0.000 m)', 130, 'A-SITE'))
+        car = cz.get('car')
+        if car:
+            over.append(P(car, '#f7f8f6', INK, .22, 'A-FURN'))
+            cx0, cy0 = car[0]; cx1, cy1 = car[2]
+            over.append(P([(cx0 + 180, cy0 + 950), (cx1 - 180, cy0 + 950), (cx1 - 180, cy1 - 850), (cx0 + 180, cy1 - 850)], 'none', LIGHT, .14, 'A-FURN'))
+            over.append(T((cx0 + cx1) / 2, (cy0 + cy1) / 2, 'CAR 6.5 x 15.5 FT', 125, 'A-FURN'))
+        npas = cz.get('north')
+        if npas:
+            under.append(P(npas, '#dfead5', '#78916b', .18, 'A-LAND'))
+            nx0, ny0 = npas[0]; nx1, ny1 = npas[2]
+            under.append(L((nx1 - 60, ny0), (nx1 - 60, ny1), '#4c6b3c', .35, 'A-LAND', True))
+            over.append(T((nx0 + nx1) / 2, (ny0 + ny1) / 2, '3 FT CLEAR NORTH PASSAGE (+0.300 m)', 115, 'A-LAND', rot=90))
+        gdn = cz.get('garden')
+        if gdn:
+            under.append(P(gdn, '#d7e5c8', '#6b845e', .2, 'A-LAND'))
+            gp = polylabel(Polygon(gdn), 10)
+            over.append(T(gp.x, gp.y + 120, 'OPEN NW GARDEN (+0.300 m)', 155, 'A-LAND'))
+            over.append(T(gp.x, gp.y - 140, 'UNBUILT / STEPPING STONES & LAWN', 120, 'A-LAND'))
+        gsa = cz.get('groundStairArrival')
+        if gsa:
+            over.append(P(gsa, 'none', ACCENT, .16, 'A-STAIR', True))
+            if rev8.get('revision',8)>=10:
+                ap=polylabel(Polygon(gsa),10)
+                over.append(T(ap.x,ap.y,'STAIR ENTRY',100,'A-STAIR'))
+            else:over.append(T(4343, 6020, 'STAIR ARRIVAL', 110, 'A-STAIR'))
+        puja = cz.get('puja')
+        if puja:
+            over.append(P(puja, '#f7f1e1', ACCENT, .18, 'A-FURN', True))
+            px0, py0 = puja[0]; px1, py1 = puja[2]
+            over.append(P([(px0 + 180, py0 + 60), (px1 - 180, py0 + 60), (px1 - 180, py0 + 280), (px0 + 180, py0 + 280)], '#d8b979', INK, .16, 'A-FURN'))
+            over.append(T((px0 + px1) / 2, (py0 + py1) / 2 + 90, 'PUJA 4x3 FT (EAST ALTAR)', 105, 'A-ANNO'))
+        lv = cz.get('livingVoid')
+        if lv:
+            over.append(P(lv, 'none', ACCENT, .18, 'A-FLOR', True))
+            over.append(T(5950, 8650, 'VOID ABOVE (~23 FT CLEAR)', 120, 'A-ANNO'))
+        bed = cz.get('bed')
+        if bed:
+            bx0, by0 = bed[0]; bx1, by1 = bed[2]; bcy = (by0 + by1) / 2
+            # Pillow at South head end (x = bx0)
+            over.append(P([(bx0 + 90, by0 + 120), (bx0 + 380, by0 + 120), (bx0 + 380, by1 - 120), (bx0 + 90, by1 - 120)], '#ece7dc', INK, .14, 'A-FURN'))
+            # Sightline arrow to North glazing & garden
+            over.append(L((bx0 + 550, bcy), (11850, bcy), GLASS, .18, 'A-ANNO', True))
+            over.append(T((bx0 + bx1) / 2, bcy, 'BED 7x3.5 FT (HEAD S -> FEET N)', 105, 'A-ANNO'))
+    elif floor == 1:
+        usa = cz.get('upperStairArrival')
+        if usa:
+            over.append(P(usa, 'none', ACCENT, .18, 'A-STAIR', True))
+            if rev8.get('revision',8)>=10:
+                ap=polylabel(Polygon(usa),10)
+                over.append(T(ap.x,ap.y,'ARRIVAL',100,'A-STAIR'))
+            else:over.append(T(4343, 7240, 'UPPER ARRIVAL (OUTSIDE VOID)', 110, 'A-STAIR'))
+        lv = cz.get('livingVoid')
+        if lv:
+            over.append(P(lv, 'none', INK, .22, 'A-FLOR', True))
+            lv_bb = Polygon(lv).bounds
+            over.append(L((lv_bb[0], lv_bb[1]), (lv_bb[2], lv_bb[3]), LIGHT, .14, 'A-FLOR', True))
+            over.append(L((lv_bb[0], lv_bb[3]), (lv_bb[2], lv_bb[1]), LIGHT, .14, 'A-FLOR', True))
+            if rev8.get('revision',8)<10:
+                over.append(T((lv_bb[0] + lv_bb[2]) / 2, (lv_bb[1] + lv_bb[3]) / 2, 'DOUBLE-HEIGHT LIVING VOID (~23 FT CLEAR)', 135, 'A-ANNO'))
+        rl = cz.get('rooflight')
+        if rl:
+            over.append(P(rl, 'none', GLASS, .22, 'A-WIND', True))
+            rx0, ry0 = rl[0]; rx1, ry1 = rl[2]
+            light_size = f'{(rx1-rx0)/304.8:.0f} x {(ry1-ry0)/304.8:.0f}'
+            over.append(T((rx0 + rx1) / 2, (ry0 + ry1) / 2 - 260, f'ROOFLIGHT ({light_size} FT OVERHEAD)', 115, 'A-WIND'))
+    return under, over
+
+
 def plan_elements(b, scene, floor=0):
+    from .tirumala_p11_p12 import is_p11_p12, p11_p12_plan_elements
+    if is_p11_p12(b):
+        return p11_p12_plan_elements(b, scene, floor)
     if b.get('rooftop'):
         from .rooftop import with_rooftop_objects
         b=with_rooftop_objects(b)
@@ -232,6 +339,8 @@ def plan_elements(b, scene, floor=0):
     hosts = {w['id']: w for w in b['walls']}
     tags, _ = opening_types(b)
     plinth = v['plinth_mm']
+    rev8_under, rev8_over = _tirumala_rev8_plan_underlays(b, floor)
+    elems.extend(rev8_under)
     for room in spaces:
         elems.append(P(room['clear'], '#eef2ef' if room['kind'] in ('bathroom', 'utility') else '#fbfbf7', 'none', layer='A-FLOR'))
     if b.get('floor_plates') or b.get('rooftop'):
@@ -241,7 +350,27 @@ def plan_elements(b, scene, floor=0):
             elems.append(P(list(part.exterior.coords),'none',LIGHT,.15,'A-FLOR'))
             for hole in part.interiors:elems.append(P(list(hole.coords),'none',INK,.2,'A-FLOR'))
         for guard in b.get('guards',[]):
-            if guard['floor']==floor:elems.append(P(guard['points'],'none',ACCENT,.3,'A-FLOR',False))
+            if guard['floor']!=floor:continue
+            if guard.get('parapet'):
+                for region in guard['parapet']:
+                    elems.append(P(region['polygon'],'#e7e4dc',INK,.25,'A-WALL'))
+            else:elems.append(P(guard['points'],'none',ACCENT,.3,'A-FLOR',False))
+    if b.get('planning',{}).get('privateGarden') and b['roofs'][-1].get('rooflight'):
+        if floor==1:
+            hole=next(h for h in b['floor_plates'][1]['openings'] if h['id']=='living-lightwell-1')
+            label=Polygon(hole['regions'][0]['polygon']).representative_point()
+            elems.append(T(label.x,label.y,'OPEN TO LIVING BELOW',125,'A-FLOR'))
+        if floor in (1,2) and b['roofs'][-1].get('suiteNorthlight'):
+            shaft=Polygon(b['roofs'][-1]['suiteNorthlight'][0]['polygon'])
+            elems.append(P(list(shaft.exterior.coords),'none',ACCENT,.25,'A-WIND'))
+            elems.append(T(shaft.centroid.x,shaft.centroid.y,'SUITE NORTHLIGHT',105,'A-WIND'))
+        if floor==2:
+            glass=Polygon(b['roofs'][-1]['rooflight'][0]['polygon'])
+            elems.append(P(list(glass.exterior.coords),'none',ACCENT,.25,'A-WIND'))
+            elems.append(T(glass.centroid.x,glass.centroid.y,'ROOFLIGHT OVER',125,'A-WIND'))
+    for member in b.get('terraceFrame', []):
+        if member['kind']=='column' and member['floor']==floor:
+            elems.append(P(list(box(*member['bounds']).exterior.coords),'#aaa7a0',INK,.25,'A-WALL'))
     # Walls cut at +1.2 m: solid poché with every opening that crosses the cut removed.
     for wall in [w for w in b['walls'] if w['floor'] == floor]:
         p = Polygon(wall['polygon'])
@@ -306,20 +435,39 @@ def plan_elements(b, scene, floor=0):
         elems.append(T(c[0], c[1] - 60, tags[o['id']], 150, 'A-TAGS'))
     # Stairs: treads, the walking line with its arrow, UP/DN and the riser note.
     for st in [s for s in b['stairs'] if s['floor'] == floor]:
+        if st.get('shape')=='three-flight-c-stair' and st.get('flights') and 'bounds' in st['flights'][0]:
+            for part in st['flights']:
+                a,c,d,e=part['bounds']
+                elems.append(P([(a,c),(d,c),(d,e),(a,e)],'none',INK,.15,'A-STAIR'))
+            continue
         x, y = st['x'], st['y']; fw = st['flight_width']; land = st['landing_mm']; tr = st['tread_mm']
+        if st.get('shape')=='quarter-turn':
+            from .stair_geometry import quarter_parts, quarter_path
+            for part in quarter_parts(st):
+                a,c,_,d,e,_=part['bounds'];elems.append(P([(a,c),(d,c),(d,e),(a,e)],'none',INK,.14,'A-STAIR'))
+            walk=quarter_path(st)
+            if st.get('to_floor') is None:walk=list(reversed(walk))
+            elems.append(P(walk,'none',INK,.2,'A-STAIR',False))
+            end=np.array(walk[-1]);u=(end-np.array(walk[-2]));u=u/np.linalg.norm(u);normal=np.array([-u[1],u[0]])
+            elems.append(P([end,end-u*140+normal*70,end-u*140-normal*70],INK,INK,.15,'A-STAIR'))
+            elems.append(T(walk[0][0],walk[0][1]-170,'DN' if st.get('to_floor') is None else 'UP',140,'A-STAIR'))
+            elems.append(T(x+fw/2,y+(st['depth']-land)/2,f'{st["riser_count"]}R / L STAIR',120,'A-STAIR'))
+            continue
+        start_land = 0 if st.get('open_arrival') else land
         from .stair_geometry import point as stair_point
         pt=lambda p: stair_point(st,p)
         for k in range(st['riser_count']//2):
-            yy = y + land + k * tr
+            yy = y + start_land + k * tr
             elems.append(L(pt((x, yy)), pt((x + fw, yy)), INK, .14, 'A-STAIR'))
             elems.append(L(pt((x + fw + st['well'], yy)), pt((x + st['width'], yy)), INK, .14, 'A-STAIR'))
-        top = y + land + (st['riser_count']//2-1) * tr
-        walk = [(x + fw / 2, y + land), (x + fw / 2, top + land / 2), (x + st['width'] - fw / 2, top + land / 2), (x + st['width'] - fw / 2, y + land)]
+        top = y + start_land + (st['riser_count']//2-1) * tr
+        walk_start = y + start_land + (150 if st.get('open_arrival') else 0)
+        walk = [(x + fw / 2, walk_start), (x + fw / 2, top + land / 2), (x + st['width'] - fw / 2, top + land / 2), (x + st['width'] - fw / 2, walk_start)]
         elems.append(P([pt(p) for p in walk], 'none', INK, .2, 'A-STAIR', False))
         ex, ey = walk[-1]
         elems.append(P([pt(p) for p in [(ex - 70, ey + 140), (ex + 70, ey + 140), (ex, ey)]], INK, INK, .15, 'A-STAIR'))
-        elems.append(T(*pt((x + fw / 2, y + land - 260)), 'UP TO ROOF' if st.get('roof_access') else 'UP' if floor == 0 else 'UP / DN', 170, 'A-STAIR'))
-        elems.append(T(*pt((x + st['width'] / 2, y + 300)), f'{st["riser_count"]}R @ {st["riser_mm"]:.0f} / T {tr}', 140, 'A-STAIR'))
+        elems.append(T(*pt((x + fw / 2, y + start_land - 260)), 'UP TO ROOF' if st.get('roof_access') else 'UP' if floor == 0 else 'UP / DN', 170, 'A-STAIR'))
+        elems.append(T(*pt((x + st['width'] / 2, top + land / 2 if st.get('open_arrival') else y + 300)), f'{st["riser_count"]}R @ {st["riser_mm"]:.0f} / T {tr:.0f}', 140, 'A-STAIR'))
     if floor==0:
         for step in b.get('entrance_steps',[]):elems.append(P(step['polygon'],'none',INK,.15,'A-STAIR'))
     for item in scene['furniture']:
@@ -349,6 +497,7 @@ def plan_elements(b, scene, floor=0):
             star = '' if clear.buffer(1).covers(box(*clear.bounds)) else '*'
             elems.append(T(spot.x, spot.y - s2 * 1.35, f'{(rx1 - rx0) / 1000:.2f} x {(ry1 - ry0) / 1000:.2f}{star}', s2))
             elems.append(T(spot.x, spot.y - s2 * 2.75, f'{room["area_m2"]:.1f} m²', s2))
+    elems.extend(rev8_over)
     # Three dimension chains on each side: openings, walls, overall.
     ext = unary_union([fp] + [box(*a['geometry']['bounds_mm']) for a in exterior.get('assemblies', [])
                               if a.get('floor_id') in (floor, -1) and a['geometry'].get('kind') != 'stair_tower'])
@@ -431,15 +580,72 @@ def plan_elements(b, scene, floor=0):
         elems.append(C(cut, cy, 280, INK, .2, 'A-SECT')); elems.append(T(cut, cy - 85, 'A', 220, 'A-SECT'))
         elems.append(P([(cut - 280, cy + sgn * 120), (cut - 620, cy), (cut - 280, cy - sgn * 120)], INK, INK, .1, 'A-SECT'))
     north_point(elems, left - 1500, top - 700, v['road_bearing_deg'])
+    if floor==0 and b.get('siteBoundary'):
+        elems.extend(enclosure_elements(b['siteBoundary'], b.get('vehicleRamp')))
     return elems, bounds_of(elems)
 
 
 # ---------------------------------------------------------------------------------------------- site plan
+def enclosure_elements(boundary, ramp=None):
+    items=[P(run['polygon'], '#b9b2a5', INK, .22, 'A-SITE') for run in boundary['runs']]
+    if ramp:
+        x,X,y,Y=(ramp[k] for k in ('x0','x1','y0','y1'))
+        items.append(P([(x,y),(X,y),(X,Y),(x,Y)],'none',ACCENT,.22,'A-SITE'))
+        mid=(x+X)/2
+        items.append(L((mid,y+80),(mid,Y-160),ACCENT,.3,'A-SITE'))
+        items.append(P([(mid-70,Y-330),(mid,Y-160),(mid+70,Y-330)],'none',ACCENT,.25,'A-SITE',closed=False))
+        items.append(T(mid,Y+300,'UP 1:10',115,'A-SITE'))
+    for gate in boundary['gates']:
+        lo,hi=gate['x0_mm'],gate['x1_mm']
+        items.append(L((lo,185),(hi,185),ACCENT,.45,'A-GATE'))
+        if gate['operation']=='sliding':
+            items.append(L((hi,210),(hi+hi-lo,210),ACCENT,.18,'A-GATE',True))
+        else:
+            for pivot,direction in ((lo,1),(hi,-1)):
+                radius=(hi-lo)/2
+                arc=[(pivot+direction*radius*math.cos(t),185+radius*math.sin(t)) for t in np.linspace(0,math.pi/2,14)]
+                items.append(P(arc,'none',ACCENT,.18,'A-GATE',closed=False))
+                items.append(L((pivot,185),(pivot,185+radius),ACCENT,.22,'A-GATE'))
+    return items
+
+
 def site_elements(b, scene):
     v = b['brief']; fp = Polygon(b['footprint']); plot = Polygon(b['plot']); xmin, ymin, xmax, ymax = plot.bounds; W, D = fp.bounds[2:]
     elems = [P(list(plot.exterior.coords), '#f0f3eb', INK, .35, 'A-SITE'), P(b['footprint'], '#dadfd6', INK, .4)]
-    elems.extend([P([(xmin - 1000, ymin - 4500), (xmax + 1000, ymin - 4500), (xmax + 1000, ymin - 200), (xmin - 1000, ymin - 200)], '#e8e8e2', LIGHT, .2, 'A-SITE'),
-                  T((xmin + xmax) / 2, ymin - 2600, 'ROAD / WIDTH TO BE SURVEYED', 230)])
+    if b.get('planning', {}).get('colonyContext') == 'tirumala-colony':
+        # East 9.0 m road (at local -Y) + Basketball Court Enclosure beyond
+        elems.extend([
+            P([(xmin - 1200, ymin - 9200), (xmax + 12200, ymin - 9200), (xmax + 12200, ymin - 200), (xmin - 1200, ymin - 200)], '#e8e8e2', LIGHT, .2, 'A-SITE'),
+            T((xmin + xmax) / 2, ymin - 4600, 'EAST ROAD — 9.0 m ROW (PRINCIPAL ARRIVAL / 40 FT FRONTAGE)', 210),
+            P([(xmin - 600, ymin - 13400), (xmax + 4000, ymin - 13400), (xmax + 4000, ymin - 9400), (xmin - 600, ymin - 9400)], '#dce5d8', '#6e8068', .22, 'A-SITE'),
+            T((xmin + xmax) / 2 + 1200, ymin - 11400, 'BASKETBALL-COURT ENCLOSURE & SCREENING PLANTING (E-01 / N-04)', 180),
+            # North 12.0 m road (at local +X) + Opposite Colony Garden & N-01 House beyond
+            P([(xmax + 200, ymin - 9200), (xmax + 12200, ymin - 9200), (xmax + 12200, ymax + 1200), (xmax + 200, ymax + 1200)], '#e8e8e2', LIGHT, .2, 'A-SITE'),
+            T(xmax + 6200, (ymin + ymax) / 2, 'NORTH ROAD — 12.0 m ROW (50 FT NORTH BOUNDARY)', 210),
+            P([(xmax + 12400, ymin - 1000), (xmax + 18200, ymin - 1000), (xmax + 18200, ymax + 800), (xmax + 12400, ymax + 800)], '#d6e3cb', '#6e8068', .22, 'A-SITE'),
+            T(xmax + 15300, (ymin + ymax) / 2, 'OPPOSITE NORTH COLONY GARDEN, PERGOLA & N-01 HOUSE BEYOND', 175),
+            # Two NW electrical feeder cabinets outside plot near NW corner (N-02)
+            P([(xmax + 280, ymax - 1650), (xmax + 780, ymax - 1650), (xmax + 780, ymax - 850), (xmax + 280, ymax - 850)], '#dcd8ce', INK, .2, 'A-SITE'),
+            P([(xmax + 260, ymax - 620), (xmax + 820, ymax - 620), (xmax + 820, ymax + 420), (xmax + 260, ymax + 420)], '#d6d2c6', INK, .2, 'A-SITE'),
+            T(xmax + 2650, ymax - 450, '2x NW FEEDER CABINETS (N-02)', 155),
+            # North streetlight pole between NE and NW corners (N-03)
+            C(xmax + 550, ymax - 4350, 180, INK, .25, 'A-SITE'),
+            T(xmax + 2550, ymax - 4350, 'STREETLIGHT POLE (N-03)', 155),
+            # Plot E-W midpoint line (X_geo = 7.620 m -> y_local = 7620 mm in Rev 8)
+            L((xmin, 7620 if _tirumala_rev8_meta(b) else 5780), (xmax, 7620 if _tirumala_rev8_meta(b) else 5780), ACCENT, .18, 'A-GRID', True),
+            T(xmax - 2800, (7620 if _tirumala_rev8_meta(b) else 5780) - 260, 'PLOT E-W MIDPOINT (X_geo = 7.620 m / 25 FT)', 145, 'A-GRID'),
+            # Explicit Geographic Corner Coordinates
+            T(xmin + 1450, ymax + 420, 'SW ORIGIN (0.000, 0.000) m', 145, 'A-SITE'),
+            T(xmin + 1450, ymin - 420, 'SE (15.240, 0.000) m', 145, 'A-SITE'),
+            T(xmax - 1450, ymax + 420, 'NW (0.000, 12.192) m', 145, 'A-SITE'),
+            T(xmax - 1450, ymin - 420, 'NE CORNER (15.240, 12.192) m', 145, 'A-SITE'),
+        ])
+        if _tirumala_rev8_meta(b):
+            u_site, o_site = _tirumala_rev8_plan_underlays(b, 0)
+            elems.extend(u_site[1:] + o_site[2:])
+    else:
+        elems.extend([P([(xmin - 1000, ymin - 4500), (xmax + 1000, ymin - 4500), (xmax + 1000, ymin - 200), (xmin - 1000, ymin - 200)], '#e8e8e2', LIGHT, .2, 'A-SITE'),
+                      T((xmin + xmax) / 2, ymin - 2600, 'ROAD / WIDTH TO BE SURVEYED', 230)])
     exterior = b.get('exterior', {})
     site_colors = {'path': '#e5e0d3', 'planting_bed': '#b9ad91', 'court': '#dcd6c8', 'lawn': '#d4e0c6', 'pebble_bed': '#d6d3cb'}
     for feature in exterior.get('landscape', {}).get('features', []):
@@ -452,7 +658,13 @@ def site_elements(b, scene):
         if txt:
             elems.append(T(x, y, txt, 170))
     boundary = exterior.get('landscape', {}).get('boundary', {})
-    if boundary:
+    if b.get('siteBoundary'):
+        elems.extend(enclosure_elements(b['siteBoundary'], b.get('vehicleRamp')))
+        for gate in b['siteBoundary']['gates']:
+            label='PEDESTRIAN / SLIDING' if gate['kind']=='pedestrian' else 'CAR / INWARD PAIR'
+            elems.append(T((gate['x0_mm']+gate['x1_mm'])/2,-1050,label,115,'A-GATE'))
+        elems.append(T(xmax+850,(ymin+ymax)/2,'NORTH ROAD',160,'A-SITE'))
+    elif boundary:
         for x0, x1, gate in gate_openings(boundary):
             if gate.get('operation') == 'sliding':
                 elems.append(L((x0, ymin + 170), (x1, ymin + 170), ACCENT, .45, 'A-GATE'))
@@ -494,9 +706,13 @@ def building_levels(b, top_extra=0):
     v = b['brief']; H = v['floor_height_mm']; plinth = v['plinth_mm']; n = b['storeys']
     marks = [(-plinth, 'NGL ±0.000'), (0, f'FFL +{plinth / 1000:.3f}')]
     marks += [(f * H, f'FFL +{(plinth + f * H) / 1000:.3f}') for f in range(1, n)]
-    marks.append((n * H, f'TOS +{(plinth + n * H) / 1000:.3f}'))
+    top = n * H
+    if b.get('planning', {}).get('g2Revision'):
+        r = next(r for r in b['roofs'] if r['floor'] == n - 1)
+        top = r['elevation'] + r['thickness']
+    marks.append((top, f'TOS +{(plinth + top) / 1000:.3f}'))
     if top_extra:
-        marks.append((n * H + top_extra, f'TOP +{(plinth + n * H + top_extra) / 1000:.3f}'))
+        marks.append((top + top_extra, f'TOP +{(plinth + top + top_extra) / 1000:.3f}'))
     return marks
 
 
@@ -504,6 +720,7 @@ def elevation_elements(b, direction, scene=None):
     from .rooftop import with_rooftop_objects
     b=with_rooftop_objects(b)
     v = b['brief']; W, D = Polygon(b['footprint']).bounds[2:]; H = v['floor_height_mm']; top = b['storeys'] * H; elems = []
+    if b.get('planning', {}).get('g2Revision'):top = building_levels(b)[-1][0]
     horizontal = direction in ('Front', 'Rear'); span = W if horizontal else D
     if b.get('planning',{}).get('custom'):
         from .plan_geometry import plate,roof
@@ -512,11 +729,16 @@ def elevation_elements(b, direction, scene=None):
             bb=Polygon(w['polygon']).bounds;a,c=bb[axis],bb[axis+2];z=w['floor']*H
             elems.append(P([(a,z),(c,z),(c,z+w['height']),(a,z+w['height'])],'#f2f0e7',INK,.2))
         for f in range(b['storeys']):
-            for geom,z in ((plate(b,f),f*H),(roof(b,f),(f+1)*H)):
+            slab_depth = 180 if b.get('planning', {}).get('g2Revision') else 150
+            roof_top = (f+1)*H
+            if b.get('planning', {}).get('g2Revision'):
+                r = next(r for r in b['roofs'] if r['floor']==f)
+                roof_top = r['elevation'] + (r['thickness'] if f==b['storeys']-1 else 0)
+            for geom,z in ((plate(b,f),f*H),(roof(b,f),roof_top)):
                 for part in get_parts(geom):
                     if part.geom_type!='Polygon':continue
                     bb=part.bounds;a,c=bb[axis],bb[axis+2]
-                    elems.append(P([(a,z-150),(c,z-150),(c,z),(a,z)],'#dadbd4',INK,.25))
+                    elems.append(P([(a,z-slab_depth),(c,z-slab_depth),(c,z),(a,z)],'#dadbd4',INK,.25))
     else:
         elems.append(P([(0, -v['plinth_mm']), (span, -v['plinth_mm']), (span, top + 600), (0, top + 600)], '#f2f0e7', INK, .25))
     elems.append(L((-1500, -v['plinth_mm']), (span + 1500, -v['plinth_mm']), INK, .5, 'A-SITE'))
@@ -573,7 +795,7 @@ def elevation_elements(b, direction, scene=None):
     elems.append(DIM((0, -v['plinth_mm']), (span, -v['plinth_mm']), 'x', -v['plinth_mm'] - 900, -1))
     elems.append(DIM((span, -v['plinth_mm']), (span, top), 'y', span + 900, -1))
     for f in range(b['storeys']):
-        elems.append(DIM((0, f * H), (0, (f + 1) * H), 'y', -700, 1))
+        elems.append(DIM((0, f * H), (0, top if f == b['storeys']-1 else (f + 1) * H), 'y', -700, 1))
     level_scale(elems, span + 2200, building_levels(b))
     return elems, bounds_of(elems)
 
@@ -592,7 +814,155 @@ def section_cut(b):
     return round(x)
 
 
+def _tirumala_living_section_elements(b, scene):
+    """South-to-North (x = 0..12192 mm) projected stair, upper landing, double-height living (~23 ft clear),
+    rooflight, and care suite (~11 ft clear) section, combined with 3D mesh-plane intersections."""
+    import trimesh
+    ft = lambda f: round(f * 304.8)
+    elems = []
+    # Plot & ground datum
+    elems.append(L((-800, -300), (13000, -300), INK, .45, 'A-SITE'))
+    elems.append(P([(ft(0.5), -300), (ft(39.5), -300), (ft(39.5), 0), (ft(0.5), 0)], '#e7e2d4', INK, .25, 'A-SECT'))
+    # Stair & hall zone (x = 0.5..16.25 ft, z = 0..7010 mm)
+    elems.append(P([(ft(0.5), 0), (ft(16.25), 0), (ft(16.25), ft(23)), (ft(0.5), ft(23))], '#fafaf5', INK, .22, 'A-SECT'))
+    # Double-height living void (x = 16.25..23 ft, z = 0..7010 mm, ~23 ft clear)
+    elems.append(P([(ft(16.25), 0), (ft(23), 0), (ft(23), ft(23)), (ft(16.25), ft(23))], '#f4f6f1', INK, .25, 'A-SECT'))
+    # Rooflight shaft & glazing at x = 18.5..22.5 ft, z = 23 ft (7010 mm)
+    elems.append(P([(ft(18.5), ft(2)), (ft(22.5), ft(2)), (ft(22.5), ft(22.8)), (ft(18.5), ft(22.8))], '#eef5f4', 'none', .1, 'A-WIND'))
+    elems.append(L((ft(18.5), ft(23)), (ft(22.5), ft(23)), GLASS, .45, 'A-WIND'))
+    rl = Polygon(b['planning']['tirumalaMeta']['canonicalZones']['rooflight']).bounds
+    light_size = f'{(rl[2]-rl[0])/304.8:.0f} x {(rl[3]-rl[1])/304.8:.0f}'
+    elems.append(T(ft(20.5), ft(23.8), f'ROOFLIGHT ({light_size} FT)', 155, 'A-WIND'))
+    # Care suite (x = 23.5..36 ft, z = 0..3353 mm (~11 ft clear), upper slab z = 3353..3658 mm)
+    elems.append(P([(ft(23.5), 0), (ft(36), 0), (ft(36), ft(11)), (ft(23.5), ft(11))], '#f6f3ea', INK, .25, 'A-SECT'))
+    elems.append(P([(ft(23.5), ft(11)), (ft(36), ft(11)), (ft(36), ft(12)), (ft(23.5), ft(12))], '#dadbd4', INK, .25, 'A-SECT'))
+    elems.append(P([(ft(23.5), ft(12)), (ft(36), ft(12)), (ft(36), ft(23)), (ft(23.5), ft(23))], '#fbfbf8', INK, .2, 'A-SECT'))
+    # Full-height North glazing on Care (x = 36 ft) & Hall-side sliding glass (x = 23.25 ft)
+    elems.append(L((ft(35.92), 0), (ft(35.92), ft(11)), GLASS, .35, 'A-WIND'))
+    elems.append(L((ft(36.08), 0), (ft(36.08), ft(11)), GLASS, .35, 'A-WIND'))
+    elems.append(L((ft(23.25), 0), (ft(23.25), ft(11)), GLASS, .32, 'A-DOOR', True))
+    # 3 ft clear North garden passage (x = 36.5..39.5 ft)
+    elems.append(P([(ft(36.5), 0), (ft(39.5), 0), (ft(39.5), ft(1.2)), (ft(36.5), ft(1.2))], '#dce8cf', '#6f8762', .2, 'A-LAND'))
+    # Upper stair arrival slab (x = 12.5..16 ft, z = 11..12 ft) & guard/wall at x = 16 ft stopping outside void
+    elems.append(P([(ft(12.5), ft(11)), (ft(16), ft(11)), (ft(16), ft(12)), (ft(12.5), ft(12))], '#dadbd4', INK, .28, 'A-STAIR'))
+    elems.append(L((ft(16), ft(12)), (ft(16), ft(15.5)), INK, .3, 'A-STAIR'))
+    elems.append(L((ft(12.5), ft(15.5)), (ft(16), ft(15.5)), INK, .22, 'A-STAIR'))
+    # South turning landing (x = 0.5..4 ft, z = 6 ft = 1829 mm) & parallel flights (20 risers @ 182.88 mm, 9 treads @ 287.87 mm)
+    elems.append(P([(ft(0.5), ft(5.65)), (ft(4), ft(5.65)), (ft(4), ft(6.0)), (ft(0.5), ft(6.0))], '#dadbd4', INK, .28, 'A-STAIR'))
+    dx = ft(8.5) / 9.0
+    dz = ft(6.0) / 10.0
+    # First flight climbing SOUTH (x = 12.5 -> 4 ft, z = 0 -> 6 ft)
+    elems.append(L((ft(12.5), 0), (ft(12.5), dz), INK, .22, 'A-STAIR'))
+    for i in range(9):
+        ax = ft(12.5) - i * dx; bx = ax - dx; z = (i + 1) * dz
+        elems.append(L((ax, z), (bx, z), INK, .22, 'A-STAIR'))
+        elems.append(L((bx, z), (bx, z + dz), INK, .22, 'A-STAIR'))
+    # Return flight climbing NORTH (x = 4 -> 12.5 ft, z = 6 -> 12 ft)
+    elems.append(L((ft(4), ft(6)), (ft(4), ft(6) + dz), INK, .22, 'A-STAIR'))
+    for i in range(9):
+        cx = ft(4) + i * dx; ex = cx + dx; zz = ft(6) + (i + 1) * dz
+        elems.append(L((cx, zz), (ex, zz), INK, .22, 'A-STAIR'))
+        elems.append(L((ex, zz), (ex, zz + dz), INK, .22, 'A-STAIR'))
+    # Care bed (x = 26.25..33.25 ft, head South at 26.25 ft, feet North at 33.25 ft) + North sightline ray
+    elems.append(P([(ft(26.25), 0), (ft(33.25), 0), (ft(33.25), ft(2.0)), (ft(26.25), ft(2.0))], '#f2ece0', INK, .2, 'A-FURN'))
+    elems.append(P([(ft(26.5), ft(2.0)), (ft(27.6), ft(2.0)), (ft(27.6), ft(2.5)), (ft(26.5), ft(2.5))], '#e5dec9', INK, .18, 'A-FURN'))
+    elems.append(L((ft(27.2), ft(2.7)), (ft(39.0), ft(2.7)), GLASS, .22, 'A-ANNO', True))
+    # Labels & dimensions
+    elems.append(T(ft(7.5), ft(18.5), 'COMPACT STAIR (12 x 7.5 FT): SOUTH <- UP / RETURN -> NORTH', 140, 'A-STAIR'))
+    elems.append(T(ft(7.5), ft(17.1), '20 RISERS @ 182.9 mm / 9 TREADS PER FLIGHT @ 287.9 mm', 120, 'A-STAIR'))
+    elems.append(T(ft(14.25), ft(16.1), 'UPPER LANDING (OUTSIDE VOID)', 120, 'A-STAIR'))
+    elems.append(T(ft(19.6), ft(16.8), 'DOUBLE-HEIGHT LIVING VOID', 155, 'A-ANNO'))
+    elems.append(T(ft(19.6), ft(15.0), '~23 FT (7010 mm) CLEAR', 145, 'A-ANNO'))
+    elems.append(T(ft(19.6), ft(7.5), 'FAMILY / LIVING HALL (+0.300 m)', 135, 'A-ANNO'))
+    elems.append(T(ft(29.7), ft(6.2), 'CARE SUITE (~11 FT / 3353 mm CLEAR)', 140, 'A-ANNO'))
+    elems.append(T(ft(29.7), ft(3.6), 'BED 7x3.5 FT (HEAD SOUTH -> FEET NORTH)', 120, 'A-FURN'))
+    elems.append(T(ft(29.7), ft(17.5), 'UPPER FLOOR ACCOMMODATION', 135, 'A-ANNO'))
+    elems.append(T(ft(38.0), ft(3.5), '3 FT NORTH GARDEN', 115, 'A-LAND'))
+    elems.append(DIM((ft(21.5), 0), (ft(21.5), ft(23)), 'y', ft(21.5), -1))
+    elems.append(DIM((ft(34.5), 0), (ft(34.5), ft(11)), 'y', ft(34.5), -1))
+    elems.append(DIM((ft(0.5), -300), (ft(39.5), -300), 'x', -1100, -1))
+    level_scale(elems, ft(40) + 1800, [
+        (-300, 'CAR BAY / NGL ±0.000'),
+        (0, 'HOUSE / COURT / VERANDA FFL +0.300'),
+        (ft(6), 'SOUTH LANDING +2.129'),
+        (ft(11), 'ORDINARY CEILING +3.653 (~11 FT CLEAR)'),
+        (ft(12), 'FIRST FLOOR FFL +3.958 (12 FT FLOOR-TO-FLOOR)'),
+        (ft(23), 'DOUBLE-HEIGHT LIVING CEILING +7.310 (~23 FT CLEAR)'),
+    ])
+    return elems, bounds_of(elems), round(ft(19.5) / 1000, 2)
+
+
+def _tirumala_entry_section_elements(b):
+    """East-to-West front entrance steps (+300 mm continuous house/court/porch/veranda datum)
+    and South-to-North Front Court (+300 mm) vs. Lower Car Bay (±0 mm) section."""
+    ft = lambda f: round(f * 304.8)
+    rev8 = _tirumala_rev8_meta(b) or {}
+    opt = rev8.get('option', 'A')
+    elems = []
+    # --- Top profile: East-to-West (y = 0..45 ft mapped horizontally 0..13716 mm, vertical rise 6x enlarged for legibility) ---
+    z_top = 4200
+    vscale = 4  # 300 mm -> 1200 drawing units for unmistakable step legibility, with true mm dimensions labeled
+    elems.append(T(6800, z_top + 2400, f'PROFILE 1 (EAST -> WEST): FRONT ENTRANCE STEPS (2 x 150 mm) TO CONTINUOUS +300 mm HOUSE / PORCH / VERANDA DATUM (OPTION {opt})', 165, 'A-ANNO'))
+    elems.append(L((-600, z_top), (ft(46), z_top), LIGHT, .2, 'A-SITE', True))
+    # Step 1 at y = 0.5 ft (152 mm), Step 2 at y = 1.5 ft (457 mm), Court y = 1.5..7.25 ft, Porch y = 7.5..10.5 ft, House y = 10.5..39 ft, Veranda y = 39..44.5 ft
+    pts = [
+        (0, z_top),
+        (ft(0.5), z_top),
+        (ft(0.5), z_top + 150 * vscale),
+        (ft(1.5), z_top + 150 * vscale),
+        (ft(1.5), z_top + 300 * vscale),
+        (ft(44.5), z_top + 300 * vscale),
+        (ft(44.5), z_top),
+    ]
+    elems.append(P(pts, '#eee9dc', INK, .3, 'A-SECT'))
+    # Zone dividers along the flush +300 mm platform
+    for x_div in (ft(7.25), ft(10.5), ft(38.5)):
+        elems.append(L((x_div, z_top + 300 * vscale - 180), (x_div, z_top + 300 * vscale + 450), ACCENT, .2, 'A-SECT', True))
+    elems.append(T(ft(0.0), z_top - 360, 'EAST ROAD / NGL ±0.000 m', 135, 'A-LEVL'))
+    elems.append(T(ft(1.0), z_top + 150 * vscale + 260, '2 x 150 mm RISES (INTERMEDIATE TREAD +150 mm)', 125, 'A-STAIR'))
+    elems.append(T(ft(4.4), z_top + 300 * vscale + 260, 'FRONT COURT (5.5 FT STANDING / +300 mm)', 130, 'A-SITE'))
+    elems.append(T(ft(9.0), z_top + 300 * vscale + 620, 'SHALLOW PORCH (3 FT / +300 mm)', 125, 'A-SITE'))
+    elems.append(T(ft(24.5), z_top + 300 * vscale + 260, 'DRAWING / FAMILY / CARE ROOMS (FLUSH +300 mm — NO STEP)', 140, 'A-FLOR'))
+    elems.append(T(ft(41.5), z_top + 300 * vscale + 260, 'WEST VERANDA (+300 mm)', 130, 'A-FLOR'))
+
+    # --- Bottom profile: South-to-North across Frontage (x = 0.5..39.5 ft -> 152..12040 mm) ---
+    z_bot = 0
+    elems.append(T(6096, z_bot + 2500, 'PROFILE 2 (SOUTH -> NORTH): RAISED FRONT COURT / CARE (+300 mm) VS. LOWER CAR BAY (10.5 x 19 FT AT ±0.000 m)', 165, 'A-ANNO'))
+    elems.append(L((-600, z_bot), (12800, z_bot), INK, .35, 'A-SITE'))
+    # Raised court/house x = 0.5..28.5 ft at +300 mm
+    elems.append(P([
+        (ft(0.5), z_bot),
+        (ft(28.5), z_bot),
+        (ft(28.5), z_bot + 300 * vscale),
+        (ft(0.5), z_bot + 300 * vscale),
+    ], '#eee9dc', INK, .3, 'A-SECT'))
+    # Lower Car Bay x = 29..39.5 ft at ±0 mm
+    elems.append(P([
+        (ft(28.5), z_bot - 120),
+        (ft(39.5), z_bot - 120),
+        (ft(39.5), z_bot),
+        (ft(28.5), z_bot),
+    ], '#dcdbd3', INK, .25, 'A-SITE'))
+    # Reference car (6.5 ft wide at x = 31..37.5 ft, 2 ft side gaps)
+    car_x0, car_x1 = ft(31.0), ft(37.5)
+    elems.append(P([
+        (car_x0, z_bot + 180),
+        (car_x1, z_bot + 180),
+        (car_x1 - 180, z_bot + 1350),
+        (car_x0 + 180, z_bot + 1350),
+    ], '#f5f7f6', INK, .25, 'A-FURN'))
+    elems.append(C(car_x0 + 320, z_bot + 180, 180, INK, .22, 'A-FURN'))
+    elems.append(C(car_x1 - 320, z_bot + 180, 180, INK, .22, 'A-FURN'))
+    elems.append(T(ft(14.5), z_bot + 300 * vscale + 280, 'FRONT COURT / DRAWING / CARE (+300 mm)', 145, 'A-FLOR'))
+    elems.append(T(ft(34.25), z_bot + 1550, 'CAR BAY 10.5 x 19 FT (±0.000 m) / CAR 6.5 x 15.5 FT (2 FT SIDE GAPS)', 130, 'A-SITE'))
+    elems.append(DIM((ft(0.5), z_bot - 450), (ft(28.5), z_bot - 450), 'x', z_bot - 650, -1))
+    elems.append(DIM((ft(29.0), z_bot - 450), (ft(39.5), z_bot - 450), 'x', z_bot - 650, -1))
+    return elems, bounds_of(elems)
+
+
 def section_elements(b, scene):
+    if _tirumala_rev8_meta(b) and b['planning'].get('tirumalaRevision',8)<10:
+        return _tirumala_living_section_elements(b, scene)
     import trimesh
     cut = section_cut(b) / 1000
     elems = []
@@ -605,9 +975,10 @@ def section_elements(b, scene):
         for line in trimesh.intersections.mesh_plane(m, plane_normal=[1, 0, 0], plane_origin=[cut, 0, 0]):
             elems.append(L((line[0, 1] * 1000, line[0, 2] * 1000), (line[1, 1] * 1000, line[1, 2] * 1000), INK, .25, 'A-SECT'))
     v = b['brief']; D = Polygon(b['footprint']).bounds[3]; H = v['floor_height_mm']; top = b['storeys'] * H
+    if b.get('planning', {}).get('g2Revision'):top = building_levels(b)[-1][0]
     elems.append(L((-1500, -v['plinth_mm']), (D + 1500, -v['plinth_mm']), INK, .5, 'A-SITE'))
     for f in range(b['storeys']):
-        elems.append(DIM((D, f * H), (D, (f + 1) * H), 'y', D + 700, -1))
+        elems.append(DIM((D, f * H), (D, top if f == b['storeys']-1 else (f + 1) * H), 'y', D + 700, -1))
     elems.append(DIM((D, -v['plinth_mm']), (D, top), 'y', D + 1300, -1))
     level_scale(elems, D + 2600, building_levels(b))
     return elems, bounds_of(elems), cut
@@ -696,9 +1067,17 @@ def make_sheets(b, scene, report):
             ['Wall and opening heights derive from the building model; levels in metres above NGL.', 'This elevation records the primary wall plane.',
              'Decorative facade accessories are coordinated in 3D, not fully detailed here.', 'No cladding anchors or construction joints are designed.'])
     e, bb, cut = section_elements(b, scene)
-    add('A-301', f'Section A-A / x = {cut:.2f} m', e, bb, ['Actual mesh-plane intersections, not a generic stair illustration.',
+    add('A-301', f'Section A-A / x = {cut:.2f} m (Double-height living & stair)' if _tirumala_rev8_meta(b) else f'Section A-A / x = {cut:.2f} m', e, bb, [
+        'South-to-north projected stair, upper landing (outside void), ~23 ft double-height living void and ~11 ft care suite.' if _tirumala_rev8_meta(b) else 'Actual mesh-plane intersections, not a generic stair illustration.',
         'Cut objects: walls, floor slabs, roof, stair and plinth. Levels in metres above NGL.', 'No reinforcement or foundation design is represented.',
         'Stair headroom and handrails require a separate professional check.'])
+    if _tirumala_rev8_meta(b):
+        e_lvl, bb_lvl = _tirumala_entry_section_elements(b)
+        add('A-302', 'Section B-B / Entrance steps, +300 mm house datum & ±0 mm car bay', e_lvl, bb_lvl, [
+            'Two 150 mm entrance rises lead to a continuous +300 mm floor across front court, shallow porch, rooms and veranda.',
+            'No additional step occurs court-to-porch-to-house. The 10.5 x 19 ft car bay remains at ±0.000 m (300 mm lower).',
+            'Vertical rise enlarged in schematic profile for step legibility; annotated millimetre levels govern.',
+            'Entrance steps are not wheelchair accessible; step-free care arrival requires portable ramp or regraded threshold.'])
     add('A-601', 'Door, window and room schedules', [P([(0, 0), (1, 0), (1, 1)], 'none', PAPER, .01)], (0, 0, 100, 100),
         ['Nominal structural opening sizes; frames, tolerances and clear passage widths need detailing.',
          'Room sizes are clear dimensions of the principal rectangle between finished wall faces.'], schedule=schedule_tables(b, report))
@@ -796,9 +1175,20 @@ def pdf_sheets(sheets, b, report):
     c.setSubject('planHash:'+b.get('planHash','legacy')); c.setKeywords('FloorForge planHash:'+b.get('planHash','legacy'))
     mm = 72 / 25.4
 
+    def pdf_text(value):
+        value = _clean(value)
+        if b.get('planning', {}).get('g2Revision'):
+            # Built-in Helvetica has no eighth-fraction glyphs. Keep the exact
+            # Tirumala 5 dimensions readable in portable PDF viewers.
+            for glyph, fraction in [('⅛', ' 1/8'), ('¼', ' 1/4'), ('⅜', ' 3/8'),
+                                    ('½', ' 1/2'), ('⅝', ' 5/8'), ('¾', ' 3/4'), ('⅞', ' 7/8')]:
+                value = value.replace(glyph, fraction)
+            value = value.replace('′', "'").replace('″', '"').replace('↑', 'UP').replace('↓', 'DOWN').replace('→', '>')
+        return value
+
     def text(x, y, t, size=3, anchor='start', rot=0):
         c.setFillColor(HexColor(INK)); c.setFont('Helvetica', size * mm)
-        t = _clean(t)
+        t = pdf_text(t)
         if rot:
             c.saveState(); c.translate(x * mm, y * mm); c.rotate(rot); c.drawCentredString(0, 0, t); c.restoreState()
         elif anchor == 'middle':
@@ -854,7 +1244,7 @@ def pdf_sheets(sheets, b, report):
                     c.circle(x, y, e['r'] / scale * mm, stroke=1, fill=0)
                 else:
                     x, y = point(e['x'], e['y']); size = max(1.45, e['size'] / scale)
-                    c.setFont('Helvetica', size * mm); c.setFillColor(HexColor(INK)); t = _clean(e['text'])
+                    c.setFont('Helvetica', size * mm); c.setFillColor(HexColor(INK)); t = pdf_text(e['text'])
                     if e.get('rot'):
                         c.saveState(); c.translate(x, y); c.rotate(e['rot']); c.drawCentredString(0, 0, t); c.restoreState()
                     elif e['anchor'] == 'middle':

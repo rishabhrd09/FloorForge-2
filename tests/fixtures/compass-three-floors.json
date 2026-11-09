@@ -1,0 +1,179 @@
+{
+  "project": {
+    "schema": "floorforge.project/0.5",
+    "brief": {
+      "width_mm": 14000,
+      "depth_mm": 18000,
+      "front_mm": 3000,
+      "rear_mm": 1200,
+      "left_mm": 1000,
+      "right_mm": 1000,
+      "bedrooms": 3,
+      "storeys": 3,
+      "roof_access": false
+    }
+  },
+  "compass": {
+    "schema": "floorforge.compass-input/1",
+    "grid": {
+      "rows": 4,
+      "cols": 4,
+      "basis": "buildable-envelope",
+      "rowOrigin": "front"
+    },
+    "floors": [
+      {
+        "id": "floor-0",
+        "splits": []
+      },
+      {
+        "id": "floor-1",
+        "splits": []
+      },
+      {
+        "id": "floor-2",
+        "splits": []
+      }
+    ],
+    "rooms": [
+      {
+        "id": "f0-stairs",
+        "name": "stairs",
+        "kind": "stair",
+        "floorId": "floor-0",
+        "regions": [
+          "0:0",
+          "1:0"
+        ]
+      },
+      {
+        "id": "f0-hall",
+        "name": "hall",
+        "kind": "living",
+        "floorId": "floor-0",
+        "regions": [
+          "0:1",
+          "0:2",
+          "1:1",
+          "1:2",
+          "1:3",
+          "2:0",
+          "2:1",
+          "2:2",
+          "2:3"
+        ]
+      },
+      {
+        "id": "f0-bed",
+        "name": "bed",
+        "kind": "bedroom",
+        "floorId": "floor-0",
+        "regions": [
+          "3:0",
+          "3:1",
+          "3:2",
+          "3:3"
+        ]
+      },
+      {
+        "id": "f0-kitchen",
+        "name": "kitchen",
+        "kind": "kitchen",
+        "floorId": "floor-0",
+        "regions": [
+          "0:3"
+        ]
+      },
+      {
+        "id": "f1-stairs",
+        "name": "stairs",
+        "kind": "stair",
+        "floorId": "floor-1",
+        "regions": [
+          "0:0",
+          "1:0"
+        ]
+      },
+      {
+        "id": "f1-hall",
+        "name": "hall",
+        "kind": "hall",
+        "floorId": "floor-1",
+        "regions": [
+          "0:1",
+          "0:2",
+          "0:3",
+          "1:1",
+          "1:2",
+          "1:3",
+          "2:0",
+          "2:1",
+          "2:2",
+          "2:3"
+        ]
+      },
+      {
+        "id": "f1-bed",
+        "name": "bed",
+        "kind": "bedroom",
+        "floorId": "floor-1",
+        "regions": [
+          "3:0",
+          "3:1",
+          "3:2",
+          "3:3"
+        ]
+      },
+      {
+        "id": "f2-stairs",
+        "name": "stairs",
+        "kind": "stair",
+        "floorId": "floor-2",
+        "regions": [
+          "0:0",
+          "1:0"
+        ]
+      },
+      {
+        "id": "f2-hall",
+        "name": "hall",
+        "kind": "hall",
+        "floorId": "floor-2",
+        "regions": [
+          "0:1",
+          "0:2",
+          "0:3",
+          "1:1",
+          "1:2",
+          "1:3",
+          "2:0",
+          "2:1",
+          "2:2",
+          "2:3"
+        ]
+      },
+      {
+        "id": "f2-bed",
+        "name": "bed",
+        "kind": "bedroom",
+        "floorId": "floor-2",
+        "regions": [
+          "3:0",
+          "3:1",
+          "3:2",
+          "3:3"
+        ]
+      }
+    ],
+    "stairLinks": [
+      {
+        "id": "linked-core",
+        "roomIds": [
+          "f0-stairs",
+          "f1-stairs",
+          "f2-stairs"
+        ]
+      }
+    ]
+  }
+}

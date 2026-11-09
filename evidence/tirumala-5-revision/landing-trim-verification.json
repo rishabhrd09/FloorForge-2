@@ -1,0 +1,511 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05",
+  "planHash": "19c57daf2178155fd509feca85b124596d26a56740d2123033f5c7e0dba6d796",
+  "generatedAt": "2026-11-05T14:15:59.113137+00:00",
+  "scope": "Second-floor unused east/window-side passage tail trim and visible continuous metal-and-teak guard only.",
+  "status": "passed",
+  "passed": true,
+  "coordinateSystem": "+X north, +Y west; plan coordinates in mm; scene coordinates in metres.",
+  "requestedCutoutBoundsMm": [
+    150,
+    4875,
+    1675,
+    7800
+  ],
+  "inputs": {
+    "before": {
+      "building.json": {
+        "path": "/tmp/t5-gallery-before/building.json",
+        "sha256": "caf7e8c824fb8555532bd550d9e0fd73c0bd7889d3edb5a863733697d75e305e",
+        "modifiedAt": "2026-11-05T13:33:26.596733+00:00"
+      },
+      "scene.json": {
+        "path": "/tmp/t5-gallery-before/scene.json",
+        "sha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+        "modifiedAt": "2026-11-05T13:33:26.597465+00:00"
+      },
+      "manifest.json": {
+        "path": "/tmp/t5-gallery-before/manifest.json",
+        "sha256": "77aeb2c6dfa85cd8702407ef9824286e9779046180393af826ca968c0cd7ff94",
+        "modifiedAt": "2026-11-05T13:33:26.597751+00:00"
+      }
+    },
+    "after": {
+      "building.json": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/building.json",
+        "sha256": "b4f366d472c1494569ddd4c14b2a53576c07d0818b28c1fd8baf04e05ca10137",
+        "modifiedAt": "2026-11-05T14:08:00.379192+00:00"
+      },
+      "scene.json": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+        "sha256": "b2d6c8bb1a4659157964260e26d2a24ab00626a43fd9f366cc10956754acb66c",
+        "modifiedAt": "2026-11-05T14:08:00.379671+00:00"
+      },
+      "manifest.json": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/manifest.json",
+        "sha256": "f7ff200c4e3b044582b5452b3d89d995c0261a614a81aaaca17a8c165bab4d43",
+        "modifiedAt": "2026-11-05T14:08:00.868626+00:00"
+      }
+    }
+  },
+  "areas": {
+    "beforeLandingSqFt": 135.89097837917896,
+    "afterLandingSqFt": 124.2861374611638,
+    "removedLandingSqFt": 11.60484091801517,
+    "removedLandingM2": 1.078125,
+    "earlierStackedGalleryLandingSqFt": 87.06555781167117,
+    "netGainVsEarlierStackedGallerySqFt": 37.220579649492635,
+    "secondTerraceSqFt": 477.178899635577,
+    "familyHallSqFt": 294.6038880966651,
+    "rooflightApertureSqFt": 61.73775368384071
+  },
+  "checks": [
+    {
+      "id": "canonical_plan_unchanged",
+      "passed": true,
+      "canonicalPlanSha256": "8aa6135b563cb4bc9b4ff9c002712d709f755133b023922d6af5b023f80cf08d"
+    },
+    {
+      "id": "first_floor_plan_unchanged_except_revision",
+      "passed": true,
+      "excludedMetadata": [
+        "revision"
+      ]
+    },
+    {
+      "id": "floor_0_spaces_unchanged",
+      "passed": true
+    },
+    {
+      "id": "floor_0_floor_plate_unchanged",
+      "passed": true
+    },
+    {
+      "id": "floor_0_rendered_geometry_unchanged",
+      "passed": true,
+      "beforeNodeCount": 1181,
+      "afterNodeCount": 1181,
+      "referencedAssetsIdentical": true,
+      "normalization": "Ignore only generated object-NNNNN id/owner numbering; compare all other node fields and referenced asset bodies.",
+      "excludedNodes": []
+    },
+    {
+      "id": "floor_1_spaces_unchanged",
+      "passed": true
+    },
+    {
+      "id": "floor_1_floor_plate_unchanged",
+      "passed": true
+    },
+    {
+      "id": "floor_1_rendered_geometry_unchanged",
+      "passed": true,
+      "beforeNodeCount": 618,
+      "afterNodeCount": 618,
+      "referencedAssetsIdentical": true,
+      "normalization": "Ignore only generated object-NNNNN id/owner numbering; compare all other node fields and referenced asset bodies.",
+      "excludedNodes": [
+        "s2-soffit-0"
+      ]
+    },
+    {
+      "id": "building_stairs_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_guards_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_openings_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_walls_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_columns_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_shafts_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_counters_unchanged",
+      "passed": true
+    },
+    {
+      "id": "building_furnitureLayout_unchanged",
+      "passed": true
+    },
+    {
+      "id": "second_floor_stairs_and_routes_unchanged",
+      "passed": true
+    },
+    {
+      "id": "atrium_and_rooflight_plan_unchanged",
+      "passed": true
+    },
+    {
+      "id": "highest_opaque_roof_unchanged",
+      "passed": true
+    },
+    {
+      "id": "highest_roof_and_rooflight_rendered_geometry_unchanged",
+      "passed": true,
+      "beforeNodeCount": 18,
+      "afterNodeCount": 18,
+      "referencedAssetsIdentical": true
+    },
+    {
+      "id": "solar_rendered_geometry_unchanged",
+      "passed": true,
+      "beforeNodeCount": 300,
+      "afterNodeCount": 300,
+      "referencedAssetsIdentical": true
+    },
+    {
+      "id": "solar_metadata_unchanged",
+      "passed": true
+    },
+    {
+      "id": "s2-hall_geometry_unchanged",
+      "passed": true,
+      "symmetricDifferenceAreaMm2": 0.0,
+      "areaSqFt": 294.6038880966651
+    },
+    {
+      "id": "s2-terrace_geometry_unchanged",
+      "passed": true,
+      "symmetricDifferenceAreaMm2": 0.0,
+      "areaSqFt": 477.178899635577
+    },
+    {
+      "id": "landing_is_exact_requested_trim",
+      "passed": true,
+      "removedAreaMm2": 1078125.0,
+      "addedAreaMm2": 0.0
+    },
+    {
+      "id": "second_slab_is_exact_requested_trim",
+      "passed": true,
+      "removedAreaMm2": 1078125.0,
+      "addedAreaMm2": 0.0
+    },
+    {
+      "id": "continuous_new_end_and_atrium_guard",
+      "passed": true,
+      "guardSegmentsMm": [
+        [
+          [
+            1675,
+            4875
+          ],
+          [
+            1675,
+            6075
+          ]
+        ],
+        [
+          [
+            1675,
+            6075
+          ],
+          [
+            5000,
+            6075
+          ]
+        ],
+        [
+          [
+            5000,
+            6075
+          ],
+          [
+            5000,
+            7800
+          ]
+        ],
+        [
+          [
+            5000,
+            7800
+          ],
+          [
+            5150,
+            7800
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "guard_base_split_into_closed_meshes",
+      "passed": true,
+      "baseNodes": [
+        "s2-landing-guard-base-0",
+        "s2-landing-guard-base-1"
+      ],
+      "picketCount": 61,
+      "handrailCount": 4
+    },
+    {
+      "id": "current_manifest_matches_files",
+      "passed": true,
+      "missing": [],
+      "mismatched": [],
+      "fileCount": 104
+    },
+    {
+      "id": "baseline_manifest_binds_baseline_inputs",
+      "passed": true
+    },
+    {
+      "id": "editable_package_matches_current_manifest",
+      "passed": true,
+      "mismatched": []
+    },
+    {
+      "id": "delivery_references_and_images_valid",
+      "passed": true,
+      "missing": [],
+      "undecodable": [],
+      "imageCount": 16
+    },
+    {
+      "id": "delivery_revision_matches_current_model",
+      "passed": true,
+      "revision": "tirumala-5-g2-skylit-atrium-guarded-landing-2026-11-05"
+    },
+    {
+      "id": "specification_landing_metrics_match",
+      "passed": true
+    },
+    {
+      "id": "responsive_qa_binds_exact_final_inputs",
+      "passed": true,
+      "widths": [
+        1440,
+        390
+      ]
+    },
+    {
+      "id": "final_upper_runtime_passed",
+      "passed": true,
+      "checkCount": 103,
+      "routeLegCount": 74,
+      "landingEndGuardTestCount": 5,
+      "finished": "2026-11-05T14:12:35.867Z"
+    },
+    {
+      "id": "current_delivery_qa_metadata",
+      "passed": true,
+      "qaPath": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/delivery-qa.json"
+    },
+    {
+      "id": "old_complete_route_explicitly_historical",
+      "passed": true,
+      "originalRevision": "tirumala-5-g2-skylit-atrium-2026-11-05"
+    }
+  ],
+  "scopeNotes": [
+    "The first-floor occupied plan and floor plate are unchanged. The underside of the removed second-floor slab is represented by roof-floor-1 and scene node s2-soffit-0, so those surfaces correctly change with the approved trim.",
+    "Second-floor terrace polygon vertex order and triangulation may change; geometric equality and zero symmetric-difference area confirm that its footprint is unchanged.",
+    "Auto-generated object-NNNNN identifiers shift after adding guard parts. Lower-floor rendered node checks ignore only that numbering while comparing every other node field and all referenced mesh asset bodies."
+  ],
+  "runtimeEvidence": {
+    "finalUpperRoute": {
+      "file": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision-upper/runtime-acceptance.json",
+        "sha256": "d44e6d8e38da84a89d3d0215ff3c28cf0774733f7eba73b234020fa0956d6121",
+        "modifiedAt": "2026-11-05T14:12:35.868432+00:00"
+      },
+      "mode": "first-floor arrival → second → first",
+      "passed": true,
+      "checkCount": 103,
+      "routeLegCount": 74,
+      "guardTests": [
+        {
+          "name": "South endpoint blocks ordinary walking",
+          "passed": true,
+          "minimumHeightM": 7.015999794006348,
+          "minimumXM": 1.9800000381469727
+        },
+        {
+          "name": "South endpoint blocks running",
+          "passed": true,
+          "minimumHeightM": 7.015999794006348,
+          "minimumXM": 1.9800000381469727
+        },
+        {
+          "name": "South endpoint blocks crouched walking",
+          "passed": true,
+          "minimumHeightM": 7.015999794006348,
+          "minimumXM": 1.951630913297799
+        },
+        {
+          "name": "Atrium-side endpoint corner blocks diagonal running",
+          "passed": true,
+          "minimumHeightM": 7.015999794006348,
+          "minimumXM": 1.9800000381469727
+        },
+        {
+          "name": "Window-side endpoint corner blocks diagonal crouching",
+          "passed": true,
+          "minimumHeightM": 7.015999794006348,
+          "minimumXM": 1.951931336600418
+        }
+      ],
+      "binding": "The runtime report records the current planHash and ran after the final build; its format does not record scene content hashes."
+    },
+    "earlierFullRoute": {
+      "file": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/evidence/tirumala-5-revision/runtime-acceptance.json",
+        "sha256": "29bdc513c3220e86d8a232703ad38386050ef77dfd3b97a89191542e2b7556e6",
+        "modifiedAt": "2026-11-05T13:53:16.434273+00:00"
+      },
+      "mode": "full gate-to-roof round trip",
+      "passed": true,
+      "checkCount": 169,
+      "routeLegCount": 123,
+      "limitation": "Completed before the final guard-base split into closed polygons. Same planHash and visual footprint; final topology is covered by the later upper-route run."
+    },
+    "earlierFullCaptureChecks": {
+      "file": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/browser-checks.json",
+        "sha256": "0278865e5b004e3796300bbe3a75d80596710234b7d4d09647214b38b027f878",
+        "modifiedAt": "2026-11-05T14:01:58.862282+00:00"
+      },
+      "passed": true,
+      "checkCount": 74,
+      "limitation": "Full WebGL captures completed before the final guard-base split into closed polygons; this report does not relabel them as captures of the exact final mesh topology."
+    },
+    "responsiveQa": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/responsive-qa.json",
+      "sha256": "85477a6f70f4cbee4d109a43e9e25892784fc2ab7d21075c88cb50869a4bc2c8",
+      "modifiedAt": "2026-11-05T14:11:59.910891+00:00"
+    }
+  },
+  "delivery": {
+    "html": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/index.html",
+      "sha256": "b3a397bae3c8200fe57b8f06bac60e9145ffd26928a1454c647063442555a88e",
+      "modifiedAt": "2026-11-05T13:45:26.360459+00:00"
+    },
+    "images": [
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-landing-endcap.png",
+        "sha256": "e4a41dfe4db9c4691d88814567e63388d1ad7d39216751fe7e9aaea91c8d1d0a",
+        "modifiedAt": "2026-11-05T14:01:18.898479+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-2d-dimensioned.png",
+        "sha256": "121c435995f4b8adf1d8c1c73b73a3bbd5e6b85c0c556c5ca0dbbd79d58c950e",
+        "modifiedAt": "2026-11-05T13:52:44.719454+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-first-floor.png",
+        "sha256": "806720688fda1c5ce090ba520494152212aceca2ce6311e2497bacb030adf2c5",
+        "modifiedAt": "2026-11-05T13:52:46.892767+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-second-floor.png",
+        "sha256": "3572e5cfaa61b90748897d060ce62acf7f111f6876ff303a99a73a808bb5aced",
+        "modifiedAt": "2026-11-05T13:52:47.338621+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/plan-roof.png",
+        "sha256": "992441488989cc61aecf9c3b43ae4eb9809d3f7dc48d8d281fe00d30dca12e2f",
+        "modifiedAt": "2026-11-05T13:52:47.801981+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+        "sha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361",
+        "modifiedAt": "2026-11-05T12:00:40.985660+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second_atrium.png",
+        "sha256": "27e189a1b6adfa9d88748e9ad7bd9bed7dcd38cd4d2cf4f0dc44dd1153eba5cf",
+        "modifiedAt": "2026-11-05T14:01:08.886312+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-veranda-living.png",
+        "sha256": "2585759bd3d94253a4a471b47ee34720b46f097fe90519a940ec7e5e8cacc898",
+        "modifiedAt": "2026-11-05T13:57:30.255087+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/interior-icu-veranda-garden.png",
+        "sha256": "8036d55aa89702b76046fb83a82692b72ce6f5ee308b266237a9c20f167c3b40",
+        "modifiedAt": "2026-11-05T13:56:14.241075+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/first-stair-up.png",
+        "sha256": "d4d7027c5a59a521b0be2829d96618e142330f8b22570b4765264c129df1e51c",
+        "modifiedAt": "2026-11-05T13:58:44.649335+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-guest.png",
+        "sha256": "e45d46cf080eb86c1286bc3be9edfa91c0b885ee13590f11202058553820157a",
+        "modifiedAt": "2026-11-05T13:59:42.224946+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-stair-arrival.png",
+        "sha256": "a20a075a29679f43c0a5d0d5cdf0c545419da842c3abfcebc31c41dde2bc0e1f",
+        "modifiedAt": "2026-11-05T14:00:40.290670+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/second-terrace.png",
+        "sha256": "7df50a2bb05a6c7a2bdadd95df01c00b68e7c7de4b651c526dfcbef04f460e3b",
+        "modifiedAt": "2026-11-05T14:00:22.322985+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/upper-terrace.png",
+        "sha256": "62de6bd4d47c851d65a97ed202bf20c972e3ed4220fc56033843f38175d523a7",
+        "modifiedAt": "2026-11-05T13:59:51.913443+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/forecourt-utility.png",
+        "sha256": "bb5a93dfb5969d593aefcae549385fdec58c7a519e30230c9c1cd7a39f09d688",
+        "modifiedAt": "2026-11-05T13:55:31.530239+00:00"
+      },
+      {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+        "sha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7",
+        "modifiedAt": "2026-11-05T12:00:59.917182+00:00"
+      }
+    ],
+    "priorRevisionCycles": "Cycles views are explicitly labelled prior-revision references in the delivery page. They are not evidence of the new guard.",
+    "staleLegacyReports": [],
+    "finalizeRequiredForCurrentManifest": false,
+    "metadataAction": "Delivery QA refreshed with current building/scene/HTML hashes, exact-input responsive QA and final upper runtime. The old complete-stair-route report is explicitly annotated historical. Current gallery manifest and editable package remain consistent; no finalize required.",
+    "qa": {
+      "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/delivery-qa.json",
+      "sha256": "42d559c012a08bcdba90c0eadc7791db0a6fc94a263facb34fec21f35d7e00bb",
+      "bytes": 32660
+    },
+    "historicalReports": [
+      {
+        "source": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/complete-stair-route.json",
+          "sha256": "1773ff070028970f3c43fd1bf808e7fa27f89d8451b4fbd568abe539da093219",
+          "bytes": 211117
+        },
+        "recordedRevision": "tirumala-5-g2-skylit-atrium-2026-11-05",
+        "recordedPlanHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+        "historicalOnly": true,
+        "disposition": "Explicit historical annotation added; original evidence preserved."
+      }
+    ]
+  },
+  "metadataUpdatedAt": "2026-11-05T14:18:48.197240+00:00",
+  "automatedTests": {
+    "passed": true,
+    "passedCount": 42,
+    "failedCount": 0,
+    "evidenceType": "coordinator-reported final test result",
+    "source": "Parent agent reported all 42 tests pass after the final guard-base mesh split. No saved test log was supplied at metadata refresh time.",
+    "independentlyRerunByThisAudit": false
+  }
+}

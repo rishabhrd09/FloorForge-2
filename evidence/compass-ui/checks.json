@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-18",
+  "baseline_commit": "1bb941b97992c6967996f02f01e2445f675b2fc0",
+  "scope": "Local intake, navigation and Compass presentation refactor; preview flag remains off by default.",
+  "tests": {
+    "pytest": "595 passed in 224.65s",
+    "node": "15 passed, including 500 deterministic assignment attempts",
+    "syntax": "All changed browser scripts passed node --check"
+  },
+  "preservation": {
+    "sample_viewer_files": 445,
+    "changed_samples_or_viewer_files": [],
+    "legacy_plan_hashes": {
+      "examples/briefs/manual-L.json": true,
+      "examples/briefs/demo.json": true,
+      "examples/briefs/small.json": true,
+      "examples/briefs/compact.json": true
+    },
+    "original_planning_documents_unchanged": {
+      "COMPASS_REFACTOR_PLAN.md": true,
+      "COMPASS_REFACTOR_IMPLEMENTATION_PROMPT.md": true
+    }
+  },
+  "browser_checks": [
+    "Full-page intake with six combinable choices; no setup dialog",
+    "Metres and feet, road bearing and middle-plot context reach the new workspace",
+    "New homes derive setbacks using the existing resolver",
+    "Equal-width input and preview panels; independent requirement categories",
+    "All 32 map cells fit within the available window; 16-to-32 remap preserves rooms",
+    "Browser fullscreen and explicit back-to-design/back-to-map controls",
+    "Bathroom half assignment, canonical check and accepted geometry",
+    "Advanced exact editor validates and returns to the saved Compass draft",
+    "32-cell map, split ownership and acceptance survive save/reload",
+    "Plain-language review precedes matching 2D/3D generation"
+  ],
+  "limitations": [
+    "No physical mobile-device or first-time-user acceptance session",
+    "This refactor does not implement the outstanding site geometry, automatic fitting or full survey-bank work",
+    "Local changes are not evidence of a new remote CI run"
+  ],
+  "generated_build": "243e727b78f1189217fa8e84",
+  "generated_identity": {
+    "building.json": "2b5c9c7fe30d43f77bcb88c1a30123dbcbaeaaec81c8dec25932338a854f4075",
+    "scene.json": "2b5c9c7fe30d43f77bcb88c1a30123dbcbaeaaec81c8dec25932338a854f4075",
+    "report.json": "2b5c9c7fe30d43f77bcb88c1a30123dbcbaeaaec81c8dec25932338a854f4075",
+    "review.json": "2b5c9c7fe30d43f77bcb88c1a30123dbcbaeaaec81c8dec25932338a854f4075"
+  }
+}

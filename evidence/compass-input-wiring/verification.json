@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-01",
+  "branch": "development",
+  "baseCommit": "8e24e9fed13e3fb528540219e8067e14529e0e38",
+  "status": "Passed local pre-commit end-to-end verification",
+  "implementation": [
+    "Plot basics open Compass immediately; survey and other input methods remain optional.",
+    "Generate settles derived form values before preparing and accepting Compass geometry, including when adapting a sample.",
+    "Preparation proposes a minimum rectangular extension into unused partition atoms for rooms below their type minimum. No occupied neighbour, room type, plot size, locked target or split orientation is changed.",
+    "Unfinished trailing floors can be excluded from generation while every floor draft remains saved.",
+    "Drawing on an upper floor includes it in generation scope; Undo restores the previous scope.",
+    "Every fitted candidate is checked again through the exact adapter before acceptance and generation."
+  ],
+  "tests": {
+    "focusedPython": {
+      "passed": 215,
+      "command": ".venv/bin/python -m pytest -q tests/test_compass_prepare.py tests/test_compass.py tests/test_compass_grids.py tests/test_compass_splits.py tests/test_editor_input_selection.py tests/test_input_coverage.py"
+    },
+    "latestEditor": {
+      "passed": 74,
+      "command": "node --test tests/compass_state.cjs"
+    },
+    "fullPython": {
+      "passed": 755,
+      "skipped": 1,
+      "seconds": 321.42,
+      "command": "python -m pytest -q --tb=short",
+      "context": "Final isolated development copy with only this task\u2019s seven source/test changes.",
+      "skip": "Optional heritage viewer build check: Node viewer packages unavailable in the isolated export."
+    }
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:8767",
+    "consoleErrors": [],
+    "verified": [
+      "new project: 40 \u00d7 60 ft, East, three floor drafts -> Compass directly",
+      "single-cell living placement -> proposed enlargement -> cancel retains allocation -> accept generates ground floor",
+      "project file chooser upload of a three-floor draft with both split directions",
+      "left/right and top/bottom owners, dimensions and below-floor context",
+      "three-floor generation with 17 authored rooms, automatic aligned stairs, and actual dimensioned 2D sheet",
+      "actual 3D dollhouse on ground, first and second floors",
+      "save on device -> reload -> reopen retains bathroom / pooja / store identities on respective floors, both axes, and scope 3",
+      "sample preview -> editable Quiet Studio copy -> Compass input -> fit -> generation keeps 25 \u00d7 35 ft plot and Warm Modern Minimal / Quiet Minimal themes",
+      "all five grid selectors render 16,20,24,25,42 cells on an empty sample working copy"
+    ],
+    "portableDownload": "Not repeated in this run; actual file upload, on-device reopen and portable serialization/reloading tests were completed."
+  },
+  "builds": [
+    {
+      "id": "c7598695beafc835ab978f51",
+      "title": "Compass three-floor upload check",
+      "planHash": "61a6286fdd1417e5d4299f03efa45bbc45583cd213c4032ff774bcbab561a7b6",
+      "floors": 3,
+      "rooms": 17,
+      "retainedDraftFloors": 3,
+      "width_mm": 14950,
+      "depth_mm": 17950,
+      "exteriorTheme": "modern_tropical",
+      "interiorTheme": "bright_natural",
+      "sharedIdentity": true,
+      "errors": [],
+      "exports": {
+        "drawings.pdf": 68951,
+        "floorplans.dxf": 281982,
+        "model.glb": 921852,
+        "model.ifc": 867660
+      }
+    },
+    {
+      "id": "21f7d7c5d87c5216e5775f77",
+      "title": "Compass adaptive wiring check",
+      "planHash": "3edf74d44660e99a8337efafb0ce993decb5325996178b4fcd2e5ae780ece552",
+      "floors": 1,
+      "rooms": 1,
+      "retainedDraftFloors": 3,
+      "width_mm": 12192,
+      "depth_mm": 18288,
+      "exteriorTheme": "modern_tropical",
+      "interiorTheme": "bright_natural",
+      "sharedIdentity": true,
+      "errors": [],
+      "exports": {
+        "drawings.pdf": 35667,
+        "floorplans.dxf": 92608,
+        "model.glb": 404936,
+        "model.ifc": 185402
+      }
+    },
+    {
+      "id": "8eccb4c0a44b7bca94c78d9c",
+      "title": "The Quiet Studio",
+      "planHash": "55dc6d3582976c1cdfe3040a1fa0de647660a9538f8ba5d6b906fad67e5f363a",
+      "floors": 1,
+      "rooms": 1,
+      "retainedDraftFloors": 1,
+      "width_mm": 7620,
+      "depth_mm": 10668,
+      "exteriorTheme": "warm_modern_minimal",
+      "interiorTheme": "quiet_minimal",
+      "sharedIdentity": true,
+      "errors": [],
+      "exports": {
+        "drawings.pdf": 36265,
+        "floorplans.dxf": 92907,
+        "model.glb": 198404,
+        "model.ifc": 184452
+      }
+    }
+  ],
+  "preservation": {
+    "protectedFiles": 2167,
+    "sampleExampleFiles": 874,
+    "changedProtectedFiles": [],
+    "sampleCompilerOrRendererFilesChangedByTask": [],
+    "mainMerged": false
+  },
+  "limits": [
+    "Automatic preparation is bounded to unused adjoining space. It does not invent land, move occupied neighbours or override locked sizes.",
+    "Impossible sizes, corrupt ownership, unsupported room/site features, missing stair/support/access constraints and unresolved input conflicts remain actionable edits; invalid geometry is not published.",
+    "Browser verification used the existing working tree, which includes unrelated pre-existing changes. The isolated regression tree contains only this task\u2019s seven source/test changes on development."
+  ],
+  "testedSourceSha256": {
+    "floorforge/compass_prepare.py": "0db8040d5c5c2aae5d8b3911fab6ac15d3234f88ebb85c4c53970e53efc0b956",
+    "floorforge/compass_api.py": "9e55e6436f44b375f93687490914272fdf8bcb0a9a42f1e9d26c954bd99f032d",
+    "web/compass-editor.js": "a17ac733dd939295fd28d2705d571418d8631728713ac7a771b83b4bdfadf435",
+    "web/start-page.js": "067b7842cd452886667e15bd7c5c0ad6f0856981da63e91af935a83a4c62a4e5",
+    "tests/test_compass_prepare.py": "dacb79da37683d279049e64361b388a8e94507f0404b6b9b5c2b176240e8054a",
+    "tests/compass_state.cjs": "ec70f416fa0d0ca9cbaf72603d3687472b48af3ec9ca5431ef8192a15006ae4b",
+    "scripts/check_start_page.mjs": "bcf1cf02deb9f9f7ac5ae557c21a8f5bf96d51b5932308e339c941174eac8235"
+  },
+  "localApp": "http://127.0.0.1:8765/",
+  "gitAtVerification": {
+    "committed": false,
+    "pushed": false,
+    "mainMerged": false
+  }
+}

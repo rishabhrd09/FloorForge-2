@@ -1,0 +1,213 @@
+{
+  "options": [
+    {
+      "option": "A",
+      "areasSqFt": {
+        "g-kitchen": {
+          "before": 50.13,
+          "after": 80.9
+        },
+        "g-family": {
+          "before": 267.48,
+          "after": 218.58
+        },
+        "g-drawing": {
+          "before": 100.13,
+          "after": 110.14
+        },
+        "g-care": {
+          "before": 192.27,
+          "after": 192.27
+        },
+        "g-master": {
+          "before": 176.5,
+          "after": 176.5
+        },
+        "u-master": {
+          "before": 117.22,
+          "after": 140.35
+        },
+        "u-lobby": {
+          "before": 171.14,
+          "after": 190.65
+        },
+        "u-bath": {
+          "before": 80.14,
+          "after": 50.13
+        },
+        "u-living-void": {
+          "before": 84.76,
+          "after": 104.91
+        }
+      }
+    },
+    {
+      "option": "B",
+      "areasSqFt": {
+        "g-kitchen": {
+          "before": 50.13,
+          "after": 80.9
+        },
+        "g-family": {
+          "before": 267.48,
+          "after": 218.58
+        },
+        "g-drawing": {
+          "before": 100.13,
+          "after": 110.14
+        },
+        "g-care": {
+          "before": 224.74,
+          "after": 224.74
+        },
+        "g-master": {
+          "before": 176.5,
+          "after": 176.5
+        },
+        "u-master": {
+          "before": 117.22,
+          "after": 140.35
+        },
+        "u-lobby": {
+          "before": 171.14,
+          "after": 190.65
+        },
+        "u-bath": {
+          "before": 80.14,
+          "after": 50.13
+        },
+        "u-living-void": {
+          "before": 84.76,
+          "after": 104.91
+        }
+      }
+    },
+    {
+      "option": "C",
+      "areasSqFt": {
+        "g-kitchen": {
+          "before": 50.13,
+          "after": 80.9
+        },
+        "g-family": {
+          "before": 267.48,
+          "after": 218.58
+        },
+        "g-drawing": {
+          "before": 100.13,
+          "after": 110.14
+        },
+        "g-care": {
+          "before": 179.75,
+          "after": 179.75
+        },
+        "g-master": {
+          "before": 176.5,
+          "after": 176.5
+        },
+        "u-master": {
+          "before": 117.22,
+          "after": 140.35
+        },
+        "u-lobby": {
+          "before": 171.14,
+          "after": 190.65
+        },
+        "u-bath": {
+          "before": 80.14,
+          "after": 50.13
+        },
+        "u-living-void": {
+          "before": 84.76,
+          "after": 104.91
+        }
+      }
+    },
+    {
+      "option": "D",
+      "areasSqFt": {
+        "g-kitchen": {
+          "before": 50.13,
+          "after": 80.9
+        },
+        "g-family": {
+          "before": 257.47,
+          "after": 206.57
+        },
+        "g-drawing": {
+          "before": 120.16,
+          "after": 132.17
+        },
+        "g-care": {
+          "before": 179.75,
+          "after": 179.75
+        },
+        "g-master": {
+          "before": 176.5,
+          "after": 176.5
+        },
+        "u-master": {
+          "before": 117.22,
+          "after": 140.35
+        },
+        "u-lobby": {
+          "before": 165.66,
+          "after": 185.17
+        },
+        "u-bath": {
+          "before": 80.14,
+          "after": 50.13
+        },
+        "u-living-void": {
+          "before": 71.23,
+          "after": 91.38
+        }
+      }
+    },
+    {
+      "option": "E",
+      "areasSqFt": {
+        "g-kitchen": {
+          "before": 50.13,
+          "after": 80.9
+        },
+        "g-family": {
+          "before": 267.48,
+          "after": 218.58
+        },
+        "g-drawing": {
+          "before": 100.13,
+          "after": 110.14
+        },
+        "g-care": {
+          "before": 192.27,
+          "after": 192.27
+        },
+        "g-master": {
+          "before": 176.5,
+          "after": 176.5
+        },
+        "u-master": {
+          "before": 117.22,
+          "after": 140.35
+        },
+        "u-lobby": {
+          "before": 171.14,
+          "after": 190.65
+        },
+        "u-bath": {
+          "before": 80.14,
+          "after": 50.13
+        },
+        "u-living-void": {
+          "before": 84.76,
+          "after": 104.91
+        }
+      }
+    }
+  ],
+  "unrelatedSamples": {
+    "filesChecked": 305,
+    "changed": []
+  }
+}

@@ -1,0 +1,130 @@
+[
+  {
+    "grid": "4x4",
+    "scope": 1,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/5db2be99f74b86dba006ac72",
+    "planHash": "c5517639a356472ba5a134889e1c255e007b70fe23248b24dad84eedcf834edf",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x4",
+    "scope": 2,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/3ef0fb4c66fef66f4960e62f",
+    "planHash": "fb15d3a2ae0d0acb8929f6f4498e741365e931d738167a058b3f6f0431a45320",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x4",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/9a9febc40ad994d2c6548059",
+    "planHash": "941f61c7e51bbe43b005436a03570766c49cf21c421480abe300653b449dd9b8",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x5",
+    "scope": 1,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/fd4b498b71330f46a0ccd4c1",
+    "planHash": "8a1b14761f973a646dfb0346804b79562326fa6ad116d198fa593034c27e8769",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x5",
+    "scope": 2,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/6282af63ba448a490835859a",
+    "planHash": "914a799345d5b63891d5f03b5bd836ca91372826852edfc0a4e67ff5a6348bf2",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x5",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/f4c5338cc0528577e2be7c91",
+    "planHash": "e2827944c0bb0cfc2afe0063dfac2781d46b5752c0dc4d159cefd9ff68ad99d2",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x6",
+    "scope": 1,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/cff743748b61c7cc4c7c1cae",
+    "planHash": "a090a1b434077425f00fef81ebf0ca77891f71cc0ac12bafec3e65a1eadb80db",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x6",
+    "scope": 2,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/63a8f79c6a39aeec8d2ad16d",
+    "planHash": "a8bf0e2e872196a87168fa8209e797e14b3d3ffc0759b9449f840707a773a436",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x6",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/cab9f5457f48b37074c040c4",
+    "planHash": "d0c13e07db6d543d228a8a3eb7ed391ff0367d9324e193fa879cb02661e80daf",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "5x5",
+    "scope": 1,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/e3565ff3a2e6b27c470eeef6",
+    "planHash": "33c92f0088a716e24137b3f046bd68e02706d538f7d4b823dcf286fbe46e30e8",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "5x5",
+    "scope": 2,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/b6dfb7506632a5b16e7e11ba",
+    "planHash": "36b78fa573e1b714333eb992abaf6bdd331b87d3b466748c997f2535d5970d6a",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "5x5",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/74b1f91aba6e3138f47dbf0d",
+    "planHash": "389749e7812b330a992e309b67d700159545421bc2db820c277863c54d46fca7",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "6x7",
+    "scope": 1,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/ae8f48175183c5e3abdd8199",
+    "planHash": "dfb2f29105e92e21088d1f454ffdf4abf033b1088b8583dd4700dfeb5171a391",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "6x7",
+    "scope": 2,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/059dc07bcac0976046adaa45",
+    "planHash": "bbffd512cec6aa3d1e33d04f5a6db9214c0f3249b5ca836d12f1b2dec419a809",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "6x7",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/362488525474abad91357835",
+    "planHash": "a70f71d849decd5c63a3d577164f0f4c77ce5397f2bf324ba77f4b22a9bda6f8",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  },
+  {
+    "grid": "4x8",
+    "scope": 3,
+    "build": "/private/tmp/floorforge-compass-splits/studio/builds/526c3b1069222a29fc7374a1",
+    "planHash": "dbec5952ac4f5cd28a01bcd87364625499eb97d8c3031fee739573992cd55dc7",
+    "errors": 0,
+    "shared_2d_3d_exports": true
+  }
+]

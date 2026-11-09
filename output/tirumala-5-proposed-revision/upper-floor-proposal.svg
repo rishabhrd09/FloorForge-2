@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="1120" viewBox="0 0 1720 1120">
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#176b65"/></marker><marker id="dim" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse"><path d="M7,0 L0,3.5 L7,7" fill="none" stroke="#68736f"/></marker><pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M-2,2 L2,-2 M0,9 L9,0 M7,11 L11,7" stroke="#b98437" stroke-width="1"/></pattern></defs>
+<rect width="1720" height="1120" fill="#f6f4ef"/>
+<text x="44" y="46" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#22332d" text-anchor="start">TIRUMALA 5 · PROPOSED REVISION</text>
+<text x="44" y="76" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#22332d" text-anchor="start">Review sketch only · The live project is unchanged · 40 ft north–south × 50 ft east–west</text>
+<text x="44" y="104" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#617069" text-anchor="start">WEST ↑     NORTH →     EAST ↓     SOUTH ←     Dimensions rounded to ⅛ inch</text>
+<path d="M679.12,933.90 L679.12,210.00 L100.00,210.00 L100.00,933.90 L679.12,933.90 Z" fill="#fffdf9" fill-rule="evenodd" stroke="#b8bfb8" stroke-width="1.2"/>
+<path d="M100.0,192.9 L679.12,192.9" stroke="#68736f" marker-start="url(#dim)" marker-end="url(#dim)"/>
+<text x="389.56" y="184.9" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">40 ft</text>
+<path d="M73.875,933.9 L73.875,210.0" stroke="#68736f" marker-start="url(#dim)" marker-end="url(#dim)"/>
+<text x="66.875" y="571.95" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="end">50 ft</text>
+<text x="389.75" y="955.75" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">EAST · entrance side</text>
+<text x="100" y="148" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#22332d" text-anchor="start">01 · FIRST FLOOR</text>
+<path d="M408.75,504.02 L360.57,504.02 L107.12,504.02 L107.12,347.31 L107.12,253.32 L263.44,253.32 L263.44,347.31 L360.57,347.31 L438.94,347.31 L438.94,363.90 L360.57,363.90 L360.57,456.52 L408.75,456.52 L408.75,504.02 Z" fill="#e9e8e2" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M386.39,340.19 L386.39,253.32 L270.56,253.32 L270.56,340.19 L386.39,340.19 Z" fill="#e9e8e2" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M643.04,385.27 L643.04,253.32 L496.62,253.32 L496.62,385.27 L643.04,385.27 Z" fill="#e9e8e2" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M489.50,335.40 L489.50,253.32 L393.51,253.32 L393.51,335.40 L489.50,335.40 Z" fill="#e9e8e2" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M344.62,511.15 L360.57,511.15 L415.88,511.15 L415.88,456.52 L446.07,456.52 L446.07,371.02 L446.07,363.90 L446.07,342.52 L489.50,342.52 L489.50,385.27 L489.50,392.40 L489.50,511.15 L489.50,551.52 L489.50,563.40 L489.50,705.90 L399.25,705.90 L399.25,620.40 L292.38,620.40 L292.38,563.40 L344.62,563.40 L344.62,511.15 Z" fill="#eeede5" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M529.02,861.51 L529.02,705.90 L100.00,705.90 L100.00,861.51 L529.02,861.51 Z" fill="#dbe6d8" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M643.04,632.27 L643.04,392.40 L496.62,392.40 L496.62,632.27 L643.04,632.27 Z" fill="#d4e6df" fill-rule="evenodd" stroke="#386858" stroke-width="3"/>
+<path d="M643.04,632.27 L643.04,544.40 L496.62,544.40 L496.62,632.27 L643.04,632.27 Z" fill="#b7d8c8" fill-rule="evenodd" stroke="#386858" stroke-width="1"/>
+<path d="M496.625,544.4 L643.039,544.4" fill="none" stroke="#688779" stroke-width="1.5" stroke-dasharray="7,5"/>
+<path d="M558.38,705.90 L558.38,653.19 L489.50,653.19 L489.50,705.90 L558.38,705.90 Z" fill="none" fill-rule="evenodd" stroke="#b47c68" stroke-width="1.5" stroke-dasharray="5,5"/>
+<path d="M565.44,653.19 L565.44,639.40 L489.50,639.40 L489.50,653.19 L565.44,653.19 Z" fill="none" fill-rule="evenodd" stroke="#b47c68" stroke-width="1.5" stroke-dasharray="5,5"/>
+<path d="M399.25,702.34 L399.25,620.40 L159.38,620.40 L159.38,702.34 L399.25,702.34 Z" fill="#e5eff1" fill-rule="evenodd" stroke="#9ab4ba" stroke-width="1.5"/>
+<text x="279.55" y="661.25" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#22332d" text-anchor="middle">OPEN TO BELOW</text>
+<text x="279.55" y="682.625" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">Clear rectangle ≈ 94 sq ft</text>
+<path d="M399.25,620.40 L399.25,563.40 L292.38,563.40 L292.38,620.40 L399.25,620.40 Z" fill="#b7d8c8" fill-rule="evenodd" stroke="#386858" stroke-width="1.5"/>
+<text x="204.5" y="387.65" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#22332d" text-anchor="middle">Master bedroom</text>
+<text x="204.5" y="413.775" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#22332d" text-anchor="middle">unchanged</text>
+<text x="328.0" y="286.95" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">Master bath</text>
+<text x="328.0" y="309.275" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#22332d" text-anchor="middle">8′ × 6′</text>
+<text x="441.05" y="286.95" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">Bath</text>
+<text x="565.5" y="311.65" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#22332d" text-anchor="middle">Study</text>
+<text x="565.5" y="475.525" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#22332d" text-anchor="middle">ENLARGED</text>
+<text x="565.5" y="499.275" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#22332d" text-anchor="middle">GUEST BEDROOM</text>
+<text x="565.5" y="525.4" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">10′1⅜″ × 16′6⅞″</text>
+<text x="565.5" y="587.15" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">Former small balcony</text>
+<text x="565.5" y="608.05" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">now enclosed room</text>
+<text x="404.0" y="401.9" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">Lightwell</text>
+<text x="465.75" y="449.4" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#22332d" text-anchor="middle">Lobby</text>
+<text x="442.0" y="602.825" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">Gallery</text>
+<text x="313.75" y="777.15" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#22332d" text-anchor="middle">LARGE TERRACE RETAINED</text>
+<text x="313.75" y="805.65" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">Existing main terrace entrance stays</text>
+<text x="591.625" y="677.4" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#9b6757" text-anchor="middle">Link removed</text>
+<path d="M368.375,507.5875 L406.375,507.5875" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M266.9989166825,330.65 L266.9989166825,287.9" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M493.0625,382.9 L493.0625,340.15" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M493.0625,530.15 L493.0625,487.4" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M442.0,338.9625 L484.75,338.9625" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M408.75,705.9000000000001 L484.75,705.9000000000001" fill="none" stroke="#fffdf9" stroke-width="8"/>
+<path d="M130.875,249.7575 L235.375,249.7575" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M103.5625,454.15 L103.5625,373.4" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M515.625,249.7575 L622.5,249.7575" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M646.6015,344.9 L646.6015,273.65" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M646.6015,501.65 L646.6015,411.4" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M413.5,249.7575 L468.125,249.7575" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M294.75,249.7575 L354.125,249.7575" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M442.50350000000003,437.525 L442.50350000000003,380.525" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M364.12850000000003,430.4 L364.12850000000003,392.4" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M408.75,705.9000000000001 L484.75,705.9000000000001" fill="none" stroke="#347d8f" stroke-width="6"/>
+<path d="M493.0625,625.15 L493.0625,558.65" fill="none" stroke="#22332d" stroke-width="5"/>
+<path d="M493.0625,530.15 L493.0625,487.4" fill="none" stroke="#fffdf9" stroke-width="7"/>
+<path d="M515.625,635.8375 L622.5,635.8375" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M370.75,534.9 L370.75,594.275 L297.125,594.275" fill="none" stroke="#176b65" stroke-width="3.5" marker-end="url(#arrow)"/>
+<text x="349.85" y="578.6" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">Indoor landing</text>
+<path d="M159.38,620.40 L159.38,511.15 L107.12,511.15 L107.12,620.40 L159.38,620.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M292.38,620.40 L292.38,568.15 L159.38,568.15 L159.38,620.40 L292.38,620.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M292.38,563.40 L292.38,511.15 L159.38,511.15 L159.38,563.40 L292.38,563.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M172.675,620.4 L172.675,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M172.675,563.4 L172.675,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M185.975,620.4 L185.975,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M185.975,563.4 L185.975,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M199.275,620.4 L199.275,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M199.275,563.4 L199.275,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M212.575,620.4 L212.575,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M212.575,563.4 L212.575,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M225.875,620.4 L225.875,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M225.875,563.4 L225.875,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M239.175,620.4 L239.175,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M239.175,563.4 L239.175,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M252.475,620.4 L252.475,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M252.475,563.4 L252.475,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M265.775,620.4 L265.775,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M265.775,563.4 L265.775,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M279.075,620.4 L279.075,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M279.075,563.4 L279.075,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M282.875,594.75 L133.25,594.75 L133.25,537.275 L283.825,537.275" fill="none" stroke="#176b65" stroke-width="3.5" marker-end="url(#arrow)"/>
+<text x="228.25" y="604.725" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">UP · internal return stair</text>
+<text x="228.25" y="525.4" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">3′7¼″ nominal width</text>
+<path d="M292.375,537.275 L344.625,537.275" fill="none" stroke="#9e8d73" stroke-width="2" stroke-dasharray="5,4"/>
+<text x="323.25" y="517.8" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#746751" text-anchor="middle">GF arrival</text>
+<path d="M1534.12,933.90 L1534.12,210.00 L955.00,210.00 L955.00,933.90 L1534.12,933.90 Z" fill="#fffdf9" fill-rule="evenodd" stroke="#b8bfb8" stroke-width="1.2"/>
+<path d="M955.0,192.9 L1534.12,192.9" stroke="#68736f" marker-start="url(#dim)" marker-end="url(#dim)"/>
+<text x="1244.56" y="184.9" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">40 ft</text>
+<path d="M928.875,933.9 L928.875,210.0" stroke="#68736f" marker-start="url(#dim)" marker-end="url(#dim)"/>
+<text x="921.875" y="571.95" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="end">50 ft</text>
+<text x="1244.75" y="955.75" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="middle">EAST · entrance side</text>
+<text x="955" y="148" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#22332d" text-anchor="start">02 · SECOND FLOOR</text>
+<path d="M962.12,511.15 L962.12,620.40 L1147.38,620.40 L1147.38,511.15 L1215.57,511.15 L1215.57,456.52 L1301.07,456.52 L1301.07,363.90 L1215.57,363.90 L1215.57,246.19 L1505.16,246.19 L1505.16,511.15 L1351.62,511.15 L1351.62,705.90 L955.00,705.90 L955.00,511.15 L962.12,511.15 Z" fill="#dbe6d8" fill-rule="evenodd" stroke="#68746c" stroke-width="2"/>
+<path d="M1208.44,504.02 L1208.44,253.32 L962.12,253.32 L962.12,504.02 L1208.44,504.02 Z" fill="#e9e8e2" fill-rule="evenodd" stroke="#68746c" stroke-width="3"/>
+<path d="M1505.16,639.40 L1351.62,639.40 L1351.62,511.15 L1505.16,511.15 L1505.16,639.40 Z" fill="#f2e7d4" fill-rule="evenodd" stroke="#b98437" stroke-width="1.5"/>
+<path d="M1505.16,639.40 L1351.62,639.40 L1351.62,511.15 L1505.16,511.15 L1505.16,639.40 Z" fill="url(#hatch)" fill-rule="evenodd" stroke="#b98437" stroke-width="1.5"/>
+<path d="M1211.50,563.40 L1211.50,504.02 L1147.38,504.02 L1147.38,563.40 L1211.50,563.40 Z" fill="#b7d8c8" fill-rule="evenodd" stroke="#386858" stroke-width="2"/>
+<text x="1085.625" y="363.9" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#22332d" text-anchor="middle">FAMILY HALL</text>
+<text x="1085.625" y="394.775" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#22332d" text-anchor="middle">17′0⅛″ × 17′3¾″</text>
+<text x="1085.625" y="423.275" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#22332d" text-anchor="middle">Existing hall retained</text>
+<text x="1370.625" y="302.15" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#22332d" text-anchor="middle">OPEN TERRACE</text>
+<text x="1370.625" y="330.65" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#22332d" text-anchor="middle">+ GARDEN</text>
+<text x="1275.625" y="589.525" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#22332d" text-anchor="middle">Roof garden</text>
+<text x="1275.625" y="610.9" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#22332d" text-anchor="middle">retained</text>
+<text x="1430.0" y="555.8" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">New roof over</text>
+<text x="1430.0" y="577.65" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">enlarged bedroom</text>
+<text x="1430.0" y="599.5" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">No additional room</text>
+<text x="1259.0" y="401.9" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#22332d" text-anchor="middle">Lightwell</text>
+<path d="M1212.0035,344.9 L1212.0035,264.15" fill="none" stroke="#347d8f" stroke-width="5"/>
+<path d="M1152.125,507.5875 L1202.0,507.5875" fill="none" stroke="#fffdf9" stroke-width="7"/>
+<path d="M1175.875,537.275 L1175.875,458.9" fill="none" stroke="#176b65" stroke-width="3.5" marker-end="url(#arrow)"/>
+<path d="M1211.5,553.9 L1211.5,515.9" fill="none" stroke="#347d8f" stroke-width="6"/>
+<text x="1197.25" y="581.925" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#22332d" text-anchor="middle">Enclosed landing</text>
+<text x="1439.5" y="815.15" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#68736f" text-anchor="middle">Long first-floor terrace below</text>
+<path d="M1014.38,620.40 L1014.38,511.15 L962.12,511.15 L962.12,620.40 L1014.38,620.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M1147.38,620.40 L1147.38,568.15 L1014.38,568.15 L1014.38,620.40 L1147.38,620.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M1147.38,563.40 L1147.38,511.15 L1014.38,511.15 L1014.38,563.40 L1147.38,563.40 Z" fill="#d5e3dc" fill-rule="evenodd" stroke="#557063" stroke-width="1.5"/>
+<path d="M1027.675,620.4 L1027.675,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1027.675,563.4 L1027.675,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1040.975,620.4 L1040.975,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1040.975,563.4 L1040.975,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1054.275,620.4 L1054.275,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1054.275,563.4 L1054.275,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1067.575,620.4 L1067.575,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1067.575,563.4 L1067.575,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1080.875,620.4 L1080.875,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1080.875,563.4 L1080.875,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1094.175,620.4 L1094.175,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1094.175,563.4 L1094.175,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1107.475,620.4 L1107.475,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1107.475,563.4 L1107.475,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1120.775,620.4 L1120.775,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1120.775,563.4 L1120.775,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1134.075,620.4 L1134.075,568.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1134.075,563.4 L1134.075,511.15" fill="none" stroke="#899a91" stroke-width="0.9"/>
+<path d="M1137.875,594.75 L988.25,594.75 L988.25,537.275 L1138.825,537.275" fill="none" stroke="#176b65" stroke-width="3.5" marker-end="url(#arrow)"/>
+<text x="1083.25" y="604.725" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">Stair from first floor</text>
+<text x="1083.25" y="525.4" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#22332d" text-anchor="middle">3′7¼″ nominal width</text>
+<text x="80" y="997" font-family="Arial,sans-serif" font-size="16" font-weight="400" fill="#22332d" text-anchor="start">GREEN: proposed enclosure / indoor stair     BLUE: remaining double-height opening     HATCH: required new bedroom roof</text>
+<text x="80" y="1030" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#22332d" text-anchor="start">Stair route: first-floor gallery → internal return flights → enclosed second-floor landing → family hall.</text>
+<text x="80" y="1060" font-family="Arial,sans-serif" font-size="17" font-weight="400" fill="#22332d" text-anchor="start">Main tradeoff: clear double-height rectangle ≈ 159 → 94 sq ft. Ground stair and existing rear rooms remain.</text>
+<text x="80" y="1091" font-family="Arial,sans-serif" font-size="15" font-weight="400" fill="#68736f" text-anchor="start">Concept geometry only. Roof/slab support, new stair opening, guards and beam/headroom coordination need structural detailing.</text>
+</svg>

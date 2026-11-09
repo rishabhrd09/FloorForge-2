@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "name": "DXF inspection exposes real units and entity layers",
+      "pass": true
+    },
+    {
+      "name": "First-floor mapping preserves index1 and an empty requested ground floor",
+      "pass": true
+    },
+    {
+      "name": "Original DXF and its measured interpretation remain portable",
+      "pass": true
+    },
+    {
+      "name": "Unsupported PDF explains the supported contract without changing geometry",
+      "pass": true
+    },
+    {
+      "name": "Individual drawing checkbox excludes its authoritative layout in the compiler",
+      "pass": true
+    },
+    {
+      "name": "Re-enabling the drawing restores its measured source without losing original text",
+      "pass": true
+    },
+    {
+      "name": "Confirmed known scale is retained before tracing",
+      "pass": true
+    },
+    {
+      "name": "Manual calibrated outlines reach the tracing backend",
+      "pass": true
+    },
+    {
+      "name": "Measured coordinates match the confirmed scale and origin",
+      "pass": true
+    },
+    {
+      "name": "Tracing retains original image bytes and explicit interpretation",
+      "pass": true
+    },
+    {
+      "name": "Unvalidated tracing requires 2D review rather than generating 3D",
+      "pass": true
+    },
+    {
+      "name": "Import retains untouched upper floors and previous stair relationships",
+      "pass": true
+    },
+    {
+      "name": "Overwritten manual geometry survives as its own authoritative original source",
+      "pass": true
+    },
+    {
+      "name": "An overlapping drawing asks which layout owns the physical ground floor",
+      "pass": true
+    },
+    {
+      "name": "No browser exceptions in import or tracing",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-imports-7aZsT0",
+  "serverErrors": ""
+}

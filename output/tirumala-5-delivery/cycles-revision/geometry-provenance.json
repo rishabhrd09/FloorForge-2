@@ -1,0 +1,177 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-stacked-gallery-2026-11-05",
+  "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+  "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+  "generatedAt": "2026-11-05T06:30:50.262441+00:00",
+  "renders": [
+    {
+      "camera": "interior_veranda_living",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/render-manifest.json",
+        "sha256": "e8975c2ca0d44793a88640c92dd8b2cb61f4f5365d91933a500cb028b49e4427",
+        "bytes": 1457
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+          "recordedSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+          "actualSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+          "recordedSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+          "actualSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/interior_veranda_living-day.png",
+          "recordedSha256": "b7e444292fa51bea2630d5e628a1684fd1b6db62537e233d2946217dbc1fa9ca",
+          "actualSha256": "b7e444292fa51bea2630d5e628a1684fd1b6db62537e233d2946217dbc1fa9ca"
+        }
+      },
+      "verified": false,
+      "problems": [
+        "Render record does not bind to the current planHash",
+        "scene: generation-time hash absent or mismatched",
+        "glb: generation-time hash absent or mismatched"
+      ]
+    },
+    {
+      "camera": "exterior_northeast",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/render-manifest.json",
+        "sha256": "c0e79961f7b6369545235bf8c7d61eba12d131f8d1bf4dea591eba7d71d61b55",
+        "bytes": 5333
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+          "actualSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+          "recordedSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+          "actualSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+          "recordedSha256": "ce4edb07a88bf8217cfd4b1502e577dae5a88f015f7e7031353979f264140418",
+          "actualSha256": "ce4edb07a88bf8217cfd4b1502e577dae5a88f015f7e7031353979f264140418"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "first_stair_up",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/render-manifest.json",
+        "sha256": "c0e79961f7b6369545235bf8c7d61eba12d131f8d1bf4dea591eba7d71d61b55",
+        "bytes": 5333
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+          "actualSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+          "recordedSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+          "actualSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/first_stair_up-day.png",
+          "recordedSha256": "e6f8a1133da60280621e3cedffb95f7c76bc66fbcb0d5faeea690977754df9ec",
+          "actualSha256": "e6f8a1133da60280621e3cedffb95f7c76bc66fbcb0d5faeea690977754df9ec"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "upper_guest",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/render-manifest.json",
+        "sha256": "c0e79961f7b6369545235bf8c7d61eba12d131f8d1bf4dea591eba7d71d61b55",
+        "bytes": 5333
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+          "actualSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+          "recordedSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+          "actualSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_guest-day.png",
+          "recordedSha256": "a7fe38508316e422511c7c6593e2111776ff11892e0de4592b4f85078fd6c93c",
+          "actualSha256": "a7fe38508316e422511c7c6593e2111776ff11892e0de4592b4f85078fd6c93c"
+        }
+      },
+      "verified": true,
+      "problems": []
+    },
+    {
+      "camera": "interior_veranda_living",
+      "manifest": {
+        "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/render-manifest.json",
+        "sha256": "c0e79961f7b6369545235bf8c7d61eba12d131f8d1bf4dea591eba7d71d61b55",
+        "bytes": 5333
+      },
+      "inputs": {
+        "scene": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+          "recordedSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+          "actualSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0"
+        },
+        "glb": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+          "recordedSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+          "actualSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327"
+        },
+        "image": {
+          "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior_veranda_living-day.png",
+          "recordedSha256": "1f49a4a4abf655a17e990606e214868fd26d07f8656cb4313d8739f9eb60d9e4",
+          "actualSha256": "1f49a4a4abf655a17e990606e214868fd26d07f8656cb4313d8739f9eb60d9e4"
+        }
+      },
+      "verified": true,
+      "problems": []
+    }
+  ],
+  "deliveryImages": [
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/first_stair_up-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior_veranda_living-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    },
+    {
+      "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_guest-day.png",
+      "verified": true,
+      "matchingManifestCount": 1
+    }
+  ],
+  "verified": true,
+  "method": "Checks generation-time manifest hashes against actual files; never relabels old renders as current",
+  "savedSceneCopy": {
+    "path": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+    "sha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+    "bytes": 3823189
+  }
+}

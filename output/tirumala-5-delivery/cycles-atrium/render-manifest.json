@@ -1,0 +1,98 @@
+[
+  {
+    "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+    "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+    "glbSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+    "camera": "ground_skylight",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/ground_skylight-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      3.700000047683716,
+      7.599999904632568,
+      1.6299999952316284
+    ],
+    "target": [
+      3.35,
+      6.96,
+      10.85
+    ],
+    "fov": 70,
+    "width": 1400,
+    "height": 1000,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 3.533,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "f753732cfc779b07a0c782ec3d3115f51f4895894b180084113556e95a36e361"
+  },
+  {
+    "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+    "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+    "glbSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+    "camera": "second_atrium",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/second_atrium-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      5.800000190734863,
+      5.449999809265137,
+      8.645999908447266
+    ],
+    "target": [
+      2.8,
+      7.0,
+      9.4
+    ],
+    "fov": 70,
+    "width": 1400,
+    "height": 1000,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 1.282,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "a3ac76e99e5b836da656c3ba5f2faedf8f7a17c798b4b9898b236b7f38e77660"
+  },
+  {
+    "planHash": "31b326372bb65367661559f1a2bce694bca254cea540f99ffdc4a9a483de560c",
+    "sceneSha256": "f2a7f719689cdea7fa0bdbab6c9197a192d012e086246f0efb6875376debbe90",
+    "glbSha256": "9859a9bcd50b205d4ff4fc12046e9325dfa57e61cc6d34e33ee6d75363bc83cc",
+    "camera": "roof_solar",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-atrium/roof_solar-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      16.0,
+      -5.0,
+      20.0
+    ],
+    "target": [
+      3.8,
+      9.0,
+      9.0
+    ],
+    "fov": 50,
+    "width": 1400,
+    "height": 1000,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.477,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "afe941bed90d224b2a57f5d8eb614df9a37c21e69ac1f89de6af1fbbfa221fa7"
+  }
+]

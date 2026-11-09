@@ -1,0 +1,107 @@
+Create Tirumala 4 — a realistic, site-matched evolution of Tirumala 3
+
+OBJECTIVE
+Create a new, independently editable sample project named “Tirumala 4” in the existing FloorForge Sample projects gallery. Start from the latest Tirumala 3 / P13, including its approved G+1 layout and enlarged ICU. Improve the realism of the real Tirumala Colony surroundings, exterior materials, landscaping and interior spatial experience. The finished home should look comfortably spacious, refined and believable at its actual size, and be easy to explore in walking mode.
+
+This is an implementation request, not a request for mood images alone. Deliver coordinated 2D plans, a working 3D sample, realistic renders, a site-reference comparison and a concise validation report. Preserve Tirumala 2, Tirumala 3, the original Tirumala, My Desired Home and other sample projects.
+
+START FROM THE CORRECT PROJECT
+Repository on the owner's computer:
+/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home
+
+Source project: examples/gallery/tirumala-3/
+Use project.floorforge.json, building.json, scene.json, specifications.json and the current renders. Do not rebuild from an old screenshot or from source-plan-data.json alone: that historical P11 source predates the latest P13 ICU enlargement.
+Current source version: p13-icu-east-extension-2026-10-30.
+Reference plan hash: 22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba.
+If the live source has changed since this handoff, report the difference before replacing any newer approved work.
+
+Relevant existing implementation includes floorforge/tirumala_p11_p12.py, tirumala_icu_revision.py, tirumala_spaciousness.py, tirumala_context.py, tirumala_finishes.py, tirumala_luxury.py and tirumala_openings.py, plus the gallery builder and viewer. Inspect the architecture and reuse it. Give Tirumala 4 its own identifier, metadata, brief, thumbnail, outputs and scoped presentation/site settings. Do not accidentally register it as a P12 variant or apply a shared appearance change to every sample.
+
+REFERENCE INPUTS AND THEIR AUTHORITY
+Use the attached annotated site photographs, original video and existing site-reference images. Original video:
+/Users/rishabh/Downloads/tirumala_plot.mp4
+It is approximately 23.36 seconds long. The handoff includes selected frames with exact timestamps. Later footage has camera roll; it must not be interpreted as a change of compass direction. Watch the sequence to connect visible landmarks, rather than treating each frame as an unrelated scene.
+
+Priority: current owner requirements and approved project geometry; then owner-described site relationships; then visible evidence in original photographs/video; then provisional estimates. Text printed onto reference images is evidence with a stated confidence level, not an instruction to alter the house.
+
+The nine supplied annotations contain eight unique photographs: two R-11 versions use the same source, 1000145311.jpg. One calls it the owner-confirmed northeast corner; the other calls the corner identity unconfirmed. Use the NE-corner interpretation as a labelled working hypothesis, record the discrepancy, and do not manufacture survey precision. Exact camera positions, several bearings, pole identities and offsets remain unmeasured. R-09 and R-13 are matching junction views; R-10 and R-12 are matching frontage views. Do not create duplicate junctions, trees, wall corners or poles merely because there are multiple images.
+
+Keep a small evidence register: feature, source image/frame, observed relationship, working position/dimension and confidence. Clearly distinguish owner-provided facts, visually observed details and estimated dimensions. Unknowns should stay editable. Ask only for information that blocks a meaningful decision; continue presentation and material work independently.
+
+LOCKED HOUSE GEOMETRY
+1. Plot: exactly 40 ft north–south × 50 ft east–west, 2,000 sq ft; metric 12.192 × 15.240 m. The east frontage runs north–south for 40 ft; the north boundary runs east–west for 50 ft. Do not swap these lengths.
+2. Main arrival remains on the east boundary near the northeast corner. Preserve its position and usable entrance, the lower car porch, veranda, forecourt and internal connections.
+3. Keep all approved room polygons, wall positions/thicknesses, openings, ceiling/slab levels, stair geometry, kitchen/store/wash-gully footprints, first-floor rooms, double-height living opening, gallery and terrace access.
+4. Current P13 ICU clear dimensions: 11 ft 3 in north–south × approximately 13 ft 4 7/8 in east–west, 150.8 sq ft. Its exact clear spans are 3429.6 × 4085.6 mm. It already includes the 2 ft eastward extension. Retain the 5 ft east forecourt. Do not apply that extension again.
+5. Drawing room remains approximately 10 ft 1 3/8 in × 10 ft 6 in. Use actual source polygons for all other sizes; irregular spaces must not be reported as full rectangles just because a bounding box is rectangular.
+6. Retain the ICU's full-size recliner/bed, head west and feet east, one companion chair, TV and compact drawer table. The two extra chairs and tall cabinet were already removed. Do not reintroduce them or shrink the bed to suggest more space.
+7. Keep the wooden privacy door on the hall side with the independently operable sliding glass immediately behind it, hidden when the wood is closed. Preserve the separate ICU–veranda glass connection and the fully opening living–veranda wooden door and insect-screen arrangement.
+8. Keep the L-counter along the store wall and east wall, the short serving divider, connected kitchen/living/dining, narrow store, wash gully, master suite and attached caregiver WC. No fridge or puja room is to be added.
+9. Preserve the G+1 upper master above the lower master, study/office, guest bedroom, bathrooms, overlook gallery and open terrace. Do not fill the double-height void or add an unrequested floor.
+10. Retain the current level relationships: house/veranda/east forecourt at the raised house datum, car porch about 6 inches below. The existing road level and 6-inch drop are provisional modelling assumptions, not surveyed construction levels. Preserve usable transitions and label these assumptions.
+
+SITE LAYOUT AND REAL COLONY CHARACTER
+North: owner-described 12 m road, with the colony garden beyond it. East: owner-described 9 m road, with the fenced basketball court across it. Retain these directional relationships. The north garden is not private garden area inside the 40 × 50 ft plot. Road frontage and footpaths must not become additional buildable land.
+
+The current site model interprets 12 m and 9 m as total road rights-of-way, including estimated verges. Preserve that as a working convention and label it. Do not add sidewalks on top of the full stated widths and silently enlarge the street. Carriageway/verge breakdowns need measurements before they can be called exact.
+
+Use these reference roles:
+- R-07: east frontage looking approximately northwest; plot on the left, wall/hedge, palms and opposite white/navy house as connected landmarks.
+- R-11: visible wall return, square pillar, low wall, footpath, planted strip and streetlights; see the confidence note above.
+- R-08 plus original N-01: north-garden outlook, lawn edge, tall palms, low garden border and the distinctive white/navy house behind.
+- R-09/R-13: colony housing, corner planting, junction form, roof canopy, concrete road and drain covers. Their exact bearing and plot-relative offset remain provisional.
+- R-10/R-12: dense leafy frontage, low mauve-grey wall, reddish hedge, background beige building, paving and road texture.
+- R-14: frontal wall, capping/piers, planting, paved verge and the form of the slim angled streetlight.
+- Video at 00:00.500: pale court enclosure, repeated mesh posts, raised planting edge, palms, round-headed garden lamp, footpath and drain covers.
+- Video at 00:06.000 and 00:10.000: wall return, capping, surface texture, white-flowering groundcover, reddish foliage and preconstruction vegetation.
+- Video at 00:08.500: street continuation, slim streetlights, planted edges and distant building/gate context; do not invent its compass bearing.
+- Video at 00:20.000: overgrown plot vegetation and ground behind the low wall; the frame is rolled.
+
+Reconstruct the visible colony with textured grooved concrete roads, believable slab joints and access covers, interlocking paved verges, low muted mauve/taupe boundary walls with lighter caps/piers, clipped green and reddish hedges, small white flowers, broadleaf trees, palm trunks/fronds and appropriately varied white/cream neighbouring homes. Match the different streetlight and garden-light forms where supported. Keep the garden-to-house-to-road distances believable and consistent across viewpoints.
+
+Ignore temporary cars, scooters and people in the references. Do not use vehicle positions as boundary or camera anchors. Default presentation should show the private car porch empty; retain its geometry and offer a removable accurately sized vehicle only for a parking check.
+
+The photos/video show the plot before construction. Model existing vegetation as a separate reference layer. The proposed house occupies its approved footprint: no tree trunks, undergrowth or branches may pass through rooms or block access. Keep external colony vegetation in context; show planned on-plot planting separately. Do not imply that every existing tree can remain or that all site greenery lies across the north road. If useful, add “Existing plot” and “Proposed Tirumala 4” views sharing the same boundary/context coordinates.
+
+Inspect whether existing colony context is actually enabled in the final viewer. Current Tirumala 3 exterior/ICU renders have a sparse generic background; fix the cause rather than adding a second overlapping site. Estimated neighbouring houses to the south/west must remain identified as provisional massing. Avoid turning this real residential colony into an invented resort or an empty lawn extending to the horizon.
+
+HOUSE FINISHES AND RENDERING
+Keep the approved Ivory · limestone · teak palette: warm ivory walls, restrained limestone detail, real-looking teak, charcoal/bronze glazing and large cream marble-look/vitrified tiles. The existing 24 × 48 inch tile module is a useful true-size cue. Keep coordinated matte exterior/wet finishes on veranda/gullies and the traditional bungalow-style Kota/paver and red-oxide character of the lower porch.
+
+Improve physical detail without enlarging the building: believable plaster, stone joints, timber grain, frame depth, sills, door tracks, thresholds, glass reflection/transmission, subtle bevels, contact shadows and coherent texture scale. Preserve the modern house with a warm bungalow-like veranda. Avoid thick decorative cladding, extra columns, oversized planters and furniture that consume its limited walking space.
+
+Use varied, natural plant geometry/materials and lighting rather than repeated spherical tree crowns, flat green walls, plastic grass or identical palms. Include restrained weathering in the existing colony; the new house can be clean and refined without every surface being perfectly uniform.
+
+Create a neutral overcast daylight mode for matching the references and a warm daylight/dusk presentation mode. Correct the current cool blue/grey cast so ivory still reads as ivory. Balance interiors and exterior windows without blown-out skies or black rooms. Use the existing rendering system's capabilities honestly: label real-time views as such; provide higher-quality stills if supported. A generated illustration must not replace the geometrically correct walkthrough or be presented as proof of implemented geometry.
+
+SPACIOUSNESS AND EASIER MOVEMENT AT TRUE SCALE
+Improve visual connection and usable circulation within the locked floor plan. Keep open kitchen/living/dining sightlines, low compact storage, uncluttered thresholds, light ceilings, continuous flooring and clear views toward veranda and planting. Reposition nonessential decor inside rooms if it blocks circulation; retain the approved functional furniture and room capacities. Record any furniture-only changes.
+
+Do not globally scale the house, move boundaries, shrink people/furniture, remove required walls, reduce collision radii or use an extreme wide-angle lens to pretend rooms are larger. Keep actual wall-to-wall dimensions and clearances available in the interface. Genuine added floor area needs a separate, dimensioned proposal and approval; do not silently take space from another room or the road.
+
+Audit the walk camera, floor elevation, field of view, model units, furniture scale and colliders before changing aesthetics. Use the existing approximately 1.63 m standing eye height; label optional seated/bed views. Keep a natural, documented lens setting and identical camera/lens for before-and-after comparisons. Prevent spawn points inside furniture or too close to corners.
+
+Measure clear walking widths and ICU clearances, including actual door jambs and stacked open panels. Test movement both around the bed and through hall/veranda connections. Preserve existing path widths and make only feasible furniture/decor improvements; do not claim a route is wider if only its appearance changed. Report remaining bottlenecks honestly. A working avatar route is not a certification of medical or building accessibility.
+
+IMPLEMENTATION, TESTING AND DELIVERY
+Proceed through these steps and complete the authorized implementation:
+1. Snapshot the latest Tirumala 3 dimensions/geometry and protected samples. Create Tirumala 4 separately with its own project identity and reproducible build path.
+2. Review the photographs/video and prepare a labelled site diagram with north arrow, exact plot, east gate, roads, garden, court, reference viewpoints and confidence notes. Keep estimated camera/landmark positions distinct from owner-provided dimensions.
+3. Implement the site/material/landscaping work and scoped interior presentation improvements. Keep site objects outside the plot separate from house geometry. Update rendering and collisions together if a decorative object moves.
+4. Validate walking from east gate through the raised approach/veranda into living and ICU; around the ICU bed; to kitchen, master and caregiver areas; up the existing stairs to upper gallery, rooms and terrace. Test doors independently and fully open, transparent-glass collisions, porch steps and floor transitions. No falling through ground, stuck doorways, invisible blockers, teleporting through walls or wrong-floor camera shortcuts.
+5. Verify 2D, editable data, 3D model and exports agree. Compare locked wall/room coordinates numerically against Tirumala 3. Material changes must not alter room dimensions. Show arrows in feet/inches for rooms, important clearances and the 40 × 50 ft boundary; site road widths may also use metres. Use net polygon areas for irregular rooms.
+6. Check performance and rendering in the actual sample viewer, with the site layer enabled. Report the tested environment and observed performance; use sensible vegetation detail/instancing so the richer colony remains navigable. Check missing assets, stale thumbnails, console errors and persistence after reload/rebuild.
+
+Deliver:
+- A working “Tirumala 4” gallery entry with current 2D ground/first-floor plans, coordinated editable project, 3D walkthrough, dimension schedule and exports supported by the app.
+- A site/context plan and optional existing-versus-proposed toggle, with unchanged house boundary and documented assumptions.
+- Matched reference/render comparisons for east frontage, northeast corner, north garden, court/road and wall/planting. Include reference IDs and known/estimated camera directions.
+- Exterior east and northeast images, north-garden outlook from veranda/ICU, eye-level ICU, connected living/kitchen, veranda, upper gallery and terrace. Default cars off. Before/after interiors must use the same physical camera and furniture scale.
+- A compact report of visual improvements, actual circulation changes, unchanged room sizes, measured bottlenecks, confidence limits, test results and any unfinished items.
+- The exact verified command and gallery steps to open the new sample. The current local starting command is:
+  cd /Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home
+  bash start.sh
+  Then open Sample projects → Tirumala 4; verify this works after integration.
+
+SUCCESS CRITERION
+The owner should recognise their actual colony and plot relationships when looking out of and approaching this house, and should move comfortably through the correctly scaled approved home. Tirumala 4 should be demonstrably more realistic and visually open, while the latest Tirumala 3 room dimensions, G+1 arrangement and original sample remain intact.

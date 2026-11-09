@@ -1,0 +1,1263 @@
+{
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+  "finished": "2026-11-05T15:53:06.638Z",
+  "checks": [
+    {
+      "name": "tirumala-5 plan-2d-dimensioned.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-2d-material-overhead.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-first-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-second-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 plan-roof.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 site-context-plan.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 loads in Studio with 40x50 ft East-facing G+2 layout (storeys=3, 23 spaces), empty car porch default (carVisible=false), and Proposed site mode",
+      "pass": true,
+      "detail": {
+        "buildId": "sample:tirumala-5",
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+        "storeys": 3,
+        "roomCount": 23,
+        "widthFt": "40",
+        "depthFt": "50",
+        "facing": "90",
+        "meshCount": 389,
+        "defaultCarVisible": false,
+        "carVisible": false,
+        "carButtonText": "Show car",
+        "siteMode": "proposed",
+        "siteModeButtonText": "Site: Proposed"
+      }
+    },
+    {
+      "name": "tirumala-5: Plan A ICU geometry (201.1 sq ft), tirumala-4 presentation profile, and eye-level shortcuts loaded",
+      "pass": true,
+      "detail": {
+        "display": "Plan A",
+        "projectId": "tirumala-5",
+        "title": "Tirumala 5 · Plan A · GROUND + FIRST + SECOND",
+        "area": 201.06298997320215,
+        "profile": "tirumala-5-plan-a",
+        "reclinerShortcut": true,
+        "verandaOutlookShortcut": true
+      }
+    },
+    {
+      "name": "Stacked-stair revision removes all nine suspended pendant parts while retaining ceiling downlights",
+      "pass": true,
+      "detail": {
+        "ceilingDownlightsRetained": true,
+        "pendantGroupsRemoved": 3,
+        "pendantPartsRemoved": 9,
+        "removedNodeCount": 12,
+        "retiredOpeningIds": [
+          "s2-stair-entry",
+          "u-bedroom-terrace",
+          "u-side-terrace-door"
+        ],
+        "suspendedAtriumDecoration": false
+      }
+    },
+    {
+      "name": "North bedroom has a one-foot south extension with its rear wall retained",
+      "pass": true,
+      "detail": {
+        "extension": [
+          8045.2,
+          6350,
+          8350,
+          9200
+        ],
+        "guest": [
+          8045.2,
+          6350,
+          11432.4,
+          11400
+        ],
+        "guestAreaSqFt": 176.90271491654093,
+        "bridgeClear": 1080
+      }
+    },
+    {
+      "name": "Current atrium revision has aligned roof opening, closed south windows and new east glazing",
+      "pass": true,
+      "detail": {
+        "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+        "aperture": [
+          1675,
+          6075,
+          5000,
+          7800
+        ],
+        "opening": [
+          [
+            5000,
+            6075
+          ],
+          [
+            5000,
+            7800
+          ],
+          [
+            1675,
+            7800
+          ],
+          [
+            1675,
+            6075
+          ]
+        ],
+        "terraceSqFt": 477.1788996355769,
+        "removedSouthWindows": true,
+        "newEastWindows": true
+      }
+    },
+    {
+      "name": "Actual render meshes preserve ground-to-skylight views through both upper slabs and highest roof",
+      "pass": true,
+      "detail": {
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+        "method": "Upward vertical ray / actual transformed render-mesh triangles, including invisible buckets",
+        "samples": [
+          {
+            "origin": [
+              3.7,
+              7.6,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.89692,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.91092,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              2.1,
+              6.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.83403,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.84803,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              4.5,
+              6.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.83403,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.84803,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              2.1,
+              7.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.88644,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.90044,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          },
+          {
+            "origin": [
+              4.5,
+              7.4,
+              1.63
+            ],
+            "hits": [
+              {
+                "height": 10.88644,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              },
+              {
+                "height": 10.90044,
+                "material": "t5-rooflight-glass",
+                "floor": 2,
+                "roles": [
+                  "roof"
+                ],
+                "transparent": true
+              }
+            ],
+            "opaqueObstructions": [],
+            "reachesWeatherGlass": true,
+            "pass": true
+          }
+        ],
+        "passed": true,
+        "roofEquipment": {
+          "clearApertureMm": [
+            1675,
+            6075,
+            5000,
+            7800
+          ],
+          "clearSizeMm": [
+            3325,
+            1725
+          ],
+          "roofSlabTopMm": 10546,
+          "rooflightCurbOutsideClearAperture": true,
+          "rooflightDrainDirection": "East, into an external curb-side gutter",
+          "rooflightOuterBoundsMm": [
+            1555.0000000000002,
+            5870,
+            5120,
+            7920
+          ],
+          "rooflightSlopeDegrees": 3,
+          "solarArrayBoundsMm": [
+            1150,
+            10000,
+            3510,
+            13620
+          ],
+          "solarFaces": "South",
+          "solarHallRoofBoundsMm": [
+            150,
+            9050,
+            5335.6,
+            14328
+          ],
+          "solarMaintenanceClearancesMm": {
+            "east": 950,
+            "north": 1825.6,
+            "south": 1000,
+            "west": 708
+          },
+          "solarModuleBoundsMm": [
+            [
+              1150,
+              10000,
+              2280,
+              11760
+            ],
+            [
+              2380,
+              10000,
+              3510,
+              11760
+            ],
+            [
+              1150,
+              11860,
+              2280,
+              13620
+            ],
+            [
+              2380,
+              11860,
+              3510,
+              13620
+            ]
+          ],
+          "solarModules": 4,
+          "solarTiltDegrees": 8,
+          "status": "Architectural concept; glazing, drainage, anchorage and roof loads require engineering."
+        },
+        "solarPanelCount": 4
+      }
+    },
+    {
+      "name": "Highest hall roof carries four physical solar modules clear of the skylight",
+      "pass": true,
+      "detail": {
+        "clearApertureMm": [
+          1675,
+          6075,
+          5000,
+          7800
+        ],
+        "clearSizeMm": [
+          3325,
+          1725
+        ],
+        "roofSlabTopMm": 10546,
+        "rooflightCurbOutsideClearAperture": true,
+        "rooflightDrainDirection": "East, into an external curb-side gutter",
+        "rooflightOuterBoundsMm": [
+          1555.0000000000002,
+          5870,
+          5120,
+          7920
+        ],
+        "rooflightSlopeDegrees": 3,
+        "solarArrayBoundsMm": [
+          1150,
+          10000,
+          3510,
+          13620
+        ],
+        "solarFaces": "South",
+        "solarHallRoofBoundsMm": [
+          150,
+          9050,
+          5335.6,
+          14328
+        ],
+        "solarMaintenanceClearancesMm": {
+          "east": 950,
+          "north": 1825.6,
+          "south": 1000,
+          "west": 708
+        },
+        "solarModuleBoundsMm": [
+          [
+            1150,
+            10000,
+            2280,
+            11760
+          ],
+          [
+            2380,
+            10000,
+            3510,
+            11760
+          ],
+          [
+            1150,
+            11860,
+            2280,
+            13620
+          ],
+          [
+            2380,
+            11860,
+            3510,
+            13620
+          ]
+        ],
+        "solarModules": 4,
+        "solarTiltDegrees": 8,
+        "status": "Architectural concept; glazing, drainage, anchorage and roof loads require engineering."
+      }
+    },
+    {
+      "name": "tirumala-5 specifications dialog displays Tirumala 5 and Home ICU",
+      "pass": true
+    },
+    {
+      "name": "Refined exterior uses leaf planting (no solid red blocks), textured paving/road, edged lawn and limestone boundary",
+      "pass": true,
+      "detail": {
+        "revision": "ivory-boundary-natural-planting-2026-10-31",
+        "redBlocks": false,
+        "pavedTexture": true,
+        "roadTexture": true,
+        "grassPockets": 4,
+        "boundaryMaterial": "t4-boundary-limestone",
+        "sun": 3.15,
+        "vacantLots": 2,
+        "facade": {
+          "exteriorFinishTriangles": 363,
+          "exteriorOpenings": [
+            "drawing-veranda-only",
+            "living-veranda",
+            "icu-east-window",
+            "icu-north-window",
+            "master-rear",
+            "drawing-north",
+            "caregiver-north",
+            "caregiver-rear",
+            "kitchen-east",
+            "icu-veranda-glass",
+            "lightwell-maintenance",
+            "bath-rear",
+            "master-lightwell",
+            "wc-rear",
+            "u-terrace-door",
+            "u-master-rear",
+            "u-office-rear",
+            "u-office-north",
+            "u-bedroom-north",
+            "u-bedroom-east-proposed",
+            "u-bath-rear",
+            "u-ensuite-rear",
+            "u-gallery-lightwell",
+            "u-master-lightwell",
+            "u-atrium-east",
+            "u-stair-east",
+            "s2-hall-garden",
+            "s2-hall-rear",
+            "s2-stair-terrace-proposed",
+            "s2-stair-east",
+            "s2-gallery-east"
+          ],
+          "frameColor": "#1d2022",
+          "houseGeometryChanged": false,
+          "neighbours": "Owner-confirmed vacant adjoining lots shown with grass",
+          "revision": "desired-home-exterior-v1-2026-10-31",
+          "source": "my-desired-home",
+          "wallColor": "#f1efea"
+        },
+        "exteriorGlassOpacity": 0.19
+      }
+    },
+    {
+      "name": "Desired Home facade, substantial exterior glass and two vacant adjoining grass lots",
+      "pass": true,
+      "detail": {
+        "exteriorFinishTriangles": 363,
+        "exteriorOpenings": [
+          "drawing-veranda-only",
+          "living-veranda",
+          "icu-east-window",
+          "icu-north-window",
+          "master-rear",
+          "drawing-north",
+          "caregiver-north",
+          "caregiver-rear",
+          "kitchen-east",
+          "icu-veranda-glass",
+          "lightwell-maintenance",
+          "bath-rear",
+          "master-lightwell",
+          "wc-rear",
+          "u-terrace-door",
+          "u-master-rear",
+          "u-office-rear",
+          "u-office-north",
+          "u-bedroom-north",
+          "u-bedroom-east-proposed",
+          "u-bath-rear",
+          "u-ensuite-rear",
+          "u-gallery-lightwell",
+          "u-master-lightwell",
+          "u-atrium-east",
+          "u-stair-east",
+          "s2-hall-garden",
+          "s2-hall-rear",
+          "s2-stair-terrace-proposed",
+          "s2-stair-east",
+          "s2-gallery-east"
+        ],
+        "frameColor": "#1d2022",
+        "houseGeometryChanged": false,
+        "neighbours": "Owner-confirmed vacant adjoining lots shown with grass",
+        "revision": "desired-home-exterior-v1-2026-10-31",
+        "source": "my-desired-home",
+        "wallColor": "#f1efea"
+      }
+    },
+    {
+      "name": "Site review has diamond mesh, shadow coverage, eight exterior views and an unobstructed north-road camera",
+      "pass": true,
+      "detail": {
+        "meshFaces": 2,
+        "shadowRadius": 43,
+        "views": 8,
+        "geometryChanged": false,
+        "northCameraX": 18.6,
+        "plotNorth": 12.192
+      }
+    },
+    {
+      "name": "tirumala-5 camera exterior_east (exterior-east.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera exterior_northeast (exterior-northeast.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera exterior_east (exterior-east-overcast.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera north_garden_passage (north-garden-passage.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r07_east_northwest (ref-r07-east-northwest.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r07_east_northwest (ref-r07-existing-plot.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r11_ne_corner (ref-r11-ne-corner.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r08_north_garden (ref-r08-north-garden.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_v01_east_court_road (ref-v01-east-court-road.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r09_colony_junction (ref-r09-colony-junction.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_r14_wall_pole_paving (ref-r14-wall-pole-paving.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_n03_north_frontage (ref-n03-north-frontage.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_n02_northwest_utilities (ref-n02-northwest-utilities.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_south_vacant (ref-south-vacant.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ref_west_vacant (ref-west-vacant.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera icu_layered_entry (icu-door-wood-closed.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 private entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 0
+      }
+    },
+    {
+      "name": "tirumala-5 camera icu_layered_entry (icu-door-glass-revealed.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 glass entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-5 camera icu_layered_entry (icu-door-both-open.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 open entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 1,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-5 camera forecourt_utility (forecourt-utility.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera under_stair_pantry (under-stair-pantry.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera veranda_north_garden_outlook (veranda-north-garden-outlook.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_icu_veranda_garden (interior-icu-veranda-garden.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_icu_veranda_garden (interior-icu-overcast.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera care_recliner_eye_level (interior-icu-recliner-sightline.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_kitchen_living_dining (interior-kitchen-living-dining.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera living_sofa_eye_level (interior-living-sofa-sightline.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_veranda_living (interior-veranda-living.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_master (interior-master.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera interior_drawing (interior-drawing.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera living_double_height (living-double-height.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera upper_gallery (upper-gallery.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera first_stair_up (first-stair-up.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera upper_master (upper-master.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera upper_office (upper-office.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera upper_guest (upper-guest.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera upper_terrace (upper-terrace.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_hall (second-hall.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_terrace (second-terrace.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_stair_arrival (second-stair-arrival.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ground_skylight (ground_skylight.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera first_gallery_parapet (first-gallery-parapet.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera ground_stair_railing (ground-stair-railing.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_atrium (second_atrium.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera second_gallery_end (second-landing-endcap.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera roof_solar (roof_solar.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera cutaway_roof_off activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera closeup_flooring_glazing_porch (closeup-flooring-glazing-lower-porch.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 camera closeup_flooring_glazing_porch (optional-parking-check-car-on.png) activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-5 walking level transitions verified (lower porch -0.1524m, ground 0.0m, upper +3.508m) and CPU submission timing",
+      "pass": true,
+      "detail": {
+        "porchFloorY": -0.1524,
+        "livingFloorY": 0,
+        "upperFloorY": 3.508,
+        "cpuSubmissionMsPerFrame": 1.84
+      }
+    },
+    {
+      "name": "Walk through pantry aisle",
+      "pass": true,
+      "detail": {
+        "name": "pantry aisle",
+        "error": 0.04265959526985874,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          2.65,
+          7.982659595269859
+        ]
+      }
+    },
+    {
+      "name": "Walk through forecourt to utility",
+      "pass": true,
+      "detail": {
+        "name": "forecourt to utility",
+        "error": 0.034278450153834794,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          0.7157215498461652,
+          0.56
+        ]
+      }
+    },
+    {
+      "name": "Walk through kitchen to living",
+      "pass": true,
+      "detail": {
+        "name": "kitchen to living",
+        "error": 0.03355649868370136,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          3.7,
+          5.433556498683702
+        ]
+      }
+    },
+    {
+      "name": "Walk through living to ICU",
+      "pass": true,
+      "detail": {
+        "name": "living to ICU",
+        "error": 0.029340399734473444,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          6.35,
+          5.170659600265527
+        ]
+      }
+    },
+    {
+      "name": "Walk through veranda to ICU",
+      "pass": true,
+      "detail": {
+        "name": "veranda to ICU",
+        "error": 0.12875358951720642,
+        "floor": 5.551115123125783e-17,
+        "grounded": true,
+        "position": [
+          8.109622086800535,
+          5.467531362336779
+        ]
+      }
+    },
+    {
+      "name": "Continuous walk first interior → indoor bridge → stacked stairs → expanded atrium gallery → second hall → first interior",
+      "pass": true,
+      "detail": {
+        "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+        "segments": [
+          {
+            "name": "first gallery",
+            "target": [
+              6.9,
+              8.35,
+              3.508
+            ],
+            "position": [
+              6.894538681491714,
+              8.35
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461318508286794,
+            "frames": 116,
+            "pass": true
+          },
+          {
+            "name": "east-edge indoor bridge",
+            "target": [
+              6.9,
+              5.475,
+              3.508
+            ],
+            "position": [
+              6.899990206531647,
+              5.4801906430529925
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005190652291919165,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "stacked stair start",
+            "target": [
+              1.9,
+              5.55,
+              3.508
+            ],
+            "position": [
+              1.9051506615195977,
+              5.549928051615942
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005151164010146984,
+            "frames": 315,
+            "pass": true
+          },
+          {
+            "name": "south starter landing",
+            "target": [
+              0.7,
+              5.55,
+              3.858
+            ],
+            "position": [
+              0.705176081565704,
+              5.549999693670197
+            ],
+            "height": 3.8580000400543213,
+            "grounded": true,
+            "error": 0.005176081574768612,
+            "frames": 117,
+            "pass": true
+          },
+          {
+            "name": "west flight landing",
+            "target": [
+              0.7,
+              8.35,
+              5.083
+            ],
+            "position": [
+              0.7000095894225163,
+              8.344776891320993
+            ],
+            "height": 5.083000183105469,
+            "grounded": true,
+            "error": 0.005223117481900465,
+            "frames": 200,
+            "pass": true
+          },
+          {
+            "name": "north flight landing",
+            "target": [
+              3.95,
+              8.35,
+              6.658
+            ],
+            "position": [
+              3.9445898651049554,
+              8.349991364069467
+            ],
+            "height": 6.6579999923706055,
+            "grounded": true,
+            "error": 0.005410141787594652,
+            "frames": 223,
+            "pass": true
+          },
+          {
+            "name": "second arrival",
+            "target": [
+              5.7,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.694580781952722,
+              8.349999973532636
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005419218047342485,
+            "frames": 145,
+            "pass": true
+          },
+          {
+            "name": "north atrium passage",
+            "target": [
+              5.8,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.793657707202773,
+              8.34999999842599
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.0063422927972267285,
+            "frames": 59,
+            "pass": true
+          },
+          {
+            "name": "expanded east gallery",
+            "target": [
+              5.8,
+              5.475,
+              7.016
+            ],
+            "position": [
+              5.799988601804169,
+              5.4801906750814435
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005190687596069588,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "east gallery window approach",
+            "target": [
+              2.2,
+              5.475,
+              7.016
+            ],
+            "position": [
+              2.205125464819563,
+              5.4750073405094035
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005125470075969141,
+            "frames": 242,
+            "pass": true
+          },
+          {
+            "name": "return east gallery",
+            "target": [
+              5.8,
+              5.475,
+              7.016
+            ],
+            "position": [
+              5.794591675343236,
+              5.475000010968931
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005408324656774897,
+            "frames": 241,
+            "pass": true
+          },
+          {
+            "name": "return north atrium passage",
+            "target": [
+              5.8,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.799990301793942,
+              8.344809358911675
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.00519065014839209,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "indoor hall approach",
+            "target": [
+              5.95,
+              9.55,
+              7.016
+            ],
+            "position": [
+              5.949337971700114,
+              9.544681403935883
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005359640432258643,
+            "frames": 117,
+            "pass": true
+          },
+          {
+            "name": "second hall",
+            "target": [
+              4.675,
+              9.55,
+              7.016
+            ],
+            "position": [
+              4.680400566961905,
+              9.549977647814115
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005400613217981067,
+            "frames": 120,
+            "pass": true
+          },
+          {
+            "name": "return to indoor landing",
+            "target": [
+              5.95,
+              9.55,
+              7.016
+            ],
+            "position": [
+              5.944696673976988,
+              9.54999990741329
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005303326023819956,
+            "frames": 120,
+            "pass": true
+          },
+          {
+            "name": "descent approach",
+            "target": [
+              5.7,
+              8.35,
+              7.016
+            ],
+            "position": [
+              5.701035297664029,
+              8.355076187714157
+            ],
+            "height": 7.015999794006348,
+            "grounded": true,
+            "error": 0.005180687499020749,
+            "frames": 118,
+            "pass": true
+          },
+          {
+            "name": "arrival connector descent",
+            "target": [
+              3.95,
+              8.35,
+              6.658
+            ],
+            "position": [
+              3.955328914082304,
+              8.350015335397233
+            ],
+            "height": 6.6579999923706055,
+            "grounded": true,
+            "error": 0.005328936148142722,
+            "frames": 145,
+            "pass": true
+          },
+          {
+            "name": "north flight descent",
+            "target": [
+              0.7,
+              8.35,
+              5.083
+            ],
+            "position": [
+              0.7051313676824097,
+              8.350000024010612
+            ],
+            "height": 5.083000183105469,
+            "grounded": true,
+            "error": 0.005131367682465912,
+            "frames": 224,
+            "pass": true
+          },
+          {
+            "name": "west flight descent",
+            "target": [
+              0.7,
+              5.55,
+              3.858
+            ],
+            "position": [
+              0.7000095063603808,
+              5.55522310177973
+            ],
+            "height": 3.8580000400543213,
+            "grounded": true,
+            "error": 0.00522311043079797,
+            "frames": 200,
+            "pass": true
+          },
+          {
+            "name": "south starter descent",
+            "target": [
+              1.9,
+              5.55,
+              3.508
+            ],
+            "position": [
+              1.894538695378032,
+              5.550023563615604
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461355456103121,
+            "frames": 116,
+            "pass": true
+          },
+          {
+            "name": "return indoor bridge",
+            "target": [
+              6.9,
+              5.475,
+              3.508
+            ],
+            "position": [
+              6.89474207264969,
+              5.475078808011535
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005258517920842952,
+            "frames": 315,
+            "pass": true
+          },
+          {
+            "name": "return first gallery",
+            "target": [
+              6.9,
+              8.35,
+              3.508
+            ],
+            "position": [
+              6.899990574339202,
+              8.344810888971208
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005189119589314121,
+            "frames": 204,
+            "pass": true
+          },
+          {
+            "name": "first arrival",
+            "target": [
+              5.7,
+              8.35,
+              3.508
+            ],
+            "position": [
+              5.7054613039200825,
+              8.34997658997442
+            ],
+            "height": 3.507999897003174,
+            "grounded": true,
+            "error": 0.005461354093702839,
+            "frames": 116,
+            "pass": true
+          }
+        ],
+        "expectedSegments": 23,
+        "passed": true,
+        "initialSpawns": 1,
+        "laterTeleports": 0
+      }
+    },
+    {
+      "name": "Zero uncaught page errors during Tirumala 5 studio & render verification",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

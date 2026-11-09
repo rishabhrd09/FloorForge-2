@@ -1,0 +1,357 @@
+{
+  "revision": 10,
+  "optionHashes": {
+    "A": "dae756745908451f9f338a1eea5137c5ddc47712c95fffabb5e48e495b5f4f64",
+    "B": "16b9ee1fe2f75bf376e63e7fa778b83f90a841620521ba3ffaee94d2aafda206",
+    "C": "fcf63e7d4efaafbd6a2cf3c6a4998a72d76b7b28bfa7a58704e169cd6e79b884",
+    "D": "d026f2cbfe470645e739cbb83a9dee5df853ada8fa766ba40adb420474224981",
+    "E": "c8fb1526d089db39d43bc6e2c4e7b3e20c2aeb4f08ee4cf0f2bb1d13d885620b"
+  },
+  "checks": [
+    {
+      "name": "Revision 10 opens through the sample selector with twelve interior presets",
+      "pass": true
+    },
+    {
+      "name": "Option A: synchronized 2D/3D, enlarged rooms, no editor issues",
+      "pass": true,
+      "detail": {
+        "hash": "dae756745908451f9f338a1eea5137c5ddc47712c95fffabb5e48e495b5f4f64",
+        "consistent": true,
+        "kitchen": 121.0283108066216,
+        "drawing": 110.1444043165864,
+        "upperBedroom": 176.49614049228097,
+        "editorIssues": 0
+      }
+    },
+    {
+      "name": "Option B: synchronized 2D/3D, enlarged rooms, no editor issues",
+      "pass": true,
+      "detail": {
+        "hash": "16b9ee1fe2f75bf376e63e7fa778b83f90a841620521ba3ffaee94d2aafda206",
+        "consistent": true,
+        "kitchen": 121.0283108066216,
+        "drawing": 110.1444043165864,
+        "upperBedroom": 176.49614049228097,
+        "editorIssues": 0
+      }
+    },
+    {
+      "name": "Option C: synchronized 2D/3D, enlarged rooms, no editor issues",
+      "pass": true,
+      "detail": {
+        "hash": "fcf63e7d4efaafbd6a2cf3c6a4998a72d76b7b28bfa7a58704e169cd6e79b884",
+        "consistent": true,
+        "kitchen": 121.0283108066216,
+        "drawing": 110.1444043165864,
+        "upperBedroom": 176.49614049228097,
+        "editorIssues": 0
+      }
+    },
+    {
+      "name": "Option D: synchronized 2D/3D, enlarged rooms, no editor issues",
+      "pass": true,
+      "detail": {
+        "hash": "d026f2cbfe470645e739cbb83a9dee5df853ada8fa766ba40adb420474224981",
+        "consistent": true,
+        "kitchen": 121.0283108066216,
+        "drawing": 132.17328517990367,
+        "upperBedroom": 176.49614049228097,
+        "editorIssues": 0
+      }
+    },
+    {
+      "name": "Option E: synchronized 2D/3D, enlarged rooms, no editor issues",
+      "pass": true,
+      "detail": {
+        "hash": "c8fb1526d089db39d43bc6e2c4e7b3e20c2aeb4f08ee4cf0f2bb1d13d885620b",
+        "consistent": true,
+        "kitchen": 121.0283108066216,
+        "drawing": 110.1444043165864,
+        "upperBedroom": 176.49614049228097,
+        "editorIssues": 0
+      }
+    },
+    {
+      "name": "All five variants remain distinct",
+      "pass": true
+    },
+    {
+      "name": "Explore-inside selector enters the kitchen in walk mode",
+      "pass": true
+    },
+    {
+      "name": "Preset living_dining_kitchen: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0,
+        "elevation": 0.008999999612569809,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset drawing_interior: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0.025399998092651366,
+        "elevation": 0.008999999612569753,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset entry_connected_hall: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0,
+        "elevation": 0.008999999612569809,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset dining_stair_connection: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0,
+        "elevation": 0.008999999612569864,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset care_interior_overview: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0,
+        "elevation": 0.008999999612569864,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset double_height_living_void: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 0,
+        "expectedFloor": 0,
+        "delta": 0,
+        "elevation": 0.008999999612569809,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset upper_gallery_connection: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.009000055313110433,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset upper_lounge_connection: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.009000055313110433,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset upper_master_one: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.009000055313110433,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset upper_master_two: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.009000055313110433,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset upper_office: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.009000055313110433,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Preset shared_upper_terrace: valid floor, human lens and unobstructed standing position",
+      "pass": true,
+      "detail": {
+        "mode": "walk",
+        "floor": 1,
+        "expectedFloor": 1,
+        "delta": 0,
+        "elevation": 0.01900004577636727,
+        "fov": 62
+      }
+    },
+    {
+      "name": "Porch to drawing",
+      "pass": true,
+      "detail": {
+        "route": "Porch to drawing",
+        "pass": true
+      }
+    },
+    {
+      "name": "Hall to care",
+      "pass": true,
+      "detail": {
+        "route": "Hall to care",
+        "pass": true
+      }
+    },
+    {
+      "name": "Care to veranda",
+      "pass": true,
+      "detail": {
+        "route": "Care to veranda",
+        "pass": true
+      }
+    },
+    {
+      "name": "L stair: south flight, quarter turn, east flight",
+      "pass": true,
+      "detail": {
+        "route": "L stair: south flight, quarter turn, east flight",
+        "pass": true,
+        "position": [
+          0.68733533792326,
+          3.6670000553131104,
+          -5.618120684677121
+        ]
+      }
+    },
+    {
+      "name": "Upper stair arrival into open lounge",
+      "pass": true,
+      "detail": {
+        "route": "Upper stair arrival into open lounge",
+        "pass": true,
+        "position": [
+          4.412280388632035,
+          3.6670000553131104,
+          -5.698112939507375
+        ]
+      }
+    },
+    {
+      "name": "L stair return to ground hall",
+      "pass": true,
+      "detail": {
+        "route": "L stair return to ground hall",
+        "pass": true,
+        "position": [
+          4.442457038530064,
+          0.008999999612569809,
+          -9.217710171819215
+        ]
+      }
+    },
+    {
+      "name": "Dining to kitchen past the low serving counter",
+      "pass": true,
+      "detail": {
+        "route": "Dining to kitchen past the low serving counter",
+        "pass": true
+      }
+    },
+    {
+      "name": "Common lounge directly onto open terrace",
+      "pass": true,
+      "detail": {
+        "route": "Common lounge directly onto open terrace",
+        "pass": true
+      }
+    },
+    {
+      "name": "Terrace directly into master suite 2",
+      "pass": true,
+      "detail": {
+        "route": "Terrace directly into master suite 2",
+        "pass": true
+      }
+    },
+    {
+      "name": "Common lounge into master suite 2",
+      "pass": true,
+      "detail": {
+        "route": "Common lounge into master suite 2",
+        "pass": true
+      }
+    },
+    {
+      "name": "Common hall into master suite 1",
+      "pass": true,
+      "detail": {
+        "route": "Common hall into master suite 1",
+        "pass": true
+      }
+    },
+    {
+      "name": "Common hall into small office",
+      "pass": true,
+      "detail": {
+        "route": "Common hall into small office",
+        "pass": true
+      }
+    },
+    {
+      "name": "my-desired-home still loads without Tirumala controls",
+      "pass": true
+    },
+    {
+      "name": "saved-verandah still loads without Tirumala controls",
+      "pass": true
+    },
+    {
+      "name": "bungalow still loads without Tirumala controls",
+      "pass": true
+    },
+    {
+      "name": "No browser page errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,7 @@
+[
+  {"cols": 4, "rows": 4, "cells": 16},
+  {"cols": 4, "rows": 5, "cells": 20},
+  {"cols": 4, "rows": 6, "cells": 24},
+  {"cols": 5, "rows": 5, "cells": 25},
+  {"cols": 6, "rows": 7, "cells": 42}
+]

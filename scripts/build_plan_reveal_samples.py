@@ -2,9 +2,9 @@
 """Two sample homes published with the Plan Reveal walkthrough; no other sample or user build is touched.
 
 The Aangan House is a single-storey, east-facing courtyard home on a 55 x 80 ft plot: every room opens off a
-veranda around an open aangan with a frangipani, as Indian courtyard houses have for centuries. The Long House
+veranda around an open aangan with a mango tree, as Indian courtyard houses have for centuries. The Long House
 is a G+1 on the commonest Indian plot, 30 x 60 ft: one straight line from the front door through living, a light
-court open to the sky through both floors, dining and kitchen to the rear garden.
+court open to the sky through both floors (an ashoka rising through it), dining and kitchen to the rear garden.
 
 Both are authored custom plans (floorforge.custom-plan/1), generated through the normal pipeline, then published
 with floorforge.plan_reveal, which works the same way for any user's plan:
@@ -53,7 +53,7 @@ def aangan():
         room('a-kitchen', 'kitchen', 'Kitchen', A0, 10350, A1 - A0, 3300, kitchenLayout='l-shaped-return', prepStorageWall='left'),
         room('a-utility', 'utility', 'Utility', A0, 13880, A1 - A0, 1500),
         room('a-yard', 'drying-yard', 'Drying yard', 0, 15610, A1, 4202, drain=True),
-        room('a-court', 'courtyard', 'Aangan', B0, 4660, B1 - B0, 7200, centerTree=True, drain=True),
+        room('a-court', 'courtyard', 'Aangan', B0, 4660, B1 - B0, 7200, centerTree='mango', drain=True),
         room('a-veranda', 'veranda', 'Veranda', B1, 4660, V1 - B1, 11630, finishStyle='warm-stone', clearAccess=True),
         room('a-family', 'family', 'Family lounge', B0, 12090, B1 - 230 - B0, 4200),
         dict(id='a-garden', kind='courtyard', name='Rear garden', garden=True, drain=True,
@@ -111,7 +111,7 @@ def aangan():
                  attached_baths=1, roof_access=False, vastu='moderate', floor_height_mm=3300, exterior_theme='earth_terracotta',
                  interior_theme='earthy_modern_indian', solar_hour=8.5)
     notes = ('East-facing 55 × 80 ft courtyard home on one level. The entrance hall looks straight across the aangan to '
-             'its frangipani; living and dining open to it on the south, a covered veranda on the north leads to the '
+             'its mango tree; living and dining open to it on the south, a covered veranda on the north leads to the '
              'bedrooms, and the family lounge opens to both the aangan and the rear garden. Every room has daylight and '
              'cross-ventilation from two sides. Preliminary concept: structure, services and approvals remain with a '
              'qualified professional.')
@@ -127,12 +127,12 @@ def long_house():
     S0, S1 = 5014, 7114         # service strip: stair, powder room, utility
     g = [
         room('l-living', 'living', 'Living room', M0, 230, S1 - M0, 4000),
-        room('l-court', 'courtyard', 'Light court', M0, 4460, C1 - M0, 2600, centerTree=True, drain=True),
+        room('l-court', 'courtyard', 'Light court', M0, 4460, C1 - M0, 2600, centerTree='ashoka', drain=True),
         room('l-passage', 'hall', 'Garden passage', P0, 4460, M1 - P0, 2600),
         room('l-stair', 'stair', 'Staircase', S0, 4460, S1 - S0, 4100),
         room('l-dining', 'dining', 'Dining room', M0, 7290, M1 - M0, 2800),
         room('l-powder', 'powder-room', 'Powder room', S0, 8790, S1 - S0, 1300),
-        room('l-kitchen', 'kitchen', 'Kitchen', M0, 10320, M1 - M0, 2400),
+        room('l-kitchen', 'kitchen', 'Kitchen', M0, 10320, M1 - M0, 2400, kitchenLayout='l-shaped-return', prepStorageWall='left'),
         room('l-utility', 'utility', 'Utility', S0, 10320, S1 - S0, 2400),
         room('l-garden', 'courtyard', 'Rear garden', 0, 12950, 7344, 814, garden=True, drain=True),
     ]
@@ -149,10 +149,11 @@ def long_house():
         opening('l-dining-court', 'l-dining', 'front', 300, 1900, 'glazed', 2400, sliding=True, slidingPanels=2),
         window('l-dining-east', 'l-dining', 'left', 600, 1600, 1500, 750),
         opening('l-dining-powder', 'l-powder', 'left', 300, 750, hinge='end'),
-        opening('l-dining-kitchen', 'l-dining', 'rear', 300, 2400, 'cased', 2400),
+        # At the free end of the kitchen's L, so the worktop has a solid wall behind it.
+        opening('l-dining-kitchen', 'l-dining', 'rear', 100, 900, 'cased', 2400),
         window('l-kitchen-east', 'l-kitchen', 'left', 500, 1400, 1100, 1050),
         opening('l-kitchen-garden', 'l-kitchen', 'rear', 2400, 1700, 'glazed', 2400, sliding=True, slidingPanels=2),
-        opening('l-kitchen-utility', 'l-kitchen', 'right', 1200, 900),
+        opening('l-kitchen-utility', 'l-kitchen', 'right', 1630, 750),   # past the end of the L's return
         opening('l-utility-garden', 'l-utility', 'rear', 600, 900),
         window('l-utility-west', 'l-utility', 'right', 700, 1000, 900, 1200),
         window('l-stair-west', 'l-stair', 'right', 1800, 1200, 1500, 900),
@@ -207,7 +208,7 @@ def long_house():
 SAMPLES = [
     ('aangan-house', aangan, {
         'title': 'The Aangan House', 'style': 'Plan Reveal · courtyard',
-        'description': 'A single-storey courtyard home on a 55 × 80 ft plot: every room opens to an aangan with a frangipani. Opens as its own drawing; scroll to walk in.',
+        'description': 'A single-storey courtyard home on a 55 × 80 ft plot: every room opens to an aangan with a mango tree. Opens as its own drawing; scroll to walk in.',
         'copy': {'eyebrow': 'The Aangan House · ground floor plan · A-101', 'headline': ['Every room', 'opens to', 'the aangan.'], 'theme': 'stencil',
                  'lede': 'One level, one courtyard and its tree. This drawing is the house itself, cut at 1.2 m. Scroll, and walk in.',
                  'cta': 'Drawing set', 'endTitle': 'Built around a tree.', 'endText': 'The drawing and the house are one model. Change the plan in the studio and this walk is rebuilt from it, room by room.'},

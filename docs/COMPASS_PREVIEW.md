@@ -1,0 +1,58 @@
+# Compass custom-home preview
+
+Compass is enabled by default for designing a new custom home. It adds a separate versioned input and a reviewed adapter into Custom Plan. The existing Automatic, fixed 16-cell Quick Guide, room board, exact editor, saved projects, sample gallery and renderer remain available.
+
+## Run locally
+
+```sh
+bash start.sh --out /private/tmp/floorforge-compass-preview --port 8766
+```
+
+Open `http://127.0.0.1:8766/`. Choose **Design a new home** for the full-page input choices and plot questions, or continue your workspace and choose **Open Compass map**. No environment flag is required. Stop and restart any server launched before this default changed, then reload the page. A server can explicitly opt out with `FLOORFORGE_COMPASS=0`; saved-draft readers remain available for recovery and downloading the saved project.
+
+## Working flow
+
+1. Choose one or more starting inputs on the full-page intake: plot dimensions, Compass, a guided home brief, a rough sketch, a prepared 2D DXF, or written requirements. Enter width, depth, road direction, occupied floors and plot context. Dimensions use canonical integer millimetres; feet and metres are supported. Plot context is advisory. Room requirements are grouped under Plot, Rooms, Ideas and Details after creation.
+2. The **Room library** opens on an empty map with **All 28 types** visible as a searchable, grouped catalogue. **Your rooms** is a separate tab for the current floor's checklist. Choose a type and paint adjoining cells, or click an empty cell first and choose its room in the same library. Selecting a new type alone chooses a brush; its room is created with the first painted cell. A single requested, unplaced room of that type is reused; multiple requested bedrooms ask which identity to use. Adding another room is explicit. Creation and placement in the chosen cell are one undoable edit. Unassigned cells remain empty. Required unplaced rooms block conversion. Lift design remains unavailable; double-height voids can be added only above Ground.
+3. The compact header gives more height to the plot; its real proportions and every grid row remain visible at fit. **Bigger map** hides the main tools while retaining Undo, Redo, review and a return to custom design. Browser **Fullscreen** and **Restore tools** remain separate actions. The library slides away to recover horizontal space. Click **Refine a cell**, or **Split this cell** in the cell inspector, to preview the whole, left or right allocation. Opening, changing the preview target or cancelling does not divide the cell. The complete room catalogue is also available for half-cell placement. Creation, division and assignment form one undoable transaction. Replacements identify all donor rooms; disconnected remaining regions are rejected. Labels use a readable rectangle inside each room's authored regions.
+4. Choose 16, 24 or 32 cells. Changing an occupied grid requests an all-floor remapping preview. Collisions and lost/disconnected rooms block applying it; no majority owner is selected silently.
+5. Review relationships, entrance destination, clear-size targets/locks and route widths. Place and link actual matching stair rooms for multiple occupied floors or roof access. Upper-floor support and open-sky checks use Custom Plan's existing rules. Room/floor IDs remain stable.
+6. Select Ground only, Ground and First, or all occupied floors. Higher-floor drafts remain saved. A partial scope derives its bedroom/floor counts and omits roof access over unfinished upper floors.
+7. **Check layout and propose geometry** displays clear polygons, allocation spans versus clear bounding dimensions, door/window proposals and structured issues. No scene is loaded during a check. Explicit acceptance selects Compass as the geometry authority; stale map/site/scope proposals cannot be used.
+8. Generate through the normal pipeline. Building, scene, drawings, review, PDF, DXF, GLB, IFC and ZIP come from the accepted geometry. Fine-tuning explicitly switches authority to Custom Plan and retains the Compass draft. Save project files and the normal workspace checkpoints retain Compass data.
+
+Home preferences remain accessible. Programme switches such as pooja, attached bathrooms and kitchen openness do not silently add or rearrange authored rooms: represent these requirements with room cards and relationships, and inspect the input-coverage review. A requested relationship that cannot be placed on a canonical wall is reported as a conflict.
+
+The workspace keeps all six input choices visible. Select one or combine several, then use the direct buttons to edit plot dimensions, arrange rooms, choose requirements, add a sketch reference, import DXF or write a description. Choices survive save/reopen under `editorState.homeInputs`. Removing a choice retains existing data. The separate layout buttons explicitly choose Guided brief, Compass, an available exact plan or an existing legacy floor guide. Selecting companion inputs does not silently replace the active room geometry. The review identifies applied values, overrides, references and unsupported prose before generation.
+
+Room types use the same shared space registry as the exact editor. Their types survive save/reopen, Compass conversion, the canonical building and 3D room metadata. Type controls room minimums, enclosure, wet areas, roof/slab treatment and the existing furniture routines; 2D drawings use the same geometry and furniture footprints. A room's display name is a label. Dining rooms receive daylight-window proposals alongside the other habitable types. Linked stairs create actual flights; a stair landing is a circulation space. An upper-floor void removes the slab and lower ceiling instead of becoming a furnished room.
+
+The corrected proposals use adapter `compass/2`. Saved maps accepted under older rules reopen as retained drafts, with all room identities, placements and scope preserved. Check and accept a fresh proposal before generating. Existing automatic, guide and exact-plan projects keep their input authority.
+
+## Contracts and isolation
+
+- `floorforge.compass-input/1`: shared buildable-envelope grid, logical row zero at the front, stable floors and room identities, single-owner whole/half regions, explicit relationships, stair links, site requests and typed requirements.
+- `floorforge.project/0.5`: active `compass`, `compassScope`, `compassAcceptance`; inactive drafts and UI selection are kept under `editorState`. An accepted Custom Plan is derived on the server, never trusted as a second editable authority.
+- `POST /api/compass/check` and `/convert`: pure proposal requests with a project, Compass draft and optional scope. Return candidate Custom Plan, issues, changes, sizes, source hash and adapter version.
+- `POST /api/compass/remap`: previews a requested row density on all saved floors.
+- `POST /api/compass/migrate-preview`: retains the original input and reports the need for explicit replacement. It does not rasterize existing exact/metric plans or activate a new input.
+- All writes retain the existing JSON size limit, local host/origin rules and session-token checks. `/api/session` describes enabled, advisory and unavailable capabilities.
+- Legacy hash calculation has no added null Compass key. Inactive Compass data does not change legacy hashes. UI state and notes do not determine the active Compass build identity; archived floor geometry is omitted from partial scopes.
+
+## Availability and remaining work
+
+This is a working preview of the core placement-to-generation slice, not completion of every item in the larger implementation plan. It is available in the normal local launch; the remaining work below is unchanged.
+
+Custom gate positions, additional road geometry, setback-band site zones, external stair/lift design and automatic lock-aware fitting are unavailable. Composite room presets, automatic conditional programme expansion, geometric migration from legacy inputs, the full reference survey question bank, and first-time-user usability sessions remain future slices. Current room cards, explicit relationships and the exact editor are the supported ways to express these custom-home requirements.
+
+Keyboard arrows move between map cells; Enter/Space select them. Focused refinement and confirmations use modal dialogs. Narrow layouts stack the map and room panel and retain large half-cell targets. Browser checks do not constitute accessibility certification or real-user usability acceptance.
+
+## Verification
+
+Run `.venv/bin/python -m pytest -q` with local loopback socket access. `tests/test_compass.py` covers region topology, hashes, inactive drafts, all eight bearings, room identities, explicit connections, size locks, remapping, G+2 prefix scopes, API protection, and generation through the shared exporters. `tests/compass_state.cjs` exercises pure edit commands, atomic undo and 500 deterministic randomized assignment/removal attempts.
+
+`evidence/compass/` records new-workflow browser captures, reproducibility and the preservation comparison. No sample or renderer regeneration is part of this input refactor. The two original Compass planning documents remain unmodified.
+
+The [dated verification report](COMPASS_VERIFICATION.md) maps the original acceptance scenarios to tested behavior, audit fixes and remaining release work.
+
+See [the custom-design workspace notes](HOME_DESIGN_WORKSPACE.md) for the full-page intake, input categories, review screen and advanced-editing navigation.

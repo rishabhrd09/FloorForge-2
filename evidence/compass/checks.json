@@ -1,0 +1,70 @@
+{
+  "baseline_commit": "ea198aba408f0c9c276bfadbdae83a2099a76d43",
+  "branch": "development",
+  "preservation": {
+    "sample_and_viewer_files_compared": 445,
+    "changed_files": [],
+    "legacy_project_hashes": {
+      "examples/briefs/manual-L.json": true,
+      "examples/briefs/demo.json": true,
+      "examples/briefs/small.json": true,
+      "examples/briefs/compact.json": true
+    },
+    "planning_documents": {
+      "COMPASS_REFACTOR_PLAN.md": {
+        "sha256": "a08adccc73fa0bc1ba36e32828c209248f47901cc849bcd8bbf9b62c1882e123",
+        "equals_backup": true
+      },
+      "COMPASS_REFACTOR_IMPLEMENTATION_PROMPT.md": {
+        "sha256": "7d5c58cccb3179667868b8f3103d238848fee1be8df495d5f8065e16f584ebb9",
+        "equals_backup": true
+      }
+    }
+  },
+  "tests": {
+    "baseline_planning": "77 passed",
+    "full_regression": "595 passed in 218.77s",
+    "focused_compass": "46 passed in 4.19s",
+    "node_transactions": "12 passed, including 500 deterministic randomized edit attempts",
+    "syntax_and_whitespace": "node --check on all Compass scripts and app.js; git diff --check passed"
+  },
+  "browser": {
+    "method": "Live in-app browser through CUA; no injected application state",
+    "checks": [
+      "eight prefilled foundation steps",
+      "NE bearing with unchanged map positions",
+      "click placement of an L-shaped living room and two bedroom identities",
+      "bathroom half-cell replacement review and cancellation",
+      "atomic split undo/redo",
+      "checked custom-plan proposal and explicit activation",
+      "generation through shared 2D/3D/export pipeline",
+      "project save/reload retains room IDs, regions and acceptance",
+      "24-cell collision refusal",
+      "16-to-32-cell remap review, cancellation, undo and redo",
+      "arrow-key navigation, Enter refinement, Escape and focus return",
+      "changed shared brief invalidates acceptance and permits fresh review",
+      "shared budget edit saves and reloads a pending draft with its exact allocations intact",
+      "fine-tuning switches to the existing exact editor; its canonical Check plan passes",
+      "returning from Custom Plan requires a fresh Compass review",
+      "replacing both halves owned by the same room asks confirmation; cancellation preserves both halves",
+      "undo restores whole-cell ownership and prior accepted input",
+      "three occupied floors navigate correctly and refinement shows rooms below",
+      "reducing to Ground retains upper placements; undo restores the upper study",
+      "generated A-101 scaled drawing opens through the shared PDF/SVG drawing workflow"
+    ],
+    "limits": [
+      "Physical mobile devices and 200% zoom acceptance remain pending",
+      "No novice-user usability sessions or exhaustive new manual stair/walkthrough session",
+      "Remote CI status is separate; consult the workflow for the pushed commit"
+    ]
+  },
+  "generated_identity": {
+    "building.json": "2e1617738b6f530694c7b7cb43ea45ec01b846c8028f55f859eea759bb38df0c",
+    "scene.json": "2e1617738b6f530694c7b7cb43ea45ec01b846c8028f55f859eea759bb38df0c",
+    "report.json": "2e1617738b6f530694c7b7cb43ea45ec01b846c8028f55f859eea759bb38df0c",
+    "review.json": "2e1617738b6f530694c7b7cb43ea45ec01b846c8028f55f859eea759bb38df0c"
+  },
+  "rollout": "Default off; explicitly enabled only on the separate port-8766 preview.",
+  "verification_date": "2026-10-18",
+  "generated_build_id": "8cb673ee2b3240767b2d9124"
+}

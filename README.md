@@ -6,6 +6,8 @@ The previous M0 response was unexecuted source. This distribution is a new multi
 
 ## See it immediately — no installation
 
+For a Git checkout, install **Git LFS** before cloning, or run `git lfs install` followed by `git lfs pull` in an existing checkout. Tirumala models, renders, reference media and export packages use LFS; their source code and plan data remain ordinary Git files. LFS must finish downloading before opening those samples or checking their export manifests.
+
 Open **`START_HERE.html`**, then **`examples/demo/preview.html`** in a modern desktop browser. The preview contains the actual scene and the realistic walkthrough viewer, with no CDN, server, account or AI dependency. Its drawing is embedded too. WebGL2 is required for 3D; the drawing remains available without it.
 
 ## Walk through your home
@@ -135,6 +137,8 @@ Builds are immutable. Editing an exported drawing does not update the source pro
 
 ## Developer commands
 
+The [Compass custom-home preview](docs/COMPASS_PREVIEW.md) is enabled by default and adds reviewed room placement on 16/24/32-cell maps. Launch normally with `bash start.sh`; existing samples and rendering keep their original paths. Its preview scope and remaining work are documented in that guide. Servers can explicitly disable Compass with `FLOORFORGE_COMPASS=0`.
+
 ```bash
 # Optional developer checks. Normal use only needs setup.sh and start.sh.
 .venv/bin/python -m floorforge doctor
@@ -197,7 +201,7 @@ Enable **Stairs to roof terrace** and regenerate to extend the actual linked cor
 
 ## Sample project gallery
 
-Open **Sample projects · explore in 3D** in the left sidebar for five completed homes with rendered thumbnails: the saved Verandah House, the original startup example, Garden Pavilion, Quiet Studio and Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
+Choose **Walk through sample homes** on the start page, or **Sample projects · explore in 3D** in the left sidebar, for the bundled homes with rendered thumbnails. They are My Desired Home (also as its original 50 × 50 ft version and as the *Inside the Wires* electrical edition), The Bungalow, The Aangan House and The Long House (both open on their own floor-plan drawing), your saved Verandah House, the original startup example, The Garden Pavilion, The Quiet Studio and The Palm Terrace Villa. Explore their exteriors, furnished floor plans and walkthroughs immediately. Browsing keeps the current project untouched. **Use this sample** loads an editable copy, and **Back to my previous project** restores the preceding project.
 
 Rebuild curated variants with `.venv/bin/python scripts/build_sample_gallery.py`; render their thumbnails with `scripts/capture_sample_gallery.mjs`. The saved favourite’s clean source brief is kept under `examples/gallery/briefs/`.
 

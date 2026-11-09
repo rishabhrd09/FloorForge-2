@@ -1,0 +1,17 @@
+PASS Fixture reproduces the pre-journey server with no custom-journey capability
+PASS Actual old route table reproduces the reported Not found response
+PASS Actual old server also lacks the new journey script, without blocking setup recovery
+PASS Create explains that the running server needs a restart instead of Not found
+PASS Stale-server guard preserves the exact entered setup and selected inputs
+PASS Failed create does not overwrite the existing autosave or saved-project records
+PASS Stale create is stopped before any unsupported or mutating endpoint
+PASS Reload restores the failed setup from local session storage
+PASS Same-origin restart provides the required API with a fresh session
+PASS An already-open tab requests its missing module reload before changing any project
+PASS Reload after restart loads the new journey module and retains the complete setup
+PASS The reported button now opens the three-floor Compass workspace
+PASS Actual saved geometry inputs match 40 by 60 feet with the road to the west
+PASS Retry after restart calls the real source-input consumer successfully
+PASS Server restart keeps the original saved project and clears only the completed setup
+PASS Created three-floor draft autosaves and reopens with the same floor identities
+PASS No browser exceptions during stale-server recovery and creation

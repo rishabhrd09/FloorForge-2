@@ -1,0 +1,114 @@
+[
+  {
+    "name": "compact-only: rendered ICU metre dimensions",
+    "pass": true,
+    "detail": {
+      "width": 3.0929999351501465,
+      "depth": 4.5472002029418945
+    }
+  },
+  {
+    "name": "compact-only: icu-glass-living open is clear",
+    "pass": true
+  },
+  {
+    "name": "compact-only: icu-glass-living closed blocks",
+    "pass": true
+  },
+  {
+    "name": "compact-only: living-veranda open is clear",
+    "pass": true
+  },
+  {
+    "name": "compact-only: living-veranda closed blocks",
+    "pass": true
+  },
+  {
+    "name": "compact-only: icu-veranda-glass open is clear",
+    "pass": true
+  },
+  {
+    "name": "compact-only: icu-veranda-glass closed blocks",
+    "pass": true
+  },
+  {
+    "name": "compact-only: walking arrival",
+    "pass": true
+  },
+  {
+    "name": "compact-only: walking kitchen",
+    "pass": true
+  },
+  {
+    "name": "compact-only: walking hallICU",
+    "pass": true
+  },
+  {
+    "name": "compact-only: walking verandaICU",
+    "pass": true
+  },
+  {
+    "name": "compact-only: walking drawing",
+    "pass": true
+  },
+  {
+    "name": "south-extension: rendered ICU metre dimensions",
+    "pass": true,
+    "detail": {
+      "width": 3.5501999855041504,
+      "depth": 4.5472002029418945
+    }
+  },
+  {
+    "name": "south-extension: icu-glass-living open is clear",
+    "pass": true
+  },
+  {
+    "name": "south-extension: icu-glass-living closed blocks",
+    "pass": true
+  },
+  {
+    "name": "south-extension: living-veranda open is clear",
+    "pass": true
+  },
+  {
+    "name": "south-extension: living-veranda closed blocks",
+    "pass": true
+  },
+  {
+    "name": "south-extension: icu-veranda-glass open is clear",
+    "pass": true
+  },
+  {
+    "name": "south-extension: icu-veranda-glass closed blocks",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking arrival",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking kitchen",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking hallICU",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking verandaICU",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking drawing",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking bedHead",
+    "pass": true
+  },
+  {
+    "name": "south-extension: walking bedFoot",
+    "pass": true
+  }
+]

@@ -1,0 +1,1276 @@
+{
+  "draftRevision": 7,
+  "editable": true,
+  "planHash": null,
+  "provenance": {
+    "attached_baths": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "bedrooms": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "budget_lakh": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "change_policy": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "cost_contingency_pct": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "depth_mm": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "eldercare": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "exterior_theme": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "finish": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "floor_height_mm": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "front_mm": {
+      "candidates": [],
+      "selected": [
+        "derived-display"
+      ]
+    },
+    "interior_layout_locked": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "interior_theme": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "latitude": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "left_mm": {
+      "candidates": [],
+      "selected": [
+        "derived-display"
+      ]
+    },
+    "longitude": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "open_kitchen": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "parking": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "plinth_mm": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "pooja": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "rate_high_inr_ft2": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "rate_low_inr_ft2": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "rear_mm": {
+      "candidates": [],
+      "selected": [
+        "derived-display"
+      ]
+    },
+    "right_mm": {
+      "candidates": [],
+      "selected": [
+        "derived-display"
+      ]
+    },
+    "road_bearing_deg": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "roof_access": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "seed": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "soil": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "solar_date": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "solar_hour": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "storeys": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "style": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "theme_version": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "timezone_hours": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "title": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "variant": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "vastu": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    },
+    "width_mm": {
+      "candidates": [],
+      "selected": [
+        "restored-display"
+      ]
+    }
+  },
+  "question": null,
+  "questions": [],
+  "requirements": [
+    {
+      "field": "depth_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:depth_mm",
+      "label": "depth",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 22000
+    },
+    {
+      "field": "floor_height_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:floor_height_mm",
+      "label": "floor height",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 3150
+    },
+    {
+      "field": "latitude",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:latitude",
+      "label": "latitude",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 22.72
+    },
+    {
+      "field": "longitude",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:longitude",
+      "label": "longitude",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 75.86
+    },
+    {
+      "field": "plinth_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:plinth_mm",
+      "label": "plinth",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 450
+    },
+    {
+      "field": "road_bearing_deg",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:road_bearing_deg",
+      "label": "road bearing deg",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 90
+    },
+    {
+      "field": "roof_access",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:roof_access",
+      "label": "roof access",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": false
+    },
+    {
+      "field": "storeys",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:storeys",
+      "label": "storeys",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 1
+    },
+    {
+      "field": "timezone_hours",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:timezone_hours",
+      "label": "timezone hours",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 5.5
+    },
+    {
+      "field": "width_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "plot-basics:width_mm",
+      "label": "width",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "plot-basics",
+      "sourceId": "plot-basics",
+      "status": "excluded",
+      "units": "mm",
+      "value": 16000
+    },
+    {
+      "field": "attached_baths",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:attached_baths",
+      "label": "attached baths",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": "all"
+    },
+    {
+      "field": "bedrooms",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:bedrooms",
+      "label": "bedrooms",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": 3
+    },
+    {
+      "field": "eldercare",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:eldercare",
+      "label": "eldercare",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": false
+    },
+    {
+      "field": "open_kitchen",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:open_kitchen",
+      "label": "open kitchen",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": true
+    },
+    {
+      "field": "parking",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:parking",
+      "label": "parking",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": false
+    },
+    {
+      "field": "pooja",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:pooja",
+      "label": "pooja",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": true
+    },
+    {
+      "field": "soil",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:soil",
+      "label": "soil",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": "unknown"
+    },
+    {
+      "field": "variant",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:variant",
+      "label": "variant",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": 0
+    },
+    {
+      "field": "vastu",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "home-goals:vastu",
+      "label": "vastu",
+      "message": "Excluded by your input choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "source": "home-goals",
+      "sourceId": "home-goals",
+      "status": "excluded",
+      "units": "mm",
+      "value": "moderate"
+    },
+    {
+      "field": "width_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "written-requirements:width_mm",
+      "label": "width",
+      "message": "",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "source": "written-requirements",
+      "sourceId": "written-requirements",
+      "status": "applied",
+      "units": "mm",
+      "value": 15240
+    },
+    {
+      "field": "depth_mm",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "written-requirements:depth_mm",
+      "label": "depth",
+      "message": "",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "source": "written-requirements",
+      "sourceId": "written-requirements",
+      "status": "applied",
+      "units": "mm",
+      "value": 24384
+    },
+    {
+      "field": "bedrooms",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "written-requirements:bedrooms",
+      "label": "bedrooms",
+      "message": "",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "source": "written-requirements",
+      "sourceId": "written-requirements",
+      "status": "applied",
+      "units": "mm",
+      "value": 2
+    },
+    {
+      "field": "storeys",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "written-requirements:storeys",
+      "label": "storeys",
+      "message": "",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "source": "written-requirements",
+      "sourceId": "written-requirements",
+      "status": "applied",
+      "units": "mm",
+      "value": 1
+    },
+    {
+      "field": "road_bearing_deg",
+      "floorIds": [],
+      "floorIndices": [],
+      "id": "written-requirements:road_bearing_deg",
+      "label": "road bearing deg",
+      "message": "",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "source": "written-requirements",
+      "sourceId": "written-requirements",
+      "status": "applied",
+      "units": "mm",
+      "value": 90
+    },
+    {
+      "field": "layout",
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:layout",
+      "label": "layout",
+      "message": "Original layout retained but excluded by your choice.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": [
+        "compass-floor-0"
+      ]
+    },
+    {
+      "field": "room-compass-room-1",
+      "fixed": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:room-compass-room-1",
+      "label": "room-compass-room-1",
+      "message": "Required room still needs an allocation.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "roomId": "compass-room-1",
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": "living"
+    },
+    {
+      "field": "room-compass-room-2",
+      "fixed": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:room-compass-room-2",
+      "label": "room-compass-room-2",
+      "message": "Required room still needs an allocation.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "roomId": "compass-room-2",
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": "kitchen"
+    },
+    {
+      "field": "room-compass-room-3",
+      "fixed": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:room-compass-room-3",
+      "label": "room-compass-room-3",
+      "message": "Required room still needs an allocation.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "roomId": "compass-room-3",
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": "bedroom"
+    },
+    {
+      "field": "room-compass-room-4",
+      "fixed": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:room-compass-room-4",
+      "label": "room-compass-room-4",
+      "message": "Required room still needs an allocation.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "roomId": "compass-room-4",
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": "bedroom"
+    },
+    {
+      "field": "room-compass-room-5",
+      "fixed": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "floorIndices": [],
+      "id": "compass-map:room-compass-room-5",
+      "label": "room-compass-room-5",
+      "message": "Required room still needs an allocation.",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "roomId": "compass-room-5",
+      "source": "compass-map",
+      "sourceId": "compass-map",
+      "status": "excluded",
+      "units": "mm",
+      "value": "bedroom"
+    }
+  ],
+  "sources": [
+    {
+      "enabled": false,
+      "floorIds": [],
+      "id": "plot-basics",
+      "interpretation": {
+        "method": "explicit measured data"
+      },
+      "kind": "plot",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "units": "mm",
+      "values": {
+        "depth_mm": 22000,
+        "floor_height_mm": 3150,
+        "latitude": 22.72,
+        "longitude": 75.86,
+        "plinth_mm": 450,
+        "road_bearing_deg": 90,
+        "roof_access": false,
+        "storeys": 1,
+        "timezone_hours": 5.5,
+        "width_mm": 16000
+      }
+    },
+    {
+      "enabled": false,
+      "floorIds": [],
+      "id": "home-goals",
+      "interpretation": {
+        "method": "explicit measured data"
+      },
+      "kind": "survey",
+      "provenance": {
+        "origin": "project",
+        "path": "brief",
+        "revisions": [
+          {
+            "enabled": true,
+            "id": "studio-field-edits",
+            "kind": "form",
+            "values": {
+              "bedrooms": 3
+            }
+          }
+        ],
+        "supersededValues": {
+          "bedrooms": 3
+        }
+      },
+      "units": "mm",
+      "values": {
+        "attached_baths": "all",
+        "bedrooms": 3,
+        "eldercare": false,
+        "open_kitchen": true,
+        "parking": false,
+        "pooja": true,
+        "soil": "unknown",
+        "variant": 0,
+        "vastu": "moderate"
+      }
+    },
+    {
+      "enabled": true,
+      "floorIds": [],
+      "id": "written-requirements",
+      "interpretation": {
+        "method": "deterministic grammar",
+        "reading": {
+          "assumptions": [],
+          "not_understood": [],
+          "understood": [
+            {
+              "text": "50 x 80 feet",
+              "values": {
+                "depth_mm": 24384,
+                "width_mm": 15240
+              }
+            },
+            {
+              "text": "east-facing",
+              "values": {
+                "road_bearing_deg": 90
+              }
+            },
+            {
+              "text": "ground only",
+              "values": {
+                "storeys": 1
+              }
+            },
+            {
+              "text": "2 bedrooms",
+              "values": {
+                "bedrooms": 2
+              }
+            }
+          ]
+        },
+        "spatialHints": []
+      },
+      "kind": "text",
+      "provenance": {
+        "origin": "project",
+        "path": "text"
+      },
+      "text": "My plot is 50 x 80 feet, east-facing, ground only, 2 bedrooms.",
+      "units": "mm",
+      "values": {
+        "bedrooms": 2,
+        "depth_mm": 24384,
+        "road_bearing_deg": 90,
+        "storeys": 1,
+        "width_mm": 15240
+      }
+    },
+    {
+      "enabled": false,
+      "floorIds": [
+        "compass-floor-0"
+      ],
+      "geometry": {
+        "connections": [],
+        "floors": [
+          {
+            "id": "compass-floor-0",
+            "splits": []
+          }
+        ],
+        "grid": {
+          "basis": "buildable-envelope",
+          "cols": 4,
+          "rowOrigin": "front",
+          "rows": 4
+        },
+        "requirements": [],
+        "rooms": [
+          {
+            "floorId": "compass-floor-0",
+            "id": "compass-room-1",
+            "kind": "living",
+            "name": "Living",
+            "regions": [],
+            "required": true
+          },
+          {
+            "floorId": "compass-floor-0",
+            "id": "compass-room-2",
+            "kind": "kitchen",
+            "name": "Kitchen",
+            "regions": [],
+            "required": true
+          },
+          {
+            "floorId": "compass-floor-0",
+            "id": "compass-room-3",
+            "kind": "bedroom",
+            "name": "Master bedroom",
+            "regions": [],
+            "required": true,
+            "role": "master"
+          },
+          {
+            "floorId": "compass-floor-0",
+            "id": "compass-room-4",
+            "kind": "bedroom",
+            "name": "Bedroom 2",
+            "regions": [],
+            "required": true
+          },
+          {
+            "floorId": "compass-floor-0",
+            "id": "compass-room-5",
+            "kind": "bedroom",
+            "name": "Bedroom 3",
+            "regions": [],
+            "required": true
+          }
+        ],
+        "schema": "floorforge.compass-input/1",
+        "site": {
+          "context": "unknown",
+          "gate": "planner",
+          "zones": []
+        },
+        "stairLinks": []
+      },
+      "id": "compass-map",
+      "interpretation": {
+        "method": "explicit measured data"
+      },
+      "kind": "compass",
+      "provenance": {
+        "origin": "project",
+        "path": "compass / editorState.compassDraft"
+      },
+      "units": "mm",
+      "values": {}
+    }
+  ],
+  "values": {
+    "attached_baths": "all",
+    "bedrooms": 2,
+    "budget_lakh": 65,
+    "change_policy": "exterior_refinement",
+    "cost_contingency_pct": 10,
+    "depth_mm": 24384,
+    "eldercare": false,
+    "exterior_theme": "modern_tropical",
+    "finish": "standard",
+    "floor_height_mm": 3150,
+    "front_mm": 3300,
+    "interior_layout_locked": true,
+    "interior_theme": "bright_natural",
+    "latitude": 22.72,
+    "left_mm": 1100,
+    "longitude": 75.86,
+    "open_kitchen": true,
+    "parking": false,
+    "plinth_mm": 450,
+    "pooja": true,
+    "rate_high_inr_ft2": 2800,
+    "rate_low_inr_ft2": 2000,
+    "rear_mm": 1200,
+    "right_mm": 1100,
+    "road_bearing_deg": 90,
+    "roof_access": false,
+    "seed": 0,
+    "soil": "unknown",
+    "solar_date": "2026-03-21",
+    "solar_hour": 15,
+    "storeys": 1,
+    "style": "warm",
+    "theme_version": "1",
+    "timezone_hours": 5.5,
+    "title": "My new home",
+    "variant": 0,
+    "vastu": "moderate",
+    "width_mm": 15240
+  }
+}

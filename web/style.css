@@ -112,3 +112,19 @@
 @media(min-width:2100px){.start-hero{height:980px;max-height:none}}
 @media(min-width:701px) and (max-width:1000px){.start-hero-copy{padding:28px 20px}.start-hero h1{font-size:36px}.start-hero-copy>p:not(.overline){font-size:12px}.hero-begin{padding:10px 12px;gap:10px;font-size:11px}.start-pills span{font-size:9px}}
 @media(max-width:700px){.start-hero-copy{width:100%;padding:35px 25px 20px;max-width:none}.start-hero h1{font-size:44px}.start-hero-copy>p:not(.overline){font-size:13px}.start-hero-image{left:0}.start-hero-image img{object-position:50% 34%}.start-hero-image:after{background:linear-gradient(180deg,#e6eddd,transparent 18%),linear-gradient(0deg,#142b2780,transparent 30%)}.hero-garden-wash{inset:0 0 38% 0;mask-image:linear-gradient(#000 78%,transparent);background:linear-gradient(#eef4e2dc,#eaf2dfc9),url('/assets/myverandah-hero.png') 0% 65%/auto 320% no-repeat}.start-pills span{font-size:10px}.start-hero-image figcaption{max-width:62%}}
+.tirumala-options-bar{display:flex;flex-direction:column;gap:8px;padding:10px 14px;margin:8px 0 10px;background:#f7f5ee;border:1px solid #d8d3c4;border-radius:10px}
+.tirumala-options-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.tirumala-option-buttons{display:flex;flex-wrap:wrap;gap:6px}
+.tirumala-option-buttons button{font-size:12px;padding:6px 11px}
+.tirumala-option-buttons button[aria-pressed="true"],.tirumala-preview-options button[aria-pressed="true"]{background:#1f3b34;color:#fbfaf5;font-weight:600}
+.tirumala-preview-options{display:inline-flex;gap:4px;margin:0 10px}
+.tirumala-room-views{display:flex;align-items:center;gap:12px;font-size:12px;margin:0;max-width:430px}
+.tirumala-room-views select{flex:1;min-width:0;margin:0;padding:6px 9px}
+.tirumala-icu-door-views{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px}
+.tirumala-icu-door-views button{font-size:12px;padding:6px 10px;margin:0}
+.tirumala-icu-door-views[hidden]{display:none}
+
+/* Keep a full-height model view as project controls grow; do not clip it under the status row. */
+.studio{height:auto;min-height:calc(100vh - 76px)}
+#home-panel{flex:0 0 auto}
+#home-panel .canvas-wrap:not(.expanded){height:clamp(430px,70vh,900px);min-height:430px;flex:none}

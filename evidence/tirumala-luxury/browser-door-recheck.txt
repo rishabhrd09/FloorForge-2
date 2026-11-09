@@ -1,0 +1,9 @@
+PASS tirumala-3 Normal 3D view has usable height and only the current plan controls
+PASS tirumala-3 ArrowUp walks from the roadside across the entrance threshold
+PASS tirumala-3 ICU glass opening can be targeted from walking mode
+PASS tirumala-3 F closes the ICU glass panels
+PASS tirumala-3 F fully reopens the ICU connection
+PASS tirumala-3 Wooden ICU layer has a separately reachable handle
+PASS tirumala-3 F closes wooden privacy panels independently of glass
+PASS tirumala-3 Exterior camera exits walking without snapping back
+tirumala-3 {"start":[8.522,-0.26499998569488525,1.4],"after":[8.522,-0.26499998569488525,1.4],"onGround":true,"doors":["arrival-sliding-gate","drawing-veranda-only","living-veranda-wood","living-veranda-mesh","icu-glass-living","icu-glass-living-wood","stair-window","icu-east-window","icu-north-window","master-rear","drawing-north","caregiver-north","caregiver-rear","store-door","kitchen-east","icu-veranda-glass","master-door","bath-door","caregiver-lobby","wc-caregiver-only","lightwell-maintenance","bath-rear","master-lightwell","wc-rear","u-master-door","u-master-bath-door","u-office-door","u-bedroom-door","u-bath-door","u-terrace-door","u-side-terrace-door","u-master-rear","u-master-south","u-office-rear","u-office-north","u-bedroom-north","u-bedroom-terrace","u-bath-rear","u-ensuite-rear","u-gallery-lightwell","u-master-lightwell","u-atrium-east","u-atrium-south"]}

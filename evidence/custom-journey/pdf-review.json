@@ -1,0 +1,8 @@
+{
+  "file": "artifacts/drawings.pdf",
+  "sha256": "b77b1e0acdbd8c1080ec5e469b1b12dab3a0a12f7e4a933e6b4b3c266ea26ed8",
+  "pages": 16,
+  "renderTool": "Poppler pdftoppm at 70 dpi",
+  "inspection": "All three floor pages at full rendered size plus a 16-page contact overview; no clipping or layout defects observed.",
+  "geometryStatus": "Preliminary study requiring professional review"
+}

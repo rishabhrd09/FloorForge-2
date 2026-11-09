@@ -148,3 +148,151 @@ def import_dxf(text, filename='floor-plan.dxf'):
     except DesignError as exc:
         return dict(project=project, valid=False, issue=exc.record(), notes=notes,
                     roomCount=len(rooms), openingCount=len(floor['openings']))
+
+
+def inspect_dxf(text, filename='floor-plan.dxf'):
+    """Describe intake without claiming that arbitrary CAD entities are imported."""
+    if not isinstance(filename, str) or not filename.lower().endswith('.dxf'):
+        reject('Choose ASCII DXF. DWG and PDF require conversion; images require manual tracing.')
+    if not isinstance(text, str) or not text or len(text.encode('utf8')) > MAX_BYTES or '\x00' in text:
+        reject('Choose a nonempty ASCII DXF up to 750 KB.')
+    try:
+        doc = ezdxf.read(io.StringIO(text))
+    except (ezdxf.DXFError, ValueError, TypeError, IndexError) as exc:
+        raise DesignError('DXF_IMPORT', 'Cannot inspect this file. Export ASCII DXF R2000 or newer.') from exc
+    inventory = {}
+    entities = list(doc.modelspace())
+    if len(entities) > 5000:
+        reject('Use at most 5,000 model-space entities.')
+    origin = None
+    for entity in entities:
+        layer = entity.dxf.layer
+        item = inventory.setdefault(layer, {'name': layer, 'entities': 0, 'types': set(), 'supported': True})
+        item['entities'] += 1; item['types'].add(entity.dxftype())
+        name = layer.upper()
+        known = name in OPENINGS or name == 'FF_PLOT' or (
+            name.startswith('FF_ROOM_') and name[8:].lower().replace('_', '-') in ROOM_KINDS)
+        supported_type = entity.dxftype() == ('LINE' if name in OPENINGS else 'LWPOLYLINE')
+        item['supported'] = item['supported'] and known and supported_type
+        if name == 'FF_PLOT' and entity.dxftype() == 'LWPOLYLINE':
+            pts = list(entity.get_points())
+            if pts:origin = [min(v[0] for v in pts), min(v[1] for v in pts)]
+    code = doc.header.get('$INSUNITS', 0)
+    return {'units': {4: 'mm', 6: 'm', 1: 'in', 2: 'ft'}.get(code, 'unknown'), 'unitsCode': code,
+            'layers': [{**item, 'types': sorted(item['types'])} for item in inventory.values()],
+            'origin': origin, 'supportedEntities': ['closed rectangular LWPOLYLINE', 'LINE opening span'],
+            'floorMapping': 'One file maps to one named floor; linked stairs and multi-file coordination need review.',
+            'limitations': ['Only documented FF_ layers contribute geometry; other layers are reference-only.',
+                            'Blocks, splines, arcs, nonrectangular outlines, DWG and PDF are not automatic imports.',
+                            'Minimum plot X/Y becomes the local origin; minimum Y is the front.']}
+
+
+def import_mapped_dxf(body):
+    """Map one drawing to a physical level without claiming the other levels.
+
+    The legacy importer remains a single-floor parser. Its measured geometry is
+    retained, while the editable result includes all requested floor slots.
+    """
+    from copy import deepcopy
+    import hashlib
+    from .custom_plan import ID
+    if not isinstance(body, dict):
+        reject('Provide the DXF text and its floor mapping as an object.')
+    index = body.get('floorIndex', 0)
+    count = body.get('floorCount', body.get('requestedFloorCount', max(index + 1, 1) if type(index) is int else 1))
+    if type(index) is not int or type(count) is not int or not 1 <= count <= 3 or not 0 <= index < count:
+        reject('Choose a floor index from zero to two within the requested one to three floors.')
+    if 'floorCount' in body and 'requestedFloorCount' in body and body['floorCount'] != body['requestedFloorCount']:
+        reject('The requested floor counts disagree. Confirm one floor count.')
+    if count > 1 and 'floorIndex' not in body:
+        reject('Choose the physical destination floor using floorIndex; a floor ID alone does not define its level.')
+    ordered_ids = body.get('floorIds')
+    if ordered_ids is None:
+        ordered_ids = ['dxf-ground'] if count == 1 else ['floor-' + str(i) for i in range(count)]
+        ordered_ids[index] = body.get('floorId', ordered_ids[index])
+    else:
+        ordered_ids = deepcopy(ordered_ids)
+    if (not isinstance(ordered_ids, list) or len(ordered_ids) != count
+            or any(not isinstance(value, str) or not ID.fullmatch(value) for value in ordered_ids)
+            or len(set(ordered_ids)) != count):
+        reject('Provide one distinct stable floor ID per requested floor, in ground-to-top order.')
+    floor_id = body.get('floorId', ordered_ids[index])
+    if floor_id != ordered_ids[index]:
+        reject('The chosen floor ID disagrees with its ordered floor mapping. Preserve the existing ID or explicitly revise the mapping.')
+    text, filename = body.get('text'), body.get('filename', 'floor-plan.dxf')
+    inventory = inspect_dxf(text, filename)
+    units = body.get('units') or inventory['units']
+    if units not in ('mm', 'm', 'in', 'ft'):
+        reject('Select drawing units before importing this unitless drawing.')
+    if body.get('origin') is not None:
+        origin = body['origin']
+        if (not isinstance(origin, list) or len(origin) != 2 or inventory['origin'] is None
+                or any(not isinstance(v, (int, float)) or not math.isfinite(v) for v in origin)
+                or math.dist(origin, inventory['origin']) > 1e-6):
+            reject('The origin must match the FF_PLOT minimum X/Y. Move the plot outline in CAD to change this mapping.')
+    original = text
+    if units != inventory['units']:
+        doc = ezdxf.read(io.StringIO(text));doc.units = {'mm': 4, 'm': 6, 'in': 1, 'ft': 2}[units]
+        stream = io.StringIO();doc.write(stream);text = stream.getvalue()
+    result = import_dxf(text, filename)
+    original_geometry = deepcopy(result['project']['customPlan'])
+    source_validation = {'valid': result['valid'], 'scope': 'original single floor, assessed at ground level'}
+    if result.get('issue'):
+        source_validation['issue'] = deepcopy(result['issue'])
+    original_hash = hashlib.sha256(original.encode('utf8')).hexdigest()
+    identity = hashlib.sha256(f'{original_hash}:{units}:{index}:{floor_id}'.encode('utf8')).hexdigest()[:16]
+    measured = deepcopy(original_geometry)
+    imported_floor = measured['floors'][0]
+    imported_floor['id'] = floor_id
+    # Entity handles repeat across independent DXFs. Assign a stable namespace
+    # at intake, never during subsequent merging or approval revisions.
+    id_map = {item['id']: 'dxf-' + identity + '-' + item['id'].removeprefix('dxf-')
+              for key in ('rooms', 'walls', 'openings') for item in imported_floor[key]}
+    for key in ('rooms', 'walls', 'openings'):
+        for item in imported_floor[key]:
+            item['id'] = id_map[item['id']]
+            for link in ('roomId', 'swingRoomId'):
+                if link in item:
+                    item[link] = id_map[item[link]]
+    full_plan = deepcopy(measured)
+    full_plan['floors'] = [deepcopy(imported_floor) if i == index else
+                          {'id': name, 'rooms': [], 'walls': [], 'openings': []}
+                          for i, name in enumerate(ordered_ids)]
+    result['project']['customPlan'] = full_plan
+    result['project']['brief']['storeys'] = count
+    result['notes'][0] = f'Imported one drawing at floor index {index} ({floor_id}) without resizing rooms. Drawing minimum Y is the front.'
+    result.pop('review', None); result.pop('issue', None)
+    if count > 1:
+        result['valid'] = False
+        missing = [i for i in range(count) if i != index]
+        result['issue'] = {'code': 'DXF_FLOORS_PENDING', 'message': 'The drawing is mapped to its selected level. Complete the other requested floors and coordinate stairs before whole-home validation.',
+                           'details': {'floorIndex': index, 'pendingFloorIndices': missing}}
+        result['notes'].append('Empty floor slots preserve the requested home; they do not assert a layout or approve omitted floors.')
+        if index and any(o['kind'] == 'entry' for o in imported_floor['openings']):
+            result['notes'].append('FF_ENTRY openings remain as authored. A main entry belongs on ground; review upper-floor opening kinds in the exact editor.')
+    else:
+        from .intent import fuse
+        from .layout import generate_layout
+        from .review import validate
+        try:
+            result['review'] = validate(generate_layout(fuse(result['project'])))
+            result['valid'] = True
+        except DesignError as exc:
+            result['valid'] = False
+            result['issue'] = exc.record()
+    result['project']['notes'] = ' '.join(result['notes'])
+    result['status'] = 'mapped-validated' if result['valid'] else 'mapped-unvalidated'
+    result['sourceValidation'] = source_validation
+    result['intake'] = {**inventory, 'selectedUnits': units, 'floorId': floor_id, 'floorIndex': index,
+                        'floorCount': count, 'floorIds': ordered_ids,
+                        'originMapping': {'drawing': inventory['origin'], 'localMillimetres': [0, 0]}}
+    result['source'] = {'id': 'dxf-' + identity,
+                        'kind': 'dxf', 'enabled': True, 'units': units, 'floorIds': [floor_id],
+                        'floorIndices': [index], 'requestedFloorCount': count, 'floorOrder': ordered_ids,
+                        'rawText': original, 'geometry': measured,
+                        'provenance': {'filename': filename, 'sha256': original_hash,
+                                       'geometry': deepcopy(measured), 'originalGeometry': original_geometry,
+                                       'floorIndices': [index], 'floorOrder': ordered_ids, 'requestedFloorCount': count,
+                                       'idMapping': id_map,
+                                       'origin': inventory['origin'], 'layers': inventory['layers']}}
+    return result

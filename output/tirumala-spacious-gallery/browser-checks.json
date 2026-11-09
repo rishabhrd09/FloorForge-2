@@ -1,0 +1,284 @@
+{
+  "checks": [
+    {
+      "name": "tirumala-2 plan-2d-dimensioned.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 plan-2d-material-overhead.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 plan-first-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 plan-2d-dimensioned.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 plan-2d-material-overhead.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 plan-first-floor.svg loads HTTP 200",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=2, 21 spaces) and populated 3D meshes",
+      "pass": true,
+      "detail": {
+        "buildId": "sample:tirumala-2",
+        "planHash": "eb3784fa16fd77fca8b8e2d4631bf9f89e17502469a7028ecb1fd9937c090e85",
+        "storeys": 2,
+        "roomCount": 21,
+        "widthFt": "40",
+        "depthFt": "50",
+        "facing": "90",
+        "meshCount": 289
+      }
+    },
+    {
+      "name": "tirumala-2: current ICU revision, spacious profile and interior shortcuts loaded",
+      "pass": true,
+      "detail": {
+        "display": "P12",
+        "title": "Tirumala 2 · P12 · GROUND + FIRST",
+        "area": 158.6279523253491,
+        "profile": true,
+        "masterShortcut": true
+      }
+    },
+    {
+      "name": "tirumala-2 specifications dialog displays title and Home ICU",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera exterior_east activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera exterior_northeast activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 private entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 0
+      }
+    },
+    {
+      "name": "tirumala-2 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 glass entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-2 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 open entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 1,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-2 camera living_double_height activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera upper_gallery activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera upper_master activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera upper_office activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera upper_guest activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera upper_terrace activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera cutaway_roof_off activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera interior_kitchen_living_dining activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera interior_icu_veranda_garden activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera interior_veranda_living activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera interior_master activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera interior_drawing activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-2 camera closeup_flooring_glazing_porch activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 loads in Studio with 40x50 ft East-facing ground-floor layout (storeys=2, 21 spaces) and populated 3D meshes",
+      "pass": true,
+      "detail": {
+        "buildId": "sample:tirumala-3",
+        "planHash": "22453e485574c04b3780e1bcabb816917ae4ab81ea91093e1720de9fe99271ba",
+        "storeys": 2,
+        "roomCount": 21,
+        "widthFt": "40",
+        "depthFt": "50",
+        "facing": "90",
+        "meshCount": 296
+      }
+    },
+    {
+      "name": "tirumala-3: current ICU revision, spacious profile and interior shortcuts loaded",
+      "pass": true,
+      "detail": {
+        "display": "P13",
+        "title": "Tirumala 3 · P13 · GROUND + FIRST",
+        "area": 150.82363289726578,
+        "profile": true,
+        "masterShortcut": true
+      }
+    },
+    {
+      "name": "tirumala-3 specifications dialog displays title and Home ICU",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera exterior_east activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera exterior_northeast activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 private entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 0
+      }
+    },
+    {
+      "name": "tirumala-3 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 glass entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 0,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-3 camera icu_layered_entry activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 open entrance button operates both layers",
+      "pass": true,
+      "detail": {
+        "icu-glass-living": 1,
+        "icu-glass-living-wood": 1
+      }
+    },
+    {
+      "name": "tirumala-3 camera living_double_height activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera upper_gallery activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera upper_master activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera upper_office activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera upper_guest activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera upper_terrace activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera cutaway_roof_off activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera interior_kitchen_living_dining activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera interior_icu_veranda_garden activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera interior_veranda_living activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera interior_master activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera interior_drawing activated",
+      "pass": true
+    },
+    {
+      "name": "tirumala-3 camera closeup_flooring_glazing_porch activated",
+      "pass": true
+    },
+    {
+      "name": "Zero uncaught page errors during Tirumala 2 and Tirumala 3 studio & render verification",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

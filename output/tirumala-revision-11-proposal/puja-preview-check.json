@@ -1,0 +1,53 @@
+{
+  "errors": [],
+  "records": [
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "swap",
+      "values": "Kitchen 157.75 sq ft · Puja 4 × 4 ft",
+      "route": "Front court → EN → hall · PO → drawing only",
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "compact",
+      "values": "Kitchen 162.25 sq ft · Puja 3 × 4 ft",
+      "route": "Front court → EN → hall · PO → drawing only",
+      "overflow": []
+    },
+    {
+      "width": 736,
+      "scroll": 736,
+      "option": "niche",
+      "values": "Kitchen 170.5 sq ft · Puja 3.5 × 1.5 ft cabinet",
+      "route": "Front court → PO → EN → hall · separate PO → drawing door",
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "swap",
+      "values": "Kitchen 157.75 sq ft · Puja 4 × 4 ft",
+      "route": "Front court → EN → hall · PO → drawing only",
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "compact",
+      "values": "Kitchen 162.25 sq ft · Puja 3 × 4 ft",
+      "route": "Front court → EN → hall · PO → drawing only",
+      "overflow": []
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "option": "niche",
+      "values": "Kitchen 170.5 sq ft · Puja 3.5 × 1.5 ft cabinet",
+      "route": "Front court → PO → EN → hall · separate PO → drawing door",
+      "overflow": []
+    }
+  ]
+}

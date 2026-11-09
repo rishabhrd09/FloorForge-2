@@ -1,0 +1,21 @@
+{
+  "projects": [
+    {
+      "project": "compact-only",
+      "manifest": true,
+      "zipMatches": true,
+      "planHash": "767dda0381bb9ae81392dc3e713f1902520259181131d2ec82fe341083931cfc"
+    },
+    {
+      "project": "south-extension",
+      "manifest": true,
+      "zipMatches": true,
+      "planHash": "320eaa38d48768720218ab3015ac1eb195b571d18b44a6a052243f7919616780"
+    }
+  ],
+  "protectedFilesUnchanged": 412,
+  "geometryRegressionTestsPassed": 13,
+  "viewerRegressionTestsPassed": 77,
+  "spaciousnessViewChecksPassed": 20,
+  "geometryUnchangedByPresentation": true
+}

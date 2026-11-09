@@ -1,0 +1,142 @@
+[
+  {
+    "camera": "exterior_northeast",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles/exterior_northeast-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      21.287254333496094,
+      -12.060136795043945,
+      7.762197017669678
+    ],
+    "target": [
+      6.3,
+      6.7,
+      3.1
+    ],
+    "fov": 48,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": -0.044,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664
+  },
+  {
+    "camera": "interior_kitchen_living_dining",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles/interior_kitchen_living_dining-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      3.5,
+      2.799999952316284,
+      1.6299999952316284
+    ],
+    "target": [
+      3.8,
+      6.5,
+      1.4
+    ],
+    "fov": 68,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 3.716,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664
+  },
+  {
+    "camera": "interior_veranda_living",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles/interior_veranda_living-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      8.300000190734863,
+      7.099999904632568,
+      1.6299999952316284
+    ],
+    "target": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fov": 64,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 4.616,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664
+  },
+  {
+    "camera": "second_terrace",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles/second_terrace-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      10.0,
+      9.300000190734863,
+      8.645999908447266
+    ],
+    "target": [
+      7.5,
+      13.1,
+      8.116
+    ],
+    "fov": 66,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.066,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664
+  },
+  {
+    "camera": "second_hall",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles/second_hall-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      4.75,
+      9.699999809265137,
+      8.645999908447266
+    ],
+    "target": [
+      2.2,
+      12,
+      8.366
+    ],
+    "fov": 66,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.785,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664
+  }
+]

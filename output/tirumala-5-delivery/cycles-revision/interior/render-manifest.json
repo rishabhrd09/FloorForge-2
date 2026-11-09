@@ -1,0 +1,40 @@
+[
+  {
+    "camera": "interior_veranda_living",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior/interior_veranda_living-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      8.300000190734863,
+      7.099999904632568,
+      1.6299999952316284
+    ],
+    "target": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fov": 64,
+    "width": 1600,
+    "height": 1040,
+    "samples": 128,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 4.618,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "planHash": "345cf1d067dd721baf64c993c31dcf6d4ce8fabf4ec02699eab7391568508b6a",
+    "sceneSha256": "6e85767ce2ad33ff8dd4500280893518409a42a0a96b932c8761ace8990b00df",
+    "glbSha256": "c9032ea67c56bce4d8ff0784859298387e98d7a1d1420db33a679449f9799a0d",
+    "imageSha256": "b7e444292fa51bea2630d5e628a1684fd1b6db62537e233d2946217dbc1fa9ca",
+    "sourceCameraTarget": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fitExterior": false
+  }
+]

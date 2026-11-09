@@ -1,0 +1,161 @@
+{
+  "build": "demo",
+  "stale": true,
+  "toast": "This sample project does not match its generated model.",
+  "project": {
+    "brief": {
+      "attached_baths": "all",
+      "bedrooms": 3,
+      "budget_lakh": 65,
+      "change_policy": "exterior_refinement",
+      "cost_contingency_pct": 10,
+      "depth_mm": 18288,
+      "eldercare": false,
+      "exterior_theme": "modern_tropical",
+      "finish": "standard",
+      "floor_height_mm": 3150,
+      "interior_layout_locked": true,
+      "interior_theme": "bright_natural",
+      "latitude": 22.72,
+      "longitude": 75.86,
+      "open_kitchen": true,
+      "parking": false,
+      "plinth_mm": 450,
+      "pooja": true,
+      "rate_high_inr_ft2": 2800,
+      "rate_low_inr_ft2": 2000,
+      "road_bearing_deg": 180,
+      "roof_access": true,
+      "seed": 0,
+      "soil": "unknown",
+      "solar_date": "2026-03-21",
+      "solar_hour": 15,
+      "storeys": 2,
+      "style": "warm",
+      "theme_version": "1",
+      "timezone_hours": 5.5,
+      "title": "The Verandah House",
+      "variant": 0,
+      "vastu": "moderate",
+      "width_mm": 12192
+    },
+    "schema": "floorforge.project/0.4",
+    "sources": [],
+    "text": "",
+    "attachments": [],
+    "draftRevision": 0,
+    "editorState": {
+      "mode": "automatic",
+      "homeInputs": [
+        "plot",
+        "survey"
+      ],
+      "guideFloors": [
+        [
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        [
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        [
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      ],
+      "guideEdited": false,
+      "customPlan": {
+        "schema": "floorforge.custom-plan/1",
+        "units": "mm",
+        "wallThickness": 150,
+        "floors": [
+          {
+            "id": "floor-0",
+            "rooms": [],
+            "walls": [],
+            "openings": []
+          },
+          {
+            "id": "floor-1",
+            "rooms": [],
+            "walls": [],
+            "openings": []
+          }
+        ],
+        "stairs": []
+      },
+      "savedRoomEdits": [],
+      "savedFurnitureLayout": [],
+      "usePlacements": false,
+      "roomBoard": null,
+      "useRoomBoard": false
+    }
+  }
+}

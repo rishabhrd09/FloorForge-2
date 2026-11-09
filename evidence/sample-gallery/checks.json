@@ -1,7 +1,7 @@
 {
   "checks": [
     {
-      "name": "Five ready-made samples are visible",
+      "name": "All 11 ready-made samples are visible",
       "pass": true
     },
     {

@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "trial": "compact-only",
+      "allGeometryAndFurnitureUnchanged": true,
+      "roomCount": 21,
+      "profile": "p12-open-interiors-2026-10-30"
+    },
+    {
+      "trial": "south-extension",
+      "allGeometryAndFurnitureUnchanged": true,
+      "roomCount": 21,
+      "profile": "p12-open-interiors-2026-10-30"
+    }
+  ],
+  "protectedOriginalFiles": 412
+}

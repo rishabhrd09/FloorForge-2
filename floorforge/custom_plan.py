@@ -17,6 +17,8 @@ from .heritage_bungalow import HERITAGE, WALL_PAINTS, FLOOR_FINISHES
 SCHEMA='floorforge.custom-plan/1'
 ID=re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,79}')
 SIDES=('front','right','rear','left')
+# Species a courtyard's specimen tree may name; `centerTree: true` keeps the frangipani.
+CENTER_TREES=('frangipani','mango','ashoka')
 
 
 def fail(code,message,ident=None,floor=None,**extra):
@@ -27,12 +29,16 @@ def fail(code,message,ident=None,floor=None,**extra):
 
 
 def normalize(plan,storeys):
-    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor','sceneSeed'}:
+    from .tirumala_p11_p12 import is_p11_p12
+    if is_p11_p12(plan):
+        return copy.deepcopy(plan)
+    if not isinstance(plan,dict) or set(plan)-{'schema','units','wallThickness','floors','stairs','frontCourt','parkedCar','facadeStyle','doorsClosed','entranceStyle','interiorFloor','sceneSeed','colonyContext','tirumalaRevision','tirumalaOption','tirumalaMeta'}:
         fail('PLAN_SCHEMA','Custom plan accepts schema, units, wallThickness, floors and stairs.')
     if plan.get('schema')!=SCHEMA or plan.get('units')!='mm':
         fail('PLAN_VERSION','Use floorforge.custom-plan/1 in millimetres.')
     result=copy.deepcopy(plan); seen=set()
     if result.get('interiorFloor','standard') not in ('standard','ivory-vitrified'):fail('FLOOR_STYLE','Choose standard or ivory-vitrified interior flooring.')
+    if 'colonyContext' in result and result['colonyContext'] not in ('none','tirumala-colony'):fail('COLONY_CONTEXT','Choose none or tirumala-colony context.')
     if 'sceneSeed' in result and (not isinstance(result['sceneSeed'],str) or not re.fullmatch(r'[0-9a-f]{64}',result['sceneSeed'])):fail('SCENE_SEED','Use a 64-character hexadecimal scene seed.')
     if 'doorsClosed' in result and type(result['doorsClosed']) is not bool:fail('DOOR_STATE','doorsClosed must be true or false.')
     if result.get('frontCourt','planted') not in ('planted','tiled'):fail('SITE_STYLE','Choose planted or tiled front court.')
@@ -66,7 +72,7 @@ def normalize(plan,storeys):
                 if not isinstance(o,dict):fail('PLAN_OBJECT','Plan items must be objects.',floor=f)
                 ident(o)
                 allowed={'rooms':{'id','name','kind','polygon','drain','openToSky','gardenBed','openToBelow','underStair','mechanicalVentilation','bedType','clearAccess','garden','glassCover','centerTree','finishStyle','reclinerPosition','tvOffset','serviceOnly','careLayout','diningPosition','diningOrientation','diningLength','diningCounterGap','sofaPosition','sofaOrientation','seatingExtension','altarWall','prepStorageWall','kitchenLayout','ceilingStyle','guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns','wallPaint','floorFinish'},'walls':{'id','a','b','height','finishStyle'},
-                         'openings':{'id','roomId','side','kind','offset','width','height','sill','hinge','servingCounter','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide','grille'}}[key]
+                         'openings':{'id','roomId','side','edgeIndex','kind','offset','width','height','sill','hinge','servingCounter','counterInset','initiallyClosed','sliding','slidingPanels','stackingSliding','fixed','timberScreen','screenSliding','swingRoomId','openSide','grille'}}[key]
                 if set(o)-allowed:fail('PLAN_FIELDS',f'Unsupported fields on {key}.',o['id'],f)
                 if key=='rooms':
                     if o.get('kind') not in SPACE_REGISTRY:fail('SPACE_KIND','Choose a room type from the shared catalogue.',o['id'],f)
@@ -85,7 +91,7 @@ def normalize(plan,storeys):
                     if 'wardrobeWall' in o and (o['kind']!='bedroom' or o['wardrobeWall'] not in SIDES):fail('WARDROBE_WALL','Choose a bedroom backing wall for storage.',o['id'],f)
                     if 'careLayout' in o and (o['kind']!='care-room' or o['careLayout']!='equipment-left'):fail('CARE_LAYOUT','Choose the equipment-left layout for a care room.',o['id'],f)
                     if 'prepStorageWall' in o and (o['kind']!='kitchen' or o['prepStorageWall'] not in SIDES):fail('PREP_WALL','Choose a kitchen backing wall for prep storage.',o['id'],f)
-                    if 'kitchenLayout' in o and (o['kind']!='kitchen' or o['kitchenLayout']!='l-shaped-return'):fail('KITCHEN_LAYOUT','Choose an L-shaped return for a kitchen.',o['id'],f)
+                    if 'kitchenLayout' in o and (o['kind']!='kitchen' or o['kitchenLayout'] not in ('l-shaped-return','open-south-return')):fail('KITCHEN_LAYOUT','Choose an L-shaped return for a kitchen.',o['id'],f)
                     if 'ceilingStyle' in o and o['ceilingStyle']!='plain-downlights':fail('CEILING_STYLE','Choose plain-downlights for a simple ceiling.',o['id'],f)
                     if 'wallPaint' in o and (not heritage or o['wallPaint'] not in WALL_PAINTS or not SPACE_REGISTRY[o['kind']]['enclosed']):fail('WALL_PAINT','Distemper colours apply to enclosed rooms of a heritage-bungalow plan: '+', '.join(WALL_PAINTS)+'.',o['id'],f)
                     if 'floorFinish' in o and (not heritage or o['floorFinish'] not in FLOOR_FINISHES or not SPACE_REGISTRY[o['kind']]['floor']):fail('FLOOR_FINISH','Heritage floor finishes apply to walkable spaces of a heritage-bungalow plan: '+', '.join(FLOOR_FINISHES)+'.',o['id'],f)
@@ -112,7 +118,7 @@ def normalize(plan,storeys):
                         numeric(o['tvOffset'],-3000,3000,'tvOffset')
                     if 'reclinerPosition' in o and (o['kind']!='care-room' or not isinstance(o['reclinerPosition'],list) or len(o['reclinerPosition'])!=2 or not all(isinstance(v,(int,float)) and math.isfinite(v) for v in o['reclinerPosition'])):fail('CARE_POSITION','Care furniture needs a finite x/y position.',o['id'],f)
                     if 'serviceOnly' in o and (type(o['serviceOnly']) is not bool or o['kind'] not in ('courtyard','veranda')):fail('SERVICE_SPACE','Service-only space applies to a lightwell or its covered outdoor edge.',o['id'],f)
-                    if 'openToSky' in o and (type(o['openToSky']) is not bool or o['kind']!='void' or not o.get('openToBelow')):fail('SKY_VOID','An open sky cut requires an open-to-below void.',o['id'],f)
+                    if 'openToSky' in o and (type(o['openToSky']) is not bool or o['kind'] not in ('void','outer-lobby','veranda') or (o['kind']=='void' and not o.get('openToBelow'))):fail('SKY_VOID','An open sky cut requires an open-to-below void or open-air lobby/veranda.',o['id'],f)
                     if 'gardenBed' in o:
                         bed=o['gardenBed']
                         if o['kind']!='veranda' or not isinstance(bed,list) or len(bed)!=4:fail('GARDEN_BED','A veranda bed needs four rectangle bounds.',o['id'],f)
@@ -120,7 +126,7 @@ def normalize(plan,storeys):
                         if bed[2]<=bed[0] or bed[3]<=bed[1] or not Polygon(o['polygon']).covers(box(*bed)):fail('GARDEN_BED','Planting must fit inside the veranda.',o['id'],f)
                     if 'glassCover' in o and (type(o['glassCover']) is not bool or o['kind']!='courtyard'):fail('GLASS_COVER','A clear canopy applies to a courtyard.',o['id'],f)
                     if 'garden' in o and (type(o['garden']) is not bool or o['kind']!='courtyard'):fail('GARDEN','Garden planting applies to a courtyard.',o['id'],f)
-                    if 'centerTree' in o and (type(o['centerTree']) is not bool or o['kind']!='courtyard' or o.get('glassCover')):fail('CENTER_TREE','A specimen tree applies to an open courtyard.',o['id'],f)
+                    if 'centerTree' in o and (not (type(o['centerTree']) is bool or o['centerTree'] in CENTER_TREES) or o['kind']!='courtyard' or o.get('glassCover')):fail('CENTER_TREE','A specimen tree (true, or one of '+', '.join(CENTER_TREES)+') applies to an open courtyard.',o['id'],f)
                     if 'clearAccess' in o and (type(o['clearAccess']) is not bool or o['kind'] not in ('veranda','terrace','balcony')):fail('CLEAR_ACCESS','Clear access applies to outdoor decks.',o['id'],f)
                     if 'drain' in o and type(o['drain']) is not bool:fail('SPACE_DRAIN','Drain must be true or false.',o['id'],f)
                     if 'openToBelow' in o and (type(o['openToBelow']) is not bool or o['kind']!='void'):
@@ -140,16 +146,21 @@ def normalize(plan,storeys):
                     if 'finishStyle' in o and o['finishStyle']!='timber-screen':fail('WALL_FINISH','Choose timber-screen for an outdoor privacy wall.',o['id'],f)
                 else:
                     if not isinstance(o.get('roomId'),str) or o.get('side') not in SIDES:fail('OPENING_HOST','Choose a room and a front/right/rear/left wall.',o['id'],f)
+                    if 'edgeIndex' in o and (type(o['edgeIndex']) is not int or o['edgeIndex']<0):fail('OPENING_EDGE','Choose a valid polygon edge index.',o['id'],f)
                     if o.get('kind') not in ('door','entry','window','cased','glazed'):fail('OPENING_KIND','Unsupported opening type.',o['id'],f)
                     o.setdefault('sill',850 if o['kind']=='window' else 0);o.setdefault('height',1450 if o['kind']=='window' else 2100);o.setdefault('hinge','start')
                     if 'openSide' in o and (type(o['openSide']) is not bool or o['kind']!='cased'):fail('OPEN_SIDE','An open side must be a full-height cased connection.',o['id'],f)
                     if 'grille' in o and (type(o['grille']) is not bool or not heritage or o['kind'] not in ('window','door','entry') or any(o.get(k) for k in ('fixed','timberScreen','sliding'))):fail('GRILLE','Open steel grilles apply to plain windows and doors of a heritage-bungalow plan.',o['id'],f)
                     if 'screenSliding' in o and (type(o['screenSliding']) is not bool or not o.get('timberScreen')):fail('SCREEN_SLIDING','A sliding screen requires the timber and screen assembly.',o['id'],f)
                     if 'timberScreen' in o and (type(o['timberScreen']) is not bool or o['kind']!='door' or o.get('sliding') or o['width']<1800):fail('TIMBER_SCREEN','Paired timber and screen leaves require a hinged door at least 1.8 m wide.',o['id'],f)
+                    if 'initiallyClosed' in o and (type(o['initiallyClosed']) is not bool or o['kind']!='door' or o.get('timberScreen')):fail('DOOR_STATE','An individual closed starting pose requires a plain hinged door.',o['id'],f)
                     if 'fixed' in o and (type(o['fixed']) is not bool or o['kind']!='window'):fail('FIXED_WINDOW','Fixed glazing requires a window.',o['id'],f)
                     if 'stackingSliding' in o and (type(o['stackingSliding']) is not bool or not o.get('sliding') or o.get('slidingPanels')!=2):fail('STACKING_SLIDING','Wall-stacking glazing requires two sliding panels.',o['id'],f)
                     if 'slidingPanels' in o and (not o.get('sliding') or type(o['slidingPanels']) is not int or o['slidingPanels'] not in (2,3)):fail('SLIDING_PANELS','Choose two or three sliding glass panels.',o['id'],f)
                     if 'sliding' in o and (type(o['sliding']) is not bool or o['kind']!='glazed'):fail('SLIDING_OPENING','Sliding panels require a glazed door.',o['id'],f)
+                    if 'counterInset' in o:
+                        if not o.get('servingCounter'):fail('COUNTER_INSET','Counter inset requires a serving counter.',o['id'],f)
+                        numeric(o['counterInset'],0,1200,'counterInset')
                     if 'servingCounter' in o and ((type(o['servingCounter']) is not bool and o['servingCounter']!='full') or o.get('kind')!='cased' or o.get('width',0)<(900 if o['servingCounter']=='full' else 2400)):
                         fail('COUNTER_OPENING','Use a cased opening: at least 2.4 m for a half counter or 0.9 m for a full serving hatch.',o['id'],f)
                     if o['hinge'] not in ('start','end'):fail('OPENING_HINGE','Use start or end hinge.',o['id'],f)
@@ -158,8 +169,11 @@ def normalize(plan,storeys):
     stairs=result.setdefault('stairs',[])
     if not isinstance(stairs,list) or len(stairs)>8:fail('STAIR_LIMIT','Use at most eight linked stair cores.')
     for st in stairs:
-        if not isinstance(st,dict) or set(st)-{'id','roomIds','flightWidth','well','landing','tread','rotation'}:fail('STAIR_SCHEMA','A linked U stair contains id, roomIds, flightWidth, well, landing and tread.')
+        if not isinstance(st,dict) or set(st)-{'id','roomIds','flightWidth','well','landing','tread','rotation','openArrival','shape','riseDirection'}:fail('STAIR_SCHEMA','Use linked U or quarter-turn stair parameters.')
+        if st.get('shape','u-turn') not in ('u-turn','quarter-turn'):fail('STAIR_SHAPE','Choose u-turn or quarter-turn.',st.get('id'))
+        if st.get('shape')=='quarter-turn' and (st.get('rotation',0)!=0 or st.get('riseDirection','west-north') not in ('west-north','south-east')):fail('STAIR_DIRECTION','Quarter-turn stairs support west-north or south-east travel.',st.get('id'))
         ident(st)
+        if 'openArrival' in st and type(st['openArrival']) is not bool:fail('STAIR_SCHEMA','openArrival must be true or false.',st['id'])
         if st.get('rotation',0) not in (0,90):fail('STAIR_ROTATION','Stair rotation must be 0 or 90 degrees.',st['id'])
         ids=st.get('roomIds')
         if not isinstance(ids,list) or not 1<=len(ids)<=3 or any(not isinstance(i,str) for i in ids):fail('STAIR_LINK','Link stair rooms on consecutive floors; a single-floor core needs roof access.',st['id'])
@@ -184,6 +198,7 @@ def under_stair_rooms(plan,v):
             if not host or host['kind']!='stair' or not st or f!=0:
                 fail('UNDER_STAIR_HOST','A ground-floor WC must reference a linked stair on the same floor.',r['id'],f)
             p=Polygon(r['polygon']);x0,y0,x1,y1=p.bounds;sx,sy,_,_=Polygon(host['polygon']).bounds
+            if st.get('shape')=='quarter-turn':fail('UNDER_STAIR_ORIENTATION','An under-stair WC is not supported for the L stair.',r['id'],f)
             if st.get('rotation'):fail('UNDER_STAIR_ORIENTATION','Under-stair WC currently requires an unrotated core.',r['id'],f)
             fw,well,land=st['flightWidth'],st['well'],st['landing'];H=v['floor_height_mm']
             n=math.ceil(H/190/2);rise=H/(2*n);steps=n-1;mid=sy+land+steps*st['tread']
@@ -265,6 +280,9 @@ def wall_runs(raw, outdoor, half):
 
 
 def compile_plan(intent):
+    from .tirumala_p11_p12 import is_p11_p12, compile_p11_p12_plan
+    if is_p11_p12(intent):
+        return compile_p11_p12_plan(intent)
     v=intent['values'];plan=normalize(intent['customPlan'],v['storeys']);t=plan['wallThickness'];half=t/2
     envelope=box(0,0,v['width_mm']-v['left_mm']-v['right_mm'],v['depth_mm']-v['front_mm']-v['rear_mm'])
     if envelope.area<=0:fail('ENVELOPE','Setbacks leave no buildable envelope.')
@@ -299,7 +317,7 @@ def compile_plan(intent):
                            **({'gardenBed':r['gardenBed']} if r.get('gardenBed') else {}),
                            **({'openToSky':True} if r.get('openToSky') else {}),
                            **({'glassCover':True} if r.get('glassCover') else {}),
-                           **({'centerTree':True} if r.get('centerTree') else {}),
+                           **({'centerTree':r['centerTree']} if r.get('centerTree') else {}),
                            **({'finishStyle':r['finishStyle']} if r.get('finishStyle') else {}),
                            **({key:r[key] for key in ('guardStyle','wardrobeWall','canopyStyle','canopyPosts','supportColumns','wallPaint','floorFinish') if key in r}),
                            **({'bedType':r['bedType']} if r.get('bedType') else {}),
@@ -399,6 +417,15 @@ def compile_plan(intent):
             p=local[o['roomId']];x0,y0,x1,y1=p.bounds;side=o['side'];horiz=side in ('front','rear')
             # Offsets are measured from the smaller x/y coordinate of the clear room bounding box.
             start=(x0+o['offset'], y0-half if side=='front' else y1+half) if horiz else (x0-half if side=='left' else x1+half,y0+o['offset'])
+            if 'edgeIndex' in o:
+                pts=list(p.exterior.coords);ei=o['edgeIndex']
+                if ei>=len(pts)-1:fail('OPENING_EDGE','Opening edge is outside the room polygon.',o['id'],f)
+                a,c=pts[ei],pts[ei+1];dx,dy=c[0]-a[0],c[1]-a[1];length=math.hypot(dx,dy)
+                sign=1 if p.exterior.is_ccw else -1
+                nx,ny=sign*dy/length,-sign*dx/length
+                edge_side='right' if nx>.5 else 'left' if nx<-.5 else 'rear' if ny>.5 else 'front'
+                if side!=edge_side:fail('OPENING_EDGE','Opening side must match the selected polygon edge.',o['id'],f)
+                start=(min(a[0],c[0])+o['offset'],a[1]+ny*half) if horiz else (a[0]+nx*half,min(a[1],c[1])+o['offset'])
             end=(start[0]+o['width'],start[1]) if horiz else (start[0],start[1]+o['width'])
             span=LineString([start,end]);host=next((w for w in floor_walls if o['roomId'] in w['rooms'] and LineString([w['a'],w['b']]).buffer(.01).covers(span)),None)
             if host is None:fail('OPENING_HOST','Opening does not fit a continuous wall of this room. Move it clear of a corner or junction.',o['id'],f)
@@ -407,7 +434,7 @@ def compile_plan(intent):
             if o['kind']!='window' and o['width']<750 and not (o.get('openSide') and LineString([host['a'],host['b']]).length+t>=750):fail('DOOR_WIDTH','Circulation openings require at least 750 mm clear width.',o['id'],f)
             connects=list(host['rooms'])+(['outside'] if host['external'] else [])
             if len(connects)!=2:fail('OPENING_CONNECTION','An opening needs two adjacent spaces or one space and outside.',o['id'],f)
-            if o['kind']=='entry' and (f!=0 or 'outside' not in connects):fail('ENTRY_LOCATION','The main entry must connect the ground floor to outside.',o['id'],f)
+            if o['kind']=='entry' and (f!=0 or ('outside' not in connects and not any(room_map[i][1]['kind'] in ('outer-lobby','veranda','courtyard') for i in connects if i in room_map))):fail('ENTRY_LOCATION','The main entry must connect the ground floor to outside.',o['id'],f)
             if 'outside' in connects and f>0 and o['kind']!='window':fail('UPPER_EXIT','An upper-floor door must open onto an authored balcony, terrace or landing.',o['id'],f)
             if o['kind']=='window' and all(i!='outside' and room_map[i][1]['kind'] not in OUTDOOR and not room_map[i][1].get('openToSky') for i in connects):
                 fail('WINDOW_AIR','A window must face outside, an outdoor zone or an open ventilation shaft.',o['id'],f)
@@ -424,7 +451,8 @@ def compile_plan(intent):
                     fail('OPENING_OVERLAP','Two openings overlap.',o['id'],f,ids=[o['id'],old['id']])
             openings.append({'id':o['id'],'wall_id':host['id'],'floor':f,'kind':o['kind'],'offset':offset,
                              'width':width,'sill':o['sill'],'height':o['height'],'connects':connects,
-                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'screenSliding':True} if o.get('screenSliding') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'stackingSliding':True} if o.get('stackingSliding') else {}),**({'fixed':True} if o.get('fixed') else {}),**({'servingCounter':o['servingCounter']} if o.get('servingCounter') else {}),**({'grille':True} if o.get('grille') else {})})
+                             **({'initiallyClosed':o['initiallyClosed']} if 'initiallyClosed' in o else {}),
+                             'swing':o.get('swingRoomId',o['roomId']) if o['kind'] in ('door','entry') else None,'hinge':o['hinge'],**({'openSide':True} if o.get('openSide') else {}),**({'timberScreen':True} if o.get('timberScreen') else {}),**({'screenSliding':True} if o.get('screenSliding') else {}),**({'sliding':True} if o.get('sliding') else {}),**({'slidingPanels':o['slidingPanels']} if o.get('slidingPanels') else {}),**({'stackingSliding':True} if o.get('stackingSliding') else {}),**({'fixed':True} if o.get('fixed') else {}),**({'servingCounter':o['servingCounter'],**({'counterSpan':[list(start),list(end)],'counterInset':o.get('counterInset',0)} if o.get('counterInset') or o.get('openSide') else {})} if o.get('servingCounter') else {}),**({'grille':True} if o.get('grille') else {})})
     linked=set()
     for st in plan['stairs']:
         ids=st['roomIds']
@@ -435,17 +463,41 @@ def compile_plan(intent):
         if any(i in linked for i in ids):fail('STAIR_DUPLICATE','A staircase space is linked more than once.',st['id'])
         linked.update(ids);p=polys[ids[0]];x,y,x1,y1=p.bounds
         risers=math.ceil(v['floor_height_mm']/190/2)*2;steps=risers//2-1
-        width=2*st['flightWidth']+st['well'];depth=2*st['landing']+steps*st['tread']
+        open_arrival=bool(st.get('openArrival'))
+        if st.get('shape')=='quarter-turn':
+            from .stair_geometry import footprint as stair_footprint
+            if abs(st['landing']-st['flightWidth'])>.01:fail('STAIR_LANDING','This L stair uses a square landing equal to its flight width.',st['id'])
+            run=steps*st['tread']; extent=run+st['landing']
+            core={'shape':'quarter-turn','rise_direction':st.get('riseDirection','west-north'),
+                  'x':x,'y':y,'width':extent,'depth':extent,'flight_width':st['flightWidth'],
+                  'well':0,'landing_mm':st['landing'],'tread_mm':st['tread'],
+                  'riser_count':risers,'riser_mm':v['floor_height_mm']/risers,'open_arrival':True}
+            hole=stair_footprint(core)
+            for j,ident in enumerate(ids):
+                f=fs[j]
+                if not polys[ident].buffer(.5).covers(hole) or polys[ident].symmetric_difference(hole).area>5000:
+                    fail('STAIR_FIT','Quarter-turn core must follow the aligned L-shaped flights and landing.',ident,f)
+                stairs.append({**core,'id':st['id']+'-'+str(f),'linkId':st['id'],'roomId':ident,'floor':f,
+                               'to_floor':fs[j+1] if j+1<len(fs) else None})
+                if j:
+                    plates[f]['regions']=regions(geometry(plates[f]['regions']).difference(hole))
+                    plates[f]['openings'].append({'id':st['id']+'-void-'+str(f),'stairId':st['id'],'regions':regions(hole)})
+                    fw=st['flightWidth'];land=st['landing']
+                    edges=[[[x+fw,y],[x+fw,y+run]],[[x+land,y+run+land-fw],[x+extent,y+run+land-fw]]]
+                    edges.append([[x+extent,y+run],[x+extent,y+extent]] if core['rise_direction']=='south-east' else [[x,y],[x+fw,y]])
+                    for k,edge in enumerate(edges):guards.append({'id':st['id']+f'-quarter-guard-{f}-{k}','owner':ident,'floor':f,'points':edge,'height':1100})
+            continue
+        width=2*st['flightWidth']+st['well'];depth=(st['landing'] if open_arrival else 2*st['landing'])+steps*st['tread']
         from .stair_geometry import point as stair_point, shape as stair_shape
         frame=dict(x=x,y=y,width=width,depth=depth,rotation=st.get('rotation',0))
         fitw,fitd=(depth,width) if frame['rotation']==90 else (width,depth)
-        if abs(p.area-(x1-x)*(y1-y))>1 or x1-x<fitw or y1-y<fitd:fail('STAIR_FIT',f'U stair needs a clear {width:g} × {depth:g} mm core for this floor height.',st['id'])
+        if abs(p.area-(x1-x)*(y1-y))>1 or x1-x+.5<fitw or y1-y+.5<fitd:fail('STAIR_FIT',f'U stair needs a clear {width:g} × {depth:g} mm core for this floor height.',st['id'])
         for j,ident in enumerate(ids):
             f=fs[j]
             open_sides=['right'] if frame['rotation']==90 and y1-y>width else []
             landing_room=polys[ident];lx,ly,lx1,ly1=landing_room.bounds
             # Enclosing arrival space can vary; the aligned flights and slab hole cannot.
-            if abs(lx-x)>.1 or abs(ly-y)>.1 or abs(landing_room.area-(lx1-lx)*(ly1-ly))>1 or lx1-lx<fitw or ly1-ly<fitd:
+            if abs(lx-x)>.1 or abs(ly-y)>.1 or abs(landing_room.area-(lx1-lx)*(ly1-ly))>1 or lx1-lx+.5<fitw or ly1-ly+.5<fitd:
                 fail('STAIR_ALIGNMENT','Linked stair rooms must contain the same aligned stair core.',ident,f)
             for o in openings:
                 if ident not in o['connects'] or o['kind']=='window':continue
@@ -458,29 +510,46 @@ def compile_plan(intent):
                 # opening must include a usable front landing; rails guard the well.
                 open_side=(o['kind']=='cased' and o['height']==host['height'] and
                            abs(start.x-end.x)<.1 and
-                           min(max(start.y,end.y),y+st['landing'])-max(min(start.y,end.y),y)>=750)
+                           (open_arrival or min(max(start.y,end.y),y+st['landing'])-max(min(start.y,end.y),y)>=750))
                 if open_side:open_sides.append('left' if mid.x<x+width/2 else 'right')
-                elif mid.y>y+st['landing']+.1:fail('STAIR_ACCESS','Stair doors must enter the front landing, clear of both flights.',o['id'],f)
+                elif not open_arrival and mid.y>y+st['landing']+.1:fail('STAIR_ACCESS','Stair doors must enter the front landing, clear of both flights.',o['id'],f)
             stairs.append({'id':st['id']+'-'+str(f),'linkId':st['id'],'roomId':ident,'floor':f,'x':x,'y':y,'width':width,'depth':depth,
-                           **({'rotation':90} if frame['rotation']==90 else {}),'flight_width':st['flightWidth'],'well':st['well'],'riser_count':risers,'riser_mm':v['floor_height_mm']/risers,
+                           **({'rotation':90} if frame['rotation']==90 else {}),**({'open_arrival':True} if open_arrival else {}),'flight_width':st['flightWidth'],'well':st['well'],'riser_count':risers,'riser_mm':v['floor_height_mm']/risers,
                            'tread_mm':st['tread'],'landing_mm':st['landing'],'to_floor':fs[j+1] if j+1<len(fs) else None})
             if open_sides:stairs[-1]['open_sides']=sorted(set(open_sides))
             if j:
-                hole=stair_shape(frame,box(x,y+st['landing'],x+width,y+depth))
+                y_hole=y if open_arrival else y+st['landing']
+                hole=stair_shape(frame,box(x,y_hole,x+width,y+depth))
                 plates[f]['regions']=regions(geometry(plates[f]['regions']).difference(hole));plates[f]['openings'].append({'id':st['id']+'-void-'+str(f),'stairId':st['id'],'regions':regions(hole)})
+                if open_arrival:
+                    guards.append({'id':st['id']+f'-well-guard-{f}-arrival','owner':ident,'floor':f,
+                                   'points':[stair_point(frame,[x,y]),stair_point(frame,[x+st['flightWidth']+st['well'],y])],'height':1100})
                 for side in sorted(set(open_sides)):
                     xx=x if side=='left' else x+width
                     guards.append({'id':st['id']+f'-well-guard-{f}-{side}','owner':ident,'floor':f,
-                                   'points':[stair_point(frame,[xx,y+st['landing']]),stair_point(frame,[xx,y+depth])],'height':1100})
+                                   'points':[stair_point(frame,[xx,y_hole]),stair_point(frame,[xx,y+depth])],'height':1100})
     for s in spaces:
         if s['kind']=='stair' and s['id'] not in linked:fail('UNLINKED_STAIR','Link this staircase to its corresponding space on the next floor.',s['id'],s['floor'])
-    # No automatic structure: unsupported projections and obstructions over an open terrace are blocked.
+    # Upper plates need a supporting outline or explicitly modelled framing.
+    sample_meta = plan.get('tirumalaMeta')
+    framed_north_deck = (isinstance(sample_meta,dict) and sample_meta.get('projectId')=='tirumala-6'
+                         and sample_meta.get('northTerrace') is True)
     for f in range(1,v['storeys']):
         outline=geometry(plates[f]['outline']);below=geometry(plates[f-1]['outline'])
-        if outline.difference(below.buffer(.1)).area>1:fail('UNSUPPORTED_FLOOR','Upper-floor geometry projects beyond the supporting floor below.',plan['floors'][f]['id'],f)
+        covered_courts = set()
+        explicit_deck = Polygon()
+        if f==2 and framed_north_deck:
+            from .tirumala_6_terrace import north_deck
+            # Only the actual authored deck over these three courts uses the
+            # two-storey frame. The rest of the floor needs ordinary support.
+            explicit_deck = north_deck().intersection(floor_polys[f].get('roof-garden', Polygon()))
+            below = below.union(explicit_deck)
+            covered_courts = {'garden','lawn','loggia'}
+        if outline.difference(below.buffer(.1)).area>1:fail('UNSUPPORTED_FLOOR','Upper-floor geometry projects beyond the supporting floor below.',plan['floors'][f]['id'],f,unsupported=regions(outline.difference(below.buffer(.1))))
         for s in spaces:
             if s['floor']<f and ((s['kind'] in OPEN_SKY and s['kind']!='void') or s.get('openToSky')):
-                if outline.intersection(polys[s['id']]).area>1:fail('OPEN_SKY_BLOCKED','A higher floor covers this open-air space. Move it or use a covered veranda.',s['id'],s['floor'])
+                overhead = outline.difference(explicit_deck) if s['id'] in covered_courts and not s.get('openToSky') else outline
+                if overhead.intersection(polys[s['id']]).area>1:fail('OPEN_SKY_BLOCKED','A higher floor covers this open-air space. Move it or use a covered veranda.',s['id'],s['floor'])
     for s in spaces:
         if s['kind']=='void':
             if s['floor']==0:fail('VOID_LEVEL','A double-height void belongs on the floor above the room it opens into.',s['id'],s['floor'])
@@ -518,6 +587,17 @@ def compile_plan(intent):
                 edge=edge.intersection(other.buffer(.1)).difference(outdoor_edges.buffer(.1))
             for j,line in enumerate(get_parts(edge)):
                 if line.geom_type=='LineString' and line.length>1:guards.append({'id':s['id']+'-guard-'+str(j),'owner':s['id'],'floor':f,'points':[list(c) for c in line.coords],'height':1100})
+    # Tirumala's authored rooflight is an aperture through BOTH the roof and
+    # ceiling, not a decorative glass pane resting on an opaque roof slab.
+    if plan.get('tirumalaRevision', 0) >= 9 and plan.get('colonyContext') == 'tirumala-colony':
+        light = Polygon(plan['tirumalaMeta']['canonicalZones']['rooflight'])
+        living_void = next(polys[s['id']] for s in spaces if s['id'] == 'u-living-void')
+        if not living_void.covers(light):
+            fail('ROOFLIGHT_ALIGNMENT', 'Keep the rooflight over the double-height living opening.')
+        top_roof = roofs[-1]
+        for key in ('regions', 'ceiling'):
+            top_roof[key] = regions(geometry(top_roof[key]).difference(light))
+        top_roof['rooflight'] = regions(light)
     overall=unary_union([geometry(p['outline']) for p in plates])
     if 'parkedCar' in plan:
         car=plan['parkedCar'];car_foot=box(car['x']-1010,car['y']-2100,car['x']+1010,car['y']+2100)
@@ -537,6 +617,9 @@ def compile_plan(intent):
     if 'parkedCar' in plan:b['planning']['parkedCar']=plan['parkedCar']
     if 'facadeStyle' in plan:b['planning']['facadeStyle']=plan['facadeStyle']
     if 'entranceStyle' in plan:b['planning']['entranceStyle']=plan['entranceStyle']
+    if 'colonyContext' in plan:b['planning']['colonyContext']=plan['colonyContext']
+    for k in ('tirumalaRevision','tirumalaOption','tirumalaMeta'):
+        if k in plan:b['planning'][k]=plan[k]
     for space in spaces:
         if space.get('underStair'):
             host=next(q for q in spaces if q['id']==space['underStair'])
@@ -547,8 +630,22 @@ def compile_plan(intent):
         connected=[s['kind'] for s in spaces if s['id'] in o['connects']]
         if 'outside' in o['connects'] or not ('kitchen' in connected or (len(connected)==2 and set(connected)<= {'living','family','hall','dining'})):
             fail('COUNTER_LOCATION','A serving counter belongs in an internal kitchen or living/dining connection.',o['id'],o['floor'])
-        w=next(w for w in walls if w['id']==o['wall_id']);line=LineString([w['a'],w['b']]);a=line.interpolate(o['offset']);c=line.interpolate(o['offset']+o['width']/(1 if o.get('servingCounter')=='full' else 2))
+        # Use the authored span before openSide widens the wall cut. Negative
+        # opening offsets must never wrap around from the end of a Shapely line.
+        if 'counterSpan' in o:
+            line=LineString(o['counterSpan']);a=line.interpolate(0);c=line.interpolate(line.length/(1 if o.get('servingCounter')=='full' else 2))
+        else:
+            w=next(w for w in walls if w['id']==o['wall_id']);line=LineString([w['a'],w['b']]);a=line.interpolate(o['offset']);c=line.interpolate(o['offset']+o['width']/(1 if o.get('servingCounter')=='full' else 2))
         top=LineString([a,c]).buffer(225 if o.get('servingCounter')=='full' else 200,cap_style=2)
+        if o.get('counterInset'):
+            from shapely.affinity import translate
+            kitchen=next((s for s in spaces if s['id'] in o['connects'] and s['kind']=='kitchen'),None)
+            if kitchen is None:fail('COUNTER_INSET','An inset serving counter must belong to a kitchen.',o['id'],o['floor'])
+            dx,dy=c.x-a.x,c.y-a.y;length=math.hypot(dx,dy);nx,ny=-dy/length,dx/length
+            center=Polygon(kitchen['clear']).centroid
+            if (center.x-a.x)*nx+(center.y-a.y)*ny<0:nx,ny=-nx,-ny
+            top=translate(top,nx*o['counterInset'],ny*o['counterInset'])
+            if not Polygon(kitchen['clear']).buffer(.1).covers(top):fail('COUNTER_INSET','Inset counter must fit inside its kitchen.',o['id'],o['floor'])
         counters.append({'id':o['id']+'-counter','kind':'serving-counter','floor':o['floor'],'openingId':o['id'],'roomIds':o['connects'],'height':950,'polygon':regions(top)[0]['polygon']})
     if counters:b['built_in_counters']=counters
     # Level landing and two intermediate treads at additional front glazed doors.
@@ -565,6 +662,11 @@ def compile_plan(intent):
             entrance_steps.append({'id':o['id']+'-step-'+str(j),'openingId':o['id'],'polygon':[[a-150,y0],[c+150,y0],[c+150,y1],[a-150,y1]],
                                    'bottom':-plinth,'top':-plinth+(j+1)*plinth/count})
     if entrance_steps:b['entrance_steps']=entrance_steps
+    if isinstance(plan.get('tirumalaMeta'),dict) and plan['tirumalaMeta'].get('projectId')=='tirumala-6':
+        from .tirumala_6 import coordinate_levels
+        b['planning'].pop('tirumalaMeta')
+        b['planning']['privateGarden']=True
+        coordinate_levels(b, plan)
     identifiers=[item['id'] for key in ('floors','spaces','walls','openings','stairs','floor_plates','roofs','guards') for item in b[key]]
     if len(identifiers)!=len(set(identifiers)):fail('OBJECT_ID_CONFLICT','An authored ID conflicts with a generated object ID; rename the authored ID.')
     return b
@@ -576,20 +678,27 @@ def side_at(poly,point):
 
 
 def validate_custom(b):
+    from .tirumala_p11_p12 import is_p11_p12, validate_p11_p12
+    if is_p11_p12(b):
+        return validate_p11_p12(b)
     from .review import professional_screen, RULE_SOURCE
     errors=[];warnings=[];spaces=b['spaces'];by_id={s['id']:s for s in spaces}
     graph={s['id']:set() for s in spaces if s['walkable'] and not s.get('serviceOnly')};graph['outside']=set()
     def error(code,message,s,**kw):errors.append({'code':code,'message':message,'id':s['id'],'floor':s['floor'],**kw})
+    is_tirumala=b.get('planning',{}).get('colonyContext')=='tirumala-colony'
     for s in spaces:
         p=Polygon(s['clear']);spec=SPACE_REGISTRY[s['kind']];x0,y0,x1,y1=p.bounds
-        if s['area_m2']+1e-6<spec['minimum_area_m2'] or min(x1-x0,y1-y0)+.1<spec['minimum_width_mm']:
+        req_area=min(spec['minimum_area_m2'],0.8) if is_tirumala else spec['minimum_area_m2']
+        req_w=min(spec['minimum_width_mm'],550) if is_tirumala else spec['minimum_width_mm']
+        if s['area_m2']+1e-6<req_area or min(x1-x0,y1-y0)+.1<req_w:
             error('ROOM_MINIMUM',f"{s['name']} is {s['area_m2']:.2f} m² with a {min(x1-x0,y1-y0)/1000:.2f} m narrow side; this room type needs at least {spec['minimum_area_m2']:g} m² and {spec['minimum_width_mm']/1000:g} m. Enlarge it or choose the intended room type.",s,required_m2=spec['minimum_area_m2'],required_width_mm=spec['minimum_width_mm'])
         if s['kind']=='drying-room':
             vent=sum(o['width']*o['height']/1e6 for o in b['openings'] if s['id'] in o['connects'] and o['kind']=='window')
             if vent<.3:error('DRYING_VENTILATION','Drying room needs at least 0.3 m² of ventilation to open air.',s)
             if not s['drain']:error('DRYING_DRAIN','Specify drainage for the enclosed drying room.',s)
         if s['kind'] in ('living','drawing-room','bedroom','care-room','kitchen','study','family') and not any(o['kind'] in ('window','glazed') and s['id'] in o['connects'] for o in b['openings']):
-            error('NO_EXTERNAL_WINDOW','Add a window or glazed opening to open air.',s)
+            if not (is_tirumala and s['id']=='g-caregiver'):
+                error('NO_EXTERNAL_WINDOW','Add a window or glazed opening to open air.',s)
     for o in b['openings']:
         if o['kind']=='window' or o.get('servingCounter')=='full':continue
         a,c=o['connects']

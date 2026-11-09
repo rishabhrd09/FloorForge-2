@@ -6,8 +6,12 @@ export class ParkedVehicle {
   constructor(viewer, nodes) {
     this.viewer = viewer;
     this.key = `floorforge:parked-car:${viewer.data.planHash || 'preview'}`;
-    this.visible = true;
-    try { this.visible = localStorage.getItem(this.key) !== 'hidden'; } catch { /* file previews may deny storage */ }
+    const defaultVis = viewer.data.defaultCarVisible !== false;
+    this.visible = defaultVis;
+    try {
+      const saved = localStorage.getItem(this.key);
+      if (saved === 'visible' || saved === 'hidden') this.visible = saved === 'visible';
+    } catch { /* file previews may deny storage */ }
     const buckets = buildBuckets({ ...viewer.data, nodes }, viewer.materials);
     this.meshes = buckets.map(b => { const m = viewer.addBucket(b); m.userData.vehicle = true; return m; });
     this.geometry = viewer.mergeForCollision(buckets.filter(b => b.collide).map(b => b.geometry));

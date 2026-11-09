@@ -1,0 +1,19 @@
+{
+  "before": {
+    "examples/gallery/my-desired-home/project.floorforge.json": "7c6d65987d9ea0f1bd263208ea7e45d722252f0ec1ef3c407189db124bf465af",
+    "examples/gallery/my-desired-home/building.json": "9f8634ed20070470c802a94dcca2da1a2c22ad453bb49582f161be310558e633",
+    "examples/gallery/briefs/my-desired-home.json": "6f53efb93dfdfe090b6084275e32e9f725c6bbe9dbe7be7507ba741eb03f3390",
+    "examples/gallery/briefs/tirumala.json": "a3d3479c8b25aff1da89662d50696755f729dd54295d243a60d8560030451f66",
+    "examples/gallery/tirumala/building.json": "9ff1135207402b5c6a8b5f5bf5168c269c96b5bca082f915c841473b716b07c7",
+    "examples/gallery/catalog.json": "883c9ce8f3544c21e6f2b4afa70b4ce3a9ed7452f83e7d1043060ebd4b060297"
+  },
+  "after": {
+    "examples/gallery/my-desired-home/project.floorforge.json": "7c6d65987d9ea0f1bd263208ea7e45d722252f0ec1ef3c407189db124bf465af",
+    "examples/gallery/my-desired-home/building.json": "9f8634ed20070470c802a94dcca2da1a2c22ad453bb49582f161be310558e633",
+    "examples/gallery/briefs/my-desired-home.json": "6f53efb93dfdfe090b6084275e32e9f725c6bbe9dbe7be7507ba741eb03f3390",
+    "examples/gallery/briefs/tirumala.json": "a3d3479c8b25aff1da89662d50696755f729dd54295d243a60d8560030451f66",
+    "examples/gallery/tirumala/building.json": "9ff1135207402b5c6a8b5f5bf5168c269c96b5bca082f915c841473b716b07c7",
+    "examples/gallery/catalog.json": "883c9ce8f3544c21e6f2b4afa70b4ce3a9ed7452f83e7d1043060ebd4b060297"
+  },
+  "unchanged": true
+}

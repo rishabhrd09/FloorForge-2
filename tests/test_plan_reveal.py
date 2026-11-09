@@ -135,16 +135,23 @@ def test_specimen_tree_is_an_open_courtyard_option():
     room = lambda kind, **extra: dict(id='r', kind=kind, polygon=[[0, 0], [3000, 0], [3000, 3000], [0, 3000]], **extra)
     plan = lambda r: dict(schema='floorforge.custom-plan/1', units='mm', floors=[dict(id='f', rooms=[r], openings=[], walls=[])])
     assert normalize(plan(room('courtyard', centerTree=True)), 1)['floors'][0]['rooms'][0]['centerTree'] is True
-    for bad in (room('living', centerTree=True), room('courtyard', centerTree=True, glassCover=True), room('courtyard', centerTree='yes')):
+    assert normalize(plan(room('courtyard', centerTree='ashoka')), 1)['floors'][0]['rooms'][0]['centerTree'] == 'ashoka'
+    for bad in (room('living', centerTree=True), room('courtyard', centerTree=True, glassCover=True), room('courtyard', centerTree='yes'),
+                room('courtyard', centerTree=1)):
         with pytest.raises(DesignError):
             normalize(plan(bad), 1)
 
 
 def test_aangan_has_its_tree_and_the_long_house_its_open_court():
     aangan = json.loads((GALLERY / 'aangan-house/scene.json').read_text(encoding='utf-8'))
-    assert any(v['species'] == 'frangipani' and v['floor'] == 0 for v in aangan['vegetation'])
-    assert any(n['id'].endswith('/vrindavan') for n in aangan['nodes'])
+    assert any(v['species'] == 'mango' and v['floor'] == 0 for v in aangan['vegetation'])
+    assert any(n['id'].endswith('/vrindavan') for n in aangan['nodes']) and any(v['species'] == 'tulsi' for v in aangan['vegetation'])
+    long_scene = json.loads((GALLERY / 'long-house/scene.json').read_text(encoding='utf-8'))
+    tree = next(v for v in long_scene['vegetation'] if v['species'] == 'ashoka')
+    # A narrow court has room for its tree alone: no vrindavan cutting into the planter.
+    assert not any(n['id'].endswith('/vrindavan') for n in long_scene['nodes'])
     long_house = json.loads((GALLERY / 'long-house/building.json').read_text(encoding='utf-8'))
     court = Polygon(next(s for s in long_house['spaces'] if s['id'] == 'l-court')['clear'])
     upper = unary_union([Polygon(s['clear']) for s in long_house['spaces'] if s['floor'] == 1])
     assert upper.intersection(court).area < 1 and court.area > 6e6
+    assert court.contains(Point(tree['position'][0] * 1000, tree['position'][1] * 1000))

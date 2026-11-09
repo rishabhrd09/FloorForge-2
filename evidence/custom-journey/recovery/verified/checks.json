@@ -1,0 +1,2288 @@
+{
+  "baseline": false,
+  "checks": [
+    {
+      "name": "Ambiguous written units produce an interpretation question",
+      "pass": true
+    },
+    {
+      "name": "Edit description opens and focuses the actual written-input field",
+      "pass": true
+    },
+    {
+      "name": "Corrected units reach approved-plan review without repeated interpretation",
+      "pass": true
+    },
+    {
+      "name": "1: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "1: edit opens the affected floor and room",
+      "pass": true
+    },
+    {
+      "name": "1: named floor and concrete issue remain visible",
+      "pass": true
+    },
+    {
+      "name": "1: actual cell placement clears the blocker and reaches all-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "2: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "2: edit opens the affected floor and room",
+      "pass": true
+    },
+    {
+      "name": "2: named floor and concrete issue remain visible",
+      "pass": true
+    },
+    {
+      "name": "2: actual cell placement clears the blocker and reaches all-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "Invalid setback produces a plot question",
+      "pass": true
+    },
+    {
+      "name": "Plot correction highlights the exact invalid setback field",
+      "pass": true
+    },
+    {
+      "name": "Correcting the actual setback reaches all-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "Missing top floor is explained before coupled stair errors",
+      "pass": true
+    },
+    {
+      "name": "Empty-floor correction opens Second floor and preserves all three floors",
+      "pass": true
+    },
+    {
+      "name": "Placing the missing-floor staircase advances beyond empty-floor blocker",
+      "pass": true
+    },
+    {
+      "name": "Missing exact-plan stair relationship routes to exact editor",
+      "pass": true
+    },
+    {
+      "name": "Exact editor selects affected stair with its relationship action visible",
+      "pass": true
+    },
+    {
+      "name": "Connecting the actual stairs clears the relationship blocker",
+      "pass": true
+    },
+    {
+      "name": "Requested exact-plan floors remain included",
+      "pass": true
+    },
+    {
+      "name": "Full occupied two-floor grid exposes validated repair alternatives",
+      "pass": true
+    },
+    {
+      "name": "Repair preview leaves room ownership unchanged before Apply",
+      "pass": true
+    },
+    {
+      "name": "Explicit repair reaches valid two-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "Undo restores exact original full-grid allocations",
+      "pass": true
+    },
+    {
+      "name": "Impossible exact size preserves the draft with no fabricated solution",
+      "pass": true
+    },
+    {
+      "name": "No-alternative question cannot repeat an identical Recommend search",
+      "pass": true
+    },
+    {
+      "name": "Exact-dimension question offers an explicit pin review",
+      "pass": true
+    },
+    {
+      "name": "Explicitly releasing exact dimensions advances to validated choices",
+      "pass": true
+    },
+    {
+      "name": "Actual start retains 40 by 60 feet, West road and three floors",
+      "pass": true
+    },
+    {
+      "name": "2: unplaced room is identified",
+      "pass": true
+    },
+    {
+      "name": "2: edit opens the affected floor and room",
+      "pass": true
+    },
+    {
+      "name": "2: named floor and concrete issue remain visible",
+      "pass": true
+    },
+    {
+      "name": "2: actual cell placement clears the blocker and reaches all-floor 2D",
+      "pass": true
+    },
+    {
+      "name": "2D publication is complete before any presentation build",
+      "pass": true
+    },
+    {
+      "name": "Editing an approved First floor opens that exact Compass floor",
+      "pass": true
+    },
+    {
+      "name": "Independent First-floor edit invalidates only First approval",
+      "pass": true
+    },
+    {
+      "name": "Reapproving only changed First floor permits fresh whole-home confirmation",
+      "pass": true
+    },
+    {
+      "name": "Appearance preserves immutable geometry and floor approvals",
+      "pass": true
+    },
+    {
+      "name": "Interactive 3D contains all three floors and exactly the approved geometry identity",
+      "pass": true,
+      "detail": {
+        "storeys": 3,
+        "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+        "planHash": "a24949869cba3774ba74f5e4c55d178d5179471b76dd00b0c380df5f7662d622",
+        "nodes": 1132,
+        "buildId": "02A137C2"
+      }
+    },
+    {
+      "name": "Save project downloads the actual approved portable home",
+      "pass": true
+    },
+    {
+      "name": "Save and upload retain all floors, allocations, answers, appearance and approvals",
+      "pass": true
+    },
+    {
+      "name": "Browser reopen restores three-floor design without losing approval",
+      "pass": true
+    },
+    {
+      "name": "A portable approved home opens editable in a different local studio",
+      "pass": true
+    },
+    {
+      "name": "Foreign approval signatures do not disable floor review or bypass confirmation",
+      "pass": true
+    },
+    {
+      "name": "All floors can be reapproved and confirmed after portable transfer",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "case": "text-interpretation",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [],
+        "choices": [
+          {
+            "description": "\"40 x 60\" read as feet.",
+            "id": "confirm",
+            "label": "Use this interpretation",
+            "recommended": true
+          },
+          {
+            "action": "edit-input",
+            "description": "Add explicit units or measurements.",
+            "editor": {
+              "kind": "text",
+              "sourceId": "written-requirements"
+            },
+            "id": "edit",
+            "label": "Edit the description",
+            "recommended": false
+          }
+        ],
+        "code": "TEXT_INTERPRETATION",
+        "explanation": "\"40 x 60\" read as feet.",
+        "id": "text_interpretation-d8ade772e85739a2",
+        "prompt": "Is this interpretation correct?",
+        "recommended": "confirm",
+        "title": "Is this interpretation correct?"
+      },
+      "issues": [],
+      "alternatives": []
+    },
+    {
+      "case": "text-interpretation",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "first-floor-unplaced",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "floorName": "First floor",
+            "name": "bed",
+            "regions": [],
+            "required": {
+              "minimum_area_m2": 7.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "f1-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 1,
+              "floorId": "floor-1",
+              "floorIndex": 1,
+              "kind": "compass",
+              "roomId": "f1-bed",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open First floor",
+            "recommended": true
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "kind": "compass",
+          "roomId": "f1-bed",
+          "view": "map"
+        },
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-9087903bfe586fda",
+        "issue": {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-bed",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f1-bed"
+        },
+        "prompt": "Place bed on First floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "On First floor, select bed from the room checklist and assign connected cells.",
+          "If this room is no longer wanted, explicitly change its required setting. Then check again."
+        ],
+        "title": "Place bed on First floor"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-bed",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f1-bed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "first-floor-unplaced",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "second-floor-unplaced",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "floorName": "Second floor",
+            "name": "bed",
+            "regions": [],
+            "required": {
+              "minimum_area_m2": 7.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "f2-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 2,
+              "floorId": "floor-2",
+              "floorIndex": 2,
+              "kind": "compass",
+              "roomId": "f2-bed",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open Second floor",
+            "recommended": true
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "kind": "compass",
+          "roomId": "f2-bed",
+          "view": "map"
+        },
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-edd0b01e39e9a1b2",
+        "issue": {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        },
+        "prompt": "Place bed on Second floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "On Second floor, select bed from the room checklist and assign connected cells.",
+          "If this room is no longer wanted, explicitly change its required setting. Then check again."
+        ],
+        "title": "Place bed on Second floor"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "second-floor-unplaced",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "invalid-plot",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [],
+        "choices": [
+          {
+            "action": "edit-plot",
+            "description": "left_mm must be an integer between 0 and 10000.",
+            "editor": {
+              "kind": "plot"
+            },
+            "id": "edit",
+            "label": "Review plot dimensions and setbacks",
+            "recommended": true
+          }
+        ],
+        "code": "FIELD_RANGE",
+        "draftPreserved": true,
+        "editor": {
+          "field": "left_mm",
+          "kind": "plot",
+          "view": "map"
+        },
+        "explanation": "left_mm must be an integer between 0 and 10000.",
+        "id": "field_range-4c03bc785b01b7c0",
+        "issue": {
+          "code": "FIELD_RANGE",
+          "details": null,
+          "editor": {
+            "field": "left_mm",
+            "kind": "plot",
+            "view": "map"
+          },
+          "field": "left_mm",
+          "message": "left_mm must be an integer between 0 and 10000."
+        },
+        "prompt": "Check this plot measurement before arranging rooms",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "Open Plot basics and check the named measurement and units.",
+          "Check that setbacks leave enough width and depth, then review the floor plans again."
+        ],
+        "title": "Check this plot measurement before arranging rooms"
+      },
+      "issues": [
+        {
+          "code": "FIELD_RANGE",
+          "details": null,
+          "editor": {
+            "field": "left_mm",
+            "kind": "plot",
+            "view": "map"
+          },
+          "field": "left_mm",
+          "message": "left_mm must be an integer between 0 and 10000."
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "invalid-plot",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "empty-second-floor",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "floorName": "Second floor",
+            "regions": []
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 2,
+              "floorId": "floor-2",
+              "floorIndex": 2,
+              "kind": "compass",
+              "view": "map"
+            },
+            "id": "finish-floors",
+            "label": "Finish the requested floors",
+            "recommended": true
+          },
+          {
+            "action": "choose-scope",
+            "id": "choose-scope",
+            "label": "Choose a smaller preview scope",
+            "recommended": false
+          }
+        ],
+        "code": "EMPTY_FLOOR",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "kind": "compass",
+          "view": "map"
+        },
+        "explanation": "Second floor has no placed rooms. Add its intended rooms, or explicitly choose a smaller preview scope.",
+        "id": "question-8086192ccf1e4654",
+        "issue": {
+          "code": "EMPTY_FLOOR",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Second floor has no placed rooms. Add its intended rooms, or explicitly choose a smaller preview scope.",
+          "name": "Second floor",
+          "severity": "error"
+        },
+        "prompt": "Would you like to finish every requested floor or review a smaller scope?",
+        "recommended": "finish-floors",
+        "remainingIssueCount": 1,
+        "steps": [
+          "Open Second floor and place its intended rooms.",
+          "Keep matching stair areas on connected floors. Use the floor-scope control only if you explicitly want fewer floors."
+        ],
+        "title": "Would you like to finish every requested floor or review a smaller scope?"
+      },
+      "issues": [
+        {
+          "code": "EMPTY_FLOOR",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Second floor has no placed rooms. Add its intended rooms, or explicitly choose a smaller preview scope.",
+          "name": "Second floor",
+          "severity": "error"
+        },
+        {
+          "code": "STAIR_LINK",
+          "editor": {
+            "kind": "compass",
+            "view": "map"
+          },
+          "message": "Place matching stair rooms on consecutive floors and link the core. A landing label alone does not create stairs.",
+          "severity": "error"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "empty-second-floor",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "910a33592de3fc8538a31741732829f871559f47398cf9b54db175a74369ce7d"
+    },
+    {
+      "case": "exact-stair-link",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 9.02,
+              "depth_mm": 4100,
+              "width_mm": 2200
+            },
+            "floor": 0,
+            "floorId": "custom-floor-0",
+            "floorIndex": 0,
+            "floorName": "Ground floor",
+            "name": "Stair",
+            "polygon": [
+              [
+                150,
+                150
+              ],
+              [
+                2350,
+                150
+              ],
+              [
+                2350,
+                4250
+              ],
+              [
+                150,
+                4250
+              ]
+            ],
+            "required": {
+              "minimum_area_m2": 0,
+              "minimum_width_mm": 0
+            },
+            "roomId": "custom-F0-stair"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 0,
+              "floorId": "custom-floor-0",
+              "floorIndex": 0,
+              "kind": "plan",
+              "roomId": "custom-F0-stair",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open Ground floor",
+            "recommended": true
+          }
+        ],
+        "code": "UNLINKED_STAIR",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 0,
+          "floorId": "custom-floor-0",
+          "floorIndex": 0,
+          "kind": "plan",
+          "roomId": "custom-F0-stair",
+          "view": "map"
+        },
+        "explanation": "Link this staircase to its corresponding space on the next floor.",
+        "id": "unlinked_stair-b348b757c79460c5",
+        "issue": {
+          "code": "UNLINKED_STAIR",
+          "current": {
+            "area_m2": 9.02,
+            "depth_mm": 4100,
+            "width_mm": 2200
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "custom-floor-0",
+            "floorIndex": 0,
+            "kind": "plan",
+            "roomId": "custom-F0-stair",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "custom-floor-0",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "id": "custom-F0-stair",
+          "message": "Link this staircase to its corresponding space on the next floor.",
+          "name": "Stair",
+          "polygon": [
+            [
+              150,
+              150
+            ],
+            [
+              2350,
+              150
+            ],
+            [
+              2350,
+              4250
+            ],
+            [
+              150,
+              4250
+            ]
+          ],
+          "required": {
+            "minimum_area_m2": 0,
+            "minimum_width_mm": 0
+          },
+          "roomId": "custom-F0-stair"
+        },
+        "prompt": "Stair · Ground floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "Keep matching measured stair outlines on every connected floor.",
+          "Review the stair core dimensions, linked rooms, flights and landings in the exact plan editor."
+        ],
+        "title": "Stair · Ground floor"
+      },
+      "issues": [
+        {
+          "code": "UNLINKED_STAIR",
+          "current": {
+            "area_m2": 9.02,
+            "depth_mm": 4100,
+            "width_mm": 2200
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "custom-floor-0",
+            "floorIndex": 0,
+            "kind": "plan",
+            "roomId": "custom-F0-stair",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "custom-floor-0",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "id": "custom-F0-stair",
+          "message": "Link this staircase to its corresponding space on the next floor.",
+          "name": "Stair",
+          "polygon": [
+            [
+              150,
+              150
+            ],
+            [
+              2350,
+              150
+            ],
+            [
+              2350,
+              4250
+            ],
+            [
+              150,
+              4250
+            ]
+          ],
+          "required": {
+            "minimum_area_m2": 0,
+            "minimum_width_mm": 0
+          },
+          "roomId": "custom-F0-stair"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "exact-stair-link",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "953dc36bc80e84e2e01b758f90fa9ee8e3741aef8857fe184f9e85f340b61c90"
+    },
+    {
+      "case": "occupied-repair",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 20.282,
+              "depth_mm": 6650,
+              "width_mm": 3050
+            },
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "floorName": "First floor",
+            "name": "stair 2",
+            "regions": [
+              "0:1",
+              "1:1"
+            ],
+            "required": {
+              "minimum_area_m2": 0,
+              "minimum_width_mm": 0
+            },
+            "roomId": "f1-stairs"
+          }
+        ],
+        "choices": [
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-ebd7875166a10213",
+            "id": "repair-ebd7875166a10213",
+            "illustration": [
+              {
+                "after": [
+                  "0:1",
+                  "0:2",
+                  "0:3",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3:L"
+                ],
+                "before": [
+                  "0:0",
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3:L"
+                ],
+                "floorId": "floor-1",
+                "roomId": "f1-hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "1:0"
+                ],
+                "before": [
+                  "0:1",
+                  "1:1"
+                ],
+                "floorId": "floor-1",
+                "roomId": "f1-stairs"
+              }
+            ],
+            "label": "Preview option 1",
+            "recommended": true
+          },
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-1529b1cffb8efbb0",
+            "id": "repair-1529b1cffb8efbb0",
+            "illustration": [
+              {
+                "after": [
+                  "0:2"
+                ],
+                "before": [
+                  "0:1",
+                  "0:2"
+                ],
+                "floorId": "floor-0",
+                "roomId": "f0-hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "1:0",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3:L"
+                ],
+                "before": [
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3:L"
+                ],
+                "floorId": "floor-0",
+                "roomId": "f0-route"
+              },
+              {
+                "after": [
+                  "0:1",
+                  "1:1"
+                ],
+                "before": [
+                  "0:0",
+                  "1:0"
+                ],
+                "floorId": "floor-0",
+                "roomId": "f0-stairs"
+              }
+            ],
+            "label": "Preview option 2",
+            "recommended": false
+          },
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 1,
+              "floorId": "floor-1",
+              "floorIndex": 1,
+              "kind": "compass",
+              "roomId": "f1-stairs",
+              "view": "map"
+            },
+            "id": "edit-map",
+            "label": "Keep my map and edit",
+            "recommended": false
+          }
+        ],
+        "code": "STAIR_ALIGNMENT",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "kind": "compass",
+          "roomId": "f1-stairs",
+          "view": "map"
+        },
+        "explanation": "Linked stair rooms must contain the same aligned stair core.",
+        "id": "question-dc0d8918b746ae11",
+        "issue": {
+          "code": "STAIR_ALIGNMENT",
+          "current": {
+            "area_m2": 20.282,
+            "depth_mm": 6650,
+            "width_mm": 3050
+          },
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-stairs",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "id": "f1-stairs",
+          "message": "Linked stair rooms must contain the same aligned stair core.",
+          "name": "stair 2",
+          "regions": [
+            "0:1",
+            "1:1"
+          ],
+          "required": {
+            "minimum_area_m2": 0,
+            "minimum_width_mm": 0
+          },
+          "roomId": "f1-stairs",
+          "severity": "error"
+        },
+        "prompt": "May I align these stairs and adjust their adjoining rooms?",
+        "recommended": "repair-ebd7875166a10213",
+        "remainingIssueCount": 0,
+        "steps": [
+          "Place a Staircase room in matching cells on every connected floor; a landing label alone is not a staircase.",
+          "Leave room for both flights and landings, then use “Link matching authored stair rooms” under Connections."
+        ],
+        "title": "May I align these stairs and adjust their adjoining rooms?"
+      },
+      "issues": [
+        {
+          "code": "STAIR_ALIGNMENT",
+          "current": {
+            "area_m2": 20.282,
+            "depth_mm": 6650,
+            "width_mm": 3050
+          },
+          "editor": {
+            "floor": 1,
+            "floorId": "floor-1",
+            "floorIndex": 1,
+            "kind": "compass",
+            "roomId": "f1-stairs",
+            "view": "map"
+          },
+          "floor": 1,
+          "floorId": "floor-1",
+          "floorIndex": 1,
+          "floorName": "First floor",
+          "id": "f1-stairs",
+          "message": "Linked stair rooms must contain the same aligned stair core.",
+          "name": "stair 2",
+          "regions": [
+            "0:1",
+            "1:1"
+          ],
+          "required": {
+            "minimum_area_m2": 0,
+            "minimum_width_mm": 0
+          },
+          "roomId": "f1-stairs",
+          "severity": "error"
+        }
+      ],
+      "alternatives": [
+        {
+          "id": "repair-ebd7875166a10213",
+          "label": "Option 1"
+        },
+        {
+          "id": "repair-1529b1cffb8efbb0",
+          "label": "Option 2"
+        },
+        {
+          "id": "repair-6409c57283a072d6",
+          "label": "Option 3"
+        }
+      ]
+    },
+    {
+      "case": "locked-no-alternative",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 7.871,
+              "depth_mm": 3334.5,
+              "width_mm": 2360.5
+            },
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "floorName": "Ground floor",
+            "name": "Living",
+            "regions": [
+              "0:0"
+            ],
+            "required": {
+              "depth_mm": 4000,
+              "locked": true,
+              "minimum_area_m2": 9.5,
+              "minimum_width_mm": 2400,
+              "width_mm": 2400
+            },
+            "roomId": "living"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "keep-dimension",
+            "label": "Keep the exact dimension; edit regions",
+            "recommended": true
+          },
+          {
+            "action": "review-pin",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "review-pin",
+            "label": "Review the dimension pin",
+            "recommended": false
+          }
+        ],
+        "code": "SIZE_LOCK",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "kind": "compass",
+          "roomId": "living",
+          "view": "map"
+        },
+        "explanation": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+        "id": "question-47c686c2be34da7b",
+        "issue": {
+          "code": "SIZE_LOCK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        "prompt": "This map does not match a pinned dimension. Which should stay fixed?",
+        "recommended": "keep-dimension",
+        "remainingIssueCount": 2,
+        "steps": [
+          "Open Living and compare its measured clear size with the locked target.",
+          "Adjust its assigned cells, or explicitly unlock the size target in Room details before requesting a new recommendation."
+        ],
+        "title": "This map does not match a pinned dimension. Which should stay fixed?"
+      },
+      "issues": [
+        {
+          "code": "NARROW_NECK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        {
+          "code": "ROOM_MINIMUM",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living: 7.87 m², 2.36 m narrow side. This type needs 9.5 m² and 2.4 m. Enlarge its assigned area.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        {
+          "code": "SIZE_LOCK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living does not match its locked clear dimensions. Adjust its regions or explicitly unlock the target; fitting never moves it silently.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "depth_mm": 4000,
+            "locked": true,
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400,
+            "width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "locked-no-alternative",
+      "phase": "after edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "current": {
+              "area_m2": 7.871,
+              "depth_mm": 3334.5,
+              "width_mm": 2360.5
+            },
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "floorName": "Ground floor",
+            "name": "Living",
+            "regions": [
+              "0:0"
+            ],
+            "required": {
+              "minimum_area_m2": 9.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "living"
+          }
+        ],
+        "choices": [
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-eb97a9cbc320ca88",
+            "id": "repair-eb97a9cbc320ca88",
+            "illustration": [
+              {
+                "after": [
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "before": [
+                  "0:1",
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "floorId": "ground",
+                "roomId": "hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "0:1"
+                ],
+                "before": [
+                  "0:0"
+                ],
+                "floorId": "ground",
+                "roomId": "living"
+              }
+            ],
+            "label": "Preview option 1",
+            "recommended": true
+          },
+          {
+            "action": "preview-alternative",
+            "alternativeId": "repair-2b2321f7bb4895b1",
+            "id": "repair-2b2321f7bb4895b1",
+            "illustration": [
+              {
+                "after": [
+                  "0:2",
+                  "0:3",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "before": [
+                  "0:1",
+                  "0:2",
+                  "0:3",
+                  "1:0",
+                  "1:1",
+                  "1:2",
+                  "1:3",
+                  "2:0",
+                  "2:1",
+                  "2:2",
+                  "2:3",
+                  "3:0",
+                  "3:1",
+                  "3:2",
+                  "3:3"
+                ],
+                "floorId": "ground",
+                "roomId": "hall"
+              },
+              {
+                "after": [
+                  "0:0",
+                  "0:1",
+                  "1:0",
+                  "1:1"
+                ],
+                "before": [
+                  "0:0"
+                ],
+                "floorId": "ground",
+                "roomId": "living"
+              }
+            ],
+            "label": "Preview option 2",
+            "recommended": false
+          },
+          {
+            "action": "edit",
+            "editor": {
+              "floor": 0,
+              "floorId": "ground",
+              "floorIndex": 0,
+              "kind": "compass",
+              "roomId": "living",
+              "view": "map"
+            },
+            "id": "edit-map",
+            "label": "Keep my map and edit",
+            "recommended": false
+          }
+        ],
+        "code": "NARROW_NECK",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "kind": "compass",
+          "roomId": "living",
+          "view": "map"
+        },
+        "explanation": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+        "id": "question-3c55526d7776aa86",
+        "issue": {
+          "code": "NARROW_NECK",
+          "current": {
+            "area_m2": 7.871,
+            "depth_mm": 3334.5,
+            "width_mm": 2360.5
+          },
+          "editor": {
+            "floor": 0,
+            "floorId": "ground",
+            "floorIndex": 0,
+            "kind": "compass",
+            "roomId": "living",
+            "view": "map"
+          },
+          "floor": 0,
+          "floorId": "ground",
+          "floorIndex": 0,
+          "floorName": "Ground floor",
+          "message": "Living has a connection narrower than its 2.4 m minimum. Widen the bridge between its regions.",
+          "name": "Living",
+          "regions": [
+            "0:0"
+          ],
+          "required": {
+            "minimum_area_m2": 9.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "living",
+          "severity": "error"
+        },
+        "prompt": "May I adjust these room boundaries to make the home work?",
+        "recommended": "repair-eb97a9cbc320ca88",
+        "remainingIssueCount": 1,
+        "steps": [
+          "Give Living enough connected cells for its minimum size after walls.",
+          "If neighbouring cells are occupied, review a proposed boundary change or explicitly reassign cells. Pinned rooms stay fixed."
+        ],
+        "title": "May I adjust these room boundaries to make the home work?"
+      }
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "before edit",
+      "valid": false,
+      "question": {
+        "affected": [
+          {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "floorName": "Second floor",
+            "name": "bed",
+            "regions": [],
+            "required": {
+              "minimum_area_m2": 7.5,
+              "minimum_width_mm": 2400
+            },
+            "roomId": "f2-bed"
+          }
+        ],
+        "choices": [
+          {
+            "action": "edit-layout",
+            "description": "The editor will show the issue and the next steps. Your draft stays saved.",
+            "editor": {
+              "floor": 2,
+              "floorId": "floor-2",
+              "floorIndex": 2,
+              "kind": "compass",
+              "roomId": "f2-bed",
+              "view": "map"
+            },
+            "id": "edit",
+            "label": "Open Second floor",
+            "recommended": true
+          }
+        ],
+        "code": "REQUIRED_ROOM_UNPLACED",
+        "draftPreserved": true,
+        "editor": {
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "kind": "compass",
+          "roomId": "f2-bed",
+          "view": "map"
+        },
+        "explanation": "Place bed, or explicitly make this room optional.",
+        "id": "required_room_unplaced-edd0b01e39e9a1b2",
+        "issue": {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        },
+        "prompt": "Place bed on Second floor",
+        "recommended": "edit",
+        "remainingIssueCount": 0,
+        "steps": [
+          "On Second floor, select bed from the room checklist and assign connected cells.",
+          "If this room is no longer wanted, explicitly change its required setting. Then check again."
+        ],
+        "title": "Place bed on Second floor"
+      },
+      "issues": [
+        {
+          "code": "REQUIRED_ROOM_UNPLACED",
+          "editor": {
+            "floor": 2,
+            "floorId": "floor-2",
+            "floorIndex": 2,
+            "kind": "compass",
+            "roomId": "f2-bed",
+            "view": "map"
+          },
+          "floor": 2,
+          "floorId": "floor-2",
+          "floorIndex": 2,
+          "floorName": "Second floor",
+          "message": "Place bed, or explicitly make this room optional.",
+          "name": "bed",
+          "regions": [],
+          "required": {
+            "minimum_area_m2": 7.5,
+            "minimum_width_mm": 2400
+          },
+          "roomId": "f2-bed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "a48eb81f22ccefcca9ec2f883d0b0166b52d298c5495a2a103c92bdbdbc93c9a"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "after edit",
+      "valid": true,
+      "question": null,
+      "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "generated scene",
+      "storeys": 3,
+      "geometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e",
+      "planHash": "a24949869cba3774ba74f5e4c55d178d5179471b76dd00b0c380df5f7662d622",
+      "nodes": 1132,
+      "buildId": "02A137C2",
+      "approvedGeometryHash": "e349ab9100fb945ceb63a3aa633d8e2aa8813442b6d353bd8e68d095963da48e"
+    },
+    {
+      "case": "complete-west-three-floors",
+      "phase": "saved artifacts",
+      "artifactBase": "http://127.0.0.1:55412/builds/02a137c26555c484b2368617/",
+      "files": [
+        "canonical.json",
+        "geometry-approval.json",
+        "export-checks.json",
+        "manifest.json",
+        "drawings.pdf",
+        "floorplans.dxf",
+        "scene.json",
+        "model.glb"
+      ]
+    },
+    {
+      "case": "foreign-studio-approval",
+      "phase": "before edit",
+      "valid": true,
+      "question": null,
+      "issues": [],
+      "alternatives": []
+    }
+  ],
+  "network": [
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "text-interpretation",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "first-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "second-floor-unplaced",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "invalid-plot",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "empty-second-floor",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "exact-stair-link",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "occupied-repair",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "locked-no-alternative",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/confirm",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/intent",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/generate",
+      "status": 202
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/930f1c76987d62c3",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/930f1c76987d62c3",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/930f1c76987d62c3",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/jobs/930f1c76987d62c3",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "complete-west-three-floors",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/prepare",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/approve",
+      "status": 200
+    },
+    {
+      "case": "foreign-studio-approval",
+      "path": "/api/design/confirm",
+      "status": 200
+    }
+  ],
+  "timings": {
+    "text-interpretation": 23.814,
+    "first-floor-unplaced": 21.074,
+    "second-floor-unplaced": 21.477,
+    "invalid-plot": 20.649,
+    "empty-second-floor": 20.434,
+    "exact-stair-link": 20.854,
+    "occupied-repair": 25.413,
+    "locked-no-alternative": 22.37,
+    "generationSeconds": 5.232,
+    "complete-west-three-floors": 55.818,
+    "foreign-studio-approval": 21.737
+  },
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-recovery-vkdiEb",
+  "serverErrors": "",
+  "humanTrial": "Pending at user request"
+}

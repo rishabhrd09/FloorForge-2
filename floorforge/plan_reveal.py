@@ -107,7 +107,7 @@ def planting_symbols(scene, b, segment):
         if v.get('floor', 0) != 0 or (fp.contains(Point(x, y)) and court is None):
             continue
         species = v.get('species', '')
-        tree = any(k in species for k in ('tree', 'frangipani', 'palm', 'neem', 'olive', 'champa'))
+        tree = any(k in species for k in ('tree', 'frangipani', 'palm', 'neem', 'olive', 'champa', 'mango', 'ashoka', 'araucaria'))
         r = (1500 if tree else 450) * v.get('scale', 1)
         if court is not None:
             r = min(r, court.exterior.distance(Point(x, y)) - 60)
@@ -309,7 +309,7 @@ def title_of(room):
     return 'The ' + name
 
 
-TALL = {'wardrobe', 'fridge', 'bookshelf', 'shelving', 'tall-unit', 'cabinet-tall', 'kitchen-tall'}
+TALL = {'wardrobe', 'fridge', 'kitchen-fridge', 'bookshelf', 'shelving', 'tall-unit', 'cabinet-tall', 'kitchen-tall'}
 
 
 def ray_distances(stand, segments, n=360, reach=30.):
@@ -583,7 +583,7 @@ def tour(b, scene, rooms, order=None, limit=8):
         elif aim:
             look_z = level - .6
         elif room['kind'] == 'courtyard':
-            look_z = level + (1.7 if min(room['size']) < 3.2 else 1.9)
+            look_z = level + (2.2 if min(room['size']) < 3.2 else 2.6)   # up into the tree and the sky
         else:
             look_z = level + (1.15 if room['kind'] == 'bedroom' else 1.3)   # a little lower over a bed
         approach = (ground + EYE, entry, footprint) if not legs else None

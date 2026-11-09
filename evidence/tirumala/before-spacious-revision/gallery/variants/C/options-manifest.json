@@ -1,0 +1,106 @@
+{
+  "id": "tirumala",
+  "revision": 8,
+  "defaultOption": "A",
+  "plotFt": [
+    40,
+    50
+  ],
+  "plotMm": [
+    12192,
+    15240
+  ],
+  "mmPerFt": 304.8,
+  "options": [
+    {
+      "option": "A",
+      "code": "A",
+      "label": "A \u2014 Original flow",
+      "tag": "Balanced care room and a 5\u00bd\u2032 rear veranda",
+      "trade": "Closest overall flow; 5\u00bd\u2032 veranda between care and the compact caregiver room.",
+      "careSqFt": 192.0,
+      "drawingFt": [
+        10.0,
+        10.0
+      ],
+      "caregiverSqFt": 51.0,
+      "verandaDepthFt": 5.5,
+      "careWestEdgeFt": 35.5,
+      "planHash": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+      "geometryHash": "63e3b8c5e7ea788b0d03f7760b550aac9a0f88c80bc6ca36978590a43f37fcfe",
+      "baseUrl": "/samples/tirumala/variants/A/"
+    },
+    {
+      "option": "B",
+      "code": "B",
+      "label": "B \u2014 Larger care suite",
+      "tag": "Largest care suite \u00b7 3\u00bd\u2032 rear veranda",
+      "trade": "Largest revised care suite (224.5 sq ft). The 3\u00bd\u2032 rear veranda is a circulation strip; seating sits in the wider northwest pocket.",
+      "careSqFt": 224.5,
+      "drawingFt": [
+        10.0,
+        10.0
+      ],
+      "caregiverSqFt": 51.0,
+      "verandaDepthFt": 3.5,
+      "careWestEdgeFt": 36.5,
+      "planHash": "23d6796d9764b40fd2834d2a2654afa8d239f13e6998fbd082fc2c95fc4dcaf0",
+      "geometryHash": "e002b5ee1d3a55a85d5c1b21dbbdb81d8e50fd5e4b51c87df2948662b474bd70",
+      "baseUrl": "/samples/tirumala/variants/B/"
+    },
+    {
+      "option": "C",
+      "code": "C",
+      "label": "C \u2014 Garden first",
+      "tag": "6\u00bd\u2032 rear veranda \u00b7 slim north passage",
+      "trade": "Deepest main veranda bay: 6\u00bd\u2032, with a 4\u00bd\u2032 left return. The side passage is the same slim 3\u2032 width as every option.",
+      "careSqFt": 179.5,
+      "drawingFt": [
+        10.0,
+        10.0
+      ],
+      "caregiverSqFt": 51.0,
+      "verandaDepthFt": 6.5,
+      "careWestEdgeFt": 35.5,
+      "planHash": "776cfc4d9c77b697234a3fccf67020d9db8a4e02bcbac7f53c2511f03474dc0b",
+      "geometryHash": "c9b8f23bc1f5848be15ca0f5dc1523606c6878d8019f20fe50fff3d4b1ea5147",
+      "baseUrl": "/samples/tirumala/variants/C/"
+    },
+    {
+      "option": "D",
+      "code": "D",
+      "label": "D \u2014 Larger drawing room",
+      "tag": "Rectangular drawing room \u00b7 10\u2032 \u00d7 12\u2032",
+      "trade": "Drawing is a plain 10\u2032 \u00d7 12\u2032 rectangle. A, B, C and E use a shorter 10\u2032 \u00d7 10\u2032 rectangle. All share the same shallow front porch.",
+      "careSqFt": 179.5,
+      "drawingFt": [
+        10.0,
+        12.0
+      ],
+      "caregiverSqFt": 51.0,
+      "verandaDepthFt": 4.5,
+      "careWestEdgeFt": 35.5,
+      "planHash": "9ac1a315d1849d22e1bae5f2e2814abbe70061012ce1aca2259822523c68cdaa",
+      "geometryHash": "dd445ea76d651340204ebd2208c091b638f203d66072f1cd1a9ecd919382a385",
+      "baseUrl": "/samples/tirumala/variants/D/"
+    },
+    {
+      "option": "E",
+      "code": "E",
+      "label": "E \u2014 Caregiver courtyard",
+      "tag": "5\u2032 shared veranda court \u00b7 caregiver opposite care",
+      "trade": "Care and caregiver face a shared 5\u2032 veranda court. A west-side return connects the hall to the rear strip.",
+      "careSqFt": 192.0,
+      "drawingFt": [
+        10.0,
+        10.0
+      ],
+      "caregiverSqFt": 52.0,
+      "verandaDepthFt": 5.0,
+      "careWestEdgeFt": 35.5,
+      "planHash": "25675697a5b354d69579756924468cd944d4bf33173d02f452a700524200fb34",
+      "geometryHash": "525cdbde46c9708e155d5666b0225cdf99adf2db8ce558ccfb305de7f127fd44",
+      "baseUrl": "/samples/tirumala/variants/E/"
+    }
+  ]
+}

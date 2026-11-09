@@ -1,0 +1,130 @@
+[
+  {
+    "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+    "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+    "glbSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+    "camera": "exterior_northeast",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/exterior_northeast-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      21.287254333496094,
+      -12.060136795043945,
+      7.762197017669678
+    ],
+    "target": [
+      6.3,
+      6.7,
+      3.1
+    ],
+    "fov": 48,
+    "width": 1600,
+    "height": 1040,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 0.054,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "ce4edb07a88bf8217cfd4b1502e577dae5a88f015f7e7031353979f264140418"
+  },
+  {
+    "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+    "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+    "glbSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+    "camera": "first_stair_up",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/first_stair_up-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      5.699999809265137,
+      5.474999904632568,
+      5.138000011444092
+    ],
+    "target": [
+      1.55,
+      5.475,
+      4.9079999999999995
+    ],
+    "fov": 64,
+    "width": 1600,
+    "height": 1040,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 2.398,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "e6f8a1133da60280621e3cedffb95f7c76bc66fbcb0d5faeea690977754df9ec"
+  },
+  {
+    "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+    "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+    "glbSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+    "camera": "upper_guest",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/upper_guest-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      8.899999618530273,
+      8.850000381469727,
+      5.138000011444092
+    ],
+    "target": [
+      10.1,
+      10.2,
+      4.8580000000000005
+    ],
+    "fov": 66,
+    "width": 1600,
+    "height": 1040,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 2.382,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "a7fe38508316e422511c7c6593e2111776ff11892e0de4592b4f85078fd6c93c"
+  },
+  {
+    "planHash": "78606c84a02072f7f82189f141e11ed4f13d8b0aa71901d0a2a630a31a66ac6a",
+    "sceneSha256": "d5298f29db221cd91924ea7725907fc7e7a4be0d56e48db851b44d70648fb2a0",
+    "glbSha256": "cc7daeea7e16066c1eb5d22d008e0a11663c310a15ab854e51e946071414f327",
+    "camera": "interior_veranda_living",
+    "image": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/interior_veranda_living-day.png",
+    "scene": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/examples/gallery/tirumala-5/scene.json",
+    "glb": "/Users/rishabh/coding_claude_projects/floor_plan_projects/Design_aesthtic_3d_home/output/tirumala-5-delivery/cycles-revision/tirumala-5-presentation.glb",
+    "geometry": "delivered presentation GLB; no scaling",
+    "position": [
+      8.300000190734863,
+      7.099999904632568,
+      1.6299999952316284
+    ],
+    "target": [
+      6.3,
+      7.1,
+      1.5
+    ],
+    "fov": 64,
+    "width": 1600,
+    "height": 1040,
+    "samples": 64,
+    "engine": "CYCLES",
+    "device": "GPU",
+    "exposure_ev": 4.836,
+    "grade": "day",
+    "fixture_lights": 0,
+    "sun_elevation_deg": 47.926,
+    "sun_rotation_deg": -27.664,
+    "imageSha256": "1f49a4a4abf655a17e990606e214868fd26d07f8656cb4313d8739f9eb60d9e4"
+  }
+]

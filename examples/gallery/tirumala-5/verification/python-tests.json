@@ -1,0 +1,9 @@
+{
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+  "command": ".venv/bin/python -m pytest tests/test_tirumala_5*.py -q --junitxml=/tmp/t5-solid-gallery-tests.xml",
+  "tests": 44,
+  "failures": 0,
+  "errors": 0,
+  "durationSeconds": 4.994,
+  "passed": true
+}

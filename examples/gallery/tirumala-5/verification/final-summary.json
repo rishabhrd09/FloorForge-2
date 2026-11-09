@@ -1,0 +1,31 @@
+{
+  "project": "Tirumala 5",
+  "revision": "tirumala-5-g2-skylit-atrium-solid-gallery-2026-11-05",
+  "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+  "generatedAt": "2026-11-05T16:01:01.836025+00:00",
+  "baselineCommit": "bd34017e7a351269740379a5e1ba0d4b8595bace",
+  "buildingSha256": "be5807fbb274080c4b04b43aaabf8899d16701f09fedb19fe8193ed33f41f8ae",
+  "sceneSha256": "e43535d771245a5427d5b4ff2e16d929dd7cb4c92f043443e1d0e05b431c5f76",
+  "preservation": true,
+  "otherSamples": true,
+  "pythonTests": {
+    "planHash": "9c8dcea35d44fc0d33f5c55b7f71427d9ded531388325afb7fd8a4b89d0f2a64",
+    "command": ".venv/bin/python -m pytest tests/test_tirumala_5*.py -q --junitxml=/tmp/t5-solid-gallery-tests.xml",
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "durationSeconds": 4.994,
+    "passed": true
+  },
+  "continuousWalkPassed": true,
+  "walkSegments": 123,
+  "initialSpawns": 1,
+  "laterTeleports": 0,
+  "runtimeChecks": 169,
+  "browserCaptureChecks": 76,
+  "responsiveBrowserPassed": true,
+  "cyclesRendering": "Not rerun for this railing revision; prior renders retained and labeled as references.",
+  "architecturalModelOnly": true,
+  "structuralDesignCertified": false,
+  "passed": true
+}

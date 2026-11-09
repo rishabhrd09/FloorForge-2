@@ -13,7 +13,8 @@ try{
  browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});
  const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.waitForFunction(()=>window.__ffApp?.viewer&&window.__ff?.ready,null,{timeout:300000});
- await page.click('[data-start="samples"]:not([disabled])');await page.waitForSelector('.sample-card');
+ // The start cards are enabled once the studio has finished starting up (slow on software WebGL).
+ await page.waitForSelector('[data-start="samples"]:not([disabled])',{timeout:300000});await page.click('[data-start="samples"]:not([disabled])');await page.waitForSelector('.sample-card');
  for(const id of ['aangan-house','long-house']){
   const card=page.locator(`.sample-card:has(button[data-sample="${id}"])`);
   check(`${id}: card offers the walkthrough`,(await card.locator('button.secondary').innerText()).includes('Walk in from the plan'));
@@ -35,7 +36,7 @@ try{
  // Hold that frame (software WebGL renders slowly) for the screenshot.
  await frame.evaluate(()=>{const r=window.__planReveal;r.still(r.state().p);});
  await page.screenshot({path:out+'/preview-lift.png',timeout:180000});
- await page.click('#sample-preview-use');
+ await page.click('#sample-preview-use',{noWaitAfter:true});   // the preview frame unloads slowly on software WebGL
  const adopted=await page.waitForFunction(()=>window.__ff?.buildId==='sample:aangan-house'&&!window.__ffApp.draftStale,null,{timeout:300000}).catch(()=>null);
  if(!adopted)console.log('Adoption status',await page.evaluate(()=>({build:window.__ff?.buildId,stale:window.__ffApp?.draftStale,message:document.getElementById('draft-state')?.textContent,toast:document.getElementById('toast')?.textContent})));
  check('Opening the project loads the matching editable custom plan',await page.evaluate(()=>window.__ffApp.collect().customPlan?.floors?.length===1&&window.__ff.building.brief.title==='The Aangan House'));

@@ -11,5 +11,7 @@ license = "MIT"
 floorforge = "floorforge.__main__:main"
 [tool.setuptools.packages.find]
 include = ["floorforge*"]
+[tool.setuptools.package-data]
+floorforge = ["compass_grids.json"]
 # Run from this distribution folder so web/ and examples/ remain alongside Python.
 # Wheel packaging of the web assets is not an accepted release target.

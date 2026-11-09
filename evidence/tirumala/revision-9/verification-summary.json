@@ -1,0 +1,18 @@
+{
+  "revision": 9,
+  "pythonTestsPassed": 106,
+  "viewerUnitTestsPassed": 23,
+  "liveBrowserChecksPassed": 25,
+  "browserErrors": [],
+  "allFiveCorrespondencePassed": true,
+  "otherSampleFilesUnchanged": 305,
+  "optionHashes": {
+    "A": "beb3b1ee3bc3a6a78abf827dadf59a701fc21d89bebff42098b2d74801170c76",
+    "B": "54c2a61dc5b57095c3f006437a4c987a081ab4a62c0f73206cdebe2c064c2366",
+    "C": "1ef64c6076ffe2b5c83a4fcc89321af52a5a1f1d5b5c047417011d77e2d83a8a",
+    "D": "b5b1c82ff25e867996595b46f916ec35aa78779f2b1271639b6608f7e2120c57",
+    "E": "f13d3ca9c95f08d25599512b6200b90a3f3e589a362ec48ee2f54b136188022f"
+  },
+  "areas": "area-comparison.json",
+  "screenshots": "This directory contains the current Revision 9 captures. Older evidence in the parent directory predates this revision."
+}

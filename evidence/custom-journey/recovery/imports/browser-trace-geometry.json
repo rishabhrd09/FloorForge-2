@@ -1,0 +1,61 @@
+{
+  "customPlan": {
+    "floors": [
+      {
+        "id": "floor-0",
+        "openings": [],
+        "rooms": [
+          {
+            "id": "trace-73e69b6b-ff3b-4d2d-8d99-057e325a8da4",
+            "kind": "living",
+            "name": "Manually traced living",
+            "polygon": [
+              [
+                200,
+                200
+              ],
+              [
+                4200,
+                200
+              ],
+              [
+                4200,
+                4200
+              ],
+              [
+                200,
+                4200
+              ]
+            ]
+          }
+        ],
+        "walls": []
+      }
+    ],
+    "schema": "floorforge.custom-plan/1",
+    "stairs": [],
+    "units": "mm",
+    "wallThickness": 150
+  },
+  "calibration": {
+    "confirmed": true,
+    "interpretationConfirmed": true,
+    "length": 4,
+    "mmPerPixel": 20,
+    "originPixels": [
+      10,
+      10
+    ],
+    "pixels": [
+      [
+        20,
+        270
+      ],
+      [
+        220,
+        270
+      ]
+    ],
+    "units": "m"
+  }
+}

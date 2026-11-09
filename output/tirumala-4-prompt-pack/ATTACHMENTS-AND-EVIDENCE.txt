@@ -1,0 +1,60 @@
+TIRUMALA 4 — WHAT TO GIVE THE NEXT AGENT
+Prepared 31 October 2026. This is a prompt/reference handoff; no sample project has been modified or created by preparing it.
+
+EASIEST HANDOFF
+Give the agent TIRUMALA-4-PROMPT.txt and the complete tirumala-4-prompt-pack.zip. If it works in the same repository, it can read the full current Tirumala 3 project directly. If the agent cannot inspect ZIP files, extract this folder and upload the files below individually. A local path alone is not a video attachment for an agent on another computer.
+
+TEN PRIORITY IMAGES (if attachment slots are limited)
+1. site-photos/R07-east-side-northwest.png — your image 1; east frontage and northwest outlook.
+2. site-photos/R11-NE-corner-owner-labelled.png — your image 2; intended NE corner, wall and footpath. See duplicate annotation warning below.
+3. site-photos/R08-north-garden-outlook.png — your image 9; north garden, palms and white/navy house.
+4. site-photos/R13-colony-junction-wide.png — your image 3; surrounding houses, road junction and drain detail.
+5. site-photos/R14-wall-pole-and-paving.png — your image 4; wall finish, planting and streetlight.
+6. video-frames/V01-court-and-road.jpg — raw frame at 00:00.500; fenced court, palms, footpath and drains.
+7. baseline-tirumala-3/renders/plan-2d-dimensioned.png — current P13 ground floor, not old P11.
+8. baseline-tirumala-3/renders/plan-first-floor.png — current approved G+1 arrangement.
+9. baseline-tirumala-3/renders/exterior-northeast.png — existing 3D appearance to improve.
+10. baseline-tirumala-3/renders/interior-icu-veranda-garden.png — current ICU scale, furniture and view.
+
+ALSO GIVE THE ORIGINAL VIDEO
+video/tirumala_plot.mp4 — complete unchanged original video, approximately 23.36 s, originally /Users/rishabh/Downloads/tirumala_plot.mp4.
+
+ADDITIONAL USEFUL IMAGES — included in the pack
+- site-photos/R12-vegetated-frontage-wide.png — your image 5, wider frontage, wall/hedge and beige building.
+- site-photos/R10-vegetated-frontage-close.png — your image 7, closer detail of the same frontage.
+- site-photos/R09-colony-junction.png — your image 8, alternate view of R13's junction.
+- site-photos/alternate-annotation/R11-wall-return-unconfirmed.png — your image 6, the same photograph as image 2 with a different confidence label. This is NOT a second corner.
+- Video frames V02 at 00:03.000, V03 at 00:06.000, V04 at 00:08.500, V05 at 00:10.000 and V06 at 00:20.000. V06 retains the camera roll from the source. No source-image content has been generated, removed or retouched.
+- prior-site-references/N-01_26039.png — original north outlook used by the existing sample.
+- prior-site-references/E-01_26044.png and N-04_26042.png — original court context.
+- prior-site-references/N-02_26040.png and N-03_26041.png — prior north frontage/utility references.
+- prior-site-references/NE-01_26043.png — prior provisional pillar detail; don't assume it identifies the same pillar as R11 without matching evidence.
+- baseline render images for kitchen/living, veranda, upper gallery, terrace and ICU doors in their three states.
+
+EDITABLE BASELINE FILES — needed for accurate implementation
+baseline-tirumala-3/project.floorforge.json is the editable current project.
+building.json, scene.json and specifications.json record current built geometry and presentation.
+site-context.json, photo-reference-manifest.json and assumptions-register.json record the existing context and its estimates.
+manifest.json identifies the current source build.
+source-plan-data.json is historical P11 reference only, NOT the current P13 geometry.
+DESIGN_GUIDE.md explains the current dimensions and door layers.
+The small source-code references folder is an implementation aid, not a standalone copy of the application. Use the repository to run/build the real sample.
+
+WHAT THE VISUAL REVIEW SUPPORTS
+The nine annotated attachments were reviewed, plus a contact sheet sampling the 23.36 s video at roughly two-second intervals and six specifically timestamped frames; selected frames were inspected at full image size. This was a visual review, not audio transcription or a site survey.
+
+Directly visible: concrete road grooves/joints, drain/access covers, interlocking paving, low mauve/grey wall with caps and piers, reddish and green hedges, small white flowers, dense existing plot vegetation, palms, court mesh, street/garden light forms, neighbouring house facades.
+
+Owner/site-brief relationships: 40 ft N–S × 50 ft E–W plot; east access; 12 m north road; 9 m east road; garden across the north road; court across the east road. These do not establish exact surveyed offsets or the widths of individual verges.
+
+Unresolved: precise corner coordinates in the photographs, exact camera poses, individual tree/pole identities, several landmark offsets, road width interpretation beyond the current working right-of-way convention, actual ground levels and exact south/west neighbours.
+
+Do not infer compass direction from video frame roll. Do not place parked cars into the permanent colony model. Do not carry all preconstruction vegetation through the proposed house footprint. Do not relocate a junction merely because an annotation calls it “nearby”.
+
+OPTIONAL FUTURE REFERENCES THAT WOULD IMPROVE ACCURACY
+These are useful if already available, not prerequisites for starting presentation work:
+- An unannotated original of R07, R11, R08 and R13, so overlays do not hide useful visual details.
+- A simple plot sketch/site plan showing all four corners, north arrow, gate, measured boundary lengths, road edges and whether road widths include footpaths.
+- North-facing and east-facing photographs from the intended gate/plot corner, plus west and south boundary views.
+- Approximate distances to a few fixed landmarks and measured road/porch levels.
+Do not invent missing measurements. Mark estimates and keep them editable.

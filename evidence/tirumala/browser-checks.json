@@ -1,0 +1,349 @@
+{
+  "planHash": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+  "optionHashes": {
+    "A": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+    "B": "23d6796d9764b40fd2834d2a2654afa8d239f13e6998fbd082fc2c95fc4dcaf0",
+    "C": "776cfc4d9c77b697234a3fccf67020d9db8a4e02bcbac7f53c2511f03474dc0b",
+    "D": "9ac1a315d1849d22e1bae5f2e2814abbe70061012ce1aca2259822523c68cdaa",
+    "E": "25675697a5b354d69579756924468cd944d4bf33173d02f452a700524200fb34"
+  },
+  "checks": [
+    {
+      "name": "Tirumala Revision 8 loads 40 × 50 ft (12.192 × 15.240 m) East-facing settings, 20 authored rooms, and Options A–E bar",
+      "pass": true
+    },
+    {
+      "name": "Option A activates and updates both 2D sheets and 3D scene",
+      "pass": true,
+      "detail": {
+        "option": "A",
+        "planHash": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+        "sheetCount": 11,
+        "careRoom": 17.862322,
+        "drawingRoom": 9.3025
+      }
+    },
+    {
+      "name": "Option B activates and updates both 2D sheets and 3D scene",
+      "pass": true,
+      "detail": {
+        "option": "B",
+        "planHash": "23d6796d9764b40fd2834d2a2654afa8d239f13e6998fbd082fc2c95fc4dcaf0",
+        "sheetCount": 11,
+        "careRoom": 20.878774,
+        "drawingRoom": 9.3025
+      }
+    },
+    {
+      "name": "Option C activates and updates both 2D sheets and 3D scene",
+      "pass": true,
+      "detail": {
+        "option": "C",
+        "planHash": "776cfc4d9c77b697234a3fccf67020d9db8a4e02bcbac7f53c2511f03474dc0b",
+        "sheetCount": 11,
+        "careRoom": 16.699662,
+        "drawingRoom": 9.3025
+      }
+    },
+    {
+      "name": "Option D activates and updates both 2D sheets and 3D scene",
+      "pass": true,
+      "detail": {
+        "option": "D",
+        "planHash": "9ac1a315d1849d22e1bae5f2e2814abbe70061012ce1aca2259822523c68cdaa",
+        "sheetCount": 11,
+        "careRoom": 16.699662,
+        "drawingRoom": 11.163
+      }
+    },
+    {
+      "name": "Option E activates and updates both 2D sheets and 3D scene",
+      "pass": true,
+      "detail": {
+        "option": "E",
+        "planHash": "25675697a5b354d69579756924468cd944d4bf33173d02f452a700524200fb34",
+        "sheetCount": 11,
+        "careRoom": 17.862322,
+        "drawingRoom": 9.3025
+      }
+    },
+    {
+      "name": "All 5 Tirumala options A–E produce distinct planHashes in the live studio",
+      "pass": true,
+      "detail": {
+        "A": "0aadd1866c8b0ffaf2febac7ef9af898ce41cc96b4518cf1219812c04ae5825b",
+        "B": "23d6796d9764b40fd2834d2a2654afa8d239f13e6998fbd082fc2c95fc4dcaf0",
+        "C": "776cfc4d9c77b697234a3fccf67020d9db8a4e02bcbac7f53c2511f03474dc0b",
+        "D": "9ac1a315d1849d22e1bae5f2e2814abbe70061012ce1aca2259822523c68cdaa",
+        "E": "25675697a5b354d69579756924468cd944d4bf33173d02f452a700524200fb34"
+      }
+    },
+    {
+      "name": "Sample isolation verified for my-desired-home (no Tirumala options bar or colony context leak)",
+      "pass": true,
+      "detail": {
+        "optionsBarHidden": true,
+        "noColonyContextLeak": true,
+        "colonyContextProp": null
+      }
+    },
+    {
+      "name": "Sample isolation verified for saved-verandah (no Tirumala options bar or colony context leak)",
+      "pass": true,
+      "detail": {
+        "optionsBarHidden": true,
+        "noColonyContextLeak": true,
+        "colonyContextProp": null
+      }
+    },
+    {
+      "name": "Sample isolation verified for bungalow (no Tirumala options bar or colony context leak)",
+      "pass": true,
+      "detail": {
+        "optionsBarHidden": true,
+        "noColonyContextLeak": true,
+        "colonyContextProp": "colony"
+      }
+    },
+    {
+      "name": "Specifications view shows Tirumala orientation, care suite and rooms table",
+      "pass": true
+    },
+    {
+      "name": "Room editor opens Tirumala custom plan with 0 local geometry issues",
+      "pass": true
+    },
+    {
+      "name": "Ground-floor cell guide has 16 cells",
+      "pass": true
+    },
+    {
+      "name": "2D site plan, ground floor, first floor, front elevation, both Revision-8 section sheets (A-301, A-302), and schedules (A-601) rendered",
+      "pass": true
+    },
+    {
+      "name": "Named camera east_entrance_exterior (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera ne_corner_two_roads (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera care_interior_overview (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera care_seated_north (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera care_recliner_north (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera care_standing_glazing (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera care_east_court_glimpse (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera north_veranda_l_route (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera living_dining_kitchen (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera caregiver_nw_pocket (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera first_floor_terrace_outlook (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera compact_corner_stair (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera double_height_living_void (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-01 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-01 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-02 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-02 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-03 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-03 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-04 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera N-04 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera NE-01 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera NE-01 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera E-01 (existing) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera E-01 (proposed) activated",
+      "pass": true
+    },
+    {
+      "name": "Named camera ne_corner_two_roads (proposed, evening) activated",
+      "pass": true
+    },
+    {
+      "name": "Colony context is populated in 3D viewer and Revision-8 care-room pieces are editable",
+      "pass": true,
+      "detail": {
+        "hasColonyGroup": true,
+        "careEditables": 2
+      }
+    },
+    {
+      "name": "All ground-floor hinged doors and sliding glass doors animate smoothly between open and closed states",
+      "pass": true,
+      "detail": {
+        "g-entry": {
+          "opened": true,
+          "closed": true
+        },
+        "g-porch-family-slider": {
+          "opened": true,
+          "closed": true
+        },
+        "g-drawing-door": {
+          "opened": true,
+          "closed": true
+        },
+        "g-master-door": {
+          "opened": true,
+          "closed": true
+        },
+        "g-bath-door": {
+          "opened": true,
+          "closed": true
+        },
+        "g-care-hall-slider": {
+          "opened": true,
+          "closed": true
+        },
+        "g-care-return-door": {
+          "opened": true,
+          "closed": true
+        },
+        "g-care-veranda-slider": {
+          "opened": true,
+          "closed": true
+        },
+        "g-caregiver-door": {
+          "opened": true,
+          "closed": true
+        },
+        "g-wc-door": {
+          "opened": true,
+          "closed": true
+        }
+      }
+    },
+    {
+      "name": "Walkthrough: Shallow Porch through g-entry into Drawing Room",
+      "pass": true,
+      "detail": {
+        "reached": true,
+        "position": [
+          7.12,
+          0.008999999612569864,
+          -3.8602966073186846
+        ]
+      }
+    },
+    {
+      "name": "Walkthrough: Family Hall through 6 ft sliding glass into Care Suite",
+      "pass": true,
+      "detail": {
+        "reached": true,
+        "position": [
+          7.638633433306757,
+          0.008999999612569864,
+          -8.2
+        ]
+      }
+    },
+    {
+      "name": "Walkthrough: Care Suite through 8 ft sliding glass onto West Veranda",
+      "pass": true,
+      "detail": {
+        "reached": true,
+        "position": [
+          9.45,
+          0.01700000092387205,
+          -11.370295123888177
+        ]
+      }
+    },
+    {
+      "name": "Walkthrough: Compact 12 × 7.5 ft corner stair climb (South flight -> West landing -> North flight) to +3.658 m upper arrival",
+      "pass": true,
+      "detail": {
+        "reached": true,
+        "position": [
+          4.208135152351482,
+          3.6670000553131104,
+          -7.2386244799193165
+        ]
+      }
+    },
+    {
+      "name": "Sample Gallery displays Tirumala card with rendered thumbnail",
+      "pass": true
+    },
+    {
+      "name": "Mobile viewport (390 × 844) renders Tirumala Options A–E switcher cleanly",
+      "pass": true
+    },
+    {
+      "name": "Original workspace project restored intact after inspecting Tirumala",
+      "pass": true
+    },
+    {
+      "name": "Zero browser page errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

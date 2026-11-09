@@ -1,0 +1,159 @@
+{
+  "checks": [
+    {
+      "name": "Fixture reproduces the pre-journey server with no custom-journey capability",
+      "pass": true
+    },
+    {
+      "name": "Actual old route table reproduces the reported Not found response",
+      "pass": true
+    },
+    {
+      "name": "Actual old server also lacks the new journey script, without blocking setup recovery",
+      "pass": true
+    },
+    {
+      "name": "Create explains that the running server needs a restart instead of Not found",
+      "pass": true
+    },
+    {
+      "name": "Stale-server guard preserves the exact entered setup and selected inputs",
+      "pass": true
+    },
+    {
+      "name": "Failed create does not overwrite the existing autosave or saved-project records",
+      "pass": true
+    },
+    {
+      "name": "Stale create is stopped before any unsupported or mutating endpoint",
+      "pass": true
+    },
+    {
+      "name": "Reload restores the failed setup from local session storage",
+      "pass": true
+    },
+    {
+      "name": "Same-origin restart provides the required API with a fresh session",
+      "pass": true
+    },
+    {
+      "name": "An already-open tab requests its missing module reload before changing any project",
+      "pass": true
+    },
+    {
+      "name": "Reload after restart loads the new journey module and retains the complete setup",
+      "pass": true
+    },
+    {
+      "name": "The reported button now opens the three-floor Compass workspace",
+      "pass": true
+    },
+    {
+      "name": "Actual saved geometry inputs match 40 by 60 feet with the road to the west",
+      "pass": true
+    },
+    {
+      "name": "Retry after restart calls the real source-input consumer successfully",
+      "pass": true
+    },
+    {
+      "name": "Server restart keeps the original saved project and clears only the completed setup",
+      "pass": true
+    },
+    {
+      "name": "Created three-floor draft autosaves and reopens with the same floor identities",
+      "pass": true
+    },
+    {
+      "name": "No browser exceptions during stale-server recovery and creation",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "baselineServer": "839609731077e9623ce819cdfd80b1152a8a0956",
+  "origin": "http://127.0.0.1:54790",
+  "serverOutput": "/var/folders/wd/schw303n1tv16s7w0y_07mpc0000gn/T/myverandah-launch-UtYXEF",
+  "network": [
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/design/inputs",
+      "status": 404
+    },
+    {
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "path": "/api/samples",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/ai/clear",
+      "status": 200
+    },
+    {
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 200
+    },
+    {
+      "path": "/api/design/inputs",
+      "status": 200
+    },
+    {
+      "path": "/api/samples",
+      "status": 200
+    }
+  ],
+  "serverLogs": [
+    {
+      "kind": "legacy",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "kind": "current",
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

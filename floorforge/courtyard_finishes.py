@@ -44,9 +44,11 @@ def skylit_garden(k, materials, room, height):
         k.rect((xx-.025,yy-.025,z+height-.15,xx+.025,yy+.025,cover_z),'frame',f,'canopy',owner+f'/vent-bracket-{i}',owner)
 
 
-def specimen_court(k, materials, room, height):
-    """An aangan: sandstone paving with a darker border, a frangipani in a raised round planter whose wide cap is a
-    seat, a tulsi vrindavan at the far end, an uplight on the tree and a floor drain."""
+def specimen_court(k, materials, room, height, storeys=1):
+    """An aangan: sandstone paving with a darker border, a specimen tree in a raised round planter whose wide cap is
+    a seat, a tulsi vrindavan at the far end, an uplight on the tree and a floor drain. The tree is a frangipani
+    unless the room names a mango (a broad crown for a wide court) or an ashoka (a slender spire for a narrow court
+    open through every storey)."""
     p=Polygon(np.array(room['clear'])/1000);x0,y0,x1,y1=p.bounds
     f=room['floor'];z=f*height;owner=room['id']
     materials['aangan-stone']={'color':'#d2c3a4','alt':'#bba987','roughness':.86,'texture':'paver','kind':'paver','params':[2,1,.003,.07],'tile_m':1.2}
@@ -64,17 +66,21 @@ def specimen_court(k, materials, room, height):
     k.poly_mesh(cap,z+.40,z+.46,'aangan-stone',f,'planter',owner+'/planter-seat',owner)
     k.poly_mesh(Point(cx,cy).buffer(r-.16,48),z+.022,z+.33,'soil',f,'landscape',owner+'/planter-soil',owner)
     k.poly_mesh(Point(cx,cy).buffer(r-.17,48).difference(Point(cx,cy).buffer(.22,32)),z+.33,z+.35,'gravel',f,'landscape',owner+'/planter-gravel',owner)
-    k.plant(cx,cy,z+.33,'frangipani',height=float(np.clip(min(w,d)*1.15,3.2,4.6)),f=f)
+    species=room['centerTree'] if isinstance(room.get('centerTree'),str) else 'frangipani'
+    tall={'frangipani':float(np.clip(min(w,d)*1.15,3.2,4.6)),'mango':float(np.clip(min(w,d)*1.3,4.0,5.2)),
+          'ashoka':float(np.clip(storeys*height+.6,4.5,7.5))}[species]
+    k.plant(cx,cy,z+.33,species,height=tall,f=f)
     for a in np.linspace(0,2*np.pi,6,endpoint=False)+.4:
         k.plant(cx+np.cos(a)*(r-.42),cy+np.sin(a)*(r-.42),z+.35,'grass_ornamental',height=.38,f=f)
     k.light((cx+r*.55,cy-r*.35,z+.42),16,kind='uplight')
     # Tulsi vrindavan: a stepped pedestal with its holy basil, on the axis at the far end.
     tx,ty=((x0+x1)/2,y1-.85) if d>w else (x1-.85,(y0+y1)/2)
-    if p.buffer(-.35).covers(Point(tx,ty).buffer(.35)):
+    # Only where it stands clear of the court's edge and of the tree's planter (a small court has no room for both).
+    if p.buffer(-.35).covers(Point(tx,ty).buffer(.35)) and not Point(tx,ty).buffer(.36).intersects(Point(cx,cy).buffer(r+.15)):
         k.rect((tx-.34,ty-.34,z+.022,tx+.34,ty+.34,z+.16),'aangan-border',f,'planter',owner+'/vrindavan-base',owner)
         k.rect((tx-.25,ty-.25,z+.16,tx+.25,ty+.25,z+.82),'kota-stone',f,'planter',owner+'/vrindavan',owner)
         k.rect((tx-.29,ty-.29,z+.82,tx+.29,ty+.29,z+.88),'aangan-stone',f,'planter',owner+'/vrindavan-cap',owner)
-        k.plant(tx,ty,z+.88,'shrub_flowering',height=.42,f=f)
+        k.plant(tx,ty,z+.88,'tulsi',height=.5,f=f)
     k.rect((x1-.36,y0+.22,z+.022,x1-.22,y0+.36,z+.028),'steel',f,'drain',owner+'/drain',owner)
 
 

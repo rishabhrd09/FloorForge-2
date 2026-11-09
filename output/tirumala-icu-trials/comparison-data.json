@@ -1,0 +1,97 @@
+{
+  "baseline": {
+    "icuWidthMm": 3093.0,
+    "icuDepthMm": 4547.2,
+    "areaSqFt": 136.249994833323,
+    "icuWidthFt": "10\u20321\u00be\u2033",
+    "icuDepthFt": "14\u203211\u2033",
+    "headGapMm": 446.5,
+    "footGapMm": 446.5,
+    "headGapFt": "1\u20325\u215d\u2033",
+    "footGapFt": "1\u20325\u215d\u2033",
+    "livingStripMm": 1822.6000000000004,
+    "livingStripFt": "5\u203211\u00be\u2033",
+    "verandaDoorApertureMm": 1600.0,
+    "verandaDoorClearMm": 1490.0,
+    "verandaDoorClearFt": "4\u203210\u215d\u2033",
+    "tableBounds": [
+      9568,
+      4500,
+      10368,
+      5000
+    ],
+    "bedBounds": [
+      7721.5,
+      5226.4,
+      9921.5,
+      6326.4
+    ]
+  },
+  "options": [
+    {
+      "id": "compact-only",
+      "title": "Tirumala 2 \u00b7 P12 \u2014 Compact furniture trial",
+      "metrics": {
+        "icuWidthMm": 3093.0,
+        "icuDepthMm": 4547.2,
+        "areaSqFt": 136.249994833323,
+        "icuWidthFt": "10\u20321\u00be\u2033",
+        "icuDepthFt": "14\u203211\u2033",
+        "headGapMm": 446.5,
+        "footGapMm": 446.5,
+        "headGapFt": "1\u20325\u215d\u2033",
+        "footGapFt": "1\u20325\u215d\u2033",
+        "livingStripMm": 1822.6000000000004,
+        "livingStripFt": "5\u203211\u00be\u2033",
+        "verandaDoorApertureMm": 1600.0,
+        "verandaDoorClearMm": 1490.0,
+        "verandaDoorClearFt": "4\u203210\u215d\u2033",
+        "tableBounds": [
+          9758.4,
+          7694.4,
+          10368,
+          8050
+        ],
+        "bedBounds": [
+          7721.5,
+          5226.4,
+          9921.5,
+          6326.4
+        ]
+      }
+    },
+    {
+      "id": "south-extension",
+      "title": "Tirumala 2 \u00b7 P12 \u2014 1\u00bd ft south trial",
+      "metrics": {
+        "icuWidthMm": 3550.2,
+        "icuDepthMm": 4547.2,
+        "areaSqFt": 158.6279475892285,
+        "icuWidthFt": "11\u20327\u00be\u2033",
+        "icuDepthFt": "14\u203211\u2033",
+        "headGapMm": 675.0999999999995,
+        "footGapMm": 675.1000000000004,
+        "headGapFt": "2\u20322\u215d\u2033",
+        "footGapFt": "2\u20322\u215d\u2033",
+        "livingStripMm": 1365.4000000000005,
+        "livingStripFt": "4\u20325\u00be\u2033",
+        "verandaDoorApertureMm": 1167.8,
+        "verandaDoorClearMm": 1057.8,
+        "verandaDoorClearFt": "3\u20325\u215d\u2033",
+        "tableBounds": [
+          9758.4,
+          7694.4,
+          10368,
+          8050
+        ],
+        "bedBounds": [
+          7492.9,
+          5226.4,
+          9692.9,
+          6326.4
+        ]
+      }
+    }
+  ],
+  "protectedFilesUnchanged": 412
+}

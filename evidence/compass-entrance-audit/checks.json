@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-18",
+  "branch": "development",
+  "local_changes_uncommitted": true,
+  "tests": {
+    "pytest": "599 passed in 220.54s",
+    "node": "16 passed, including 500 randomized transaction attempts and label-placement checks",
+    "syntax": "All changed JavaScript passed node --check",
+    "diff": "git diff --check passed"
+  },
+  "live_generation": {
+    "build_id": "b920fbaacecf303102a98ad0",
+    "planHash": "859134ac68c0092ca546876c7c8008246e3bd7015efd67faaf97c29b126229a8",
+    "verified_brief": {
+      "width_mm": 15000,
+      "depth_mm": 19000,
+      "road_bearing_deg": 90,
+      "bedrooms": 2,
+      "storeys": 1,
+      "floor_height_mm": 3200,
+      "budget_lakh": 75
+    },
+    "scene_floor_height_m": 3.2,
+    "all_output_hashes_match": true,
+    "scene_uses_canonical_walls_and_openings": true,
+    "verified_openings": [
+      {
+        "id": "compass-link-e56554ce-4ac3-4213-8b60-e16045874d7f",
+        "kind": "cased",
+        "width": 1800,
+        "connects": [
+          "compass-room-1",
+          "compass-room-2"
+        ]
+      },
+      {
+        "id": "compass-main-entry",
+        "kind": "entry",
+        "width": 1000,
+        "connects": [
+          "compass-room-1",
+          "outside"
+        ]
+      }
+    ],
+    "exports": {
+      "drawings.pdf": 42665,
+      "floorplans.dxf": 141194,
+      "model.glb": 960724,
+      "model.ifc": 568081,
+      "FloorForge-export.zip": 1447565
+    }
+  },
+  "browser": {
+    "input_changes_invalidated_acceptance": true,
+    "explicit_geometry_review_before_generation": true,
+    "generated_2d_image_loaded": true,
+    "generated_furnished_3d_viewed": true,
+    "save_reopen_retains_32_cells_split_ownership_and_acceptance": true,
+    "reopened_matching_project_exports_enabled": true,
+    "drawer_keyboard_and_zoom_work": true,
+    "all_11_sample_viewers_rendered": true
+  },
+  "fixes": [
+    "Optional unplaced bedrooms are excluded from generated bedroom totals while their checklist records stay saved.",
+    "Unplaced optional-room requests are marked unapplied; excluded-floor requests are marked off.",
+    "Applied relationships, entrance destination and stair scope appear in the input audit.",
+    "Restored projects are marked current only when their resolved plan hash matches the generated scene."
+  ],
+  "preservation": {
+    "protected_files": 445,
+    "changed_protected_files": [],
+    "legacy_intent_hashes": {
+      "examples/briefs/manual-L.json": true,
+      "examples/briefs/demo.json": true,
+      "examples/briefs/small.json": true,
+      "examples/briefs/compact.json": true
+    },
+    "original_planning_document_hashes": {
+      "COMPASS_REFACTOR_PLAN.md": "a08adccc73fa0bc1ba36e32828c209248f47901cc849bcd8bbf9b62c1882e123",
+      "COMPASS_REFACTOR_IMPLEMENTATION_PROMPT.md": "7d5c58cccb3179667868b8f3103d238848fee1be8df495d5f8065e16f584ebb9"
+    }
+  },
+  "limitations": [
+    "Plot context and notes are advisory; they do not infer additional roads or automatic site geometry.",
+    "Reference images are not automatically traced, and unparsed written requests remain visible in coverage.",
+    "Authored Compass geometry takes precedence over automatic programme arrangement switches.",
+    "No physical-mobile or first-time-user acceptance session, and no claim of a new remote CI run."
+  ]
+}

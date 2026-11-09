@@ -1,0 +1,64 @@
+✔ tirumala-2: ICU wooden handle remains reachable when panels are parked (362.607167ms)
+✔ tirumala-2: every ground-level door is operable; closed/open collision agrees (287.961417ms)
+▶ tirumala-2: actual walking capsule traverses approved rooms with car parked
+  ✔ kitchen (7.606416ms)
+  ✔ store (2.291708ms)
+  ✔ master (3.806083ms)
+  ✔ bathroom (1.359791ms)
+  ✔ caregiver (9.075083ms)
+  ✔ attachedWC (2.665917ms)
+  ✔ lightwell (1.806333ms)
+  ✔ washGully (2.198708ms)
+  ✔ stairs (5.876958ms)
+  ✔ arrival (6.3235ms)
+  ✔ ICU (2.409042ms)
+  ✔ ICUVeranda (1.168417ms)
+  ✔ drawing (6.611666ms)
+✔ tirumala-2: actual walking capsule traverses approved rooms with car parked (241.841958ms)
+✔ tirumala-2: porch, house and veranda use their specified floor levels (180.093625ms)
+▶ tirumala-2: walk upstairs, through every upper room and onto open terrace
+  ✔ stairToGallery (7.398083ms)
+  ✔ master (2.516542ms)
+  ✔ ensuite (0.956416ms)
+  ✔ office (2.750375ms)
+  ✔ guest (1.749166ms)
+  ✔ sharedBath (1.238708ms)
+  ✔ terrace (6.887917ms)
+  ✔ sideTerrace (2.28875ms)
+✔ tirumala-2: walk upstairs, through every upper room and onto open terrace (200.1345ms)
+✔ tirumala-3: ICU wooden handle remains reachable when panels are parked (313.77825ms)
+✔ tirumala-3: every ground-level door is operable; closed/open collision agrees (197.339167ms)
+▶ tirumala-3: actual walking capsule traverses approved rooms with car parked
+  ✔ kitchen (3.230542ms)
+  ✔ store (2.787333ms)
+  ✔ master (2.892375ms)
+  ✔ bathroom (1.043792ms)
+  ✔ caregiver (4.636083ms)
+  ✔ attachedWC (1.883375ms)
+  ✔ lightwell (1.469667ms)
+  ✔ washGully (1.463ms)
+  ✔ stairs (3.261875ms)
+  ✔ arrival (4.966542ms)
+  ✔ ICU (1.630041ms)
+  ✔ ICUVeranda (0.897ms)
+  ✔ drawing (0.853917ms)
+✔ tirumala-3: actual walking capsule traverses approved rooms with car parked (266.960917ms)
+✔ tirumala-3: porch, house and veranda use their specified floor levels (173.42075ms)
+▶ tirumala-3: walk upstairs, through every upper room and onto open terrace
+  ✔ stairToGallery (5.772291ms)
+  ✔ master (2.223834ms)
+  ✔ ensuite (0.861917ms)
+  ✔ office (2.86425ms)
+  ✔ guest (1.930833ms)
+  ✔ sharedBath (1.541542ms)
+  ✔ terrace (4.583708ms)
+  ✔ sideTerrace (1.829333ms)
+✔ tirumala-3: walk upstairs, through every upper room and onto open terrace (203.44ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 52
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2525.451334

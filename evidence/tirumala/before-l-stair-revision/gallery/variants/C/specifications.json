@@ -1,0 +1,340 @@
+{
+  "id": "tirumala",
+  "revision": 9,
+  "option": "C",
+  "optionLabel": "C \u2014 Garden first",
+  "optionTag": "6\u00bd\u2032 rear veranda \u00b7 slim north passage",
+  "optionTrade": "Deepest main veranda bay: 6\u00bd\u2032, with a 4\u00bd\u2032 left return. The side passage is the same slim 3\u2032 width as every option.",
+  "title": "Tirumala (C \u2014 Garden first)",
+  "planHash": "1ef64c6076ffe2b5c83a4fcc89321af52a5a1f1d5b5c047417011d77e2d83a8a",
+  "geometryHash": "4f6924878075dbe65dd912cddefea898e301014bc13f7653d00a4bf890327ea6",
+  "disclaimer": "PRELIMINARY - ENGINEER TO REVIEW - NOT FOR CONSTRUCTION",
+  "orientation": "East road/front (40 ft = 12.192 m, y=0) \u00b7 South left (x=0) \u00b7 North 12 m road/right (50 ft = 15.240 m, x=12.192 m) \u00b7 West rear (y=15.240 m)",
+  "notes": "Tirumala Revision 9 \u2014 C \u2014 Garden first: 179.5 sq ft care suite, 11 \u00d7 10 ft drawing room, 51 sq ft caregiver room, and 6.5 ft deep main rear veranda. 40 ft East frontage (9 m road + basketball-court enclosure) x 50 ft North/South depth (12 m North road + opposite colony garden). Compact 12 x 7.5 ft South-wall corner stair (climb South, turn West, return North; 20 risers @ 182.9 mm, 9 treads @ 287.9 mm) with tall 3.25 ft East lane glazing and open North arrival. Continuous +300 mm house/court/porch/veranda datum with two 150 mm front entrance rises and \u00b10 mm 10.5 x 19 ft car bay. Revision 9 enlarges the kitchen to approximately 81 sq ft, widens drawing to 11 ft, relocates dining beside the rear of the stair, broadens the glass-linked upper gallery, and opens the rooflight through the slab. Care and ground master retain their floor areas.",
+  "plotFt": [
+    40,
+    50
+  ],
+  "plotM": [
+    12.192,
+    15.24
+  ],
+  "plotAreaSqFt": 2000,
+  "plotAreaM2": 185.806,
+  "floorLevelsMm": {
+    "parking_bay_mm": 0,
+    "entry_intermediate_step_mm": 150,
+    "house_court_porch_veranda_mm": 300,
+    "floor_to_floor_mm": 3658,
+    "ordinary_clear_ceiling_mm": 3353,
+    "double_height_living_clear_mm": 7010
+  },
+  "stairSpec": {
+    "coreFt": [
+      12.0,
+      7.5
+    ],
+    "coreAreaSqFt": 90.0,
+    "flightWidthFt": 3.5,
+    "wellFt": 0.5,
+    "southLandingDepthFt": 3.5,
+    "riserCount": 20,
+    "riserMm": 182.88,
+    "treadsPerFlight": 9,
+    "treadMm": 287.87,
+    "sequence": "Enter from North open hall -> climb SOUTH -> turn WEST on South landing -> climb NORTH to upper arrival outside living void"
+  },
+  "coordinateSystem": {
+    "origin_description": "Southwest plot corner (SW) at Natural Ground Level (NGL \u00b10.000 m); FloorForge local/scene origin (0, 0, 0) is Southeast plot corner (SE) at Ground Floor FFL (+0.300 m)",
+    "axes": {
+      "X_geo": "Increases Eastward (0.000 m at West boundary -> 15.240 m at East frontage; 50 ft)",
+      "Y_geo": "Increases Northward (0.000 m at South boundary -> 12.192 m at North boundary; 40 ft)",
+      "Z_geo": "Increases Upward (0.000 m at NGL/car-bay -> +0.300 m at Ground Floor FFL)"
+    },
+    "plot_corners_geo_m": {
+      "SW": [
+        0.0,
+        0.0
+      ],
+      "SE": [
+        15.24,
+        0.0
+      ],
+      "NW": [
+        0.0,
+        12.192
+      ],
+      "NE": [
+        15.24,
+        12.192
+      ]
+    },
+    "plot_corners_scene_m": {
+      "SW": [
+        0.0,
+        15.24
+      ],
+      "SE": [
+        0.0,
+        0.0
+      ],
+      "NW": [
+        12.192,
+        15.24
+      ],
+      "NE": [
+        12.192,
+        0.0
+      ]
+    },
+    "scene_transform": {
+      "road_bearing_deg": 90,
+      "front_direction": "East (+X_geo -> -y_scene)",
+      "rear_direction": "West (-X_geo -> +y_scene)",
+      "left_direction": "South (-Y_geo -> -x_scene)",
+      "right_direction": "North (+Y_geo -> +x_scene)",
+      "formula_geo_to_scene_m": {
+        "x_scene": "Y_geo",
+        "y_scene": "15.240 - X_geo",
+        "z_scene": "Z_geo - 0.300"
+      },
+      "formula_scene_to_geo_m": {
+        "X_geo": "15.240 - y_scene",
+        "Y_geo": "x_scene",
+        "Z_geo": "z_scene + 0.300"
+      },
+      "envelope_se_origin_geo_m": [
+        15.24,
+        0.0,
+        0.3
+      ]
+    }
+  },
+  "careRoomVerification": {
+    "plot_ew_midpoint_x_geo_m": 7.62,
+    "midpoint_scene_y_m": 7.62,
+    "revision": 9,
+    "midpoint_extension_permitted": true,
+    "nw_corner_open": true,
+    "nw_garden_open": true,
+    "care_west_edge_ft": 35.5,
+    "bed_orientation": "South-to-North (head South at x=26.25 ft, feet North at x=33.25 ft)",
+    "option": "C",
+    "option_label": "C \u2014 Garden first",
+    "care_clear_x_geo_min_m": 4.418,
+    "care_clear_x_geo_max_m": 8.993,
+    "care_outer_x_geo_min_m": 4.418,
+    "care_outer_x_geo_max_m": 8.993,
+    "strictly_east_of_midpoint": false
+  },
+  "referenceCameras": [
+    "N-01",
+    "N-02",
+    "N-03",
+    "N-04",
+    "NE-01",
+    "E-01"
+  ],
+  "sightlineCameras": [
+    "care_recliner_north",
+    "care_seated_north",
+    "care_standing_glazing",
+    "care_east_court_glimpse",
+    "care_interior_overview",
+    "double_height_living_void",
+    "compact_corner_stair",
+    "north_veranda_l_route",
+    "living_dining_kitchen",
+    "caregiver_nw_pocket",
+    "first_floor_terrace_outlook",
+    "east_entrance_exterior",
+    "ne_corner_two_roads",
+    "entry_connected_hall",
+    "drawing_interior",
+    "dining_stair_connection",
+    "upper_gallery_connection",
+    "upper_lounge_connection"
+  ],
+  "rooms": [
+    {
+      "id": "g-bath",
+      "name": "Master attached bath",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 1.527,
+      "depthM": 2.136,
+      "areaM2": 3.261672
+    },
+    {
+      "id": "g-care",
+      "name": "Home care suite \u00b7 north",
+      "floor": 0,
+      "kind": "care-room",
+      "widthM": 6.098,
+      "depthM": 4.575,
+      "areaM2": 16.699662
+    },
+    {
+      "id": "g-caregiver",
+      "name": "Caregiver room",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 2.593,
+      "depthM": 1.831,
+      "areaM2": 4.747783
+    },
+    {
+      "id": "g-drawing",
+      "name": "Drawing room \u00b7 guests",
+      "floor": 0,
+      "kind": "drawing-room",
+      "widthM": 3.355,
+      "depthM": 3.05,
+      "areaM2": 10.23275
+    },
+    {
+      "id": "g-family",
+      "name": "Living \u00b7 dining \u00b7 stair hall",
+      "floor": 0,
+      "kind": "family",
+      "widthM": 6.861,
+      "depthM": 7.47,
+      "areaM2": 20.306724
+    },
+    {
+      "id": "g-kitchen",
+      "name": "Open kitchen \u00b7 southeast",
+      "floor": 0,
+      "kind": "kitchen",
+      "widthM": 3.051,
+      "depthM": 3.05,
+      "areaM2": 7.516191
+    },
+    {
+      "id": "g-master",
+      "name": "Master bedroom \u00b7 southwest",
+      "floor": 0,
+      "kind": "bedroom",
+      "widthM": 4.575,
+      "depthM": 4.422,
+      "areaM2": 16.397028
+    },
+    {
+      "id": "g-porch",
+      "name": "Shallow entry porch",
+      "floor": 0,
+      "kind": "veranda",
+      "widthM": 3.355,
+      "depthM": 0.917,
+      "areaM2": 3.076535
+    },
+    {
+      "id": "g-puja",
+      "name": "Screened puja niche",
+      "floor": 0,
+      "kind": "pooja",
+      "widthM": 1.222,
+      "depthM": 0.917,
+      "areaM2": 1.120574
+    },
+    {
+      "id": "g-south-lane",
+      "name": "South daylight lane",
+      "floor": 0,
+      "kind": "veranda",
+      "widthM": 1.219,
+      "depthM": 3.2,
+      "areaM2": 3.9008
+    },
+    {
+      "id": "g-stair",
+      "name": "Compact corner stair",
+      "floor": 0,
+      "kind": "stair",
+      "widthM": 3.658,
+      "depthM": 2.286,
+      "areaM2": 8.362188
+    },
+    {
+      "id": "g-veranda",
+      "name": "Open rear veranda",
+      "floor": 0,
+      "kind": "veranda",
+      "widthM": 6.098,
+      "depthM": 1.984,
+      "areaM2": 10.612472
+    },
+    {
+      "id": "g-wc",
+      "name": "Caregiver WC",
+      "floor": 0,
+      "kind": "bathroom",
+      "widthM": 1.526,
+      "depthM": 1.831,
+      "areaM2": 2.794106
+    },
+    {
+      "id": "u-bath",
+      "name": "Upper bathroom \u00b7 southeast",
+      "floor": 1,
+      "kind": "bathroom",
+      "widthM": 1.527,
+      "depthM": 3.05,
+      "areaM2": 4.65735
+    },
+    {
+      "id": "u-living-void",
+      "name": "Double-height living void",
+      "floor": 1,
+      "kind": "void",
+      "widthM": 4.118,
+      "depthM": 2.975,
+      "areaM2": 9.746464
+    },
+    {
+      "id": "u-lobby",
+      "name": "Upper stair arrival & gallery",
+      "floor": 1,
+      "kind": "hall",
+      "widthM": 6.174,
+      "depthM": 7.546,
+      "areaM2": 17.711957
+    },
+    {
+      "id": "u-master",
+      "name": "Upper bedroom \u00b7 southwest",
+      "floor": 1,
+      "kind": "bedroom",
+      "widthM": 3.658,
+      "depthM": 4.12,
+      "areaM2": 13.03894
+    },
+    {
+      "id": "u-stair",
+      "name": "Upper staircase core",
+      "floor": 1,
+      "kind": "stair",
+      "widthM": 3.658,
+      "depthM": 2.286,
+      "areaM2": 8.362188
+    },
+    {
+      "id": "u-study",
+      "name": "Upper lounge \u00b7 study",
+      "floor": 1,
+      "kind": "study",
+      "widthM": 3.736,
+      "depthM": 2.212,
+      "areaM2": 8.264032
+    },
+    {
+      "id": "u-terrace",
+      "name": "East upper terrace",
+      "floor": 1,
+      "kind": "terrace",
+      "widthM": 3.355,
+      "depthM": 0.917,
+      "areaM2": 3.076535
+    }
+  ]
+}

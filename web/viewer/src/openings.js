@@ -11,13 +11,14 @@ const angleDelta = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 export function describeOpenings(scene, building = scene.opening_model) {
   building ||= {walls: [], openings: []};
   const walls = new Map(building.walls.map(w => [w.id, w]));
+  const convertMotion = p => ({...p, ...(p.slide ? {slide: point(p.slide)} : {}), ...(p.pivot ? {pivot: point(p.pivot)} : {})});
   const result = (scene.gate_model || []).map(gate => ({
     ...gate, start: point(gate.start), axis: point(gate.axis),
     center: point(gate.start).addScaledVector(point(gate.axis), gate.width / 2).addScaledVector(up, gate.height / 2),
-    parts: gate.parts.map(part => ({...part, ...(part.slide ? {slide: point(part.slide)} : {pivot: point(part.pivot)})})),
+    parts: gate.parts.map(convertMotion),
   }));
   for (const o of building.openings) {
-    if (o.kind === 'cased' || o.fixed) continue;
+    if (o.kind === 'cased' || o.kind === 'cased-opening' || o.fixed) continue;
     const wall = walls.get(o.wall_id);
     if (!wall) continue;
     const dx = wall.b[0] - wall.a[0], dy = wall.b[1] - wall.a[1], len = Math.hypot(dx, dy);
@@ -32,10 +33,17 @@ export function describeOpenings(scene, building = scene.opening_model) {
     const glass = owned.filter(node => node.role === 'glass');
     if (scene.door_motion?.[o.id]) {
       const motion = scene.door_motion[o.id];
+      if (motion.parts) {
+        desc.parts = motion.parts.map(convertMotion);
+        desc.initial = motion.initial ?? 0;
+        desc.clearWidth = motion.clearWidth;
+        result.push(desc);
+        continue;
+      }
       if (motion.layers) {
         for (const leaf of motion.layers) result.push({...desc, id: leaf.id,
-          label: `${leaf.label} · ${label}`, initial: 0, clearWidth: leaf.clearWidth ?? motion.clearWidth,
-          handle: point(leaf.handle), parts: [{ids: leaf.ids, ...(leaf.slide ? {slide: point(leaf.slide)} : {pivot: point(leaf.pivot), angle: leaf.angle})}]});
+          label: `${leaf.label} · ${label}`, initial: leaf.initial ?? motion.initial ?? 0, clearWidth: leaf.clearWidth ?? motion.clearWidth,
+          ...(leaf.handle ? {handle: point(leaf.handle)} : {}), parts: (leaf.parts || [leaf]).map(convertMotion)});
         continue;
       }
       desc.parts.push({...motion, pivot: point(motion.pivot)});
@@ -102,6 +110,7 @@ export class OpeningController {
         }
         item.parts.push(part);
       }
+      this.pose(item);
       this.items.push(item);
     }
     if (offset) {
@@ -118,9 +127,13 @@ export class OpeningController {
       const t = part.reverse ? 1 - item.value : item.value, m = part.group.matrix;
       m.identity();
       if (part.slide) m.makeTranslation(...part.slide.clone().multiplyScalar(t).toArray());
-      else {
-        m.makeTranslation(...part.pivot.toArray());
-        m.multiply(new THREE.Matrix4().makeRotationAxis(up, part.angle * t));
+      if (part.pivot && (Number.isFinite(part.angle) || part.scaleTo)) {
+        m.multiply(new THREE.Matrix4().makeTranslation(...part.pivot.toArray()));
+        m.multiply(new THREE.Matrix4().makeRotationAxis(up, (part.angle || 0) * t));
+        if (part.scaleTo) {
+          const [sx, sy, sz] = part.scaleTo;
+          m.multiply(new THREE.Matrix4().makeScale(1+(sx-1)*t, 1+(sz-1)*t, 1+(sy-1)*t));
+        }
         m.multiply(new THREE.Matrix4().makeTranslation(...part.pivot.clone().negate().toArray()));
       }
       part.group.matrixAutoUpdate = false; part.group.updateMatrixWorld(true);

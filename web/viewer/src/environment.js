@@ -165,8 +165,8 @@ export class Environment {
     return new THREE.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)).normalize();
   }
 
-  setGrade(name) {
-    const grade = GRADES[name] || GRADES.day;
+  setGrade(name, overrides = {}) {
+    const grade = { ...(GRADES[name] || GRADES.day), ...overrides };
     this.gradeName = GRADES[name] ? name : 'day';
     this.grade = grade;
     const dir = this.sunDirectionFor(grade);
@@ -203,7 +203,8 @@ export class Environment {
     this.sun.castShadow = grade.sun > .3;
     this.moon.intensity = grade.moon || 0;
     this.bounce.intensity = grade.bounce ?? .3;
-    this.bounce.groundColor.set(grade.bounceColor || '#d9c7aa');
+    this.bounce.color.set(grade.skyBounceColor || '#eef1f5');
+    this.bounce.groundColor.set(grade.bounceColor || '#dfd0b8');
     this.moon.position.set(this.center.x - 30, this.center.y + 60, this.center.z + 20);
     this.moon.target = this.sunTarget;
     this.fog.color.set(grade.fog);
@@ -318,7 +319,9 @@ void main() {
     if (!texture) return;
     if (this.scene.environment !== texture) this.scene.environment = texture;
     this.scene.environmentIntensity = target ? (this.grade.probe ?? 1) : this.grade.env;
-    this.bounce.intensity = (this.grade.bounce ?? .3) * (target ? .3 : 1);
+    this.bounce.color.set(target ? '#f7f1e6' : (this.grade.skyBounceColor || '#eef1f5'));
+    this.bounce.groundColor.set(target ? '#e8dcc8' : (this.grade.bounceColor || '#dfd0b8'));
+    this.bounce.intensity = (this.grade.bounce ?? .3) * (target ? .42 : 1);
     this.probe = target || null;
   }
 
