@@ -69,24 +69,43 @@ def project() -> dict:
         interior_theme='bright_natural',
     )
 
-    # Reuse the colony site layers from tirumala-6's scene.json
+    # Reuse the colony site layers from tirumala-6's scene.json (omitting `north_frontage_utilities`
+    # and any `shrub_round` entries so zero round green shrub balls spawn along the East/North gates).
     previous_scene = json.loads((GALLERY / 'tirumala-6/scene.json').read_text())
     site_layers = (
         'schema', 'style', 'roads', 'coordinate_system', 'north_colony_garden',
-        'east_basketball_court', 'north_frontage_utilities',
-        'northwest_feeder_cabinets', 'adjoining_south_and_west',
+        'east_basketball_court', 'northwest_feeder_cabinets', 'adjoining_south_and_west',
     )
-    colony = {key: previous_scene['context'][key] for key in site_layers if key in previous_scene.get('context', {})}
+    colony = json.loads(json.dumps({
+        key: previous_scene['context'][key]
+        for key in site_layers
+        if key in previous_scene.get('context', {})
+    }))
+    if 'northwest_feeder_cabinets' in colony:
+        colony['northwest_feeder_cabinets']['hedge_bounds_scene'] = [0, 0, 0, 0]
+    if 'north_colony_garden' in colony:
+        colony['north_colony_garden']['trees_scene'] = [
+            t for t in colony['north_colony_garden'].get('trees_scene', [])
+            if 'shrub' not in t.get('species', '')
+        ]
+    if 'east_basketball_court' in colony:
+        colony['east_basketball_court']['screening_trees_scene'] = [
+            t for t in colony['east_basketball_court'].get('screening_trees_scene', [])
+            if 'shrub' not in t.get('species', '')
+        ]
     site_materials = (
         't4-colony-road', 't4-colony-paving', 't4-colony-turf', 't4-colony-wall',
         't4-boundary-coping', 't4-mulch', 't4-chainlink', 't4-garden-timber', 't4-garden-urn',
     )
     colony_materials = {key: previous_scene['materials'][key] for key in site_materials if key in previous_scene.get('materials', {})}
 
-    # Pedestrian gate on the PDF's curved east arrival route near the NE corner (y_ft: 3.5..8.0)
-    ped_a = local(50.0, 8.0)[0]
-    ped_b = local(50.0, 3.5)[0]
-    east_gates = [['east-walk-gate', 'pedestrian', min(ped_a, ped_b), max(ped_a, ped_b)]]
+    # East Pedestrian Gate (y_ft: 2.2..5.8) + 13'2" East Sliding Car Gate (y_ft: 7.0..20.2)
+    ped_a, ped_b = local(50.0, 5.8)[0], local(50.0, 2.2)[0]
+    car_a, car_b = local(50.0, 20.2)[0], local(50.0, 7.0)[0]
+    east_gates = [
+        ['east-walk-gate', 'pedestrian', min(ped_a, ped_b), max(ped_a, ped_b)],
+        ['east-sliding-car-gate', 'vehicle', min(car_a, car_b), max(car_a, car_b)],
+    ]
 
     cp = dict(
         schema='floorforge.custom-plan/1',
@@ -97,31 +116,37 @@ def project() -> dict:
         frontCourt='tiled',
         doorsClosed=False,
         interiorFloor='ivory-vitrified',
-        parkedCar={'x': round((40.0 - 10.5) * FT, 2), 'y': round((50.0 - 44.5) * FT, 2)},
+        parkedCar={'x': round((40.0 - 11.70) * FT, 2), 'y': round((50.0 - 44.35) * FT, 2)},
         tirumalaMeta={
             'projectId': 'tirumala-7',
+            'parkedCarModel': 'honda-city-sedan',
             'planReference': source,
             'colony': colony,
             'colonyMaterials': colony_materials,
             'eastGates': east_gates,
+            'eastSlidingVehicleGate': {'x_ft': 50.0, 'y_ft': [7.0, 20.2]},
             'northVehicleGate': {'x_ft': [39.5, 49.5], 'y_ft': 0.0},
+            'plinthMm': int(PLINTH_MM),
+            'porchDropMm': 220,
             'finishEdition': 'tirumala-7-sage-teal-fluted-teak',
         },
     )
 
     notes = (
-        "Three-floor 50' x 40' north-east corner home with a full-span double-height dining atrium "
-        "(x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft) spanning "
-        "from the Home ICU/Dining wall right up to the U-turn staircase. Ground floor includes a 3' east setback "
-        "(x=47 ft) along the kitchen and wash room, a 22' car porch with a 10' NE corner car gate and sloped stone "
-        "ramp, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU with 7' north "
-        "slider and 5'6\" clear west opening, living hall, drawing room, caregiver suite, master suite, and an "
-        "open-plan kitchen with a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, full "
-        "under-counter sage-teal storage, minimalist floating shelves, and west-shifted refrigerator/appliance bank. "
-        "First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, "
-        "study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' "
-        "office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical "
-        "services are conceptual only and require licensed professional engineering design before construction."
+        "Three-floor 50' x 40' north-east corner home set on a 600 mm (2'0\") raised residential plinth above "
+        "colony road level, with a stepped-down 22' car porch (-220 mm below the verandah and main ground floor), "
+        "dual vehicle access via a 13'2\" east sliding car gate and a 10' NE corner car gate with sloped stone "
+        "ramps, and a sleek Honda City sedan parked inside the porch. Features a full-span double-height dining "
+        "atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft), a "
+        "3' east setback (x=47 ft) along the kitchen and wash room, a 16' x 9' north verandah with recessed "
+        "manicured lawn court, a 15' x 16' Home ICU, and an open-plan kitchen with an unobstructed dining-to-kitchen "
+        "sightline, a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz "
+        "center counter parallel to the east platform near the dining table, and a compact corner refrigerator on "
+        "the small 3' wall beside the porch door. First floor steps back to x=47 ft with symmetrical 3.5' atrium "
+        "bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor "
+        "steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, "
+        "waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed "
+        "professional engineering design before construction."
     )
     return dict(schema='floorforge.project/0.4', brief=base, customPlan=cp, notes=notes)
 
@@ -140,16 +165,16 @@ def build_tour_html(dest: Path) -> None:
 </main>
 <script>
 const views=[
- ['Ground floor','ground','Care suite, 15′ × 16′ Home ICU, living hall, full-span double-height dining atrium, wide 2′9″ east-platform kitchen with 3′ east setback and east windows, 22′ car porch with NE car gate, and north verandah lawn court.'],
+ ['Ground floor','ground','600 mm raised plinth with stepped-down 22′ car porch (-220 mm), Honda City sedan, 13′2″ east sliding car gate + 10′ NE car gate, 16′ × 9′ verandah lawn court, 15′ × 16′ Home ICU, living hall, full-span double-height dining atrium, and open-plan kitchen with N–S center counter and compact corner fridge.'],
  ['First floor','first','389 sq ft master suite with dressing room and bath, study/meditation room, medium bedroom, symmetrical 3.5′ bridges framing the 10′ × 8′ dining atrium, and 526 sq ft shared terrace.'],
  ['Second floor','second','31′ × 17′ office and TV hall with three workstations, lounge sofa and 75″ east-wall TV, 13.5′ × 8′ raised glazed sunroof directly above the dining atrium, and 873 sq ft open terrace.'],
- ['Exterior','exterior','North-east corner view showing the 10′ NE car gate and sloped stone ramp, 22′ car porch, 3′ east kitchen setback with east windows, north verandah lawn court, and stepped terraces.'],
- ['East arrival','east_arrival','East pedestrian gate, louvered setback screen, and 22′ car porch frontage along the 9 m east road.'],
- ['North frontage','north_frontage','North road view across the 10′ NE car gate, 16′ × 9′ verandah with manicured north-wall lawn court, and covered entry.'],
+ ['Exterior','exterior','North-east corner view showing the 600 mm raised plinth, stepped-down 22′ car porch with Honda City sedan, 13′2″ east sliding car gate, 10′ NE car gate, 3′ east kitchen setback with east windows, north verandah lawn court, and stepped terraces.'],
+ ['East arrival','east_arrival','9 m east colony road arrival showing the 13′2″ east sliding car gate and sloped stone vehicle ramp alongside the east pedestrian gate, with the Honda City sedan inside the stepped-down 22′ car porch.'],
+ ['North frontage','north_frontage','North road view across the 10′ NE car gate and sloped ramp, stepped-down car porch, 600 mm house plinth, 16′ × 9′ verandah with manicured north-wall lawn court, and covered entry.'],
  ['Colony view','colony_overview','The 50′ × 40′ north-east corner parcel in the Tirumala colony facing the north garden and east basketball court.'],
  ['Roof terraces','roof_terraces','Elevated view of the first-floor and second-floor stepped terraces and the full-span 13.5′ × 8′ raised glazed sunroof.'],
- ['Kitchen run','kitchen_run','Wide 2′9″ (840 mm) east-wall nano-white quartz platform beneath two east windows, with sage-teal under-platform drawers, minimalist floating teak shelves, and west-shifted refrigerator & oven bank.'],
- ['Kitchen from dining','kitchen_from_dining','Spacious open-plan sightline from dining past the waterfall quartz prep island and west appliance bank to the sunlit east kitchen platform.'],
+ ['Kitchen run','kitchen_run','Wide 2′9″ (840 mm) east-wall nano-white quartz platform beneath two east windows, N–S parallel waterfall center counter, and compact corner refrigerator on the small 3′ wall beside the porch door.'],
+ ['Kitchen from dining','kitchen_from_dining','Unobstructed open-plan sightline from the dining table across the N–S waterfall center counter to the sunlit 2′9″ east kitchen platform and east windows.'],
  ['Dining double-height','dining_double_height','Full-span double-height dining atrium extending right up to the staircase, crowned by the 13.5′ × 8′ glazed sunroof and 3-ring brushed-gold chandelier.'],
  ['Living hall','living_hall','Core living hall with terracotta velvet sofa, marble coffee table, and 75″ OLED TV on a fluted-teak media wall.'],
  ['Living to ICU','living_to_icu','Clean sightline from the living hall through the 5′6″ cased opening into the 15′ × 16′ Home ICU.'],
@@ -206,10 +231,11 @@ def main() -> None:
         id='tirumala-7',
         title='Tirumala 7',
         description=(
-            'Three-floor 50′ × 40′ corner home with a full-span double-height dining atrium and 13.5′ × 8′ '
-            'raised glazed sunroof, 3′ east kitchen setback with wide 2′9″ quartz platform and east windows, '
-            '22′ car porch with NE corner car gate, north verandah lawn court, 15′ × 16′ home ICU, '
-            'four bedrooms, meditation study, and second-floor office & TV hall wrapped by stepped terraces.'
+            'Three-floor 50′ × 40′ corner home on a 600 mm raised plinth with a stepped-down 22′ car porch, '
+            'dual car gates (13′2″ east sliding + 10′ NE corner) and Honda City sedan, full-span double-height '
+            'dining atrium with 13.5′ × 8′ raised glazed sunroof, unobstructed dining-to-kitchen view with '
+            '2′9″ east quartz platform, N–S center counter and compact corner fridge, 16′ × 9′ verandah lawn '
+            'court, 15′ × 16′ home ICU, four bedrooms, meditation study, and second-floor office & TV hall.'
         ),
         style='Sage-teal gloss · fluted teak · ivory vitrified',
         directory='gallery/tirumala-7',

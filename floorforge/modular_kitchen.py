@@ -332,61 +332,54 @@ def straight_run_kitchen(k, ctx, floor_height, finishes, spec=None):
             rect((sh_x0, y_wall, sz, sh_x1, y_wall + 0.250, sz + 0.032), teak_wood, f'minimal-floating-shelf-{s_idx}', 'furniture')
             rect((sh_x0 + 0.02, y_wall + 0.04, sz - 0.008, sh_x1 - 0.02, y_wall + 0.065, sz), led_warm, f'minimal-shelf-led-{s_idx}', 'cove')
 
-    # 8. Shifted West Tall Appliance & Fridge Bank against Home ICU South Wall (y_ft=25.0 -> X=4.512 m, x_ft=35.05..38.95)
-    # Completely clear of the east wall and NE corner so the wide east platform stays open, bright, and spacious!
-    app_x0 = spec.get('app_x0', 3.860)
-    app_x1 = spec.get('app_x1', 4.512)
-    fridge_y0 = spec.get('fridge_y0', 3.368)
-    fridge_y1 = spec.get('fridge_y1', 4.100)
-    pantry_y0 = spec.get('pantry_y0', 4.108)
-    pantry_y1 = spec.get('pantry_y1', 4.557)
+    # 8. Compact Modern Refrigerator ONLY on the small 3' west wall of work_bay (x_ft=39.0, y_ft=22.45..24.45)
+    # Tucked neatly at the NW corner beside work_bay_porch_door, facing EAST directly toward the platform,
+    # with ZERO bulky green vertical cupboards or overhead lofts — keeping the Dining-to-Kitchen view 100% open!
+    cf_x0 = spec.get('fridge_x0', 4.740)   # y_ft = 24.45 (stays north of y_ft=25.0 Dining sightline!)
+    cf_x1 = spec.get('fridge_x1', 5.349)   # y_ft = 22.45 (tucked into corner near porch door)
+    cf_y0 = spec.get('fridge_y0', 2.743)   # East front face (x_ft = 41.00, leaving clean reveal before porch door!)
+    cf_y1 = spec.get('fridge_y1', 3.285)   # Backed against small x_ft=39.0 wall east face (Y = 3.293 m)
+    rect((cf_x0 + 0.02, cf_y0 + 0.03, 0.0, cf_x1 - 0.02, cf_y1, 0.035), gola_black, 'compact-fridge-plinth', 'detail')
+    rect((cf_x0, cf_y0 + 0.026, 0.035, cf_x1, cf_y1, 1.540), gola_black, 'compact-fridge-body')
+    rect((cf_x0 + 0.006, cf_y0, 0.042, cf_x1 - 0.006, cf_y0 + 0.026, 0.585), 'steel', 'compact-fridge-freezer-door')
+    rect((cf_x0 + 0.008, cf_y0 + 0.006, 0.585, cf_x1 - 0.008, cf_y0 + 0.026, 0.618), gola_black, 'compact-fridge-pocket-handle', 'detail')
+    rect((cf_x0 + 0.006, cf_y0, 0.618, cf_x1 - 0.006, cf_y0 + 0.026, 1.534), 'steel', 'compact-fridge-upper-door')
+    rect((cf_x0 + 0.22, cf_y0 - 0.003, 1.180, cf_x0 + 0.39, cf_y0 + 0.004, 1.255), 'blackglass', 'compact-fridge-display', 'detail')
 
-    # Side-by-side black mirror-glass refrigerator in sage-teal & fluted-teak architectural surround
-    rect((app_x0, fridge_y0, 0.0, app_x1, fridge_y1, 2.160), teal_gloss, 'fridge-housing')
-    f_mid = 0.5 * (fridge_y0 + fridge_y1)
-    rect((app_x0 - 0.022, fridge_y0 + 0.012, 0.080, app_x0, f_mid - 0.004, 1.920), 'blackglass', 'fridge-door-L')
-    rect((app_x0 - 0.022, f_mid + 0.004, 0.080, app_x0, fridge_y1 - 0.012, 1.920), 'blackglass', 'fridge-door-R')
-    rect((app_x0 - 0.020, fridge_y0 + 0.004, 1.926, app_x0, fridge_y1 - 0.004, 2.156), teal_gloss, 'fridge-over-door')
-    rect((app_x0, fridge_y0 + 0.004, 2.160, app_x1, fridge_y1 - 0.004, 2.980), teal_loft, 'fridge-loft-door')
-
-    # Tall appliance & pantry column (built-in oven + microwave + sage-teal storage shifted away from east wall)
-    rect((app_x0, pantry_y0, 0.0, app_x1, pantry_y1, 2.160), teak_wood, 'tall-pantry-carcass')
-    rect((app_x0 - 0.020, pantry_y0 + 0.004, 0.105, app_x0, pantry_y1 - 0.004, 0.720), teal_gloss, 'tall-pantry-lower')
-    rect((app_x0 - 0.022, pantry_y0 + 0.018, 0.730, app_x0, pantry_y1 - 0.018, 1.320), 'blackglass', 'built-in-oven', 'detail')
-    rect((app_x0 - 0.022, pantry_y0 + 0.018, 1.335, app_x0, pantry_y1 - 0.018, 1.720), 'blackglass', 'built-in-microwave', 'detail')
-    rect((app_x0 - 0.020, pantry_y0 + 0.004, 1.730, app_x0, pantry_y1 - 0.004, 2.156), teal_gloss, 'tall-pantry-upper')
-    rect((app_x0 - 0.020, pantry_y0 + 0.004, 2.166, app_x0, pantry_y1 - 0.004, 2.980), teal_loft, 'tall-pantry-loft')
-
-    # 9. Sculptural Waterfall Quartz & Fluted-Teak Prep Island (x_ft: 35.40..39.20, y_ft: 30.00..31.65)
-    px0 = spec.get('prep_x0', 2.545)
-    px1 = spec.get('prep_x1', 3.048)
-    py0 = spec.get('prep_y0', 3.292)
-    py1 = spec.get('prep_y1', 4.450)
-    rect((px0 + 0.02, py0 + 0.02, 0.0, px1 - 0.02, py1 - 0.02, 0.865), teak_wood, 'prep-counter-base')
-    rect((px0 + 0.015, py0 + 0.015, 0.012, px1 - 0.015, py1 - 0.015, 0.032), led_warm, 'prep-toe-led', 'cove')
-    rect((px0 + 0.015, py0 + 0.015, 0.845, px1 - 0.015, py1 - 0.015, 0.862), led_warm, 'prep-lip-led', 'cove')
-    p_flutes = int((py1 - py0) / 0.045)
+    # 9. Sculptural Waterfall Quartz & Fluted-Teak Center Counter — oriented North-South PARALLEL to the East Platform
+    # and positioned close to the Dining Table (x_ft: 34.80..36.85, y_ft: 25.85..30.65) in the freed-up threshold!
+    px0 = spec.get('prep_x0', 2.850)   # South end (y_ft = 30.65)
+    px1 = spec.get('prep_x1', 4.313)   # North end (y_ft = 25.85) -> 1.463 m N-S length parallel to east platform!
+    py0 = spec.get('prep_y0', 4.008)   # East kitchen-facing side (x_ft = 36.85)
+    py1 = spec.get('prep_y1', 4.633)   # West dining-facing side (x_ft = 34.80) -> 0.625 m E-W width
+    rect((px0 + 0.025, py0 + 0.022, 0.0, px1 - 0.025, py1 - 0.022, 0.865), teak_wood, 'prep-counter-base')
+    rect((px0 + 0.020, py0 + 0.018, 0.012, px1 - 0.020, py1 - 0.018, 0.032), led_warm, 'prep-toe-led', 'cove')
+    rect((px0 + 0.020, py0 + 0.018, 0.845, px1 - 0.020, py1 - 0.018, 0.862), led_warm, 'prep-lip-led', 'cove')
+    # Fluted-teak architectural ribs along the West face (facing the Dining Table)
+    p_flutes = int((px1 - px0 - 0.06) / 0.048)
     for i in range(p_flutes):
-        fy = py0 + i * 0.045 + 0.012
-        rect((px0 - 0.008, fy, 0.040, px0 + 0.012, fy + 0.022, 0.860), teak_wood, f'prep-flute-{i}', 'detail')
+        fx_p = px0 + 0.035 + i * 0.048
+        rect((fx_p, py1 - 0.024, 0.040, fx_p + 0.024, py1 - 0.004, 0.860), teak_wood, f'prep-flute-{i}', 'detail')
+    # Sleek sage-teal under-counter drawers on the East face (facing the Kitchen Platform)
+    pm_x = 0.5 * (px0 + px1)
+    for b_idx, (bxa, bxb) in enumerate(((px0 + 0.030, pm_x - 0.004), (pm_x + 0.004, px1 - 0.030))):
+        rect((bxa, py0 + 0.004, 0.095, bxb, py0 + 0.022, 0.455), teal_gloss, f'prep-drawer-low-{b_idx}')
+        rect((bxa, py0 + 0.004, 0.480, bxb, py0 + 0.022, 0.825), teal_gloss, f'prep-drawer-high-{b_idx}')
+    rect((px0 + 0.030, py0 + 0.006, 0.825, px1 - 0.030, py0 + 0.024, 0.845), gola_black, 'prep-gola-channel', 'detail')
+    # Nano-White engineered quartz top + North & South waterfall legs
     rect((px0 - 0.015, py0 - 0.015, 0.865, px1 + 0.015, py1 + 0.015, 0.902), quartz_top, 'prep-quartz-top')
-    rect((px0 - 0.015, py0 - 0.015, 0.0, px1 + 0.015, py0 + 0.025, 0.902), quartz_top, 'prep-waterfall-east', 'detail')
-    rect((px0 - 0.015, py1 - 0.025, 0.0, px1 + 0.015, py1 + 0.015, 0.902), quartz_top, 'prep-waterfall-west', 'detail')
-    # Minimalist linear brushed-gold & warm-LED pendant bar over the prep island
-    pxm = 0.5 * (px0 + px1)
-    rect((pxm - 0.04, py0 + 0.20, 2.96, pxm + 0.04, py1 - 0.20, 3.00), gola_black, 'prep-pendant-canopy', 'detail')
-    for py_p in (py0 + 0.28, py1 - 0.28):
-        k.beam((pxm, py_p, z + 2.08), (pxm, py_p, z + 2.96), 0.005, gola_black, floor, 'detail')
-    rect((pxm - 0.022, py0 + 0.14, 2.04, pxm + 0.022, py1 - 0.14, 2.08), 'chandelier_gold_ring', 'prep-pendant-bar', 'fixture')
-    rect((pxm - 0.016, py0 + 0.16, 2.025, pxm + 0.016, py1 - 0.16, 2.04), led_warm, 'prep-pendant-glow', 'cove')
+    rect((px0 - 0.015, py0 - 0.015, 0.0, px0 + 0.025, py1 + 0.015, 0.902), quartz_top, 'prep-waterfall-south', 'detail')
+    rect((px1 - 0.025, py0 - 0.015, 0.0, px1 + 0.015, py1 + 0.015, 0.902), quartz_top, 'prep-waterfall-north', 'detail')
 
     # Register footprints with scene kit
+    fridge_poly = box(cf_x0, cf_y0, cf_x1, cf_y1)
+    prep_poly = box(px0 - 0.015, py0 - 0.015, px1 + 0.015, py1 + 0.015)
     k.furnishing('kitchen-counter', room, worktop_poly)
     k.furnishing('kitchen-sink', room, sink_box)
     k.furnishing('kitchen-hob', room, box(hob_x0, y_wall, hob_x1, y_front))
-    k.furnishing('kitchen-fridge', room, box(app_x0, fridge_y0, app_x1, fridge_y1))
-    k.furnishing('prep-counter', room, box(px0, py0, px1, py1))
-    ctx['placed'].extend([worktop_poly, box(app_x0, fridge_y0, app_x1, pantry_y1), box(px0, py0, px1, py1)])
+    k.furnishing('kitchen-fridge', room, fridge_poly)
+    k.furnishing('prep-counter', room, prep_poly)
+    ctx['placed'].extend([worktop_poly, fridge_poly, prep_poly])
     for n in k.nodes[mark[0]:]:
         n['owner'] = owner
 

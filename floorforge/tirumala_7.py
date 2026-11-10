@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import numpy as np
+from scipy.interpolate import PchipInterpolator
 import trimesh
 from shapely.affinity import scale as shp_scale
 from shapely.geometry import LineString, Point, Polygon, box
@@ -22,8 +23,10 @@ WALL_MM = 120.0
 HALF_WALL_MM = 60.0
 FLOOR_H_MM = 3150.0
 FLOOR_H_M = 3.150
-PLINTH_MM = 300.0
-PLINTH_M = 0.300
+PLINTH_MM = 600.0
+PLINTH_M = 0.600
+PORCH_DROP_MM = 220.0
+PORCH_Z = -0.220
 
 
 def local_mm(x_ft: float, y_ft: float) -> list[float]:
@@ -349,7 +352,7 @@ def coordinate_levels(b: dict, plan: dict) -> None:
         'master_bath_door': (['master_bath', 'master_bedroom'], 'master_bath'),
         'master_west_gully_door': (['master_bedroom', 'west_gully'], 'master_bedroom'),
         'master_bedroom_door': (['master_bedroom', 'bedroom_entry'], 'master_bedroom'),
-        'work_bay_porch_door': (['work_bay', 'car_porch'], 'work_bay'),
+        'work_bay_porch_door': (['work_bay', 'car_porch'], 'car_porch'),
         'store_door': (['store', 'kitchen'], 'store'),
         'wash_area_door': (['wash_area', 'kitchen'], 'wash_area'),
         # Ground floor windows
@@ -477,7 +480,10 @@ def coordinate_levels(b: dict, plan: dict) -> None:
                 for pw in f_walls
                 if (abs(pw['a'][1] - pw['b'][1]) < 1.0) != horiz
             ]
-            if perp_lines and kind in ('door', 'entry') and not o.get('double_leaf'):
+            if oid == 'work_bay_porch_door':
+                # Hinge on west jamb (x_ft=41.4, 'end') swinging north onto the porch landing clear of fridge, platform & car
+                best_hinge = 'end'
+            elif perp_lines and kind in ('door', 'entry') and not o.get('double_leaf'):
                 d_start = min(pl.distance(w_line.interpolate(offset)) for pl in perp_lines)
                 d_end = min(pl.distance(w_line.interpolate(offset + width)) for pl in perp_lines)
                 best_hinge = 'start' if d_start <= d_end else 'end'
@@ -546,8 +552,11 @@ def coordinate_levels(b: dict, plan: dict) -> None:
     stair_well_f1 = box_mm(17.0, 33.0, 33.0, 40.0)
     stair_well_f2 = box_mm(17.0, 33.0, 33.0, 40.0)
 
-    # Plate 0: full 50' x 40' ground footprint (with open-to-sky gullies, 3' east setback, and outer 3' of 22' car porch)
+    # Plate 0: 50' x 40' plot outline, with the 22' Car Porch (x=39.20..50.0, y=0.0..21.80) stepped 220 mm lower than
+    # the Verandah & Main Ground Floor (retaining full 120 mm wall bearing on x=39.0 and y=22.0!).
     plate0_outline = box_mm(0.0, 0.0, 50.0, 40.0)
+    porch_cut_mm = box_mm(39.20, 0.0, 50.0, 21.80)
+    plate0_slab = plate0_outline.difference(porch_cut_mm)
     # Plate 1: First-floor slab (east edge straight at x=47 for full 40', matching Ground Kitchen 3' east setback!)
     plate1_outline = box_mm(0.0, 0.0, 47.0, 40.0).difference(
         unary_union([box_mm(0.0, 0.0, 23.0, 2.0), box_mm(0.0, 26.0, 2.0, 40.0)])
@@ -566,8 +575,8 @@ def coordinate_levels(b: dict, plan: dict) -> None:
             'floor': 0,
             'floorId': 'floor-0',
             'outline': regions(plate0_outline),
-            'regions': regions(plate0_outline),
-            'openings': [],
+            'regions': regions(plate0_slab),
+            'openings': [{'id': 'car-porch-step-down', 'regions': regions(porch_cut_mm)}],
         },
         {
             'id': 'plate-floor-1',
@@ -1251,26 +1260,28 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     for zone_name, bounds_ft in [
         ('living-border', (6.5, 16.6, 23.4, 25.4)),
         ('foyer-border', (18.2, 9.6, 23.4, 16.0)),
-        ('dining-border', (21.6, 25.6, 34.4, 32.5)),
-        ('kitchen-border', (35.4, 25.6, 43.8, 34.4)),
+        ('dining-border', (21.6, 25.6, 33.8, 32.5)),
+        ('kitchen-border', (37.4, 25.6, 43.8, 34.4)),
     ]:
         bx0, by0, bx1, by1 = box_m(*bounds_ft)
         outer = box(bx0, by0, bx1, by1)
         inlay = outer.difference(outer.buffer(-0.075, join_style=2))
         k.poly_mesh(inlay, 0.001, 0.004, 'border_inlay_charcoal', 0, 'finish', f'g-{zone_name}', 'living_hall')
 
-    # 2. Redesigned East-Wall Wide Platform Kitchen (x_ft: 44.05..46.80, y_ft: 22.20..34.80):
+    # 2. Redesigned Open-Sightline Kitchen (x_ft: 35.0..47.0, y_ft: 22.0..35.0):
     # - 2'9" (840 mm) wide nano-white quartz platform along east wall (x=47', 3' setback from plot boundary!)
     # - Full storage beneath platform ONLY + minimalist floating teak shelves on center pier (clear of both east windows!)
-    # - Fridge, oven/microwave, and tall pantry shifted WEST against Home ICU south wall (y=25', x=35.05..38.95)
+    # - ZERO tall vertical cupboards blocking the Dining-to-Kitchen sightline!
+    # - ONLY a sleek compact refrigerator tucked on the small 3' west wall of work_bay (x=39', y=22.3..24.5) near porch door
+    # - Waterfall quartz & fluted-teak center counter oriented North-South PARALLEL to the east platform near the Dining Table!
     kitchen_room = next(s for s in b['spaces'] if s['id'] == 'kitchen')
     kx0 = (40.0 - 35.0) * 0.3048 + 0.062  # 1.586 m (flush with south wall inner face)
     kx1 = (40.0 - 22.0) * 0.3048 - 0.062  # 5.424 m (flush with north wall inner face)
     sx0, _, sx1, _ = box_m(44.5, 23.50, 46.6, 25.70)   # Centered under kitchen_east_window_1 (y=23..27)
     pier_x0, _, pier_x1, _ = box_m(46.0, 27.05, 46.8, 30.75)  # Solid pier between east windows (y=27..30.8)
     hx0, _, hx1, _ = box_m(44.5, 28.60, 46.6, 30.65)   # Hob on south half of solid center pier
-    app_x0, app_y0, app_x1, app_y1 = box_m(35.05, 25.20, 38.95, 27.33)  # Shifted west against y=25' wall!
-    px0, py0, px1, py1 = box_m(35.40, 30.00, 39.20, 31.65)
+    cf_x0, cf_y0, cf_x1, cf_y1 = box_m(39.22, 22.45, 41.00, 24.45)  # Compact fridge on small 3' wall at NW corner!
+    px0, py0, px1, py1 = box_m(34.80, 25.85, 36.85, 30.65)          # Parallel to east platform, close to Dining Table!
     y_east_wall_inner = (50.0 - 47.0) * 0.3048 + 0.060  # 0.9744 m
 
     ctx = {'room': kitchen_room, 'floor': 0, 'clear': Polygon(np.array(kitchen_room['clear']) / 1000.0), 'placed': []}
@@ -1295,12 +1306,10 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
         'pier_x1': pier_x1,
         'hob_x0': hx0,
         'hob_x1': hx1,
-        'app_x0': app_x0,
-        'app_x1': app_x1,
-        'fridge_y0': app_y0,
-        'fridge_y1': app_y0 + 0.74,
-        'pantry_y0': app_y0 + 0.75,
-        'pantry_y1': app_y1,
+        'fridge_x0': cf_x0,
+        'fridge_x1': cf_x1,
+        'fridge_y0': cf_y0,
+        'fridge_y1': cf_y1,
         'prep_x0': px0,
         'prep_x1': px1,
         'prep_y0': py0,
@@ -1528,38 +1537,293 @@ def _furnish_second_floor(k: SceneKit, b: dict, H: float) -> None:
     k.rect((ntt0, ntty0, z2 + 0.05, ntt1, ntty1, z2 + 0.40), 'travertine_warm', 2, 'furniture', 's_open_terrace/lounge-table', 's_open_terrace')
 
 
-def _build_sloped_vehicle_ramp(k: SceneKit, x0_m: float, x1_m: float, y0_m: float, y1_m: float, z_low: float, z_high: float) -> None:
-    """Build a true sloped honed-stone vehicle driveway ramp from the North Road (z_low=-0.30 m) up into the Car Porch (z_high=0.00 m)."""
-    top = [
-        (x0_m, y0_m, z_high),
-        (x0_m, y1_m, z_high),
-        (x1_m, y1_m, z_low),
-        (x1_m, y0_m, z_low),
-    ]
-    bot = [(a, b, z - 0.10) for a, b, z in top]
-    verts = top + bot
+def _build_sloped_ramp_mesh(
+    k: SceneKit,
+    top_quad: list[tuple[float, float, float]],
+    name: str,
+    owner: str,
+    thickness: float = 0.14,
+) -> None:
+    """Build a watertight sloped stone vehicle ramp + solid base down to road datum with verified upward normals."""
+    bot = [(x, y, min(z - thickness, -PLINTH_M)) for x, y, z in top_quad]
+    verts = top_quad + bot
     faces = [(0, 1, 2), (0, 2, 3), (4, 6, 5), (4, 7, 6)]
     for i in range(4):
         j = (i + 1) % 4
         faces.extend([(i, 4 + i, 4 + j), (i, 4 + j, j)])
-    mesh = trimesh.Trimesh(vertices=verts, faces=faces)
-    k.node(k.asset(mesh), 'travertine_warm', floor=0, role='floor', name='north-vehicle-ramp', owner='north-vehicle-gate')
+    mesh = trimesh.Trimesh(vertices=verts, faces=faces, process=True)
+    mesh.fix_normals()
+    k.node(k.asset(mesh), 'travertine_warm', floor=0, role='floor', name=name, owner=owner)
+
+
+def _build_honda_city_sedan(k: SceneKit, materials: dict, cx: float, cy: float, z_porch: float) -> None:
+    """Build a sleek, photorealistic 5th-Gen Honda City style fastback sedan (4560 x 1748 x 1485 mm, WB 2600 mm)
+    parked on the stepped-down Car Porch (z_porch = -0.220 m), facing North (+X_scene):
+    - Smooth PCHIP-lofted three-box fastback body with open circular wheel wells (no boxy toy cubes!)
+    - Honda-style chrome Solid Wing front bar, gloss-black sport grille, multi-projector Jewel-Eye LED headlights + DRLs
+    - Steeply raked windscreen, fastback C-pillar, dark smoke cabin glazing with 4 bolstered seats, dash & RHD steering wheel
+    - Revolved pneumatic rubber tires, 16-inch 5-split-spoke diamond-cut alloy wheels, brake discs & calipers
+    - Sculpted sedan trunk decklid with lip spoiler, Z-signature crimson 3D LED tail lamps & shark-fin antenna.
+    """
+    materials.update({
+        'honda-pearl': {'color': '#f2f0ec', 'roughness': 0.15, 'metallic': 0.22, 'clearcoat': 1.0, 'clearcoat_roughness': 0.05, 'kind': 'metal'},
+        'honda-tint': {'color': '#1f2b33', 'roughness': 0.08, 'metallic': 0.14, 'alpha': 0.52, 'kind': 'glass'},
+        'honda-black': {'color': '#121619', 'roughness': 0.22, 'metallic': 0.25, 'clearcoat': 0.60, 'kind': 'metal'},
+        'honda-rubber': {'color': '#1f2224', 'roughness': 0.86},
+        'honda-chrome': {'color': '#d8dde2', 'roughness': 0.14, 'metallic': 0.94, 'kind': 'metal'},
+        'honda-alloy': {'color': '#c7cdd2', 'roughness': 0.18, 'metallic': 0.92, 'kind': 'metal'},
+        'honda-brake': {'color': '#646a6e', 'roughness': 0.46, 'metallic': 0.78, 'kind': 'metal'},
+        'honda-tail': {'color': '#a8141c', 'roughness': 0.14, 'clearcoat': 1.0, 'emissive': '#c91822', 'emissive_strength': 1.2},
+        'honda-drl': {'color': '#eef5ff', 'roughness': 0.08, 'metallic': 0.30, 'emissive': '#f2f7ff', 'emissive_strength': 1.8},
+        'honda-seat': {'color': '#2b3033', 'roughness': 0.84, 'kind': 'fabric'},
+        'honda-plate': {'color': '#eceee9', 'roughness': 0.34},
+    })
+    start = len(k.nodes)
+    owner = 'parked-car'
+
+    # Right-handed rigid transform from local car coords (lx=width, ly=-2.28 front..+2.28 rear, lz=height)
+    # to scene coords (+X north/front, +Y west/left, +Z up): T(lx, ly, lz) = (cx - ly, cy + lx, z_porch + lz), det = +1!
+    def T(lx: float, ly: float, lz: float) -> tuple[float, float, float]:
+        return (cx - ly, cy + lx, z_porch + lz)
+
+    def mesh_car(vertices, faces, mat, name=None, smooth=False):
+        sv = [T(vx, vy, vz) for vx, vy, vz in vertices]
+        m = trimesh.Trimesh(vertices=sv, faces=faces, process=True)
+        m.fix_normals()
+        return k.node(k.asset(m, smooth=smooth), mat, (0.0, 0.0, 0.0), floor=0, role='vehicle', name=name, owner=owner)
+
+    def rb_car(lx: float, ly: float, lz: float, size_xyz: tuple[float, float, float], mat: str, r: float = 0.014, name: str | None = None):
+        sx, sy, sz = size_xyz
+        nid = k.rb(T(lx, ly, lz), (sy, sx, sz), mat, 0, 'vehicle', r, owner=owner)
+        if name:
+            k.nodes[-1]['id'] = name
+        return nid
+
+    def beam_car(pa, pb, rad: float, mat: str):
+        k.beam(T(*pa), T(*pb), rad, mat, 0, 'vehicle')
+
+    def loft_car(rings, mat: str, name: str, body: bool = False):
+        rr = np.array(rings, dtype=float)
+        ys = np.linspace(rr[0, 0], rr[-1, 0], 112 if body else 42)
+        interp = PchipInterpolator(rr[:, 0], rr[:, 1:], axis=0)
+        verts, faces = [], []
+        section = [
+            (-0.90, 0.00), (0.90, 0.00), (0.978, 0.05), (1.00, 0.16),
+            (1.00, 0.64), (0.975, 0.82), (0.89, 0.96), (0.68, 1.00),
+            (-0.68, 1.00), (-0.89, 0.96), (-0.975, 0.82), (-1.00, 0.64),
+            (-1.00, 0.16), (-0.978, 0.05),
+        ]
+        for yy in ys:
+            w, lo, hi = interp(yy)
+            if body:
+                for wy in (-1.30, 1.30):
+                    d = abs(yy - wy)
+                    if d < 0.364:
+                        lo = max(lo, 0.316 + math.sqrt(0.364 ** 2 - d * d))
+            dz = max(0.012, hi - lo)
+            verts.extend([(a * w, yy, lo + b * dz) for a, b in section])
+        n = len(section)
+        for j in range(len(ys) - 1):
+            for i in range(n):
+                a = j * n + i
+                b = j * n + (i + 1) % n
+                faces.extend([(a, b, b + n), (a, b + n, a + n)])
+        for i in range(1, n - 1):
+            faces.extend([(0, i + 1, i), ((len(ys) - 1) * n, (len(ys) - 1) * n + i, (len(ys) - 1) * n + i + 1)])
+        mesh_car(verts, faces, mat, f'parked-car-{name}', smooth=True)
+
+    # 1. Sleek three-box Honda City fastback sedan body (4.56 m long, low sloping aerodynamic hood + rear boot deck)
+    loft_car([
+        (-2.280, 0.720, 0.205, 0.685),
+        (-2.175, 0.805, 0.185, 0.765),
+        (-1.840, 0.850, 0.180, 0.855),
+        (-1.300, 0.870, 0.175, 0.935),
+        (-0.780, 0.874, 0.175, 0.990),
+        (0.150, 0.874, 0.175, 1.018),
+        (1.300, 0.866, 0.185, 1.045),
+        (1.760, 0.842, 0.205, 1.048),
+        (2.160, 0.802, 0.235, 1.032),
+        (2.280, 0.735, 0.268, 0.905),
+    ], 'honda-pearl', 'body', body=True)
+
+    # 2. Steeply raked windscreen, sedan cabin glazing & fastback rear window meeting the trunk deck at ly=+1.66
+    loft_car([
+        (-0.820, 0.765, 0.978, 0.998),
+        (-0.230, 0.662, 0.998, 1.448),
+        (0.480, 0.666, 1.012, 1.464),
+        (1.080, 0.678, 1.028, 1.388),
+        (1.660, 0.742, 1.035, 1.072),
+    ], 'honda-tint', 'glazing')
+
+    # 3. Painted Platinum-White roof crown + electric glass sunroof + shark-fin antenna
+    loft_car([
+        (-0.240, 0.656, 1.440, 1.468),
+        (0.060, 0.670, 1.458, 1.486),
+        (0.680, 0.668, 1.450, 1.478),
+        (1.060, 0.650, 1.380, 1.406),
+    ], 'honda-pearl', 'roof')
+    rb_car(0.0, 0.16, 1.484, (0.76, 0.52, 0.014), 'honda-black', 0.005, 'parked-car-sunroof')
+    rb_car(0.0, 0.92, 1.495, (0.045, 0.16, 0.065), 'honda-pearl', 0.012, 'parked-car-sharkfin')
+
+    # 4. Dark charcoal sedan interior: dashboard, infotainment screen, RHD steering wheel, console & 4 seats
+    rb_car(0.0, -0.58, 0.96, (1.42, 0.34, 0.14), 'honda-black', 0.032)
+    rb_car(0.0, -0.44, 1.06, (0.24, 0.025, 0.12), 'honda-black', 0.010)
+    rb_car(0.0, 0.25, 0.68, (0.22, 1.38, 0.20), 'honda-black', 0.035)
+    rb_car(0.0, 1.42, 1.01, (1.36, 0.36, 0.06), 'honda-black', 0.020)
+    for sx_seat in (-0.38, 0.38):
+        for sy_seat in (-0.02, 0.86):
+            rb_car(sx_seat, sy_seat, 0.69, (0.46, 0.48, 0.14), 'honda-seat', 0.045)
+            rb_car(sx_seat, sy_seat + 0.18, 0.94, (0.45, 0.13, 0.46), 'honda-seat', 0.045)
+            rb_car(sx_seat, sy_seat + 0.19, 1.23, (0.23, 0.10, 0.15), 'honda-seat', 0.035)
+    # Right-hand-drive (-lx = East side) steering wheel & column
+    for i in range(32):
+        a0 = 2.0 * math.pi * i / 32
+        a1 = 2.0 * math.pi * (i + 1) / 32
+        beam_car((-0.38 + 0.135 * math.cos(a0), -0.32, 1.04 + 0.135 * math.sin(a0)),
+                 (-0.38 + 0.135 * math.cos(a1), -0.32, 1.04 + 0.135 * math.sin(a1)), 0.011, 'honda-black')
+    beam_car((-0.38, -0.32, 1.04), (-0.38, -0.48, 0.96), 0.014, 'honda-black')
+
+    # 5. Sleek A/B/C pillars, chrome beltline, katana shoulder crease, aero mirrors, flush handles & 16" diamond-cut alloys
+    for side in (-1, 1):
+        # Raked A-pillar, gloss-black B-pillar, and fastback C-pillar
+        beam_car((side * 0.758, -0.80, 0.99), (side * 0.658, -0.23, 1.452), 0.034, 'honda-pearl')
+        beam_car((side * 0.785, 0.22, 1.01), (side * 0.668, 0.22, 1.472), 0.040, 'honda-black')
+        beam_car((side * 0.750, 1.62, 1.045), (side * 0.655, 1.04, 1.402), 0.054, 'honda-pearl')
+        # Chrome lower window beltline + katana shoulder crease + lower sculpted rocker sill
+        beam_car((side * 0.795, -0.78, 0.995), (side * 0.775, 1.56, 1.038), 0.010, 'honda-chrome')
+        beam_car((side * 0.864, -1.82, 0.83), (side * 0.856, 1.92, 0.96), 0.008, 'honda-pearl')
+        rb_car(side * 0.848, 0.0, 0.215, (0.040, 1.82, 0.095), 'honda-black', 0.016)
+        # Door shut lines & body-colour pull handles with chrome touch strip
+        for yy_shut in (-0.74, 0.22, 1.02):
+            beam_car((side * 0.874, yy_shut, 0.30), (side * 0.874, yy_shut, 0.98), 0.003, 'honda-black')
+        for yy_hdl in (-0.02, 0.84):
+            rb_car(side * 0.882, yy_hdl, 0.91, (0.024, 0.175, 0.034), 'honda-pearl', 0.010)
+            rb_car(side * 0.895, yy_hdl, 0.91, (0.008, 0.135, 0.010), 'honda-chrome', 0.003)
+        # Door-mounted aerodynamic wing mirrors with LED turn indicator strip
+        beam_car((side * 0.810, -0.62, 0.98), (side * 0.915, -0.58, 1.05), 0.020, 'honda-black')
+        rb_car(side * 0.925, -0.59, 1.08, (0.145, 0.195, 0.092), 'honda-pearl', 0.028)
+        rb_car(side * 0.935, -0.68, 1.078, (0.105, 0.010, 0.012), 'honda-drl', 0.003)
+
+        # Open circular wheel wells + revolved pneumatic tires + 16" 5-split-spoke diamond-cut alloys
+        for wy in (-1.30, 1.30):
+            # Dark wheel-arch liner inside open cutout
+            av, af = [], []
+            for a in np.linspace(-0.15, math.pi + 0.15, 41):
+                for xx_r, rad_a in [(side * 0.865, 0.362), (side * 0.882, 0.366), (side * 0.880, 0.398), (side * 0.858, 0.405)]:
+                    av.append((xx_r, wy + rad_a * math.cos(a), 0.316 + rad_a * math.sin(a)))
+            for j in range(40):
+                for i in range(3):
+                    ia = j * 4 + i
+                    af.extend([(ia, ia + 1, ia + 5), (ia, ia + 5, ia + 4)])
+            mesh_car(av, af, 'honda-rubber', smooth=True)
+
+            # Revolved rounded tire sidewall & tread (outer radius = 0.316 m -> contacts z_porch at lz = 0.000!)
+            profile = [
+                (-0.098, 0.218), (-0.102, 0.262), (-0.092, 0.302), (-0.072, 0.316),
+                (0.072, 0.316), (0.092, 0.302), (0.102, 0.262), (0.098, 0.218),
+            ]
+            tv, tf = [], []
+            xc_w = side * 0.778
+            for ang in np.linspace(0, 2.0 * math.pi, 73)[:-1]:
+                tv.extend([(xc_w + ax, wy + r_p * math.cos(ang), 0.316 + r_p * math.sin(ang)) for ax, r_p in profile])
+            for j in range(72):
+                for i in range(8):
+                    a = j * 8 + i
+                    b = j * 8 + (i + 1) % 8
+                    c = ((j + 1) % 72) * 8 + (i + 1) % 8
+                    d = ((j + 1) % 72) * 8 + i
+                    tf.extend([(a, b, c), (a, c, d)])
+            mesh_car(tv, tf, 'honda-rubber', smooth=True)
+
+            # Dark barrel, ventilated brake disc, and diamond-cut center hub (axle along scene Y)
+            for lx_c, rad_c, dep_c, mat_c in [
+                (side * 0.858, 0.208, 0.014, 'honda-black'),
+                (side * 0.864, 0.168, 0.014, 'honda-brake'),
+                (side * 0.876, 0.058, 0.020, 'honda-alloy'),
+            ]:
+                k.cylinder(T(lx_c, wy, 0.316), rad_c, dep_c, mat_c, 0, 'vehicle', rot=(math.pi / 2, 0, 0))
+            # Outer machined alloy rim flange + 5 twin-split diamond-cut spokes
+            for a_i in range(60):
+                aa = 2.0 * math.pi * a_i / 60
+                bb = 2.0 * math.pi * (a_i + 1) / 60
+                beam_car((side * 0.880, wy + 0.208 * math.cos(aa), 0.316 + 0.208 * math.sin(aa)),
+                         (side * 0.880, wy + 0.208 * math.cos(bb), 0.316 + 0.208 * math.sin(bb)), 0.005, 'honda-alloy')
+            for s_i in range(5):
+                sa = 2.0 * math.pi * s_i / 5
+                for delta in (-0.17, 0.17):
+                    beam_car((side * 0.882, wy + 0.054 * math.cos(sa), 0.316 + 0.054 * math.sin(sa)),
+                             (side * 0.882, wy + 0.202 * math.cos(sa + delta), 0.316 + 0.202 * math.sin(sa + delta)), 0.012, 'honda-alloy')
+
+    # 6. Honda City Signature Front Fascia: Chrome "Solid Wing" bar, honeycomb black sport grille & Jewel-Eye LED headlamps
+    rb_car(0.0, -2.255, 0.728, (1.16, 0.045, 0.052), 'honda-chrome', 0.014, 'parked-car-solid-wing-chrome')
+    rb_car(0.0, -2.282, 0.718, (0.088, 0.016, 0.068), 'honda-chrome', 0.012, 'parked-car-front-emblem')
+    rb_car(0.0, -2.250, 0.635, (0.98, 0.048, 0.135), 'honda-black', 0.018, 'parked-car-upper-grille')
+    rb_car(0.0, -2.265, 0.315, (1.14, 0.055, 0.135), 'honda-black', 0.020, 'parked-car-lower-intake')
+    rb_car(0.0, -2.292, 0.222, (1.42, 0.042, 0.036), 'honda-black', 0.010, 'parked-car-front-splitter')
+    rb_car(0.0, -2.288, 0.475, (0.42, 0.016, 0.092), 'honda-plate', 0.006, 'parked-car-front-plate')
+    for side in (-1, 1):
+        # Wraparound multi-element Jewel-Eye LED headlight cluster + crisp DRL eyebrow
+        rb_car(side * 0.615, -2.165, 0.735, (0.35, 0.18, 0.082), 'honda-black', 0.020)
+        rb_car(side * 0.615, -2.225, 0.766, (0.33, 0.028, 0.016), 'honda-drl', 0.005)
+        for j_idx in range(4):
+            jx = side * (0.485 + j_idx * 0.072)
+            jy = -2.228 + j_idx * 0.018
+            rb_car(jx, jy, 0.730, (0.048, 0.024, 0.034), 'honda-drl', 0.006)
+        # Sculpted lower fog-lamp pod + hood power-bulge creases
+        rb_car(side * 0.665, -2.225, 0.335, (0.20, 0.065, 0.115), 'honda-black', 0.016)
+        rb_car(side * 0.675, -2.256, 0.335, (0.065, 0.018, 0.036), 'honda-drl', 0.006)
+        beam_car((side * 0.36, -2.12, 0.785), (side * 0.56, -0.82, 0.992), 0.006, 'honda-pearl')
+
+    # 7. Sculpted Sedan Rear Trunk Lip, Z-Signature 3D Crimson LED Tail Lamps & Sport Diffuser
+    rb_car(0.0, 2.175, 1.045, (1.28, 0.085, 0.028), 'honda-pearl', 0.010, 'parked-car-trunk-spoiler')
+    rb_car(0.0, 2.275, 0.720, (0.42, 0.016, 0.092), 'honda-plate', 0.006, 'parked-car-rear-plate')
+    rb_car(0.0, 2.255, 0.315, (1.38, 0.060, 0.125), 'honda-black', 0.022, 'parked-car-rear-diffuser')
+    for side in (-1, 1):
+        rb_car(side * 0.605, 2.195, 0.935, (0.37, 0.14, 0.092), 'honda-black', 0.018)
+        rb_car(side * 0.605, 2.238, 0.942, (0.35, 0.035, 0.038), 'honda-tail', 0.008)
+        rb_car(side * 0.745, 2.170, 0.915, (0.06, 0.12, 0.072), 'honda-tail', 0.010)
+        rb_car(side * 0.615, 2.272, 0.355, (0.22, 0.016, 0.024), 'honda-tail', 0.005)
+
+    for n in k.nodes[start:]:
+        n['owner'] = owner
+        n['floor'] = 0
+        n['role'] = 'vehicle'
 
 
 def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: float) -> None:
-    """Build custom perimeter enclosure with BOTH the East Pedestrian Gate AND the NE Corner Car Gate,
-    sloped stone vehicle ramp, 22' car porch with sleek SUV & timber soffit, and 3' east kitchen setback walk."""
+    """Build the raised 600 mm house plinth, stepped-down 22' Car Porch (-220 mm below Verandah & Ground Floor),
+    sleek Honda City sedan, and custom perimeter enclosure with ALL THREE GATES:
+    1. East Pedestrian Gate (x=50', y=2.2..5.8') + 3 travertine arrival steps
+    2. Large 13'2" East Sliding Car Gate (x=50', y=7.0..20.2') + sloped stone East Vehicle Ramp
+    3. 10' North-East Corner Car Gate (x=39.5..49.5', y=0') + sloped stone North Vehicle Ramp."""
     planning = building['planning']
     if planning.get('colonyMaterials'):
         scene['materials'].update(planning['colonyMaterials'])
     if planning.get('colony'):
-        ped_lo, ped_hi = sorted((local_mm(50.0, 8.0)[0], local_mm(50.0, 3.5)[0]))
+        # Copy colony roads & context while stripping `north_frontage_utilities` and any `shrub_round` hedges
+        # so zero round green shrub balls ever spawn outside our East Sliding Car Gate or North Car Gate!
+        clean_colony = json.loads(json.dumps(planning['colony']))
+        clean_colony.pop('north_frontage_utilities', None)
+        if 'northwest_feeder_cabinets' in clean_colony:
+            clean_colony['northwest_feeder_cabinets']['hedge_bounds_scene'] = [0, 0, 0, 0]
+        if 'north_colony_garden' in clean_colony:
+            clean_colony['north_colony_garden']['trees_scene'] = [
+                t for t in clean_colony['north_colony_garden'].get('trees_scene', [])
+                if 'shrub' not in t.get('species', '')
+            ]
+        if 'east_basketball_court' in clean_colony:
+            clean_colony['east_basketball_court']['screening_trees_scene'] = [
+                t for t in clean_colony['east_basketball_court'].get('screening_trees_scene', [])
+                if 'shrub' not in t.get('species', '')
+            ]
+        gap_lo, gap_hi = sorted((local_mm(50.0, 21.2)[0] / 1000.0, local_mm(50.0, 1.8)[0] / 1000.0))
         scene['context'] = {
-            **planning['colony'],
+            **clean_colony,
             'project_id': 'tirumala-7',
             'detailLevel': 'reference',
-            'entryGaps': [[ped_lo / 1000.0, ped_hi / 1000.0]],
+            'entryGaps': [[round(gap_lo, 3), round(gap_hi, 3)]],
             'northVehicleGate': {'x_ft': [39.5, 49.5], 'y_ft': 0.0},
+            'eastSlidingVehicleGate': {'x_ft': 50.0, 'y_ft': [7.0, 20.2]},
         }
 
     # Re-tint generic world terrain from neon-green grass to warm architectural stone/road tone
@@ -1567,30 +1831,56 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
         if n.get('role') == 'terrain':
             n['material'] = 't4-colony-road' if 't4-colony-road' in scene['materials'] else 'terrace_grey_paver'
 
-    g = -PLINTH_M  # -0.300 m road datum
-    W_m, D_m = 40.0 * 0.3048, 50.0 * 0.3048  # 12.192 m (+X north), 15.240 m (+Y west)
+    g = -PLINTH_M  # -0.600 m colony road datum (2'0" raised residential plinth!)
+    W_m = 40.0 * 0.3048  # 12.192 m (+X north)
 
-    # 1. Grounded 300 mm travertine plinth base under the house footprint (excluding sloped porch ramp mouth)
-    ramp_mouth_mm = box_mm(39.2, 0.0, 49.8, 3.5)
-    plinth_poly = geometry(building['floor_plates'][0]['outline']).difference(ramp_mouth_mm)
-    k.poly_mesh(shp_scale(plinth_poly, xfact=0.001, yfact=0.001, origin=(0, 0)), g, 0.0, 'travertine_warm', -1, 'plinth', 't7-house-plinth', 'tirumala-7')
+    # 1. Raised 600 mm Main House & Verandah Plinth (z = -0.600 .. 0.002 m) + Lowered Car Porch Plinth (z = -0.600 .. -0.242 m)
+    # Buffered +14 mm proud of `plate-floor-0` so honed travertine wraps the raw slab edge with zero Z-fighting!
+    porch_cut_mm = box_mm(39.20, 0.0, 50.0, 21.80)
+    main_plinth_mm = geometry(building['floor_plates'][0]['outline']).difference(porch_cut_mm).buffer(14.0, join_style=2)
+    porch_plinth_mm = porch_cut_mm.buffer(14.0, join_style=2).difference(main_plinth_mm)
+    k.poly_mesh(shp_scale(main_plinth_mm, xfact=0.001, yfact=0.001, origin=(0, 0)),
+                g, 0.002, 'travertine_warm', -1, 'plinth', 't7-house-plinth', 'tirumala-7')
+    k.poly_mesh(shp_scale(porch_plinth_mm, xfact=0.001, yfact=0.001, origin=(0, 0)),
+                g, PORCH_Z - 0.020, 'travertine_warm', -1, 'plinth', 't7-porch-plinth', 'car_porch')
 
-    # 2. Paved open-to-sky perimeter setback passages (3' East Kitchen Setback x=47..50, North Gully, West Gully)
-    esx0, esy0, esx1, esy1 = box_m(47.0, 22.0, 50.0, 40.0)
+    # 2. Paved 3' East Kitchen Setback passage (x=47..50, y=22..40 at z=0.00 m) + step down into Car Porch
+    esx0, esy0, esx1, esy1 = box_m(47.0, 21.80, 50.0, 40.0)
     k.rect((esx0, esy0, 0.001, esx1, esy1, 0.022), 'terrace_grey_paver', 0, 'floor', 'east_setback/paving', 'east_setback')
-    # Stepping stones along the 3' east kitchen setback passage
     for s_idx, sy_ft in enumerate((24.0, 27.0, 30.0, 33.0, 36.0, 38.8)):
-        st0, sty0, st1, sty1 = box_m(47.6, sy_ft - 0.85, 49.4, sy_ft + 0.85)
+        st0, sty0, st1, sty1 = box_m(47.5, sy_ft - 0.85, 49.1, sy_ft + 0.85)
         k.rect((st0, sty0, 0.022, st1, sty1, 0.040), 'travertine_warm', 0, 'finish', f'east_setback/step-pad-{s_idx}', 'east_setback')
+    ess_x0, ess_y0, ess_x1, ess_y1 = box_m(47.15, 20.85, 49.25, 21.80)
+    k.rect((ess_x0, ess_y0, PORCH_Z, ess_x1, ess_y1, -0.105), 'travertine_warm', 0, 'step', 'east_setback/porch-step', 'east_setback')
 
-    # 3. 22' Car Porch (x_ft: 39.0..50.0, y_ft: 0.0..22.0): paving, sloped stone ramp, sleek SUV, and smoked-oak ceiling slats
-    px0, py0, px1, py1 = box_m(39.0, 3.5, 50.0, 22.0)
-    k.rect((px0, py0, 0.001, px1, py1, 0.024), 'terrace_grey_paver', 0, 'floor', 'car_porch/paving', 'car_porch')
-    # True 3D sloped travertine ramp from North Road (X=13.35 m, z=-0.30 m) up into the Car Porch (X=11.125 m, z=0.02 m)
-    _, ry0, _, ry1 = box_m(39.5, 0.0, 49.5, 3.5)
-    _build_sloped_vehicle_ramp(k, (40.0 - 3.5) * 0.3048, W_m + 1.15, ry0, ry1, g, 0.022)
+    # 3. Stepped-Down 22' Car Porch (x_ft: 39.20..50.0, y_ft: 0.0..21.80 at PORCH_Z = -0.220 m):
+    # Clearly 220 mm (~8.7") lower than the Verandah & Main Ground Floor (0.000 m), with crisp travertine transition steps!
+    px0, py0, px1, py1 = box_m(39.20, 0.0, 50.0, 21.80)
+    k.rect((px0, py0, PORCH_Z - 0.022, px1, py1, PORCH_Z), 'terrace_grey_paver', 0, 'floor', 'car_porch/paving', 'car_porch')
 
-    # Smoked-oak slatted ceiling soffit + recessed warm LED strips under covered portion of Car Porch (x_ft: 39.2..46.8, y_ft: 0.5..21.8)
+    # Verandah east bullnose coping (z = 0.00..0.03 m) + full-length intermediate travertine step (z = -0.220..-0.096 m)
+    vc_x0, vc_y0, vc_x1, vc_y1 = box_m(38.95, 0.35, 39.22, 8.95)
+    k.rect((vc_x0, vc_y0, 0.002, vc_x1, vc_y1, 0.030), 'travertine_warm', 0, 'finish', 'verandah/east-coping', 'verandah')
+    vs_x0, vs_y0, vs_x1, vs_y1 = box_m(39.20, 0.85, 40.18, 8.75)
+    k.rect((vs_x0, vs_y0, PORCH_Z, vs_x1, vs_y1, -0.096), 'travertine_warm', 0, 'step', 'verandah/porch-step', 'verandah')
+    k.rect((vs_x0 + 0.06, vs_y0 + 0.01, -0.112, vs_x1 - 0.06, vs_y0 + 0.03, -0.098), 'cove_led_warm', 0, 'cove', 'verandah/porch-step-led', 'verandah')
+
+    # Kitchen north door (work_bay_porch_door, x_ft: 41.55..44.15, y_ft=22.0) travertine landing & step down into Car Porch
+    wl_x0, wl_y0, wl_x1, wl_y1 = box_m(41.20, 20.60, 44.45, 21.80)
+    ws_x0, ws_y0, ws_x1, ws_y1 = box_m(41.20, 19.65, 44.45, 20.60)
+    k.rect((wl_x0, wl_y0, PORCH_Z, wl_x1, wl_y1, -0.015), 'travertine_warm', 0, 'step', 'work_bay/porch-landing', 'work_bay')
+    k.rect((ws_x0, ws_y0, PORCH_Z, ws_x1, ws_y1, -0.118), 'travertine_warm', 0, 'step', 'work_bay/porch-step', 'work_bay')
+
+    # True 3D sloped travertine North Vehicle Ramp from North Colony Road (X=13.55 m, z=-0.585 m) up to North Car Gate (X=12.192 m, z=-0.220 m)
+    _, nry0, _, nry1 = box_m(39.5, 0.0, 49.5, 0.5)
+    _build_sloped_ramp_mesh(
+        k,
+        [(W_m, nry0, PORCH_Z), (W_m, nry1, PORCH_Z), (W_m + 1.38, nry1, g + 0.015), (W_m + 1.38, nry0, g + 0.015)],
+        'north-vehicle-ramp',
+        'north-vehicle-gate',
+    )
+
+    # Smoked-oak slatted ceiling soffit + recessed warm LED strips under covered portion of Car Porch
     for j in range(18):
         sy_ft = 1.0 + j * 1.18
         sx0_s, sy0_s, sx1_s, sy1_s = box_m(39.3, sy_ft, 46.8, sy_ft + 0.42)
@@ -1599,52 +1889,33 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
         lx0_s, ly0_s, lx1_s, ly1_s = box_m(lx_ft - 0.08, 2.0, lx_ft + 0.08, 20.5)
         k.rect((lx0_s, ly0_s, H - 0.22, lx1_s, ly1_s, H - 0.205), 'cove_led_warm', 0, 'cove', f'car_porch/soffit-led-{lx_ft}', 'car_porch')
 
-    # Sleek Pearl-Metallic SUV parked inside the spacious 22' Car Porch (x_ft: 41.6..47.4, y_ft: 5.8..19.6)
-    cx0, cy0, cx1, cy1 = box_m(41.6, 5.8, 47.4, 19.6)
-    cm_x, cm_y = 0.5 * (cx0 + cx1), 0.5 * (cy0 + cy1)
-    car_len, car_wid = cx1 - cx0, cy1 - cy0
-    k.rb((cm_x, cm_y, 0.45), (car_len, car_wid, 0.56), 'car_pearl_metallic', 0, 'vehicle', 0.12, owner='parked-car')
-    # Solid dark interior cabin core + pearl roof & pillars so greenhouse reads solid, never hollow
-    k.rb((cm_x - 0.22, cm_y, 0.89), (car_len * 0.48, car_wid * 0.76, 0.40), 'gola_matte_black', 0, 'vehicle', 0.06, owner='parked-car')
-    k.rb((cm_x - 0.22, cm_y, 0.93), (car_len * 0.56, car_wid * 0.84, 0.46), 'tv_oled_screen', 0, 'vehicle', 0.09, owner='parked-car')
-    k.rb((cm_x - 0.22, cm_y, 1.19), (car_len * 0.52, car_wid * 0.81, 0.06), 'car_pearl_metallic', 0, 'vehicle', 0.03, owner='parked-car')
-    for px_off in (-0.88, -0.18, 0.52):
-        for py_side in (cy0 + 0.17, cy1 - 0.17):
-            k.rect((cm_x + px_off - 0.045, py_side - 0.025, 0.72, cm_x + px_off + 0.045, py_side + 0.025, 1.18),
-                   'car_pearl_metallic', 0, 'vehicle', f'parked-car/pillar-{px_off:.2f}-{py_side:.2f}', 'parked-car')
-    # Front grille + headlights facing North Road (+X) & slim rear tail-light bar (-X)
-    k.rect((cx1 - 0.02, cy0 + 0.46, 0.34, cx1 + 0.012, cy1 - 0.46, 0.56), 'gola_matte_black', 0, 'vehicle', 'parked-car/grille', 'parked-car')
-    k.rect((cx1 - 0.03, cy0 + 0.14, 0.50, cx1 + 0.012, cy0 + 0.42, 0.58), 'cove_led_warm', 0, 'vehicle', 'parked-car/headlight-R', 'parked-car')
-    k.rect((cx1 - 0.03, cy1 - 0.42, 0.50, cx1 + 0.012, cy1 - 0.14, 0.58), 'cove_led_warm', 0, 'vehicle', 'parked-car/headlight-L', 'parked-car')
-    k.rect((cx0 - 0.012, cy0 + 0.18, 0.56, cx0 + 0.02, cy1 - 0.18, 0.61), 'sofa_terracotta_velvet', 0, 'vehicle', 'parked-car/taillight', 'parked-car')
-    for wx in (cx0 + 0.76, cx1 - 0.76):
-        for wy in (cy0 + 0.08, cy1 - 0.08):
-            k.cylinder((wx, wy, 0.32), 0.32, 0.22, 'gola_matte_black', 0, 'vehicle', rot=(math.pi / 2, 0, 0))
-            k.cylinder((wx, wy + (-0.115 if wy < cm_y else 0.115), 0.32), 0.19, 0.03, 'travertine_warm', 0, 'vehicle', rot=(math.pi / 2, 0, 0))
+    # Sleek Platinum White Pearl Honda City Sedan parked on the stepped-down Car Porch (z = PORCH_Z = -0.220 m)
+    car_cx, car_cy = local_m(44.35, 11.70)
+    _build_honda_city_sedan(k, scene['materials'], car_cx, car_cy, PORCH_Z)
 
-    # 4. Custom Architectural Compound Enclosure with BOTH East Pedestrian Gate & North-East Corner Car Gate
-    def wall_run(ident: str, x0_ft: float, y0_ft: float, x1_ft: float, y1_ft: float, h_masonry: float, louvered_top: float | None = None):
+    # 4. Custom Architectural Compound Enclosure sitting cleanly on top of the 600 mm plinth (z_bot = 0.002 m) with ALL THREE GATES
+    def wall_run(ident: str, x0_ft: float, y0_ft: float, x1_ft: float, y1_ft: float, z_masonry_top: float, z_louver_top: float | None = None):
         bx0, by0, bx1, by1 = box_m(x0_ft, y0_ft, x1_ft, y1_ft)
-        k.rect((bx0, by0, g, bx1, by1, g + h_masonry - 0.04), 'wall', 0, 'wall', ident, ident)
-        k.rect((bx0 - 0.015, by0 - 0.015, g + h_masonry - 0.04, bx1 + 0.015, by1 + 0.015, g + h_masonry),
+        k.rect((bx0, by0, 0.002, bx1, by1, z_masonry_top - 0.04), 'wall', 0, 'wall', ident, ident)
+        k.rect((bx0 - 0.018, by0 - 0.018, z_masonry_top - 0.04, bx1 + 0.018, by1 + 0.018, z_masonry_top),
                'travertine_warm', 0, 'coping', f'{ident}-coping', ident)
-        if louvered_top and louvered_top > h_masonry + 0.12:
+        if z_louver_top and z_louver_top > z_masonry_top + 0.12:
             along_x = (bx1 - bx0) >= (by1 - by0)
             span = (bx1 - bx0) if along_x else (by1 - by0)
             n_posts = max(2, int(round(span / 1.5)) + 1)
             for p_i in range(n_posts):
                 t = p_i / (n_posts - 1)
                 if along_x:
-                    px = bx0 + 0.04 + t * (bx1 - bx0 - 0.08)
-                    k.rect((px - 0.02, by0 + 0.03, g + h_masonry, px + 0.02, by1 - 0.03, g + louvered_top),
+                    px_p = bx0 + 0.04 + t * (bx1 - bx0 - 0.08)
+                    k.rect((px_p - 0.02, by0 + 0.03, z_masonry_top, px_p + 0.02, by1 - 0.03, z_louver_top),
                            'gola_matte_black', 0, 'wall', f'{ident}-post-{p_i}', ident)
                 else:
-                    py = by0 + 0.04 + t * (by1 - by0 - 0.08)
-                    k.rect((bx0 + 0.03, py - 0.02, g + h_masonry, bx1 - 0.03, py + 0.02, g + louvered_top),
+                    py_p = by0 + 0.04 + t * (by1 - by0 - 0.08)
+                    k.rect((bx0 + 0.03, py_p - 0.02, z_masonry_top, bx1 - 0.03, py_p + 0.02, z_louver_top),
                            'gola_matte_black', 0, 'wall', f'{ident}-post-{p_i}', ident)
-            z_cur = g + h_masonry + 0.04
+            z_cur = z_masonry_top + 0.04
             s_i = 0
-            while z_cur + 0.055 <= g + louvered_top - 0.02:
+            while z_cur + 0.055 <= z_louver_top - 0.02:
                 if along_x:
                     k.rect((bx0 + 0.02, by0 + 0.045, z_cur, bx1 - 0.02, by1 - 0.045, z_cur + 0.052),
                            'cladding_fluted_teak', 0, 'wall', f'{ident}-slat-{s_i}', ident)
@@ -1654,53 +1925,101 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
                 z_cur += 0.088
                 s_i += 1
 
-    # East boundary south of Pedestrian Gate (x_ft: 49.6..50.0, y_ft: 8.2..40.0): dwarf wall + smoked-oak louver screen
-    wall_run('t7-boundary-east-south', 49.6, 8.2, 50.0, 40.0, h_masonry=0.82, louvered_top=1.52)
-    # NE corner sculptural travertine pier between East Pedestrian Gate (y=3.5..8.0) and North Car Gate (x=39.5..49.5)
-    cpx0, cpy0, cpx1, cpy1 = box_m(49.5, 0.0, 50.0, 3.3)
-    k.rect((cpx0, cpy0, g, cpx1, cpy1, 1.32), 'travertine_warm', 0, 'wall', 't7-ne-corner-pier', 't7-ne-corner-pier')
-    k.rect((cpx0 - 0.02, cpy0 - 0.02, 1.32, cpx1 + 0.02, cpy1 + 0.02, 1.37), 'gola_matte_black', 0, 'coping', 't7-ne-corner-cap', 't7-ne-corner-pier')
+    def gate_pier(ident: str, x0_ft: float, y0_ft: float, x1_ft: float, y1_ft: float, z_top: float = 1.38):
+        pxa, pya, pxb, pyb = box_m(x0_ft, y0_ft, x1_ft, y1_ft)
+        # Project pilaster piers +22 mm proud of plot boundary so they frame the +14 mm plinth with crisp shadow reveals!
+        if pya < 0.05:
+            pya -= 0.022
+        if pxb > W_m - 0.05:
+            pxb += 0.022
+        k.rect((pxa, pya, g, pxb, pyb, z_top), 'travertine_warm', 0, 'wall', ident, ident)
+        k.rect((pxa - 0.02, pya - 0.02, z_top, pxb + 0.02, pyb + 0.02, z_top + 0.045),
+               'gola_matte_black', 0, 'coping', f'{ident}-cap', ident)
 
-    # North boundary along Verandah & Lawn Court (x_ft: 23.0..39.2, y_ft: 0.0..0.4): low dwarf wall + airy oak louver screen
-    wall_run('t7-boundary-north-verandah', 23.0, 0.0, 39.2, 0.4, h_masonry=0.68, louvered_top=1.28)
+    # East boundary south of the Large Sliding Car Gate (x_ft: 49.6..50.0, y_ft: 21.8..40.0 — 18.2' long pocket!)
+    wall_run('t7-boundary-east-south', 49.6, 21.8, 50.0, 40.0, z_masonry_top=0.58, z_louver_top=1.35)
+    # Sculptural travertine piers framing the NE Car Gate, East Pedestrian Gate, and 13'2" East Sliding Car Gate
+    gate_pier('t7-ne-corner-pier', 49.5, 0.0, 50.0, 2.2, z_top=1.38)
+    gate_pier('t7-east-gate-pier', 49.5, 5.8, 50.0, 7.0, z_top=1.38)
+    gate_pier('t7-east-sliding-south-pier', 49.5, 20.2, 50.0, 21.8, z_top=1.38)
+    gate_pier('north-car-gate-west-pier', 39.12, 0.0, 39.5, 0.45, z_top=1.38)
+
+    # North boundary along Verandah & Lawn Court (x_ft: 23.0..39.12, y_ft: 0.0..0.4): dwarf wall + airy oak louver screen
+    wall_run('t7-boundary-north-verandah', 23.0, 0.0, 39.12, 0.4, z_masonry_top=0.52, z_louver_top=1.22)
     # North boundary along Caregiver Gully (x_ft: 0.0..23.0, y_ft: 0.0..0.4)
-    wall_run('t7-boundary-north-gully', 0.0, 0.0, 23.0, 0.4, h_masonry=1.42)
-    # West boundary gaps (y_ft: 0.0..2.0 and y_ft: 26.0..40.0) & South boundary gaps (x_ft: 0.0..2.0 and x_ft: 47.0..50.0)
-    wall_run('t7-boundary-west-n', 0.0, 0.0, 0.4, 2.0, h_masonry=1.55)
-    wall_run('t7-boundary-west-s', 0.0, 26.0, 0.4, 40.0, h_masonry=1.55)
-    wall_run('t7-boundary-south-w', 0.0, 39.6, 2.0, 40.0, h_masonry=1.55)
-    wall_run('t7-boundary-south-e', 47.0, 39.6, 50.0, 40.0, h_masonry=1.55)
+    wall_run('t7-boundary-north-gully', 0.0, 0.0, 23.0, 0.4, z_masonry_top=1.22)
+    # West & South setback boundary runs
+    wall_run('t7-boundary-west-n', 0.0, 0.0, 0.4, 2.0, z_masonry_top=1.35)
+    wall_run('t7-boundary-west-s', 0.0, 26.0, 0.4, 40.0, z_masonry_top=1.35)
+    wall_run('t7-boundary-south-w', 0.0, 39.6, 2.0, 40.0, z_masonry_top=1.35)
+    wall_run('t7-boundary-south-e', 47.0, 39.6, 50.0, 40.0, z_masonry_top=1.35)
 
-    # 5. East Pedestrian Gate (x_ft=50.0, y_ft: 3.5..8.0) — travertine jamb piers, louvered oak gate leaf, and arrival steps
-    eg_x0, eg_y0, eg_x1, eg_y1 = box_m(49.65, 3.5, 49.95, 8.0)
-    for j_i, (ja, jb) in enumerate(((eg_x0 - 0.22, eg_x0), (eg_x1, eg_x1 + 0.18))):
-        k.rect((ja, 0.0, g, jb, 0.16, 1.32), 'travertine_warm', 0, 'wall', f'east-walk-gate-jamb-{j_i}', 'east-walk-gate')
+    # 5. East Pedestrian Gate (x_ft=50.0, y_ft: 2.2..5.8) — louvered oak gate leaf + 3 travertine arrival steps from -0.60 m road
+    eg_x0, _, eg_x1, _ = box_m(49.65, 2.2, 49.95, 5.8)
+    eg_z0, eg_z1 = PORCH_Z + 0.030, 1.280
     eg_leaf_ids = []
     for suffix, bounds in [
-        ('foot', (eg_x0 + 0.02, 0.06, 0.03, eg_x1 - 0.02, 0.11, 0.075)),
-        ('head', (eg_x0 + 0.02, 0.06, 1.20, eg_x1 - 0.02, 0.11, 1.245)),
-        ('left', (eg_x0 + 0.02, 0.06, 0.075, eg_x0 + 0.06, 0.11, 1.20)),
-        ('right', (eg_x1 - 0.06, 0.06, 0.075, eg_x1 - 0.02, 0.11, 1.20)),
+        ('foot', (eg_x0 + 0.02, 0.06, eg_z0, eg_x1 - 0.02, 0.11, eg_z0 + 0.045)),
+        ('head', (eg_x0 + 0.02, 0.06, eg_z1 - 0.045, eg_x1 - 0.02, 0.11, eg_z1)),
+        ('left', (eg_x0 + 0.02, 0.06, eg_z0 + 0.045, eg_x0 + 0.06, 0.11, eg_z1 - 0.045)),
+        ('right', (eg_x1 - 0.06, 0.06, eg_z0 + 0.045, eg_x1 - 0.02, 0.11, eg_z1 - 0.045)),
     ]:
         nid = f'east-walk-gate-leaf-0-{suffix}'
         k.rect(bounds, 'gola_matte_black', 0, 'gate', nid, 'east-walk-gate-leaf-0')
         eg_leaf_ids.append(nid)
-    for row in range(12):
-        zb = 0.095 + row * 0.090
-        nid = f'east-walk-gate-leaf-0-blade-{row}'
-        k.rect((eg_x0 + 0.06, 0.07, zb, eg_x1 - 0.06, 0.10, zb + 0.058), 'cladding_fluted_teak', 0, 'gate', nid, 'east-walk-gate-leaf-0')
+    zb_ped = eg_z0 + 0.065
+    row_p = 0
+    while zb_ped + 0.058 <= eg_z1 - 0.055:
+        nid = f'east-walk-gate-leaf-0-blade-{row_p}'
+        k.rect((eg_x0 + 0.06, 0.07, zb_ped, eg_x1 - 0.06, 0.10, zb_ped + 0.056), 'cladding_fluted_teak', 0, 'gate', nid, 'east-walk-gate-leaf-0')
         eg_leaf_ids.append(nid)
-    k.rect((eg_x0, -0.78, g, eg_x1, 0.0, -0.15), 'travertine_warm', -1, 'step', 'east-arrival-step-1', 'east-pedestrian-gate')
-    k.rect((eg_x0, -0.38, -0.15, eg_x1, 0.0, 0.0), 'travertine_warm', -1, 'step', 'east-arrival-step-2', 'east-pedestrian-gate')
+        zb_ped += 0.088
+        row_p += 1
+    k.rect((eg_x0, -0.92, g, eg_x1, -0.60, -0.465), 'travertine_warm', -1, 'step', 'east-arrival-step-1', 'east-pedestrian-gate')
+    k.rect((eg_x0, -0.60, g, eg_x1, -0.28, -0.342), 'travertine_warm', -1, 'step', 'east-arrival-step-2', 'east-pedestrian-gate')
+    k.rect((eg_x0, -0.28, g, eg_x1, 0.14, PORCH_Z), 'travertine_warm', -1, 'step', 'east-arrival-step-3', 'east-pedestrian-gate')
 
-    # 6. North-East Corner Car Gate (x_ft: 39.5..49.5, y_ft=0.0 -> 10' clear vehicle entrance!)
-    # West pier at x_ft: 39.2..39.5 + paired architectural horizontal smoked-oak & matte-black louver swing leaves
-    wp_x0, wp_y0, wp_x1, wp_y1 = box_m(39.15, 0.0, 39.5, 0.45)
-    k.rect((wp_x0, wp_y0, g, wp_x1, wp_y1, 1.32), 'travertine_warm', 0, 'wall', 'north-car-gate-west-pier', 'north-vehicle-gate')
-    k.rect((wp_x0 - 0.02, wp_y0 - 0.02, 1.32, wp_x1 + 0.02, wp_y1 + 0.02, 1.37), 'gola_matte_black', 0, 'coping', 'north-car-gate-west-cap', 'north-vehicle-gate')
+    # 6. Large 13'2" East Sliding Car Gate (x_ft=50.0, y_ft: 7.0..20.2 -> 4.023 m clear vehicle entrance!) + Sloped East Vehicle Ramp
+    esg_x0, _, esg_x1, _ = box_m(49.30, 7.0, 49.55, 20.2)
+    esg_xm = 0.5 * (esg_x0 + esg_x1)
+    esg_z0, esg_z1 = PORCH_Z + 0.025, 1.300
+    # Recessed steel ground slide track running south behind t7-boundary-east-south (y_ft: 7.0..34.0)
+    trk_x0, _, trk_x1, _ = box_m(49.30, 7.0, 49.55, 34.0)
+    k.rect((trk_x0, 0.155, PORCH_Z - 0.008, trk_x1, 0.215, PORCH_Z + 0.012), 'gola_matte_black', 0, 'detail', 'east-sliding-car-gate-track', 'east-sliding-car-gate')
 
+    esg_leaf_ids = []
+    for suffix, bounds in [
+        ('foot', (esg_x0, 0.16, esg_z0, esg_x1, 0.21, esg_z0 + 0.050)),
+        ('head', (esg_x0, 0.16, esg_z1 - 0.050, esg_x1, 0.21, esg_z1)),
+        ('left', (esg_x0, 0.16, esg_z0 + 0.050, esg_x0 + 0.055, 0.21, esg_z1 - 0.050)),
+        ('mid', (esg_xm - 0.025, 0.16, esg_z0 + 0.050, esg_xm + 0.025, 0.21, esg_z1 - 0.050)),
+        ('right', (esg_x1 - 0.055, 0.16, esg_z0 + 0.050, esg_x1, 0.21, esg_z1 - 0.050)),
+    ]:
+        nid = f'east-sliding-car-gate-{suffix}'
+        k.rect(bounds, 'gola_matte_black', 0, 'gate', nid, 'east-sliding-car-gate-leaf')
+        esg_leaf_ids.append(nid)
+    zb_esg = esg_z0 + 0.068
+    row_e = 0
+    while zb_esg + 0.058 <= esg_z1 - 0.055:
+        nid = f'east-sliding-car-gate-blade-{row_e}'
+        k.rect((esg_x0 + 0.055, 0.17, zb_esg, esg_x1 - 0.055, 0.20, zb_esg + 0.056),
+               'cladding_fluted_teak', 0, 'gate', nid, 'east-sliding-car-gate-leaf')
+        esg_leaf_ids.append(nid)
+        zb_esg += 0.088
+        row_e += 1
+
+    # Sloped stone East Vehicle Ramp rising from East Colony Road (Y=-1.25 m, z=-0.585 m) up to Car Porch threshold (Y=0.14 m, z=-0.220 m)
+    _build_sloped_ramp_mesh(
+        k,
+        [(esg_x0, 0.14, PORCH_Z), (esg_x1, 0.14, PORCH_Z), (esg_x1, -1.25, g + 0.015), (esg_x0, -1.25, g + 0.015)],
+        'east-vehicle-ramp',
+        'east-sliding-car-gate',
+    )
+
+    # 7. North-East Corner Car Gate (x_ft: 39.5..49.5, y_ft=0.0 -> 10' clear vehicle entrance!)
     ng_x0, ng_y0, ng_x1, ng_y1 = box_m(39.5, 0.08, 49.5, 0.24)
     ng_ym = 0.5 * (ng_y0 + ng_y1)
+    ng_z0, ng_z1 = PORCH_Z + 0.025, 1.300
     ng_motion = []
     for leaf_idx, (lya, lyb, pivot_y, ang) in enumerate([
         (ng_y0 + 0.02, ng_ym - 0.015, ng_y0 + 0.02, -math.pi / 2),
@@ -1709,21 +2028,24 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
         leaf_owner = f'north-vehicle-gate-leaf-{leaf_idx}'
         l_ids = []
         for suffix, bounds in [
-            ('foot', (ng_x0, lya, -0.02, ng_x1, lyb, 0.025)),
-            ('head', (ng_x0, lya, 1.18, ng_x1, lyb, 1.225)),
-            ('left', (ng_x0, lya, 0.025, ng_x1, lya + 0.042, 1.18)),
-            ('right', (ng_x0, lyb - 0.042, 0.025, ng_x1, lyb, 1.18)),
+            ('foot', (ng_x0, lya, ng_z0, ng_x1, lyb, ng_z0 + 0.045)),
+            ('head', (ng_x0, lya, ng_z1 - 0.045, ng_x1, lyb, ng_z1)),
+            ('left', (ng_x0, lya, ng_z0 + 0.045, ng_x1, lya + 0.042, ng_z1 - 0.045)),
+            ('right', (ng_x0, lyb - 0.042, ng_z0 + 0.045, ng_x1, lyb, ng_z1 - 0.045)),
         ]:
             nid = f'{leaf_owner}-{suffix}'
             k.rect(bounds, 'gola_matte_black', 0, 'gate', nid, leaf_owner)
             l_ids.append(nid)
-        for row in range(12):
-            zb = 0.050 + row * 0.092
-            nid = f'{leaf_owner}-blade-{row}'
-            k.rect((ng_x0 + 0.008, lya + 0.042, zb, ng_x1 - 0.008, lyb - 0.042, zb + 0.056),
+        zb_ng = ng_z0 + 0.068
+        row_n = 0
+        while zb_ng + 0.058 <= ng_z1 - 0.055:
+            nid = f'{leaf_owner}-blade-{row_n}'
+            k.rect((ng_x0 + 0.008, lya + 0.042, zb_ng, ng_x1 - 0.008, lyb - 0.042, zb_ng + 0.056),
                    'cladding_fluted_teak', 0, 'gate', nid, leaf_owner)
             l_ids.append(nid)
-        ng_motion.append({'ids': l_ids, 'pivot': [round(0.5 * (ng_x0 + ng_x1), 3), round(pivot_y, 3), 0.0], 'angle': ang})
+            zb_ng += 0.088
+            row_n += 1
+        ng_motion.append({'ids': l_ids, 'pivot': [round(0.5 * (ng_x0 + ng_x1), 3), round(pivot_y, 3), round(PORCH_Z, 3)], 'angle': ang})
 
     scene['gate_model'] = [
         {
@@ -1731,26 +2053,40 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
             'label': 'East pedestrian gate',
             'kind': 'gate',
             'floor': 0,
-            'start': [round(eg_x0, 3), 0.085, 0.03],
+            'start': [round(eg_x0, 3), 0.085, round(eg_z0, 3)],
             'axis': [1, 0, 0],
-            'base': 0.03,
+            'base': round(eg_z0, 3),
             'sill': 0,
             'width': round(eg_x1 - eg_x0, 3),
-            'height': 1.22,
+            'height': round(eg_z1 - eg_z0, 3),
             'initial': 0,
-            'parts': [{'ids': eg_leaf_ids, 'slide': [round(eg_x1 - eg_x0 + 0.04, 3), 0, 0]}],
+            'parts': [{'ids': eg_leaf_ids, 'pivot': [round(eg_x1 - 0.04, 3), 0.085, round(eg_z0, 3)], 'angle': -math.pi / 2}],
+        },
+        {
+            'id': 'east-sliding-car-gate',
+            'label': 'East sliding car gate',
+            'kind': 'gate',
+            'floor': 0,
+            'start': [round(esg_x0, 3), 0.185, round(esg_z0, 3)],
+            'axis': [1, 0, 0],
+            'base': round(esg_z0, 3),
+            'sill': 0,
+            'width': round(esg_x1 - esg_x0, 3),
+            'height': round(esg_z1 - esg_z0, 3),
+            'initial': 0,
+            'parts': [{'ids': esg_leaf_ids, 'slide': [round(-(esg_x1 - esg_x0 + 0.12), 3), 0, 0]}],
         },
         {
             'id': 'north-vehicle-gate',
             'label': 'North-east corner car gate',
             'kind': 'gate',
             'floor': 0,
-            'start': [round(0.5 * (ng_x0 + ng_x1), 3), round(ng_y0, 3), 0.0],
+            'start': [round(0.5 * (ng_x0 + ng_x1), 3), round(ng_y0, 3), round(ng_z0, 3)],
             'axis': [0, 1, 0],
-            'base': 0.0,
+            'base': round(ng_z0, 3),
             'sill': 0,
             'width': round(ng_y1 - ng_y0, 3),
-            'height': 1.22,
+            'height': round(ng_z1 - ng_z0, 3),
             'initial': 0,
             'parts': ng_motion,
         },
@@ -1769,12 +2105,12 @@ def _configure_cameras_and_walk(scene: dict, H: float) -> None:
     scene['cameras'].update({
         'hero': {'position': [21.8, -10.2, 8.0], 'target': [6.0, 6.6, 3.3], 'fov': 44},
         'exterior': {'position': [21.8, -10.2, 8.0], 'target': [6.0, 6.6, 3.3], 'fov': 44},
-        'east_arrival': {'position': [9.8, -9.2, 2.3], 'target': [8.6, 4.5, 1.9], 'fov': 48},
+        'east_arrival': {'position': [8.6, -9.2, 2.05], 'target': [8.4, 3.2, 1.55], 'fov': 48},
         'north_frontage': {'position': [23.8, 5.8, 3.1], 'target': [6.5, 6.5, 3.2], 'fov': 46},
         'colony_overview': {'position': [28.0, -16.0, 14.5], 'target': [6.0, 7.6, 3.0], 'fov': 45},
         'roof_terraces': {'position': [19.5, -8.5, 13.8], 'target': [5.8, 7.8, 6.4], 'fov': 46},
-        'kitchen_run': cam((37.4, 34.0), (45.8, 25.2), 1.50, 1.28, 60),
-        'kitchen_from_dining': cam((25.0, 30.8), (45.8, 27.5), 1.50, 1.32, 56),
+        'kitchen_run': cam((35.8, 34.0), (42.8, 24.8), 1.48, 1.18, 60),
+        'kitchen_from_dining': cam((24.8, 29.8), (45.6, 28.0), 1.48, 1.24, 58),
         'dining_double_height': cam((18.6, 29.2), (28.5, 28.2), 1.45, 3.95, 62),
         'living_hall': cam((21.0, 18.8), (11.8, 23.8), 1.52, 1.32, 58),
         'living_to_icu': cam((15.5, 22.0), (35.0, 16.0), 1.52, 1.30, 56),
@@ -1784,8 +2120,8 @@ def _configure_cameras_and_walk(scene: dict, H: float) -> None:
         'master_bedroom': cam((13.8, 28.8), (6.5, 36.8), 1.48, 1.12, 58),
         'gallery_void': cam((18.2, 28.8), (29.5, 28.8), H + 1.58, 1.25, 60),
         'master_suite': cam((3.0, 15.5), (12.5, 5.5), H + 1.48, H + 1.10, 58),
-        'study_meditation': cam((25.5, 19.2), (35.5, 11.5), H + 1.50, H + 1.10, 58),
         'medium_bedroom': cam((15.2, 30.8), (4.5, 36.0), H + 1.50, H + 1.10, 58),
+        'study_meditation': cam((25.5, 19.2), (35.5, 11.5), H + 1.50, H + 1.10, 58),
         'east_terrace': cam((43.5, 34.5), (41.5, 10.0), H + 1.58, H + 1.35, 56),
         'office_tv_hall': cam((9.0, 18.5), (33.5, 18.8), 2 * H + 1.45, 2 * H + 1.32, 58),
         'north_terrace': cam((39.0, 4.2), (12.0, 4.8), 2 * H + 1.58, 2 * H + 1.20, 56),
@@ -1797,10 +2133,10 @@ def _configure_cameras_and_walk(scene: dict, H: float) -> None:
     f0_x, f0_y = local_m(20.5, 18.5)
     f1_x, f1_y = local_m(19.0, 23.0)
     f2_x, f2_y = local_m(18.5, 21.0)
-    arr_x, arr_y = local_m(47.5, 6.0)
+    arr_x, arr_y = local_m(47.5, 4.0)
     scene['walk'] = {
         'eye_height': 1.63,
-        'arrival': {'position': [round(arr_x, 3), round(arr_y, 3), 0.0], 'yaw_deg': 270},
+        'arrival': {'position': [round(arr_x, 3), round(arr_y, 3), round(PORCH_Z, 3)], 'yaw_deg': 270},
         'floors': [
             {'floor': 0, 'position': [round(f0_x, 3), round(f0_y, 3), 0.0], 'yaw_deg': 180},
             {'floor': 1, 'position': [round(f1_x, 3), round(f1_y, 3), round(H, 3)], 'yaw_deg': 180},
@@ -1814,7 +2150,7 @@ def make_tirumala_7_scene(building: dict, report: dict, base_scene_builder) -> d
     scene = base_scene_builder(building, report)
     H = scene['floor_height']
 
-    # Strip ALL generic auto-generated clutter, stray rugs, bed-leg dots, conical funnels, ceiling slats,
+    # Strip ALL generic auto-generated clutter, auto-generated `car_porch/floor` at z=0 (since Car Porch is stepped to -0.22 m!),
     # generic perimeter walls, and ALL round/spiky green plant proxies from `scene.py`!
     drop_roles = {
         'furniture', 'stair', 'railing', 'curtain', 'canopy', 'band', 'pipe',
@@ -1825,6 +2161,7 @@ def make_tirumala_7_scene(building: dict, report: dict, base_scene_builder) -> d
     scene['nodes'][:] = [
         n for n in scene['nodes']
         if n.get('role') not in drop_roles
+        and n.get('id') != 'car_porch/floor'
         and not (n.get('role') == 'fixture' and not str(n.get('id', '')).endswith('/exhaust-grille'))
         and not str(n.get('owner', '')).startswith('stair-')
     ]

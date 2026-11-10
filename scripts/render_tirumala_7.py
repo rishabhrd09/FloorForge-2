@@ -211,12 +211,16 @@ def exterior_context():
             sh.inputs['Roughness'].default_value = 0.78
     verge_mat = bpy.data.materials.get('travertine_warm') or road_mat
 
-    # 12 m North Colony Road (X = 13.35..24.20 m) & 9 m East Colony Road (X = -16.0..13.35 m, non-overlapping!) + stone footpath verges
-    created.append(add_box_mesh('North road carriageway', (13.35, -24.0, -0.36, 24.20, 32.0, -0.302), road_mat))
-    created.append(add_box_mesh('East road carriageway', (-16.0, -9.00, -0.36, 13.35, -0.90, -0.302), road_mat))
-    created.append(add_box_mesh('North footpath west of ramp', (12.192, 3.22, -0.34, 13.35, 16.0, -0.285), verge_mat))
-    created.append(add_box_mesh('East footpath verge', (-2.0, -0.90, -0.34, 13.35, 0.0, -0.295), verge_mat))
-    created.append(add_box_mesh('North avenue opposite verge', (24.20, -20.0, -0.34, 26.20, 28.0, -0.285), verge_mat))
+    # 12 m North Colony Road (X = 13.58..24.20 m) & 9 m East Colony Road (X = -16.0..13.58 m, non-overlapping!)
+    # grounded at PLINTH_M = 0.600 m (g = -0.600 m) + non-overlapping stone footpath verges around both vehicle ramps.
+    created.append(add_box_mesh('North road carriageway', (13.58, -24.0, -0.66, 24.20, 32.0, -0.600), road_mat))
+    created.append(add_box_mesh('East road carriageway', (-16.0, -9.00, -0.66, 13.58, -1.26, -0.600), road_mat))
+    created.append(add_box_mesh('North footpath NE corner', (12.192, -1.26, -0.65, 13.58, 0.15, -0.585), verge_mat))
+    created.append(add_box_mesh('North footpath west of ramp', (12.192, 3.21, -0.65, 13.58, 16.0, -0.585), verge_mat))
+    created.append(add_box_mesh('East footpath south', (-4.0, -1.26, -0.65, 6.03, 0.0, -0.592), verge_mat))
+    created.append(add_box_mesh('East ramp subbase', (6.03, -1.26, -0.66, 10.06, 0.0, -0.602), road_mat))
+    created.append(add_box_mesh('East footpath north', (10.06, -1.26, -0.65, 12.192, 0.0, -0.592), verge_mat))
+    created.append(add_box_mesh('North avenue opposite verge', (24.20, -20.0, -0.65, 26.20, 28.0, -0.585), verge_mat))
 
     # Distant mature off-site canopy trees across the colony avenue & adjoining parcels (NO round shrub spheres!)
     rng = random.Random(702)
@@ -242,7 +246,7 @@ def exterior_context():
         (6.0, 21.5, 8.5), (12.0, 23.0, 6.4),
         (26.5, -5.0, 7.6), (26.2, 4.0, 7.8), (26.8, 12.5, 8.4), (26.0, 21.0, 7.4),
     ]:
-        base = Vector((x, y, -0.35))
+        base = Vector((x, y, -0.65))
         trunk = base + Vector((0.14, 0.04, h * 0.56))
         stem([base, trunk], [1.4, 0.60])
         for j in range(20):
@@ -367,7 +371,7 @@ for view in views:
         eye = target + Vector((-5.8, -0.6, 19.0))
         cam.type = 'ORTHO'
         cam.ortho_scale = 20.6 if floor == 0 else 20.0
-        bpy.ops.mesh.primitive_plane_add(size=200, location=(6, 7.6, z - 0.35))
+        bpy.ops.mesh.primitive_plane_add(size=200, location=(6, 7.6, -0.66 if floor == 0 else z - 0.35))
         ground = bpy.context.object
         ground.name = 'Studio surface'
         mat = bpy.data.materials.get('Studio oatmeal') or bpy.data.materials.new('Studio oatmeal')
@@ -387,7 +391,7 @@ for view in views:
             sun.data.angle = math.radians(2.2)
 
     if floor is None:
-        bpy.ops.mesh.primitive_plane_add(size=1800, location=(6, 7.6, -0.397))
+        bpy.ops.mesh.primitive_plane_add(size=1800, location=(6, 7.6, -0.697))
         ground = bpy.context.object
         mat = bpy.data.materials.get('Studio urban earth') or bpy.data.materials.new('Studio urban earth')
         sh = rendering.principled(mat)

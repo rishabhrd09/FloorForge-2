@@ -147,7 +147,8 @@ def test_full_span_double_height_atrium_and_sunroof_alignment():
 
 def test_terrace_edges_east_setback_and_ne_car_gate_with_verandah_lawn():
     """Terrace outer east edges sit at x=47' (first floor) and x=44' (second floor), x=47..50 is open to sky,
-    NE corner has an interactive 10' car gate + sloped ramp, and Verandah has a manicured lawn court with zero round shrub balls."""
+    both car gates (13'2" East Sliding Car Gate + 10' NE Car Gate) have sloped ramps, house sits on a 600 mm plinth
+    with a -220 mm stepped-down Car Porch and Honda City sedan, and Verandah has a manicured lawn court with zero round shrub balls."""
     b = read('building.json')
     scene = read('scene.json')
     spaces = {s['id']: s for s in b['spaces']}
@@ -160,17 +161,36 @@ def test_terrace_edges_east_setback_and_ne_car_gate_with_verandah_lawn():
         plate = geometry(b['floor_plates'][fl_idx]['regions'])
         assert plate.intersection(open_east_strip).area < 1.0
 
+    # Raised 600 mm house plinth + stepped-down -220 mm Car Porch
+    assert b['brief']['plinth_mm'] == 600
+    assert abs(scene['bounds'][2] - (-0.600)) < 0.01
+
     gate_ids = {g['id'] for g in scene.get('gate_model', [])}
     assert 'east-walk-gate' in gate_ids
+    assert 'east-sliding-car-gate' in gate_ids
     assert 'north-vehicle-gate' in gate_ids
+    sliding_gate = next(g for g in scene['gate_model'] if g['id'] == 'east-sliding-car-gate')
+    assert sliding_gate['width'] >= 4.00
+    assert 'slide' in sliding_gate['parts'][0]
 
-    node_ids = {n['id'] for n in scene['nodes']}
-    assert 'north-vehicle-ramp' in node_ids
-    assert 'verandah/north-lawn-turf' in node_ids
-    assert 'verandah/north-lawn-coping' in node_ids
+    nodes = {n['id']: n for n in scene['nodes']}
+    assert 'north-vehicle-ramp' in nodes
+    assert 'east-vehicle-ramp' in nodes
+    assert 'verandah/north-lawn-turf' in nodes
+    assert 'verandah/north-lawn-coping' in nodes
+    assert 'verandah/porch-step' in nodes
+    assert 'car_porch/floor' not in nodes  # Replaced by stepped-down car_porch/paving at -0.220 m
+    assert nodes['car_porch/paving']['position'][2] < -0.20
+    assert nodes['verandah/wood-deck']['position'][2] > 0.0
 
-    # Zero round/spiky green shrub spheres anywhere in the project
+    # Sleek modern Honda City sedan present on the stepped-down Car Porch
+    assert 'parked-car-body' in nodes
+    assert 'parked-car-glazing' in nodes
+    assert 'parked-car-solid-wing-chrome' in nodes
+
+    # Zero round/spiky green shrub spheres anywhere in the project (including viewer context)
     assert scene.get('vegetation') == []
+    assert 'north_frontage_utilities' not in scene.get('context', {})
     plant_proxies = [n['id'] for n in scene['nodes'] if 'plant' in n.get('role', '') or n.get('material') in ('leaf', 'leaf-light')]
     assert plant_proxies == []
 
@@ -222,7 +242,9 @@ def test_home_icu_and_all_tvs_complete_without_wall_overlap():
 
 def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
     """Kitchen has two east windows on x=47', an 840 mm (2'9\") wide quartz platform with under-platform storage
-    and minimalist floating shelves (no heavy east loft), and fridge/pantry shifted west away from the east wall & NE corner."""
+    and minimalist floating shelves, zero tall vertical cupboards blocking the Dining-to-Kitchen sightline,
+    ONLY a compact corner refrigerator on the small 3' wall beside the porch door, and a N-S waterfall center counter
+    running parallel to the east platform near the dining table."""
     b = read('building.json')
     scene = read('scene.json')
     openings = {o['id']: o for o in b['openings']}
@@ -235,13 +257,25 @@ def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
     assert 'kitchen/modular-kitchen/minimal-floating-shelf-0' in nodes
     assert 'kitchen/modular-kitchen/loft-carcass' not in nodes  # No heavy overhead loft on east wall!
 
+    # Tall vertical cupboards/fridge next to dining table are completely removed (unobstructed Dining-to-Kitchen view)
+    assert 'kitchen/modular-kitchen/fridge-housing' not in nodes
+    assert 'kitchen/modular-kitchen/tall-pantry-carcass' not in nodes
+
     plinth = nodes['kitchen/modular-kitchen/plinth-kickboard']
     # Plinth depth is 840 mm - 50 mm = 0.79 m -> confirms 840 mm wide platform!
     assert plinth['scale'][1] >= 0.78
 
-    # Fridge is shifted west (> 2.3 m west of the x=47' east wall, i.e. Y > 3.3 m)
-    fridge = nodes['kitchen/modular-kitchen/fridge-housing']
-    assert fridge['position'][1] > 3.30
+    # Compact refrigerator sits ONLY on the small 3' west wall of work_bay (x_ft=39', y_ft: 22.3..24.5) near porch door
+    fridge = nodes['kitchen/modular-kitchen/compact-fridge-body']
+    assert fridge['position'][0] > 4.70  # Strictly north of y_ft=25' inside the small 3' corner!
+    assert 2.65 <= fridge['position'][1] <= 3.35
+    assert fridge['scale'][2] <= 1.65
+
+    # Center waterfall counter runs North-South (+X) PARALLEL to the east platform and sits close to the dining table
+    island_top = nodes['kitchen/modular-kitchen/prep-quartz-top']
+    assert island_top['scale'][0] > 1.40  # N-S length (~1.463 m)
+    assert island_top['scale'][0] > 2.0 * island_top['scale'][1]  # Parallel to N-S east platform!
+    assert island_top['position'][1] > 4.00  # Close to dining table (x_ft ~ 34.8..36.85)
 
 
 def test_all_plan_reference_doors_and_windows_match_within_25mm():

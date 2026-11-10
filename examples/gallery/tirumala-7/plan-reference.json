@@ -33,11 +33,14 @@
   },
   "vertical_alignment": {
     "storeys": 3,
-    "plinth_height_mm": 300,
+    "plinth_height_mm": 600,
+    "car_porch_drop_mm": 220,
     "floor_to_floor_height_mm": 3150,
     "slab_thickness_mm": 180,
     "clear_room_height_mm": 2970,
     "level_elevations_mm": {
+      "colony_road_ngl": -600,
+      "car_porch": -220,
       "ground": 0,
       "first": 3150,
       "second": 6300,
@@ -764,10 +767,10 @@
           "type": "door",
           "wall": "y=22.0",
           "span_ft": [
-            39.6,
-            42.6
+            41.55,
+            44.15
           ],
-          "width_ft": 3.0
+          "width_ft": 2.6
         },
         {
           "id": "store_door",
@@ -1121,13 +1124,25 @@
         },
         "prep_counter": {
           "x_ft": [
-            34.1,
-            38.1
+            34.8,
+            36.85
           ],
           "y_ft": [
-            26.18,
-            27.93
-          ]
+            25.85,
+            30.65
+          ],
+          "orientation": "north_south_parallel_to_east_platform"
+        },
+        "compact_fridge": {
+          "x_ft": [
+            39.22,
+            41.0
+          ],
+          "y_ft": [
+            22.45,
+            24.45
+          ],
+          "facing": "east_toward_platform"
         },
         "kitchen_counter": {
           "x_ft": [

@@ -12,7 +12,7 @@
     "left_mm": 0,
     "open_kitchen": true,
     "parking": true,
-    "plinth_mm": 300,
+    "plinth_mm": 600,
     "pooja": false,
     "rear_mm": 0,
     "right_mm": 0,
@@ -838,11 +838,12 @@
     "doorsClosed": false,
     "interiorFloor": "ivory-vitrified",
     "parkedCar": {
-      "x": 8991.6,
-      "y": 1676.4
+      "x": 8625.84,
+      "y": 1722.12
     },
     "tirumalaMeta": {
       "projectId": "tirumala-7",
+      "parkedCarModel": "honda-city-sedan",
       "planReference": {
         "sample_id": "tirumala-7",
         "title": "Tirumala 7 — 50′ × 40′ Three-Floor Corner Home with Full-Span Atrium Sunroof & East Kitchen Setback",
@@ -878,11 +879,14 @@
         },
         "vertical_alignment": {
           "storeys": 3,
-          "plinth_height_mm": 300,
+          "plinth_height_mm": 600,
+          "car_porch_drop_mm": 220,
           "floor_to_floor_height_mm": 3150,
           "slab_thickness_mm": 180,
           "clear_room_height_mm": 2970,
           "level_elevations_mm": {
+            "colony_road_ngl": -600,
+            "car_porch": -220,
             "ground": 0,
             "first": 3150,
             "second": 6300,
@@ -1609,10 +1613,10 @@
                 "type": "door",
                 "wall": "y=22.0",
                 "span_ft": [
-                  39.6,
-                  42.6
+                  41.55,
+                  44.15
                 ],
-                "width_ft": 3
+                "width_ft": 2.6
               },
               {
                 "id": "store_door",
@@ -1966,13 +1970,25 @@
               },
               "prep_counter": {
                 "x_ft": [
-                  34.1,
-                  38.1
+                  34.8,
+                  36.85
                 ],
                 "y_ft": [
-                  26.18,
-                  27.93
-                ]
+                  25.85,
+                  30.65
+                ],
+                "orientation": "north_south_parallel_to_east_platform"
+              },
+              "compact_fridge": {
+                "x_ft": [
+                  39.22,
+                  41
+                ],
+                "y_ft": [
+                  22.45,
+                  24.45
+                ],
+                "facing": "east_toward_platform"
               },
               "kitchen_counter": {
                 "x_ft": [
@@ -3522,14 +3538,6 @@
               ],
               "scale": 0.65,
               "species": "areca"
-            },
-            {
-              "position": [
-                34,
-                8.2
-              ],
-              "scale": 1.2,
-              "species": "shrub_round"
             }
           ]
         },
@@ -3699,61 +3707,12 @@
             "N-04"
           ]
         },
-        "north_frontage_utilities": {
-          "excluded_temporary_objects": [
-            {
-              "id": "excluded-white-car-n03",
-              "reason": "Parked white hatchback car along the north road frontage is temporary and explicitly excluded from the 3D scene and site plan.",
-              "source_photos": [
-                "N-03",
-                "N-04"
-              ]
-            }
-          ],
-          "ne_reference_pillar": {
-            "bounds_scene": [
-              11.972,
-              -0.06,
-              12.412,
-              0.38
-            ],
-            "height_m": 1.35,
-            "id": "ne-reference-masonry-pillar",
-            "position_geo_m": [
-              15.08,
-              12.112,
-              0
-            ],
-            "status": "provisional_photo_reference_not_survey_monument"
-          },
-          "source_photos": [
-            "N-02",
-            "N-03",
-            "NE-01"
-          ],
-          "streetlight_pole": {
-            "arm_direction": "+x_scene (North over road)",
-            "arm_length_m": 1.6,
-            "height_m": 6.2,
-            "id": "north-streetlight-pole-01",
-            "position_geo_m": [
-              4.35,
-              12.742,
-              0
-            ],
-            "position_scene": [
-              12.742,
-              10.89,
-              -0.3
-            ]
-          }
-        },
         "northwest_feeder_cabinets": {
           "hedge_bounds_scene": [
-            12.312,
-            12.24,
-            12.742,
-            19.24
+            0,
+            0,
+            0,
+            0
           ],
           "low_wall_bounds_scene": [
             12.112,
@@ -3948,10 +3907,23 @@
         [
           "east-walk-gate",
           "pedestrian",
-          9753.6,
-          11125.2
+          10424.16,
+          11521.44
+        ],
+        [
+          "east-sliding-car-gate",
+          "vehicle",
+          6035.04,
+          10058.4
         ]
       ],
+      "eastSlidingVehicleGate": {
+        "x_ft": 50,
+        "y_ft": [
+          7,
+          20.2
+        ]
+      },
       "northVehicleGate": {
         "x_ft": [
           39.5,
@@ -3959,8 +3931,10 @@
         ],
         "y_ft": 0
       },
+      "plinthMm": 600,
+      "porchDropMm": 220,
       "finishEdition": "tirumala-7-sage-teal-fluted-teak"
     }
   },
-  "notes": "Three-floor 50' x 40' north-east corner home with a full-span double-height dining atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft) spanning from the Home ICU/Dining wall right up to the U-turn staircase. Ground floor includes a 3' east setback (x=47 ft) along the kitchen and wash room, a 22' car porch with a 10' NE corner car gate and sloped stone ramp, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU with 7' north slider and 5'6\" clear west opening, living hall, drawing room, caregiver suite, master suite, and an open-plan kitchen with a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, full under-counter sage-teal storage, minimalist floating shelves, and west-shifted refrigerator/appliance bank. First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
+  "notes": "Three-floor 50' x 40' north-east corner home set on a 600 mm (2'0\") raised residential plinth above colony road level, with a stepped-down 22' car porch (-220 mm below the verandah and main ground floor), dual vehicle access via a 13'2\" east sliding car gate and a 10' NE corner car gate with sloped stone ramps, and a sleek Honda City sedan parked inside the porch. Features a full-span double-height dining atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft), a 3' east setback (x=47 ft) along the kitchen and wash room, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU, and an open-plan kitchen with an unobstructed dining-to-kitchen sightline, a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz center counter parallel to the east platform near the dining table, and a compact corner refrigerator on the small 3' wall beside the porch door. First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
 }
