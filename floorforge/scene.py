@@ -56,6 +56,12 @@ def make_scene(building, report):
         if 'exterior' in base:
             base['exterior']={**base['exterior'], 'landscape': {**base['exterior']['landscape'], 'boundary': {}}}
         return furnish(make_scene(base, report), building)
+    if building.get('planning', {}).get('tirumala7'):
+        from .tirumala_7 import make_tirumala_7_scene
+        base = {**building, 'stairs': [], 'planning': {**building['planning'], 'tirumala7': False, 'colonyContext': None, 'parkedCar': None}}
+        if 'exterior' in base:
+            base['exterior'] = {**base['exterior'], 'landscape': {**base['exterior']['landscape'], 'boundary': {}}}
+        return make_tirumala_7_scene(building, report, lambda b_, r_: make_scene(base, r_))
     from .tirumala_p11_p12 import is_p11_p12, make_p11_p12_scene
     if is_p11_p12(building):
         b_ext = building if building.get('exterior') else apply_exterior_preferences(building)

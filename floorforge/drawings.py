@@ -803,6 +803,8 @@ def elevation_elements(b, direction, scene=None):
 def section_cut(b):
     """The plan x (mm) of section A-A: along the up flight of the stair, or through the living room of a single-storey
     house, kept clear of the overall dimension figure at mid-width."""
+    if b.get('planning', {}).get('tirumala7'):
+        return 3505  # Cut through the 12' x 5' double-height void & dining shaft (y_ft = 28.5)
     W = Polygon(b['footprint']).bounds[2]
     if b['stairs'] and (b['storeys'] > 1 or b.get('rooftop')):
         st = b['stairs'][0]

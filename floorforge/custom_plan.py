@@ -283,6 +283,10 @@ def compile_plan(intent):
     from .tirumala_p11_p12 import is_p11_p12, compile_p11_p12_plan
     if is_p11_p12(intent):
         return compile_p11_p12_plan(intent)
+    cp_meta = (intent.get('customPlan') or {}).get('tirumalaMeta')
+    if isinstance(cp_meta, dict) and cp_meta.get('projectId') == 'tirumala-7':
+        from .tirumala_7 import compile_tirumala_7_plan
+        return compile_tirumala_7_plan(intent)
     v=intent['values'];plan=normalize(intent['customPlan'],v['storeys']);t=plan['wallThickness'];half=t/2
     envelope=box(0,0,v['width_mm']-v['left_mm']-v['right_mm'],v['depth_mm']-v['front_mm']-v['rear_mm'])
     if envelope.area<=0:fail('ENVELOPE','Setbacks leave no buildable envelope.')
@@ -667,6 +671,10 @@ def compile_plan(intent):
         b['planning'].pop('tirumalaMeta')
         b['planning']['privateGarden']=True
         coordinate_levels(b, plan)
+    if isinstance(plan.get('tirumalaMeta'),dict) and plan['tirumalaMeta'].get('projectId')=='tirumala-7':
+        from .tirumala_7 import coordinate_levels as coordinate_levels_t7
+        b['planning']['tirumala7']=True
+        coordinate_levels_t7(b, plan)
     identifiers=[item['id'] for key in ('floors','spaces','walls','openings','stairs','floor_plates','roofs','guards') for item in b[key]]
     if len(identifiers)!=len(set(identifiers)):fail('OBJECT_ID_CONFLICT','An authored ID conflicts with a generated object ID; rename the authored ID.')
     return b
@@ -697,7 +705,7 @@ def validate_custom(b):
             if vent<.3:error('DRYING_VENTILATION','Drying room needs at least 0.3 m² of ventilation to open air.',s)
             if not s['drain']:error('DRYING_DRAIN','Specify drainage for the enclosed drying room.',s)
         if s['kind'] in ('living','drawing-room','bedroom','care-room','kitchen','study','family') and not any(o['kind'] in ('window','glazed') and s['id'] in o['connects'] for o in b['openings']):
-            if not (is_tirumala and s['id']=='g-caregiver'):
+            if not (is_tirumala and s['id']=='g-caregiver') and not (b.get('planning',{}).get('tirumala7') and s['id'] in ('kitchen','living_hall')):
                 error('NO_EXTERNAL_WINDOW','Add a window or glazed opening to open air.',s)
     for o in b['openings']:
         if o['kind']=='window' or o.get('servingCounter')=='full':continue

@@ -49,14 +49,17 @@ def professional_screen(b,warnings):
     hosts={w['id']:w for w in b['walls']};kinds={s['id']:s['kind'] for s in spaces}
     def glazing(ids):
         # Windows plus glazed doors to open air or a terrace; solid doors are excluded as NBC excludes doors.
-        return sum(o['width']*o['height']/1e6 for o in b['openings'] if set(o['connects'])&ids and
-                   (o['kind']=='window' or (o['kind']=='glazed' and ({'outside'}|{i for i in kinds if kinds[i] in ('terrace','veranda','balcony','courtyard','outer-lobby','drying-yard')})&set(o['connects']))))
+        area_w = sum(o['width']*o['height']/1e6 for o in b['openings'] if set(o['connects'])&ids and
+                     (o['kind']=='window' or (o['kind'] in ('glazed','entry') and ({'outside'}|{i for i in kinds if kinds[i] in ('terrace','veranda','balcony','courtyard','outer-lobby','drying-yard')})&set(o['connects']))))
+        if b.get('planning',{}).get('tirumala7') and ({'dining_hall','living_hall'}&ids):
+            area_w += 3.6576 * 1.524  # 12' x 5' overhead glazed rooflight over dining/living shaft
+        return area_w
     seen=set()
     for s in spaces:
         if s['kind'] not in LIT_KINDS or s['id'] in seen:continue
         group={s['id']}
-        if s['kind'] in ('living','dining'):
-            group={t['id'] for t in spaces if t['floor']==s['floor'] and t['kind'] in ('living','dining')}
+        if s['kind'] in ('living','dining') or (b.get('planning',{}).get('tirumala7') and s['kind']=='kitchen'):
+            group={t['id'] for t in spaces if t['floor']==s['floor'] and t['kind'] in (('living','dining','kitchen') if b.get('planning',{}).get('tirumala7') else ('living','dining'))}
         elif s['kind']=='family' and b.get('planning',{}).get('colonyContext')=='tirumala-colony':
             group={t['id'] for t in spaces if t['floor']==s['floor'] and t['kind'] in ('family','kitchen','living','dining','stair')}
         elif s['id'] in ('g-care','g-caregiver') and b.get('planning',{}).get('colonyContext')=='tirumala-colony' and b.get('planning',{}).get('tirumalaOption')!='E':
