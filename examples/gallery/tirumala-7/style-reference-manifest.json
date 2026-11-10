@@ -1,0 +1,539 @@
+{
+  "sampleId": "tirumala-7",
+  "title": "Tirumala 7 \u2014 Video Style & Material Reference Manifest",
+  "sourceVideo": "Record_2026-11-09-23-57-43_40deb401b9ffe8e1df2f1cc5ba480b12.mp4 (Regal Art Interiors \u2014 Vallikunnam, Alappuzha)",
+  "videoDurationSec": 51.8,
+  "extractedFpsFrames": 52,
+  "committedReferenceFramesCount": 12,
+  "maxReferenceDimensionPx": 1080,
+  "geometryAuthorityRule": "Plan PDF (three-floor-home-with-rooflight.pdf) wins 100% on geometry. Video drives finishes, colours, materials, fixtures, furniture style, lighting and mood only.",
+  "paletteSummary": {
+    "kitchen_high_gloss_sage_teal": {
+      "sampled_raw_hex": "#587078",
+      "sampled_lit_hex": "#6E8E8A",
+      "pbr_base_hex": "#68928E",
+      "roughness": 0.12,
+      "metallic": 0.02
+    },
+    "kitchen_loft_deep_teal": {
+      "sampled_raw_hex": "#596C66",
+      "pbr_base_hex": "#567B77",
+      "roughness": 0.12,
+      "metallic": 0.02
+    },
+    "nano_white_quartz_worktop": {
+      "sampled_raw_hex": "#DFC8CA",
+      "pbr_base_hex": "#F2EFE9",
+      "roughness": 0.18,
+      "metallic": 0.0
+    },
+    "fluted_white_ceramic_backsplash": {
+      "sampled_raw_hex": "#D8C5CA",
+      "pbr_base_hex": "#EAE5DC",
+      "roughness": 0.32,
+      "tile_size_mm": [
+        75,
+        300
+      ]
+    },
+    "kerala_teak_joinery_and_furniture": {
+      "sampled_raw_hex": "#5B341D",
+      "pbr_base_hex": "#6E4223",
+      "roughness": 0.34,
+      "metallic": 0.0
+    },
+    "fluted_teak_slats_and_cubbies": {
+      "sampled_raw_hex": "#835A2E",
+      "pbr_base_hex": "#8A5A32",
+      "roughness": 0.38,
+      "metallic": 0.0
+    },
+    "black_glass_hob_and_fridge": {
+      "sampled_raw_hex": "#302E30",
+      "pbr_base_hex": "#1C1E20",
+      "roughness": 0.08,
+      "metallic": 0.15
+    },
+    "ivory_vitrified_floor_slab": {
+      "sampled_raw_hex": "#8F949C",
+      "pbr_base_hex": "#E6E1D6",
+      "roughness": 0.16,
+      "tile_size_mm": [
+        800,
+        800
+      ]
+    },
+    "charcoal_floor_border_inlay": {
+      "sampled_raw_hex": "#200507",
+      "pbr_base_hex": "#232527",
+      "roughness": 0.2,
+      "band_width_mm": 150
+    },
+    "warm_ivory_wall_paint": {
+      "sampled_raw_hex": "#BCB59B",
+      "pbr_base_hex": "#F4EFE6",
+      "roughness": 0.65
+    },
+    "matte_white_false_ceiling": {
+      "sampled_raw_hex": "#A49B8A",
+      "pbr_base_hex": "#F7F5F0",
+      "roughness": 0.75
+    },
+    "terracotta_sofa_upholstery": {
+      "sampled_raw_hex": "#4E1C1D",
+      "pbr_base_hex": "#94382C",
+      "roughness": 0.68
+    },
+    "warm_beige_pleated_drapery": {
+      "sampled_raw_hex": "#845F3C",
+      "pbr_base_hex": "#B89F82",
+      "roughness": 0.72
+    },
+    "warm_3000k_led_cove_and_pendants": {
+      "sampled_raw_hex": "#EB500B",
+      "kelvin": 3000,
+      "emissive_hex": "#FFD99B"
+    }
+  },
+  "frames": [
+    {
+      "id": "K-01",
+      "filename": "K-01_tall_pantry_and_fridge.png",
+      "source_frame": "fps_0002.jpg",
+      "timestamp_sec": 2.0,
+      "timestamp_label": "00:02",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Tall Pantry, Fridge Surround & Loft LED",
+      "comparison_view": "kitchen_from_dining",
+      "observed_features": [
+        "Full-height high-gloss sage-teal acrylic tall unit and refrigerator surround on the right end of the kitchen run",
+        "Stepped ceiling-height loft cabinets in deep sage-teal gloss with recessed linear LED strip along the soffit step",
+        "Laser-cut wooden geometric pendant lamp glowing warm amber (2700K) at the kitchen threshold",
+        "Warm teak wood portal framing at the kitchen entry"
+      ],
+      "sampled_colors": {
+        "teal_tall_unit_mid": "#6E8E8A",
+        "teal_loft_shadow": "#596C66",
+        "appliance_black_glass": "#302E30",
+        "pendant_amber_glow": "#EB500B"
+      },
+      "materials": [
+        "high_gloss_sage_teal_acrylic",
+        "black_mirror_glass",
+        "warm_teak_timber"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.tall_unit",
+        "tirumala7.kitchen.fridge_housing",
+        "tirumala7.kitchen.loft_cabinets"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-01_tall_pantry_and_fridge.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "K-02",
+      "filename": "K-02_hob_hood_and_loft_run.png",
+      "source_frame": "fps_0005.jpg",
+      "timestamp_sec": 5.0,
+      "timestamp_label": "00:05",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Hob, Chimney Hood, Display Uppers & Base Drawers",
+      "comparison_view": "kitchen_run",
+      "observed_features": [
+        "Two-tier upper cabinetry: deep high-gloss sage-teal ceiling loft cabinets with matte-black button knobs over mid-level uppers",
+        "Mid-level uppers combine black-framed smoked glass display cabinets, warm teak open cubbies with vertical LED strips, and a sage-teal fascia over a black chimney hood",
+        "3-burner black glass gas hob centered on a nano-white quartz worktop (860 mm height, 600 mm depth) with black Gola handle channels on base drawers",
+        "Vertically fluted matte-white ceramic tile backsplash illuminated by warm 3000K under-cabinet LED strips"
+      ],
+      "sampled_colors": {
+        "teal_loft_gloss": "#596C66",
+        "teal_base_gloss": "#587078",
+        "teal_mid_fascia": "#9C9E86",
+        "teak_open_cubby": "#7E431C",
+        "quartz_worktop_raw": "#DFC8CA",
+        "quartz_worktop_pbr": "#F2EFE9"
+      },
+      "materials": [
+        "high_gloss_sage_teal_acrylic",
+        "nano_white_quartz",
+        "fluted_white_ceramic_tile",
+        "smoked_glass_black_frame",
+        "warm_teak_timber"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.base_run",
+        "tirumala7.kitchen.upper_cabinets",
+        "tirumala7.kitchen.hob_and_hood",
+        "tirumala7.kitchen.backsplash"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-02_hob_hood_and_loft_run.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "K-03",
+      "filename": "K-03_breakfast_counter_and_pendants.png",
+      "source_frame": "fps_0023.jpg",
+      "timestamp_sec": 23.0,
+      "timestamp_label": "00:23",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Prep / Breakfast Counter, Waterfall Edge & Pendants",
+      "comparison_view": "kitchen_from_dining",
+      "observed_features": [
+        "Nano-white quartz counter with thick mitred waterfall edge and recessed vertical fluted teak-slat front panel",
+        "Two hanging laser-cut dark wood geometric lantern pendants suspended from a warm teak wood portal beam",
+        "Continuous warm LED strip under the loft cabinet step and under mid-level upper cabinets"
+      ],
+      "sampled_colors": {
+        "waterfall_quartz_raw": "#B2C2E2",
+        "waterfall_quartz_pbr": "#F2EFE9",
+        "fluted_teak_panel": "#7E431C",
+        "pendant_lantern_glow": "#EB500B"
+      },
+      "materials": [
+        "nano_white_quartz",
+        "fluted_teak_slats",
+        "laser_cut_wood_pendant"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.prep_counter",
+        "tirumala7.kitchen.portal_pendants"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-03_breakfast_counter_and_pendants.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "K-04",
+      "filename": "K-04_sink_window_and_uppers.png",
+      "source_frame": "fps_0028.jpg",
+      "timestamp_sec": 28.0,
+      "timestamp_label": "00:28",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Work Bay Sink, Gooseneck Tap & Backsplash",
+      "comparison_view": "kitchen_run",
+      "observed_features": [
+        "Matte-black square single-bowl undermount sink with brushed-nickel gooseneck mixer tap",
+        "Vertically fluted matte-white ceramic backsplash tiles catching warm 3000K under-cabinet LED wash",
+        "High-gloss sage-teal upper and loft cabinets with crisp specular reflections of ceiling linear LED profiles",
+        "Note: Video shows a teak casement window behind the sink; PDF has a solid east wall on the kitchen run (recorded under Owner Decisions)"
+      ],
+      "sampled_colors": {
+        "teal_upper_lit": "#5B7167",
+        "fluted_backsplash_warm": "#BAA68D",
+        "undercabinet_led_wash": "#998972",
+        "matte_black_sink": "#222425"
+      },
+      "materials": [
+        "matte_black_granite_sink",
+        "brushed_nickel_tap",
+        "fluted_white_ceramic_tile",
+        "high_gloss_sage_teal_acrylic"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.work_bay_sink",
+        "tirumala7.kitchen.undercabinet_lighting"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-04_sink_window_and_uppers.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "K-05",
+      "filename": "K-05_built_in_fridge_and_loft_led.png",
+      "source_frame": "fps_0034.jpg",
+      "timestamp_sec": 34.0,
+      "timestamp_label": "00:34",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Black Glass Refrigerator & Ceiling Linear LED",
+      "comparison_view": "kitchen_run",
+      "observed_features": [
+        "Double-door black mirror-glass refrigerator recessed into a full-height high-gloss sage-teal cabinet bay",
+        "Square/rectangular recessed linear LED profile light in the white false ceiling plus recessed spot downlights",
+        "Warm teak cornice trim along the top of the loft cabinets"
+      ],
+      "sampled_colors": {
+        "black_mirror_fridge": "#302E30",
+        "teal_cabinet_side": "#688683",
+        "teak_cornice_trim": "#5B341D"
+      },
+      "materials": [
+        "black_mirror_glass",
+        "high_gloss_sage_teal_acrylic",
+        "warm_teak_timber"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.refrigerator",
+        "tirumala7.kitchen.ceiling_led_profile"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-05_built_in_fridge_and_loft_led.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "K-06",
+      "filename": "K-06_full_kitchen_elevation.png",
+      "source_frame": "fps_0040.jpg",
+      "timestamp_sec": 40.0,
+      "timestamp_label": "00:40",
+      "space": "kitchen",
+      "view_group": "Kitchen \u2014 Full Elevation Composition & Material Balance",
+      "comparison_view": "kitchen_run",
+      "observed_features": [
+        "Complete vertical rhythm of the kitchen: sage-teal base drawers with black Gola channels -> white quartz top -> fluted white backsplash -> teak & smoked-glass mid uppers -> stepped sage-teal loft cabinets",
+        "White ceiling fan centered inside the rectangular linear LED ceiling profile"
+      ],
+      "sampled_colors": {
+        "teal_mid_upper_lit": "#8B937F",
+        "teal_base_cabinet": "#576D73",
+        "teak_cubby_lit": "#7E431C"
+      },
+      "materials": [
+        "high_gloss_sage_teal_acrylic",
+        "nano_white_quartz",
+        "warm_teak_timber",
+        "smoked_glass_black_frame"
+      ],
+      "drives_elements": [
+        "tirumala7.kitchen.straight_run_composition"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/K-06_full_kitchen_elevation.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "D-01",
+      "filename": "D-01_entry_pendants_and_drapery.png",
+      "source_frame": "fps_0009.jpg",
+      "timestamp_sec": 9.0,
+      "timestamp_label": "00:09",
+      "space": "dining_and_foyer",
+      "view_group": "Entry & Foyer \u2014 Solid Teak Doors, Pelmet Curtains & Lantern Pendants",
+      "comparison_view": "verandah",
+      "observed_features": [
+        "Solid panelled warm teak wood entrance door and teak-framed casement windows with horizontal security bars",
+        "Full-height warm beige/latte pleated curtains paired with sheer white curtains under a continuous teak wood pelmet",
+        "Pair of laser-cut wooden lantern pendants casting a warm 2700K amber glow at the threshold"
+      ],
+      "sampled_colors": {
+        "teak_door_timber": "#5B341D",
+        "curtain_warm_beige": "#845F3C",
+        "curtain_sheer_white": "#AEC1C6",
+        "pendant_amber": "#EB500B"
+      },
+      "materials": [
+        "warm_teak_timber",
+        "warm_beige_linen_drapery",
+        "sheer_white_voile",
+        "laser_cut_wood_pendant"
+      ],
+      "drives_elements": [
+        "tirumala7.doors.teak_main_double_doors",
+        "tirumala7.curtains.full_height_pelmet_drapes",
+        "tirumala7.foyer.lantern_pendants"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/D-01_entry_pendants_and_drapery.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "D-02",
+      "filename": "D-02_dining_table_and_slat_ceiling.png",
+      "source_frame": "fps_0011.jpg",
+      "timestamp_sec": 11.0,
+      "timestamp_label": "00:11",
+      "space": "dining_double_height",
+      "view_group": "Dining & Double-Height \u2014 Slatted Teak Tray, 3-Ring Chandelier & Teak Set",
+      "comparison_view": "dining_double_height",
+      "observed_features": [
+        "3-ring modern circular LED chandelier suspended at staggered heights over the dining table",
+        "Recessed slatted/fluted teak wood ceiling tray with warm perimeter cove light (adapted to the 12'\u00d75' double-height shaft walls and soffit trim)",
+        "6-seater warm teak dining table with high-back vertical-slat teak chairs",
+        "Glazed double doors opening onto the north verandah with greenery beyond"
+      ],
+      "sampled_colors": {
+        "slatted_teak_ceiling": "#835A2E",
+        "dining_chair_teak": "#43271A",
+        "warm_ivory_wall_raw": "#BCB59B",
+        "warm_ivory_wall_pbr": "#F4EFE6"
+      },
+      "materials": [
+        "fluted_teak_slats",
+        "warm_teak_timber",
+        "warm_led_ring_chandelier",
+        "warm_ivory_wall_paint"
+      ],
+      "drives_elements": [
+        "tirumala7.dining.chandelier_3ring",
+        "tirumala7.void.fluted_teak_shaft_cladding",
+        "tirumala7.dining.table_and_banquette_set"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/D-02_dining_table_and_slat_ceiling.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "D-03",
+      "filename": "D-03_dining_to_kitchen_portal.png",
+      "source_frame": "fps_0019.jpg",
+      "timestamp_sec": 19.0,
+      "timestamp_label": "00:19",
+      "space": "dining_double_height",
+      "view_group": "Dining to Kitchen \u2014 Cream Stone Tabletop, Framed Art & Open Kitchen View",
+      "comparison_view": "dining_double_height",
+      "observed_features": [
+        "Teak dining table with glossy cream/white marble-inlay top and slatted teak chairs",
+        "Direct sightline from the dining table into the sage-teal kitchen and white waterfall prep counter",
+        "Large-format glossy ivory vitrified floor tiles with a dark charcoal border inlay band",
+        "Teak-framed botanical wall art on warm ivory walls"
+      ],
+      "sampled_colors": {
+        "table_marble_top_raw": "#A19487",
+        "table_marble_top_pbr": "#EDE8DF",
+        "warm_ivory_wall": "#8F816B",
+        "teak_chair_frame": "#43271A"
+      },
+      "materials": [
+        "cream_marble_inlay",
+        "warm_teak_timber",
+        "ivory_vitrified_tile_800",
+        "charcoal_border_tile"
+      ],
+      "drives_elements": [
+        "tirumala7.dining.marble_top_table",
+        "tirumala7.flooring.ivory_vitrified_with_dark_border"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/D-03_dining_to_kitchen_portal.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "D-04",
+      "filename": "D-04_vanity_niche_and_backlit_mirror.png",
+      "source_frame": "fps_0017.jpg",
+      "timestamp_sec": 17.0,
+      "timestamp_label": "00:17",
+      "space": "living_and_bathrooms",
+      "view_group": "Wash / Vanity Niche & Hanging Swing \u2014 Fluted Teak & Backlit Circular Mirror",
+      "comparison_view": "living_hall",
+      "observed_features": [
+        "Recessed vanity alcove clad in vertical fluted teak wood slats with a circular warm-backlit LED mirror",
+        "Floating white vanity cabinet with black Gola profile handle and dark stone countertop",
+        "Hanging teak wood indoor swing (jhula) suspended on wrought-iron chains in the foreground"
+      ],
+      "sampled_colors": {
+        "fluted_teak_cladding": "#835A2E",
+        "swing_teak_plank": "#5B341D",
+        "vanity_white_shutter": "#EAE6DF"
+      },
+      "materials": [
+        "fluted_teak_slats",
+        "backlit_round_mirror",
+        "matte_white_lacquer",
+        "black_granite_counter"
+      ],
+      "drives_elements": [
+        "tirumala7.bathrooms.vanity_and_backlit_mirror",
+        "tirumala7.void.feature_wall_cladding"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/D-04_vanity_niche_and_backlit_mirror.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "L-01",
+      "filename": "L-01_living_chevron_led_and_columns.png",
+      "source_frame": "fps_0015.jpg",
+      "timestamp_sec": 15.0,
+      "timestamp_label": "00:15",
+      "space": "living_hall",
+      "view_group": "Living Hall \u2014 Chevron Linear Ceiling LEDs, Terracotta Sofa & Slatted Divider",
+      "comparison_view": "living_hall",
+      "observed_features": [
+        "Crisp white false ceiling with diagonal/chevron recessed linear LED strips and warm spot downlights",
+        "Deep terracotta/rust-red fabric sofa with teal accent cushions",
+        "Vertical slatted teak wood screen/bookcase divider and full-height sheer + beige window curtains",
+        "Glossy large-format ivory vitrified floor tiles with charcoal border inlay"
+      ],
+      "sampled_colors": {
+        "terracotta_sofa_raw": "#4E1C1D",
+        "terracotta_sofa_pbr": "#94382C",
+        "ivory_floor_tile_raw": "#8F949C",
+        "ivory_floor_tile_pbr": "#E6E1D6",
+        "charcoal_floor_inlay": "#200507"
+      },
+      "materials": [
+        "terracotta_woven_fabric",
+        "teal_velvet_cushion",
+        "ivory_vitrified_tile_800",
+        "fluted_teak_slats"
+      ],
+      "drives_elements": [
+        "tirumala7.living.sofa_and_cushions",
+        "tirumala7.living.chevron_ceiling_leds",
+        "tirumala7.flooring.whole_house_slab"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/L-01_living_chevron_led_and_columns.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    },
+    {
+      "id": "L-02",
+      "filename": "L-02_living_sofa_swing_and_tv_wall.png",
+      "source_frame": "fps_0050.jpg",
+      "timestamp_sec": 50.0,
+      "timestamp_label": "00:50",
+      "space": "living_hall",
+      "view_group": "Living Hall \u2014 TV Wall Unit, Window Bay Seat & Overall Mood",
+      "comparison_view": "living_to_icu",
+      "observed_features": [
+        "Built-in teak wood TV wall unit with fluted wood backing and warm-lit open display shelves on the living room wall",
+        "Window bay bench beneath sheer white and beige curtains",
+        "Unified whole-house palette: warm ivory walls (#F4EFE6), glossy ivory vitrified floor (#E6E1D6) with dark border (#232527), rich teak joinery (#6E4223), sage-teal cabinetry (#68928E), and terracotta upholstery (#94382C)"
+      ],
+      "sampled_colors": {
+        "tv_unit_teak": "#5B341D",
+        "terracotta_sofa": "#4D1815",
+        "false_ceiling_white": "#7C7B76"
+      },
+      "materials": [
+        "warm_teak_timber",
+        "fluted_teak_slats",
+        "terracotta_woven_fabric",
+        "warm_ivory_wall_paint"
+      ],
+      "drives_elements": [
+        "tirumala7.living.tv_wall_unit",
+        "tirumala7.bedrooms.wardrobe_and_headboard_style"
+      ],
+      "asset_path": "examples/gallery/tirumala-7/reference-assets/L-02_living_sofa_swing_and_tv_wall.png",
+      "dimensions_px": [
+        720,
+        1083
+      ]
+    }
+  ]
+}

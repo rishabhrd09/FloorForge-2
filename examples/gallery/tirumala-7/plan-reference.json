@@ -1,0 +1,3517 @@
+{
+  "sample_id": "tirumala-7",
+  "title": "Tirumala 7 \u2014 50\u2032 \u00d7 40\u2032 Three-Floor Corner Home with Rooflight",
+  "source_pdf": "three-floor-home-with-rooflight.pdf",
+  "scale": {
+    "paper": "A3 (1191.12 \u00d7 841.92 pt)",
+    "ratio": "1:60",
+    "pt_per_ft": 14.4,
+    "origin_pt_top_left": [
+      99.05947,
+      164.91214
+    ],
+    "max_wall_axis_error_mm": 0.0,
+    "tolerance_mm": 25.0
+  },
+  "coordinate_system": {
+    "plot_width_x_ft": 50.0,
+    "plot_depth_y_ft": 40.0,
+    "plot_width_x_mm": 15240.0,
+    "plot_depth_y_mm": 12192.0,
+    "pdf_x_axis": "feet east of west plot line (0..50)",
+    "pdf_y_axis": "feet south of north plot line (0..40)",
+    "floorforge_local_transform": "X_mm = (40 - y_ft) * 304.8 (+X north), Y_mm = (50 - x_ft) * 304.8 (+Y west)"
+  },
+  "wall_thickness_mm": {
+    "external_mm": 120,
+    "internal_mm": 120,
+    "parapet_mm": 120,
+    "slab_depth_mm": 180,
+    "parapet_height_mm": 1050,
+    "guard_height_mm": 1050,
+    "note": "Follows Tirumala 5/6 custom-plan convention (WALL = 120 mm, 60 mm each side of nominal wall axes)."
+  },
+  "vertical_alignment": {
+    "storeys": 3,
+    "plinth_height_mm": 300,
+    "floor_to_floor_height_mm": 3150,
+    "slab_thickness_mm": 180,
+    "clear_room_height_mm": 2970,
+    "level_elevations_mm": {
+      "ground": 0,
+      "first": 3150,
+      "second": 6300,
+      "second_roof_slab": 9450
+    },
+    "light_shaft": {
+      "x_ft": [
+        21.0,
+        33.0
+      ],
+      "y_ft": [
+        26.0,
+        31.0
+      ],
+      "size_ft": [
+        12.0,
+        5.0
+      ],
+      "size_mm": [
+        3657.6,
+        1524.0
+      ],
+      "area_sqft": 60.0,
+      "ground_floor": "Double-height volume over dining table and adjoining south-east edge of living hall",
+      "first_floor": "12\u2032 \u00d7 5\u2032 slab opening ('Open to below') with guards on all open edges",
+      "second_floor": "12\u2032 \u00d7 5\u2032 raised glazed rooflight with protective curb (250 mm curb), drainage falls, non-walkable (excluded from 858 sq ft terrace)"
+    },
+    "east_terrace_setbacks": {
+      "ground_east_wall_x_ft": 50.0,
+      "first_floor_terrace_edge_x_ft": 47.0,
+      "first_floor_setback_ft": 3.0,
+      "second_floor_terrace_edge_x_ft": 44.0,
+      "second_floor_setback_ft": 6.0,
+      "car_porch_open_to_sky_strip_ft": {
+        "x": [
+          47.0,
+          50.0
+        ],
+        "y": [
+          0.0,
+          20.0
+        ],
+        "size_ft": [
+          3.0,
+          20.0
+        ]
+      }
+    },
+    "stair": {
+      "type": "U-turn stair climbing south, west, north",
+      "well_x_ft": [
+        17.0,
+        32.0
+      ],
+      "well_y_ft": [
+        33.0,
+        40.0
+      ],
+      "flight_outer_x_ft": [
+        17.15,
+        31.85
+      ],
+      "flight_outer_y_ft": [
+        33.0625,
+        39.8125
+      ],
+      "flight_width_ft": 3.25,
+      "flight_width_mm": 990.6,
+      "tread_sequence": [
+        2,
+        9,
+        4
+      ],
+      "legs": [
+        {
+          "direction": "south",
+          "treads": 2,
+          "x_ft": [
+            28.6,
+            31.85
+          ],
+          "y_ft": [
+            34.8125,
+            36.5625
+          ],
+          "tread_depth_ft": 0.875,
+          "tread_depth_mm": 266.7
+        },
+        {
+          "direction": "se_landing",
+          "treads": 0,
+          "x_ft": [
+            28.6,
+            31.85
+          ],
+          "y_ft": [
+            36.5625,
+            39.8125
+          ]
+        },
+        {
+          "direction": "west",
+          "treads": 9,
+          "x_ft": [
+            20.4,
+            28.6
+          ],
+          "y_ft": [
+            36.5625,
+            39.8125
+          ],
+          "tread_depth_ft": 0.9111,
+          "tread_depth_mm": 277.7
+        },
+        {
+          "direction": "sw_landing",
+          "treads": 0,
+          "x_ft": [
+            17.15,
+            20.4
+          ],
+          "y_ft": [
+            36.5625,
+            39.8125
+          ]
+        },
+        {
+          "direction": "north",
+          "treads": 4,
+          "x_ft": [
+            17.15,
+            20.4
+          ],
+          "y_ft": [
+            33.0625,
+            36.5625
+          ],
+          "tread_depth_ft": 0.875,
+          "tread_depth_mm": 266.7
+        }
+      ],
+      "risers_per_storey": 18,
+      "riser_height_mm": 175.0,
+      "min_tread_depth_mm": 266.7,
+      "min_clear_headroom_mm": 2450.0
+    }
+  },
+  "floors": {
+    "ground": {
+      "level_index": 0,
+      "elevation_mm": 0,
+      "rooms": {
+        "outside_gully": {
+          "label": "Outside gully",
+          "kind": "verandah",
+          "enclosed": false,
+          "x_ft": [
+            0.0,
+            23.0
+          ],
+          "y_ft": [
+            0.0,
+            2.0
+          ],
+          "size_ft": [
+            23.0,
+            2.0
+          ],
+          "size_mm": [
+            7010.4,
+            609.6
+          ],
+          "local_x_mm": [
+            11582.4,
+            12192.0
+          ],
+          "local_y_mm": [
+            8229.6,
+            15240.0
+          ]
+        },
+        "caregiver": {
+          "label": "Caregiver",
+          "kind": "bedroom",
+          "enclosed": true,
+          "x_ft": [
+            0.0,
+            8.0
+          ],
+          "y_ft": [
+            2.0,
+            12.0
+          ],
+          "size_ft": [
+            8.0,
+            10.0
+          ],
+          "size_mm": [
+            2438.4,
+            3048.0
+          ],
+          "local_x_mm": [
+            8534.4,
+            11582.4
+          ],
+          "local_y_mm": [
+            12801.6,
+            15240.0
+          ]
+        },
+        "caregiver_bath": {
+          "label": "Caregiver bath",
+          "kind": "bathroom",
+          "enclosed": true,
+          "x_ft": [
+            0.0,
+            5.0
+          ],
+          "y_ft": [
+            12.0,
+            18.0
+          ],
+          "size_ft": [
+            5.0,
+            6.0
+          ],
+          "size_mm": [
+            1524.0,
+            1828.8
+          ],
+          "local_x_mm": [
+            6705.6,
+            8534.4
+          ],
+          "local_y_mm": [
+            13716.0,
+            15240.0
+          ]
+        },
+        "hall_entry": {
+          "label": "Hall entry",
+          "kind": "corridor",
+          "enclosed": true,
+          "x_ft": [
+            5.0,
+            8.0
+          ],
+          "y_ft": [
+            12.0,
+            16.0
+          ],
+          "size_ft": [
+            3.0,
+            4.0
+          ],
+          "size_mm": [
+            914.4,
+            1219.2
+          ],
+          "local_x_mm": [
+            7315.2,
+            8534.4
+          ],
+          "local_y_mm": [
+            12801.6,
+            13716.0
+          ]
+        },
+        "drawing_room": {
+          "label": "Drawing room",
+          "kind": "drawing",
+          "enclosed": true,
+          "x_ft": [
+            8.0,
+            17.5
+          ],
+          "y_ft": [
+            2.0,
+            16.0
+          ],
+          "size_ft": [
+            9.5,
+            14.0
+          ],
+          "size_mm": [
+            2895.6,
+            4267.2
+          ],
+          "local_x_mm": [
+            7315.2,
+            11582.4
+          ],
+          "local_y_mm": [
+            9906.0,
+            12801.6
+          ]
+        },
+        "covered_entry": {
+          "label": "Covered entry",
+          "kind": "foyer",
+          "enclosed": false,
+          "x_ft": [
+            17.5,
+            23.0
+          ],
+          "y_ft": [
+            2.0,
+            9.0
+          ],
+          "size_ft": [
+            5.5,
+            7.0
+          ],
+          "size_mm": [
+            1676.4,
+            2133.6
+          ],
+          "local_x_mm": [
+            9448.8,
+            11582.4
+          ],
+          "local_y_mm": [
+            8229.6,
+            9906.0
+          ]
+        },
+        "verandah": {
+          "label": "Verandah",
+          "kind": "verandah",
+          "enclosed": false,
+          "x_ft": [
+            23.0,
+            39.0
+          ],
+          "y_ft": [
+            0.0,
+            9.0
+          ],
+          "size_ft": [
+            16.0,
+            9.0
+          ],
+          "size_mm": [
+            4876.8,
+            2743.2
+          ],
+          "local_x_mm": [
+            9448.8,
+            12192.0
+          ],
+          "local_y_mm": [
+            3352.8,
+            8229.6
+          ]
+        },
+        "car_porch": {
+          "label": "Car porch",
+          "kind": "parking",
+          "enclosed": false,
+          "x_ft": [
+            39.0,
+            50.0
+          ],
+          "y_ft": [
+            0.0,
+            20.0
+          ],
+          "size_ft": [
+            11.0,
+            20.0
+          ],
+          "size_mm": [
+            3352.8,
+            6096.0
+          ],
+          "local_x_mm": [
+            6096.0,
+            12192.0
+          ],
+          "local_y_mm": [
+            0.0,
+            3352.8
+          ]
+        },
+        "living_hall": {
+          "label": "Living hall",
+          "kind": "living",
+          "enclosed": true,
+          "x_ft": [
+            5.5,
+            24.0
+          ],
+          "y_ft": [
+            16.0,
+            26.0
+          ],
+          "size_ft": [
+            18.5,
+            10.0
+          ],
+          "size_mm": [
+            5638.8,
+            3048.0
+          ],
+          "local_x_mm": [
+            4267.2,
+            7315.2
+          ],
+          "local_y_mm": [
+            7924.8,
+            13563.6
+          ],
+          "foyer_extension_ft": {
+            "x": [
+              17.5,
+              24.0
+            ],
+            "y": [
+              9.0,
+              16.0
+            ]
+          }
+        },
+        "home_icu": {
+          "label": "Home ICU",
+          "kind": "bedroom",
+          "enclosed": true,
+          "x_ft": [
+            24.0,
+            39.0
+          ],
+          "y_ft": [
+            9.0,
+            26.0
+          ],
+          "size_ft": [
+            15.0,
+            17.0
+          ],
+          "size_mm": [
+            4572.0,
+            5181.6
+          ],
+          "local_x_mm": [
+            4267.2,
+            9448.8
+          ],
+          "local_y_mm": [
+            3352.8,
+            7924.8
+          ]
+        },
+        "master_bath": {
+          "label": "Master bath",
+          "kind": "bathroom",
+          "enclosed": true,
+          "x_ft": [
+            0.0,
+            5.5
+          ],
+          "y_ft": [
+            18.0,
+            26.0
+          ],
+          "size_ft": [
+            5.5,
+            8.0
+          ],
+          "size_mm": [
+            1676.4,
+            2438.4
+          ],
+          "local_x_mm": [
+            4267.2,
+            6705.6
+          ],
+          "local_y_mm": [
+            13563.6,
+            15240.0
+          ]
+        },
+        "west_gully": {
+          "label": "West gully",
+          "kind": "verandah",
+          "enclosed": false,
+          "x_ft": [
+            0.0,
+            2.0
+          ],
+          "y_ft": [
+            26.0,
+            40.0
+          ],
+          "size_ft": [
+            2.0,
+            14.0
+          ],
+          "size_mm": [
+            609.6,
+            4267.2
+          ],
+          "local_x_mm": [
+            0.0,
+            4267.2
+          ],
+          "local_y_mm": [
+            14630.4,
+            15240.0
+          ]
+        },
+        "master_bedroom": {
+          "label": "Master bedroom",
+          "kind": "master_bedroom",
+          "enclosed": true,
+          "x_ft": [
+            2.0,
+            17.0
+          ],
+          "y_ft": [
+            26.0,
+            40.0
+          ],
+          "size_ft": [
+            15.0,
+            14.0
+          ],
+          "size_mm": [
+            4572.0,
+            4267.2
+          ],
+          "local_x_mm": [
+            0.0,
+            4267.2
+          ],
+          "local_y_mm": [
+            10058.4,
+            14630.4
+          ]
+        },
+        "bedroom_entry": {
+          "label": "Bedroom entry",
+          "kind": "corridor",
+          "enclosed": true,
+          "x_ft": [
+            17.0,
+            24.0
+          ],
+          "y_ft": [
+            26.0,
+            33.0
+          ],
+          "size_ft": [
+            7.0,
+            7.0
+          ],
+          "size_mm": [
+            2133.6,
+            2133.6
+          ],
+          "local_x_mm": [
+            2133.6,
+            4267.2
+          ],
+          "local_y_mm": [
+            7924.8,
+            10058.4
+          ]
+        },
+        "dining_hall": {
+          "label": "Dining hall",
+          "kind": "dining",
+          "enclosed": true,
+          "x_ft": [
+            24.0,
+            36.0
+          ],
+          "y_ft": [
+            26.0,
+            33.0
+          ],
+          "size_ft": [
+            12.0,
+            7.0
+          ],
+          "size_mm": [
+            3657.6,
+            2133.6
+          ],
+          "local_x_mm": [
+            2133.6,
+            4267.2
+          ],
+          "local_y_mm": [
+            4267.2,
+            7924.8
+          ]
+        },
+        "kitchen": {
+          "label": "Kitchen",
+          "kind": "kitchen",
+          "enclosed": true,
+          "x_ft": [
+            36.0,
+            50.0
+          ],
+          "y_ft": [
+            26.0,
+            34.0
+          ],
+          "size_ft": [
+            14.0,
+            8.0
+          ],
+          "size_mm": [
+            4267.2,
+            2438.4
+          ],
+          "local_x_mm": [
+            1828.8,
+            4267.2
+          ],
+          "local_y_mm": [
+            0.0,
+            4267.2
+          ]
+        },
+        "work_bay": {
+          "label": "Work bay",
+          "kind": "utility",
+          "enclosed": true,
+          "x_ft": [
+            39.0,
+            50.0
+          ],
+          "y_ft": [
+            20.0,
+            26.0
+          ],
+          "size_ft": [
+            11.0,
+            6.0
+          ],
+          "size_mm": [
+            3352.8,
+            1828.8
+          ],
+          "local_x_mm": [
+            4267.2,
+            6096.0
+          ],
+          "local_y_mm": [
+            0.0,
+            3352.8
+          ]
+        },
+        "stair": {
+          "label": "Stair \u00b7 up",
+          "kind": "stair",
+          "enclosed": true,
+          "x_ft": [
+            17.0,
+            32.0
+          ],
+          "y_ft": [
+            33.0,
+            40.0
+          ],
+          "size_ft": [
+            15.0,
+            7.0
+          ],
+          "size_mm": [
+            4572.0,
+            2133.6
+          ],
+          "local_x_mm": [
+            0.0,
+            2133.6
+          ],
+          "local_y_mm": [
+            5486.4,
+            10058.4
+          ]
+        },
+        "stair_gap": {
+          "label": "2\u2032 gap",
+          "kind": "corridor",
+          "enclosed": true,
+          "x_ft": [
+            32.0,
+            34.0
+          ],
+          "y_ft": [
+            33.0,
+            40.0
+          ],
+          "size_ft": [
+            2.0,
+            7.0
+          ],
+          "size_mm": [
+            609.6,
+            2133.6
+          ],
+          "local_x_mm": [
+            0.0,
+            2133.6
+          ],
+          "local_y_mm": [
+            4876.8,
+            5486.4
+          ]
+        },
+        "store": {
+          "label": "Store",
+          "kind": "store",
+          "enclosed": true,
+          "x_ft": [
+            34.0,
+            41.0
+          ],
+          "y_ft": [
+            34.0,
+            40.0
+          ],
+          "size_ft": [
+            7.0,
+            6.0
+          ],
+          "size_mm": [
+            2133.6,
+            1828.8
+          ],
+          "local_x_mm": [
+            0.0,
+            1828.8
+          ],
+          "local_y_mm": [
+            2743.2,
+            4876.8
+          ]
+        },
+        "wash_area": {
+          "label": "Wash area",
+          "kind": "wash_area",
+          "enclosed": true,
+          "x_ft": [
+            41.0,
+            50.0
+          ],
+          "y_ft": [
+            34.0,
+            40.0
+          ],
+          "size_ft": [
+            9.0,
+            6.0
+          ],
+          "size_mm": [
+            2743.2,
+            1828.8
+          ],
+          "local_x_mm": [
+            0.0,
+            1828.8
+          ],
+          "local_y_mm": [
+            0.0,
+            2743.2
+          ]
+        }
+      },
+      "walls_ft": [
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            0.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            26.0
+          ],
+          [
+            0.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            40.0
+          ],
+          [
+            50.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            50.0,
+            40.0
+          ],
+          [
+            50.0,
+            20.0
+          ]
+        ],
+        [
+          [
+            50.0,
+            20.0
+          ],
+          [
+            42.65,
+            20.0
+          ]
+        ],
+        [
+          [
+            39.4,
+            20.0
+          ],
+          [
+            39.0,
+            20.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            26.0
+          ],
+          [
+            2.0,
+            27.05
+          ]
+        ],
+        [
+          [
+            2.0,
+            30.05
+          ],
+          [
+            2.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            3.95,
+            2.0
+          ]
+        ],
+        [
+          [
+            7.45,
+            2.0
+          ],
+          [
+            17.5,
+            2.0
+          ]
+        ],
+        [
+          [
+            17.5,
+            2.0
+          ],
+          [
+            17.5,
+            12.2
+          ]
+        ],
+        [
+          [
+            17.5,
+            15.7
+          ],
+          [
+            17.5,
+            16.0
+          ]
+        ],
+        [
+          [
+            17.5,
+            16.0
+          ],
+          [
+            8.0,
+            16.0
+          ]
+        ],
+        [
+          [
+            8.0,
+            16.0
+          ],
+          [
+            8.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            12.0
+          ],
+          [
+            1.5,
+            12.0
+          ]
+        ],
+        [
+          [
+            4.5,
+            12.0
+          ],
+          [
+            5.0,
+            12.0
+          ]
+        ],
+        [
+          [
+            5.0,
+            12.0
+          ],
+          [
+            5.0,
+            18.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            18.0
+          ],
+          [
+            5.5,
+            18.0
+          ]
+        ],
+        [
+          [
+            5.5,
+            18.0
+          ],
+          [
+            5.5,
+            26.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            26.0
+          ],
+          [
+            2.2,
+            26.0
+          ]
+        ],
+        [
+          [
+            5.2,
+            26.0
+          ],
+          [
+            17.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            17.0,
+            26.0
+          ],
+          [
+            17.0,
+            27.25
+          ]
+        ],
+        [
+          [
+            17.0,
+            31.0
+          ],
+          [
+            17.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            17.5,
+            9.0
+          ],
+          [
+            17.75,
+            9.0
+          ]
+        ],
+        [
+          [
+            23.75,
+            9.0
+          ],
+          [
+            28.0,
+            9.0
+          ]
+        ],
+        [
+          [
+            35.0,
+            9.0
+          ],
+          [
+            39.0,
+            9.0
+          ]
+        ],
+        [
+          [
+            39.0,
+            9.0
+          ],
+          [
+            39.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            39.0,
+            26.0
+          ],
+          [
+            24.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            24.0,
+            26.0
+          ],
+          [
+            24.0,
+            25.75
+          ]
+        ],
+        [
+          [
+            24.0,
+            20.25
+          ],
+          [
+            24.0,
+            9.0
+          ]
+        ],
+        [
+          [
+            34.0,
+            40.0
+          ],
+          [
+            34.0,
+            34.0
+          ]
+        ],
+        [
+          [
+            34.0,
+            34.0
+          ],
+          [
+            36.8,
+            34.0
+          ]
+        ],
+        [
+          [
+            39.8,
+            34.0
+          ],
+          [
+            42.0,
+            34.0
+          ]
+        ],
+        [
+          [
+            45.25,
+            34.0
+          ],
+          [
+            50.0,
+            34.0
+          ]
+        ],
+        [
+          [
+            41.0,
+            34.0
+          ],
+          [
+            41.0,
+            40.0
+          ]
+        ]
+      ],
+      "doors": [
+        {
+          "id": "caregiver_north_door",
+          "wall": "y=2.0",
+          "span_ft": [
+            3.95,
+            7.45
+          ],
+          "width_ft": 3.5,
+          "hinge_ft": [
+            7.45,
+            2.0
+          ],
+          "swing": "south_into_caregiver"
+        },
+        {
+          "id": "caregiver_hall_door",
+          "wall": "y=12.0",
+          "span_ft": [
+            5.0,
+            7.94
+          ],
+          "width_ft": 2.94,
+          "hinge_ft": [
+            7.94,
+            12.0
+          ],
+          "swing": "north_into_caregiver"
+        },
+        {
+          "id": "caregiver_bath_door",
+          "wall": "y=12.0",
+          "span_ft": [
+            1.5,
+            4.5
+          ],
+          "width_ft": 3.0,
+          "hinge_ft": [
+            4.5,
+            12.0
+          ],
+          "swing": "south_into_caregiver_bath"
+        },
+        {
+          "id": "drawing_east_door",
+          "wall": "x=17.5",
+          "span_ft": [
+            12.2,
+            15.7
+          ],
+          "width_ft": 3.5,
+          "hinge_ft": [
+            17.5,
+            15.7
+          ],
+          "swing": "west_into_drawing_room"
+        },
+        {
+          "id": "main_double_doors",
+          "wall": "y=9.0",
+          "span_ft": [
+            17.75,
+            23.75
+          ],
+          "width_ft": 6.0,
+          "type": "double_door",
+          "swing": "south_into_living_hall"
+        },
+        {
+          "id": "icu_north_slider",
+          "wall": "y=9.0",
+          "span_ft": [
+            28.0,
+            35.0
+          ],
+          "width_ft": 7.0,
+          "type": "sliding_glass_door"
+        },
+        {
+          "id": "icu_west_clear_opening",
+          "wall": "x=24.0",
+          "span_ft": [
+            20.25,
+            25.75
+          ],
+          "width_ft": 5.5,
+          "width_mm": 1676.4,
+          "type": "clear_opening_no_door"
+        },
+        {
+          "id": "master_bath_door",
+          "wall": "y=26.0",
+          "span_ft": [
+            2.2,
+            5.2
+          ],
+          "width_ft": 3.0,
+          "hinge_ft": [
+            5.2,
+            26.0
+          ],
+          "swing": "north_into_master_bath"
+        },
+        {
+          "id": "master_west_gully_door",
+          "wall": "x=2.0",
+          "span_ft": [
+            27.05,
+            30.05
+          ],
+          "width_ft": 3.0,
+          "hinge_ft": [
+            2.0,
+            30.05
+          ],
+          "swing": "east_into_master_bedroom"
+        },
+        {
+          "id": "master_bedroom_door",
+          "wall": "x=17.0",
+          "span_ft": [
+            27.25,
+            31.0
+          ],
+          "width_ft": 3.75,
+          "hinge_ft": [
+            17.0,
+            27.25
+          ],
+          "swing": "west_into_master_bedroom"
+        },
+        {
+          "id": "work_bay_porch_door",
+          "wall": "y=20.0",
+          "span_ft": [
+            39.4,
+            42.65
+          ],
+          "width_ft": 3.25,
+          "hinge_ft": [
+            39.4,
+            20.0
+          ],
+          "swing": "south_into_work_bay"
+        },
+        {
+          "id": "store_door",
+          "wall": "y=34.0",
+          "span_ft": [
+            36.8,
+            39.8
+          ],
+          "width_ft": 3.0,
+          "hinge_ft": [
+            36.8,
+            34.0
+          ],
+          "swing": "south_into_store"
+        },
+        {
+          "id": "wash_area_door",
+          "wall": "y=34.0",
+          "span_ft": [
+            42.0,
+            45.25
+          ],
+          "width_ft": 3.25,
+          "hinge_ft": [
+            45.25,
+            34.0
+          ],
+          "swing": "south_into_wash_area"
+        }
+      ],
+      "windows": [
+        {
+          "id": "caregiver_west_window",
+          "wall": "x=0.0",
+          "span_ft": [
+            5.2,
+            9.2
+          ],
+          "width_ft": 4.0
+        },
+        {
+          "id": "drawing_north_window",
+          "wall": "y=2.0",
+          "span_ft": [
+            10.5,
+            16.75
+          ],
+          "width_ft": 6.25
+        },
+        {
+          "id": "drawing_east_window_1",
+          "wall": "x=17.5",
+          "span_ft": [
+            2.5,
+            5.0
+          ],
+          "width_ft": 2.5
+        },
+        {
+          "id": "drawing_east_window_2",
+          "wall": "x=17.5",
+          "span_ft": [
+            5.65,
+            8.15
+          ],
+          "width_ft": 2.5
+        },
+        {
+          "id": "icu_north_fixed_glazing_west",
+          "wall": "y=9.0",
+          "span_ft": [
+            24.5,
+            28.0
+          ],
+          "width_ft": 3.5
+        },
+        {
+          "id": "icu_north_fixed_glazing_east",
+          "wall": "y=9.0",
+          "span_ft": [
+            35.0,
+            38.5
+          ],
+          "width_ft": 3.5
+        },
+        {
+          "id": "icu_east_window_1",
+          "wall": "x=39.0",
+          "span_ft": [
+            10.15,
+            14.65
+          ],
+          "width_ft": 4.5
+        },
+        {
+          "id": "icu_east_window_2",
+          "wall": "x=39.0",
+          "span_ft": [
+            15.15,
+            19.65
+          ],
+          "width_ft": 4.5
+        },
+        {
+          "id": "master_bath_high_window",
+          "wall": "y=26.0",
+          "span_ft": [
+            0.2,
+            1.75
+          ],
+          "width_ft": 1.55
+        },
+        {
+          "id": "master_west_window",
+          "wall": "x=2.0",
+          "span_ft": [
+            31.6,
+            37.0
+          ],
+          "width_ft": 5.4
+        },
+        {
+          "id": "master_south_window",
+          "wall": "y=40.0",
+          "span_ft": [
+            9.0,
+            14.0
+          ],
+          "width_ft": 5.0
+        },
+        {
+          "id": "wash_south_window",
+          "wall": "y=40.0",
+          "span_ft": [
+            42.0,
+            46.0
+          ],
+          "width_ft": 4.0
+        }
+      ],
+      "fixtures": {
+        "caregiver_bed": {
+          "x_ft": [
+            0.55,
+            3.45
+          ],
+          "y_ft": [
+            2.7,
+            8.95
+          ]
+        },
+        "caregiver_bath_wc": {
+          "x_ft": [
+            0.45,
+            2.05
+          ],
+          "y_ft": [
+            15.95,
+            17.45
+          ]
+        },
+        "caregiver_bath_basin": {
+          "x_ft": [
+            0.45,
+            1.55
+          ],
+          "y_ft": [
+            13.2,
+            14.5
+          ]
+        },
+        "caregiver_bath_drain": {
+          "x_ft": [
+            3.75,
+            4.58
+          ],
+          "y_ft": [
+            16.8,
+            17.63
+          ]
+        },
+        "drawing_sofa": {
+          "x_ft": [
+            9.2,
+            16.4
+          ],
+          "y_ft": [
+            2.6,
+            5.3
+          ]
+        },
+        "living_sofa": {
+          "x_ft": [
+            9.9,
+            15.9
+          ],
+          "y_ft": [
+            16.18,
+            19.03
+          ]
+        },
+        "living_coffee_table": {
+          "x_ft": [
+            11.15,
+            14.65
+          ],
+          "y_ft": [
+            20.55,
+            22.3
+          ]
+        },
+        "living_tv_75in": {
+          "x_ft": [
+            10.176,
+            15.624
+          ],
+          "y_ft": [
+            25.67,
+            25.85
+          ]
+        },
+        "icu_bed": {
+          "x_ft": [
+            28.125,
+            34.875
+          ],
+          "y_ft": [
+            15.8,
+            19.2
+          ],
+          "orientation": "east_to_west_head_east"
+        },
+        "icu_bedside_unit": {
+          "x_ft": [
+            33.9,
+            34.9
+          ],
+          "y_ft": [
+            14.45,
+            15.2
+          ]
+        },
+        "icu_tv_55in": {
+          "x_ft": [
+            24.18,
+            24.36
+          ],
+          "y_ft": [
+            15.503,
+            19.497
+          ]
+        },
+        "master_bath_shower": {
+          "x_ft": [
+            0.17,
+            2.82
+          ],
+          "y_ft": [
+            18.17,
+            20.82
+          ]
+        },
+        "master_bath_wc": {
+          "x_ft": [
+            3.75,
+            5.33
+          ],
+          "y_ft": [
+            20.84,
+            22.32
+          ]
+        },
+        "master_bath_basin": {
+          "x_ft": [
+            0.55,
+            2.05
+          ],
+          "y_ft": [
+            24.45,
+            25.55
+          ]
+        },
+        "master_bed": {
+          "x_ft": [
+            5.15,
+            11.05
+          ],
+          "y_ft": [
+            32.55,
+            39.5
+          ]
+        },
+        "dining_banquette": {
+          "x_ft": [
+            26.8,
+            32.2
+          ],
+          "y_ft": [
+            26.32,
+            27.6
+          ]
+        },
+        "dining_table": {
+          "x_ft": [
+            26.6,
+            32.4
+          ],
+          "y_ft": [
+            27.95,
+            30.85
+          ]
+        },
+        "dining_chair_west": {
+          "x_ft": [
+            25.25,
+            26.35
+          ],
+          "y_ft": [
+            28.5,
+            30.3
+          ]
+        },
+        "dining_chair_east": {
+          "x_ft": [
+            32.65,
+            33.75
+          ],
+          "y_ft": [
+            28.5,
+            30.3
+          ]
+        },
+        "prep_counter": {
+          "x_ft": [
+            34.1,
+            38.1
+          ],
+          "y_ft": [
+            26.18,
+            27.93
+          ]
+        },
+        "kitchen_counter": {
+          "x_ft": [
+            48.0,
+            49.72
+          ],
+          "y_ft": [
+            20.3,
+            33.7
+          ],
+          "length_ft": 13.4
+        },
+        "kitchen_sink": {
+          "x_ft": [
+            48.17,
+            49.53
+          ],
+          "y_ft": [
+            22.25,
+            24.35
+          ]
+        },
+        "kitchen_hob": {
+          "x_ft": [
+            48.15,
+            49.55
+          ],
+          "y_ft": [
+            30.0,
+            32.15
+          ]
+        },
+        "store_shelves": {
+          "x_ft": [
+            34.24,
+            35.35
+          ],
+          "y_ft": [
+            34.45,
+            39.57
+          ]
+        },
+        "wash_counter_and_sink": {
+          "x_ft": [
+            47.85,
+            49.73
+          ],
+          "y_ft": [
+            34.38,
+            37.72
+          ]
+        },
+        "wash_floor_drain": {
+          "x_ft": [
+            48.82,
+            49.24
+          ],
+          "y_ft": [
+            38.8,
+            39.22
+          ]
+        },
+        "parked_car": {
+          "x_ft": [
+            43.4,
+            49.1
+          ],
+          "y_ft": [
+            6.0,
+            19.45
+          ]
+        }
+      }
+    },
+    "first": {
+      "level_index": 1,
+      "elevation_mm": 3150,
+      "walkable_terrace_area_sqft": 520.0,
+      "rooms": {
+        "master_bedroom": {
+          "label": "Master bedroom",
+          "kind": "master_bedroom",
+          "enclosed": true,
+          "x_ft": [
+            0.0,
+            18.0
+          ],
+          "y_ft": [
+            2.0,
+            17.0
+          ],
+          "size_ft": [
+            18.0,
+            15.0
+          ],
+          "size_mm": [
+            5486.4,
+            4572.0
+          ],
+          "local_x_mm": [
+            7010.4,
+            11582.4
+          ],
+          "local_y_mm": [
+            9753.6,
+            15240.0
+          ]
+        },
+        "dressing": {
+          "label": "Dressing",
+          "kind": "dressing",
+          "enclosed": true,
+          "x_ft": [
+            7.0,
+            15.0
+          ],
+          "y_ft": [
+            17.0,
+            24.0
+          ],
+          "size_ft": [
+            8.0,
+            7.0
+          ],
+          "size_mm": [
+            2438.4,
+            2133.6
+          ],
+          "local_x_mm": [
+            4876.8,
+            7010.4
+          ],
+          "local_y_mm": [
+            10668.0,
+            13106.4
+          ]
+        },
+        "en_suite": {
+          "label": "En suite",
+          "kind": "bathroom",
+          "enclosed": true,
+          "x_ft": [
+            0.0,
+            7.0
+          ],
+          "y_ft": [
+            17.0,
+            26.0
+          ],
+          "size_ft": [
+            7.0,
+            9.0
+          ],
+          "size_mm": [
+            2133.6,
+            2743.2
+          ],
+          "local_x_mm": [
+            4267.2,
+            7010.4
+          ],
+          "local_y_mm": [
+            13106.4,
+            15240.0
+          ]
+        },
+        "study_meditation": {
+          "label": "Study / meditation",
+          "kind": "study",
+          "enclosed": true,
+          "x_ft": [
+            24.0,
+            39.0
+          ],
+          "y_ft": [
+            8.0,
+            21.0
+          ],
+          "size_ft": [
+            15.0,
+            13.0
+          ],
+          "size_mm": [
+            4572.0,
+            3962.4
+          ],
+          "local_x_mm": [
+            5791.2,
+            9753.6
+          ],
+          "local_y_mm": [
+            3352.8,
+            7924.8
+          ]
+        },
+        "family_gallery": {
+          "label": "Family gallery",
+          "kind": "lounge",
+          "enclosed": true,
+          "x_ft": [
+            15.0,
+            39.0
+          ],
+          "y_ft": [
+            9.0,
+            26.0
+          ],
+          "size_ft": [
+            24.0,
+            17.0
+          ],
+          "size_mm": [
+            7315.2,
+            5181.6
+          ],
+          "local_x_mm": [
+            4267.2,
+            9448.8
+          ],
+          "local_y_mm": [
+            3352.8,
+            10668.0
+          ],
+          "west_void_passage_ft": {
+            "x": [
+              17.0,
+              21.0
+            ],
+            "y": [
+              26.0,
+              33.0
+            ]
+          }
+        },
+        "open_to_below": {
+          "label": "Open to below",
+          "kind": "void",
+          "enclosed": false,
+          "x_ft": [
+            21.0,
+            33.0
+          ],
+          "y_ft": [
+            26.0,
+            31.0
+          ],
+          "size_ft": [
+            12.0,
+            5.0
+          ],
+          "size_mm": [
+            3657.6,
+            1524.0
+          ],
+          "local_x_mm": [
+            2743.2,
+            4267.2
+          ],
+          "local_y_mm": [
+            5181.6,
+            8839.2
+          ]
+        },
+        "shared_bath": {
+          "label": "Shared bath",
+          "kind": "bathroom",
+          "enclosed": true,
+          "x_ft": [
+            33.0,
+            39.0
+          ],
+          "y_ft": [
+            26.0,
+            34.0
+          ],
+          "size_ft": [
+            6.0,
+            8.0
+          ],
+          "size_mm": [
+            1828.8,
+            2438.4
+          ],
+          "local_x_mm": [
+            1828.8,
+            4267.2
+          ],
+          "local_y_mm": [
+            3352.8,
+            5181.6
+          ]
+        },
+        "medium_bedroom": {
+          "label": "Medium bedroom",
+          "kind": "bedroom",
+          "enclosed": true,
+          "x_ft": [
+            2.0,
+            17.0
+          ],
+          "y_ft": [
+            29.0,
+            40.0
+          ],
+          "size_ft": [
+            15.0,
+            11.0
+          ],
+          "size_mm": [
+            4572.0,
+            3352.8
+          ],
+          "local_x_mm": [
+            0.0,
+            3352.8
+          ],
+          "local_y_mm": [
+            10058.4,
+            14630.4
+          ]
+        },
+        "stair": {
+          "label": "Stair \u00b7 up to second",
+          "kind": "stair",
+          "enclosed": true,
+          "x_ft": [
+            17.0,
+            33.0
+          ],
+          "y_ft": [
+            33.0,
+            40.0
+          ],
+          "size_ft": [
+            16.0,
+            7.0
+          ],
+          "size_mm": [
+            4876.8,
+            2133.6
+          ],
+          "local_x_mm": [
+            0.0,
+            2133.6
+          ],
+          "local_y_mm": [
+            5181.6,
+            10058.4
+          ]
+        },
+        "large_terrace_north": {
+          "label": "Large terrace (north)",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            23.0,
+            47.0
+          ],
+          "y_ft": [
+            0.0,
+            8.0
+          ],
+          "size_ft": [
+            24.0,
+            8.0
+          ],
+          "size_mm": [
+            7315.2,
+            2438.4
+          ],
+          "local_x_mm": [
+            9753.6,
+            12192.0
+          ],
+          "local_y_mm": [
+            914.4,
+            8229.6
+          ]
+        },
+        "large_terrace_nw": {
+          "label": "Large terrace (NW entry)",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            18.0,
+            23.0
+          ],
+          "y_ft": [
+            2.0,
+            9.0
+          ],
+          "size_ft": [
+            5.0,
+            7.0
+          ],
+          "size_mm": [
+            1524.0,
+            2133.6
+          ],
+          "local_x_mm": [
+            9448.8,
+            11582.4
+          ],
+          "local_y_mm": [
+            8229.6,
+            9753.6
+          ]
+        },
+        "large_terrace_study_strip": {
+          "label": "Large terrace (study strip)",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            23.0,
+            24.0
+          ],
+          "y_ft": [
+            8.0,
+            9.0
+          ],
+          "size_ft": [
+            1.0,
+            1.0
+          ],
+          "size_mm": [
+            304.8,
+            304.8
+          ],
+          "local_x_mm": [
+            9448.8,
+            9753.6
+          ],
+          "local_y_mm": [
+            7924.8,
+            8229.6
+          ]
+        },
+        "east_terrace": {
+          "label": "East terrace (8\u2032 deep)",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            39.0,
+            47.0
+          ],
+          "y_ft": [
+            8.0,
+            40.0
+          ],
+          "size_ft": [
+            8.0,
+            32.0
+          ],
+          "size_mm": [
+            2438.4,
+            9753.6
+          ],
+          "local_x_mm": [
+            0.0,
+            9753.6
+          ],
+          "local_y_mm": [
+            914.4,
+            3352.8
+          ]
+        },
+        "se_terrace": {
+          "label": "South-east terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            33.0,
+            39.0
+          ],
+          "y_ft": [
+            34.0,
+            40.0
+          ],
+          "size_ft": [
+            6.0,
+            6.0
+          ],
+          "size_mm": [
+            1828.8,
+            1828.8
+          ],
+          "local_x_mm": [
+            0.0,
+            1828.8
+          ],
+          "local_y_mm": [
+            3352.8,
+            5181.6
+          ]
+        }
+      },
+      "walls_ft": [
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            0.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            26.0
+          ],
+          [
+            2.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            7.0,
+            17.0
+          ],
+          [
+            7.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            15.0,
+            17.0
+          ],
+          [
+            15.0,
+            24.0
+          ]
+        ],
+        [
+          [
+            17.0,
+            29.0
+          ],
+          [
+            17.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            18.0,
+            2.0
+          ],
+          [
+            18.0,
+            17.0
+          ]
+        ],
+        [
+          [
+            24.0,
+            8.0
+          ],
+          [
+            24.0,
+            21.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            26.0
+          ],
+          [
+            33.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            39.0,
+            8.0
+          ],
+          [
+            39.0,
+            34.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            18.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            24.0,
+            8.0
+          ],
+          [
+            39.0,
+            8.0
+          ]
+        ],
+        [
+          [
+            18.0,
+            9.0
+          ],
+          [
+            24.0,
+            9.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            17.0
+          ],
+          [
+            18.0,
+            17.0
+          ]
+        ],
+        [
+          [
+            24.0,
+            21.0
+          ],
+          [
+            39.0,
+            21.0
+          ]
+        ],
+        [
+          [
+            7.0,
+            24.0
+          ],
+          [
+            15.0,
+            24.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            26.0
+          ],
+          [
+            7.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            26.0
+          ],
+          [
+            39.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            29.0
+          ],
+          [
+            17.0,
+            29.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            34.0
+          ],
+          [
+            39.0,
+            34.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            40.0
+          ],
+          [
+            33.0,
+            40.0
+          ]
+        ]
+      ],
+      "parapets_and_guards_ft": [
+        [
+          [
+            23.0,
+            0.0
+          ],
+          [
+            47.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            47.0,
+            0.0
+          ],
+          [
+            47.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            40.0
+          ],
+          [
+            47.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            18.0,
+            2.0
+          ],
+          [
+            23.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            23.0,
+            0.0
+          ],
+          [
+            23.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            21.0,
+            26.0
+          ],
+          [
+            33.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            21.0,
+            31.0
+          ],
+          [
+            33.0,
+            31.0
+          ]
+        ],
+        [
+          [
+            21.0,
+            26.0
+          ],
+          [
+            21.0,
+            31.0
+          ]
+        ]
+      ],
+      "doors": [
+        {
+          "id": "ff_master_door",
+          "wall": "x=18.0",
+          "span_ft": [
+            11.35,
+            14.85
+          ],
+          "width_ft": 3.5,
+          "swing": "west_into_master"
+        },
+        {
+          "id": "ff_dressing_opening",
+          "wall": "y=17.0",
+          "span_ft": [
+            9.0,
+            12.5
+          ],
+          "width_ft": 3.5,
+          "type": "sliding_or_open"
+        },
+        {
+          "id": "ff_ensuite_door",
+          "wall": "x=7.0",
+          "span_ft": [
+            20.0,
+            23.0
+          ],
+          "width_ft": 3.0,
+          "swing": "west_into_ensuite"
+        },
+        {
+          "id": "ff_gallery_terrace_double_doors",
+          "wall": "y=9.0",
+          "span_ft": [
+            18.7,
+            23.2
+          ],
+          "width_ft": 4.5,
+          "type": "double_door",
+          "swing": "north_to_terrace"
+        },
+        {
+          "id": "ff_study_door",
+          "wall": "x=24.0",
+          "span_ft": [
+            16.35,
+            19.85
+          ],
+          "width_ft": 3.5,
+          "swing": "east_into_study"
+        },
+        {
+          "id": "ff_study_terrace_slider",
+          "wall": "x=39.0",
+          "span_ft": [
+            13.0,
+            19.0
+          ],
+          "width_ft": 6.0,
+          "type": "sliding_glass_door"
+        },
+        {
+          "id": "ff_medium_bedroom_door",
+          "wall": "y=29.0",
+          "span_ft": [
+            12.5,
+            16.0
+          ],
+          "width_ft": 3.5,
+          "swing": "south_into_medium_bedroom"
+        },
+        {
+          "id": "ff_shared_bath_door",
+          "wall": "y=26.0",
+          "span_ft": [
+            34.1,
+            37.35
+          ],
+          "width_ft": 3.25,
+          "swing": "south_into_shared_bath"
+        }
+      ],
+      "windows": [
+        {
+          "id": "ff_master_north_window",
+          "wall": "y=2.0",
+          "span_ft": [
+            2.5,
+            10.5
+          ],
+          "width_ft": 8.0
+        },
+        {
+          "id": "ff_master_west_window",
+          "wall": "x=0.0",
+          "span_ft": [
+            7.2,
+            12.0
+          ],
+          "width_ft": 4.8
+        },
+        {
+          "id": "ff_ensuite_south_high_window",
+          "wall": "y=26.0",
+          "span_ft": [
+            0.25,
+            1.8
+          ],
+          "width_ft": 1.55
+        },
+        {
+          "id": "ff_study_north_glazing",
+          "wall": "y=8.0",
+          "span_ft": [
+            26.0,
+            33.0
+          ],
+          "width_ft": 7.0
+        },
+        {
+          "id": "ff_shared_bath_east_window",
+          "wall": "x=39.0",
+          "span_ft": [
+            28.0,
+            31.0
+          ],
+          "width_ft": 3.0
+        },
+        {
+          "id": "ff_medium_west_window",
+          "wall": "x=2.0",
+          "span_ft": [
+            31.5,
+            36.8
+          ],
+          "width_ft": 5.3
+        },
+        {
+          "id": "ff_medium_south_window",
+          "wall": "y=40.0",
+          "span_ft": [
+            3.6,
+            9.5
+          ],
+          "width_ft": 5.9
+        }
+      ],
+      "fixtures": {
+        "master_bed": {
+          "x_ft": [
+            1.0,
+            7.5
+          ],
+          "y_ft": [
+            3.1,
+            10.2
+          ]
+        },
+        "master_side_table": {
+          "x_ft": [
+            7.8,
+            8.9
+          ],
+          "y_ft": [
+            3.2,
+            4.4
+          ]
+        },
+        "master_foot_bench": {
+          "x_ft": [
+            3.1,
+            8.1
+          ],
+          "y_ft": [
+            13.9,
+            15.65
+          ]
+        },
+        "dressing_wardrobe_west": {
+          "x_ft": [
+            7.25,
+            8.7
+          ],
+          "y_ft": [
+            17.3,
+            19.55
+          ]
+        },
+        "dressing_wardrobe_east": {
+          "x_ft": [
+            13.05,
+            14.75
+          ],
+          "y_ft": [
+            18.2,
+            23.7
+          ]
+        },
+        "ensuite_shower": {
+          "x_ft": [
+            0.4,
+            3.4
+          ],
+          "y_ft": [
+            17.42,
+            20.57
+          ]
+        },
+        "ensuite_wc": {
+          "x_ft": [
+            0.5,
+            1.73
+          ],
+          "y_ft": [
+            22.75,
+            24.17
+          ]
+        },
+        "ensuite_basin": {
+          "x_ft": [
+            4.6,
+            6.25
+          ],
+          "y_ft": [
+            24.25,
+            25.25
+          ]
+        },
+        "study_desk": {
+          "x_ft": [
+            25.25,
+            30.05
+          ],
+          "y_ft": [
+            8.65,
+            10.6
+          ]
+        },
+        "meditation_platform": {
+          "x_ft": [
+            33.8,
+            37.05
+          ],
+          "y_ft": [
+            10.4,
+            15.35
+          ]
+        },
+        "medium_bed": {
+          "x_ft": [
+            3.3,
+            9.0
+          ],
+          "y_ft": [
+            30.7,
+            37.25
+          ]
+        },
+        "medium_wardrobe": {
+          "x_ft": [
+            10.65,
+            16.45
+          ],
+          "y_ft": [
+            37.95,
+            39.65
+          ]
+        },
+        "shared_bath_wc": {
+          "x_ft": [
+            33.5,
+            34.73
+          ],
+          "y_ft": [
+            30.65,
+            32.07
+          ]
+        },
+        "shared_bath_basin": {
+          "x_ft": [
+            36.25,
+            38.6
+          ],
+          "y_ft": [
+            28.7,
+            33.75
+          ]
+        },
+        "terrace_chair_north": {
+          "x_ft": [
+            43.65,
+            45.65
+          ],
+          "y_ft": [
+            12.15,
+            14.0
+          ]
+        },
+        "terrace_side_table": {
+          "x_ft": [
+            43.83,
+            45.37
+          ],
+          "y_ft": [
+            14.38,
+            15.92
+          ]
+        },
+        "terrace_chair_south": {
+          "x_ft": [
+            43.65,
+            45.65
+          ],
+          "y_ft": [
+            16.3,
+            18.15
+          ]
+        },
+        "planter_ne": {
+          "x_ft": [
+            41.1,
+            42.5
+          ],
+          "y_ft": [
+            1.5,
+            2.9
+          ]
+        },
+        "planter_se": {
+          "x_ft": [
+            44.6,
+            46.0
+          ],
+          "y_ft": [
+            36.9,
+            38.3
+          ]
+        }
+      }
+    },
+    "second": {
+      "level_index": 2,
+      "elevation_mm": 6300,
+      "walkable_terrace_area_sqft": 858.0,
+      "rooms": {
+        "office_tv_hall": {
+          "label": "Office & TV hall",
+          "kind": "lounge",
+          "enclosed": true,
+          "x_ft": [
+            3.0,
+            33.0
+          ],
+          "y_ft": [
+            8.0,
+            26.0
+          ],
+          "size_ft": [
+            30.0,
+            18.0
+          ],
+          "size_mm": [
+            9144.0,
+            5486.4
+          ],
+          "local_x_mm": [
+            4267.2,
+            9753.6
+          ],
+          "local_y_mm": [
+            5181.6,
+            14325.6
+          ]
+        },
+        "lobby_passage": {
+          "label": "Lobby passage",
+          "kind": "corridor",
+          "enclosed": true,
+          "x_ft": [
+            17.0,
+            21.0
+          ],
+          "y_ft": [
+            26.0,
+            31.0
+          ],
+          "size_ft": [
+            4.0,
+            5.0
+          ],
+          "size_mm": [
+            1219.2,
+            1524.0
+          ],
+          "local_x_mm": [
+            2743.2,
+            4267.2
+          ],
+          "local_y_mm": [
+            8839.2,
+            10058.4
+          ]
+        },
+        "stair_lobby": {
+          "label": "Stair lobby",
+          "kind": "stair",
+          "enclosed": true,
+          "x_ft": [
+            17.0,
+            34.0
+          ],
+          "y_ft": [
+            31.0,
+            40.0
+          ],
+          "size_ft": [
+            17.0,
+            9.0
+          ],
+          "size_mm": [
+            5181.6,
+            2743.2
+          ],
+          "local_x_mm": [
+            0.0,
+            2743.2
+          ],
+          "local_y_mm": [
+            4876.8,
+            10058.4
+          ]
+        },
+        "raised_rooflight": {
+          "label": "Raised rooflight",
+          "kind": "void",
+          "enclosed": false,
+          "walkable": false,
+          "x_ft": [
+            21.0,
+            33.0
+          ],
+          "y_ft": [
+            26.0,
+            31.0
+          ],
+          "size_ft": [
+            12.0,
+            5.0
+          ],
+          "size_mm": [
+            3657.6,
+            1524.0
+          ],
+          "local_x_mm": [
+            2743.2,
+            4267.2
+          ],
+          "local_y_mm": [
+            5181.6,
+            8839.2
+          ]
+        },
+        "open_terrace_ne": {
+          "label": "Open north-east terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            23.0,
+            44.0
+          ],
+          "y_ft": [
+            0.0,
+            8.0
+          ],
+          "size_ft": [
+            21.0,
+            8.0
+          ],
+          "size_mm": [
+            6400.8,
+            2438.4
+          ],
+          "local_x_mm": [
+            9753.6,
+            12192.0
+          ],
+          "local_y_mm": [
+            1828.8,
+            8229.6
+          ]
+        },
+        "open_terrace_nw": {
+          "label": "Open north-west terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            0.0,
+            23.0
+          ],
+          "y_ft": [
+            2.0,
+            8.0
+          ],
+          "size_ft": [
+            23.0,
+            6.0
+          ],
+          "size_mm": [
+            7010.4,
+            1828.8
+          ],
+          "local_x_mm": [
+            9753.6,
+            11582.4
+          ],
+          "local_y_mm": [
+            8229.6,
+            15240.0
+          ]
+        },
+        "open_terrace_west": {
+          "label": "Open west strip terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            0.0,
+            3.0
+          ],
+          "y_ft": [
+            8.0,
+            26.0
+          ],
+          "size_ft": [
+            3.0,
+            18.0
+          ],
+          "size_mm": [
+            914.4,
+            5486.4
+          ],
+          "local_x_mm": [
+            4267.2,
+            9753.6
+          ],
+          "local_y_mm": [
+            14325.6,
+            15240.0
+          ]
+        },
+        "open_terrace_east_upper": {
+          "label": "Open east terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            33.0,
+            44.0
+          ],
+          "y_ft": [
+            8.0,
+            31.0
+          ],
+          "size_ft": [
+            11.0,
+            23.0
+          ],
+          "size_mm": [
+            3352.8,
+            7010.4
+          ],
+          "local_x_mm": [
+            2743.2,
+            9753.6
+          ],
+          "local_y_mm": [
+            1828.8,
+            5181.6
+          ]
+        },
+        "open_terrace_east_lower": {
+          "label": "Open south-east terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            34.0,
+            44.0
+          ],
+          "y_ft": [
+            31.0,
+            40.0
+          ],
+          "size_ft": [
+            10.0,
+            9.0
+          ],
+          "size_mm": [
+            3048.0,
+            2743.2
+          ],
+          "local_x_mm": [
+            0.0,
+            2743.2
+          ],
+          "local_y_mm": [
+            1828.8,
+            4876.8
+          ]
+        },
+        "open_terrace_sw_strip": {
+          "label": "Open south-west terrace strip",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            2.0,
+            17.0
+          ],
+          "y_ft": [
+            26.0,
+            29.0
+          ],
+          "size_ft": [
+            15.0,
+            3.0
+          ],
+          "size_mm": [
+            4572.0,
+            914.4
+          ],
+          "local_x_mm": [
+            3352.8,
+            4267.2
+          ],
+          "local_y_mm": [
+            10058.4,
+            14630.4
+          ]
+        },
+        "open_terrace_sw_court": {
+          "label": "Open south-west terrace",
+          "kind": "terrace",
+          "enclosed": false,
+          "x_ft": [
+            7.0,
+            17.0
+          ],
+          "y_ft": [
+            29.0,
+            40.0
+          ],
+          "size_ft": [
+            10.0,
+            11.0
+          ],
+          "size_mm": [
+            3048.0,
+            3352.8
+          ],
+          "local_x_mm": [
+            0.0,
+            3352.8
+          ],
+          "local_y_mm": [
+            10058.4,
+            13106.4
+          ]
+        },
+        "bedroom_roof_non_walkable": {
+          "label": "Bedroom roof (non-walkable)",
+          "kind": "verandah",
+          "enclosed": false,
+          "walkable": false,
+          "x_ft": [
+            2.0,
+            7.0
+          ],
+          "y_ft": [
+            29.0,
+            40.0
+          ],
+          "size_ft": [
+            5.0,
+            11.0
+          ],
+          "size_mm": [
+            1524.0,
+            3352.8
+          ],
+          "local_x_mm": [
+            0.0,
+            3352.8
+          ],
+          "local_y_mm": [
+            13106.4,
+            14630.4
+          ]
+        }
+      },
+      "walls_ft": [
+        [
+          [
+            3.0,
+            8.0
+          ],
+          [
+            3.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            17.0,
+            26.0
+          ],
+          [
+            17.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            21.0,
+            26.0
+          ],
+          [
+            21.0,
+            31.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            8.0
+          ],
+          [
+            33.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            34.0,
+            31.0
+          ],
+          [
+            34.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            3.0,
+            8.0
+          ],
+          [
+            33.0,
+            8.0
+          ]
+        ],
+        [
+          [
+            3.0,
+            26.0
+          ],
+          [
+            33.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            21.0,
+            31.0
+          ],
+          [
+            34.0,
+            31.0
+          ]
+        ],
+        [
+          [
+            17.0,
+            40.0
+          ],
+          [
+            34.0,
+            40.0
+          ]
+        ]
+      ],
+      "parapets_and_guards_ft": [
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            0.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            26.0
+          ],
+          [
+            2.0,
+            26.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            26.0
+          ],
+          [
+            2.0,
+            29.0
+          ]
+        ],
+        [
+          [
+            2.0,
+            29.0
+          ],
+          [
+            7.0,
+            29.0
+          ]
+        ],
+        [
+          [
+            7.0,
+            29.0
+          ],
+          [
+            7.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            7.0,
+            40.0
+          ],
+          [
+            17.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            34.0,
+            40.0
+          ],
+          [
+            44.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            44.0,
+            0.0
+          ],
+          [
+            44.0,
+            40.0
+          ]
+        ],
+        [
+          [
+            23.0,
+            0.0
+          ],
+          [
+            44.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            23.0,
+            0.0
+          ],
+          [
+            23.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            2.0
+          ],
+          [
+            23.0,
+            2.0
+          ]
+        ],
+        [
+          [
+            33.0,
+            26.0
+          ],
+          [
+            33.0,
+            31.0
+          ]
+        ]
+      ],
+      "doors": [
+        {
+          "id": "sf_hall_lobby_door",
+          "wall": "y=26.0",
+          "span_ft": [
+            17.6,
+            20.75
+          ],
+          "width_ft": 3.15,
+          "swing": "north_into_hall"
+        },
+        {
+          "id": "sf_hall_terrace_slider",
+          "wall": "y=8.0",
+          "span_ft": [
+            25.5,
+            32.5
+          ],
+          "width_ft": 7.0,
+          "type": "sliding_glass_door"
+        }
+      ],
+      "windows": [
+        {
+          "id": "sf_hall_north_window",
+          "wall": "y=8.0",
+          "span_ft": [
+            5.0,
+            21.0
+          ],
+          "width_ft": 16.0
+        },
+        {
+          "id": "sf_hall_west_window",
+          "wall": "x=3.0",
+          "span_ft": [
+            15.0,
+            22.0
+          ],
+          "width_ft": 7.0
+        },
+        {
+          "id": "sf_hall_east_window",
+          "wall": "x=33.0",
+          "span_ft": [
+            10.0,
+            15.0
+          ],
+          "width_ft": 5.0
+        }
+      ],
+      "fixtures": {
+        "desk_station_1": {
+          "x_ft": [
+            4.1,
+            8.95
+          ],
+          "y_ft": [
+            9.05,
+            11.0
+          ],
+          "chair_ft": {
+            "x": [
+              5.805,
+              7.245
+            ],
+            "y": [
+              11.2,
+              12.6
+            ]
+          }
+        },
+        "desk_station_2": {
+          "x_ft": [
+            9.45,
+            14.3
+          ],
+          "y_ft": [
+            9.05,
+            11.0
+          ],
+          "chair_ft": {
+            "x": [
+              11.155,
+              12.595
+            ],
+            "y": [
+              11.2,
+              12.6
+            ]
+          }
+        },
+        "desk_station_3": {
+          "x_ft": [
+            14.8,
+            19.65
+          ],
+          "y_ft": [
+            9.05,
+            11.0
+          ],
+          "chair_ft": {
+            "x": [
+              16.505,
+              17.945
+            ],
+            "y": [
+              11.2,
+              12.6
+            ]
+          }
+        },
+        "lounge_sofa": {
+          "x_ft": [
+            20.55,
+            23.35
+          ],
+          "y_ft": [
+            16.05,
+            24.15
+          ],
+          "facing": "east"
+        },
+        "lounge_coffee_table": {
+          "x_ft": [
+            24.75,
+            26.45
+          ],
+          "y_ft": [
+            18.1,
+            22.1
+          ]
+        },
+        "hall_tv_75in": {
+          "x_ft": [
+            32.62,
+            32.8
+          ],
+          "y_ft": [
+            17.1,
+            22.55
+          ]
+        },
+        "planter_nw": {
+          "x_ft": [
+            7.3,
+            8.7
+          ],
+          "y_ft": [
+            2.7,
+            4.1
+          ]
+        },
+        "planter_ne": {
+          "x_ft": [
+            39.3,
+            40.7
+          ],
+          "y_ft": [
+            1.5,
+            2.9
+          ]
+        },
+        "planter_se": {
+          "x_ft": [
+            36.9,
+            38.3
+          ],
+          "y_ft": [
+            36.5,
+            37.9
+          ]
+        }
+      }
+    }
+  }
+}
