@@ -224,25 +224,26 @@ def straight_run_kitchen(k, ctx, floor_height, finishes, spec=None):
         return k.rect((a, b, z + c, d, e, z + f), material, floor, role, owner + '/' + name, owner)
 
     # In building coordinates (+X north, +Y west):
-    # East wall inner face is at y_wall (~0.06 m), counter extends west to y_front (~0.66 m).
-    # Counter spans along X from x_south (~1.920 m, y_ft=33.70) to x_north (~6.005 m, y_ft=20.30).
-    x_south = spec.get('x_south', 1.9202)
-    x_north = spec.get('x_north', 6.0046)
-    y_wall = spec.get('y_wall', 0.060)
-    depth = spec.get('depth', 0.600)
+    # East exterior wall (at x_ft=47.0, 3' west of plot line) inner face is at y_wall (~0.9744 m).
+    # Wide 2'9" (840 mm) quartz platform extends west to y_front (~1.8144 m), running uninterrupted
+    # along the east wall from x_south (y_ft=34.75 -> 1.6002 m) to x_north (y_ft=22.25 -> 5.4102 m).
+    x_south = spec.get('x_south', 1.6002)
+    x_north = spec.get('x_north', 5.4102)
+    y_wall = spec.get('y_wall', 0.9744)
+    depth = spec.get('depth', 0.840)
     y_front = y_wall + depth
 
-    # Sink (north end, in work bay: y_ft 22.25..24.35 -> X 4.770..5.410 m)
-    sink_x0 = spec.get('sink_x0', 4.7701)
-    sink_x1 = spec.get('sink_x1', 5.4102)
+    # Sink centered beneath the north east-wall kitchen window (y_ft 23.50..25.70 -> X 4.3586..5.0292 m)
+    sink_x0 = spec.get('sink_x0', 4.3586)
+    sink_x1 = spec.get('sink_x1', 5.0292)
     sink_xm = 0.5 * (sink_x0 + sink_x1)
-    sink_ym = y_wall + 0.300
+    sink_ym = y_wall + 0.5 * depth
 
-    # Hob (south end, in kitchen: y_ft 30.00..32.15 -> X 2.393..3.048 m)
-    hob_x0 = spec.get('hob_x0', 2.3927)
-    hob_x1 = spec.get('hob_x1', 3.0480)
+    # Hob positioned on the solid masonry pier between the two east windows (X 2.84..3.46 m)
+    hob_x0 = spec.get('hob_x0', 2.8400)
+    hob_x1 = spec.get('hob_x1', 3.4600)
     hob_xm = 0.5 * (hob_x0 + hob_x1)
-    hob_ym = y_wall + 0.300
+    hob_ym = y_wall + 0.48 * depth
 
     teal_gloss = finishes.get('fronts', 'kitchen_sage_teal_gloss')
     teal_loft = finishes.get('loft', 'kitchen_sage_teal_loft')
@@ -253,168 +254,139 @@ def straight_run_kitchen(k, ctx, floor_height, finishes, spec=None):
     led_warm = finishes.get('led', 'cove_led_warm')
     smoked_glass = finishes.get('smoked_glass', 'glass_smoked_fluted')
 
-    # 1. Recessed dark plinth kickboard (0..100 mm) & base carcass (100..832 mm)
-    rect((x_south, y_wall, 0.0, x_north, y_front - 0.045, 0.100), gola_black, 'plinth-kickboard', 'detail')
+    # 1. Recessed dark plinth kickboard (0..100 mm) + warm LED toe-kick + deep base carcass (100..832 mm)
+    rect((x_south, y_wall, 0.0, x_north, y_front - 0.050, 0.100), gola_black, 'plinth-kickboard', 'detail')
+    rect((x_south + 0.04, y_front - 0.052, 0.015, x_north - 0.04, y_front - 0.036, 0.032), led_warm, 'plinth-toe-led', 'cove')
     worktop_poly = box(x_south, y_wall, x_north, y_front)
-    sink_box = box(sink_x0 + 0.05, y_wall + 0.08, sink_x1 - 0.05, y_front - 0.08)
-    base_poly = box(x_south, y_wall, x_north, y_front - 0.020)
+    sink_box = box(sink_x0 + 0.05, y_wall + 0.14, sink_x1 - 0.05, y_front - 0.16)
+    base_poly = box(x_south, y_wall, x_north, y_front - 0.022)
     k.poly_mesh(base_poly.difference(sink_box.buffer(0.01)), z + 0.100, z + 0.832,
                 teak_wood, floor, 'furniture', owner + '/base-carcass', owner)
 
     # 2. Matte-black horizontal Gola J-profile channels (+808..832 mm and +465..485 mm)
-    rect((x_south, y_front - 0.028, 0.808, x_north, y_front - 0.004, 0.832), gola_black, 'gola-top-channel', 'detail')
-    rect((x_south, y_front - 0.028, 0.465, x_north, y_front - 0.004, 0.485), gola_black, 'gola-mid-channel', 'detail')
+    rect((x_south, y_front - 0.030, 0.808, x_north, y_front - 0.004, 0.832), gola_black, 'gola-top-channel', 'detail')
+    rect((x_south, y_front - 0.030, 0.465, x_north, y_front - 0.004, 0.485), gola_black, 'gola-mid-channel', 'detail')
 
-    # 3. High-gloss sage-teal modular base shutters & tandem drawers (7 bays across 4.084 m)
-    bays = 7
+    # 3. Full under-platform modular storage: 6 wide high-gloss sage-teal drawer & shutter bays
+    bays = 6
     bay_w = (x_north - x_south) / bays
     for i in range(bays):
         bx0 = x_south + i * bay_w + 0.004
         bx1 = x_south + (i + 1) * bay_w - 0.004
-        # Sink bay gets full-height twin under-sink doors; other bays get 3-tier or 2-tier tandem drawers
-        if abs(0.5 * (bx0 + bx1) - sink_xm) < bay_w * 0.65:
+        if abs(0.5 * (bx0 + bx1) - sink_xm) < bay_w * 0.55:
             bm = 0.5 * (bx0 + bx1)
-            rect((bx0, y_front - 0.020, 0.105, bm - 0.002, y_front, 0.806), teal_gloss, f'sink-door-L-{i}')
-            rect((bm + 0.002, y_front - 0.020, 0.105, bx1, y_front, 0.806), teal_gloss, f'sink-door-R-{i}')
-        elif abs(0.5 * (bx0 + bx1) - hob_xm) < bay_w * 0.85:
-            # 3-tier cutlery + utensil + deep pot tandem drawers under hob (matching K-01/K-03)
-            rect((bx0, y_front - 0.020, 0.105, bx1, y_front, 0.340), teal_gloss, f'hob-drawer-bot-{i}')
-            rect((bx0, y_front - 0.020, 0.346, bx1, y_front, 0.575), teal_gloss, f'hob-drawer-mid-{i}')
-            rect((bx0, y_front - 0.020, 0.581, bx1, y_front, 0.806), teal_gloss, f'hob-drawer-top-{i}')
+            rect((bx0, y_front - 0.022, 0.105, bm - 0.002, y_front, 0.806), teal_gloss, f'sink-door-L-{i}')
+            rect((bm + 0.002, y_front - 0.022, 0.105, bx1, y_front, 0.806), teal_gloss, f'sink-door-R-{i}')
+        elif abs(0.5 * (bx0 + bx1) - hob_xm) < bay_w * 0.65:
+            rect((bx0, y_front - 0.022, 0.105, bx1, y_front, 0.340), teal_gloss, f'hob-drawer-bot-{i}')
+            rect((bx0, y_front - 0.022, 0.346, bx1, y_front, 0.575), teal_gloss, f'hob-drawer-mid-{i}')
+            rect((bx0, y_front - 0.022, 0.581, bx1, y_front, 0.806), teal_gloss, f'hob-drawer-top-{i}')
         else:
-            rect((bx0, y_front - 0.020, 0.105, bx1, y_front, 0.462), teal_gloss, f'base-drawer-low-{i}')
-            rect((bx0, y_front - 0.020, 0.488, bx1, y_front, 0.806), teal_gloss, f'base-drawer-high-{i}')
+            rect((bx0, y_front - 0.022, 0.105, bx1, y_front, 0.462), teal_gloss, f'base-drawer-low-{i}')
+            rect((bx0, y_front - 0.022, 0.488, bx1, y_front, 0.806), teal_gloss, f'base-drawer-high-{i}')
 
-    # 4. Nano-white engineered quartz worktop (832..860 mm) with sink cutout & rear upstand
-    k.poly_mesh(worktop_poly.difference(sink_box), z + 0.832, z + 0.860,
+    # 4. Wide 840 mm Nano-white engineered quartz platform (832..865 mm) + sill-safe 80 mm upstand
+    k.poly_mesh(worktop_poly.difference(sink_box), z + 0.832, z + 0.865,
                 quartz_top, floor, 'furniture', owner + '/quartz-worktop', owner)
-    rect((x_south, y_wall, 0.860, x_north, y_wall + 0.018, 0.910), quartz_top, 'quartz-upstand', 'detail')
+    # Upstand tops out at +945 mm so it stays cleanly below the +960 mm east-wall kitchen windows
+    rect((x_south, y_wall, 0.865, x_north, y_wall + 0.020, 0.945), quartz_top, 'quartz-upstand', 'detail')
 
-    # 5. Matte-black quartz square sink + drainboard + high-arc pull-down gooseneck mixer (in work bay)
-    k.poly_mesh(sink_box, z + 0.680, z + 0.695, gola_black, floor, 'detail', owner + '/sink-bottom', owner)
-    k.poly_mesh(sink_box.buffer(0.018, join_style=2).difference(sink_box), z + 0.855, z + 0.866,
+    # 5. Matte-black undermount quartz sink + drainboard + sleek gooseneck mixer under north east window
+    k.poly_mesh(sink_box, z + 0.675, z + 0.692, gola_black, floor, 'detail', owner + '/sink-bottom', owner)
+    k.poly_mesh(sink_box.buffer(0.018, join_style=2).difference(sink_box), z + 0.860, z + 0.868,
                 gola_black, floor, 'detail', owner + '/sink-rim', owner)
-    k.poly_mesh(sink_box.difference(sink_box.buffer(-0.012)), z + 0.695, z + 0.858,
+    k.poly_mesh(sink_box.difference(sink_box.buffer(-0.012)), z + 0.692, z + 0.862,
                 gola_black, floor, 'detail', owner + '/sink-walls', owner)
-    # Drainboard grooves next to sink
-    rect((sink_x1 - 0.03, y_wall + 0.10, 0.858, sink_x1 + 0.24, y_front - 0.10, 0.863), gola_black, 'sink-drainboard', 'detail')
-    k.cylinder((sink_xm, sink_ym, z + 0.696), 0.042, 0.006, 'steel', floor, 'detail')
-    # High-arc black gooseneck faucet
-    tap_x, tap_y = sink_xm, y_wall + 0.055
-    k.cylinder((tap_x, tap_y, z + 0.860), 0.024, 0.055, gola_black, floor, 'detail')
-    k.beam((tap_x, tap_y, z + 0.90), (tap_x, tap_y, z + 1.18), 0.020, gola_black, floor, 'detail')
-    k.beam((tap_x, tap_y, z + 1.18), (tap_x, tap_y + 0.21, z + 1.18), 0.020, gola_black, floor, 'detail')
-    k.beam((tap_x, tap_y + 0.21, z + 1.18), (tap_x, tap_y + 0.21, z + 1.04), 0.024, gola_black, floor, 'detail')
+    rect((sink_x1 - 0.02, y_wall + 0.16, 0.863, sink_x1 + 0.24, y_front - 0.18, 0.868), gola_black, 'sink-drainboard', 'detail')
+    k.cylinder((sink_xm, sink_ym, z + 0.693), 0.042, 0.006, 'steel', floor, 'detail')
+    tap_x, tap_y = sink_xm, y_wall + 0.085
+    k.cylinder((tap_x, tap_y, z + 0.865), 0.024, 0.055, gola_black, floor, 'detail')
+    k.beam((tap_x, tap_y, z + 0.90), (tap_x, tap_y, z + 1.15), 0.018, gola_black, floor, 'detail')
+    k.beam((tap_x, tap_y, z + 1.15), (tap_x, tap_y + 0.22, z + 1.15), 0.018, gola_black, floor, 'detail')
+    k.beam((tap_x, tap_y + 0.22, z + 1.15), (tap_x, tap_y + 0.22, z + 1.03), 0.022, gola_black, floor, 'detail')
 
-    # 6. 3-burner black toughened-glass gas hob + brass burner crowns + black auto-clean chimney hood (K-01, K-03)
-    rect((hob_x0 + 0.03, y_wall + 0.07, 0.860, hob_x1 - 0.03, y_front - 0.07, 0.874), 'blackglass', 'hob-glass-plate', 'detail')
-    for bx, by, rad in ((hob_xm - 0.17, hob_ym - 0.06, 0.058),
-                        (hob_xm + 0.17, hob_ym - 0.06, 0.058),
-                        (hob_xm, hob_ym + 0.09, 0.048)):
-        k.cylinder((bx, by, z + 0.874), rad, 0.014, gola_black, floor, 'detail')
-        k.cylinder((bx, by, z + 0.888), rad * 0.52, 0.008, 'brass', floor, 'detail')
-    # Chimney hood above hob (+1460..2160 mm)
-    rect((hob_x0 - 0.02, y_wall + 0.02, 1.480, hob_x1 + 0.02, y_wall + 0.48, 1.545), 'blackglass', 'chimney-canopy', 'detail')
-    rect((hob_x0 + 0.06, y_wall + 0.08, 1.474, hob_x1 - 0.06, y_wall + 0.22, 1.480), led_warm, 'chimney-task-led', 'detail')
-    rect((hob_xm - 0.15, y_wall + 0.02, 1.545, hob_xm + 0.15, y_wall + 0.30, 2.160), gola_black, 'chimney-flue', 'detail')
-
-    # 7. Vertically fluted off-white ceramic backsplash (+860..1460 mm) & under-cabinet 3000K LED strip
-    rect((x_south, y_wall, 0.860, x_north, y_wall + 0.016, 1.460), fluted_splash, 'fluted-backsplash', 'detail')
-    flute_step = 0.050
-    n_flutes = int((x_north - x_south) / flute_step)
+    # 6. 3-burner black glass hob + fluted splash panel + sleek architectural T-chimney on the center pier (clear of both east windows)
+    pier_x0 = spec.get('pier_x0', 2.820)
+    pier_x1 = spec.get('pier_x1', 3.950)
+    rect((pier_x0, y_wall, 0.945, pier_x1, y_wall + 0.018, 1.480), fluted_splash, 'fluted-backsplash', 'detail')
+    n_flutes = int((pier_x1 - pier_x0) / 0.050)
     for i in range(n_flutes):
-        fx = x_south + i * flute_step + 0.010
-        rect((fx, y_wall + 0.015, 0.865, fx + 0.018, y_wall + 0.022, 1.455), fluted_splash, f'splash-rib-{i}', 'detail')
-    rect((x_south + 0.02, y_wall + 0.03, 1.448, x_north - 0.02, y_wall + 0.055, 1.460), led_warm, 'undercab-led-strip', 'detail')
+        fx = pier_x0 + i * 0.050 + 0.010
+        rect((fx, y_wall + 0.016, 0.950, fx + 0.018, y_wall + 0.024, 1.475), fluted_splash, f'splash-rib-{i}', 'detail')
 
-    # 8. Upper cabinets (+1460..2160 mm, depth 350 mm): sage-teal lift-ups + smoked glass doors + open teak cubbies
-    y_upper = y_wall + 0.350
-    for i in range(bays):
-        bx0 = x_south + i * bay_w + 0.004
-        bx1 = x_south + (i + 1) * bay_w - 0.004
-        bm = 0.5 * (bx0 + bx1)
-        # Skip chimney bay
-        if abs(bm - hob_xm) < bay_w * 0.55:
-            continue
-        # Bays flanking the chimney / center get black-framed smoked glass doors + open teak cubby (K-01/K-03)
-        if i in (2, 4):
-            # Lower open teak display cubby (+1460..1710 mm) with internal warm LED strip
-            rect((bx0, y_wall, 1.460, bx1, y_upper, 1.710), teak_wood, f'upper-teak-cubby-{i}')
-            rect((bx0 + 0.018, y_wall + 0.02, 1.480, bx1 - 0.018, y_upper - 0.01, 1.690), gola_black, f'upper-cubby-void-{i}', 'detail')
-            rect((bx0 + 0.025, y_wall + 0.04, 1.682, bx1 - 0.025, y_wall + 0.065, 1.692), led_warm, f'upper-cubby-led-{i}', 'detail')
-            # Upper black-framed smoked glass shutter (+1714..2156 mm)
-            rect((bx0, y_wall, 1.714, bx1, y_upper - 0.018, 2.156), teak_wood, f'upper-glass-box-{i}')
-            rect((bx0, y_upper - 0.020, 1.714, bx1, y_upper, 2.156), gola_black, f'upper-glass-frame-{i}', 'detail')
-            rect((bx0 + 0.028, y_upper - 0.022, 1.742, bx1 - 0.028, y_upper + 0.002, 2.128), smoked_glass, f'upper-smoked-glass-{i}', 'detail')
-        else:
-            rect((bx0, y_wall, 1.460, bx1, y_upper - 0.018, 2.156), teak_wood, f'upper-box-{i}')
-            # Split horizontal lift-up shutters in high-gloss sage-teal
-            rect((bx0, y_upper - 0.020, 1.462, bx1, y_upper, 1.804), teal_gloss, f'upper-lift-low-{i}')
-            rect((bx0, y_upper - 0.020, 1.810, bx1, y_upper, 2.156), teal_gloss, f'upper-lift-high-{i}')
+    rect((hob_x0, y_wall + 0.14, 0.865, hob_x1, y_front - 0.16, 0.878), 'blackglass', 'hob-glass-plate', 'detail')
+    for bx, by, rad in ((hob_xm - 0.16, hob_ym - 0.07, 0.056),
+                        (hob_xm + 0.16, hob_ym - 0.07, 0.056),
+                        (hob_xm, hob_ym + 0.09, 0.046)):
+        k.cylinder((bx, by, z + 0.878), rad, 0.014, gola_black, floor, 'detail')
+        k.cylinder((bx, by, z + 0.892), rad * 0.52, 0.008, 'brass', floor, 'detail')
 
-    # 9. Stepped full-depth ceiling loft cabinets (+2160..2970 mm, depth 600 mm) in deep sage-teal with black knobs
-    rect((x_south, y_wall, 2.160, x_north, y_front - 0.020, 2.970), teak_wood, 'loft-carcass')
-    rect((x_south, y_wall, 2.970, x_north, y_front, 3.000), teak_wood, 'loft-crown-trim', 'detail')
-    for i in range(bays):
-        bx0 = x_south + i * bay_w + 0.004
-        bx1 = x_south + (i + 1) * bay_w - 0.004
-        bm = 0.5 * (bx0 + bx1)
-        rect((bx0, y_front - 0.020, 2.166, bx1, y_front, 2.966), teal_loft, f'loft-door-{i}')
-        # Matte-black round button knob on each loft door (matching K-01/K-04)
-        k.cylinder((bm, y_front + 0.008, z + 2.280), 0.014, 0.014, gola_black, floor, 'detail')
+    rect((hob_x0 - 0.02, y_wall + 0.02, 1.480, hob_x1 + 0.02, y_wall + 0.52, 1.535), 'blackglass', 'chimney-canopy', 'detail')
+    rect((hob_x0 + 0.05, y_wall + 0.08, 1.474, hob_x1 - 0.05, y_wall + 0.24, 1.480), led_warm, 'chimney-task-led', 'cove')
+    rect((hob_xm - 0.14, y_wall + 0.02, 1.535, hob_xm + 0.14, y_wall + 0.30, 2.980), gola_black, 'chimney-flue', 'detail')
 
-    # 10. Work-bay tall appliance unit + black mirror-glass double-door fridge along north wall of work bay (K-04)
-    # Work bay north wall is at X = 6.035 m (y_ft=20.2), spanning Y = 0.68..2.05 m (x_ft=43.3..47.8), clear of service door
-    tall_x0, tall_x1 = 5.380, 6.030
-    fridge_y0, fridge_y1 = 0.700, 1.620
-    pantry_y0, pantry_y1 = 1.630, 2.180
-    # Black mirror-glass side-by-side refrigerator in sage-teal surround
-    rect((tall_x0, fridge_y0, 0.0, tall_x1, fridge_y1, 2.160), teal_gloss, 'fridge-housing')
-    rect((tall_x0 - 0.022, fridge_y0 + 0.015, 0.080, tall_x0, 0.5 * (fridge_y0 + fridge_y1) - 0.004, 1.920), 'blackglass', 'fridge-door-L')
-    rect((tall_x0 - 0.022, 0.5 * (fridge_y0 + fridge_y1) + 0.004, 0.080, tall_x0, fridge_y1 - 0.015, 1.920), 'blackglass', 'fridge-door-R')
-    rect((tall_x0 - 0.020, fridge_y0 + 0.004, 1.926, tall_x0, fridge_y1 - 0.004, 2.156), teal_gloss, 'fridge-over-door')
-    rect((tall_x0, fridge_y0 + 0.004, 2.160, tall_x1, fridge_y1 - 0.004, 2.970), teal_loft, 'fridge-loft-door')
-    # Tall appliance & pantry column (built-in oven + microwave + sage-teal drawers)
-    rect((tall_x0, pantry_y0, 0.0, tall_x1, pantry_y1, 2.160), teak_wood, 'tall-pantry-carcass')
-    rect((tall_x0 - 0.020, pantry_y0 + 0.004, 0.105, tall_x0, pantry_y1 - 0.004, 0.720), teal_gloss, 'tall-pantry-lower')
-    rect((tall_x0 - 0.022, pantry_y0 + 0.020, 0.730, tall_x0, pantry_y1 - 0.020, 1.320), 'blackglass', 'built-in-oven', 'detail')
-    rect((tall_x0 - 0.022, pantry_y0 + 0.020, 1.335, tall_x0, pantry_y1 - 0.020, 1.720), 'blackglass', 'built-in-microwave', 'detail')
-    rect((tall_x0 - 0.020, pantry_y0 + 0.004, 1.730, tall_x0, pantry_y1 - 0.004, 2.156), teal_gloss, 'tall-pantry-upper')
-    rect((tall_x0 - 0.020, pantry_y0 + 0.004, 2.166, tall_x0, pantry_y1 - 0.004, 2.966), teal_loft, 'tall-pantry-loft')
+    # 7. Very minimalist above-platform storage on the solid center pier beside the hood (2 slim floating teak shelves + warm LED)
+    sh_x0, sh_x1 = hob_x1 + 0.04, pier_x1 - 0.02
+    if sh_x1 - sh_x0 > 0.25:
+        for s_idx, sz in enumerate((1.480, 1.840)):
+            rect((sh_x0, y_wall, sz, sh_x1, y_wall + 0.250, sz + 0.032), teak_wood, f'minimal-floating-shelf-{s_idx}', 'furniture')
+            rect((sh_x0 + 0.02, y_wall + 0.04, sz - 0.008, sh_x1 - 0.02, y_wall + 0.065, sz), led_warm, f'minimal-shelf-led-{s_idx}', 'cove')
 
-    # 11. Prep Counter (4' x 1'9", x_ft: 34.10..38.10, y_ft: 26.18..27.93 -> X: 3.679..4.212 m, Y: 3.627..4.846 m) (K-05)
-    px0 = spec.get('prep_x0', 3.679)
-    px1 = spec.get('prep_x1', 4.212)
-    py0 = spec.get('prep_y0', 3.627)
-    py1 = spec.get('prep_y1', 4.846)
-    # Fluted warm teak base with recessed warm LED toe-kick and under-counter cove
-    rect((px0 + 0.02, py0 + 0.02, 0.0, px1 - 0.02, py1 - 0.02, 0.860), teak_wood, 'prep-counter-base')
-    rect((px0 + 0.015, py0 + 0.015, 0.012, px1 - 0.015, py1 - 0.015, 0.032), led_warm, 'prep-toe-led', 'detail')
-    rect((px0 + 0.015, py0 + 0.015, 0.840, px1 - 0.015, py1 - 0.015, 0.858), led_warm, 'prep-lip-led', 'detail')
-    # Vertical teak flutes on the south/dining face of the prep counter
+    # 8. Shifted West Tall Appliance & Fridge Bank against Home ICU South Wall (y_ft=25.0 -> X=4.512 m, x_ft=35.05..38.95)
+    # Completely clear of the east wall and NE corner so the wide east platform stays open, bright, and spacious!
+    app_x0 = spec.get('app_x0', 3.860)
+    app_x1 = spec.get('app_x1', 4.512)
+    fridge_y0 = spec.get('fridge_y0', 3.368)
+    fridge_y1 = spec.get('fridge_y1', 4.100)
+    pantry_y0 = spec.get('pantry_y0', 4.108)
+    pantry_y1 = spec.get('pantry_y1', 4.557)
+
+    # Side-by-side black mirror-glass refrigerator in sage-teal & fluted-teak architectural surround
+    rect((app_x0, fridge_y0, 0.0, app_x1, fridge_y1, 2.160), teal_gloss, 'fridge-housing')
+    f_mid = 0.5 * (fridge_y0 + fridge_y1)
+    rect((app_x0 - 0.022, fridge_y0 + 0.012, 0.080, app_x0, f_mid - 0.004, 1.920), 'blackglass', 'fridge-door-L')
+    rect((app_x0 - 0.022, f_mid + 0.004, 0.080, app_x0, fridge_y1 - 0.012, 1.920), 'blackglass', 'fridge-door-R')
+    rect((app_x0 - 0.020, fridge_y0 + 0.004, 1.926, app_x0, fridge_y1 - 0.004, 2.156), teal_gloss, 'fridge-over-door')
+    rect((app_x0, fridge_y0 + 0.004, 2.160, app_x1, fridge_y1 - 0.004, 2.980), teal_loft, 'fridge-loft-door')
+
+    # Tall appliance & pantry column (built-in oven + microwave + sage-teal storage shifted away from east wall)
+    rect((app_x0, pantry_y0, 0.0, app_x1, pantry_y1, 2.160), teak_wood, 'tall-pantry-carcass')
+    rect((app_x0 - 0.020, pantry_y0 + 0.004, 0.105, app_x0, pantry_y1 - 0.004, 0.720), teal_gloss, 'tall-pantry-lower')
+    rect((app_x0 - 0.022, pantry_y0 + 0.018, 0.730, app_x0, pantry_y1 - 0.018, 1.320), 'blackglass', 'built-in-oven', 'detail')
+    rect((app_x0 - 0.022, pantry_y0 + 0.018, 1.335, app_x0, pantry_y1 - 0.018, 1.720), 'blackglass', 'built-in-microwave', 'detail')
+    rect((app_x0 - 0.020, pantry_y0 + 0.004, 1.730, app_x0, pantry_y1 - 0.004, 2.156), teal_gloss, 'tall-pantry-upper')
+    rect((app_x0 - 0.020, pantry_y0 + 0.004, 2.166, app_x0, pantry_y1 - 0.004, 2.980), teal_loft, 'tall-pantry-loft')
+
+    # 9. Sculptural Waterfall Quartz & Fluted-Teak Prep Island (x_ft: 35.40..39.20, y_ft: 30.00..31.65)
+    px0 = spec.get('prep_x0', 2.545)
+    px1 = spec.get('prep_x1', 3.048)
+    py0 = spec.get('prep_y0', 3.292)
+    py1 = spec.get('prep_y1', 4.450)
+    rect((px0 + 0.02, py0 + 0.02, 0.0, px1 - 0.02, py1 - 0.02, 0.865), teak_wood, 'prep-counter-base')
+    rect((px0 + 0.015, py0 + 0.015, 0.012, px1 - 0.015, py1 - 0.015, 0.032), led_warm, 'prep-toe-led', 'cove')
+    rect((px0 + 0.015, py0 + 0.015, 0.845, px1 - 0.015, py1 - 0.015, 0.862), led_warm, 'prep-lip-led', 'cove')
     p_flutes = int((py1 - py0) / 0.045)
     for i in range(p_flutes):
         fy = py0 + i * 0.045 + 0.012
-        rect((px0 - 0.008, fy, 0.040, px0 + 0.012, fy + 0.022, 0.855), teak_wood, f'prep-flute-{i}', 'detail')
-    # Nano-white quartz top + waterfall drop on the east & west ends
-    rect((px0 - 0.015, py0 - 0.015, 0.860, px1 + 0.015, py1 + 0.015, 0.900), quartz_top, 'prep-quartz-top')
-    rect((px0 - 0.015, py0 - 0.015, 0.0, px1 + 0.015, py0 + 0.025, 0.900), quartz_top, 'prep-waterfall-east', 'detail')
-    rect((px0 - 0.015, py1 - 0.025, 0.0, px1 + 0.015, py1 + 0.015, 0.900), quartz_top, 'prep-waterfall-west', 'detail')
-    # Two geometric wood-slat lantern pendants suspended over the prep counter (K-05)
+        rect((px0 - 0.008, fy, 0.040, px0 + 0.012, fy + 0.022, 0.860), teak_wood, f'prep-flute-{i}', 'detail')
+    rect((px0 - 0.015, py0 - 0.015, 0.865, px1 + 0.015, py1 + 0.015, 0.902), quartz_top, 'prep-quartz-top')
+    rect((px0 - 0.015, py0 - 0.015, 0.0, px1 + 0.015, py0 + 0.025, 0.902), quartz_top, 'prep-waterfall-east', 'detail')
+    rect((px0 - 0.015, py1 - 0.025, 0.0, px1 + 0.015, py1 + 0.015, 0.902), quartz_top, 'prep-waterfall-west', 'detail')
+    # Minimalist linear brushed-gold & warm-LED pendant bar over the prep island
     pxm = 0.5 * (px0 + px1)
-    rect((pxm - 0.06, py0 + 0.22, 2.96, pxm + 0.06, py1 - 0.22, 3.00), teak_wood, 'prep-pendant-canopy', 'detail')
-    for idx, py_p in enumerate((py0 + 0.38, py1 - 0.38)):
-        k.beam((pxm, py_p, z + 2.12), (pxm, py_p, z + 2.96), 0.008, gola_black, floor, 'detail')
-        k.cylinder((pxm, py_p, z + 1.90), 0.115, 0.22, teak_wood, floor, 'detail')
-        k.cylinder((pxm, py_p, z + 1.93), 0.075, 0.16, led_warm, floor, 'detail')
+    rect((pxm - 0.04, py0 + 0.20, 2.96, pxm + 0.04, py1 - 0.20, 3.00), gola_black, 'prep-pendant-canopy', 'detail')
+    for py_p in (py0 + 0.28, py1 - 0.28):
+        k.beam((pxm, py_p, z + 2.08), (pxm, py_p, z + 2.96), 0.005, gola_black, floor, 'detail')
+    rect((pxm - 0.022, py0 + 0.14, 2.04, pxm + 0.022, py1 - 0.14, 2.08), 'chandelier_gold_ring', 'prep-pendant-bar', 'fixture')
+    rect((pxm - 0.016, py0 + 0.16, 2.025, pxm + 0.016, py1 - 0.16, 2.04), led_warm, 'prep-pendant-glow', 'cove')
 
     # Register footprints with scene kit
     k.furnishing('kitchen-counter', room, worktop_poly)
     k.furnishing('kitchen-sink', room, sink_box)
     k.furnishing('kitchen-hob', room, box(hob_x0, y_wall, hob_x1, y_front))
-    k.furnishing('kitchen-fridge', room, box(tall_x0, fridge_y0, tall_x1, fridge_y1))
+    k.furnishing('kitchen-fridge', room, box(app_x0, fridge_y0, app_x1, fridge_y1))
     k.furnishing('prep-counter', room, box(px0, py0, px1, py1))
-    ctx['placed'].extend([worktop_poly, box(tall_x0, fridge_y0, tall_x1, pantry_y1), box(px0, py0, px1, py1)])
+    ctx['placed'].extend([worktop_poly, box(app_x0, fridge_y0, app_x1, pantry_y1), box(px0, py0, px1, py1)])
     for n in k.nodes[mark[0]:]:
         n['owner'] = owner
 

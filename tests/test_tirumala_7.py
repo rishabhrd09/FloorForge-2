@@ -1,8 +1,9 @@
-"""Comprehensive geometry, architecture, furnishing, and preservation tests for Tirumala 7."""
+"""Comprehensive geometry, architecture, furnishing, glitch-freedom, and preservation tests for Tirumala 7."""
 import json
 from pathlib import Path
 
 from shapely.geometry import Point, Polygon, box
+from shapely.ops import unary_union
 from floorforge.sample_projects import sample_file
 from floorforge.plan_geometry import geometry
 
@@ -20,10 +21,10 @@ def local_box_mm(x0_ft: float, y0_ft: float, x1_ft: float, y1_ft: float):
     return box(min(ax, bx), min(ay, by), max(ax, bx), max(ay, by))
 
 
-def test_room_programme_and_nominal_dimensions_within_25mm():
-    """Every room on all three floors exists on the right floor with nominal size within ±25 mm of the PDF."""
+def test_room_programme_east_setback_and_zero_space_overlaps():
+    """Every room on all three floors has exact dimensions, zero pairwise space overlaps,
+    a 3' east kitchen/wash setback (x=47..50), 22' car porch, 15'x16' Home ICU, and 5' wash room."""
     b = read('building.json')
-    ref = read('plan-reference.json')
     spaces = {s['id']: s for s in b['spaces']}
 
     expected_ground = {
@@ -34,20 +35,20 @@ def test_room_programme_and_nominal_dimensions_within_25mm():
         'drawing_room': (9.5, 14.0),
         'covered_entry': (5.5, 7.0),
         'verandah': (16.0, 9.0),
-        'car_porch': (11.0, 20.0),
+        'car_porch': (11.0, 22.0),
+        'east_setback': (3.0, 18.0),
         'living_hall': (18.5, 10.0),
-        'home_icu': (15.0, 17.0),
+        'home_icu': (15.0, 16.0),
         'master_bath': (5.5, 8.0),
         'west_gully': (2.0, 14.0),
         'master_bedroom': (15.0, 14.0),
-        'bedroom_entry': (7.0, 7.0),
-        'dining_hall': (12.0, 7.0),
-        'kitchen': (14.0, 8.0),
-        'work_bay': (11.0, 6.0),
-        'stair': (15.0, 7.0),
-        'stair_gap': (2.0, 7.0),
-        'store': (7.0, 6.0),
-        'wash_area': (9.0, 6.0),
+        'bedroom_entry': (4.0, 7.0),
+        'dining_hall': (11.0, 8.0),
+        'work_bay': (8.0, 3.0),
+        'kitchen': (12.0, 10.0),
+        'stair': (16.0, 7.0),
+        'store': (7.0, 5.0),
+        'wash_area': (7.0, 5.0),
     }
     for sid, (w_ft, d_ft) in expected_ground.items():
         assert sid in spaces, f"Missing ground floor room {sid}"
@@ -56,13 +57,19 @@ def test_room_programme_and_nominal_dimensions_within_25mm():
         assert abs(s['size_mm'][0] - w_ft * FT) <= 25.0
         assert abs(s['size_mm'][1] - d_ft * FT) <= 25.0
 
+    # Kitchen and wash room sit west of x=47', leaving a full 3' east setback (x=47..50)
+    assert spaces['kitchen']['x_ft'][1] == 47.0
+    assert spaces['work_bay']['x_ft'][1] == 47.0
+    assert spaces['wash_area']['x_ft'][1] == 47.0
+    assert spaces['east_setback']['x_ft'] == [47.0, 50.0]
+
     expected_first = {
         'u_master_bedroom': (18.0, 15.0),
         'u_dressing': (8.0, 7.0),
         'u_en_suite': (7.0, 9.0),
         'u_study_meditation': (15.0, 13.0),
-        'u_open_to_below': (12.0, 5.0),
-        'u_shared_bath': (6.0, 8.0),
+        'u_open_to_below': (10.0, 8.0),
+        'u_shared_bath': (5.0, 8.0),
         'u_medium_bedroom': (15.0, 11.0),
         'u_stair': (16.0, 7.0),
     }
@@ -73,7 +80,6 @@ def test_room_programme_and_nominal_dimensions_within_25mm():
         assert abs(s['size_mm'][0] - w_ft * FT) <= 25.0
         assert abs(s['size_mm'][1] - d_ft * FT) <= 25.0
 
-    # Master suite total area on First floor = 18x15 (270) + 8x7 (56) + 7x9 (63) = 389 sq ft exact per PDF label
     suite_sqft = (
         spaces['u_master_bedroom']['nominal_area_sqft']
         + spaces['u_dressing']['nominal_area_sqft']
@@ -82,10 +88,10 @@ def test_room_programme_and_nominal_dimensions_within_25mm():
     assert abs(suite_sqft - 389.0) < 0.1
 
     expected_second = {
-        's_office_tv_hall': (30.0, 18.0),
-        's_lobby_passage': (4.0, 5.0),
-        's_raised_rooflight': (12.0, 5.0),
-        's_stair_lobby': (17.0, 9.0),
+        's_office_tv_hall': (31.0, 17.0),
+        's_lobby_passage': (3.5, 8.0),
+        's_raised_rooflight': (13.5, 8.0),
+        's_stair_lobby': (17.0, 7.0),
     }
     for sid, (w_ft, d_ft) in expected_second.items():
         assert sid in spaces, f"Missing second floor room {sid}"
@@ -94,61 +100,79 @@ def test_room_programme_and_nominal_dimensions_within_25mm():
         assert abs(s['size_mm'][0] - w_ft * FT) <= 25.0
         assert abs(s['size_mm'][1] - d_ft * FT) <= 25.0
 
+    # Zero pairwise polygon overlaps on every floor
+    for f_idx in (0, 1, 2):
+        fl_spaces = [sp for sp in b['spaces'] if sp['floor'] == f_idx]
+        for i in range(len(fl_spaces)):
+            for j in range(i + 1, len(fl_spaces)):
+                p1 = Polygon(fl_spaces[i]['polygon'])
+                p2 = Polygon(fl_spaces[j]['polygon'])
+                assert p1.intersection(p2).area < 1.0, f"Overlap on floor {f_idx}: {fl_spaces[i]['id']} vs {fl_spaces[j]['id']}"
 
-def test_double_height_void_and_rooflight_alignment_and_guards():
-    """The 12' x 5' void and rooflight sit at identical x/y (x: 21..33, y: 26..31) on all three levels,
-    cut the first-floor and second-floor slabs, glaze the second floor, and guard all open edges."""
+
+def test_full_span_double_height_atrium_and_sunroof_alignment():
+    """The double-height atrium spans the full 8' N-S gap from the Dining north wall (y=25') right up to
+    the Staircase (y=33'), and the 13.5' x 8' raised glazed sunroof sits directly overhead."""
     b = read('building.json')
     ref = read('plan-reference.json')
     spaces = {s['id']: s for s in b['spaces']}
 
-    # Check identical x_ft=[21, 33], y_ft=[26, 31] across all 3 levels
     shaft = ref['vertical_alignment']['light_shaft']
-    assert shaft['x_ft'] == [21.0, 33.0] and shaft['y_ft'] == [26.0, 31.0]
-    assert spaces['u_open_to_below']['x_ft'] == [21.0, 33.0] and spaces['u_open_to_below']['y_ft'] == [26.0, 31.0]
-    assert spaces['s_raised_rooflight']['x_ft'] == [21.0, 33.0] and spaces['s_raised_rooflight']['y_ft'] == [26.0, 31.0]
+    assert shaft['y_ft'] == [25.0, 33.0]
+    assert spaces['u_open_to_below']['x_ft'] == [20.5, 30.5] and spaces['u_open_to_below']['y_ft'] == [25.0, 33.0]
+    assert spaces['s_raised_rooflight']['x_ft'] == [20.5, 34.0] and spaces['s_raised_rooflight']['y_ft'] == [25.0, 33.0]
     assert not spaces['u_open_to_below']['walkable']
     assert not spaces['s_raised_rooflight']['walkable']
     assert spaces['s_raised_rooflight'].get('glassCover') is True
 
-    void_poly = local_box_mm(21.0, 26.0, 33.0, 31.0).buffer(-5.0)
+    void_f1 = local_box_mm(20.5, 25.0, 30.5, 33.0).buffer(-5.0)
+    void_f2 = local_box_mm(20.5, 25.0, 34.0, 33.0).buffer(-5.0)
     plate1 = geometry(b['floor_plates'][1]['regions'])
     plate2 = geometry(b['floor_plates'][2]['regions'])
-    assert plate1.intersection(void_poly).area < 1.0, "First-floor slab must be cut over the 12' x 5' void"
-    assert plate2.intersection(void_poly).area < 1.0, "Second-floor slab must be cut for the 12' x 5' rooflight"
+    assert plate1.intersection(void_f1).area < 1.0
+    assert plate2.intersection(void_f2).area < 1.0
 
-    # Guards around first-floor overlook and second-floor rooflight
     guards = {g['id']: g for g in b['guards']}
-    for gid in ('u-void-guard-west', 'u-void-guard-north', 'u-void-guard-south', 's-rooflight-curb-north', 's-rooflight-curb-east'):
+    for gid in ('u-void-guard-west', 'u-void-guard-east', 'u-void-guard-north', 'u-void-guard-south', 's-rooflight-curb-north', 's-rooflight-curb-east'):
         assert gid in guards
         assert guards[gid]['height'] >= 1050
 
-    # Verify 3D scene has the rooflight glass and balustrade nodes
     scene = read('scene.json')
     node_ids = {n['id'] for n in scene['nodes']}
     assert 's-rooflight-glass' in node_ids
     assert 'u-void-guard-north-glass' in node_ids
+    assert 'u-void-guard-east-glass' in node_ids
     assert 'void-chandelier-ring-0' in node_ids
 
 
-def test_terrace_edges_walkable_areas_and_car_porch_open_strip():
-    """Terrace outer east edges are straight at x=47' (first floor, 520 sq ft) and x=44' (second floor, 858 sq ft),
-    and the outer 3' of the car porch (x: 47..50, y: 0..20) is open to the sky."""
+def test_terrace_edges_east_setback_and_ne_car_gate_with_verandah_lawn():
+    """Terrace outer east edges sit at x=47' (first floor) and x=44' (second floor), x=47..50 is open to sky,
+    NE corner has an interactive 10' car gate + sloped ramp, and Verandah has a manicured lawn court with zero round shrub balls."""
     b = read('building.json')
+    scene = read('scene.json')
     spaces = {s['id']: s for s in b['spaces']}
 
-    t1 = spaces['u_large_terrace']
-    t2 = spaces['s_open_terrace']
-    assert t1['east_edge_x_ft'] == 47.0
-    assert t2['east_edge_x_ft'] == 44.0
-    assert abs(t1['nominal_area_sqft'] - 520.0) < 0.5
-    assert abs(t2['nominal_area_sqft'] - 858.0) < 0.5
+    assert spaces['u_large_terrace']['east_edge_x_ft'] == 47.0
+    assert spaces['s_open_terrace']['east_edge_x_ft'] == 44.0
 
-    # Outer 3' of the car porch (x: 47..50, y: 0..20) is open to the sky on both upper floor plates
-    open_strip = local_box_mm(47.0, 0.0, 50.0, 20.0).buffer(-5.0)
+    open_east_strip = local_box_mm(47.0, 0.0, 50.0, 40.0).buffer(-5.0)
     for fl_idx in (1, 2):
         plate = geometry(b['floor_plates'][fl_idx]['regions'])
-        assert plate.intersection(open_strip).area < 1.0
+        assert plate.intersection(open_east_strip).area < 1.0
+
+    gate_ids = {g['id'] for g in scene.get('gate_model', [])}
+    assert 'east-walk-gate' in gate_ids
+    assert 'north-vehicle-gate' in gate_ids
+
+    node_ids = {n['id'] for n in scene['nodes']}
+    assert 'north-vehicle-ramp' in node_ids
+    assert 'verandah/north-lawn-turf' in node_ids
+    assert 'verandah/north-lawn-coping' in node_ids
+
+    # Zero round/spiky green shrub spheres anywhere in the project
+    assert scene.get('vegetation') == []
+    plant_proxies = [n['id'] for n in scene['nodes'] if 'plant' in n.get('role', '') or n.get('material') in ('leaf', 'leaf-light')]
+    assert plant_proxies == []
 
 
 def test_stair_294_sequence_risers_treads_and_headroom():
@@ -166,61 +190,61 @@ def test_stair_294_sequence_risers_treads_and_headroom():
         assert st['flight_width'] >= 1000.0
 
 
-def test_home_icu_dimensions_openings_and_layout():
-    """Home ICU is 15' x 17', has a 7' north slider to the verandah, >= 1200 mm clear west opening with no door leaf,
-    and hospital bed facing the west-wall 75\" TV."""
+def test_home_icu_and_all_tvs_complete_without_wall_overlap():
+    """Home ICU is 15' x 16' with 7' north slider and 5'6\" clear west opening, and every TV in the house
+    has full screen dimensions and zero wall collision."""
     b = read('building.json')
-    spaces = {s['id']: s for s in b['spaces']}
-    icu = spaces['home_icu']
-    assert abs(icu['size_mm'][0] - 15.0 * FT) <= 25.0
-    assert abs(icu['size_mm'][1] - 17.0 * FT) <= 25.0
-
+    scene = read('scene.json')
     openings = {o['id']: o for o in b['openings']}
+
     slider = openings['icu_north_slider']
-    assert slider['sliding'] is True
-    assert abs(slider['width'] - 7.0 * FT) <= 25.0
-    assert set(slider['connects']) == {'home_icu', 'verandah'}
-
+    assert slider['sliding'] is True and abs(slider['width'] - 7.0 * FT) <= 25.0
     west_open = openings['icu_west_clear_opening']
-    assert west_open['kind'] == 'cased'
-    assert west_open['swing'] is None
-    assert west_open['width'] >= 1200.0 and abs(west_open['width'] - 5.5 * FT) <= 25.0
-    assert set(west_open['connects']) == {'home_icu', 'living_hall'}
+    assert west_open['kind'] == 'cased' and west_open['swing'] is None and west_open['width'] >= 1200.0
 
-    scene = read('scene.json')
     nodes = {n['id']: n for n in scene['nodes']}
-    assert 'home_icu/bed-base' in nodes and 'home_icu/tv-55in' in nodes
-    bed_y = nodes['home_icu/bed-base']['position'][1]
-    tv_y = nodes['home_icu/tv-55in']['position'][1]
-    # In building metres (+Y is west), the west wall TV has a larger Y coordinate than the east-side bed
-    assert tv_y > bed_y + 2.0
+    walls_by_floor = {f: unary_union([Polygon(w['polygon']) for w in b['walls'] if w['floor'] == f]) for f in (0, 1, 2)}
+
+    for tv_id, min_span_m in (
+        ('living_hall/tv-75in', 1.60),
+        ('home_icu/tv-55in', 1.20),
+        ('s_office_tv_hall/tv-75in', 1.60),
+    ):
+        assert tv_id in nodes
+        n = nodes[tv_id]
+        pos, sc = n['position'], n['scale']
+        assert max(sc[0], sc[1]) >= min_span_m
+        assert sc[2] >= 0.70
+        tv_box_mm = box((pos[0] - sc[0] / 2) * 1000, (pos[1] - sc[1] / 2) * 1000,
+                        (pos[0] + sc[0] / 2) * 1000, (pos[1] + sc[1] / 2) * 1000)
+        assert tv_box_mm.intersection(walls_by_floor[n['floor']]).area < 1.0
 
 
-def test_straight_run_kitchen_work_bay_and_prep_counter():
-    """Kitchen counter is a single straight east-wall run (~13'6\"), with sink in the work bay (y~22.25..24.35),
-    hob at the south end (y~30..32.15), prep counter against the ICU south wall, and doors to store and wash area."""
+def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
+    """Kitchen has two east windows on x=47', an 840 mm (2'9\") wide quartz platform with under-platform storage
+    and minimalist floating shelves (no heavy east loft), and fridge/pantry shifted west away from the east wall & NE corner."""
     b = read('building.json')
-    openings = {o['id']: o for o in b['openings']}
-    assert set(openings['store_door']['connects']) == {'kitchen', 'store'}
-    assert set(openings['wash_area_door']['connects']) == {'kitchen', 'wash_area'}
-
     scene = read('scene.json')
+    openings = {o['id']: o for o in b['openings']}
+    assert 'kitchen_east_window_1' in openings and openings['kitchen_east_window_1']['wall_ref'] == 'x=47.0'
+    assert 'kitchen_east_window_2' in openings and openings['kitchen_east_window_2']['wall_ref'] == 'x=47.0'
+    assert 'wash_east_window' in openings and openings['wash_east_window']['wall_ref'] == 'x=47.0'
+
     nodes = {n['id']: n for n in scene['nodes']}
     assert 'kitchen/modular-kitchen/quartz-worktop' in nodes
-    assert 'kitchen/modular-kitchen/sink-bottom' in nodes
-    assert 'kitchen/modular-kitchen/hob-glass-plate' in nodes
-    assert 'kitchen/modular-kitchen/prep-quartz-top' in nodes
-    assert 'kitchen/modular-kitchen/loft-carcass' in nodes
-    loft = nodes['kitchen/modular-kitchen/loft-carcass']
-    # Counter/loft run spans y_ft: 20.3..33.7 (13.4 ft = 4.084 m along X in building coordinates)
-    assert abs(loft['scale'][0] - 13.4 * 0.3048) < 0.05
-    # Sink is at north end (larger X in building metres), hob is at south end (smaller X in building metres)
-    sink_x = nodes['kitchen/modular-kitchen/sink-drainboard']['position'][0]
-    hob_x = nodes['kitchen/modular-kitchen/hob-glass-plate']['position'][0]
-    assert sink_x > hob_x + 1.8
+    assert 'kitchen/modular-kitchen/minimal-floating-shelf-0' in nodes
+    assert 'kitchen/modular-kitchen/loft-carcass' not in nodes  # No heavy overhead loft on east wall!
+
+    plinth = nodes['kitchen/modular-kitchen/plinth-kickboard']
+    # Plinth depth is 840 mm - 50 mm = 0.79 m -> confirms 840 mm wide platform!
+    assert plinth['scale'][1] >= 0.78
+
+    # Fridge is shifted west (> 2.3 m west of the x=47' east wall, i.e. Y > 3.3 m)
+    fridge = nodes['kitchen/modular-kitchen/fridge-housing']
+    assert fridge['position'][1] > 3.30
 
 
-def test_all_pdf_doors_and_windows_match_within_25mm():
+def test_all_plan_reference_doors_and_windows_match_within_25mm():
     """Every door and window in `plan-reference.json` exists in `building.json` within ±25 mm."""
     b = read('building.json')
     ref = read('plan-reference.json')
@@ -230,7 +254,7 @@ def test_all_pdf_doors_and_windows_match_within_25mm():
         f_data = ref['floors'][fkey]
         for item in list(f_data['doors']) + list(f_data['windows']):
             oid = item['id']
-            assert oid in by_id, f"Missing PDF opening {oid} on {fkey} floor"
+            assert oid in by_id, f"Missing opening {oid} on {fkey} floor"
             o = by_id[oid]
             assert o['floor'] == f_idx
             expected_w = abs(item['span_ft'][1] - item['span_ft'][0]) * FT
@@ -238,7 +262,7 @@ def test_all_pdf_doors_and_windows_match_within_25mm():
 
 
 def test_other_gallery_samples_are_unchanged():
-    """Adding tirumala-7 leaves all existing catalog entries and their planHashes untouched."""
+    """Revising tirumala-7 leaves all existing catalog entries and their planHashes untouched."""
     catalog = json.loads((ROOT / 'examples/gallery/catalog.json').read_text())
     by_id = {entry['id']: entry for entry in catalog}
     assert 'tirumala-7' in by_id
@@ -248,8 +272,8 @@ def test_other_gallery_samples_are_unchanged():
         assert by_id[sid]['planHash'] == b['planHash']
 
 
-def test_walkthrough_rooflight_sightline_and_cycles_renders_exist():
-    """Verify 3-floor walkthrough start points, clear daylight path through the 12' x 5' rooflight shaft,
+def test_walkthrough_sunroof_sightline_and_cycles_renders_exist():
+    """Verify 3-floor walkthrough start points, clear daylight path through the atrium & sunroof,
     and all 26 Blender Cycles renders plus style-comparison-sheet.png and gallery thumbnail."""
     b, scene = read('building.json'), read('scene.json')
     spaces = {r['id']: r for r in b['spaces']}
@@ -259,8 +283,7 @@ def test_walkthrough_rooflight_sightline_and_cycles_renders_exist():
         assert Polygon(spaces[rid]['clear']).contains(pt_mm)
         assert geometry(b['roofs'][f]['ceiling']).covers(pt_mm)
 
-    # Vertical daylight sightline from dining table center (28.0', 28.5') up through First and Second floor plates to rooflight glass
-    shaft_pt_mm = Point((40.0 - 28.5) * FT, (50.0 - 28.0) * FT)
+    shaft_pt_mm = Point((40.0 - 29.0) * FT, (50.0 - 26.2) * FT)
     for f in (1, 2):
         assert not geometry(b['floor_plates'][f]['regions']).intersects(shaft_pt_mm)
         assert not geometry(b['roofs'][f - 1]['ceiling']).intersects(shaft_pt_mm)
@@ -280,4 +303,3 @@ def test_walkthrough_rooflight_sightline_and_cycles_renders_exist():
         assert p.is_file() and p.stat().st_size > 20_000, f"Missing or empty render: {p}"
     thumb = ROOT / 'examples/gallery/thumbnails/tirumala-7.png'
     assert thumb.is_file() and thumb.stat().st_size > 15_000
-

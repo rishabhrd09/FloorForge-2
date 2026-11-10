@@ -342,7 +342,7 @@
   {
     "id": "tirumala-7",
     "title": "Tirumala 7",
-    "description": "Three-floor 50′ × 40′ corner home with a 12′ × 5′ double-height rooflight shaft over dining, a 15′ × 17′ home ICU opening to a north verandah, a straight-run sage-teal and fluted-teak modular kitchen, four bedrooms, a meditation study, and a second-floor office & TV hall wrapped by 520 and 858 sq ft stepped terraces.",
+    "description": "Three-floor 50′ × 40′ corner home with a full-span double-height dining atrium and 13.5′ × 8′ raised glazed sunroof, 3′ east kitchen setback with wide 2′9″ quartz platform and east windows, 22′ car porch with NE corner car gate, north verandah lawn court, 15′ × 16′ home ICU, four bedrooms, meditation study, and second-floor office & TV hall wrapped by stepped terraces.",
     "style": "Sage-teal gloss · fluted teak · ivory vitrified",
     "directory": "gallery/tirumala-7",
     "basedOnSample": "tirumala-6",
@@ -352,6 +352,6 @@
     "depthFt": 50,
     "roofAccess": false,
     "terraceAccess": true,
-    "planHash": "a5c179d8db25d47343b2d28f1da75ff3a5f4c640c654300385c07650829ea4bc"
+    "planHash": "203532188f02ed1733c7e4ff69a246ca6be99746a69b67474d4cdac137a14f5f"
   }
 ]

@@ -23,7 +23,7 @@ OUT.mkdir(exist_ok=True)
 data = json.loads((SAMPLE / 'scene.json').read_text())
 nodes = {n['id']: n for n in data['nodes']}
 requested = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
-args = SimpleNamespace(width=1200, height=920, samples=24, gpu='--gpu' in requested)
+args = SimpleNamespace(width=1200, height=920, samples=36, gpu='--gpu' in requested)
 grade = rendering.GRADES['day'].copy()
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -34,36 +34,35 @@ H = float(data.get('floor_height', 3.15))
 prepare_tirumala_materials(data, grade)
 rendering.configure(args, grade)
 rendering.sky(data, grade)
-rendering.fixtures(data, dict(grade, lamps=0.35))
+rendering.fixtures(data, dict(grade, lamps=0.30))
 
-# Convert local PDF feet (x_ft east of west line, y_ft south of north line) to building metres (+X north, +Y west)
 FT = 0.3048
 def lm(x_ft: float, y_ft: float, z: float) -> tuple[float, float, float]:
     return ((40.0 - y_ft) * FT, (50.0 - x_ft) * FT, z)
 
-# Architectural daylight & warm interior fill lights across all three floors and the 12' x 5' rooflight shaft
+# Architectural daylight & warm interior fill lights tuned to the full-span atrium & east kitchen windows
 area_lights = [
-    # Rooflight shaft daylight pouring down through 2nd and 1st floor into dining
-    ('Rooflight top sun', lm(27.0, 28.5, 2 * H + 0.35), lm(27.0, 28.5, 0.5), 3.2, 680, (1.0, 0.97, 0.91)),
-    ('Rooflight mid shaft', lm(27.0, 28.5, H + 0.20), lm(27.0, 28.5, 0.2), 2.8, 460, (1.0, 0.96, 0.89)),
-    # Ground floor rooms
-    ('Kitchen fill', lm(42.5, 27.5, 2.75), lm(48.5, 27.0, 1.10), 2.6, 420, (1.0, 0.95, 0.86)),
-    ('Work bay fill', lm(44.0, 23.0, 2.75), lm(48.5, 23.0, 1.10), 2.2, 320, (1.0, 0.96, 0.88)),
-    ('Dining warm fill', lm(28.0, 29.0, 2.85), lm(31.0, 28.0, 1.00), 2.5, 360, (1.0, 0.94, 0.84)),
-    ('Living hall fill', lm(15.5, 21.0, 2.80), lm(13.0, 22.0, 1.00), 3.0, 440, (1.0, 0.95, 0.86)),
-    ('Home ICU fill', lm(31.5, 17.5, 2.80), lm(34.0, 17.5, 1.00), 3.2, 480, (1.0, 0.97, 0.92)),
-    ('Verandah daylight', lm(31.0, 4.5, 2.85), lm(28.0, 7.0, 1.00), 3.4, 420, (1.0, 0.98, 0.94)),
-    ('Drawing room fill', lm(12.8, 9.0, 2.80), lm(12.5, 6.0, 1.00), 2.6, 380, (1.0, 0.95, 0.87)),
-    ('Ground master fill', lm(9.5, 33.0, 2.80), lm(9.5, 35.5, 1.00), 2.8, 400, (1.0, 0.95, 0.86)),
+    # Full-span 13.5' x 8' sunroof pouring natural sky light down through First Floor into the Dining Atrium
+    ('Sunroof top sky', lm(26.5, 29.0, 2 * H + 0.32), lm(26.2, 29.0, 0.4), 3.6, 540, (1.0, 0.98, 0.93)),
+    ('Atrium mid shaft', lm(25.8, 29.0, H + 0.25), lm(26.2, 29.0, 0.2), 3.0, 380, (1.0, 0.96, 0.90)),
+    # Ground floor rooms + morning east window daylight into kitchen
+    ('Kitchen east window light', lm(48.4, 28.5, 1.85), lm(42.0, 28.5, 0.95), 2.8, 360, (1.0, 0.98, 0.93)),
+    ('Kitchen warm fill', lm(40.5, 28.5, 2.75), lm(45.5, 27.5, 1.05), 2.8, 300, (1.0, 0.95, 0.87)),
+    ('Dining warm fill', lm(26.5, 29.0, 2.82), lm(28.0, 28.0, 0.95), 2.6, 280, (1.0, 0.94, 0.85)),
+    ('Living hall fill', lm(15.5, 20.8, 2.76), lm(12.8, 23.5, 1.10), 3.0, 340, (1.0, 0.95, 0.87)),
+    ('Home ICU fill', lm(31.5, 15.8, 2.78), lm(26.0, 15.2, 1.15), 3.2, 360, (1.0, 0.97, 0.92)),
+    ('Verandah daylight', lm(31.0, 4.2, 2.82), lm(28.5, 3.0, 0.60), 3.4, 340, (1.0, 0.98, 0.94)),
+    ('Drawing room fill', lm(12.8, 9.0, 2.78), lm(12.5, 5.5, 1.00), 2.6, 300, (1.0, 0.95, 0.88)),
+    ('Ground master fill', lm(9.5, 33.0, 2.78), lm(9.5, 36.0, 1.00), 2.8, 320, (1.0, 0.95, 0.87)),
     # First floor rooms
-    ('First gallery fill', lm(20.0, 22.0, H + 2.80), lm(24.0, 26.0, H + 1.00), 2.8, 380, (1.0, 0.96, 0.88)),
-    ('First master fill', lm(11.5, 9.5, H + 2.80), lm(11.0, 6.5, H + 1.00), 3.2, 440, (1.0, 0.95, 0.87)),
-    ('Study meditation fill', lm(31.5, 14.5, H + 2.80), lm(34.0, 13.0, H + 1.00), 2.8, 400, (1.0, 0.96, 0.89)),
-    ('Medium bedroom fill', lm(8.5, 34.5, H + 2.80), lm(6.0, 35.5, H + 1.00), 2.6, 380, (1.0, 0.95, 0.87)),
+    ('First gallery fill', lm(20.5, 22.5, H + 2.78), lm(25.5, 27.5, H + 1.00), 2.8, 310, (1.0, 0.96, 0.89)),
+    ('First master fill', lm(11.5, 9.5, H + 2.78), lm(11.5, 6.0, H + 1.00), 3.2, 350, (1.0, 0.95, 0.88)),
+    ('Study meditation fill', lm(31.5, 14.5, H + 2.78), lm(34.0, 12.5, H + 1.00), 2.8, 320, (1.0, 0.96, 0.90)),
+    ('Medium bedroom fill', lm(8.5, 34.5, H + 2.78), lm(5.5, 35.5, H + 1.00), 2.6, 300, (1.0, 0.95, 0.88)),
     # Second floor rooms
-    ('Office TV hall west', lm(11.0, 17.0, 2 * H + 2.80), lm(16.0, 16.0, 2 * H + 1.00), 3.4, 450, (1.0, 0.96, 0.88)),
-    ('Office TV hall east', lm(24.0, 17.0, 2 * H + 2.80), lm(28.0, 17.0, 2 * H + 1.00), 3.4, 450, (1.0, 0.96, 0.88)),
-    ('Stair lobby fill', lm(24.5, 36.5, 2 * H + 2.80), lm(22.0, 36.5, 2 * H + 1.00), 2.6, 380, (1.0, 0.96, 0.89)),
+    ('Office TV hall west', lm(11.5, 16.5, 2 * H + 2.78), lm(15.0, 15.0, 2 * H + 1.05), 3.4, 340, (1.0, 0.96, 0.89)),
+    ('Office TV hall east', lm(24.5, 18.5, 2 * H + 2.78), lm(32.5, 19.0, 2 * H + 1.25), 3.4, 360, (1.0, 0.96, 0.89)),
+    ('Stair lobby fill', lm(25.0, 36.5, 2 * H + 2.78), lm(20.0, 36.5, 2 * H + 1.00), 2.6, 300, (1.0, 0.96, 0.90)),
 ]
 for name, pos, aim, size, power, rgb in area_lights:
     light = bpy.data.lights.new(name, 'AREA')
@@ -74,13 +73,40 @@ for name, pos, aim, size, power, rgb in area_lights:
     scene.collection.objects.link(obj)
     obj.location = pos
     obj.rotation_euler = (Vector(aim) - Vector(pos)).to_track_quat('-Z', 'Y').to_euler()
+    if hasattr(obj, 'visible_camera'):
+        obj.visible_camera = False
+    if hasattr(obj, 'visible_glossy'):
+        obj.visible_glossy = False
 
-# Configure PBR shaders for video-matched materials and standard surfaces
+# Configure PBR shaders for architectural & video-matched materials
 for mat in bpy.data.materials:
+    base_name = (mat.name or '').split('.')[0]
+    if base_name in ('glass', 'railglass', 'frosted', 'context-glass'):
+        continue
     props = data['materials'].get(mat.name, {})
     typ = props.get('kind', '')
     shader = rendering.principled(mat)
     if not shader:
+        continue
+    if base_name == 'tv_oled_screen':
+        shader.inputs['Base Color'].default_value = (0.004, 0.005, 0.007, 1.0)
+        if 'Roughness' in shader.inputs:
+            shader.inputs['Roughness'].default_value = 0.25
+        if 'Metallic' in shader.inputs:
+            shader.inputs['Metallic'].default_value = 0.04
+        for cc_key in ('Coat Weight', 'Clearcoat'):
+            if cc_key in shader.inputs:
+                shader.inputs[cc_key].default_value = 0.06
+        continue
+    if base_name == 'blackglass':
+        shader.inputs['Base Color'].default_value = (0.006, 0.008, 0.011, 1.0)
+        if 'Roughness' in shader.inputs:
+            shader.inputs['Roughness'].default_value = 0.06
+        if 'Metallic' in shader.inputs:
+            shader.inputs['Metallic'].default_value = 0.15
+        for cc_key in ('Coat Weight', 'Clearcoat'):
+            if cc_key in shader.inputs:
+                shader.inputs[cc_key].default_value = 0.90
         continue
     if not props.get('alpha') and props.get('color') and mat.name not in ('lamp', 'globe', 'cove_led_warm'):
         shader.inputs['Base Color'].default_value = (*rendering.linear(props['color']), 1)
@@ -98,13 +124,13 @@ for mat in bpy.data.materials:
             if em_key in shader.inputs:
                 shader.inputs[em_key].default_value = (*em_col, 1)
         if 'Emission Strength' in shader.inputs:
-            shader.inputs['Emission Strength'].default_value = float(props.get('emissive_strength', 3.5))
+            shader.inputs['Emission Strength'].default_value = float(props.get('emissive_strength', 3.2))
         continue
     if props.get('alpha') and props['alpha'] < 0.95:
         shader.inputs['Alpha'].default_value = float(props['alpha'])
         for tr_key in ('Transmission Weight', 'Transmission'):
             if tr_key in shader.inputs:
-                shader.inputs[tr_key].default_value = 0.72
+                shader.inputs[tr_key].default_value = 0.76
         continue
     if typ not in ('wood', 'woodfloor', 'stone', 'tile', 'fabric', 'rug', 'paver', 'render', 'grass', 'concrete', 'soil', 'marble'):
         continue
@@ -112,21 +138,21 @@ for mat in bpy.data.materials:
     coord = tree.nodes.new('ShaderNodeTexCoord')
     stretch = tree.nodes.new('ShaderNodeVectorMath')
     stretch.operation = 'MULTIPLY'
-    stretch.inputs[1].default_value = (2, 22, 11) if typ in ('wood', 'woodfloor') else (8, 8, 8)
+    stretch.inputs[1].default_value = (2, 22, 11) if typ in ('wood', 'woodfloor') else (18, 18, 18) if typ == 'grass' else (8, 8, 8)
     tree.links.new(coord.outputs['Generated'], stretch.inputs[0])
     noise = tree.nodes.new('ShaderNodeTexNoise')
-    noise.inputs['Scale'].default_value = 2.8
-    noise.inputs['Detail'].default_value = 4.0
+    noise.inputs['Scale'].default_value = 6.5 if typ == 'grass' else 2.8
+    noise.inputs['Detail'].default_value = 5.0 if typ == 'grass' else 4.0
     tree.links.new(stretch.outputs[0], noise.inputs['Vector'])
     ramp = tree.nodes.new('ShaderNodeValToRGB')
     rgb = list(shader.inputs['Base Color'].default_value)[:3]
-    for el, t in zip(ramp.color_ramp.elements, [0.82, 1.12]):
+    for el, t in zip(ramp.color_ramp.elements, [0.85, 1.10]):
         el.color = (*[min(1, v * t) for v in rgb], 1)
     tree.links.new(noise.outputs['Fac'], ramp.inputs[0])
     tree.links.new(ramp.outputs[0], shader.inputs['Base Color'])
     bump = tree.nodes.new('ShaderNodeBump')
-    bump.inputs['Strength'].default_value = 0.14
-    bump.inputs['Distance'].default_value = 0.010
+    bump.inputs['Strength'].default_value = 0.22 if typ == 'grass' else 0.13
+    bump.inputs['Distance'].default_value = 0.008
     tree.links.new(noise.outputs['Fac'], bump.inputs['Height'])
     tree.links.new(bump.outputs[0], shader.inputs['Normal'])
 
@@ -155,43 +181,53 @@ for name in ('floor_ivory_vitrified_800', 'ivory-vitrified', 'flagstone', 'floor
     nt.links.new(brick.outputs['Color'], shader.inputs['Base Color'])
 
 objects = {o.name: o for o in scene.objects if o.type == 'MESH'}
-# Replace each preview foliage proxy with a branched cluster of individual leaves
-for name, obj in list(objects.items()):
-    node = nodes.get(name, {})
-    if node.get('role') != 'plant-proxy' or node.get('material') != 'leaf':
-        continue
-    rng = random.Random(name)
-    verts, faces, indices = [], [], []
-    for i in range(420):
-        a = rng.uniform(0, 2 * math.pi)
-        z = rng.uniform(-1, 1)
-        rad = math.sqrt(1 - z * z) * rng.uniform(0.3, 1.0)
-        c = Vector((rad * math.cos(a), rad * math.sin(a), z * 0.9))
-        sideways = Vector((-math.sin(a), math.cos(a), 0)) * rng.uniform(0.055, 0.11)
-        axis = Vector((math.cos(a), math.sin(a), rng.uniform(-0.9, 0.4))) * rng.uniform(0.14, 0.32)
-        n = len(verts)
-        verts.extend([c - axis, c + sideways, c + axis, c - sideways, c + Vector((0, 0, 0.045))])
-        faces.extend([(n, n + 1, n + 4), (n + 1, n + 2, n + 4), (n + 2, n + 3, n + 4), (n + 3, n, n + 4)])
-        indices.extend([i % 2] * 4)
-    mesh = bpy.data.meshes.new('Leaf canopy')
-    mesh.from_pydata(verts, [], faces)
-    for k in ('leaf', 'leaf-light'):
-        mesh.materials.append(bpy.data.materials.get(k) or bpy.data.materials['leaf'])
-    for poly, mi in zip(mesh.polygons, indices):
-        poly.material_index = mi
-    obj.data = mesh
 
 
-def garden_backdrop():
-    """Plant neighbouring plots in exterior stills; keep them off the house plans."""
+def add_box_mesh(name: str, bounds: tuple[float, float, float, float, float, float], mat) -> bpy.types.Object:
+    x0, y0, z0, x1, y1, z1 = bounds
+    verts = [
+        (x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0),
+        (x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1),
+    ]
+    faces = [(0, 1, 2, 3), (4, 7, 6, 5), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)]
+    m = bpy.data.meshes.new(name)
+    m.from_pydata(verts, [], faces)
+    if mat:
+        m.materials.append(mat)
+    o = bpy.data.objects.new(name, m)
+    scene.collection.objects.link(o)
+    return o
+
+
+def exterior_context():
+    """Build brushed-concrete North & East colony roads, paver footpaths, and distant mature off-site trees for exterior stills."""
+    created = []
+    road_mat = bpy.data.materials.get('Studio road')
+    if not road_mat:
+        road_mat = bpy.data.materials.new('Studio road')
+        sh = rendering.principled(road_mat)
+        if sh:
+            sh.inputs['Base Color'].default_value = (*rendering.linear('#9b968d'), 1)
+            sh.inputs['Roughness'].default_value = 0.78
+    verge_mat = bpy.data.materials.get('travertine_warm') or road_mat
+
+    # 12 m North Colony Road (X = 13.35..24.20 m) & 9 m East Colony Road (X = -16.0..13.35 m, non-overlapping!) + stone footpath verges
+    created.append(add_box_mesh('North road carriageway', (13.35, -24.0, -0.36, 24.20, 32.0, -0.302), road_mat))
+    created.append(add_box_mesh('East road carriageway', (-16.0, -9.00, -0.36, 13.35, -0.90, -0.302), road_mat))
+    created.append(add_box_mesh('North footpath west of ramp', (12.192, 3.22, -0.34, 13.35, 16.0, -0.285), verge_mat))
+    created.append(add_box_mesh('East footpath verge', (-2.0, -0.90, -0.34, 13.35, 0.0, -0.295), verge_mat))
+    created.append(add_box_mesh('North avenue opposite verge', (24.20, -20.0, -0.34, 26.20, 28.0, -0.285), verge_mat))
+
+    # Distant mature off-site canopy trees across the colony avenue & adjoining parcels (NO round shrub spheres!)
     rng = random.Random(702)
     branches = bpy.data.curves.new('Neighbouring trees', 'CURVE')
     branches.dimensions = '3D'
-    branches.bevel_depth = 0.12
+    branches.bevel_depth = 0.11
     branches.bevel_resolution = 1
     branch_obj = bpy.data.objects.new('Off-site branches', branches)
     scene.collection.objects.link(branch_obj)
     branches.materials.append(bpy.data.materials.get('smoked-oak') or bpy.data.materials.get('Walnut'))
+    created.append(branch_obj)
     verts, faces, swatches = [], [], []
 
     def stem(points, radii):
@@ -201,45 +237,50 @@ def garden_backdrop():
             point.co = (*position, 1)
             point.radius = radius
 
-    for x, y, h in [(-4, 6, 7.2), (-5, 15, 8.1), (-1, 20, 6.5), (6, 21, 8.8), (12, 23, 6.2), (-11, 1, 6.8), (-8, 26, 9)]:
-        base = Vector((x, y, -0.39))
-        trunk = base + Vector((0.15, 0.04, h * 0.56))
-        stem([base, trunk], [1.5, 0.65])
-        for j in range(22):
+    for x, y, h in [
+        (-4.5, 6.0, 7.2), (-5.2, 15.0, 8.0), (-1.5, 20.5, 6.6),
+        (6.0, 21.5, 8.5), (12.0, 23.0, 6.4),
+        (26.5, -5.0, 7.6), (26.2, 4.0, 7.8), (26.8, 12.5, 8.4), (26.0, 21.0, 7.4),
+    ]:
+        base = Vector((x, y, -0.35))
+        trunk = base + Vector((0.14, 0.04, h * 0.56))
+        stem([base, trunk], [1.4, 0.60])
+        for j in range(20):
             angle = j * 2.399963
-            extent = h * rng.uniform(0.18, 0.41)
-            b = trunk + Vector((extent * math.cos(angle), extent * math.sin(angle), h * rng.uniform(-0.09, 0.39)))
-            fork = trunk.lerp(b, 0.47) + Vector((0, 0, 0.35))
-            stem([trunk, fork, b], [0.66, 0.40, 0.10])
-            for _ in range(420):
+            extent = h * rng.uniform(0.18, 0.40)
+            b_pt = trunk + Vector((extent * math.cos(angle), extent * math.sin(angle), h * rng.uniform(-0.08, 0.38)))
+            fork = trunk.lerp(b_pt, 0.47) + Vector((0, 0, 0.34))
+            stem([trunk, fork, b_pt], [0.62, 0.38, 0.09])
+            for _ in range(380):
                 phi = rng.random() * math.tau
                 dz = rng.uniform(-1, 1)
                 rho = math.sqrt(1 - dz * dz) * rng.random() ** 0.333
-                ctr = b + Vector((math.cos(phi) * rho, math.sin(phi) * rho, dz * 0.73)) * h * 0.175
-                length = rng.uniform(0.062, 0.13)
+                ctr = b_pt + Vector((math.cos(phi) * rho, math.sin(phi) * rho, dz * 0.72)) * h * 0.17
+                length = rng.uniform(0.06, 0.125)
                 yaw = rng.random() * math.tau
                 along = Vector((math.cos(yaw), math.sin(yaw), rng.uniform(-0.9, 0.6))) * length
                 across = Vector((-math.sin(yaw), math.cos(yaw), 0.1)) * length * 0.45
                 n = len(verts)
-                verts.extend([ctr - along, ctr + across, ctr + axis if False else ctr + along, ctr - across, ctr + Vector((0, 0, 0.014))])
+                verts.extend([ctr - along, ctr + across, ctr + along, ctr - across, ctr + Vector((0, 0, 0.014))])
                 faces.extend([(n, n + 1, n + 4), (n + 1, n + 2, n + 4), (n + 2, n + 3, n + 4), (n + 3, n, n + 4)])
                 swatches.extend([rng.randrange(4)] * 4)
     mesh = bpy.data.meshes.new('Garden canopy')
     mesh.from_pydata(verts, [], faces)
-    for rgb in [(53, 76, 44), (72, 93, 49), (92, 111, 64), (108, 118, 70)]:
+    for rgb in [(58, 76, 48), (74, 92, 54), (90, 106, 66), (104, 114, 72)]:
         mat = bpy.data.materials.new('Garden foliage')
         lin = (*[(v / 255) ** 2.2 for v in rgb], 1)
         mat.diffuse_color = lin
         sh = rendering.principled(mat)
         if sh:
             sh.inputs['Base Color'].default_value = lin
-            sh.inputs['Roughness'].default_value = 0.68
+            sh.inputs['Roughness'].default_value = 0.70
         mesh.materials.append(mat)
     for poly, idx in zip(mesh.polygons, swatches):
         poly.material_index = idx
     leaves = bpy.data.objects.new('Off-site foliage', mesh)
     scene.collection.objects.link(leaves)
-    return branch_obj, leaves
+    created.append(leaves)
+    return created
 
 
 ALL_VIEWS = [
@@ -260,6 +301,7 @@ views = [v for v in requested if v != '--gpu'] or ALL_VIEWS
 cut_roles = {'wall', 'joinery', 'glass', 'door', 'curtain', 'wall-tile', 'wall-panel', 'post', 'window-surround', 'sill', 'pipe', 'window-hood', 'parapet'}
 overheads = {'roof', 'ceiling', 'cove', 'downlight', 'ceiling-feature', 'canopy', 'band'}
 exterior_views = {'exterior', 'east_arrival', 'north_frontage', 'colony_overview', 'roof_terraces'}
+context_views = exterior_views | {'verandah', 'east_terrace', 'north_terrace', 'rooflight'}
 
 for view in views:
     floor = {'ground': 0, 'first': 1, 'second': 2}.get(view)
@@ -273,7 +315,7 @@ for view in views:
     for light in scene.objects:
         if light.type == 'LIGHT' and light.data.type != 'SUN':
             light.hide_render = floor is not None
-    backdrop = garden_backdrop() if view in exterior_views else []
+    backdrop = exterior_context() if view in context_views else []
 
     for name, obj in objects.items():
         n = nodes.get(name)
@@ -286,7 +328,7 @@ for view in views:
             continue
         obj.hide_render = (
             f != floor
-            and not (floor == 0 and role in ('plinth', 'vehicle'))
+            and not (floor == 0 and role in ('plinth', 'vehicle', 'gate', 'step'))
             and not (floor > 0 and f == floor - 1 and role == 'stair')
         ) or role in overheads
         if obj.hide_render:
@@ -329,7 +371,10 @@ for view in views:
         ground = bpy.context.object
         ground.name = 'Studio surface'
         mat = bpy.data.materials.get('Studio oatmeal') or bpy.data.materials.new('Studio oatmeal')
-        mat.diffuse_color = (0.52, 0.46, 0.37, 1)
+        sh = rendering.principled(mat)
+        if sh:
+            sh.inputs['Base Color'].default_value = (0.48, 0.44, 0.38, 1)
+            sh.inputs['Roughness'].default_value = 0.88
         ground.data.materials.append(mat)
     else:
         cfg = data['cameras'][view]
@@ -344,17 +389,20 @@ for view in views:
     if floor is None:
         bpy.ops.mesh.primitive_plane_add(size=1800, location=(6, 7.6, -0.397))
         ground = bpy.context.object
-        mat = bpy.data.materials.get('Studio oatmeal') or bpy.data.materials.new('Studio oatmeal')
-        mat.diffuse_color = (0.34, 0.32, 0.25, 1)
+        mat = bpy.data.materials.get('Studio urban earth') or bpy.data.materials.new('Studio urban earth')
+        sh = rendering.principled(mat)
+        if sh:
+            sh.inputs['Base Color'].default_value = (0.36, 0.33, 0.28, 1)
+            sh.inputs['Roughness'].default_value = 0.90
         ground.data.materials.append(mat)
 
     camera.location = eye
     camera.rotation_euler = (target - eye).to_track_quat('-Z', 'Y').to_euler()
     scene.view_settings.exposure = (
-        -1.15 if floor is not None
-        else -0.55 if view in exterior_views
-        else -0.35 if view in ('verandah', 'east_terrace', 'north_terrace', 'rooflight')
-        else 0.05
+        -1.10 if floor is not None
+        else -0.60 if view in exterior_views
+        else -0.42 if view in ('verandah', 'east_terrace', 'north_terrace', 'rooflight')
+        else -0.22
     )
     scene.render.filepath = str(OUT / (view + '.png'))
     bpy.ops.render.render(write_still=True)
@@ -366,7 +414,12 @@ for view in views:
         bpy.data.meshes.remove(temp)
     bpy.data.objects.remove(camera, do_unlink=True)
     for obj in backdrop:
+        m_data = obj.data
         bpy.data.objects.remove(obj, do_unlink=True)
+        if isinstance(m_data, bpy.types.Mesh):
+            bpy.data.meshes.remove(m_data)
+        elif isinstance(m_data, bpy.types.Curve):
+            bpy.data.curves.remove(m_data)
 
     if view == 'exterior':
         thumb = bpy.data.images.load(str(OUT / 'exterior.png'))

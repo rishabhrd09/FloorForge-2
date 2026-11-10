@@ -57,7 +57,7 @@
           },
           {
             "id": "caregiver",
-            "name": "Caregiver",
+            "name": "Caregiver room",
             "kind": "bedroom",
             "polygon": [
               [
@@ -172,7 +172,7 @@
           },
           {
             "id": "verandah",
-            "name": "Verandah",
+            "name": "Verandah & north lawn court",
             "kind": "veranda",
             "polygon": [
               [
@@ -195,7 +195,7 @@
           },
           {
             "id": "car_porch",
-            "name": "Car porch",
+            "name": "Car porch (22′)",
             "kind": "outer-lobby",
             "polygon": [
               [
@@ -207,11 +207,34 @@
                 3352.8
               ],
               [
-                6096,
+                5486.4,
                 3352.8
               ],
               [
-                6096,
+                5486.4,
+                0
+              ]
+            ]
+          },
+          {
+            "id": "east_setback",
+            "name": "East setback passage (3′)",
+            "kind": "courtyard",
+            "polygon": [
+              [
+                5486.4,
+                0
+              ],
+              [
+                5486.4,
+                914.4
+              ],
+              [
+                0,
+                914.4
+              ],
+              [
+                0,
                 0
               ]
             ]
@@ -253,11 +276,11 @@
                 7924.8
               ],
               [
-                4267.2,
+                4572,
                 7924.8
               ],
               [
-                4267.2,
+                4572,
                 3352.8
               ]
             ]
@@ -338,7 +361,7 @@
             "polygon": [
               [
                 4267.2,
-                7924.8
+                8839.2
               ],
               [
                 4267.2,
@@ -350,21 +373,21 @@
               ],
               [
                 2133.6,
-                7924.8
+                8839.2
               ]
             ]
           },
           {
             "id": "dining_hall",
-            "name": "Dining hall",
+            "name": "Dining hall (double-height atrium)",
             "kind": "dining",
             "polygon": [
               [
-                4267.2,
-                4267.2
+                4572,
+                4572
               ],
               [
-                4267.2,
+                4572,
                 7924.8
               ],
               [
@@ -373,7 +396,30 @@
               ],
               [
                 2133.6,
-                4267.2
+                4572
+              ]
+            ]
+          },
+          {
+            "id": "work_bay",
+            "name": "Kitchen north bay",
+            "kind": "foyer",
+            "polygon": [
+              [
+                5486.4,
+                914.4
+              ],
+              [
+                5486.4,
+                3352.8
+              ],
+              [
+                4572,
+                3352.8
+              ],
+              [
+                4572,
+                914.4
               ]
             ]
           },
@@ -383,54 +429,31 @@
             "kind": "kitchen",
             "polygon": [
               [
-                4267.2,
-                0
+                4572,
+                914.4
               ],
               [
-                4267.2,
-                4267.2
+                4572,
+                4572
               ],
               [
-                1828.8,
-                4267.2
+                1524,
+                4572
               ],
               [
-                1828.8,
-                0
-              ]
-            ]
-          },
-          {
-            "id": "work_bay",
-            "name": "Work bay",
-            "kind": "foyer",
-            "polygon": [
-              [
-                6096,
-                0
-              ],
-              [
-                6096,
-                3352.8
-              ],
-              [
-                4267.2,
-                3352.8
-              ],
-              [
-                4267.2,
-                0
+                1524,
+                914.4
               ]
             ]
           },
           {
             "id": "stair",
-            "name": "Stair · up",
+            "name": "Staircase",
             "kind": "stair",
             "polygon": [
               [
                 2133.6,
-                5486.4
+                5181.6
               ],
               [
                 2133.6,
@@ -442,76 +465,53 @@
               ],
               [
                 0,
-                5486.4
-              ]
-            ]
-          },
-          {
-            "id": "stair_gap",
-            "name": "2′ gap",
-            "kind": "foyer",
-            "polygon": [
-              [
-                2133.6,
-                4876.8
-              ],
-              [
-                2133.6,
-                5486.4
-              ],
-              [
-                0,
-                5486.4
-              ],
-              [
-                0,
-                4876.8
+                5181.6
               ]
             ]
           },
           {
             "id": "store",
-            "name": "Store",
+            "name": "Store room",
             "kind": "store",
             "polygon": [
               [
-                1828.8,
-                2743.2
+                1524,
+                3048
               ],
               [
-                1828.8,
-                4876.8
-              ],
-              [
-                0,
-                4876.8
+                1524,
+                5181.6
               ],
               [
                 0,
-                2743.2
+                5181.6
+              ],
+              [
+                0,
+                3048
               ]
             ]
           },
           {
             "id": "wash_area",
-            "name": "Wash area",
+            "name": "Wash room",
             "kind": "drying-room",
             "polygon": [
               [
-                1828.8,
-                0
+                1524,
+                914.4
               ],
               [
-                1828.8,
-                2743.2
-              ],
-              [
-                0,
-                2743.2
+                1524,
+                3048
               ],
               [
                 0,
-                0
+                3048
+              ],
+              [
+                0,
+                914.4
               ]
             ]
           }
@@ -524,7 +524,7 @@
         "rooms": [
           {
             "id": "u_master_bedroom",
-            "name": "Master bedroom",
+            "name": "Master suite",
             "kind": "bedroom",
             "polygon": [
               [
@@ -547,7 +547,7 @@
           },
           {
             "id": "u_dressing",
-            "name": "Dressing",
+            "name": "Dressing room",
             "kind": "dress",
             "polygon": [
               [
@@ -570,7 +570,7 @@
           },
           {
             "id": "u_en_suite",
-            "name": "En suite",
+            "name": "En-suite bath",
             "kind": "bathroom",
             "polygon": [
               [
@@ -593,7 +593,7 @@
           },
           {
             "id": "u_study_meditation",
-            "name": "Study / meditation",
+            "name": "Study & meditation room",
             "kind": "study",
             "polygon": [
               [
@@ -621,42 +621,42 @@
             "polygon": [
               [
                 9448.8,
-                3352.8
+                7924.8
               ],
               [
                 9448.8,
-                10668
+                9753.6
               ],
               [
-                4267.2,
-                10668
+                4572,
+                9753.6
               ],
               [
-                4267.2,
-                3352.8
+                4572,
+                7924.8
               ]
             ]
           },
           {
             "id": "u_open_to_below",
-            "name": "Open to below",
+            "name": "Open to below (13′ × 8′ atrium)",
             "kind": "void",
             "polygon": [
               [
-                4267.2,
-                5181.6
+                4572,
+                5943.6
               ],
               [
-                4267.2,
-                8839.2
+                4572,
+                8991.6
               ],
               [
-                2743.2,
-                8839.2
+                2133.6,
+                8991.6
               ],
               [
-                2743.2,
-                5181.6
+                2133.6,
+                5943.6
               ]
             ]
           },
@@ -666,19 +666,19 @@
             "kind": "bathroom",
             "polygon": [
               [
-                4267.2,
+                4572,
                 3352.8
               ],
               [
-                4267.2,
-                5181.6
+                4572,
+                4876.8
               ],
               [
-                1828.8,
-                5181.6
+                2133.6,
+                4876.8
               ],
               [
-                1828.8,
+                2133.6,
                 3352.8
               ]
             ]
@@ -708,7 +708,7 @@
           },
           {
             "id": "u_stair",
-            "name": "Stair · up to second",
+            "name": "Staircase",
             "kind": "stair",
             "polygon": [
               [
@@ -726,121 +726,6 @@
               [
                 0,
                 5181.6
-              ]
-            ]
-          },
-          {
-            "id": "u_large_terrace_north",
-            "name": "Large terrace (north)",
-            "kind": "foyer",
-            "polygon": [
-              [
-                12192,
-                914.4
-              ],
-              [
-                12192,
-                8229.6
-              ],
-              [
-                9753.6,
-                8229.6
-              ],
-              [
-                9753.6,
-                914.4
-              ]
-            ]
-          },
-          {
-            "id": "u_large_terrace_nw",
-            "name": "Large terrace (NW entry)",
-            "kind": "foyer",
-            "polygon": [
-              [
-                11582.4,
-                8229.6
-              ],
-              [
-                11582.4,
-                9753.6
-              ],
-              [
-                9448.8,
-                9753.6
-              ],
-              [
-                9448.8,
-                8229.6
-              ]
-            ]
-          },
-          {
-            "id": "u_large_terrace_study_strip",
-            "name": "Large terrace (study strip)",
-            "kind": "foyer",
-            "polygon": [
-              [
-                9753.6,
-                7924.8
-              ],
-              [
-                9753.6,
-                8229.6
-              ],
-              [
-                9448.8,
-                8229.6
-              ],
-              [
-                9448.8,
-                7924.8
-              ]
-            ]
-          },
-          {
-            "id": "u_east_terrace",
-            "name": "East terrace (8′ deep)",
-            "kind": "foyer",
-            "polygon": [
-              [
-                9753.6,
-                914.4
-              ],
-              [
-                9753.6,
-                3352.8
-              ],
-              [
-                0,
-                3352.8
-              ],
-              [
-                0,
-                914.4
-              ]
-            ]
-          },
-          {
-            "id": "u_se_terrace",
-            "name": "South-east terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                1828.8,
-                3352.8
-              ],
-              [
-                1828.8,
-                5181.6
-              ],
-              [
-                0,
-                5181.6
-              ],
-              [
-                0,
-                3352.8
               ]
             ]
           }
@@ -853,47 +738,47 @@
         "rooms": [
           {
             "id": "s_office_tv_hall",
-            "name": "Office & TV hall",
+            "name": "Office & TV lounge hall",
             "kind": "family",
             "polygon": [
               [
                 9753.6,
-                5181.6
+                4876.8
               ],
               [
                 9753.6,
                 14325.6
               ],
               [
-                4267.2,
+                4572,
                 14325.6
               ],
               [
-                4267.2,
-                5181.6
+                4572,
+                4876.8
               ]
             ]
           },
           {
             "id": "s_lobby_passage",
-            "name": "Lobby passage",
+            "name": "Atrium lobby passage",
             "kind": "inner-lobby",
             "polygon": [
               [
-                4267.2,
-                8839.2
+                4572,
+                8991.6
               ],
               [
-                4267.2,
+                4572,
                 10058.4
               ],
               [
-                2743.2,
+                2133.6,
                 10058.4
               ],
               [
-                2743.2,
-                8839.2
+                2133.6,
+                8991.6
               ]
             ]
           },
@@ -903,11 +788,11 @@
             "kind": "stair",
             "polygon": [
               [
-                2743.2,
+                2133.6,
                 4876.8
               ],
               [
-                2743.2,
+                2133.6,
                 10058.4
               ],
               [
@@ -922,185 +807,24 @@
           },
           {
             "id": "s_raised_rooflight",
-            "name": "Raised rooflight",
+            "name": "Raised glazed sunroof (13′ × 8′)",
             "kind": "void",
             "polygon": [
               [
-                4267.2,
-                5181.6
-              ],
-              [
-                4267.2,
-                8839.2
-              ],
-              [
-                2743.2,
-                8839.2
-              ],
-              [
-                2743.2,
-                5181.6
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_ne",
-            "name": "Open north-east terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                12192,
-                1828.8
-              ],
-              [
-                12192,
-                8229.6
-              ],
-              [
-                9753.6,
-                8229.6
-              ],
-              [
-                9753.6,
-                1828.8
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_nw",
-            "name": "Open north-west terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                11582.4,
-                8229.6
-              ],
-              [
-                11582.4,
-                15240
-              ],
-              [
-                9753.6,
-                15240
-              ],
-              [
-                9753.6,
-                8229.6
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_west",
-            "name": "Open west strip terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                9753.6,
-                14325.6
-              ],
-              [
-                9753.6,
-                15240
-              ],
-              [
-                4267.2,
-                15240
-              ],
-              [
-                4267.2,
-                14325.6
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_east_upper",
-            "name": "Open east terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                9753.6,
-                1828.8
-              ],
-              [
-                9753.6,
-                5181.6
-              ],
-              [
-                2743.2,
-                5181.6
-              ],
-              [
-                2743.2,
-                1828.8
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_east_lower",
-            "name": "Open south-east terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                2743.2,
-                1828.8
-              ],
-              [
-                2743.2,
+                4572,
                 4876.8
               ],
               [
-                0,
+                4572,
+                8991.6
+              ],
+              [
+                2133.6,
+                8991.6
+              ],
+              [
+                2133.6,
                 4876.8
-              ],
-              [
-                0,
-                1828.8
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_sw_strip",
-            "name": "Open south-west terrace strip",
-            "kind": "foyer",
-            "polygon": [
-              [
-                4267.2,
-                10058.4
-              ],
-              [
-                4267.2,
-                14630.4
-              ],
-              [
-                3352.8,
-                14630.4
-              ],
-              [
-                3352.8,
-                10058.4
-              ]
-            ]
-          },
-          {
-            "id": "s_open_terrace_sw_court",
-            "name": "Open south-west terrace",
-            "kind": "foyer",
-            "polygon": [
-              [
-                3352.8,
-                10058.4
-              ],
-              [
-                3352.8,
-                13106.4
-              ],
-              [
-                0,
-                13106.4
-              ],
-              [
-                0,
-                10058.4
               ]
             ]
           }
@@ -1121,7 +845,7 @@
       "projectId": "tirumala-7",
       "planReference": {
         "sample_id": "tirumala-7",
-        "title": "Tirumala 7 — 50′ × 40′ Three-Floor Corner Home with Rooflight",
+        "title": "Tirumala 7 — 50′ × 40′ Three-Floor Corner Home with Full-Span Atrium Sunroof & East Kitchen Setback",
         "source_pdf": "three-floor-home-with-rooflight.pdf",
         "scale": {
           "paper": "A3 (1191.12 × 841.92 pt)",
@@ -1166,28 +890,42 @@
           },
           "light_shaft": {
             "x_ft": [
-              21,
-              33
+              20.5,
+              30.5
             ],
             "y_ft": [
-              26,
-              31
+              25,
+              33
             ],
             "size_ft": [
-              12,
-              5
+              10,
+              8
             ],
             "size_mm": [
-              3657.6,
-              1524
+              3048,
+              2438.4
             ],
-            "area_sqft": 60,
-            "ground_floor": "Double-height volume over dining table and adjoining south-east edge of living hall",
-            "first_floor": "12′ × 5′ slab opening ('Open to below') with guards on all open edges",
-            "second_floor": "12′ × 5′ raised glazed rooflight with protective curb (250 mm curb), drainage falls, non-walkable (excluded from 858 sq ft terrace)"
+            "area_sqft": 80,
+            "ground_floor": "Full-span double-height atrium from Home ICU south wall (y=25′) right up to the Staircase (y=33′) over the Dining Hall",
+            "first_floor": "13′ × 8′ slab opening (Open to below) with frameless glass guards on all open edges",
+            "second_floor": "13′ × 8′ raised architectural glazed sunroof directly above the dining atrium with travertine upstand curb and safety glass guard",
+            "sunroof_x_ft": [
+              20.5,
+              34
+            ],
+            "sunroof_y_ft": [
+              25,
+              33
+            ],
+            "sunroof_size_ft": [
+              13.5,
+              8
+            ],
+            "sunroof_area_sqft": 108
           },
           "east_terrace_setbacks": {
-            "ground_east_wall_x_ft": 50,
+            "ground_kitchen_east_wall_x_ft": 47,
+            "ground_kitchen_east_setback_ft": 3,
             "first_floor_terrace_edge_x_ft": 47,
             "first_floor_setback_ft": 3,
             "second_floor_terrace_edge_x_ft": 44,
@@ -1199,11 +937,11 @@
               ],
               "y": [
                 0,
-                20
+                22
               ],
               "size_ft": [
                 3,
-                20
+                22
               ]
             }
           },
@@ -1211,7 +949,7 @@
             "type": "U-turn stair climbing south, west, north",
             "well_x_ft": [
               17,
-              32
+              33
             ],
             "well_y_ft": [
               33,
@@ -1312,9 +1050,7 @@
             "elevation_mm": 0,
             "rooms": {
               "outside_gully": {
-                "label": "Outside gully",
-                "kind": "verandah",
-                "enclosed": false,
+                "name": "Outside gully",
                 "x_ft": [
                   0,
                   23
@@ -1322,28 +1058,10 @@
                 "y_ft": [
                   0,
                   2
-                ],
-                "size_ft": [
-                  23,
-                  2
-                ],
-                "size_mm": [
-                  7010.4,
-                  609.6
-                ],
-                "local_x_mm": [
-                  11582.4,
-                  12192
-                ],
-                "local_y_mm": [
-                  8229.6,
-                  15240
                 ]
               },
               "caregiver": {
-                "label": "Caregiver",
-                "kind": "bedroom",
-                "enclosed": true,
+                "name": "Caregiver room",
                 "x_ft": [
                   0,
                   8
@@ -1351,28 +1069,10 @@
                 "y_ft": [
                   2,
                   12
-                ],
-                "size_ft": [
-                  8,
-                  10
-                ],
-                "size_mm": [
-                  2438.4,
-                  3048
-                ],
-                "local_x_mm": [
-                  8534.4,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  12801.6,
-                  15240
                 ]
               },
               "caregiver_bath": {
-                "label": "Caregiver bath",
-                "kind": "bathroom",
-                "enclosed": true,
+                "name": "Caregiver bath",
                 "x_ft": [
                   0,
                   5
@@ -1380,28 +1080,10 @@
                 "y_ft": [
                   12,
                   18
-                ],
-                "size_ft": [
-                  5,
-                  6
-                ],
-                "size_mm": [
-                  1524,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  6705.6,
-                  8534.4
-                ],
-                "local_y_mm": [
-                  13716,
-                  15240
                 ]
               },
               "hall_entry": {
-                "label": "Hall entry",
-                "kind": "corridor",
-                "enclosed": true,
+                "name": "Hall entry",
                 "x_ft": [
                   5,
                   8
@@ -1409,28 +1091,10 @@
                 "y_ft": [
                   12,
                   16
-                ],
-                "size_ft": [
-                  3,
-                  4
-                ],
-                "size_mm": [
-                  914.4,
-                  1219.2
-                ],
-                "local_x_mm": [
-                  7315.2,
-                  8534.4
-                ],
-                "local_y_mm": [
-                  12801.6,
-                  13716
                 ]
               },
               "drawing_room": {
-                "label": "Drawing room",
-                "kind": "drawing",
-                "enclosed": true,
+                "name": "Drawing room",
                 "x_ft": [
                   8,
                   17.5
@@ -1438,28 +1102,10 @@
                 "y_ft": [
                   2,
                   16
-                ],
-                "size_ft": [
-                  9.5,
-                  14
-                ],
-                "size_mm": [
-                  2895.6,
-                  4267.2
-                ],
-                "local_x_mm": [
-                  7315.2,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  9906,
-                  12801.6
                 ]
               },
               "covered_entry": {
-                "label": "Covered entry",
-                "kind": "foyer",
-                "enclosed": false,
+                "name": "Covered entry",
                 "x_ft": [
                   17.5,
                   23
@@ -1467,28 +1113,10 @@
                 "y_ft": [
                   2,
                   9
-                ],
-                "size_ft": [
-                  5.5,
-                  7
-                ],
-                "size_mm": [
-                  1676.4,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  9448.8,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  8229.6,
-                  9906
                 ]
               },
               "verandah": {
-                "label": "Verandah",
-                "kind": "verandah",
-                "enclosed": false,
+                "name": "Verandah & north lawn court",
                 "x_ft": [
                   23,
                   39
@@ -1496,57 +1124,32 @@
                 "y_ft": [
                   0,
                   9
-                ],
-                "size_ft": [
-                  16,
-                  9
-                ],
-                "size_mm": [
-                  4876.8,
-                  2743.2
-                ],
-                "local_x_mm": [
-                  9448.8,
-                  12192
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  8229.6
                 ]
               },
               "car_porch": {
-                "label": "Car porch",
-                "kind": "parking",
-                "enclosed": false,
+                "name": "Car porch (22′)",
                 "x_ft": [
                   39,
                   50
                 ],
                 "y_ft": [
                   0,
-                  20
+                  22
+                ]
+              },
+              "east_setback": {
+                "name": "East setback passage (3′)",
+                "x_ft": [
+                  47,
+                  50
                 ],
-                "size_ft": [
-                  11,
-                  20
-                ],
-                "size_mm": [
-                  3352.8,
-                  6096
-                ],
-                "local_x_mm": [
-                  6096,
-                  12192
-                ],
-                "local_y_mm": [
-                  0,
-                  3352.8
+                "y_ft": [
+                  22,
+                  40
                 ]
               },
               "living_hall": {
-                "label": "Living hall",
-                "kind": "living",
-                "enclosed": true,
+                "name": "Living hall",
                 "x_ft": [
                   5.5,
                   24
@@ -1554,67 +1157,21 @@
                 "y_ft": [
                   16,
                   26
-                ],
-                "size_ft": [
-                  18.5,
-                  10
-                ],
-                "size_mm": [
-                  5638.8,
-                  3048
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  7315.2
-                ],
-                "local_y_mm": [
-                  7924.8,
-                  13563.6
-                ],
-                "foyer_extension_ft": {
-                  "x": [
-                    17.5,
-                    24
-                  ],
-                  "y": [
-                    9,
-                    16
-                  ]
-                }
+                ]
               },
               "home_icu": {
-                "label": "Home ICU",
-                "kind": "bedroom",
-                "enclosed": true,
+                "name": "Home ICU",
                 "x_ft": [
                   24,
                   39
                 ],
                 "y_ft": [
                   9,
-                  26
-                ],
-                "size_ft": [
-                  15,
-                  17
-                ],
-                "size_mm": [
-                  4572,
-                  5181.6
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  9448.8
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  7924.8
+                  25
                 ]
               },
               "master_bath": {
-                "label": "Master bath",
-                "kind": "bathroom",
-                "enclosed": true,
+                "name": "Master bath",
                 "x_ft": [
                   0,
                   5.5
@@ -1622,28 +1179,10 @@
                 "y_ft": [
                   18,
                   26
-                ],
-                "size_ft": [
-                  5.5,
-                  8
-                ],
-                "size_mm": [
-                  1676.4,
-                  2438.4
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  6705.6
-                ],
-                "local_y_mm": [
-                  13563.6,
-                  15240
                 ]
               },
               "west_gully": {
-                "label": "West gully",
-                "kind": "verandah",
-                "enclosed": false,
+                "name": "West gully",
                 "x_ft": [
                   0,
                   2
@@ -1651,28 +1190,10 @@
                 "y_ft": [
                   26,
                   40
-                ],
-                "size_ft": [
-                  2,
-                  14
-                ],
-                "size_mm": [
-                  609.6,
-                  4267.2
-                ],
-                "local_x_mm": [
-                  0,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  14630.4,
-                  15240
                 ]
               },
               "master_bedroom": {
-                "label": "Master bedroom",
-                "kind": "master_bedroom",
-                "enclosed": true,
+                "name": "Master bedroom",
                 "x_ft": [
                   2,
                   17
@@ -1680,254 +1201,83 @@
                 "y_ft": [
                   26,
                   40
-                ],
-                "size_ft": [
-                  15,
-                  14
-                ],
-                "size_mm": [
-                  4572,
-                  4267.2
-                ],
-                "local_x_mm": [
-                  0,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  10058.4,
-                  14630.4
                 ]
               },
               "bedroom_entry": {
-                "label": "Bedroom entry",
-                "kind": "corridor",
-                "enclosed": true,
+                "name": "Bedroom entry",
                 "x_ft": [
                   17,
-                  24
+                  21
                 ],
                 "y_ft": [
                   26,
                   33
-                ],
-                "size_ft": [
-                  7,
-                  7
-                ],
-                "size_mm": [
-                  2133.6,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  2133.6,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  7924.8,
-                  10058.4
                 ]
               },
               "dining_hall": {
-                "label": "Dining hall",
-                "kind": "dining",
-                "enclosed": true,
+                "name": "Dining hall (double-height atrium)",
                 "x_ft": [
                   24,
-                  36
+                  35
                 ],
                 "y_ft": [
-                  26,
+                  25,
                   33
-                ],
-                "size_ft": [
-                  12,
-                  7
-                ],
-                "size_mm": [
-                  3657.6,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  2133.6,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  4267.2,
-                  7924.8
-                ]
-              },
-              "kitchen": {
-                "label": "Kitchen",
-                "kind": "kitchen",
-                "enclosed": true,
-                "x_ft": [
-                  36,
-                  50
-                ],
-                "y_ft": [
-                  26,
-                  34
-                ],
-                "size_ft": [
-                  14,
-                  8
-                ],
-                "size_mm": [
-                  4267.2,
-                  2438.4
-                ],
-                "local_x_mm": [
-                  1828.8,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  0,
-                  4267.2
                 ]
               },
               "work_bay": {
-                "label": "Work bay",
-                "kind": "utility",
-                "enclosed": true,
+                "name": "Kitchen north bay",
                 "x_ft": [
                   39,
-                  50
+                  47
                 ],
                 "y_ft": [
-                  20,
-                  26
+                  22,
+                  25
+                ]
+              },
+              "kitchen": {
+                "name": "Kitchen",
+                "x_ft": [
+                  35,
+                  47
                 ],
-                "size_ft": [
-                  11,
-                  6
-                ],
-                "size_mm": [
-                  3352.8,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  6096
-                ],
-                "local_y_mm": [
-                  0,
-                  3352.8
+                "y_ft": [
+                  25,
+                  35
                 ]
               },
               "stair": {
-                "label": "Stair · up",
-                "kind": "stair",
-                "enclosed": true,
+                "name": "Staircase",
                 "x_ft": [
                   17,
-                  32
+                  33
                 ],
                 "y_ft": [
                   33,
                   40
-                ],
-                "size_ft": [
-                  15,
-                  7
-                ],
-                "size_mm": [
-                  4572,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  0,
-                  2133.6
-                ],
-                "local_y_mm": [
-                  5486.4,
-                  10058.4
-                ]
-              },
-              "stair_gap": {
-                "label": "2′ gap",
-                "kind": "corridor",
-                "enclosed": true,
-                "x_ft": [
-                  32,
-                  34
-                ],
-                "y_ft": [
-                  33,
-                  40
-                ],
-                "size_ft": [
-                  2,
-                  7
-                ],
-                "size_mm": [
-                  609.6,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  0,
-                  2133.6
-                ],
-                "local_y_mm": [
-                  4876.8,
-                  5486.4
                 ]
               },
               "store": {
-                "label": "Store",
-                "kind": "store",
-                "enclosed": true,
+                "name": "Store room",
                 "x_ft": [
-                  34,
-                  41
-                ],
-                "y_ft": [
-                  34,
+                  33,
                   40
                 ],
-                "size_ft": [
-                  7,
-                  6
-                ],
-                "size_mm": [
-                  2133.6,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  0,
-                  1828.8
-                ],
-                "local_y_mm": [
-                  2743.2,
-                  4876.8
+                "y_ft": [
+                  35,
+                  40
                 ]
               },
               "wash_area": {
-                "label": "Wash area",
-                "kind": "wash_area",
-                "enclosed": true,
+                "name": "Wash room",
                 "x_ft": [
-                  41,
-                  50
+                  40,
+                  47
                 ],
                 "y_ft": [
-                  34,
+                  35,
                   40
-                ],
-                "size_ft": [
-                  9,
-                  6
-                ],
-                "size_mm": [
-                  2743.2,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  0,
-                  1828.8
-                ],
-                "local_y_mm": [
-                  0,
-                  2743.2
                 ]
               }
             },
@@ -1938,124 +1288,24 @@
                   2
                 ],
                 [
+                  17.5,
+                  2
+                ]
+              ],
+              [
+                [
+                  0,
+                  2
+                ],
+                [
                   0,
                   26
                 ]
               ],
               [
                 [
-                  0,
-                  26
-                ],
-                [
-                  0,
-                  40
-                ]
-              ],
-              [
-                [
-                  0,
-                  40
-                ],
-                [
-                  50,
-                  40
-                ]
-              ],
-              [
-                [
-                  50,
-                  40
-                ],
-                [
-                  50,
-                  20
-                ]
-              ],
-              [
-                [
-                  50,
-                  20
-                ],
-                [
-                  42.65,
-                  20
-                ]
-              ],
-              [
-                [
-                  39.4,
-                  20
-                ],
-                [
-                  39,
-                  20
-                ]
-              ],
-              [
-                [
-                  2,
-                  26
-                ],
-                [
-                  2,
-                  27.05
-                ]
-              ],
-              [
-                [
-                  2,
-                  30.05
-                ],
-                [
-                  2,
-                  40
-                ]
-              ],
-              [
-                [
-                  0,
+                  8,
                   2
-                ],
-                [
-                  3.95,
-                  2
-                ]
-              ],
-              [
-                [
-                  7.45,
-                  2
-                ],
-                [
-                  17.5,
-                  2
-                ]
-              ],
-              [
-                [
-                  17.5,
-                  2
-                ],
-                [
-                  17.5,
-                  12.2
-                ]
-              ],
-              [
-                [
-                  17.5,
-                  15.7
-                ],
-                [
-                  17.5,
-                  16
-                ]
-              ],
-              [
-                [
-                  17.5,
-                  16
                 ],
                 [
                   8,
@@ -2064,31 +1314,11 @@
               ],
               [
                 [
-                  8,
-                  16
-                ],
-                [
-                  8,
-                  2
-                ]
-              ],
-              [
-                [
                   0,
                   12
                 ],
                 [
-                  1.5,
-                  12
-                ]
-              ],
-              [
-                [
-                  4.5,
-                  12
-                ],
-                [
-                  5,
+                  8,
                   12
                 ]
               ],
@@ -2124,42 +1354,22 @@
               ],
               [
                 [
-                  0,
-                  26
+                  8,
+                  16
                 ],
                 [
-                  2.2,
-                  26
+                  17.5,
+                  16
                 ]
               ],
               [
                 [
-                  5.2,
-                  26
+                  17.5,
+                  2
                 ],
                 [
-                  17,
-                  26
-                ]
-              ],
-              [
-                [
-                  17,
-                  26
-                ],
-                [
-                  17,
-                  27.25
-                ]
-              ],
-              [
-                [
-                  17,
-                  31
-                ],
-                [
-                  17,
-                  40
+                  17.5,
+                  16
                 ]
               ],
               [
@@ -2168,28 +1378,18 @@
                   9
                 ],
                 [
-                  17.75,
-                  9
-                ]
-              ],
-              [
-                [
-                  23.75,
-                  9
-                ],
-                [
-                  28,
-                  9
-                ]
-              ],
-              [
-                [
-                  35,
-                  9
-                ],
-                [
                   39,
                   9
+                ]
+              ],
+              [
+                [
+                  24,
+                  9
+                ],
+                [
+                  24,
+                  25
                 ]
               ],
               [
@@ -2199,86 +1399,106 @@
                 ],
                 [
                   39,
-                  26
+                  25
+                ]
+              ],
+              [
+                [
+                  24,
+                  25
+                ],
+                [
+                  39,
+                  25
                 ]
               ],
               [
                 [
                   39,
+                  22
+                ],
+                [
+                  47,
+                  22
+                ]
+              ],
+              [
+                [
+                  47,
+                  22
+                ],
+                [
+                  47,
+                  40
+                ]
+              ],
+              [
+                [
+                  0,
                   26
                 ],
                 [
-                  24,
+                  17,
                   26
                 ]
               ],
               [
                 [
-                  24,
+                  2,
                   26
                 ],
                 [
-                  24,
-                  25.75
+                  2,
+                  40
                 ]
               ],
               [
                 [
-                  24,
-                  20.25
+                  17,
+                  26
                 ],
                 [
-                  24,
-                  9
+                  17,
+                  40
                 ]
               ],
               [
                 [
-                  34,
+                  2,
                   40
                 ],
                 [
-                  34,
-                  34
+                  47,
+                  40
                 ]
               ],
               [
                 [
-                  34,
-                  34
+                  33,
+                  35
                 ],
                 [
-                  36.8,
-                  34
+                  47,
+                  35
                 ]
               ],
               [
                 [
-                  39.8,
-                  34
+                  33,
+                  35
                 ],
                 [
-                  42,
-                  34
+                  33,
+                  40
                 ]
               ],
               [
                 [
-                  45.25,
-                  34
+                  40,
+                  35
                 ],
                 [
-                  50,
-                  34
-                ]
-              ],
-              [
-                [
-                  41,
-                  34
-                ],
-                [
-                  41,
+                  40,
                   40
                 ]
               ]
@@ -2286,175 +1506,133 @@
             "doors": [
               {
                 "id": "caregiver_north_door",
+                "type": "door",
                 "wall": "y=2.0",
                 "span_ft": [
-                  3.95,
-                  7.45
+                  4.2,
+                  7.2
                 ],
-                "width_ft": 3.5,
-                "hinge_ft": [
-                  7.45,
-                  2
-                ],
-                "swing": "south_into_caregiver"
+                "width_ft": 3
               },
               {
                 "id": "caregiver_hall_door",
+                "type": "door",
                 "wall": "y=12.0",
                 "span_ft": [
-                  5,
-                  7.94
+                  5.2,
+                  7.8
                 ],
-                "width_ft": 2.94,
-                "hinge_ft": [
-                  7.94,
-                  12
-                ],
-                "swing": "north_into_caregiver"
+                "width_ft": 2.6
               },
               {
                 "id": "caregiver_bath_door",
+                "type": "door",
                 "wall": "y=12.0",
                 "span_ft": [
-                  1.5,
-                  4.5
+                  1.6,
+                  4.2
                 ],
-                "width_ft": 3,
-                "hinge_ft": [
-                  4.5,
-                  12
-                ],
-                "swing": "south_into_caregiver_bath"
+                "width_ft": 2.6
               },
               {
                 "id": "drawing_east_door",
+                "type": "door",
                 "wall": "x=17.5",
                 "span_ft": [
                   12.2,
-                  15.7
+                  15.4
                 ],
-                "width_ft": 3.5,
-                "hinge_ft": [
-                  17.5,
-                  15.7
-                ],
-                "swing": "west_into_drawing_room"
+                "width_ft": 3.2
               },
               {
                 "id": "main_double_doors",
+                "type": "double_door",
                 "wall": "y=9.0",
                 "span_ft": [
-                  17.75,
-                  23.75
+                  18,
+                  23.6
                 ],
-                "width_ft": 6,
-                "type": "double_door",
-                "swing": "south_into_living_hall"
+                "width_ft": 5.6
               },
               {
                 "id": "icu_north_slider",
+                "type": "sliding_glass_door",
                 "wall": "y=9.0",
                 "span_ft": [
                   28,
                   35
                 ],
-                "width_ft": 7,
-                "type": "sliding_glass_door"
+                "width_ft": 7
               },
               {
                 "id": "icu_west_clear_opening",
+                "type": "clear_opening_no_door",
                 "wall": "x=24.0",
                 "span_ft": [
-                  20.25,
-                  25.75
+                  19,
+                  24.5
                 ],
-                "width_ft": 5.5,
-                "width_mm": 1676.4,
-                "type": "clear_opening_no_door"
+                "width_ft": 5.5
               },
               {
                 "id": "master_bath_door",
+                "type": "door",
                 "wall": "y=26.0",
                 "span_ft": [
-                  2.2,
-                  5.2
+                  2.3,
+                  5
                 ],
-                "width_ft": 3,
-                "hinge_ft": [
-                  5.2,
-                  26
-                ],
-                "swing": "north_into_master_bath"
+                "width_ft": 2.7
               },
               {
                 "id": "master_west_gully_door",
+                "type": "door",
                 "wall": "x=2.0",
                 "span_ft": [
-                  27.05,
-                  30.05
+                  27,
+                  29.8
                 ],
-                "width_ft": 3,
-                "hinge_ft": [
-                  2,
-                  30.05
-                ],
-                "swing": "east_into_master_bedroom"
+                "width_ft": 2.8
               },
               {
                 "id": "master_bedroom_door",
+                "type": "door",
                 "wall": "x=17.0",
                 "span_ft": [
-                  27.25,
-                  31
+                  27.2,
+                  30.6
                 ],
-                "width_ft": 3.75,
-                "hinge_ft": [
-                  17,
-                  27.25
-                ],
-                "swing": "west_into_master_bedroom"
+                "width_ft": 3.4
               },
               {
                 "id": "work_bay_porch_door",
-                "wall": "y=20.0",
+                "type": "door",
+                "wall": "y=22.0",
                 "span_ft": [
-                  39.4,
-                  42.65
+                  39.6,
+                  42.6
                 ],
-                "width_ft": 3.25,
-                "hinge_ft": [
-                  39.4,
-                  20
-                ],
-                "swing": "south_into_work_bay"
+                "width_ft": 3
               },
               {
                 "id": "store_door",
-                "wall": "y=34.0",
+                "type": "door",
+                "wall": "y=35.0",
                 "span_ft": [
-                  36.8,
-                  39.8
+                  35.4,
+                  38.2
                 ],
-                "width_ft": 3,
-                "hinge_ft": [
-                  36.8,
-                  34
-                ],
-                "swing": "south_into_store"
+                "width_ft": 2.8
               },
               {
                 "id": "wash_area_door",
-                "wall": "y=34.0",
+                "type": "door",
+                "wall": "y=35.0",
                 "span_ft": [
-                  42,
-                  45.25
+                  40.8,
+                  43.6
                 ],
-                "width_ft": 3.25,
-                "hinge_ft": [
-                  45.25,
-                  34
-                ],
-                "swing": "south_into_wash_area"
+                "width_ft": 2.8
               }
             ],
             "windows": [
@@ -2462,8 +1640,8 @@
                 "id": "caregiver_west_window",
                 "wall": "x=0.0",
                 "span_ft": [
-                  5.2,
-                  9.2
+                  5,
+                  9
                 ],
                 "width_ft": 4
               },
@@ -2472,99 +1650,126 @@
                 "wall": "y=2.0",
                 "span_ft": [
                   10.5,
-                  16.75
+                  16.5
                 ],
-                "width_ft": 6.25
+                "width_ft": 6
               },
               {
                 "id": "drawing_east_window_1",
                 "wall": "x=17.5",
                 "span_ft": [
-                  2.5,
-                  5
+                  3.8,
+                  6.6
                 ],
-                "width_ft": 2.5
+                "width_ft": 2.8
               },
               {
                 "id": "drawing_east_window_2",
                 "wall": "x=17.5",
                 "span_ft": [
-                  5.65,
-                  8.15
+                  7.6,
+                  10.4
                 ],
-                "width_ft": 2.5
+                "width_ft": 2.8
               },
               {
                 "id": "icu_north_fixed_glazing_west",
                 "wall": "y=9.0",
                 "span_ft": [
-                  24.5,
-                  28
+                  24.6,
+                  27.8
                 ],
-                "width_ft": 3.5
+                "width_ft": 3.2
               },
               {
                 "id": "icu_north_fixed_glazing_east",
                 "wall": "y=9.0",
                 "span_ft": [
-                  35,
-                  38.5
+                  35.2,
+                  38.4
                 ],
-                "width_ft": 3.5
+                "width_ft": 3.2
               },
               {
                 "id": "icu_east_window_1",
                 "wall": "x=39.0",
                 "span_ft": [
-                  10.15,
-                  14.65
+                  10.8,
+                  14.8
                 ],
-                "width_ft": 4.5
+                "width_ft": 4
               },
               {
                 "id": "icu_east_window_2",
                 "wall": "x=39.0",
                 "span_ft": [
-                  15.15,
-                  19.65
+                  16.2,
+                  20.2
                 ],
-                "width_ft": 4.5
+                "width_ft": 4
               },
               {
-                "id": "master_bath_high_window",
-                "wall": "y=26.0",
+                "id": "kitchen_east_window_1",
+                "wall": "x=47.0",
                 "span_ft": [
-                  0.2,
-                  1.75
+                  23,
+                  27
                 ],
-                "width_ft": 1.55
+                "width_ft": 4
               },
               {
-                "id": "master_west_window",
-                "wall": "x=2.0",
+                "id": "kitchen_east_window_2",
+                "wall": "x=47.0",
                 "span_ft": [
-                  31.6,
-                  37
+                  30.8,
+                  34.2
                 ],
-                "width_ft": 5.4
+                "width_ft": 3.4
               },
               {
-                "id": "master_south_window",
-                "wall": "y=40.0",
+                "id": "wash_east_window",
+                "wall": "x=47.0",
                 "span_ft": [
-                  9,
-                  14
+                  36.2,
+                  38.8
                 ],
-                "width_ft": 5
+                "width_ft": 2.6
               },
               {
                 "id": "wash_south_window",
                 "wall": "y=40.0",
                 "span_ft": [
-                  42,
-                  46
+                  41.8,
+                  45.5
                 ],
-                "width_ft": 4
+                "width_ft": 3.7
+              },
+              {
+                "id": "master_bath_high_window",
+                "wall": "x=0.0",
+                "span_ft": [
+                  20.5,
+                  23.5
+                ],
+                "width_ft": 3
+              },
+              {
+                "id": "master_west_window",
+                "wall": "x=2.0",
+                "span_ft": [
+                  31.5,
+                  37
+                ],
+                "width_ft": 5.5
+              },
+              {
+                "id": "master_south_window",
+                "wall": "y=40.0",
+                "span_ft": [
+                  8.5,
+                  14
+                ],
+                "width_ft": 5.5
               }
             ],
             "fixtures": {
@@ -2848,9 +2053,7 @@
             "walkable_terrace_area_sqft": 520,
             "rooms": {
               "master_bedroom": {
-                "label": "Master bedroom",
-                "kind": "master_bedroom",
-                "enclosed": true,
+                "name": "Master suite",
                 "x_ft": [
                   0,
                   18
@@ -2858,28 +2061,10 @@
                 "y_ft": [
                   2,
                   17
-                ],
-                "size_ft": [
-                  18,
-                  15
-                ],
-                "size_mm": [
-                  5486.4,
-                  4572
-                ],
-                "local_x_mm": [
-                  7010.4,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  9753.6,
-                  15240
                 ]
               },
               "dressing": {
-                "label": "Dressing",
-                "kind": "dressing",
-                "enclosed": true,
+                "name": "Dressing room",
                 "x_ft": [
                   7,
                   15
@@ -2887,28 +2072,10 @@
                 "y_ft": [
                   17,
                   24
-                ],
-                "size_ft": [
-                  8,
-                  7
-                ],
-                "size_mm": [
-                  2438.4,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  4876.8,
-                  7010.4
-                ],
-                "local_y_mm": [
-                  10668,
-                  13106.4
                 ]
               },
               "en_suite": {
-                "label": "En suite",
-                "kind": "bathroom",
-                "enclosed": true,
+                "name": "En-suite bath",
                 "x_ft": [
                   0,
                   7
@@ -2916,28 +2083,10 @@
                 "y_ft": [
                   17,
                   26
-                ],
-                "size_ft": [
-                  7,
-                  9
-                ],
-                "size_mm": [
-                  2133.6,
-                  2743.2
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  7010.4
-                ],
-                "local_y_mm": [
-                  13106.4,
-                  15240
                 ]
               },
               "study_meditation": {
-                "label": "Study / meditation",
-                "kind": "study",
-                "enclosed": true,
+                "name": "Study & meditation room",
                 "x_ft": [
                   24,
                   39
@@ -2945,125 +2094,43 @@
                 "y_ft": [
                   8,
                   21
-                ],
-                "size_ft": [
-                  15,
-                  13
-                ],
-                "size_mm": [
-                  4572,
-                  3962.4
-                ],
-                "local_x_mm": [
-                  5791.2,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  7924.8
                 ]
               },
               "family_gallery": {
-                "label": "Family gallery",
-                "kind": "lounge",
-                "enclosed": true,
+                "name": "Family gallery",
                 "x_ft": [
-                  15,
-                  39
+                  18,
+                  24
                 ],
                 "y_ft": [
                   9,
-                  26
-                ],
-                "size_ft": [
-                  24,
-                  17
-                ],
-                "size_mm": [
-                  7315.2,
-                  5181.6
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  9448.8
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  10668
-                ],
-                "west_void_passage_ft": {
-                  "x": [
-                    17,
-                    21
-                  ],
-                  "y": [
-                    26,
-                    33
-                  ]
-                }
+                  25
+                ]
               },
               "open_to_below": {
-                "label": "Open to below",
-                "kind": "void",
-                "enclosed": false,
+                "name": "Open to below (13′ × 8′ atrium)",
                 "x_ft": [
-                  21,
-                  33
+                  20.5,
+                  30.5
                 ],
                 "y_ft": [
-                  26,
-                  31
-                ],
-                "size_ft": [
-                  12,
-                  5
-                ],
-                "size_mm": [
-                  3657.6,
-                  1524
-                ],
-                "local_x_mm": [
-                  2743.2,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  5181.6,
-                  8839.2
+                  25,
+                  33
                 ]
               },
               "shared_bath": {
-                "label": "Shared bath",
-                "kind": "bathroom",
-                "enclosed": true,
+                "name": "Shared bath",
                 "x_ft": [
-                  33,
+                  34,
                   39
                 ],
                 "y_ft": [
-                  26,
-                  34
-                ],
-                "size_ft": [
-                  6,
-                  8
-                ],
-                "size_mm": [
-                  1828.8,
-                  2438.4
-                ],
-                "local_x_mm": [
-                  1828.8,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  5181.6
+                  25,
+                  33
                 ]
               },
               "medium_bedroom": {
-                "label": "Medium bedroom",
-                "kind": "bedroom",
-                "enclosed": true,
+                "name": "Medium bedroom",
                 "x_ft": [
                   2,
                   17
@@ -3071,28 +2138,10 @@
                 "y_ft": [
                   29,
                   40
-                ],
-                "size_ft": [
-                  15,
-                  11
-                ],
-                "size_mm": [
-                  4572,
-                  3352.8
-                ],
-                "local_x_mm": [
-                  0,
-                  3352.8
-                ],
-                "local_y_mm": [
-                  10058.4,
-                  14630.4
                 ]
               },
               "stair": {
-                "label": "Stair · up to second",
-                "kind": "stair",
-                "enclosed": true,
+                "name": "Staircase",
                 "x_ft": [
                   17,
                   33
@@ -3100,167 +2149,6 @@
                 "y_ft": [
                   33,
                   40
-                ],
-                "size_ft": [
-                  16,
-                  7
-                ],
-                "size_mm": [
-                  4876.8,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  0,
-                  2133.6
-                ],
-                "local_y_mm": [
-                  5181.6,
-                  10058.4
-                ]
-              },
-              "large_terrace_north": {
-                "label": "Large terrace (north)",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  23,
-                  47
-                ],
-                "y_ft": [
-                  0,
-                  8
-                ],
-                "size_ft": [
-                  24,
-                  8
-                ],
-                "size_mm": [
-                  7315.2,
-                  2438.4
-                ],
-                "local_x_mm": [
-                  9753.6,
-                  12192
-                ],
-                "local_y_mm": [
-                  914.4,
-                  8229.6
-                ]
-              },
-              "large_terrace_nw": {
-                "label": "Large terrace (NW entry)",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  18,
-                  23
-                ],
-                "y_ft": [
-                  2,
-                  9
-                ],
-                "size_ft": [
-                  5,
-                  7
-                ],
-                "size_mm": [
-                  1524,
-                  2133.6
-                ],
-                "local_x_mm": [
-                  9448.8,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  8229.6,
-                  9753.6
-                ]
-              },
-              "large_terrace_study_strip": {
-                "label": "Large terrace (study strip)",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  23,
-                  24
-                ],
-                "y_ft": [
-                  8,
-                  9
-                ],
-                "size_ft": [
-                  1,
-                  1
-                ],
-                "size_mm": [
-                  304.8,
-                  304.8
-                ],
-                "local_x_mm": [
-                  9448.8,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  7924.8,
-                  8229.6
-                ]
-              },
-              "east_terrace": {
-                "label": "East terrace (8′ deep)",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  39,
-                  47
-                ],
-                "y_ft": [
-                  8,
-                  40
-                ],
-                "size_ft": [
-                  8,
-                  32
-                ],
-                "size_mm": [
-                  2438.4,
-                  9753.6
-                ],
-                "local_x_mm": [
-                  0,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  914.4,
-                  3352.8
-                ]
-              },
-              "se_terrace": {
-                "label": "South-east terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  33,
-                  39
-                ],
-                "y_ft": [
-                  34,
-                  40
-                ],
-                "size_ft": [
-                  6,
-                  6
-                ],
-                "size_mm": [
-                  1828.8,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  0,
-                  1828.8
-                ],
-                "local_y_mm": [
-                  3352.8,
-                  5181.6
                 ]
               }
             },
@@ -3271,18 +2159,38 @@
                   2
                 ],
                 [
+                  18,
+                  2
+                ]
+              ],
+              [
+                [
+                  0,
+                  2
+                ],
+                [
                   0,
                   26
                 ]
               ],
               [
                 [
-                  2,
-                  26
+                  18,
+                  2
                 ],
                 [
-                  2,
-                  40
+                  18,
+                  17
+                ]
+              ],
+              [
+                [
+                  0,
+                  17
+                ],
+                [
+                  18,
+                  17
                 ]
               ],
               [
@@ -3307,72 +2215,32 @@
               ],
               [
                 [
-                  17,
-                  29
+                  7,
+                  24
                 ],
                 [
-                  17,
-                  40
-                ]
-              ],
-              [
-                [
-                  18,
-                  2
-                ],
-                [
-                  18,
-                  17
-                ]
-              ],
-              [
-                [
-                  24,
-                  8
-                ],
-                [
-                  24,
-                  21
-                ]
-              ],
-              [
-                [
-                  33,
-                  26
-                ],
-                [
-                  33,
-                  40
-                ]
-              ],
-              [
-                [
-                  39,
-                  8
-                ],
-                [
-                  39,
-                  34
+                  15,
+                  24
                 ]
               ],
               [
                 [
                   0,
-                  2
+                  26
                 ],
                 [
-                  18,
-                  2
+                  7,
+                  26
                 ]
               ],
               [
                 [
-                  24,
-                  8
+                  7,
+                  26
                 ],
                 [
-                  39,
-                  8
+                  7,
+                  29
                 ]
               ],
               [
@@ -3387,12 +2255,32 @@
               ],
               [
                 [
-                  0,
-                  17
+                  24,
+                  8
                 ],
                 [
-                  18,
-                  17
+                  39,
+                  8
+                ]
+              ],
+              [
+                [
+                  24,
+                  8
+                ],
+                [
+                  24,
+                  21
+                ]
+              ],
+              [
+                [
+                  39,
+                  8
+                ],
+                [
+                  39,
+                  33
                 ]
               ],
               [
@@ -3407,32 +2295,42 @@
               ],
               [
                 [
-                  7,
-                  24
+                  34,
+                  25
                 ],
                 [
-                  15,
-                  24
+                  39,
+                  25
                 ]
               ],
               [
                 [
-                  0,
-                  26
+                  34,
+                  25
                 ],
                 [
-                  7,
-                  26
+                  34,
+                  33
                 ]
               ],
               [
                 [
                   33,
-                  26
+                  33
                 ],
                 [
                   39,
-                  26
+                  33
+                ]
+              ],
+              [
+                [
+                  33,
+                  33
+                ],
+                [
+                  33,
+                  40
                 ]
               ],
               [
@@ -3447,12 +2345,22 @@
               ],
               [
                 [
-                  33,
-                  34
+                  2,
+                  29
                 ],
                 [
-                  39,
-                  34
+                  2,
+                  40
+                ]
+              ],
+              [
+                [
+                  17,
+                  29
+                ],
+                [
+                  17,
+                  40
                 ]
               ],
               [
@@ -3551,84 +2459,83 @@
             "doors": [
               {
                 "id": "ff_master_door",
+                "type": "door",
                 "wall": "x=18.0",
                 "span_ft": [
-                  11.35,
-                  14.85
+                  13.2,
+                  16.4
                 ],
-                "width_ft": 3.5,
-                "swing": "west_into_master"
+                "width_ft": 3.2
               },
               {
                 "id": "ff_dressing_opening",
+                "type": "clear_opening_no_door",
                 "wall": "y=17.0",
                 "span_ft": [
-                  9,
-                  12.5
+                  9.5,
+                  13
                 ],
-                "width_ft": 3.5,
-                "type": "sliding_or_open"
+                "width_ft": 3.5
               },
               {
                 "id": "ff_ensuite_door",
+                "type": "door",
                 "wall": "x=7.0",
                 "span_ft": [
-                  20,
-                  23
+                  18,
+                  20.8
                 ],
-                "width_ft": 3,
-                "swing": "west_into_ensuite"
+                "width_ft": 2.8
               },
               {
                 "id": "ff_gallery_terrace_double_doors",
+                "type": "double_door",
                 "wall": "y=9.0",
                 "span_ft": [
-                  18.7,
-                  23.2
+                  18.6,
+                  23.4
                 ],
-                "width_ft": 4.5,
-                "type": "double_door",
-                "swing": "north_to_terrace"
+                "width_ft": 4.8
               },
               {
                 "id": "ff_study_door",
+                "type": "door",
                 "wall": "x=24.0",
                 "span_ft": [
-                  16.35,
-                  19.85
+                  16.8,
+                  20
                 ],
-                "width_ft": 3.5,
-                "swing": "east_into_study"
+                "width_ft": 3.2
               },
               {
                 "id": "ff_study_terrace_slider",
+                "type": "sliding_glass_door",
                 "wall": "x=39.0",
                 "span_ft": [
-                  13,
-                  19
+                  12,
+                  19.5
                 ],
-                "width_ft": 6,
-                "type": "sliding_glass_door"
-              },
-              {
-                "id": "ff_medium_bedroom_door",
-                "wall": "y=29.0",
-                "span_ft": [
-                  12.5,
-                  16
-                ],
-                "width_ft": 3.5,
-                "swing": "south_into_medium_bedroom"
+                "width_ft": 7.5
               },
               {
                 "id": "ff_shared_bath_door",
-                "wall": "y=26.0",
+                "type": "door",
+                "wall": "y=25.0",
                 "span_ft": [
-                  34.1,
-                  37.35
+                  34.8,
+                  37.6
                 ],
-                "width_ft": 3.25,
-                "swing": "south_into_shared_bath"
+                "width_ft": 2.8
+              },
+              {
+                "id": "ff_medium_bedroom_door",
+                "type": "door",
+                "wall": "x=17.0",
+                "span_ft": [
+                  29.6,
+                  32.6
+                ],
+                "width_ft": 3
               }
             ],
             "windows": [
@@ -3636,64 +2543,64 @@
                 "id": "ff_master_north_window",
                 "wall": "y=2.0",
                 "span_ft": [
-                  2.5,
-                  10.5
+                  3.5,
+                  10
                 ],
-                "width_ft": 8
+                "width_ft": 6.5
               },
               {
                 "id": "ff_master_west_window",
                 "wall": "x=0.0",
                 "span_ft": [
-                  7.2,
-                  12
+                  6.5,
+                  12.5
                 ],
-                "width_ft": 4.8
+                "width_ft": 6
               },
               {
                 "id": "ff_ensuite_south_high_window",
-                "wall": "y=26.0",
+                "wall": "x=0.0",
                 "span_ft": [
-                  0.25,
-                  1.8
+                  20,
+                  23.5
                 ],
-                "width_ft": 1.55
+                "width_ft": 3.5
               },
               {
                 "id": "ff_study_north_glazing",
                 "wall": "y=8.0",
                 "span_ft": [
-                  26,
-                  33
+                  26.5,
+                  36.5
                 ],
-                "width_ft": 7
+                "width_ft": 10
               },
               {
                 "id": "ff_shared_bath_east_window",
                 "wall": "x=39.0",
                 "span_ft": [
-                  28,
-                  31
+                  27,
+                  30.5
                 ],
-                "width_ft": 3
+                "width_ft": 3.5
               },
               {
                 "id": "ff_medium_west_window",
                 "wall": "x=2.0",
                 "span_ft": [
-                  31.5,
-                  36.8
+                  32,
+                  37.5
                 ],
-                "width_ft": 5.3
+                "width_ft": 5.5
               },
               {
                 "id": "ff_medium_south_window",
                 "wall": "y=40.0",
                 "span_ft": [
-                  3.6,
-                  9.5
+                  6,
+                  11.5
                 ],
-                "width_ft": 5.9
+                "width_ft": 5.5
               }
             ],
             "fixtures": {
@@ -3895,353 +2802,47 @@
             "walkable_terrace_area_sqft": 858,
             "rooms": {
               "office_tv_hall": {
-                "label": "Office & TV hall",
-                "kind": "lounge",
-                "enclosed": true,
+                "name": "Office & TV lounge hall",
                 "x_ft": [
                   3,
-                  33
+                  34
                 ],
                 "y_ft": [
                   8,
-                  26
-                ],
-                "size_ft": [
-                  30,
-                  18
-                ],
-                "size_mm": [
-                  9144,
-                  5486.4
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  5181.6,
-                  14325.6
+                  25
                 ]
               },
               "lobby_passage": {
-                "label": "Lobby passage",
-                "kind": "corridor",
-                "enclosed": true,
+                "name": "Atrium lobby passage",
                 "x_ft": [
                   17,
-                  21
+                  20.5
                 ],
                 "y_ft": [
-                  26,
-                  31
-                ],
-                "size_ft": [
-                  4,
-                  5
-                ],
-                "size_mm": [
-                  1219.2,
-                  1524
-                ],
-                "local_x_mm": [
-                  2743.2,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  8839.2,
-                  10058.4
+                  25,
+                  33
                 ]
               },
               "stair_lobby": {
-                "label": "Stair lobby",
-                "kind": "stair",
-                "enclosed": true,
+                "name": "Stair lobby",
                 "x_ft": [
                   17,
                   34
                 ],
                 "y_ft": [
-                  31,
+                  33,
                   40
-                ],
-                "size_ft": [
-                  17,
-                  9
-                ],
-                "size_mm": [
-                  5181.6,
-                  2743.2
-                ],
-                "local_x_mm": [
-                  0,
-                  2743.2
-                ],
-                "local_y_mm": [
-                  4876.8,
-                  10058.4
                 ]
               },
               "raised_rooflight": {
-                "label": "Raised rooflight",
-                "kind": "void",
-                "enclosed": false,
-                "walkable": false,
+                "name": "Raised glazed sunroof (13′ × 8′)",
                 "x_ft": [
-                  21,
+                  20.5,
+                  34
+                ],
+                "y_ft": [
+                  25,
                   33
-                ],
-                "y_ft": [
-                  26,
-                  31
-                ],
-                "size_ft": [
-                  12,
-                  5
-                ],
-                "size_mm": [
-                  3657.6,
-                  1524
-                ],
-                "local_x_mm": [
-                  2743.2,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  5181.6,
-                  8839.2
-                ]
-              },
-              "open_terrace_ne": {
-                "label": "Open north-east terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  23,
-                  44
-                ],
-                "y_ft": [
-                  0,
-                  8
-                ],
-                "size_ft": [
-                  21,
-                  8
-                ],
-                "size_mm": [
-                  6400.8,
-                  2438.4
-                ],
-                "local_x_mm": [
-                  9753.6,
-                  12192
-                ],
-                "local_y_mm": [
-                  1828.8,
-                  8229.6
-                ]
-              },
-              "open_terrace_nw": {
-                "label": "Open north-west terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  0,
-                  23
-                ],
-                "y_ft": [
-                  2,
-                  8
-                ],
-                "size_ft": [
-                  23,
-                  6
-                ],
-                "size_mm": [
-                  7010.4,
-                  1828.8
-                ],
-                "local_x_mm": [
-                  9753.6,
-                  11582.4
-                ],
-                "local_y_mm": [
-                  8229.6,
-                  15240
-                ]
-              },
-              "open_terrace_west": {
-                "label": "Open west strip terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  0,
-                  3
-                ],
-                "y_ft": [
-                  8,
-                  26
-                ],
-                "size_ft": [
-                  3,
-                  18
-                ],
-                "size_mm": [
-                  914.4,
-                  5486.4
-                ],
-                "local_x_mm": [
-                  4267.2,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  14325.6,
-                  15240
-                ]
-              },
-              "open_terrace_east_upper": {
-                "label": "Open east terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  33,
-                  44
-                ],
-                "y_ft": [
-                  8,
-                  31
-                ],
-                "size_ft": [
-                  11,
-                  23
-                ],
-                "size_mm": [
-                  3352.8,
-                  7010.4
-                ],
-                "local_x_mm": [
-                  2743.2,
-                  9753.6
-                ],
-                "local_y_mm": [
-                  1828.8,
-                  5181.6
-                ]
-              },
-              "open_terrace_east_lower": {
-                "label": "Open south-east terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  34,
-                  44
-                ],
-                "y_ft": [
-                  31,
-                  40
-                ],
-                "size_ft": [
-                  10,
-                  9
-                ],
-                "size_mm": [
-                  3048,
-                  2743.2
-                ],
-                "local_x_mm": [
-                  0,
-                  2743.2
-                ],
-                "local_y_mm": [
-                  1828.8,
-                  4876.8
-                ]
-              },
-              "open_terrace_sw_strip": {
-                "label": "Open south-west terrace strip",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  2,
-                  17
-                ],
-                "y_ft": [
-                  26,
-                  29
-                ],
-                "size_ft": [
-                  15,
-                  3
-                ],
-                "size_mm": [
-                  4572,
-                  914.4
-                ],
-                "local_x_mm": [
-                  3352.8,
-                  4267.2
-                ],
-                "local_y_mm": [
-                  10058.4,
-                  14630.4
-                ]
-              },
-              "open_terrace_sw_court": {
-                "label": "Open south-west terrace",
-                "kind": "terrace",
-                "enclosed": false,
-                "x_ft": [
-                  7,
-                  17
-                ],
-                "y_ft": [
-                  29,
-                  40
-                ],
-                "size_ft": [
-                  10,
-                  11
-                ],
-                "size_mm": [
-                  3048,
-                  3352.8
-                ],
-                "local_x_mm": [
-                  0,
-                  3352.8
-                ],
-                "local_y_mm": [
-                  10058.4,
-                  13106.4
-                ]
-              },
-              "bedroom_roof_non_walkable": {
-                "label": "Bedroom roof (non-walkable)",
-                "kind": "verandah",
-                "enclosed": false,
-                "walkable": false,
-                "x_ft": [
-                  2,
-                  7
-                ],
-                "y_ft": [
-                  29,
-                  40
-                ],
-                "size_ft": [
-                  5,
-                  11
-                ],
-                "size_mm": [
-                  1524,
-                  3352.8
-                ],
-                "local_x_mm": [
-                  0,
-                  3352.8
-                ],
-                "local_y_mm": [
-                  13106.4,
-                  14630.4
                 ]
               }
             },
@@ -4252,14 +2853,44 @@
                   8
                 ],
                 [
+                  34,
+                  8
+                ]
+              ],
+              [
+                [
                   3,
-                  26
+                  8
+                ],
+                [
+                  3,
+                  25
+                ]
+              ],
+              [
+                [
+                  3,
+                  25
+                ],
+                [
+                  34,
+                  25
+                ]
+              ],
+              [
+                [
+                  34,
+                  8
+                ],
+                [
+                  34,
+                  25
                 ]
               ],
               [
                 [
                   17,
-                  26
+                  25
                 ],
                 [
                   17,
@@ -4268,62 +2899,32 @@
               ],
               [
                 [
-                  21,
-                  26
+                  20.5,
+                  25
                 ],
                 [
-                  21,
-                  31
+                  20.5,
+                  33
                 ]
               ],
               [
                 [
-                  33,
-                  8
+                  20.5,
+                  33
                 ],
                 [
-                  33,
-                  26
+                  34,
+                  33
                 ]
               ],
               [
                 [
                   34,
-                  31
+                  33
                 ],
                 [
                   34,
                   40
-                ]
-              ],
-              [
-                [
-                  3,
-                  8
-                ],
-                [
-                  33,
-                  8
-                ]
-              ],
-              [
-                [
-                  3,
-                  26
-                ],
-                [
-                  33,
-                  26
-                ]
-              ],
-              [
-                [
-                  21,
-                  31
-                ],
-                [
-                  34,
-                  31
                 ]
               ],
               [
@@ -4462,23 +3063,43 @@
             "doors": [
               {
                 "id": "sf_hall_lobby_door",
-                "wall": "y=26.0",
+                "type": "door",
+                "wall": "y=25.0",
                 "span_ft": [
-                  17.6,
-                  20.75
+                  17.4,
+                  20.2
                 ],
-                "width_ft": 3.15,
-                "swing": "north_into_hall"
+                "width_ft": 2.8
               },
               {
                 "id": "sf_hall_terrace_slider",
+                "type": "sliding_glass_door",
                 "wall": "y=8.0",
                 "span_ft": [
-                  25.5,
-                  32.5
+                  24,
+                  31.5
                 ],
-                "width_ft": 7,
-                "type": "sliding_glass_door"
+                "width_ft": 7.5
+              },
+              {
+                "id": "sf_lobby_terrace_door",
+                "type": "door",
+                "wall": "x=17.0",
+                "span_ft": [
+                  26,
+                  29
+                ],
+                "width_ft": 3
+              },
+              {
+                "id": "sf_stair_terrace_door",
+                "type": "door",
+                "wall": "x=34.0",
+                "span_ft": [
+                  35,
+                  38
+                ],
+                "width_ft": 3
               }
             ],
             "windows": [
@@ -4486,28 +3107,37 @@
                 "id": "sf_hall_north_window",
                 "wall": "y=8.0",
                 "span_ft": [
-                  5,
-                  21
+                  5.5,
+                  20.5
                 ],
-                "width_ft": 16
+                "width_ft": 15
               },
               {
                 "id": "sf_hall_west_window",
                 "wall": "x=3.0",
                 "span_ft": [
-                  15,
-                  22
+                  12,
+                  21
                 ],
-                "width_ft": 7
+                "width_ft": 9
               },
               {
                 "id": "sf_hall_east_window",
-                "wall": "x=33.0",
+                "wall": "x=34.0",
                 "span_ft": [
-                  10,
-                  15
+                  9.5,
+                  14.5
                 ],
                 "width_ft": 5
+              },
+              {
+                "id": "sf_hall_atrium_window",
+                "wall": "y=25.0",
+                "span_ft": [
+                  23,
+                  32
+                ],
+                "width_ft": 9
               }
             ],
             "fixtures": {
@@ -5332,5 +3962,5 @@
       "finishEdition": "tirumala-7-sage-teal-fluted-teak"
     }
   },
-  "notes": "Three-floor 50' x 40' north-east corner home with a 12' x 5' double-height rooflight shaft (x 21-33 ft, y 26-31 ft) aligned vertically over the ground-floor dining area, first-floor guarded overlook, and second-floor raised glazed rooflight. Ground floor includes a 15' x 17' Home ICU with a 7' north slider to the verandah and a 5'6\" clear west opening (no door leaf), caregiver suite, drawing room, living hall, master suite, straight-run 13'6\" east-wall modular kitchen with work-bay sink and south hob, prep counter, store, wash area, and a 2/9/4 U-turn stair (18 risers @ 175 mm = 3150 mm floor-to-floor, clear headroom 2775 mm). First floor steps back to x=47 ft (520 sq ft walkable terrace) with a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft (858 sq ft walkable terrace) with a 30' x 18' office & TV hall and raised non-walkable rooflight curb. All structure (columns, beams, slabs, cantilevers), waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
+  "notes": "Three-floor 50' x 40' north-east corner home with a full-span double-height dining atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft) spanning from the Home ICU/Dining wall right up to the U-turn staircase. Ground floor includes a 3' east setback (x=47 ft) along the kitchen and wash room, a 22' car porch with a 10' NE corner car gate and sloped stone ramp, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU with 7' north slider and 5'6\" clear west opening, living hall, drawing room, caregiver suite, master suite, and an open-plan kitchen with a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, full under-counter sage-teal storage, minimalist floating shelves, and west-shifted refrigerator/appliance bank. First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
 }

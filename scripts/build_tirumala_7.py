@@ -110,18 +110,18 @@ def project() -> dict:
     )
 
     notes = (
-        "Three-floor 50' x 40' north-east corner home with a 12' x 5' double-height rooflight shaft "
-        "(x 21-33 ft, y 26-31 ft) aligned vertically over the ground-floor dining area, first-floor "
-        "guarded overlook, and second-floor raised glazed rooflight. Ground floor includes a 15' x 17' "
-        "Home ICU with a 7' north slider to the verandah and a 5'6\" clear west opening (no door leaf), "
-        "caregiver suite, drawing room, living hall, master suite, straight-run 13'6\" east-wall modular "
-        "kitchen with work-bay sink and south hob, prep counter, store, wash area, and a 2/9/4 U-turn stair "
-        "(18 risers @ 175 mm = 3150 mm floor-to-floor, clear headroom 2775 mm). First floor steps back to "
-        "x=47 ft (520 sq ft walkable terrace) with a 389 sq ft master suite, study/meditation room, shared "
-        "bath, and medium bedroom. Second floor steps back to x=44 ft (858 sq ft walkable terrace) with a "
-        "30' x 18' office & TV hall and raised non-walkable rooflight curb. All structure (columns, beams, "
-        "slabs, cantilevers), waterproofing, drainage falls, and MEP/medical services are conceptual only "
-        "and require licensed professional engineering design before construction."
+        "Three-floor 50' x 40' north-east corner home with a full-span double-height dining atrium "
+        "(x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft) spanning "
+        "from the Home ICU/Dining wall right up to the U-turn staircase. Ground floor includes a 3' east setback "
+        "(x=47 ft) along the kitchen and wash room, a 22' car porch with a 10' NE corner car gate and sloped stone "
+        "ramp, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU with 7' north "
+        "slider and 5'6\" clear west opening, living hall, drawing room, caregiver suite, master suite, and an "
+        "open-plan kitchen with a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, full "
+        "under-counter sage-teal storage, minimalist floating shelves, and west-shifted refrigerator/appliance bank. "
+        "First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, "
+        "study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' "
+        "office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical "
+        "services are conceptual only and require licensed professional engineering design before construction."
     )
     return dict(schema='floorforge.project/0.4', brief=base, customPlan=cp, notes=notes)
 
@@ -130,42 +130,42 @@ def build_tour_html(dest: Path) -> None:
     """Create `examples/gallery/tirumala-7/tour.html` modelled on `tirumala-6/tour.html`."""
     html = """<!doctype html>
 <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tirumala 7 · Three-floor corner home with rooflight</title>
+<title>Tirumala 7 · Three-floor corner home with full-span atrium sunroof</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f6f3eb;color:#292b24;font:16px/1.5 "DM Sans",system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:clamp(18px,4vw,54px)}header{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem}h1{font:clamp(38px,6vw,74px)/1 Georgia,serif;font-weight:400;letter-spacing:-.05em;margin:0}p{margin:.4rem 0}a{color:#354b3c;text-underline-offset:4px}.actions{display:flex;align-items:center;gap:1.3rem;flex-wrap:wrap}.action{color:white;background:#334839;text-decoration:none;padding:.7rem 1rem;border-radius:3px}nav{display:flex;gap:.45rem;flex-wrap:wrap;margin:1rem 0}button{border:1px solid #cbc7b9;color:inherit;background:transparent;font:inherit;padding:.45rem .8rem;cursor:pointer;border-radius:3px}button[aria-pressed=true]{background:#353a31;border-color:#353a31;color:white}figure{margin:0}img{width:100%;height:auto;display:block;aspect-ratio:1200/920;object-fit:contain;background:#e4e2d9}figcaption{margin-top:.8rem}strong{font-weight:600}
 </style>
-<main><header><div><h1>Tirumala 7</h1><p>Three-floor corner home with 12′ × 5′ rooflight · 50′ × 40′ plot</p></div><div class="actions"><a id="walkLink" class="action" href="preview.html">Enter the 3D walkthrough</a><a href="drawings.pdf">Floor drawings</a><a href="model.glb" download>3D model (GLB)</a></div></header>
+<main><header><div><h1>Tirumala 7</h1><p>Three-floor corner home with full-span atrium sunroof · 50′ × 40′ plot</p></div><div class="actions"><a id="walkLink" class="action" href="preview.html">Enter the 3D walkthrough</a><a href="drawings.pdf">Floor drawings</a><a href="model.glb" download>3D model (GLB)</a></div></header>
 <nav aria-label="Rendered views"></nav>
 <figure><img id="render" width="1200" height="920" src="renders/ground.png" alt="Furnished ground-floor cutaway."><figcaption aria-live="polite" id="caption"></figcaption></figure>
 </main>
 <script>
 const views=[
- ['Ground floor','ground','Care suite, 15′ × 17′ Home ICU with 7′ north slider and 5′6″ clear west opening, living hall, dining under the 12′ × 5′ void, straight-run 13′6″ east kitchen and 2/9/4 U-turn stair.'],
- ['First floor','first','389 sq ft master suite with dressing room and bath, 11′ × 12′ study/meditation room, medium bedroom, guarded 12′ × 5′ overlook and 520 sq ft shared terrace.'],
- ['Second floor','second','30′ × 18′ office and TV hall with three-person desk, L-sofa and 100″ TV, raised 12′ × 5′ glazed rooflight and 858 sq ft open terrace.'],
- ['Exterior','exterior','North-east corner view showing the stepped east terraces (x=47′ first floor, x=44′ second floor), north verandah and car porch.'],
- ['East arrival','east_arrival','East pedestrian gate and car porch frontage along the 9 m east road.'],
- ['North frontage','north_frontage','North road view across the 16′ × 9′ decked verandah, covered entry and car porch.'],
+ ['Ground floor','ground','Care suite, 15′ × 16′ Home ICU, living hall, full-span double-height dining atrium, wide 2′9″ east-platform kitchen with 3′ east setback and east windows, 22′ car porch with NE car gate, and north verandah lawn court.'],
+ ['First floor','first','389 sq ft master suite with dressing room and bath, study/meditation room, medium bedroom, symmetrical 3.5′ bridges framing the 10′ × 8′ dining atrium, and 526 sq ft shared terrace.'],
+ ['Second floor','second','31′ × 17′ office and TV hall with three workstations, lounge sofa and 75″ east-wall TV, 13.5′ × 8′ raised glazed sunroof directly above the dining atrium, and 873 sq ft open terrace.'],
+ ['Exterior','exterior','North-east corner view showing the 10′ NE car gate and sloped stone ramp, 22′ car porch, 3′ east kitchen setback with east windows, north verandah lawn court, and stepped terraces.'],
+ ['East arrival','east_arrival','East pedestrian gate, louvered setback screen, and 22′ car porch frontage along the 9 m east road.'],
+ ['North frontage','north_frontage','North road view across the 10′ NE car gate, 16′ × 9′ verandah with manicured north-wall lawn court, and covered entry.'],
  ['Colony view','colony_overview','The 50′ × 40′ north-east corner parcel in the Tirumala colony facing the north garden and east basketball court.'],
- ['Roof terraces','roof_terraces','Elevated view of the first-floor (520 sq ft) and second-floor (858 sq ft) terraces and the raised 12′ × 5′ glazed rooflight.'],
- ['Kitchen run','kitchen_run','13′6″ straight east-wall modular kitchen with high-gloss sage-teal base units, matte-black Gola channels, nano-white quartz worktop, fluted ivory backsplash, smoked glass uppers and full-height ceiling loft.'],
- ['Kitchen from dining','kitchen_from_dining','View from the dining hall past the 4′ × 1′9″ waterfall quartz and fluted-teak prep counter toward the straight-run kitchen and work bay.'],
- ['Dining double-height','dining_double_height','Double-height dining space under the 12′ × 5′ shaft with first-floor frameless glass balustrade, two-storey fluted-teak and marble feature wall, and tiered gold ring chandelier.'],
- ['Living hall','living_hall','18′6″ × 10′ core living hall with terracotta velvet sofa, nested coffee tables and 75″ TV on a fluted-teak media wall.'],
- ['Living to ICU','living_to_icu','Sightline from the living hall through the 5′6″ clear west opening into the 15′ × 17′ Home ICU.'],
- ['Home ICU','icu','15′ × 17′ Home ICU with hospital bed facing the west-wall 75″ TV, medical headwall console, visitor armchair, south bathroom and 7′ north slider to the verandah.'],
- ['Verandah','verandah','16′ × 9′ north verandah connecting the covered entry, Home ICU 7′ glass slider and car porch.'],
- ['Drawing room','drawing_room','9′6″ × 14′ drawing room with north sofa, coffee table, north window and east windows to the covered entry.'],
- ['Master bedroom','master_bedroom','15′ × 14′ ground-floor master bedroom with fluted headboard wall, south and west windows, en-suite bath and west gully door.'],
- ['Gallery void','gallery_void','First-floor family gallery looking across the 12′ × 5′ guarded void down to the dining table below.'],
- ['Master suite','master_suite','First-floor master bedroom (389 sq ft suite) with king bed, upholstered bench, dressing room and north terrace access.'],
- ['Study / meditation','study_meditation','11′ × 12′ first-floor study and meditation room with work desk, bookshelf and meditation mat, opening to the north terrace.'],
- ['Medium bedroom','medium_bedroom','10′6″ × 11′ first-floor southwest bedroom with wardrobe and south/west windows.'],
- ['East terrace','east_terrace','First-floor 8′-wide east terrace (outer edge at x=47′) with planter boxes and outdoor seating.'],
- ['Office & TV hall','office_tv_hall','30′ × 18′ second-floor office and TV hall with three-person north desk, L-shaped lounge sofa and 100″ east-wall TV.'],
- ['North terrace','north_terrace','Second-floor north terrace (858 sq ft continuous L/U terrace) with outdoor lounge and dining zones.'],
- ['Rooflight','rooflight','Second-floor raised 12′ × 5′ non-walkable laminated glass rooflight curb and surrounding 1100 mm guard.'],
- ['Stair lobby','stair_lobby','Second-floor stair lobby at the head of the 2/9/4 U-turn staircase with north glass door to the terrace.']
+ ['Roof terraces','roof_terraces','Elevated view of the first-floor and second-floor stepped terraces and the full-span 13.5′ × 8′ raised glazed sunroof.'],
+ ['Kitchen run','kitchen_run','Wide 2′9″ (840 mm) east-wall nano-white quartz platform beneath two east windows, with sage-teal under-platform drawers, minimalist floating teak shelves, and west-shifted refrigerator & oven bank.'],
+ ['Kitchen from dining','kitchen_from_dining','Spacious open-plan sightline from dining past the waterfall quartz prep island and west appliance bank to the sunlit east kitchen platform.'],
+ ['Dining double-height','dining_double_height','Full-span double-height dining atrium extending right up to the staircase, crowned by the 13.5′ × 8′ glazed sunroof and 3-ring brushed-gold chandelier.'],
+ ['Living hall','living_hall','Core living hall with terracotta velvet sofa, marble coffee table, and 75″ OLED TV on a fluted-teak media wall.'],
+ ['Living to ICU','living_to_icu','Clean sightline from the living hall through the 5′6″ cased opening into the 15′ × 16′ Home ICU.'],
+ ['Home ICU','icu','15′ × 16′ Home ICU with hospital bed facing the complete 55″ west-wall TV, clinical monitor cart, companion recliner, and 7′ north slider to the verandah.'],
+ ['Verandah','verandah','16′ × 9′ north verandah featuring a recessed manicured velvet lawn court with honed-travertine coping, stepping pads, and warm LED graze lighting.'],
+ ['Drawing room','drawing_room','9′6″ × 14′ drawing room with taupe bouclé sofa, marble coffee table, and sheer/taupe drapery.'],
+ ['Master bedroom','master_bedroom','15′ × 14′ ground-floor master bedroom with upholstered headboard, full-height fluted-teak wardrobe, and en-suite bath.'],
+ ['Gallery void','gallery_void','First-floor gallery looking across the full-span 10′ × 8′ glass-guarded atrium and sky-lit east bridge down to the dining hall.'],
+ ['Master suite','master_suite','First-floor master bedroom (389 sq ft suite) with king bed, upholstered foot bench, dressing room, and north curtains.'],
+ ['Study / meditation','study_meditation','First-floor study and meditation room with teak work desk, backlit meditation platform, and east terrace slider.'],
+ ['Medium bedroom','medium_bedroom','15′ × 11′ first-floor southwest bedroom with west headboard, south wardrobe, and dual-aspect windows.'],
+ ['East terrace','east_terrace','First-floor 8′-wide east terrace (outer edge at x=47′) with timber lounge deck and outdoor seating.'],
+ ['Office & TV hall','office_tv_hall','31′ × 17′ second-floor office and TV hall with three north workstations, terracotta lounge sofa, and 75″ east-wall OLED TV.'],
+ ['North terrace','north_terrace','Second-floor north terrace with timber lounge deck, outdoor sofa, and travertine table.'],
+ ['Rooflight','rooflight','Second-floor 13.5′ × 8′ raised laminated-glass sunroof curb with 5×2 structural mullion grid directly above the dining atrium.'],
+ ['Stair lobby','stair_lobby','Second-floor stair lobby at the head of the 2/9/4 U-turn staircase with frameless glass well balustrade.']
 ];
 const nav=document.querySelector('nav'),image=document.querySelector('#render'),caption=document.querySelector('#caption');
 function selectView(index){const [title,id,description]=views[index];document.getElementById('walkLink').href='preview.html#'+id;image.src='renders/'+id+'.png';image.alt=title+'. '+description;caption.textContent=description;Array.from(nav.children).forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));}
@@ -206,10 +206,10 @@ def main() -> None:
         id='tirumala-7',
         title='Tirumala 7',
         description=(
-            'Three-floor 50′ × 40′ corner home with a 12′ × 5′ double-height rooflight shaft over dining, '
-            'a 15′ × 17′ home ICU opening to a north verandah, a straight-run sage-teal and fluted-teak '
-            'modular kitchen, four bedrooms, a meditation study, and a second-floor office & TV hall '
-            'wrapped by 520 and 858 sq ft stepped terraces.'
+            'Three-floor 50′ × 40′ corner home with a full-span double-height dining atrium and 13.5′ × 8′ '
+            'raised glazed sunroof, 3′ east kitchen setback with wide 2′9″ quartz platform and east windows, '
+            '22′ car porch with NE corner car gate, north verandah lawn court, 15′ × 16′ home ICU, '
+            'four bedrooms, meditation study, and second-floor office & TV hall wrapped by stepped terraces.'
         ),
         style='Sage-teal gloss · fluted teak · ivory vitrified',
         directory='gallery/tirumala-7',
