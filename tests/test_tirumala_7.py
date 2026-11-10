@@ -197,18 +197,33 @@ def test_terrace_edges_east_setback_and_ne_car_gate_with_verandah_lawn():
 
 
 def test_stair_294_sequence_risers_treads_and_headroom():
-    """The U-turn staircase has the 2/9/4 tread sequence, risers <= 190 mm, treads >= 250 mm, and headroom >= 2100 mm."""
+    """Ground->First removes the lowermost southbound step so ONLY 2 steps remain going south ([1, 9, 4], 17 risers @ 185.3 mm <= 190 mm),
+    while First->Second keeps [2, 9, 4] (18 risers @ 175.0 mm <= 190 mm), with treads >= 250 mm and headroom >= 2100 mm."""
     b = read('building.json')
+    scene = read('scene.json')
     stairs = {st['floor']: st for st in b['stairs']}
     assert set(stairs) == {0, 1, 2}
+
+    st0 = stairs[0]
+    assert st0['tread_sequence'] == [1, 9, 4]
+    assert st0['riser_count'] == 17
+    assert st0['riser_mm'] <= 190.0 and abs(st0['riser_mm'] - round(3150.0 / 17.0, 2)) < 0.1
+
+    st1 = stairs[1]
+    assert st1['tread_sequence'] == [2, 9, 4]
+    assert st1['riser_count'] == 18
+    assert st1['riser_mm'] <= 190.0 and abs(st1['riser_mm'] - 175.0) < 0.1
+
     for f in (0, 1):
         st = stairs[f]
-        assert st['tread_sequence'] == [2, 9, 4]
-        assert st['riser_count'] == 18
-        assert st['riser_mm'] <= 190.0 and abs(st['riser_mm'] - 175.0) < 0.1
         assert st['tread_mm'] >= 250.0
         assert st['headroom_mm'] >= 2100.0
         assert st['flight_width'] >= 1000.0
+
+    node_ids = {n['id'] for n in scene['nodes']}
+    assert 'stair-0/f1-tread-1-tread' in node_ids
+    assert 'stair-0/se-landing-tread' in node_ids
+    assert 'stair-0/f1-tread-2-tread' not in node_ids  # Lowermost step removed -> only 2 southbound steps on Ground->First!
 
 
 def test_home_icu_and_all_tvs_complete_without_wall_overlap():
@@ -285,11 +300,16 @@ def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
     assert 2.65 <= fridge['position'][1] <= 3.35
     assert fridge['scale'][2] <= 1.65
 
-    # Center waterfall counter runs North-South (+X) PARALLEL to the east platform and sits close to the dining table
+    # Center waterfall counter runs North-South (+X) PARALLEL to the east platform and sits anchored right beside the y=24' ICU/Dining wall
     island_top = nodes['kitchen/modular-kitchen/prep-quartz-top']
-    assert island_top['scale'][0] > 1.40  # N-S length (~1.463 m)
+    assert island_top['scale'][0] > 1.40  # N-S length (~1.447 m)
     assert island_top['scale'][0] > 2.0 * island_top['scale'][1]  # Parallel to N-S east platform!
-    assert island_top['position'][1] > 4.00  # Close to dining table (x_ft ~ 34.8..36.85)
+    assert island_top['position'][1] > 4.00  # Close to east-shifted dining table (x_ft ~ 35.4..37.45)
+    assert island_top['position'][0] > 4.05  # Shifted north right beside the y=24' Home ICU / Dining wall!
+
+    # Dining table shifted east towards the kitchen (center x_ft = 28.6 -> Y = (50 - 28.6)*0.3048 = 6.523 m)
+    dtable = nodes['dining/table-top']
+    assert 6.30 <= dtable['position'][1] <= 6.75
 
 
 def test_all_plan_reference_doors_and_windows_match_within_25mm():

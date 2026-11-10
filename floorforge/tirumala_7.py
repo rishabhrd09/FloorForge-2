@@ -512,14 +512,37 @@ def coordinate_levels(b: dict, plan: dict) -> None:
                 rec['fixed'] = True
             openings.append(rec)
 
-    # 4. Build the 2/9/4 U-turn stair (`stair-0` Ground->First, `stair-1` First->Second)
+    # 4. Build the U-turn stair (`stair-0` Ground->First with lowermost southbound step removed = 17 risers [1, 9, 4];
+    #    `stair-1` First->Second = 18 risers [2, 9, 4])
     # Well is x_ft: 17..33 (width 16' = 4876.8 mm along Y), y_ft: 33..40 (depth 7' = 2133.6 mm along X)
     stair_box = box_mm(17.0, 33.0, 33.0, 40.0)
     sx0, sy0, sx1, sy1 = stair_box.bounds
+
+    def _stair_flight_rects_mm(f_idx: int) -> list[dict]:
+        rects = []
+        if f_idx == 0:
+            rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 34.85, 33.0, 36.5).bounds]})
+        else:
+            for i in range(2):
+                rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 33.0 + i * 1.75, 33.0, 33.0 + (i + 1) * 1.75).bounds]})
+        rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 36.5, 33.0, 40.0).bounds]})
+        for i in range(9):
+            xb = 29.5 - i * 1.0
+            rects.append({'bounds': [round(v, 2) for v in box_mm(xb - 1.0, 36.5, xb, 40.0).bounds]})
+        rects.append({'bounds': [round(v, 2) for v in box_mm(17.0, 36.5, 20.5, 40.0).bounds]})
+        for i in range(4):
+            yb = 36.5 - i * 0.875
+            rects.append({'bounds': [round(v, 2) for v in box_mm(17.0, yb - 0.875, 20.5, yb).bounds]})
+        return rects
+
     stairs = []
     for f_idx, room_id, next_f in ((0, 'stair', 1), (1, 'u_stair', 2), (2, 's_stair_lobby', None)):
+        r_cnt = 17 if f_idx == 0 else 18
+        r_mm = round(float(FLOOR_H_MM) / r_cnt, 2)
+        t_seq = [1, 9, 4] if f_idx == 0 else [2, 9, 4]
         stairs.append({
             'id': f'stair-{f_idx}',
+            'shape': 'three-flight-c-stair',
             'linkId': 'main-stair',
             'roomId': room_id,
             'floor': f_idx,
@@ -531,12 +554,13 @@ def coordinate_levels(b: dict, plan: dict) -> None:
             'flight_width': round(3.5 * FT, 2),   # 1066.8 mm (>= 1000 mm)
             'well': 0,
             'landing_mm': round(3.5 * FT, 2),     # 1066.8 mm
-            'riser_count': 18,
-            'riser_mm': 175.0,                    # <= 190 mm
+            'riser_count': r_cnt,
+            'riser_mm': r_mm,                     # 185.29 mm / 175.0 mm (<= 190 mm)
             'tread_mm': 304.8,                    # 1.0 ft >= 250 mm
             'headroom_mm': 2775.0,                # >= 2100 mm
-            'tread_sequence': [2, 9, 4],
+            'tread_sequence': t_seq,
             'direction': 'east-south-west-north',
+            'flights': _stair_flight_rects_mm(f_idx if f_idx < 2 else 1),
         })
 
     # 5. Build Floor Plates & Roofs across all 3 levels
@@ -882,20 +906,21 @@ def _register_video_materials(scene: dict) -> None:
 
 
 def _build_stair_294(k: SceneKit, H: float) -> None:
-    """Build the 2/9/4 U-turn staircase (18 risers x 175 mm = 3150 mm) for Ground->First and First->Second.
+    """Build the U-turn staircase for Ground->First (17 risers x 185.3 mm = 3150 mm, lowermost southbound step removed
+    so ONLY 2 steps remain going south!) and First->Second (18 risers x 175.0 mm = 3150 mm).
 
     Stair well in PDF feet: x_ft: 17..33, y_ft: 33..40.
-    - Flight 1 (East leg, x_ft: 29.5..33.0): starts at y_ft=33.0 (fed on Floor 1 by the 3.5' East Sky-Lit Bridge!),
-      climbs 2 treads SOUTH to y_ft=36.5 (risers 1..2), plus SE corner landing (x_ft: 29.5..33.0, y_ft: 36.5..40.0) at riser 3.
-    - Flight 2 (South leg, y_ft: 36.5..40.0): climbs 9 treads WEST from x_ft=29.5 to x_ft=20.5 (risers 4..12, 304.8 mm treads),
-      plus SW corner landing (x_ft: 17.0..20.5, y_ft: 36.5..40.0) at riser 13.
-    - Flight 3 (West leg, x_ft: 17.0..20.5): climbs 4 treads NORTH from y_ft=36.5 to y_ft=33.0 (risers 14..17),
-      stepping onto the 3.5' West Atrium Bridge / Second-Floor Lobby at y_ft=33.0 (riser 18 = +3.150 m).
+    - Ground->First (f_idx=0): Flight 1 starts cleanly at y_ft=34.85 (aligned with the y=35.0 Store wall corner),
+      climbing ONLY 2 southbound steps: `f1-tread-1` (y_ft=34.85..36.50, riser 1) + `se-landing` (y_ft=36.50..40.00, riser 2),
+      then 9 westbound treads (risers 3..11), `sw-landing` (riser 12), and 4 northbound treads (risers 13..16) -> riser 17 = H.
+    - First->Second (f_idx=1): Flight 1 starts from the 3.5' East Sky-Lit Bridge at y_ft=33.0 (2 treads + SE landing = risers 1..3),
+      9 westbound treads (risers 4..12), `sw-landing` (riser 13), and 4 northbound treads (risers 14..17) -> riser 18 = 2*H.
     """
-    riser = H / 18.0
     for f_idx in (0, 1):
         z0 = f_idx * H
         owner = f'stair-{f_idx}'
+        n_risers = 17 if f_idx == 0 else 18
+        riser = H / float(n_risers)
 
         def step_block(x0_ft, y0_ft, x1_ft, y1_ft, r_idx, name, is_landing=False):
             bx0, by0, bx1, by1 = box_m(x0_ft, y0_ft, x1_ft, y1_ft)
@@ -906,32 +931,42 @@ def _build_stair_294(k: SceneKit, H: float) -> None:
             if not is_landing:
                 k.rect((bx0 + 0.04, by0 + 0.04, top_z - 0.042, bx1 - 0.04, by1 - 0.04, top_z - 0.032), 'cove_led_warm', f_idx, 'cove', f'{owner}/{name}-led', owner)
 
-        # Flight 1: 2 treads south along east leg (x_ft: 29.5..33.0, y_ft: 33.0 -> 36.5)
-        dy1 = 3.5 / 2.0
-        for i in range(2):
-            ya = 33.0 + i * dy1
-            step_block(29.5, ya, 33.0, ya + dy1, i + 1, f'f1-tread-{i+1}')
-        step_block(29.5, 36.5, 33.0, 40.0, 3, 'se-landing', is_landing=True)
+        if f_idx == 0:
+            # Ground->First: lowermost step removed — ONLY 2 steps in the southbound direction (1 tread + SE landing)!
+            step_block(29.5, 34.85, 33.0, 36.5, 1, 'f1-tread-1')
+            step_block(29.5, 36.5, 33.0, 40.0, 2, 'se-landing', is_landing=True)
+            r_se = 2
+        else:
+            # First->Second: 2 treads south from the 3.5' East Sky-Lit Bridge + SE landing
+            dy1 = 3.5 / 2.0
+            for i in range(2):
+                ya = 33.0 + i * dy1
+                step_block(29.5, ya, 33.0, ya + dy1, i + 1, f'f1-tread-{i+1}')
+            step_block(29.5, 36.5, 33.0, 40.0, 3, 'se-landing', is_landing=True)
+            r_se = 3
 
         # Flight 2: 9 treads west along south leg (x_ft: 29.5 -> 20.5, y_ft: 36.5..40.0)
         dx2 = 9.0 / 9.0
         for i in range(9):
             xb = 29.5 - i * dx2
-            step_block(xb - dx2, 36.5, xb, 40.0, 4 + i, f'f2-tread-{i+1}')
-        step_block(17.0, 36.5, 20.5, 40.0, 13, 'sw-landing', is_landing=True)
+            step_block(xb - dx2, 36.5, xb, 40.0, (r_se + 1) + i, f'f2-tread-{i+1}')
+        r_sw = r_se + 10
+        step_block(17.0, 36.5, 20.5, 40.0, r_sw, 'sw-landing', is_landing=True)
 
         # Flight 3: 4 treads north along west leg (x_ft: 17.0..20.5, y_ft: 36.5 -> 33.0)
         dy3 = 3.5 / 4.0
         for i in range(4):
             yb = 36.5 - i * dy3
-            step_block(17.0, yb - dy3, 20.5, yb, 14 + i, f'f3-tread-{i+1}')
+            step_block(17.0, yb - dy3, 20.5, yb, (r_sw + 1) + i, f'f3-tread-{i+1}')
 
         # Inner well frameless glass balustrade & warm teak handrail
         ix0, iy0, ix1, iy1 = box_m(20.5, 33.0, 29.5, 36.5)
-        k.beam((ix1, iy0, z0 + 1.05), (ix0, iy0, z0 + 1.45), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
-        k.rect((ix0 - 0.012, iy0, z0 + 0.55, ix0 + 0.012, iy1, z0 + 3.05), 'glass', f_idx, 'railing', f'{owner}/inner-glass-s', owner)
-        k.beam((ix0, iy0, z0 + 1.45), (ix0, iy1, z0 + 3.12), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
-        k.beam((ix0, iy1, z0 + 3.12), (ix1, iy1, z0 + 4.02), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
+        rail_x_start = (40.0 - 34.85) * 0.3048 if f_idx == 0 else ix1
+        rail_z_start = z0 + (1.06 if f_idx == 0 else 1.05)
+        k.beam((rail_x_start, iy0, rail_z_start), (ix0, iy0, z0 + r_se * riser + 0.92), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
+        k.rect((ix0 - 0.012, iy0, z0 + r_se * riser + 0.04, ix0 + 0.012, iy1, z0 + 3.05), 'glass', f_idx, 'railing', f'{owner}/inner-glass-s', owner)
+        k.beam((ix0, iy0, z0 + r_se * riser + 0.92), (ix0, iy1, z0 + r_sw * riser + 0.90), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
+        k.beam((ix0, iy1, z0 + r_sw * riser + 0.90), (ix1, iy1, z0 + H + 0.90), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
 
     # Second-floor stair well south/east arrival balustrade along open inner well (x_ft: 20.5..33.0, y_ft=33.0..36.5)
     z2 = 2 * H
@@ -970,8 +1005,8 @@ def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     k.rect((rx1 - 0.085, wy_face + 0.025, H + 0.06, rx1 - 0.06, wy_face + 0.042, 2 * H - 0.06), 'cove_led_warm', 1, 'cove', f'{owner}/east-led-n', owner)
 
     # Ground-floor Dining north wall feature cladding (Home ICU south wall shifted 1' north to y_ft=24.0!)
-    # Spanning x_ft: 24.2..34.8 cleanly below the y=24..25 banquette soffit (z <= H - 0.19)
-    dn_x0, dn_y0, dn_x1, dn_y1 = box_m(24.2, 24.0, 34.8, 24.2)
+    # Spanning x_ft: 24.2..35.1 cleanly below the y=24..25 banquette soffit (z <= H - 0.19)
+    dn_x0, dn_y0, dn_x1, dn_y1 = box_m(24.2, 24.0, 35.1, 24.2)
     nx_face = (40.0 - 24.0) * 0.3048 - 0.064
     k.rect((nx_face - 0.022, dn_y0, 0.55, nx_face, dn_y1, H - 0.19), 'travertine_warm', 0, 'wall-panel', f'{owner}/north-travertine', owner)
     k.rect((nx_face - 0.036, dn_y0 + 0.45, 0.85, nx_face - 0.020, dn_y1 - 0.45, H - 0.24), 'cladding_fluted_teak', 0, 'wall-panel', f'{owner}/north-teak-inset', owner)
@@ -1029,8 +1064,8 @@ def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     k.poly_mesh(east_guard_line.buffer(0.010, cap_style=2), z_roof + 0.085, z_roof + 1.06, 'glass', 2, 'railing', 's-rooflight-safety-glass', 's_raised_rooflight')
     k.poly_mesh(east_guard_line.buffer(0.025, cap_style=2), z_roof + 1.06, z_roof + 1.10, 'gola_matte_black', 2, 'railing', 's-rooflight-safety-rail', 's_raised_rooflight')
 
-    # 4. Sculptural 3-Ring Brushed-Gold & Warm-LED Chandelier suspended down the center of the 10' x 8' atrium (x=26.4', y=28.5')
-    cx, cy = local_m(26.4, 28.5)
+    # 4. Sculptural 3-Ring Brushed-Gold & Warm-LED Chandelier suspended down the 10' x 8' atrium over the east-shifted dining table
+    cx, cy = local_m(27.6, 28.5)
     k.cylinder((cx, cy, z_roof + 0.36), 0.20, 0.04, 'chandelier_gold_ring', 2, 'fixture')
     rings = [
         (0.76, H + 1.45, 0.03),
@@ -1255,8 +1290,8 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     for zone_name, bounds_ft in [
         ('living-border', (6.5, 16.6, 23.4, 25.4)),
         ('foyer-border', (18.2, 9.6, 23.4, 16.0)),
-        ('dining-border', (21.6, 24.6, 33.8, 32.5)),
-        ('kitchen-border', (37.4, 24.6, 43.8, 34.4)),
+        ('dining-border', (23.6, 24.6, 34.4, 32.2)),
+        ('kitchen-border', (38.0, 24.6, 43.8, 34.4)),
     ]:
         bx0, by0, bx1, by1 = box_m(*bounds_ft)
         outer = box(bx0, by0, bx1, by1)
@@ -1277,7 +1312,7 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     pier_x0, _, pier_x1, _ = box_m(46.0, 27.05, 46.8, 30.75)  # Solid pier between east windows (y=27..30.8)
     hx0, _, hx1, _ = box_m(44.5, 28.60, 46.6, 30.65)   # Hob on south half of solid center pier
     cf_x0, cf_y0, cf_x1, cf_y1 = box_m(39.22, 22.24, 41.00, 23.96)  # Compact fridge tucked into 2' NW corner!
-    px0, py0, px1, py1 = box_m(34.80, 25.65, 36.85, 30.35)          # Parallel to east platform, close to Dining Table!
+    px0, py0, px1, py1 = box_m(35.40, 24.28, 37.45, 28.93)          # Anchored right next to y=24.0 Home ICU/Dining wall!
     y_east_wall_inner = (50.0 - 47.0) * 0.3048 + 0.060  # 0.9744 m
 
     ctx = {'room': kitchen_room, 'floor': 0, 'clear': Polygon(np.array(kitchen_room['clear']) / 1000.0), 'placed': []}
@@ -1312,21 +1347,21 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
         'prep_y1': py1,
     })
 
-    # 3. Spacious Dining Hall (x_ft: 21..35, y_ft: 24..33 — widened 1' north!):
-    # Banquette on shifted Home ICU south wall (y=24.25..25.65), 6-seater marble table centered under atrium (x=23.6..29.2, y=26.55..29.15)
-    banq_x0, banq_y0, banq_x1, banq_y1 = box_m(24.3, 24.25, 29.5, 25.65)
+    # 3. Spacious Dining Hall (x_ft: 21..35, y_ft: 24..33 — widened 1' north, dining set shifted 2.2' east toward Kitchen!):
+    # Banquette on shifted Home ICU south wall (x=26.3..31.5, y=24.36..25.76), 6-seater marble table at (x=25.8..31.4, y=26.55..29.15)
+    banq_x0, banq_y0, banq_x1, banq_y1 = box_m(26.3, 24.36, 31.5, 25.76)
     k.rect((banq_x0, banq_y0, 0.0, banq_x1, banq_y1, 0.46), 'cladding_fluted_teak', 0, 'furniture', 'dining/banquette-base', 'dining_hall')
     k.rect((banq_x0 + 0.02, banq_y0 + 0.02, 0.46, banq_x1 - 0.02, banq_y1 - 0.02, 0.54), 'sofa_taupe_boucle', 0, 'furniture', 'dining/banquette-cushion', 'dining_hall')
     k.rect((banq_x1 - 0.12, banq_y0 + 0.02, 0.54, banq_x1, banq_y1 - 0.02, 0.92), 'sofa_taupe_boucle', 0, 'furniture', 'dining/banquette-back', 'dining_hall')
-    dtx0, dty0, dtx1, dty1 = box_m(23.6, 26.55, 29.2, 29.15)
+    dtx0, dty0, dtx1, dty1 = box_m(25.8, 26.55, 31.4, 29.15)
     k.rect((dtx0, dty0, 0.72, dtx1, dty1, 0.76), 'dining_marble_top', 0, 'furniture', 'dining/table-top', 'dining_hall')
     k.rect((dtx0 + 0.18, dty0 + 0.35, 0.0, dtx1 - 0.18, dty0 + 0.50, 0.72), 'gola_matte_black', 0, 'furniture', 'dining/table-leg-E', 'dining_hall')
     k.rect((dtx0 + 0.18, dty1 - 0.50, 0.0, dtx1 - 0.18, dty1 - 0.35, 0.72), 'gola_matte_black', 0, 'furniture', 'dining/table-leg-W', 'dining_hall')
-    for idx, cx_ft in enumerate((24.6, 26.4, 28.2)):
+    for idx, cx_ft in enumerate((26.8, 28.6, 30.4)):
         cx0, cy0, cx1, cy1 = box_m(cx_ft - 0.72, 29.40, cx_ft + 0.72, 30.80)
         k.rect((cx0, cy0, 0.42, cx1, cy1, 0.48), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-s-{idx}', 'dining_hall')
         k.rect((cx0, cy0, 0.48, cx0 + 0.09, cy1, 0.86), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-s-back-{idx}', 'dining_hall')
-    for side, (cx0_ft, cx1_ft) in (('west', (22.0, 23.35)), ('east', (29.45, 30.8))):
+    for side, (cx0_ft, cx1_ft) in (('west', (24.20, 25.55)), ('east', (31.65, 33.00))):
         cx0, cy0, cx1, cy1 = box_m(cx0_ft, 27.05, cx1_ft, 28.65)
         k.rect((cx0, cy0, 0.42, cx1, cy1, 0.48), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-{side}', 'dining_hall')
         back_y0 = cy1 - 0.09 if side == 'west' else cy0
@@ -2106,9 +2141,9 @@ def _configure_cameras_and_walk(scene: dict, H: float) -> None:
         'north_frontage': {'position': [23.8, 5.8, 3.1], 'target': [6.5, 6.5, 3.2], 'fov': 46},
         'colony_overview': {'position': [28.0, -16.0, 14.5], 'target': [6.0, 7.6, 3.0], 'fov': 45},
         'roof_terraces': {'position': [19.5, -8.5, 13.8], 'target': [5.8, 7.8, 6.4], 'fov': 46},
-        'kitchen_run': cam((35.8, 34.0), (42.8, 24.4), 1.48, 1.18, 60),
-        'kitchen_from_dining': cam((24.8, 29.0), (45.6, 27.6), 1.48, 1.24, 58),
-        'dining_double_height': cam((18.6, 28.6), (28.5, 27.6), 1.45, 3.85, 62),
+        'kitchen_run': cam((36.4, 33.8), (42.8, 24.4), 1.48, 1.18, 60),
+        'kitchen_from_dining': cam((23.2, 28.8), (44.8, 28.4), 1.50, 1.18, 60),
+        'dining_double_height': cam((20.0, 28.6), (29.2, 27.6), 1.45, 3.85, 62),
         'living_hall': cam((21.0, 18.8), (11.8, 23.8), 1.52, 1.32, 58),
         'living_to_icu': cam((15.2, 22.2), (35.0, 16.2), 1.52, 1.30, 56),
         'icu': cam((37.2, 21.8), (25.2, 14.5), 1.52, 1.22, 58),

@@ -104,7 +104,7 @@
       }
     },
     "stair": {
-      "type": "U-turn stair climbing south, west, north",
+      "type": "U-turn stair climbing south, west, north (Ground->First has lowermost southbound step removed so 2 steps remain going south)",
       "well_x_ft": [
         17.0,
         33.0
@@ -114,15 +114,20 @@
         40.0
       ],
       "flight_outer_x_ft": [
-        17.15,
-        31.85
+        17.0,
+        33.0
       ],
       "flight_outer_y_ft": [
-        33.0625,
-        39.8125
+        33.0,
+        40.0
       ],
-      "flight_width_ft": 3.25,
-      "flight_width_mm": 990.6,
+      "flight_width_ft": 3.5,
+      "flight_width_mm": 1066.8,
+      "ground_to_first_tread_sequence": [
+        1,
+        9,
+        4
+      ],
       "tread_sequence": [
         2,
         9,
@@ -131,28 +136,29 @@
       "legs": [
         {
           "direction": "south",
-          "treads": 2,
+          "treads": 1,
+          "note": "Ground->First starts at y_ft=34.85 (lowermost step removed; 1 tread + SE landing = 2 southbound steps). First->Second starts at y_ft=33.0 (2 treads + SE landing).",
           "x_ft": [
-            28.6,
-            31.85
+            29.5,
+            33.0
           ],
           "y_ft": [
-            34.8125,
-            36.5625
+            34.85,
+            36.5
           ],
-          "tread_depth_ft": 0.875,
-          "tread_depth_mm": 266.7
+          "tread_depth_ft": 1.65,
+          "tread_depth_mm": 502.9
         },
         {
           "direction": "se_landing",
           "treads": 0,
           "x_ft": [
-            28.6,
-            31.85
+            29.5,
+            33.0
           ],
           "y_ft": [
-            36.5625,
-            39.8125
+            36.5,
+            40.0
           ]
         },
         {
@@ -1065,18 +1071,18 @@
         },
         "dining_banquette": {
           "x_ft": [
-            24.3,
-            29.5
+            26.3,
+            31.5
           ],
           "y_ft": [
-            24.25,
-            25.65
+            24.36,
+            25.76
           ]
         },
         "dining_table": {
           "x_ft": [
-            23.6,
-            29.2
+            25.8,
+            31.4
           ],
           "y_ft": [
             26.55,
@@ -1085,8 +1091,8 @@
         },
         "dining_chair_west": {
           "x_ft": [
-            22.0,
-            23.35
+            24.2,
+            25.55
           ],
           "y_ft": [
             27.05,
@@ -1095,8 +1101,8 @@
         },
         "dining_chair_east": {
           "x_ft": [
-            29.45,
-            30.8
+            31.65,
+            33.0
           ],
           "y_ft": [
             27.05,
@@ -1105,14 +1111,14 @@
         },
         "prep_counter": {
           "x_ft": [
-            34.8,
-            36.85
+            35.4,
+            37.45
           ],
           "y_ft": [
-            25.65,
-            30.35
+            24.28,
+            28.93
           ],
-          "orientation": "north_south_parallel_to_east_platform"
+          "orientation": "north_south_parallel_to_east_platform_against_icu_wall"
         },
         "compact_fridge": {
           "x_ft": [
