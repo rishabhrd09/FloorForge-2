@@ -352,7 +352,6 @@ def coordinate_levels(b: dict, plan: dict) -> None:
         'master_bath_door': (['master_bath', 'master_bedroom'], 'master_bath'),
         'master_west_gully_door': (['master_bedroom', 'west_gully'], 'master_bedroom'),
         'master_bedroom_door': (['master_bedroom', 'bedroom_entry'], 'master_bedroom'),
-        'work_bay_porch_door': (['work_bay', 'car_porch'], 'car_porch'),
         'store_door': (['store', 'kitchen'], 'store'),
         'wash_area_door': (['wash_area', 'kitchen'], 'wash_area'),
         # Ground floor windows
@@ -366,7 +365,6 @@ def coordinate_levels(b: dict, plan: dict) -> None:
         'icu_east_window_2': (['home_icu', 'car_porch'], None),
         'kitchen_east_window_1': (['kitchen', 'east_setback'], None),
         'kitchen_east_window_2': (['kitchen', 'east_setback'], None),
-        'wash_east_window': (['wash_area', 'east_setback'], None),
         'wash_south_window': (['wash_area', 'outside'], None),
         'master_bath_high_window': (['master_bath', 'outside'], None),
         'master_west_window': (['master_bedroom', 'west_gully'], None),
@@ -480,10 +478,7 @@ def coordinate_levels(b: dict, plan: dict) -> None:
                 for pw in f_walls
                 if (abs(pw['a'][1] - pw['b'][1]) < 1.0) != horiz
             ]
-            if oid == 'work_bay_porch_door':
-                # Hinge on west jamb (x_ft=41.4, 'end') swinging north onto the porch landing clear of fridge, platform & car
-                best_hinge = 'end'
-            elif perp_lines and kind in ('door', 'entry') and not o.get('double_leaf'):
+            if perp_lines and kind in ('door', 'entry') and not o.get('double_leaf'):
                 d_start = min(pl.distance(w_line.interpolate(offset)) for pl in perp_lines)
                 d_end = min(pl.distance(w_line.interpolate(offset + width)) for pl in perp_lines)
                 best_hinge = 'start' if d_start <= d_end else 'end'
@@ -974,14 +969,14 @@ def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     k.rect((rx0 + 0.06, wy_face + 0.025, H + 0.06, rx0 + 0.085, wy_face + 0.042, 2 * H - 0.06), 'cove_led_warm', 1, 'cove', f'{owner}/east-led-s', owner)
     k.rect((rx1 - 0.085, wy_face + 0.025, H + 0.06, rx1 - 0.06, wy_face + 0.042, 2 * H - 0.06), 'cove_led_warm', 1, 'cove', f'{owner}/east-led-n', owner)
 
-    # Ground-floor Dining north wall feature cladding (Home ICU south wall at y_ft=25.0 -> inner south face X = vx1 - 0.064)
-    # Spanning x_ft: 24.2..34.8 cleanly below the First-Floor atrium slab!
-    dn_x0, dn_y0, dn_x1, dn_y1 = box_m(24.2, 25.0, 34.8, 25.2)
-    nx_face = vx1 - 0.064
-    k.rect((nx_face - 0.022, dn_y0, 0.55, nx_face, dn_y1, H - 0.16), 'travertine_warm', 0, 'wall-panel', f'{owner}/north-travertine', owner)
-    k.rect((nx_face - 0.036, dn_y0 + 0.45, 0.85, nx_face - 0.020, dn_y1 - 0.45, H - 0.22), 'cladding_fluted_teak', 0, 'wall-panel', f'{owner}/north-teak-inset', owner)
+    # Ground-floor Dining north wall feature cladding (Home ICU south wall shifted 1' north to y_ft=24.0!)
+    # Spanning x_ft: 24.2..34.8 cleanly below the y=24..25 banquette soffit (z <= H - 0.19)
+    dn_x0, dn_y0, dn_x1, dn_y1 = box_m(24.2, 24.0, 34.8, 24.2)
+    nx_face = (40.0 - 24.0) * 0.3048 - 0.064
+    k.rect((nx_face - 0.022, dn_y0, 0.55, nx_face, dn_y1, H - 0.19), 'travertine_warm', 0, 'wall-panel', f'{owner}/north-travertine', owner)
+    k.rect((nx_face - 0.036, dn_y0 + 0.45, 0.85, nx_face - 0.020, dn_y1 - 0.45, H - 0.24), 'cladding_fluted_teak', 0, 'wall-panel', f'{owner}/north-teak-inset', owner)
     k.rect((nx_face - 0.038, dn_y0 + 0.42, 0.83, nx_face - 0.022, dn_y1 - 0.42, 0.85), 'cove_led_warm', 0, 'cove', f'{owner}/north-cove-bot', owner)
-    k.rect((nx_face - 0.038, dn_y0 + 0.42, H - 0.22, nx_face - 0.022, dn_y1 - 0.42, H - 0.20), 'cove_led_warm', 0, 'cove', f'{owner}/north-cove-top', owner)
+    k.rect((nx_face - 0.038, dn_y0 + 0.42, H - 0.24, nx_face - 0.022, dn_y1 - 0.42, H - 0.22), 'cove_led_warm', 0, 'cove', f'{owner}/north-cove-top', owner)
 
     # Crisp fluted-teak architectural fascia around the 10' x 8' First-Floor atrium slab opening + structural header beam at y=33'
     void_ring = box(vx0, vy0, vx1, vy1).exterior.buffer(0.038, join_style=2)
@@ -1034,8 +1029,8 @@ def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     k.poly_mesh(east_guard_line.buffer(0.010, cap_style=2), z_roof + 0.085, z_roof + 1.06, 'glass', 2, 'railing', 's-rooflight-safety-glass', 's_raised_rooflight')
     k.poly_mesh(east_guard_line.buffer(0.025, cap_style=2), z_roof + 1.06, z_roof + 1.10, 'gola_matte_black', 2, 'railing', 's-rooflight-safety-rail', 's_raised_rooflight')
 
-    # 4. Sculptural 3-Ring Brushed-Gold & Warm-LED Chandelier suspended down the center of the 10' x 8' atrium (x=26.2', y=29.0')
-    cx, cy = local_m(26.2, 29.0)
+    # 4. Sculptural 3-Ring Brushed-Gold & Warm-LED Chandelier suspended down the center of the 10' x 8' atrium (x=26.4', y=28.5')
+    cx, cy = local_m(26.4, 28.5)
     k.cylinder((cx, cy, z_roof + 0.36), 0.20, 0.04, 'chandelier_gold_ring', 2, 'fixture')
     rings = [
         (0.76, H + 1.45, 0.03),
@@ -1260,28 +1255,29 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     for zone_name, bounds_ft in [
         ('living-border', (6.5, 16.6, 23.4, 25.4)),
         ('foyer-border', (18.2, 9.6, 23.4, 16.0)),
-        ('dining-border', (21.6, 25.6, 33.8, 32.5)),
-        ('kitchen-border', (37.4, 25.6, 43.8, 34.4)),
+        ('dining-border', (21.6, 24.6, 33.8, 32.5)),
+        ('kitchen-border', (37.4, 24.6, 43.8, 34.4)),
     ]:
         bx0, by0, bx1, by1 = box_m(*bounds_ft)
         outer = box(bx0, by0, bx1, by1)
         inlay = outer.difference(outer.buffer(-0.075, join_style=2))
         k.poly_mesh(inlay, 0.001, 0.004, 'border_inlay_charcoal', 0, 'finish', f'g-{zone_name}', 'living_hall')
 
-    # 2. Redesigned Open-Sightline Kitchen (x_ft: 35.0..47.0, y_ft: 22.0..35.0):
+    # 2. Redesigned Open-Sightline Kitchen (x_ft: 35.0..47.0, y_ft: 22.0..35.0; north partition shifted 1' north to y=24.0!):
     # - 2'9" (840 mm) wide nano-white quartz platform along east wall (x=47', 3' setback from plot boundary!)
+    # - Solid north wall at y=22' (north porch door removed!)
     # - Full storage beneath platform ONLY + minimalist floating teak shelves on center pier (clear of both east windows!)
     # - ZERO tall vertical cupboards blocking the Dining-to-Kitchen sightline!
-    # - ONLY a sleek compact refrigerator tucked on the small 3' west wall of work_bay (x=39', y=22.3..24.5) near porch door
+    # - ONLY a sleek compact refrigerator tucked on the small 2' west wall of work_bay (x=39', y=22.24..23.96)
     # - Waterfall quartz & fluted-teak center counter oriented North-South PARALLEL to the east platform near the Dining Table!
     kitchen_room = next(s for s in b['spaces'] if s['id'] == 'kitchen')
     kx0 = (40.0 - 35.0) * 0.3048 + 0.062  # 1.586 m (flush with south wall inner face)
-    kx1 = (40.0 - 22.0) * 0.3048 - 0.062  # 5.424 m (flush with north wall inner face)
+    kx1 = (40.0 - 22.0) * 0.3048 - 0.062  # 5.424 m (flush with solid north wall inner face)
     sx0, _, sx1, _ = box_m(44.5, 23.50, 46.6, 25.70)   # Centered under kitchen_east_window_1 (y=23..27)
     pier_x0, _, pier_x1, _ = box_m(46.0, 27.05, 46.8, 30.75)  # Solid pier between east windows (y=27..30.8)
     hx0, _, hx1, _ = box_m(44.5, 28.60, 46.6, 30.65)   # Hob on south half of solid center pier
-    cf_x0, cf_y0, cf_x1, cf_y1 = box_m(39.22, 22.45, 41.00, 24.45)  # Compact fridge on small 3' wall at NW corner!
-    px0, py0, px1, py1 = box_m(34.80, 25.85, 36.85, 30.65)          # Parallel to east platform, close to Dining Table!
+    cf_x0, cf_y0, cf_x1, cf_y1 = box_m(39.22, 22.24, 41.00, 23.96)  # Compact fridge tucked into 2' NW corner!
+    px0, py0, px1, py1 = box_m(34.80, 25.65, 36.85, 30.35)          # Parallel to east platform, close to Dining Table!
     y_east_wall_inner = (50.0 - 47.0) * 0.3048 + 0.060  # 0.9744 m
 
     ctx = {'room': kitchen_room, 'floor': 0, 'clear': Polygon(np.array(kitchen_room['clear']) / 1000.0), 'placed': []}
@@ -1316,22 +1312,22 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
         'prep_y1': py1,
     })
 
-    # 3. Dining Hall under the Full-Span 10' x 8' Atrium (x_ft: 21..35, y_ft: 25..33):
-    # Banquette on Home ICU south wall (y=25.2..26.6), 6-seater marble table centered under atrium chandelier (x=23.4..29.2, y=27.2..30.0)
-    banq_x0, banq_y0, banq_x1, banq_y1 = box_m(24.3, 25.25, 29.5, 26.65)
+    # 3. Spacious Dining Hall (x_ft: 21..35, y_ft: 24..33 — widened 1' north!):
+    # Banquette on shifted Home ICU south wall (y=24.25..25.65), 6-seater marble table centered under atrium (x=23.6..29.2, y=26.55..29.15)
+    banq_x0, banq_y0, banq_x1, banq_y1 = box_m(24.3, 24.25, 29.5, 25.65)
     k.rect((banq_x0, banq_y0, 0.0, banq_x1, banq_y1, 0.46), 'cladding_fluted_teak', 0, 'furniture', 'dining/banquette-base', 'dining_hall')
     k.rect((banq_x0 + 0.02, banq_y0 + 0.02, 0.46, banq_x1 - 0.02, banq_y1 - 0.02, 0.54), 'sofa_taupe_boucle', 0, 'furniture', 'dining/banquette-cushion', 'dining_hall')
     k.rect((banq_x1 - 0.12, banq_y0 + 0.02, 0.54, banq_x1, banq_y1 - 0.02, 0.92), 'sofa_taupe_boucle', 0, 'furniture', 'dining/banquette-back', 'dining_hall')
-    dtx0, dty0, dtx1, dty1 = box_m(23.6, 27.30, 29.2, 29.90)
+    dtx0, dty0, dtx1, dty1 = box_m(23.6, 26.55, 29.2, 29.15)
     k.rect((dtx0, dty0, 0.72, dtx1, dty1, 0.76), 'dining_marble_top', 0, 'furniture', 'dining/table-top', 'dining_hall')
     k.rect((dtx0 + 0.18, dty0 + 0.35, 0.0, dtx1 - 0.18, dty0 + 0.50, 0.72), 'gola_matte_black', 0, 'furniture', 'dining/table-leg-E', 'dining_hall')
     k.rect((dtx0 + 0.18, dty1 - 0.50, 0.0, dtx1 - 0.18, dty1 - 0.35, 0.72), 'gola_matte_black', 0, 'furniture', 'dining/table-leg-W', 'dining_hall')
     for idx, cx_ft in enumerate((24.6, 26.4, 28.2)):
-        cx0, cy0, cx1, cy1 = box_m(cx_ft - 0.72, 30.15, cx_ft + 0.72, 31.55)
+        cx0, cy0, cx1, cy1 = box_m(cx_ft - 0.72, 29.40, cx_ft + 0.72, 30.80)
         k.rect((cx0, cy0, 0.42, cx1, cy1, 0.48), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-s-{idx}', 'dining_hall')
         k.rect((cx0, cy0, 0.48, cx0 + 0.09, cy1, 0.86), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-s-back-{idx}', 'dining_hall')
     for side, (cx0_ft, cx1_ft) in (('west', (22.0, 23.35)), ('east', (29.45, 30.8))):
-        cx0, cy0, cx1, cy1 = box_m(cx0_ft, 27.8, cx1_ft, 29.4)
+        cx0, cy0, cx1, cy1 = box_m(cx0_ft, 27.05, cx1_ft, 28.65)
         k.rect((cx0, cy0, 0.42, cx1, cy1, 0.48), 'sofa_taupe_boucle', 0, 'furniture', f'dining/chair-{side}', 'dining_hall')
         back_y0 = cy1 - 0.09 if side == 'west' else cy0
         back_y1 = cy1 if side == 'west' else cy0 + 0.09
@@ -1358,18 +1354,18 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     k.furnishing('sofa', {'id': 'living_hall', 'floor': 0}, box(lsx0, lsy0, lsx1, lsy1))
     k.furnishing('tv-75in', {'id': 'living_hall', 'floor': 0}, tv_poly)
 
-    # 5. Home ICU (15' x 16', x_ft: 24..39, y_ft: 9..25):
-    # Bed centered at y=13.2..17.2 (facing solid west wall y=9..19, keeping the 5'6" clear opening y=19..24.5 100% clear!)
-    _add_bed_assembly(k, 31.20, 13.20, 38.45, 17.20, 'east', 0, H, 'home_icu')
-    icu_tv_poly = _add_tv_wall_assembly(k, 'west', 24.0, 13.4, 17.0, 0, H, 'home_icu', 'tv-55in', width_m=1.24, height_m=0.72, with_console=False, with_panel=True)
+    # 5. Home ICU (15' x 15', x_ft: 24..39, y_ft: 9..24):
+    # Bed centered at y=12.6..16.6 (facing solid west wall y=9..18, keeping the 5'6" clear opening y=18..23.5 100% clear!)
+    _add_bed_assembly(k, 31.20, 12.60, 38.45, 16.60, 'east', 0, H, 'home_icu')
+    icu_tv_poly = _add_tv_wall_assembly(k, 'west', 24.0, 12.8, 16.4, 0, H, 'home_icu', 'tv-55in', width_m=1.24, height_m=0.72, with_console=False, with_panel=True)
     k.furnishing('icu-tv-55in', {'id': 'home_icu', 'floor': 0}, icu_tv_poly)
 
-    eqx0, eqy0, eqx1, eqy1 = box_m(36.50, 10.80, 38.45, 12.60)
+    eqx0, eqy0, eqx1, eqy1 = box_m(36.50, 10.40, 38.45, 12.20)
     k.rect((eqx0, eqy0, 0.04, eqx1, eqy1, 0.78), 'quartz_nano_white', 0, 'furniture', 'home_icu/equipment-cart', 'home_icu')
     k.rect((eqx0 + 0.10, eqy0 + 0.12, 0.78, eqx1 - 0.10, eqy1 - 0.12, 1.18), 'blackglass', 0, 'detail', 'home_icu/patient-monitor', 'home_icu')
     k.furnishing('icu-equipment', {'id': 'home_icu', 'floor': 0}, box(eqx0, eqy0, eqx1, eqy1))
 
-    rcx0, rcy0, rcx1, rcy1 = box_m(26.4, 10.6, 29.2, 13.2)
+    rcx0, rcy0, rcx1, rcy1 = box_m(26.4, 10.2, 29.2, 12.6)
     k.rect((rcx0, rcy0, 0.04, rcx1, rcy1, 0.45), 'sofa_taupe_boucle', 0, 'furniture', 'home_icu/companion-recliner', 'home_icu')
     k.rect((rcx1 - 0.18, rcy0, 0.45, rcx1, rcy1, 0.92), 'sofa_taupe_boucle', 0, 'furniture', 'home_icu/companion-recliner-back', 'home_icu')
     k.furnishing('icu-companion-chair', {'id': 'home_icu', 'floor': 0}, box(rcx0, rcy0, rcx1, rcy1))
@@ -1395,18 +1391,24 @@ def _furnish_ground_floor(k: SceneKit, b: dict, H: float) -> None:
     k.furnishing('wardrobe', {'id': 'master_bedroom', 'floor': 0}, box(mwx0, mwy0, mwx1, mwy1))
     _add_bath_fittings(k, (0.4, 20.3, 2.0, 22.0), (0.4, 22.3, 2.4, 23.7), (0.4, 18.3, 3.2, 20.1), 0, H, 'master_bath')
 
-    # 9. Store (7' x 5', x_ft: 33..40, y_ft: 35..40) & Wash Area (7' x 5', x_ft: 40..47, y_ft: 35..40)
-    # Storage shifted west away from east wall!
+    # 9. Store (7' x 5', x_ft: 33..40, y_ft: 35..40) & Merged Wash + East Kitchen Gully (x_ft: 40..50, y_ft: 35..40 + x_ft: 47..50, y_ft: 22..35)
     stx0, sty0, stx1, sty1 = box_m(33.3, 35.3, 35.0, 39.7)
     for sz in (0.45, 0.95, 1.45, 1.95):
         k.rect((stx0, sty0, sz, stx1, sty1, sz + 0.04), 'cladding_fluted_teak', 0, 'furniture', f'store/shelf-{sz}', 'store')
     k.furnishing('store-shelves', {'id': 'store', 'floor': 0}, box(stx0, sty0, stx1, sty1))
 
-    wmx0, wmy0, wmx1, wmy1 = box_m(44.4, 35.4, 46.6, 37.4)
-    k.rect((wmx0, wmy0, 0.0, wmx1, wmy1, 0.85), 'quartz_nano_white', 0, 'furniture', 'wash_area/washer', 'wash_area')
-    k.cylinder((wmx0 + 0.32, wmy1 + 0.01, 0.45), 0.22, 0.02, 'blackglass', 0, 'detail')
-    usx0, usy0, usx1, usy1 = box_m(44.6, 37.5, 46.6, 39.5)
-    k.rect((usx0, usy0, 0.0, usx1, usy1, 0.85), 'kitchen_sage_teal_gloss', 0, 'furniture', 'wash_area/utility-sink', 'wash_area')
+    # Laundry washer + utility sink placed neatly along the SOUTH wall (y=40.0, cleanly below wash_south_window sill 1.05 m)
+    # so opening `wash_area_door` leaves a wide, unobstructed walkway straight into the merged 3' East Kitchen Gully!
+    wmx0, wmy0, wmx1, wmy1 = box_m(41.30, 37.92, 43.35, 39.74)
+    k.rect((wmx0, wmy0, 0.022, wmx1, wmy1, 0.85), 'quartz_nano_white', 0, 'furniture', 'wash_area/washer', 'wash_area')
+    k.cylinder((wmx1 + 0.01, 0.5 * (wmy0 + wmy1), 0.45), 0.21, 0.02, 'blackglass', 0, 'detail', rot=(0, math.pi / 2, 0))
+    usx0, usy0, usx1, usy1 = box_m(43.45, 37.92, 45.55, 39.74)
+    k.rect((usx0, usy0, 0.022, usx1, usy1, 0.85), 'kitchen_sage_teal_gloss', 0, 'furniture', 'wash_area/utility-sink', 'wash_area')
+    wcx0, wcy0, wcx1, wcy1 = box_m(41.25, 37.86, 45.60, 39.76)
+    k.rect((wcx0, wcy0, 0.85, wcx1, wcy1, 0.885), 'quartz_nano_white', 0, 'furniture', 'wash_area/laundry-countertop', 'wash_area')
+    utap_x, utap_y = wcx0 + 0.08, 0.5 * (usy0 + usy1)
+    k.beam((utap_x, utap_y, 0.885), (utap_x, utap_y, 1.02), 0.015, 'gola_matte_black', 0, 'detail')
+    k.beam((utap_x, utap_y, 1.02), (utap_x + 0.16, utap_y, 1.02), 0.015, 'gola_matte_black', 0, 'detail')
     k.furnishing('washer', {'id': 'wash_area', 'floor': 0}, box(wmx0, wmy0, wmx1, wmy1))
     k.furnishing('utility-sink', {'id': 'wash_area', 'floor': 0}, box(usx0, usy0, usx1, usy1))
 
@@ -1844,10 +1846,12 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
     k.poly_mesh(shp_scale(porch_plinth_mm, xfact=0.001, yfact=0.001, origin=(0, 0)),
                 g, PORCH_Z - 0.020, 'travertine_warm', -1, 'plinth', 't7-porch-plinth', 'car_porch')
 
-    # 2. Paved 3' East Kitchen Setback passage (x=47..50, y=22..40 at z=0.00 m) + step down into Car Porch
+    # 2. Seamless L-shaped Merged Wash Area + 3' East Kitchen Gully paving (x=40..50, y=35..40 U x=47..50, y=21.8..40 at z=0.00 m)
+    wux0, wuy0, wux1, wuy1 = box_m(40.0, 35.0, 50.0, 40.0)
     esx0, esy0, esx1, esy1 = box_m(47.0, 21.80, 50.0, 40.0)
-    k.rect((esx0, esy0, 0.001, esx1, esy1, 0.022), 'terrace_grey_paver', 0, 'floor', 'east_setback/paving', 'east_setback')
-    for s_idx, sy_ft in enumerate((24.0, 27.0, 30.0, 33.0, 36.0, 38.8)):
+    merged_gully_poly = unary_union([box(wux0, wuy0, wux1, wuy1), box(esx0, esy0, esx1, esy1)])
+    k.poly_mesh(merged_gully_poly, 0.001, 0.022, 'terrace_grey_paver', 0, 'floor', 'east_setback/paving', 'east_setback')
+    for s_idx, sy_ft in enumerate((24.0, 27.0, 30.0, 33.0, 36.2)):
         st0, sty0, st1, sty1 = box_m(47.5, sy_ft - 0.85, 49.1, sy_ft + 0.85)
         k.rect((st0, sty0, 0.022, st1, sty1, 0.040), 'travertine_warm', 0, 'finish', f'east_setback/step-pad-{s_idx}', 'east_setback')
     ess_x0, ess_y0, ess_x1, ess_y1 = box_m(47.15, 20.85, 49.25, 21.80)
@@ -1864,12 +1868,6 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
     vs_x0, vs_y0, vs_x1, vs_y1 = box_m(39.20, 0.85, 40.18, 8.75)
     k.rect((vs_x0, vs_y0, PORCH_Z, vs_x1, vs_y1, -0.096), 'travertine_warm', 0, 'step', 'verandah/porch-step', 'verandah')
     k.rect((vs_x0 + 0.06, vs_y0 + 0.01, -0.112, vs_x1 - 0.06, vs_y0 + 0.03, -0.098), 'cove_led_warm', 0, 'cove', 'verandah/porch-step-led', 'verandah')
-
-    # Kitchen north door (work_bay_porch_door, x_ft: 41.55..44.15, y_ft=22.0) travertine landing & step down into Car Porch
-    wl_x0, wl_y0, wl_x1, wl_y1 = box_m(41.20, 20.60, 44.45, 21.80)
-    ws_x0, ws_y0, ws_x1, ws_y1 = box_m(41.20, 19.65, 44.45, 20.60)
-    k.rect((wl_x0, wl_y0, PORCH_Z, wl_x1, wl_y1, -0.015), 'travertine_warm', 0, 'step', 'work_bay/porch-landing', 'work_bay')
-    k.rect((ws_x0, ws_y0, PORCH_Z, ws_x1, ws_y1, -0.118), 'travertine_warm', 0, 'step', 'work_bay/porch-step', 'work_bay')
 
     # True 3D sloped travertine North Vehicle Ramp from North Colony Road (X=13.55 m, z=-0.585 m) up to North Car Gate (X=12.192 m, z=-0.220 m)
     _, nry0, _, nry1 = box_m(39.5, 0.0, 49.5, 0.5)
@@ -1936,8 +1934,8 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
         k.rect((pxa - 0.02, pya - 0.02, z_top, pxb + 0.02, pyb + 0.02, z_top + 0.045),
                'gola_matte_black', 0, 'coping', f'{ident}-cap', ident)
 
-    # East boundary south of the Large Sliding Car Gate (x_ft: 49.6..50.0, y_ft: 21.8..40.0 — 18.2' long pocket!)
-    wall_run('t7-boundary-east-south', 49.6, 21.8, 50.0, 40.0, z_masonry_top=0.58, z_louver_top=1.35)
+    # East boundary south of the Large Sliding Car Gate (x_ft: 49.6..50.0, y_ft: 21.8..39.78 — butts cleanly into continuous y=40' south wall!)
+    wall_run('t7-boundary-east-south', 49.6, 21.8, 50.0, 39.78, z_masonry_top=0.58, z_louver_top=1.35)
     # Sculptural travertine piers framing the NE Car Gate, East Pedestrian Gate, and 13'2" East Sliding Car Gate
     gate_pier('t7-ne-corner-pier', 49.5, 0.0, 50.0, 2.2, z_top=1.38)
     gate_pier('t7-east-gate-pier', 49.5, 5.8, 50.0, 7.0, z_top=1.38)
@@ -1948,11 +1946,10 @@ def _add_site_context_and_gates(k: SceneKit, scene: dict, building: dict, H: flo
     wall_run('t7-boundary-north-verandah', 23.0, 0.0, 39.12, 0.4, z_masonry_top=0.52, z_louver_top=1.22)
     # North boundary along Caregiver Gully (x_ft: 0.0..23.0, y_ft: 0.0..0.4)
     wall_run('t7-boundary-north-gully', 0.0, 0.0, 23.0, 0.4, z_masonry_top=1.22)
-    # West & South setback boundary runs
+    # West & South-West setback boundary runs (south-east is closed by the continuous y=40' south wall up to x=49.8'!)
     wall_run('t7-boundary-west-n', 0.0, 0.0, 0.4, 2.0, z_masonry_top=1.35)
     wall_run('t7-boundary-west-s', 0.0, 26.0, 0.4, 40.0, z_masonry_top=1.35)
-    wall_run('t7-boundary-south-w', 0.0, 39.6, 2.0, 40.0, z_masonry_top=1.35)
-    wall_run('t7-boundary-south-e', 47.0, 39.6, 50.0, 40.0, z_masonry_top=1.35)
+    wall_run('t7-boundary-south-w', 0.0, 39.6, 1.80, 40.0, z_masonry_top=1.35)
 
     # 5. East Pedestrian Gate (x_ft=50.0, y_ft: 2.2..5.8) — louvered oak gate leaf + 3 travertine arrival steps from -0.60 m road
     eg_x0, _, eg_x1, _ = box_m(49.65, 2.2, 49.95, 5.8)
@@ -2109,12 +2106,12 @@ def _configure_cameras_and_walk(scene: dict, H: float) -> None:
         'north_frontage': {'position': [23.8, 5.8, 3.1], 'target': [6.5, 6.5, 3.2], 'fov': 46},
         'colony_overview': {'position': [28.0, -16.0, 14.5], 'target': [6.0, 7.6, 3.0], 'fov': 45},
         'roof_terraces': {'position': [19.5, -8.5, 13.8], 'target': [5.8, 7.8, 6.4], 'fov': 46},
-        'kitchen_run': cam((35.8, 34.0), (42.8, 24.8), 1.48, 1.18, 60),
-        'kitchen_from_dining': cam((24.8, 29.8), (45.6, 28.0), 1.48, 1.24, 58),
-        'dining_double_height': cam((18.6, 29.2), (28.5, 28.2), 1.45, 3.95, 62),
+        'kitchen_run': cam((35.8, 34.0), (42.8, 24.4), 1.48, 1.18, 60),
+        'kitchen_from_dining': cam((24.8, 29.0), (45.6, 27.6), 1.48, 1.24, 58),
+        'dining_double_height': cam((18.6, 28.6), (28.5, 27.6), 1.45, 3.85, 62),
         'living_hall': cam((21.0, 18.8), (11.8, 23.8), 1.52, 1.32, 58),
-        'living_to_icu': cam((15.5, 22.0), (35.0, 16.0), 1.52, 1.30, 56),
-        'icu': cam((37.2, 22.5), (25.2, 14.8), 1.52, 1.22, 58),
+        'living_to_icu': cam((15.2, 22.2), (35.0, 16.2), 1.52, 1.30, 56),
+        'icu': cam((37.2, 21.8), (25.2, 14.5), 1.52, 1.22, 58),
         'verandah': cam((38.0, 4.2), (24.5, 3.5), 1.52, 1.05, 58),
         'drawing_room': cam((15.8, 14.2), (11.5, 4.5), 1.50, 1.20, 58),
         'master_bedroom': cam((13.8, 28.8), (6.5, 36.8), 1.48, 1.12, 58),
@@ -2161,7 +2158,7 @@ def make_tirumala_7_scene(building: dict, report: dict, base_scene_builder) -> d
     scene['nodes'][:] = [
         n for n in scene['nodes']
         if n.get('role') not in drop_roles
-        and n.get('id') != 'car_porch/floor'
+        and n.get('id') not in ('car_porch/floor', 'wash_area/floor')
         and not (n.get('role') == 'fixture' and not str(n.get('id', '')).endswith('/exhaust-grille'))
         and not str(n.get('owner', '')).startswith('stair-')
     ]

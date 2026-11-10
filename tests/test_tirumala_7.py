@@ -23,7 +23,8 @@ def local_box_mm(x0_ft: float, y0_ft: float, x1_ft: float, y1_ft: float):
 
 def test_room_programme_east_setback_and_zero_space_overlaps():
     """Every room on all three floors has exact dimensions, zero pairwise space overlaps,
-    a 3' east kitchen/wash setback (x=47..50), 22' car porch, 15'x16' Home ICU, and 5' wash room."""
+    a 15'x15' Home ICU (y=9..24), widened 11'x9' Dining Hall & 12'x11' Kitchen (y=24..33/35),
+    and a 5' wash area merged seamlessly with the 3' east kitchen gully (x=47..50)."""
     b = read('building.json')
     spaces = {s['id']: s for s in b['spaces']}
 
@@ -38,14 +39,14 @@ def test_room_programme_east_setback_and_zero_space_overlaps():
         'car_porch': (11.0, 22.0),
         'east_setback': (3.0, 18.0),
         'living_hall': (18.5, 10.0),
-        'home_icu': (15.0, 16.0),
+        'home_icu': (15.0, 15.0),
         'master_bath': (5.5, 8.0),
         'west_gully': (2.0, 14.0),
         'master_bedroom': (15.0, 14.0),
         'bedroom_entry': (4.0, 7.0),
-        'dining_hall': (11.0, 8.0),
-        'work_bay': (8.0, 3.0),
-        'kitchen': (12.0, 10.0),
+        'dining_hall': (11.0, 9.0),
+        'work_bay': (8.0, 2.0),
+        'kitchen': (12.0, 11.0),
         'stair': (16.0, 7.0),
         'store': (7.0, 5.0),
         'wash_area': (7.0, 5.0),
@@ -241,21 +242,34 @@ def test_home_icu_and_all_tvs_complete_without_wall_overlap():
 
 
 def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
-    """Kitchen has two east windows on x=47', an 840 mm (2'9\") wide quartz platform with under-platform storage
-    and minimalist floating shelves, zero tall vertical cupboards blocking the Dining-to-Kitchen sightline,
-    ONLY a compact corner refrigerator on the small 3' wall beside the porch door, and a N-S waterfall center counter
-    running parallel to the east platform near the dining table."""
+    """Kitchen has two east windows on x=47', NO north porch door, wash area merged seamlessly with the
+    3' east kitchen gully (no x=47 wall on y=35..40 while south wall y=40 remains intact), an 840 mm (2'9\")
+    wide quartz platform, ONLY a compact corner refrigerator on the small 2' NW corner wall, and a N-S waterfall
+    center counter running parallel to the east platform near the dining table."""
     b = read('building.json')
     scene = read('scene.json')
     openings = {o['id']: o for o in b['openings']}
     assert 'kitchen_east_window_1' in openings and openings['kitchen_east_window_1']['wall_ref'] == 'x=47.0'
     assert 'kitchen_east_window_2' in openings and openings['kitchen_east_window_2']['wall_ref'] == 'x=47.0'
-    assert 'wash_east_window' in openings and openings['wash_east_window']['wall_ref'] == 'x=47.0'
+    assert 'work_bay_porch_door' not in openings  # North kitchen-to-porch door removed!
+    assert 'wash_east_window' not in openings     # Wash area merged open into 3' east kitchen gully!
+    assert 'wash_area_door' in openings and openings['wash_area_door']['wall_ref'] == 'y=35.0'
+    assert 'wash_south_window' in openings and openings['wash_south_window']['wall_ref'] == 'y=40.0'
+
+    # Verify NO ground-floor wall separates wash_area (x=40..47, y=35..40) from east_setback (x=47..50, y=22..40),
+    # while the south wall along y=40.0 remains intact!
+    g_walls = unary_union([Polygon(w['polygon']) for w in b['walls'] if w['floor'] == 0])
+    wash_gully_throat = local_box_mm(46.5, 35.8, 47.5, 39.2)
+    assert g_walls.intersection(wash_gully_throat).area < 1.0
+    south_wash_wall_probe = local_box_mm(41.0, 39.85, 49.5, 40.15)
+    assert g_walls.intersection(south_wash_wall_probe).area > 120000.0
 
     nodes = {n['id']: n for n in scene['nodes']}
     assert 'kitchen/modular-kitchen/quartz-worktop' in nodes
     assert 'kitchen/modular-kitchen/minimal-floating-shelf-0' in nodes
     assert 'kitchen/modular-kitchen/loft-carcass' not in nodes  # No heavy overhead loft on east wall!
+    assert 'work_bay/porch-landing' not in nodes
+    assert 'work_bay/porch-step' not in nodes
 
     # Tall vertical cupboards/fridge next to dining table are completely removed (unobstructed Dining-to-Kitchen view)
     assert 'kitchen/modular-kitchen/fridge-housing' not in nodes
@@ -265,9 +279,9 @@ def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
     # Plinth depth is 840 mm - 50 mm = 0.79 m -> confirms 840 mm wide platform!
     assert plinth['scale'][1] >= 0.78
 
-    # Compact refrigerator sits ONLY on the small 3' west wall of work_bay (x_ft=39', y_ft: 22.3..24.5) near porch door
+    # Compact refrigerator sits ONLY on the small 2' west wall of work_bay (x_ft=39', y_ft: 22.24..23.96)
     fridge = nodes['kitchen/modular-kitchen/compact-fridge-body']
-    assert fridge['position'][0] > 4.70  # Strictly north of y_ft=25' inside the small 3' corner!
+    assert fridge['position'][0] > 5.05  # Strictly north of shifted y_ft=24' wall inside the 2' NW corner!
     assert 2.65 <= fridge['position'][1] <= 3.35
     assert fridge['scale'][2] <= 1.65
 

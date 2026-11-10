@@ -64,7 +64,7 @@
         2438.4
       ],
       "area_sqft": 80.0,
-      "ground_floor": "Full-span double-height atrium from Home ICU south wall (y=25\u2032) right up to the Staircase (y=33\u2032) over the Dining Hall",
+      "ground_floor": "Spacious Dining Hall (y=24\u2032..33\u2032, shifted 1\u2032 north) under the 10\u2032 \u00d7 8\u2032 double-height atrium right up to the Staircase (y=33\u2032)",
       "first_floor": "13\u2032 \u00d7 8\u2032 slab opening (Open to below) with frameless glass guards on all open edges",
       "second_floor": "13\u2032 \u00d7 8\u2032 raised architectural glazed sunroof directly above the dining atrium with travertine upstand curb and safety glass guard",
       "sunroof_x_ft": [
@@ -296,7 +296,7 @@
           ]
         },
         "east_setback": {
-          "name": "East setback passage (3\u2032)",
+          "name": "East gully (3\u2032)",
           "x_ft": [
             47.0,
             50.0
@@ -325,7 +325,7 @@
           ],
           "y_ft": [
             9.0,
-            25.0
+            24.0
           ]
         },
         "master_bath": {
@@ -379,7 +379,7 @@
             35.0
           ],
           "y_ft": [
-            25.0,
+            24.0,
             33.0
           ]
         },
@@ -391,7 +391,7 @@
           ],
           "y_ft": [
             22.0,
-            25.0
+            24.0
           ]
         },
         "kitchen": {
@@ -401,7 +401,7 @@
             47.0
           ],
           "y_ft": [
-            25.0,
+            24.0,
             35.0
           ]
         },
@@ -428,7 +428,7 @@
           ]
         },
         "wash_area": {
-          "name": "Wash room",
+          "name": "Wash & utility",
           "x_ft": [
             40.0,
             47.0
@@ -547,7 +547,7 @@
           ],
           [
             24.0,
-            25.0
+            24.0
           ]
         ],
         [
@@ -557,17 +557,17 @@
           ],
           [
             39.0,
-            25.0
+            24.0
           ]
         ],
         [
           [
             24.0,
-            25.0
+            24.0
           ],
           [
             39.0,
-            25.0
+            24.0
           ]
         ],
         [
@@ -587,7 +587,7 @@
           ],
           [
             47.0,
-            40.0
+            35.0
           ]
         ],
         [
@@ -626,7 +626,7 @@
             40.0
           ],
           [
-            47.0,
+            49.8,
             40.0
           ]
         ],
@@ -727,8 +727,8 @@
           "type": "clear_opening_no_door",
           "wall": "x=24.0",
           "span_ft": [
-            19.0,
-            24.5
+            18.0,
+            23.5
           ],
           "width_ft": 5.5
         },
@@ -761,16 +761,6 @@
             30.6
           ],
           "width_ft": 3.4
-        },
-        {
-          "id": "work_bay_porch_door",
-          "type": "door",
-          "wall": "y=22.0",
-          "span_ft": [
-            41.55,
-            44.15
-          ],
-          "width_ft": 2.6
         },
         {
           "id": "store_door",
@@ -883,15 +873,6 @@
             34.2
           ],
           "width_ft": 3.4
-        },
-        {
-          "id": "wash_east_window",
-          "wall": "x=47.0",
-          "span_ft": [
-            36.2,
-            38.8
-          ],
-          "width_ft": 2.6
         },
         {
           "id": "wash_south_window",
@@ -1084,42 +1065,42 @@
         },
         "dining_banquette": {
           "x_ft": [
-            26.8,
-            32.2
+            24.3,
+            29.5
           ],
           "y_ft": [
-            26.32,
-            27.6
+            24.25,
+            25.65
           ]
         },
         "dining_table": {
           "x_ft": [
-            26.6,
-            32.4
+            23.6,
+            29.2
           ],
           "y_ft": [
-            27.95,
-            30.85
+            26.55,
+            29.15
           ]
         },
         "dining_chair_west": {
           "x_ft": [
-            25.25,
-            26.35
+            22.0,
+            23.35
           ],
           "y_ft": [
-            28.5,
-            30.3
+            27.05,
+            28.65
           ]
         },
         "dining_chair_east": {
           "x_ft": [
-            32.65,
-            33.75
+            29.45,
+            30.8
           ],
           "y_ft": [
-            28.5,
-            30.3
+            27.05,
+            28.65
           ]
         },
         "prep_counter": {
@@ -1128,8 +1109,8 @@
             36.85
           ],
           "y_ft": [
-            25.85,
-            30.65
+            25.65,
+            30.35
           ],
           "orientation": "north_south_parallel_to_east_platform"
         },
@@ -1139,60 +1120,60 @@
             41.0
           ],
           "y_ft": [
-            22.45,
-            24.45
+            22.24,
+            23.96
           ],
           "facing": "east_toward_platform"
         },
         "kitchen_counter": {
           "x_ft": [
-            48.0,
-            49.72
+            44.24,
+            47.0
           ],
           "y_ft": [
-            20.3,
-            33.7
+            22.2,
+            34.8
           ],
-          "length_ft": 13.4
+          "length_ft": 12.6
         },
         "kitchen_sink": {
           "x_ft": [
-            48.17,
-            49.53
+            44.5,
+            46.6
           ],
           "y_ft": [
-            22.25,
-            24.35
+            23.5,
+            25.7
           ]
         },
         "kitchen_hob": {
           "x_ft": [
-            48.15,
-            49.55
+            44.5,
+            46.6
           ],
           "y_ft": [
-            30.0,
-            32.15
+            28.6,
+            30.65
           ]
         },
         "store_shelves": {
           "x_ft": [
-            34.24,
-            35.35
+            33.3,
+            35.0
           ],
           "y_ft": [
-            34.45,
-            39.57
+            35.3,
+            39.7
           ]
         },
         "wash_counter_and_sink": {
           "x_ft": [
-            47.85,
-            49.73
+            41.25,
+            45.6
           ],
           "y_ft": [
-            34.38,
-            37.72
+            37.86,
+            39.74
           ]
         },
         "wash_floor_drain": {

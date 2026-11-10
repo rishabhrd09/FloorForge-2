@@ -342,7 +342,7 @@
   {
     "id": "tirumala-7",
     "title": "Tirumala 7",
-    "description": "Three-floor 50′ × 40′ corner home on a 600 mm raised plinth with a stepped-down 22′ car porch, dual car gates (13′2″ east sliding + 10′ NE corner) and Honda City sedan, full-span double-height dining atrium with 13.5′ × 8′ raised glazed sunroof, unobstructed dining-to-kitchen view with 2′9″ east quartz platform, N–S center counter and compact corner fridge, 16′ × 9′ verandah lawn court, 15′ × 16′ home ICU, four bedrooms, meditation study, and second-floor office & TV hall.",
+    "description": "Three-floor 50′ × 40′ corner home on a 600 mm raised plinth with a stepped-down 22′ car porch, dual car gates (13′2″ east sliding + 10′ NE corner) and Honda City sedan, widened dining hall under a double-height atrium with 13.5′ × 8′ raised glazed sunroof, open-plan kitchen with 2′9″ east quartz platform, N–S center counter, compact corner fridge and wash area merged into the 3′ east gully, 16′ × 9′ verandah lawn court, 15′ × 15′ home ICU, four bedrooms, meditation study, and office & TV hall.",
     "style": "Sage-teal gloss · fluted teak · ivory vitrified",
     "directory": "gallery/tirumala-7",
     "basedOnSample": "tirumala-6",
@@ -352,6 +352,6 @@
     "depthFt": 50,
     "roofAccess": false,
     "terraceAccess": true,
-    "planHash": "47085f733a7b77b3bea893e1485e31cf3759505ee5f8d5b4b8c37503b7c78d5d"
+    "planHash": "bc3815546b024aba7f0543d19d627e3e6689debcebc422c3b53c84d6a41d1d65"
   }
 ]

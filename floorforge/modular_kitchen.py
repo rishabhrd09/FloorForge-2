@@ -332,19 +332,20 @@ def straight_run_kitchen(k, ctx, floor_height, finishes, spec=None):
             rect((sh_x0, y_wall, sz, sh_x1, y_wall + 0.250, sz + 0.032), teak_wood, f'minimal-floating-shelf-{s_idx}', 'furniture')
             rect((sh_x0 + 0.02, y_wall + 0.04, sz - 0.008, sh_x1 - 0.02, y_wall + 0.065, sz), led_warm, f'minimal-shelf-led-{s_idx}', 'cove')
 
-    # 8. Compact Modern Refrigerator ONLY on the small 3' west wall of work_bay (x_ft=39.0, y_ft=22.45..24.45)
-    # Tucked neatly at the NW corner beside work_bay_porch_door, facing EAST directly toward the platform,
+    # 8. Compact Modern Refrigerator ONLY on the small 2' west wall of work_bay (x_ft=39.0, y_ft=22.24..23.96)
+    # Tucked neatly at the solid NW corner (north of y=24.0 Dining wall), facing EAST directly toward the platform,
     # with ZERO bulky green vertical cupboards or overhead lofts — keeping the Dining-to-Kitchen view 100% open!
-    cf_x0 = spec.get('fridge_x0', 4.740)   # y_ft = 24.45 (stays north of y_ft=25.0 Dining sightline!)
-    cf_x1 = spec.get('fridge_x1', 5.349)   # y_ft = 22.45 (tucked into corner near porch door)
-    cf_y0 = spec.get('fridge_y0', 2.743)   # East front face (x_ft = 41.00, leaving clean reveal before porch door!)
+    cf_x0 = spec.get('fridge_x0', 4.889)   # y_ft = 23.96 (strictly north of y_ft=24.0 Dining sightline!)
+    cf_x1 = spec.get('fridge_x1', 5.413)   # y_ft = 22.24 (tucked into solid NW corner)
+    cf_y0 = spec.get('fridge_y0', 2.743)   # East front face (x_ft = 41.00)
     cf_y1 = spec.get('fridge_y1', 3.285)   # Backed against small x_ft=39.0 wall east face (Y = 3.293 m)
+    cf_xm = 0.5 * (cf_x0 + cf_x1)
     rect((cf_x0 + 0.02, cf_y0 + 0.03, 0.0, cf_x1 - 0.02, cf_y1, 0.035), gola_black, 'compact-fridge-plinth', 'detail')
     rect((cf_x0, cf_y0 + 0.026, 0.035, cf_x1, cf_y1, 1.540), gola_black, 'compact-fridge-body')
     rect((cf_x0 + 0.006, cf_y0, 0.042, cf_x1 - 0.006, cf_y0 + 0.026, 0.585), 'steel', 'compact-fridge-freezer-door')
     rect((cf_x0 + 0.008, cf_y0 + 0.006, 0.585, cf_x1 - 0.008, cf_y0 + 0.026, 0.618), gola_black, 'compact-fridge-pocket-handle', 'detail')
     rect((cf_x0 + 0.006, cf_y0, 0.618, cf_x1 - 0.006, cf_y0 + 0.026, 1.534), 'steel', 'compact-fridge-upper-door')
-    rect((cf_x0 + 0.22, cf_y0 - 0.003, 1.180, cf_x0 + 0.39, cf_y0 + 0.004, 1.255), 'blackglass', 'compact-fridge-display', 'detail')
+    rect((cf_xm - 0.08, cf_y0 - 0.003, 1.180, cf_xm + 0.08, cf_y0 + 0.004, 1.255), 'blackglass', 'compact-fridge-display', 'detail')
 
     # 9. Sculptural Waterfall Quartz & Fluted-Teak Center Counter — oriented North-South PARALLEL to the East Platform
     # and positioned close to the Dining Table (x_ft: 34.80..36.85, y_ft: 25.85..30.65) in the freed-up threshold!

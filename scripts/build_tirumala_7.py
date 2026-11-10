@@ -136,13 +136,14 @@ def project() -> dict:
         "Three-floor 50' x 40' north-east corner home set on a 600 mm (2'0\") raised residential plinth above "
         "colony road level, with a stepped-down 22' car porch (-220 mm below the verandah and main ground floor), "
         "dual vehicle access via a 13'2\" east sliding car gate and a 10' NE corner car gate with sloped stone "
-        "ramps, and a sleek Honda City sedan parked inside the porch. Features a full-span double-height dining "
-        "atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft), a "
-        "3' east setback (x=47 ft) along the kitchen and wash room, a 16' x 9' north verandah with recessed "
-        "manicured lawn court, a 15' x 16' Home ICU, and an open-plan kitchen with an unobstructed dining-to-kitchen "
-        "sightline, a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz "
-        "center counter parallel to the east platform near the dining table, and a compact corner refrigerator on "
-        "the small 3' wall beside the porch door. First floor steps back to x=47 ft with symmetrical 3.5' atrium "
+        "ramps, and a sleek Honda City sedan parked inside the porch. Features a widened 9'-deep dining hall "
+        "(y 24-33 ft) under the 10' x 8' double-height atrium and 13.5' x 8' raised glazed sunroof, a merged "
+        "wash/utility alcove and 3' east kitchen gully (x=47-50 ft) accessed from the kitchen south door with a "
+        "continuous south wall, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 15' Home ICU, "
+        "and an open-plan kitchen (solid north wall to porch) with an unobstructed dining-to-kitchen sightline, a "
+        "wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz center "
+        "counter parallel to the east platform near the dining table, and a compact corner refrigerator on the "
+        "small 2' west corner wall. First floor steps back to x=47 ft with symmetrical 3.5' atrium "
         "bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor "
         "steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, "
         "waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed "
@@ -165,7 +166,7 @@ def build_tour_html(dest: Path) -> None:
 </main>
 <script>
 const views=[
- ['Ground floor','ground','600 mm raised plinth with stepped-down 22′ car porch (-220 mm), Honda City sedan, 13′2″ east sliding car gate + 10′ NE car gate, 16′ × 9′ verandah lawn court, 15′ × 16′ Home ICU, living hall, full-span double-height dining atrium, and open-plan kitchen with N–S center counter and compact corner fridge.'],
+ ['Ground floor','ground','600 mm raised plinth with stepped-down 22′ car porch (-220 mm), Honda City sedan, 13′2″ east sliding car gate + 10′ NE car gate, 16′ × 9′ verandah lawn court, 15′ × 15′ Home ICU, living hall, widened dining atrium, open-plan kitchen with N–S center counter and compact corner fridge, and wash utility merged into the 3′ east gully.'],
  ['First floor','first','389 sq ft master suite with dressing room and bath, study/meditation room, medium bedroom, symmetrical 3.5′ bridges framing the 10′ × 8′ dining atrium, and 526 sq ft shared terrace.'],
  ['Second floor','second','31′ × 17′ office and TV hall with three workstations, lounge sofa and 75″ east-wall TV, 13.5′ × 8′ raised glazed sunroof directly above the dining atrium, and 873 sq ft open terrace.'],
  ['Exterior','exterior','North-east corner view showing the 600 mm raised plinth, stepped-down 22′ car porch with Honda City sedan, 13′2″ east sliding car gate, 10′ NE car gate, 3′ east kitchen setback with east windows, north verandah lawn court, and stepped terraces.'],
@@ -173,12 +174,12 @@ const views=[
  ['North frontage','north_frontage','North road view across the 10′ NE car gate and sloped ramp, stepped-down car porch, 600 mm house plinth, 16′ × 9′ verandah with manicured north-wall lawn court, and covered entry.'],
  ['Colony view','colony_overview','The 50′ × 40′ north-east corner parcel in the Tirumala colony facing the north garden and east basketball court.'],
  ['Roof terraces','roof_terraces','Elevated view of the first-floor and second-floor stepped terraces and the full-span 13.5′ × 8′ raised glazed sunroof.'],
- ['Kitchen run','kitchen_run','Wide 2′9″ (840 mm) east-wall nano-white quartz platform beneath two east windows, N–S parallel waterfall center counter, and compact corner refrigerator on the small 3′ wall beside the porch door.'],
- ['Kitchen from dining','kitchen_from_dining','Unobstructed open-plan sightline from the dining table across the N–S waterfall center counter to the sunlit 2′9″ east kitchen platform and east windows.'],
- ['Dining double-height','dining_double_height','Full-span double-height dining atrium extending right up to the staircase, crowned by the 13.5′ × 8′ glazed sunroof and 3-ring brushed-gold chandelier.'],
+ ['Kitchen run','kitchen_run','Wide 2′9″ (840 mm) east-wall nano-white quartz platform beneath two east windows, solid north wall, N–S parallel waterfall center counter, compact corner refrigerator, and south wash door opening directly into the merged 3′ east gully.'],
+ ['Kitchen from dining','kitchen_from_dining','Spacious, unobstructed open-plan sightline across the widened dining-to-kitchen zone (y=24′ partition) over the N–S waterfall center counter to the sunlit 2′9″ east kitchen platform.'],
+ ['Dining double-height','dining_double_height','Spacious dining hall (widened 1′ north to y=24′) under the double-height atrium extending right up to the staircase, crowned by the 13.5′ × 8′ glazed sunroof and 3-ring brushed-gold chandelier.'],
  ['Living hall','living_hall','Core living hall with terracotta velvet sofa, marble coffee table, and 75″ OLED TV on a fluted-teak media wall.'],
- ['Living to ICU','living_to_icu','Clean sightline from the living hall through the 5′6″ cased opening into the 15′ × 16′ Home ICU.'],
- ['Home ICU','icu','15′ × 16′ Home ICU with hospital bed facing the complete 55″ west-wall TV, clinical monitor cart, companion recliner, and 7′ north slider to the verandah.'],
+ ['Living to ICU','living_to_icu','Clean sightline from the living hall into the 15′ × 15′ Home ICU and across the shifted y=24′ partition into the widened dining and kitchen zone.'],
+ ['Home ICU','icu','15′ × 15′ Home ICU with hospital bed facing the complete 55″ west-wall TV, clinical monitor cart, companion recliner, and 7′ north slider to the verandah.'],
  ['Verandah','verandah','16′ × 9′ north verandah featuring a recessed manicured velvet lawn court with honed-travertine coping, stepping pads, and warm LED graze lighting.'],
  ['Drawing room','drawing_room','9′6″ × 14′ drawing room with taupe bouclé sofa, marble coffee table, and sheer/taupe drapery.'],
  ['Master bedroom','master_bedroom','15′ × 14′ ground-floor master bedroom with upholstered headboard, full-height fluted-teak wardrobe, and en-suite bath.'],
@@ -232,10 +233,10 @@ def main() -> None:
         title='Tirumala 7',
         description=(
             'Three-floor 50′ × 40′ corner home on a 600 mm raised plinth with a stepped-down 22′ car porch, '
-            'dual car gates (13′2″ east sliding + 10′ NE corner) and Honda City sedan, full-span double-height '
-            'dining atrium with 13.5′ × 8′ raised glazed sunroof, unobstructed dining-to-kitchen view with '
-            '2′9″ east quartz platform, N–S center counter and compact corner fridge, 16′ × 9′ verandah lawn '
-            'court, 15′ × 16′ home ICU, four bedrooms, meditation study, and second-floor office & TV hall.'
+            'dual car gates (13′2″ east sliding + 10′ NE corner) and Honda City sedan, widened dining hall under '
+            'a double-height atrium with 13.5′ × 8′ raised glazed sunroof, open-plan kitchen with 2′9″ east quartz '
+            'platform, N–S center counter, compact corner fridge and wash area merged into the 3′ east gully, '
+            '16′ × 9′ verandah lawn court, 15′ × 15′ home ICU, four bedrooms, meditation study, and office & TV hall.'
         ),
         style='Sage-teal gloss · fluted teak · ivory vitrified',
         directory='gallery/tirumala-7',

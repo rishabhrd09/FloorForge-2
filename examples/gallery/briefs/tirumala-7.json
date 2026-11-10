@@ -218,7 +218,7 @@
           },
           {
             "id": "east_setback",
-            "name": "East setback passage (3′)",
+            "name": "East gully (3′)",
             "kind": "courtyard",
             "polygon": [
               [
@@ -276,11 +276,11 @@
                 7924.8
               ],
               [
-                4572,
+                4876.8,
                 7924.8
               ],
               [
-                4572,
+                4876.8,
                 3352.8
               ]
             ]
@@ -383,11 +383,11 @@
             "kind": "dining",
             "polygon": [
               [
-                4572,
+                4876.8,
                 4572
               ],
               [
-                4572,
+                4876.8,
                 7924.8
               ],
               [
@@ -414,11 +414,11 @@
                 3352.8
               ],
               [
-                4572,
+                4876.8,
                 3352.8
               ],
               [
-                4572,
+                4876.8,
                 914.4
               ]
             ]
@@ -429,11 +429,11 @@
             "kind": "kitchen",
             "polygon": [
               [
-                4572,
+                4876.8,
                 914.4
               ],
               [
-                4572,
+                4876.8,
                 4572
               ],
               [
@@ -494,7 +494,7 @@
           },
           {
             "id": "wash_area",
-            "name": "Wash room",
+            "name": "Wash & utility",
             "kind": "drying-room",
             "polygon": [
               [
@@ -910,7 +910,7 @@
               2438.4
             ],
             "area_sqft": 80,
-            "ground_floor": "Full-span double-height atrium from Home ICU south wall (y=25′) right up to the Staircase (y=33′) over the Dining Hall",
+            "ground_floor": "Spacious Dining Hall (y=24′..33′, shifted 1′ north) under the 10′ × 8′ double-height atrium right up to the Staircase (y=33′)",
             "first_floor": "13′ × 8′ slab opening (Open to below) with frameless glass guards on all open edges",
             "second_floor": "13′ × 8′ raised architectural glazed sunroof directly above the dining atrium with travertine upstand curb and safety glass guard",
             "sunroof_x_ft": [
@@ -1142,7 +1142,7 @@
                 ]
               },
               "east_setback": {
-                "name": "East setback passage (3′)",
+                "name": "East gully (3′)",
                 "x_ft": [
                   47,
                   50
@@ -1171,7 +1171,7 @@
                 ],
                 "y_ft": [
                   9,
-                  25
+                  24
                 ]
               },
               "master_bath": {
@@ -1225,7 +1225,7 @@
                   35
                 ],
                 "y_ft": [
-                  25,
+                  24,
                   33
                 ]
               },
@@ -1237,7 +1237,7 @@
                 ],
                 "y_ft": [
                   22,
-                  25
+                  24
                 ]
               },
               "kitchen": {
@@ -1247,7 +1247,7 @@
                   47
                 ],
                 "y_ft": [
-                  25,
+                  24,
                   35
                 ]
               },
@@ -1274,7 +1274,7 @@
                 ]
               },
               "wash_area": {
-                "name": "Wash room",
+                "name": "Wash & utility",
                 "x_ft": [
                   40,
                   47
@@ -1393,7 +1393,7 @@
                 ],
                 [
                   24,
-                  25
+                  24
                 ]
               ],
               [
@@ -1403,17 +1403,17 @@
                 ],
                 [
                   39,
-                  25
+                  24
                 ]
               ],
               [
                 [
                   24,
-                  25
+                  24
                 ],
                 [
                   39,
-                  25
+                  24
                 ]
               ],
               [
@@ -1433,7 +1433,7 @@
                 ],
                 [
                   47,
-                  40
+                  35
                 ]
               ],
               [
@@ -1472,7 +1472,7 @@
                   40
                 ],
                 [
-                  47,
+                  49.8,
                   40
                 ]
               ],
@@ -1573,8 +1573,8 @@
                 "type": "clear_opening_no_door",
                 "wall": "x=24.0",
                 "span_ft": [
-                  19,
-                  24.5
+                  18,
+                  23.5
                 ],
                 "width_ft": 5.5
               },
@@ -1607,16 +1607,6 @@
                   30.6
                 ],
                 "width_ft": 3.4
-              },
-              {
-                "id": "work_bay_porch_door",
-                "type": "door",
-                "wall": "y=22.0",
-                "span_ft": [
-                  41.55,
-                  44.15
-                ],
-                "width_ft": 2.6
               },
               {
                 "id": "store_door",
@@ -1729,15 +1719,6 @@
                   34.2
                 ],
                 "width_ft": 3.4
-              },
-              {
-                "id": "wash_east_window",
-                "wall": "x=47.0",
-                "span_ft": [
-                  36.2,
-                  38.8
-                ],
-                "width_ft": 2.6
               },
               {
                 "id": "wash_south_window",
@@ -1930,42 +1911,42 @@
               },
               "dining_banquette": {
                 "x_ft": [
-                  26.8,
-                  32.2
+                  24.3,
+                  29.5
                 ],
                 "y_ft": [
-                  26.32,
-                  27.6
+                  24.25,
+                  25.65
                 ]
               },
               "dining_table": {
                 "x_ft": [
-                  26.6,
-                  32.4
+                  23.6,
+                  29.2
                 ],
                 "y_ft": [
-                  27.95,
-                  30.85
+                  26.55,
+                  29.15
                 ]
               },
               "dining_chair_west": {
                 "x_ft": [
-                  25.25,
-                  26.35
+                  22,
+                  23.35
                 ],
                 "y_ft": [
-                  28.5,
-                  30.3
+                  27.05,
+                  28.65
                 ]
               },
               "dining_chair_east": {
                 "x_ft": [
-                  32.65,
-                  33.75
+                  29.45,
+                  30.8
                 ],
                 "y_ft": [
-                  28.5,
-                  30.3
+                  27.05,
+                  28.65
                 ]
               },
               "prep_counter": {
@@ -1974,8 +1955,8 @@
                   36.85
                 ],
                 "y_ft": [
-                  25.85,
-                  30.65
+                  25.65,
+                  30.35
                 ],
                 "orientation": "north_south_parallel_to_east_platform"
               },
@@ -1985,60 +1966,60 @@
                   41
                 ],
                 "y_ft": [
-                  22.45,
-                  24.45
+                  22.24,
+                  23.96
                 ],
                 "facing": "east_toward_platform"
               },
               "kitchen_counter": {
                 "x_ft": [
-                  48,
-                  49.72
+                  44.24,
+                  47
                 ],
                 "y_ft": [
-                  20.3,
-                  33.7
+                  22.2,
+                  34.8
                 ],
-                "length_ft": 13.4
+                "length_ft": 12.6
               },
               "kitchen_sink": {
                 "x_ft": [
-                  48.17,
-                  49.53
+                  44.5,
+                  46.6
                 ],
                 "y_ft": [
-                  22.25,
-                  24.35
+                  23.5,
+                  25.7
                 ]
               },
               "kitchen_hob": {
                 "x_ft": [
-                  48.15,
-                  49.55
+                  44.5,
+                  46.6
                 ],
                 "y_ft": [
-                  30,
-                  32.15
+                  28.6,
+                  30.65
                 ]
               },
               "store_shelves": {
                 "x_ft": [
-                  34.24,
-                  35.35
+                  33.3,
+                  35
                 ],
                 "y_ft": [
-                  34.45,
-                  39.57
+                  35.3,
+                  39.7
                 ]
               },
               "wash_counter_and_sink": {
                 "x_ft": [
-                  47.85,
-                  49.73
+                  41.25,
+                  45.6
                 ],
                 "y_ft": [
-                  34.38,
-                  37.72
+                  37.86,
+                  39.74
                 ]
               },
               "wash_floor_drain": {
@@ -3936,5 +3917,5 @@
       "finishEdition": "tirumala-7-sage-teal-fluted-teak"
     }
   },
-  "notes": "Three-floor 50' x 40' north-east corner home set on a 600 mm (2'0\") raised residential plinth above colony road level, with a stepped-down 22' car porch (-220 mm below the verandah and main ground floor), dual vehicle access via a 13'2\" east sliding car gate and a 10' NE corner car gate with sloped stone ramps, and a sleek Honda City sedan parked inside the porch. Features a full-span double-height dining atrium (x 20.5-30.5 ft, y 25-33 ft) and 13.5' x 8' raised glazed sunroof (x 20.5-34 ft, y 25-33 ft), a 3' east setback (x=47 ft) along the kitchen and wash room, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 16' Home ICU, and an open-plan kitchen with an unobstructed dining-to-kitchen sightline, a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz center counter parallel to the east platform near the dining table, and a compact corner refrigerator on the small 3' wall beside the porch door. First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
+  "notes": "Three-floor 50' x 40' north-east corner home set on a 600 mm (2'0\") raised residential plinth above colony road level, with a stepped-down 22' car porch (-220 mm below the verandah and main ground floor), dual vehicle access via a 13'2\" east sliding car gate and a 10' NE corner car gate with sloped stone ramps, and a sleek Honda City sedan parked inside the porch. Features a widened 9'-deep dining hall (y 24-33 ft) under the 10' x 8' double-height atrium and 13.5' x 8' raised glazed sunroof, a merged wash/utility alcove and 3' east kitchen gully (x=47-50 ft) accessed from the kitchen south door with a continuous south wall, a 16' x 9' north verandah with recessed manicured lawn court, a 15' x 15' Home ICU, and an open-plan kitchen (solid north wall to porch) with an unobstructed dining-to-kitchen sightline, a wide 2'9\" (840 mm) east-wall quartz platform beneath two east windows, a N-S waterfall quartz center counter parallel to the east platform near the dining table, and a compact corner refrigerator on the small 2' west corner wall. First floor steps back to x=47 ft with symmetrical 3.5' atrium bridges, a 389 sq ft master suite, study/meditation room, shared bath, and medium bedroom. Second floor steps back to x=44 ft with a 31' x 17' office & TV hall and raised glazed sunroof. All structure, waterproofing, drainage falls, and MEP/medical services are conceptual only and require licensed professional engineering design before construction."
 }

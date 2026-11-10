@@ -45,10 +45,11 @@ area_lights = [
     # Full-span 13.5' x 8' sunroof pouring natural sky light down through First Floor into the Dining Atrium
     ('Sunroof top sky', lm(26.5, 29.0, 2 * H + 0.32), lm(26.2, 29.0, 0.4), 3.6, 540, (1.0, 0.98, 0.93)),
     ('Atrium mid shaft', lm(25.8, 29.0, H + 0.25), lm(26.2, 29.0, 0.2), 3.0, 380, (1.0, 0.96, 0.90)),
-    # Ground floor rooms + morning east window daylight into kitchen
+    # Ground floor rooms + morning east window daylight into kitchen & merged wash/east gully
     ('Kitchen east window light', lm(48.4, 28.5, 1.85), lm(42.0, 28.5, 0.95), 2.8, 360, (1.0, 0.98, 0.93)),
-    ('Kitchen warm fill', lm(40.5, 28.5, 2.75), lm(45.5, 27.5, 1.05), 2.8, 300, (1.0, 0.95, 0.87)),
-    ('Dining warm fill', lm(26.5, 29.0, 2.82), lm(28.0, 28.0, 0.95), 2.6, 280, (1.0, 0.94, 0.85)),
+    ('Wash gully daylight', lm(47.4, 36.6, 2.55), lm(43.2, 37.8, 0.85), 2.2, 280, (1.0, 0.98, 0.94)),
+    ('Kitchen warm fill', lm(40.5, 28.0, 2.75), lm(45.5, 27.0, 1.05), 2.8, 300, (1.0, 0.95, 0.87)),
+    ('Dining warm fill', lm(26.5, 28.2, 2.82), lm(28.0, 27.5, 0.95), 2.6, 280, (1.0, 0.94, 0.85)),
     ('Living hall fill', lm(15.5, 20.8, 2.76), lm(12.8, 23.5, 1.10), 3.0, 340, (1.0, 0.95, 0.87)),
     ('Home ICU fill', lm(31.5, 15.8, 2.78), lm(26.0, 15.2, 1.15), 3.2, 360, (1.0, 0.97, 0.92)),
     ('Verandah daylight', lm(31.0, 4.2, 2.82), lm(28.5, 3.0, 0.60), 3.4, 340, (1.0, 0.98, 0.94)),
