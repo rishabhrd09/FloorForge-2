@@ -520,12 +520,13 @@ def coordinate_levels(b: dict, plan: dict) -> None:
 
     def _stair_flight_rects_mm(f_idx: int) -> list[dict]:
         rects = []
-        if f_idx == 0:
-            rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 34.85, 33.0, 36.5).bounds]})
-        else:
-            for i in range(2):
-                rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 33.0 + i * 1.75, 33.0, 33.0 + (i + 1) * 1.75).bounds]})
-        rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 36.5, 33.0, 40.0).bounds]})
+        if f_idx < 2:
+            if f_idx == 0:
+                rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 34.85, 33.0, 36.5).bounds]})
+            else:
+                for i in range(2):
+                    rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 33.0 + i * 1.75, 33.0, 33.0 + (i + 1) * 1.75).bounds]})
+            rects.append({'bounds': [round(v, 2) for v in box_mm(29.5, 36.5, 33.0, 40.0).bounds]})
         for i in range(9):
             xb = 29.5 - i * 1.0
             rects.append({'bounds': [round(v, 2) for v in box_mm(xb - 1.0, 36.5, xb, 40.0).bounds]})
@@ -557,10 +558,10 @@ def coordinate_levels(b: dict, plan: dict) -> None:
             'riser_count': r_cnt,
             'riser_mm': r_mm,                     # 185.29 mm / 175.0 mm (<= 190 mm)
             'tread_mm': 304.8,                    # 1.0 ft >= 250 mm
-            'headroom_mm': 2775.0,                # >= 2100 mm
+            'headroom_mm': 2475.0 if f_idx == 1 else 2775.0,  # >= 2100 mm everywhere
             'tread_sequence': t_seq,
             'direction': 'east-south-west-north',
-            'flights': _stair_flight_rects_mm(f_idx if f_idx < 2 else 1),
+            'flights': _stair_flight_rects_mm(f_idx),
         })
 
     # 5. Build Floor Plates & Roofs across all 3 levels
@@ -569,7 +570,12 @@ def coordinate_levels(b: dict, plan: dict) -> None:
     void_f1 = box_mm(20.5, 25.0, 30.5, 33.0)       # 10' x 8' (80 sq ft) full-gap double-height dining atrium
     void_f2 = box_mm(20.5, 25.0, 34.0, 33.0)       # 13.5' x 8' (108 sq ft) raised glazed sunroof above atrium + east bridge
     stair_well_f1 = box_mm(17.0, 33.0, 33.0, 40.0)
-    stair_well_f2 = box_mm(17.0, 33.0, 33.0, 40.0)
+    # On Second Floor, preserve the walkable L-shaped Stair Lobby slab (x=20.5..34, y=33..36.5 + x=29.5..34, y=36.5..40)
+    # shown on PDF Sheet 3 (>= 2475 mm clear headroom over stair-1 Flight 1 & SE landing!), cutting only Flight 2, SW landing & Flight 3.
+    stair_well_f2 = unary_union([
+        box_mm(17.0, 33.0, 20.5, 40.0),
+        box_mm(20.5, 36.5, 29.5, 40.0),
+    ])
 
     # Plate 0: 50' x 40' plot outline, with the 22' Car Porch (x=39.20..50.0, y=0.0..21.80) stepped 220 mm lower than
     # the Verandah & Main Ground Floor (retaining full 120 mm wall bearing on x=39.0 and y=22.0!).
@@ -696,7 +702,31 @@ def coordinate_levels(b: dict, plan: dict) -> None:
             'owner': 'u_open_to_below',
             'floor': 1,
             'edge': 'south',
-            'points': [local_mm(20.5, 33.0), local_mm(29.5, 33.0)],
+            'points': [local_mm(29.5, 33.0), local_mm(30.5, 33.0)],
+            'height': 1100,
+        },
+        {
+            'id': 's-stair-well-west',
+            'owner': 's_stair_lobby',
+            'floor': 2,
+            'edge': 'west',
+            'points': [local_mm(20.5, 33.0), local_mm(20.5, 36.5)],
+            'height': 1100,
+        },
+        {
+            'id': 's-stair-well-south',
+            'owner': 's_stair_lobby',
+            'floor': 2,
+            'edge': 'south',
+            'points': [local_mm(20.5, 36.5), local_mm(29.5, 36.5)],
+            'height': 1100,
+        },
+        {
+            'id': 's-stair-well-east',
+            'owner': 's_stair_lobby',
+            'floor': 2,
+            'edge': 'east',
+            'points': [local_mm(29.5, 36.5), local_mm(29.5, 40.0)],
             'height': 1100,
         },
         {
@@ -898,6 +928,8 @@ def _register_video_materials(scene: dict) -> None:
         'verandah_lawn_velvet': {'color': '#556d43', 'roughness': 0.88, 'kind': 'grass'},
         'car_pearl_metallic': {'color': '#eae7e1', 'roughness': 0.20, 'metallic': 0.14, 'clearcoat': 0.65, 'kind': 'metal'},
         'tv_oled_screen': {'color': '#090a0d', 'roughness': 0.24, 'metallic': 0.04, 'clearcoat': 0.08, 'kind': 'metal'},
+        'railing_white_opaque': {'color': '#f6f4ee', 'roughness': 0.24, 'metallic': 0.05, 'clearcoat': 0.50, 'clearcoat_roughness': 0.10, 'kind': 'metal', 'params': [0.24]},
+        'railing_white_plinth': {'color': '#e7e2d8', 'roughness': 0.32, 'metallic': 0.03, 'clearcoat': 0.25, 'kind': 'stone'},
     })
     mats['wall'].update({'color': '#f3efe6', 'roughness': 0.60})
     mats['floor'] = dict(mats['floor_ivory_vitrified_800'])
@@ -905,93 +937,424 @@ def _register_video_materials(scene: dict) -> None:
     mats['walnut'] = {'color': '#6e472f', 'roughness': 0.38, 'kind': 'wood'}
 
 
+def _build_raked_prism(
+    k: SceneKit,
+    p_a: tuple[float, float],
+    p_b: tuple[float, float],
+    half_width: float,
+    za_bot: float,
+    za_top: float,
+    zb_bot: float,
+    zb_top: float,
+    mat: str,
+    floor_idx: int,
+    role: str,
+    ident: str,
+    owner: str,
+) -> None:
+    """Build a watertight 8-vertex sloped architectural prism centered on p_a -> p_b."""
+    xa, ya = p_a
+    xb, yb = p_b
+    L = math.hypot(xb - xa, yb - ya)
+    if L < 1e-4:
+        return
+    nx, ny = -(yb - ya) / L * half_width, (xb - xa) / L * half_width
+    verts = [
+        (xa - nx, ya - ny, za_bot),
+        (xb - nx, yb - ny, zb_bot),
+        (xb + nx, yb + ny, zb_bot),
+        (xa + nx, ya + ny, za_bot),
+        (xa - nx, ya - ny, za_top),
+        (xb - nx, yb - ny, zb_top),
+        (xb + nx, yb + ny, zb_top),
+        (xa + nx, ya + ny, za_top),
+    ]
+    faces = [
+        (0, 2, 1), (0, 3, 2),
+        (4, 5, 6), (4, 6, 7),
+        (0, 1, 5), (0, 5, 4),
+        (1, 2, 6), (1, 6, 5),
+        (2, 3, 7), (2, 7, 6),
+        (3, 0, 4), (3, 4, 7),
+    ]
+    mesh = trimesh.Trimesh(vertices=verts, faces=faces, process=True)
+    mesh.fix_normals()
+    k.node(k.asset(mesh), mat, floor=floor_idx, role=role, name=ident, owner=owner)
+
+
+def _build_oriented_box(
+    k: SceneKit,
+    cx: float,
+    cy: float,
+    tx: float,
+    ty: float,
+    half_along: float,
+    half_across: float,
+    z_bot: float,
+    z_top: float,
+    mat: str,
+    floor_idx: int,
+    role: str,
+    ident: str,
+    owner: str,
+) -> None:
+    """Build a crisp vertical rectangular baluster/post aligned with unit tangent (tx, ty)."""
+    if z_top <= z_bot + 1e-4:
+        return
+    ax, ay = tx * half_along, ty * half_along
+    nx, ny = -ty * half_across, tx * half_across
+    poly = Polygon([
+        (cx - ax - nx, cy - ay - ny),
+        (cx + ax - nx, cy + ay - ny),
+        (cx + ax + nx, cy + ay + ny),
+        (cx - ax + nx, cy - ay + ny),
+    ])
+    k.poly_mesh(poly, z_bot, z_top, mat, floor_idx, role, ident, owner)
+
+
+def _build_white_newel_post(
+    k: SceneKit,
+    cx: float,
+    cy: float,
+    z_bot: float,
+    z_top: float,
+    floor_idx: int,
+    ident: str,
+    owner: str,
+) -> None:
+    """Build a sculpted 88 mm x 88 mm solid white architectural newel post with molded base collar & beveled cap."""
+    hw = 0.044
+    base_top = min(z_bot + 0.026, z_top - 0.06)
+    k.rect((cx - 0.052, cy - 0.052, z_bot, cx + 0.052, cy + 0.052, base_top),
+           'railing_white_plinth', floor_idx, 'railing', f'{ident}-base', owner)
+    k.rect((cx - hw, cy - hw, base_top, cx + hw, cy + hw, z_top - 0.022),
+           'railing_white_opaque', floor_idx, 'railing', ident, owner)
+    k.rect((cx - 0.037, cy - 0.037, z_top - 0.022, cx + 0.037, cy + 0.037, z_top - 0.008),
+           'railing_white_plinth', floor_idx, 'railing', f'{ident}-neck', owner)
+    k.rect((cx - 0.053, cy - 0.053, z_top - 0.008, cx + 0.053, cy + 0.053, z_top + 0.010),
+           'railing_white_opaque', floor_idx, 'railing', f'{ident}-cap', owner)
+    k.rect((cx - 0.041, cy - 0.041, z_top + 0.010, cx + 0.041, cy + 0.041, z_top + 0.020),
+           'railing_white_opaque', floor_idx, 'railing', f'{ident}-crown', owner)
+
+
+def _build_level_white_balustrade(
+    k: SceneKit,
+    p_a: tuple[float, float],
+    p_b: tuple[float, float],
+    z_base: float,
+    height: float,
+    floor_idx: int,
+    ident: str,
+    owner: str,
+    start_post: bool = True,
+    end_post: bool = True,
+    start_post_z_bot: float | None = None,
+    end_post_z_bot: float | None = None,
+) -> None:
+    """Build a solid, safe, opaque white architectural balustrade with ~85-92 mm rhythmic baluster gaps."""
+    xa, ya = p_a
+    xb, yb = p_b
+    L = math.hypot(xb - xa, yb - ya)
+    if L < 0.08:
+        return
+    tx, ty = (xb - xa) / L, (yb - ya) / L
+    line = LineString([p_a, p_b])
+
+    # 1. Solid white bottom curb plinth + beveled white curb cap
+    k.poly_mesh(line.buffer(0.039, cap_style=2, join_style=2), z_base, z_base + 0.092,
+                'railing_white_plinth', floor_idx, 'railing', f'{ident}-shoe', owner)
+    k.poly_mesh(line.buffer(0.044, cap_style=2, join_style=2), z_base + 0.092, z_base + 0.118,
+                'railing_white_opaque', floor_idx, 'railing', f'{ident}-curb-cap', owner)
+
+    # 2. Subdivide into balanced structural bays (<= 1.85 m) with sculpted white newel posts
+    n_bays = max(1, math.ceil(L / 1.85))
+    if start_post:
+        _build_white_newel_post(k, xa, ya, z_base if start_post_z_bot is None else start_post_z_bot,
+                                z_base + height + 0.012, floor_idx, f'{ident}-post-start', owner)
+    if end_post:
+        _build_white_newel_post(k, xb, yb, z_base if end_post_z_bot is None else end_post_z_bot,
+                                z_base + height + 0.012, floor_idx, f'{ident}-post-end', owner)
+    for b_i in range(1, n_bays):
+        s_mid = b_i * L / n_bays
+        _build_white_newel_post(k, xa + tx * s_mid, ya + ty * s_mid, z_base, z_base + height + 0.012,
+                                floor_idx, f'{ident}-post-mid-{b_i}', owner)
+
+    # 3. Rhythmic 38 mm x 60 mm solid white opaque vertical balusters with safe < 94 mm clear gaps
+    w_bal, d_bal = 0.038, 0.060
+    post_hw = 0.044
+    for b_i in range(n_bays):
+        s0 = b_i * L / n_bays + post_hw
+        s1 = (b_i + 1) * L / n_bays - post_hw
+        bay_len = s1 - s0
+        if bay_len <= 0.05:
+            continue
+        n_bal = max(1, math.ceil((bay_len - 0.092) / (w_bal + 0.092)))
+        gap = max(0.018, (bay_len - n_bal * w_bal) / (n_bal + 1))
+        for i in range(n_bal):
+            sc = s0 + gap + (i + 0.5) * w_bal + i * gap
+            _build_oriented_box(
+                k, xa + tx * sc, ya + ty * sc, tx, ty,
+                w_bal * 0.5, d_bal * 0.5,
+                z_base + 0.116, z_base + height - 0.046,
+                'railing_white_opaque', floor_idx, 'railing', f'{ident}-baluster-{b_i}-{i}', owner,
+            )
+
+    # 4. Horizontal white frieze sub-rail + wide sculpted white top handrail
+    k.poly_mesh(line.buffer(0.025, cap_style=2, join_style=2), z_base + height - 0.156, z_base + height - 0.128,
+                'railing_white_plinth', floor_idx, 'railing', f'{ident}-subrail', owner)
+    k.poly_mesh(line.buffer(0.033, cap_style=2, join_style=2), z_base + height - 0.056, z_base + height - 0.042,
+                'railing_white_plinth', floor_idx, 'railing', f'{ident}-rail-fillet', owner)
+    k.poly_mesh(line.buffer(0.042, cap_style=2, join_style=2), z_base + height - 0.042, z_base + height,
+                'railing_white_opaque', floor_idx, 'railing', f'{ident}-rail', owner)
+
+
+def _build_raked_white_balustrade(
+    k: SceneKit,
+    p_a: tuple[float, float],
+    p_b: tuple[float, float],
+    z_a: float,
+    z_b: float,
+    z_floor: float,
+    guard_h: float,
+    floor_idx: int,
+    ident: str,
+    owner: str,
+    start_post: bool = True,
+    end_post: bool = True,
+    post_z_bot_a: float | None = None,
+    post_z_top_a: float | None = None,
+    post_z_bot_b: float | None = None,
+    post_z_top_b: float | None = None,
+) -> None:
+    """Build a raked solid white opaque stair balustrade with closed stringer curb & ~85-92 mm baluster gaps."""
+    xa, ya = p_a
+    xb, yb = p_b
+    L = math.hypot(xb - xa, yb - ya)
+    if L < 0.08:
+        return
+    tx, ty = (xb - xa) / L, (yb - ya) / L
+
+    def z_at(s: float) -> float:
+        return z_a + (s / L) * (z_b - z_a)
+
+    # 1. Closed solid white raked stringer + toe curb cap
+    _build_raked_prism(
+        k, p_a, p_b, 0.039,
+        max(z_floor, z_a - 0.22), z_a + 0.090,
+        max(z_floor, z_b - 0.22), z_b + 0.090,
+        'railing_white_plinth', floor_idx, 'railing', f'{ident}-shoe', owner,
+    )
+    _build_raked_prism(
+        k, p_a, p_b, 0.044,
+        z_a + 0.090, z_a + 0.116,
+        z_b + 0.090, z_b + 0.116,
+        'railing_white_opaque', floor_idx, 'railing', f'{ident}-curb-cap', owner,
+    )
+
+    # 2. Sculpted corner/end white newel posts
+    if start_post:
+        _build_white_newel_post(
+            k, xa, ya,
+            max(z_floor, z_a - 0.22) if post_z_bot_a is None else post_z_bot_a,
+            (z_a + guard_h + 0.020) if post_z_top_a is None else post_z_top_a,
+            floor_idx, f'{ident}-post-start', owner,
+        )
+    if end_post:
+        _build_white_newel_post(
+            k, xb, yb,
+            max(z_floor, z_b - 0.22) if post_z_bot_b is None else post_z_bot_b,
+            (z_b + guard_h + 0.020) if post_z_top_b is None else post_z_top_b,
+            floor_idx, f'{ident}-post-end', owner,
+        )
+
+    # 3. Rhythmic 38 mm x 60 mm solid white opaque vertical balusters tucked cleanly into raked curb & top rail
+    w_bal, d_bal = 0.038, 0.060
+    s0, s1 = 0.044, L - 0.044
+    bay_len = s1 - s0
+    if bay_len > 0.05:
+        n_bal = max(1, math.ceil((bay_len - 0.090) / (w_bal + 0.090)))
+        gap = max(0.018, (bay_len - n_bal * w_bal) / (n_bal + 1))
+        for i in range(n_bal):
+            sc = s0 + gap + (i + 0.5) * w_bal + i * gap
+            z_lo = max(z_at(sc - 0.5 * w_bal), z_at(sc + 0.5 * w_bal)) - 0.026
+            z_hi = min(z_at(sc - 0.5 * w_bal), z_at(sc + 0.5 * w_bal))
+            _build_oriented_box(
+                k, xa + tx * sc, ya + ty * sc, tx, ty,
+                w_bal * 0.5, d_bal * 0.5,
+                z_lo + 0.098, z_hi + guard_h - 0.028,
+                'railing_white_opaque', floor_idx, 'railing', f'{ident}-baluster-{i}', owner,
+            )
+
+    # 4. Raked white frieze sub-rail + sculpted wide white top handrail
+    _build_raked_prism(
+        k, p_a, p_b, 0.025,
+        z_a + guard_h - 0.150, z_a + guard_h - 0.122,
+        z_b + guard_h - 0.150, z_b + guard_h - 0.122,
+        'railing_white_plinth', floor_idx, 'railing', f'{ident}-subrail', owner,
+    )
+    _build_raked_prism(
+        k, p_a, p_b, 0.033,
+        z_a + guard_h - 0.054, z_a + guard_h - 0.040,
+        z_b + guard_h - 0.054, z_b + guard_h - 0.040,
+        'railing_white_plinth', floor_idx, 'railing', f'{ident}-rail-fillet', owner,
+    )
+    _build_raked_prism(
+        k, p_a, p_b, 0.042,
+        z_a + guard_h - 0.040, z_a + guard_h,
+        z_b + guard_h - 0.040, z_b + guard_h,
+        'railing_white_opaque', floor_idx, 'railing', f'{ident}-rail', owner,
+    )
+
+
 def _build_stair_294(k: SceneKit, H: float) -> None:
     """Build the U-turn staircase for Ground->First (17 risers x 185.3 mm = 3150 mm, lowermost southbound step removed
-    so ONLY 2 steps remain going south!) and First->Second (18 risers x 175.0 mm = 3150 mm).
-
-    Stair well in PDF feet: x_ft: 17..33, y_ft: 33..40.
-    - Ground->First (f_idx=0): Flight 1 starts cleanly at y_ft=34.85 (aligned with the y=35.0 Store wall corner),
-      climbing ONLY 2 southbound steps: `f1-tread-1` (y_ft=34.85..36.50, riser 1) + `se-landing` (y_ft=36.50..40.00, riser 2),
-      then 9 westbound treads (risers 3..11), `sw-landing` (riser 12), and 4 northbound treads (risers 13..16) -> riser 17 = H.
-    - First->Second (f_idx=1): Flight 1 starts from the 3.5' East Sky-Lit Bridge at y_ft=33.0 (2 treads + SE landing = risers 1..3),
-      9 westbound treads (risers 4..12), `sw-landing` (riser 13), and 4 northbound treads (risers 14..17) -> riser 18 = 2*H.
+    so ONLY 2 steps remain going south!) and First->Second (18 risers x 175.0 mm = 3150 mm), complete with smooth
+    white structural waist slabs and solid white opaque architectural balustrades (zero glass railings!).
     """
+    ix0, iy0, ix1, iy1 = box_m(20.5, 33.0, 29.5, 36.5)
+    ox0, oy0, ox1, oy1 = box_m(17.0, 33.0, 33.0, 40.0)
+    guard_h = 0.98
+
     for f_idx in (0, 1):
         z0 = f_idx * H
         owner = f'stair-{f_idx}'
         n_risers = 17 if f_idx == 0 else 18
         riser = H / float(n_risers)
 
-        def step_block(x0_ft, y0_ft, x1_ft, y1_ft, r_idx, name, is_landing=False):
+        def step_block(x0_ft, y0_ft, x1_ft, y1_ft, r_idx, name, is_landing=False, bot_override=None):
             bx0, by0, bx1, by1 = box_m(x0_ft, y0_ft, x1_ft, y1_ft)
             top_z = z0 + r_idx * riser
-            bot_z = max(z0, top_z - (0.16 if is_landing else riser * 1.35))
+            if bot_override is not None:
+                bot_z = bot_override
+            elif is_landing:
+                bot_z = max(z0, top_z - 0.20)
+            else:
+                bot_z = max(z0, top_z - riser - 0.015)
             k.rect((bx0, by0, bot_z, bx1, by1, top_z - 0.032), 'floor_ivory_vitrified_800', f_idx, 'stair', f'{owner}/{name}-body', owner)
             k.rect((bx0 - 0.006, by0 - 0.006, top_z - 0.032, bx1 + 0.006, by1 + 0.006, top_z), 'cladding_fluted_teak', f_idx, 'stair', f'{owner}/{name}-tread', owner)
             if not is_landing:
                 k.rect((bx0 + 0.04, by0 + 0.04, top_z - 0.042, bx1 - 0.04, by1 - 0.04, top_z - 0.032), 'cove_led_warm', f_idx, 'cove', f'{owner}/{name}-led', owner)
 
         if f_idx == 0:
-            # Ground->First: lowermost step removed — ONLY 2 steps in the southbound direction (1 tread + SE landing)!
-            step_block(29.5, 34.85, 33.0, 36.5, 1, 'f1-tread-1')
-            step_block(29.5, 36.5, 33.0, 40.0, 2, 'se-landing', is_landing=True)
+            # Ground->First: lowermost step removed — ONLY 2 steps going south, grounded solidly to z=0.0!
+            step_block(29.5, 34.85, 33.0, 36.5, 1, 'f1-tread-1', bot_override=0.0)
+            step_block(29.5, 36.5, 33.0, 40.0, 2, 'se-landing', is_landing=True, bot_override=0.0)
             r_se = 2
         else:
-            # First->Second: 2 treads south from the 3.5' East Sky-Lit Bridge + SE landing
+            # First->Second: 2 treads south from the 3.5' East Sky-Lit Bridge + SE landing + smooth white waist slab
             dy1 = 3.5 / 2.0
             for i in range(2):
                 ya = 33.0 + i * dy1
                 step_block(29.5, ya, 33.0, ya + dy1, i + 1, f'f1-tread-{i+1}')
-            step_block(29.5, 36.5, 33.0, 40.0, 3, 'se-landing', is_landing=True)
             r_se = 3
+            se_bot = z0 + r_se * riser - 0.36
+            step_block(29.5, 36.5, 33.0, 40.0, r_se, 'se-landing', is_landing=True, bot_override=se_bot)
+            _build_raked_prism(
+                k, (ix1, 0.5 * (oy0 + iy0)), (ix0, 0.5 * (oy0 + iy0)), 0.5 * (iy0 - oy0) - 0.004,
+                z0 - 0.15, z0 - 0.01,
+                se_bot, z0 + 1.0 * riser + 0.01,
+                'wall', f_idx, 'stair', f'{owner}/f1-waist-slab', owner,
+            )
 
-        # Flight 2: 9 treads west along south leg (x_ft: 29.5 -> 20.5, y_ft: 36.5..40.0)
+        # Flight 2: 9 treads west along south leg (x_ft: 29.5 -> 20.5, y_ft: 36.5..40.0) + smooth white raked waist slab
         dx2 = 9.0 / 9.0
         for i in range(9):
             xb = 29.5 - i * dx2
             step_block(xb - dx2, 36.5, xb, 40.0, (r_se + 1) + i, f'f2-tread-{i+1}')
         r_sw = r_se + 10
-        step_block(17.0, 36.5, 20.5, 40.0, r_sw, 'sw-landing', is_landing=True)
+        sw_bot = z0 + (r_se + 8) * riser - 0.14
+        step_block(17.0, 36.5, 20.5, 40.0, r_sw, 'sw-landing', is_landing=True, bot_override=sw_bot)
+        _build_raked_prism(
+            k, (0.5 * (ox0 + ix0), iy0), (0.5 * (ox0 + ix0), iy1), 0.5 * (ix0 - ox0) - 0.004,
+            max(z0, z0 + (r_se - 1) * riser - 0.14), z0 + r_se * riser + 0.005,
+            sw_bot, z0 + (r_se + 9) * riser + 0.005,
+            'wall', f_idx, 'stair', f'{owner}/f2-waist-slab', owner,
+        )
 
-        # Flight 3: 4 treads north along west leg (x_ft: 17.0..20.5, y_ft: 36.5 -> 33.0)
+        # Flight 3: 4 treads north along west leg (x_ft: 17.0..20.5, y_ft: 36.5 -> 33.0) + smooth white raked waist slab
         dy3 = 3.5 / 4.0
         for i in range(4):
             yb = 36.5 - i * dy3
             step_block(17.0, yb - dy3, 20.5, yb, (r_sw + 1) + i, f'f3-tread-{i+1}')
+        _build_raked_prism(
+            k, (ix0, 0.5 * (iy1 + oy1)), (ix1, 0.5 * (iy1 + oy1)), 0.5 * (oy1 - iy1) - 0.004,
+            sw_bot, z0 + r_sw * riser + 0.005,
+            z0 + H - 0.36, z0 + (r_sw + 4) * riser + 0.005,
+            'wall', f_idx, 'stair', f'{owner}/f3-waist-slab', owner,
+        )
 
-        # Inner well frameless glass balustrade & warm teak handrail
-        ix0, iy0, ix1, iy1 = box_m(20.5, 33.0, 29.5, 36.5)
-        rail_x_start = (40.0 - 34.85) * 0.3048 if f_idx == 0 else ix1
-        rail_z_start = z0 + (1.06 if f_idx == 0 else 1.05)
-        k.beam((rail_x_start, iy0, rail_z_start), (ix0, iy0, z0 + r_se * riser + 0.92), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
-        k.rect((ix0 - 0.012, iy0, z0 + r_se * riser + 0.04, ix0 + 0.012, iy1, z0 + 3.05), 'glass', f_idx, 'railing', f'{owner}/inner-glass-s', owner)
-        k.beam((ix0, iy0, z0 + r_se * riser + 0.92), (ix0, iy1, z0 + r_sw * riser + 0.90), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
-        k.beam((ix0, iy1, z0 + r_sw * riser + 0.90), (ix1, iy1, z0 + H + 0.90), 0.040, 'cladding_fluted_teak', f_idx, 'railing')
+        # 3-Flight Solid White Opaque Architectural Balustrade along the open inner well (zero glass!)
+        inset = 0.036
+        p_f1_start = (((40.0 - 34.85) * 0.3048 - 0.044, iy0 - inset) if f_idx == 0 else (ix1, iy0 - inset))
+        p_se_corner = (ix0 - inset, iy0 - inset)
+        p_sw_corner = (ix0 - inset, iy1 + inset)
+        p_f3_end = ((ix1 + inset, iy1 + inset) if f_idx == 0 else (ix1 - 0.068, iy1 + inset))
 
-    # Second-floor stair well south/east arrival balustrade along open inner well (x_ft: 20.5..33.0, y_ft=33.0..36.5)
+        # Flight 1 raked white balustrade (southbound along x_ft=29.5)
+        z_f1_a = z0 + (1.0 * riser if f_idx == 0 else 0.12)
+        z_f1_b = z0 + r_se * riser
+        _build_raked_white_balustrade(
+            k, p_f1_start, p_se_corner,
+            z_f1_a, z_f1_b, z0, guard_h, f_idx, f'{owner}/f1-white-guard', owner,
+            start_post=(f_idx == 0),  # On f_idx=1, u-void-guard-south provides the shared corner newel at PE!
+            end_post=True,
+            post_z_bot_a=0.0 if f_idx == 0 else z0,
+            post_z_bot_b=0.0 if f_idx == 0 else se_bot,
+            post_z_top_b=z0 + (r_se + 1) * riser + guard_h + 0.022,
+        )
+
+        # Flight 2 raked white balustrade (westbound along y_ft=36.5)
+        _build_raked_white_balustrade(
+            k, p_se_corner, p_sw_corner,
+            z0 + (r_se + 0.85) * riser, z0 + r_sw * riser, z0, guard_h, f_idx, f'{owner}/f2-white-guard', owner,
+            start_post=False,  # Shared corner post at p_se_corner
+            end_post=True,
+            post_z_bot_b=sw_bot,
+            post_z_top_b=z0 + (r_sw + 1) * riser + guard_h + 0.022,
+        )
+
+        # Flight 3 raked white balustrade (northbound along x_ft=20.5)
+        _build_raked_white_balustrade(
+            k, p_sw_corner, p_f3_end,
+            z0 + (r_sw + 0.85) * riser, z0 + H, z0, guard_h, f_idx, f'{owner}/f3-white-guard', owner,
+            start_post=False,  # Shared corner post at p_sw_corner
+            end_post=(f_idx == 1),  # On f_idx=0, u-void-guard-west provides the shared arrival newel at PA!
+            post_z_bot_b=z0 + H - 0.36,
+            post_z_top_b=z0 + H + 1.112,
+        )
+
+    # Second-Floor Stair Lobby walkable L-slab finish, fluted-teak well fascia & Solid White Opaque Balustrade!
     z2 = 2 * H
-    sx0, sy0, sx1, sy1 = box_m(20.5, 33.0, 33.0, 36.5)
-    for ename, pa, pb in [
-        ('west', (sx0, sy1), (sx1, sy1)),
-        ('south', (sx0, sy0), (sx0, sy1)),
-    ]:
-        line = LineString([pa, pb])
-        k.poly_mesh(line.buffer(0.028, cap_style=2), z2, z2 + 0.08, 'gola_matte_black', 2, 'railing', f's-stair-well-shoe-{ename}', 's_stair_lobby')
-        k.poly_mesh(line.buffer(0.010, cap_style=2), z2 + 0.08, z2 + 1.05, 'glass', 2, 'railing', f's-stair-well-glass-{ename}', 's_stair_lobby')
-        k.poly_mesh(line.buffer(0.026, cap_style=2), z2 + 1.05, z2 + 1.10, 'cladding_fluted_teak', 2, 'railing', f's-stair-well-rail-{ename}', 's_stair_lobby')
+    lobby_l_poly = box(0.062, (50.0 - 34.0) * 0.3048 + 0.062, ix1 - 0.062, iy1).difference(
+        box(0.0, iy0, ix0, iy1 + 0.10)
+    )
+    k.poly_mesh(lobby_l_poly, z2 + 0.002, z2 + 0.009, 'floor_ivory_vitrified_800', 2, 'finish', 's_stair_lobby/floor', 's_stair_lobby')
+
+    f2_well_fascia_line = LineString([(ix1 - 0.062, iy1), (ix0, iy1), (ix0, iy0), (0.062, iy0)])
+    k.poly_mesh(f2_well_fascia_line.buffer(0.032, cap_style=2, join_style=2), z2 - 0.16, z2 + 0.025,
+                'cladding_fluted_teak', 2, 'fascia', 's-stair-well-fascia', 's_stair_lobby')
+
+    q0 = (ix1 - 0.080, iy1 - 0.044)
+    q1 = (ix0 + 0.044, iy1 - 0.044)
+    q2 = (ix0 + 0.044, iy0 - 0.044)
+    q3 = (0.080, iy0 - 0.044)
+    _build_level_white_balustrade(k, q0, q1, z2, 1.10, 2, 's-stair-well-west', 's_stair_lobby', start_post=True, end_post=True)
+    _build_level_white_balustrade(k, q1, q2, z2, 1.10, 2, 's-stair-well-south', 's_stair_lobby', start_post=False, end_post=True)
+    _build_level_white_balustrade(k, q2, q3, z2, 1.10, 2, 's-stair-well-east', 's_stair_lobby', start_post=False, end_post=True)
 
 
 def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     """Build the full-span Double-Height Dining Atrium (x_ft: 20.5..30.5, y_ft: 25.0..33.0, 10' x 8' = 80 sq ft)
     and Overhead Glazed Sunroof (x_ft: 20.5..34.0, y_ft: 25.0..33.0, 13.5' x 8' = 108 sq ft):
     - Spans the ENTIRE 8' N-S gap from the Dining Hall north wall (y=25') right up to the Staircase (y=33')
-    - Symmetrical 3.5' West & East Atrium Bridges on First Floor with fluted-teak slab fascias & frameless glass guards
+    - Symmetrical 3.5' West & East Atrium Bridges on First Floor with fluted-teak slab fascias & solid white opaque balustrades
     - Two-storey travertine & fluted-teak feature cladding + warm linear LED coves
     - Raised architectural solar-glass sunroof with 5x2 matte-black structural mullion grid directly overhead
     - Sculptural 3-ring brushed-gold & warm-LED chandelier centered over the marble dining table
     """
     vx0, vy0, vx1, vy1 = box_m(20.5, 25.0, 30.5, 33.0)
     rx0, ry0, rx1, ry1 = box_m(20.5, 25.0, 34.0, 33.0)
+    _, iy0, _, _ = box_m(20.5, 33.0, 29.5, 36.5)
     owner = 'double-height-shaft'
 
     # 1. Full-height fluted teak & travertine feature wall on u_shared_bath west wall (x_ft=34.0 -> Y=ry0 + 0.062) at First Floor
@@ -1013,28 +1376,34 @@ def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:
     k.rect((nx_face - 0.038, dn_y0 + 0.42, 0.83, nx_face - 0.022, dn_y1 - 0.42, 0.85), 'cove_led_warm', 0, 'cove', f'{owner}/north-cove-bot', owner)
     k.rect((nx_face - 0.038, dn_y0 + 0.42, H - 0.24, nx_face - 0.022, dn_y1 - 0.42, H - 0.22), 'cove_led_warm', 0, 'cove', f'{owner}/north-cove-top', owner)
 
-    # Crisp fluted-teak architectural fascia around the 10' x 8' First-Floor atrium slab opening + structural header beam at y=33'
-    void_ring = box(vx0, vy0, vx1, vy1).exterior.buffer(0.038, join_style=2)
-    k.poly_mesh(void_ring, H - 0.18, H + 0.03, 'cladding_fluted_teak', 1, 'fascia', f'{owner}/f1-void-fascia', owner)
-    # Recessed warm perimeter cove glow around the atrium opening
-    cove_ring = box(vx0, vy0, vx1, vy1).buffer(0.015, join_style=2).difference(box(vx0, vy0, vx1, vy1))
-    k.poly_mesh(cove_ring, H - 0.19, H - 0.17, 'cove_led_warm', 1, 'cove', f'{owner}/f1-void-cove', owner)
+    # Crisp fluted-teak architectural fascia wrapping ONLY the real concrete slab edges of the U-shaped atrium & stair bridges
+    slab_edge_line = LineString([(vx0, vy1), (vx1, vy1), (vx1, vy0), (vx0, vy0), (vx0, iy0)])
+    k.poly_mesh(slab_edge_line.buffer(0.036, cap_style=2, join_style=2), H - 0.18, H + 0.03, 'cladding_fluted_teak', 1, 'fascia', f'{owner}/f1-void-fascia', owner)
+    k.poly_mesh(slab_edge_line.buffer(0.015, cap_style=2, join_style=2), H - 0.195, H - 0.175, 'cove_led_warm', 1, 'cove', f'{owner}/f1-void-cove', owner)
 
-    # 2. First-floor frameless glass balustrade (height 1.10 m) on all 4 open edges of the 10' x 8' atrium
-    guard_edges = [
-        ('north', (vx1 + 0.05, vy0 - 0.04), (vx1 + 0.05, vy1 + 0.04)),
-        ('west', (vx0, vy1 + 0.05), (vx1 + 0.05, vy1 + 0.05)),
-        ('east', (vx0 + 0.10, vy0 - 0.05), (vx1 + 0.05, vy0 - 0.05)),
-        ('south', (vx0, vy0 + 0.30), (vx0, vy1 + 0.05)),
-    ]
-    for ename, p_a, p_b in guard_edges:
-        line = LineString([p_a, p_b])
-        shoe = line.buffer(0.030, cap_style=2, join_style=2)
-        pane = line.buffer(0.010, cap_style=2, join_style=2)
-        rail = line.buffer(0.026, cap_style=2, join_style=2)
-        k.poly_mesh(shoe, H, H + 0.085, 'gola_matte_black', 1, 'railing', f'u-void-guard-{ename}-shoe', 'u_open_to_below')
-        k.poly_mesh(pane, H + 0.085, H + 1.055, 'glass', 1, 'railing', f'u-void-guard-{ename}-glass', 'u_open_to_below')
-        k.poly_mesh(rail, H + 1.055, H + 1.100, 'cladding_fluted_teak', 1, 'railing', f'u-void-guard-{ename}-rail', 'u_open_to_below')
+    # 2. First-Floor Solid White Opaque Architectural Balustrade (height 1.10 m) seamlessly connecting stair-0 arrival -> bridges -> stair-1!
+    inset = 0.036
+    pa = (vx0 + inset, vy1 + inset)  # SW corner: shared with stair-0 Flight 3 top arrival!
+    pb = (vx1 + inset, vy1 + inset)  # NW corner of atrium
+    pc = (vx1 + inset, vy0 - inset)  # NE corner of atrium
+    pd = (vx0, vy0 - inset)          # SE corner of East Sky-Lit Bridge
+    pe = (vx0, iy0 - inset)          # Shared with stair-1 Flight 1 start!
+    _build_level_white_balustrade(
+        k, pa, pb, H, 1.10, 1, 'u-void-guard-west', 'u_open_to_below',
+        start_post=True, end_post=True, start_post_z_bot=H - 0.22,
+    )
+    _build_level_white_balustrade(
+        k, pb, pc, H, 1.10, 1, 'u-void-guard-north', 'u_open_to_below',
+        start_post=False, end_post=True,
+    )
+    _build_level_white_balustrade(
+        k, pc, pd, H, 1.10, 1, 'u-void-guard-east', 'u_open_to_below',
+        start_post=False, end_post=True,
+    )
+    _build_level_white_balustrade(
+        k, pd, pe, H, 1.10, 1, 'u-void-guard-south', 'u_open_to_below',
+        start_post=False, end_post=True, end_post_z_bot=H - 0.18,
+    )
 
     # 3. Second-floor Full-Span Raised Architectural Glazed Sunroof (13.5' x 8' = 108 sq ft, x_ft: 20.5..34.0, y_ft: 25.0..33.0)
     z_roof = 2 * H

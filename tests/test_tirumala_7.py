@@ -134,15 +134,25 @@ def test_full_span_double_height_atrium_and_sunroof_alignment():
     assert plate2.intersection(void_f2).area < 1.0
 
     guards = {g['id']: g for g in b['guards']}
-    for gid in ('u-void-guard-west', 'u-void-guard-east', 'u-void-guard-north', 'u-void-guard-south', 's-rooflight-curb-north', 's-rooflight-curb-east'):
+    for gid in (
+        'u-void-guard-west', 'u-void-guard-east', 'u-void-guard-north', 'u-void-guard-south',
+        's-stair-well-west', 's-stair-well-south', 's-stair-well-east',
+        's-rooflight-curb-north', 's-rooflight-curb-east',
+    ):
         assert gid in guards
         assert guards[gid]['height'] >= 1050
 
     scene = read('scene.json')
     node_ids = {n['id'] for n in scene['nodes']}
     assert 's-rooflight-glass' in node_ids
-    assert 'u-void-guard-north-glass' in node_ids
-    assert 'u-void-guard-east-glass' in node_ids
+    assert 'u-void-guard-north-rail' in node_ids
+    assert 'u-void-guard-east-rail' in node_ids
+    assert 'u-void-guard-west-rail' in node_ids
+    assert 'u-void-guard-north-baluster-0-0' in node_ids
+    assert 'u-void-guard-north-glass' not in node_ids
+    assert 'u-void-guard-east-glass' not in node_ids
+    assert 'u-void-guard-west-glass' not in node_ids
+    assert 'u-void-guard-south-glass' not in node_ids
     assert 'void-chandelier-ring-0' in node_ids
 
 
@@ -224,6 +234,27 @@ def test_stair_294_sequence_risers_treads_and_headroom():
     assert 'stair-0/f1-tread-1-tread' in node_ids
     assert 'stair-0/se-landing-tread' in node_ids
     assert 'stair-0/f1-tread-2-tread' not in node_ids  # Lowermost step removed -> only 2 southbound steps on Ground->First!
+
+    # All stair & stair-lobby railings on Ground, First & Second Floors are solid white opaque balustrades (zero glass!)
+    for prefix in (
+        'stair-0/f1-white-guard', 'stair-0/f2-white-guard', 'stair-0/f3-white-guard',
+        'stair-1/f1-white-guard', 'stair-1/f2-white-guard', 'stair-1/f3-white-guard',
+    ):
+        assert f'{prefix}-rail' in node_ids
+        assert f'{prefix}-shoe' in node_ids
+        assert f'{prefix}-baluster-0' in node_ids
+    for prefix in ('s-stair-well-west', 's-stair-well-south', 's-stair-well-east'):
+        assert f'{prefix}-rail' in node_ids
+        assert f'{prefix}-shoe' in node_ids
+        assert f'{prefix}-baluster-0-0' in node_ids
+    assert 's_stair_lobby/floor' in node_ids
+
+    interior_guard_owners = {'stair-0', 'stair-1', 'u_open_to_below', 's_stair_lobby'}
+    glass_stair_rails = [
+        n['id'] for n in scene['nodes']
+        if n.get('owner') in interior_guard_owners and 'glass' in str(n.get('material', '')).lower()
+    ]
+    assert glass_stair_rails == []
 
 
 def test_home_icu_and_all_tvs_complete_without_wall_overlap():
