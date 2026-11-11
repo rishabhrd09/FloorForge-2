@@ -81,7 +81,7 @@ def _room_kind_map() -> dict[str, str]:
         'work_bay': 'foyer',
         'stair': 'stair',
         'store': 'store',
-        'wash_area': 'drying-room',
+        'wash_area': 'utility',
         # First floor
         'u_master_bedroom': 'bedroom',
         'u_dressing': 'dress',
@@ -182,11 +182,11 @@ def coordinate_levels(b: dict, plan: dict) -> None:
                 'y_ft': [float(y0_ft), float(y1_ft)],
                 'size_ft': [round(x1_ft - x0_ft, 3), round(y1_ft - y0_ft, 3)],
                 'size_mm': [round((x1_ft - x0_ft) * FT, 2), round((y1_ft - y0_ft) * FT, 2)],
-                'enclosed': spec['enclosed'] and not open_sky_space,
+                'enclosed': spec['enclosed'] and not open_sky_space and raw_id != 'wash_area',
                 'roofed': spec['roofed'] and not open_sky_space,
                 'walkable': spec['floor'] and raw_id not in ('open_to_below', 'raised_rooflight'),
                 'wet': spec['wet'],
-                'drain': kind in ('bathroom', 'drying-room') or open_sky_space,
+                'drain': kind in ('bathroom', 'drying-room', 'utility') or open_sky_space,
             }
             if kind == 'bathroom':
                 rec['mechanicalVentilation'] = True
@@ -365,10 +365,8 @@ def coordinate_levels(b: dict, plan: dict) -> None:
         'icu_east_window_2': (['home_icu', 'car_porch'], None),
         'kitchen_east_window_1': (['kitchen', 'east_setback'], None),
         'kitchen_east_window_2': (['kitchen', 'east_setback'], None),
-        'wash_south_window': (['wash_area', 'outside'], None),
         'master_bath_high_window': (['master_bath', 'outside'], None),
         'master_west_window': (['master_bedroom', 'west_gully'], None),
-        'master_south_window': (['master_bedroom', 'outside'], None),
         # First floor doors
         'ff_master_door': (['u_master_bedroom', 'u_family_gallery'], 'u_master_bedroom'),
         'ff_dressing_opening': (['u_master_bedroom', 'u_dressing'], None),
@@ -385,7 +383,8 @@ def coordinate_levels(b: dict, plan: dict) -> None:
         'ff_study_north_glazing': (['u_study_meditation', 'u_large_terrace'], None),
         'ff_shared_bath_east_window': (['u_shared_bath', 'u_large_terrace'], None),
         'ff_medium_west_window': (['u_medium_bedroom', 'outside'], None),
-        'ff_medium_south_window': (['u_medium_bedroom', 'outside'], None),
+        'ff_stair_east_window_1': (['u_stair', 'u_large_terrace'], None),
+        'ff_stair_east_window_2': (['u_stair', 'u_large_terrace'], None),
         # Second floor doors & windows
         'sf_hall_lobby_door': (['s_office_tv_hall', 's_lobby_passage'], 's_lobby_passage'),
         'sf_hall_terrace_slider': (['s_office_tv_hall', 's_open_terrace'], None),
@@ -456,6 +455,9 @@ def coordinate_levels(b: dict, plan: dict) -> None:
                 if oid in ('kitchen_east_window_1', 'kitchen_east_window_2'):
                     sill = 960
                     height = 1340
+                elif oid in ('ff_stair_east_window_1', 'ff_stair_east_window_2'):
+                    sill = 620
+                    height = 2230
                 elif oid == 'sf_hall_atrium_window':
                     sill = 1050
                     height = 1450
@@ -1341,6 +1343,14 @@ def _build_stair_294(k: SceneKit, H: float) -> None:
     _build_level_white_balustrade(k, q0, q1, z2, 1.10, 2, 's-stair-well-west', 's_stair_lobby', start_post=True, end_post=True)
     _build_level_white_balustrade(k, q1, q2, z2, 1.10, 2, 's-stair-well-south', 's_stair_lobby', start_post=False, end_post=True)
     _build_level_white_balustrade(k, q2, q3, z2, 1.10, 2, 's-stair-well-east', 's_stair_lobby', start_post=False, end_post=True)
+
+    # Architectural rain/sun eyebrow hood + eastern daylight emitters for the 2 tall vertical staircase windows (x_ft=33.0, y_ft=33.55..39.45)
+    sh_x0, sh_y0, sh_x1, sh_y1 = box_m(33.20, 33.30, 34.05, 39.70)
+    k.rect((sh_x0, sh_y0, H + 2.86, sh_x1, sh_y1, H + 2.89), 'cladding_fluted_teak', 1, 'window-hood', 'stair-1/east-windows-hood-soffit', 'u_stair')
+    k.rect((sh_x0 - 0.015, sh_y0 - 0.015, H + 2.89, sh_x1 + 0.015, sh_y1 + 0.002, H + 2.93), 'gola_matte_black', 1, 'window-hood', 'stair-1/east-windows-hood-cap', 'u_stair')
+    for wy_ft in (34.88, 38.12):
+        wx_l, wy_l = local_m(32.35, wy_ft)
+        k.light((wx_l, wy_l, H + 1.75), 58, kind='daylight-shaft')
 
 
 def _build_double_height_shaft_and_rooflight(k: SceneKit, H: float) -> None:

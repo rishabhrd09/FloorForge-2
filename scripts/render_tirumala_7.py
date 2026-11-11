@@ -57,6 +57,7 @@ area_lights = [
     ('Ground master fill', lm(9.5, 33.0, 2.78), lm(9.5, 36.0, 1.00), 2.8, 320, (1.0, 0.95, 0.87)),
     # First floor rooms
     ('First gallery fill', lm(20.5, 22.5, H + 2.78), lm(25.5, 27.5, H + 1.00), 2.8, 310, (1.0, 0.96, 0.89)),
+    ('Staircase east sunlight', lm(34.6, 36.5, H + 1.85), lm(23.5, 35.8, 1.35), 2.4, 420, (1.0, 0.98, 0.92)),
     ('First master fill', lm(11.5, 9.5, H + 2.78), lm(11.5, 6.0, H + 1.00), 3.2, 350, (1.0, 0.95, 0.88)),
     ('Study meditation fill', lm(31.5, 14.5, H + 2.78), lm(34.0, 12.5, H + 1.00), 2.8, 320, (1.0, 0.96, 0.90)),
     ('Medium bedroom fill', lm(8.5, 34.5, H + 2.78), lm(5.5, 35.5, H + 1.00), 2.6, 300, (1.0, 0.95, 0.88)),
@@ -306,7 +307,7 @@ views = [v for v in requested if v != '--gpu'] or ALL_VIEWS
 cut_roles = {'wall', 'joinery', 'glass', 'door', 'curtain', 'wall-tile', 'wall-panel', 'post', 'window-surround', 'sill', 'pipe', 'window-hood', 'parapet'}
 overheads = {'roof', 'ceiling', 'cove', 'downlight', 'ceiling-feature', 'canopy', 'band'}
 exterior_views = {'exterior', 'east_arrival', 'north_frontage', 'colony_overview', 'roof_terraces'}
-context_views = exterior_views | {'verandah', 'east_terrace', 'north_terrace', 'rooflight'}
+context_views = exterior_views | {'verandah', 'east_terrace', 'north_terrace', 'rooflight', 'dining_double_height', 'gallery_void', 'stair_lobby'}
 
 for view in views:
     floor = {'ground': 0, 'first': 1, 'second': 2}.get(view)

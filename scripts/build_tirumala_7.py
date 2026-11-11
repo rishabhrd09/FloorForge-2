@@ -167,7 +167,7 @@ def build_tour_html(dest: Path) -> None:
 <script>
 const views=[
  ['Ground floor','ground','600 mm raised plinth with stepped-down 22′ car porch (-220 mm), Honda City sedan, 13′2″ east sliding car gate + 10′ NE car gate, 16′ × 9′ verandah lawn court, 15′ × 15′ Home ICU, living hall, widened dining atrium, open-plan kitchen with N–S center counter and compact corner fridge, and wash utility merged into the 3′ east gully.'],
- ['First floor','first','389 sq ft master suite with dressing room and bath, study/meditation room, medium bedroom, symmetrical 3.5′ bridges framing the 10′ × 8′ dining atrium, and 526 sq ft shared terrace.'],
+ ['First floor','first','389 sq ft master suite with dressing room and bath, study/meditation room, medium bedroom, symmetrical 3.5′ bridges with solid white opaque balustrades framing the 10′ × 8′ dining atrium, two tall vertical east sunlight windows on the staircase wall, and 526 sq ft shared terrace.'],
  ['Second floor','second','31′ × 17′ office and TV hall with three workstations, lounge sofa and 75″ east-wall TV, 13.5′ × 8′ raised glazed sunroof directly above the dining atrium, and 873 sq ft open terrace.'],
  ['Exterior','exterior','North-east corner view showing the 600 mm raised plinth, stepped-down 22′ car porch with Honda City sedan, 13′2″ east sliding car gate, 10′ NE car gate, 3′ east kitchen setback with east windows, north verandah lawn court, and stepped terraces.'],
  ['East arrival','east_arrival','9 m east colony road arrival showing the 13′2″ east sliding car gate and sloped stone vehicle ramp alongside the east pedestrian gate, with the Honda City sedan inside the stepped-down 22′ car porch.'],
@@ -183,15 +183,15 @@ const views=[
  ['Verandah','verandah','16′ × 9′ north verandah featuring a recessed manicured velvet lawn court with honed-travertine coping, stepping pads, and warm LED graze lighting.'],
  ['Drawing room','drawing_room','9′6″ × 14′ drawing room with taupe bouclé sofa, marble coffee table, and sheer/taupe drapery.'],
  ['Master bedroom','master_bedroom','15′ × 14′ ground-floor master bedroom with upholstered headboard, full-height fluted-teak wardrobe, and en-suite bath.'],
- ['Gallery void','gallery_void','First-floor gallery looking across the full-span 10′ × 8′ glass-guarded atrium and sky-lit east bridge down to the dining hall.'],
+ ['Gallery void','gallery_void','First-floor gallery looking across the full-span 10′ × 8′ atrium and sky-lit east bridge with solid white opaque balustrades down to the dining hall.'],
  ['Master suite','master_suite','First-floor master bedroom (389 sq ft suite) with king bed, upholstered foot bench, dressing room, and north curtains.'],
  ['Study / meditation','study_meditation','First-floor study and meditation room with teak work desk, backlit meditation platform, and east terrace slider.'],
- ['Medium bedroom','medium_bedroom','15′ × 11′ first-floor southwest bedroom with west headboard, south wardrobe, and dual-aspect windows.'],
+ ['Medium bedroom','medium_bedroom','15′ × 11′ first-floor southwest bedroom with west headboard, south wardrobe, solid south boundary wall, and west window.'],
  ['East terrace','east_terrace','First-floor 8′-wide east terrace (outer edge at x=47′) with timber lounge deck and outdoor seating.'],
  ['Office & TV hall','office_tv_hall','31′ × 17′ second-floor office and TV hall with three north workstations, terracotta lounge sofa, and 75″ east-wall OLED TV.'],
  ['North terrace','north_terrace','Second-floor north terrace with timber lounge deck, outdoor sofa, and travertine table.'],
  ['Rooflight','rooflight','Second-floor 13.5′ × 8′ raised laminated-glass sunroof curb with 5×2 structural mullion grid directly above the dining atrium.'],
- ['Stair lobby','stair_lobby','Second-floor stair lobby at the head of the 2/9/4 U-turn staircase with frameless glass well balustrade.']
+ ['Stair lobby','stair_lobby','Second-floor stair lobby at the head of the U-turn staircase with solid white opaque balustrade and sunlit east staircase windows below.']
 ];
 const nav=document.querySelector('nav'),image=document.querySelector('#render'),caption=document.querySelector('#caption');
 function selectView(index){const [title,id,description]=views[index];document.getElementById('walkLink').href='preview.html#'+id;image.src='renders/'+id+'.png';image.alt=title+'. '+description;caption.textContent=description;Array.from(nav.children).forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));}

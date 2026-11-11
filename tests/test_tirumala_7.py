@@ -300,7 +300,19 @@ def test_wide_east_kitchen_platform_east_windows_and_west_shifted_fridge():
     assert 'work_bay_porch_door' not in openings  # North kitchen-to-porch door removed!
     assert 'wash_east_window' not in openings     # Wash area merged open into 3' east kitchen gully!
     assert 'wash_area_door' in openings and openings['wash_area_door']['wall_ref'] == 'y=35.0'
-    assert 'wash_south_window' in openings and openings['wash_south_window']['wall_ref'] == 'y=40.0'
+    assert 'wash_south_window' not in openings    # South wall has zero windows or doors!
+    assert 'master_south_window' not in openings
+    assert 'ff_medium_south_window' not in openings
+    south_wall_openings = [o['id'] for o in b['openings'] if o.get('wall_ref') == 'y=40.0']
+    assert south_wall_openings == []
+
+    # Two tall vertical sunlight windows along the staircase east wall (x=33.0 on First Floor)
+    for wid in ('ff_stair_east_window_1', 'ff_stair_east_window_2'):
+        assert wid in openings
+        wo = openings[wid]
+        assert wo['floor'] == 1 and wo['wall_ref'] == 'x=33.0'
+        assert wo['height'] >= 2150 and wo['height'] > 2.5 * wo['width']
+        assert wo['sill'] >= 580
 
     # Verify NO ground-floor wall separates wash_area (x=40..47, y=35..40) from east_setback (x=47..50, y=22..40),
     # while the south wall along y=40.0 remains intact!

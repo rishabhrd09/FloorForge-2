@@ -495,7 +495,7 @@
           {
             "id": "wash_area",
             "name": "Wash & utility",
-            "kind": "drying-room",
+            "kind": "utility",
             "polygon": [
               [
                 1524,
@@ -1727,15 +1727,6 @@
                 "width_ft": 3.4
               },
               {
-                "id": "wash_south_window",
-                "wall": "y=40.0",
-                "span_ft": [
-                  41.8,
-                  45.5
-                ],
-                "width_ft": 3.7
-              },
-              {
                 "id": "master_bath_high_window",
                 "wall": "x=0.0",
                 "span_ft": [
@@ -1750,15 +1741,6 @@
                 "span_ft": [
                   31.5,
                   37
-                ],
-                "width_ft": 5.5
-              },
-              {
-                "id": "master_south_window",
-                "wall": "y=40.0",
-                "span_ft": [
-                  8.5,
-                  14
                 ],
                 "width_ft": 5.5
               }
@@ -2597,13 +2579,22 @@
                 "width_ft": 5.5
               },
               {
-                "id": "ff_medium_south_window",
-                "wall": "y=40.0",
+                "id": "ff_stair_east_window_1",
+                "wall": "x=33.0",
                 "span_ft": [
-                  6,
-                  11.5
+                  33.55,
+                  36.2
                 ],
-                "width_ft": 5.5
+                "width_ft": 2.65
+              },
+              {
+                "id": "ff_stair_east_window_2",
+                "wall": "x=33.0",
+                "span_ft": [
+                  36.8,
+                  39.45
+                ],
+                "width_ft": 2.65
               }
             ],
             "fixtures": {
